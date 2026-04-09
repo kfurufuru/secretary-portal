@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secretary Portal v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #0a0e1a;
+      --surface:     rgba(15,22,41,0.60);
+      --surface2:    rgba(15,22,41,0.85);
+      --border:      rgba(255,255,255,0.08);
+      --border-h:    rgba(255,255,255,0.18);
+      --text:        rgba(255,255,255,0.92);
+      --text2:       rgba(255,255,255,0.60);
+      --text3:       rgba(255,255,255,0.35);
+      --accent:      #22d3ee;
+      --accent-h:    #67e8f9;
+      --accent-glow: rgba(34,211,238,0.20);
+      --accent-sub:  #6366f1;
+      --accent-sub-h:#818cf8;
+      --green:       #10b981;
+      --yellow:      #f59e0b;
+      --red:         #ef4444;
+      --cyan:        #22d3ee;
+      --shadow:      rgba(0,0,0,0.5);
+      --header-bg:   rgba(10,14,26,0.90);
+      /* spacing */
+      --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+      --sp-6:24px; --sp-8:32px; --sp-12:48px; --sp-16:64px;
+      /* typography */
+      --font-base: 'Inter','Noto Sans JP',sans-serif;
+      --fs-h1:2rem; --fs-h2:1.5rem; --fs-h3:1.25rem;
+      --fs-body: clamp(0.875rem, 2.5vw, 1rem); --fs-sm:0.78rem; --lh-body:1.6;
+      --fw-normal:400; --fw-bold:700;
+      --radius-sm:6px; --radius-md:14px; --radius-lg:20px;
+      --transition:0.2s ease;
+      --hover-lift: translateY(-2px);
+      /* --- Status tokens --- */
+      --status-ok:       #10b981;
+      --status-warn:     #f59e0b;
+      --status-critical: #ef4444;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:var(--font-base);
+      background:var(--bg); color:var(--text);
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ---- ORBS ---- */
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+    .orb-1{width:520px;height:520px;background:#6366f1;opacity:.05;top:-160px;left:-120px;}
+    .orb-2{width:360px;height:360px;background:#06b6d4;opacity:.04;top:50%;right:-80px;}
+    .orb-3{width:280px;height:280px;background:#a855f7;opacity:.03;bottom:80px;left:38%;}
+    /* Mode-tinted orbs */
+    .orb-mode{
+      position:fixed;width:600px;height:600px;border-radius:50%;
+      filter:blur(120px);pointer-events:none;z-index:0;
+      top:-200px;right:-200px;opacity:.05;
+      transition:background 1.5s ease;
+    }
+
+    /* ---- HEADER ---- */
+    header{
+      position:sticky;top:0;z-index:200;
+      padding:12px 32px;
+      background:var(--header-bg);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:12px;
+    }
+    .logo{
+      font-size:0.9rem;font-weight:700;letter-spacing:-0.02em;
+      background:linear-gradient(135deg,#a5b4fc,#818cf8 50%,#c084fc);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .header-meta{font-size:0.72rem;color:var(--text3);}
+    .header-right{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+    .phase-badge{
+      font-size:0.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      padding:4px 10px;border-radius:20px;
+      background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.35);
+      color:#a5b4fc;
+    }
+    .data-badge{
+      font-size:0.65rem;font-weight:600;padding:4px 10px;border-radius:20px;
+      border:1px solid;cursor:default;
+    }
+    .data-badge.live{
+      background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;
+    }
+    .data-badge.offline{
+      background:rgba(239,68,68,0.10);border-color:rgba(239,68,68,0.30);color:#fca5a5;
+    }
+    .status-dot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--red);box-shadow:0 0 8px var(--red);
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+    .status-dot.green{background:var(--green);box-shadow:0 0 8px var(--green);}
+    .status-dot.yellow{background:var(--yellow);box-shadow:0 0 8px var(--yellow);}
+
+    /* ---- MAIN GRID ---- */
+    main{
+      position:relative;z-index:1;
+      max-width:1040px;margin:0 auto;
+      padding:24px 24px 80px;
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:12px;
+    }
+
+    /* ---- CARDS ---- */
+    .card{
+      background:var(--surface);
+      backdrop-filter:blur(8px) saturate(160%);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:var(--sp-6);
+      box-shadow:0 8px 32px var(--shadow),inset 0 1px 0 rgba(255,255,255,0.05);
+      transition:border-color var(--transition),transform var(--transition);
+    }
+    .card:hover{border-color:var(--border-h);}
+    .card-label{
+      font-size:0.62rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--text3);margin-bottom:var(--sp-3);
+    }
+    .card-title{font-size:1rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px;}
+    .card-sub{font-size:var(--fs-body);color:var(--text2);line-height:var(--lh-body);}
+
+    /* ---- HERO ---- */
+    .card-hero{
+      grid-column:span 7;
+      background:linear-gradient(135deg,rgba(99,102,241,0.14) 0%,rgba(168,85,247,0.07) 50%,rgba(15,22,41,0.60) 100%);
+      border-color:rgba(99,102,241,0.20);
+      position:relative;overflow:hidden;
+    }
+    .card-hero::before{
+      content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+      background:linear-gradient(180deg,#6366f1,#a855f7 60%,transparent);
+      border-radius:var(--radius-lg) 0 0 var(--radius-lg);
+    }
+    .hero-clock{
+      font-size:clamp(2.4rem,4vw,3.4rem);font-weight:200;letter-spacing:-0.03em;
+      font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.88);line-height:1;
+      margin-bottom:4px;
+    }
+    .hero-greeting{font-size:1rem;font-weight:500;color:var(--text2);margin-bottom:2px;}
+    .hero-date{font-size:0.75rem;color:var(--text3);margin-bottom:20px;}
+    .system-status-row{display:flex;gap:10px;flex-wrap:wrap;}
+    .sys-chip{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:5px 12px;border-radius:20px;font-size:0.72rem;font-weight:500;
+      border:1px solid;
+    }
+    .sys-chip.red{background:rgba(239,68,68,0.10);border-color:rgba(239,68,68,0.30);color:#fca5a5;}
+    .sys-chip.yellow{background:rgba(245,158,11,0.10);border-color:rgba(245,158,11,0.30);color:#fcd34d;}
+    .sys-chip.green{background:rgba(16,185,129,0.10);border-color:rgba(16,185,129,0.30);color:#6ee7b7;}
+    .sys-chip .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+    .sys-chip.red .dot{background:var(--red);}
+    .sys-chip.yellow .dot{background:var(--yellow);}
+    .sys-chip.green .dot{background:var(--green);}
+
+    /* ---- MODE BADGE ---- */
+    .mode-badge{
+      position:absolute;top:16px;right:16px;
+      font-size:0.72rem;font-weight:600;padding:5px 14px;border-radius:20px;
+      border:1px solid;letter-spacing:.04em;
+      transition:all 0.5s ease;
+    }
+    .mode-badge.morning{
+      background:rgba(99,102,241,0.20);border-color:rgba(99,102,241,0.50);
+      color:#a5b4fc;
+    }
+    .mode-badge.noon{
+      background:rgba(245,158,11,0.18);border-color:rgba(245,158,11,0.45);
+      color:#fcd34d;
+    }
+    .mode-badge.night{
+      background:rgba(168,85,247,0.18);border-color:rgba(168,85,247,0.45);
+      color:#c084fc;
+    }
+
+    /* ---- EXAM COUNTDOWN ---- */
+    .card-exam{
+      grid-column:span 5;
+      background:linear-gradient(160deg,rgba(6,182,212,0.12) 0%,rgba(99,102,241,0.06) 100%);
+      border-color:rgba(6,182,212,0.22);
+      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;
+    }
+    .exam-days{
+      font-size:clamp(3rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.04em;line-height:1;
+      color:#22d3ee;text-shadow:0 0 24px rgba(34,211,238,0.35);
+    }
+    .exam-name{font-size:0.85rem;font-weight:600;color:var(--text2);}
+    .exam-date{font-size:0.72rem;color:var(--text3);}
+    .exam-progress{
+      width:100%;margin-top:8px;
+      background:rgba(255,255,255,0.08);border-radius:4px;height:4px;overflow:hidden;
+    }
+    .exam-progress-bar{
+      height:100%;border-radius:4px;
+      background:linear-gradient(90deg,#22d3ee,#6366f1);
+      transition:width 1s ease;
+    }
+    .exam-score-row{display:flex;gap:16px;margin-top:6px;}
+    .exam-score-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
+    .exam-score-val{font-size:1.1rem;font-weight:700;color:var(--text);}
+    .exam-score-lbl{font-size:0.62rem;color:var(--text3);}
+
+    /* ---- DYNAMIC MODE SECTION ---- */
+    .card-mode{
+      grid-column:span 12;
+      animation:fade-in 0.5s ease;
+    }
+    @keyframes fade-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+    /* Morning mode */
+    .morning-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+    .focus-card{
+      padding:20px;border-radius:var(--radius-md);
+      background:linear-gradient(135deg,rgba(99,102,241,0.18),rgba(168,85,247,0.10));
+      border:1px solid rgba(99,102,241,0.30);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .focus-label{font-size:0.62rem;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#a5b4fc;}
+    .focus-text{font-size:1.05rem;font-weight:600;color:var(--text);line-height:1.4;}
+    .focus-sub{font-size:0.75rem;color:var(--text2);}
+
+    /* Noon mode */
+    .noon-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;}
+
+    /* Night mode */
+    .night-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .reflect-item{
+      display:flex;align-items:flex-start;gap:10px;padding:10px 14px;
+      background:rgba(255,255,255,0.03);border:1px solid var(--border);
+      border-radius:10px;font-size:0.82rem;
+    }
+    .reflect-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .reflect-text{flex:1;color:var(--text2);line-height:1.4;}
+    .reflect-status{
+      font-size:0.65rem;font-weight:600;padding:2px 8px;border-radius:8px;
+      flex-shrink:0;align-self:center;
+    }
+    .reflect-status.done{background:rgba(16,185,129,0.15);color:#6ee7b7;}
+    .reflect-status.open{background:rgba(245,158,11,0.12);color:#fcd34d;}
+    .night-checklist{display:flex;flex-direction:column;gap:8px;}
+    .night-check-item{
+      display:flex;align-items:center;gap:10px;
+      padding:8px 14px;
+      background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.18);
+      border-radius:10px;font-size:0.82rem;color:var(--text2);
+    }
+    .night-check-box{
+      width:18px;height:18px;border-radius:5px;
+      border:1px solid rgba(168,85,247,0.40);
+      flex-shrink:0;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:11px;
+      transition:all var(--transition);
+    }
+    .night-check-box.checked{background:rgba(168,85,247,0.40);border-color:#c084fc;color:#fff;}
+
+    /* ---- TODO card ---- */
+    .card-todo{grid-column:span 6;}
+    .todo-list{display:flex;flex-direction:column;gap:6px;margin-top:var(--sp-3);}
+    .todo-item{
+      display:flex;align-items:flex-start;gap:10px;
+      padding:9px 12px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);border-radius:10px;
+      font-size:0.82rem;line-height:1.45;
+      transition:background var(--transition),border-color var(--transition);
+    }
+    .todo-item:hover{background:rgba(255,255,255,0.06);border-color:var(--border-h);}
+    .todo-check{
+      width:16px;height:16px;border-radius:4px;border:1px solid var(--border-h);
+      flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;
+      font-size:10px;
+    }
+    .todo-check.done{background:var(--green);border-color:var(--green);color:#fff;}
+    .todo-item.high .todo-check{border-color:rgba(239,68,68,0.5);}
+    .todo-text{flex:1;}
+    .todo-tag{
+      font-size:0.6rem;font-weight:600;padding:2px 6px;border-radius:4px;
+      letter-spacing:.06em;flex-shrink:0;align-self:center;
+    }
+    .todo-tag.high{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);}
+    .todo-tag.normal{background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);}
+    .todo-tag.low{background:rgba(255,255,255,0.05);color:var(--text3);border:1px solid var(--border);}
+    .todo-add{
+      margin-top:8px;width:100%;padding:8px 12px;
+      background:rgba(99,102,241,0.06);border:1px dashed rgba(99,102,241,0.25);
+      border-radius:10px;color:var(--text3);font-size:0.78rem;font-family:inherit;
+      cursor:pointer;text-align:left;transition:all var(--transition);
+    }
+    .todo-add:hover{background:rgba(99,102,241,0.12);color:var(--accent-h);border-color:rgba(99,102,241,0.45);}
+
+    /* ---- KNOWLEDGE STATS ---- */
+    .card-knowledge{grid-column:span 6;}
+    .knowledge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:var(--sp-3);}
+    .k-stat{
+      padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;
+    }
+    .k-stat-val{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--text);}
+    .k-stat-lbl{font-size:0.68rem;color:var(--text3);margin-top:2px;}
+    .k-stat-sub{font-size:0.7rem;color:var(--text2);margin-top:4px;}
+    .k-bar-wrap{margin-top:12px;}
+    .k-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+    .k-bar-label{font-size:0.7rem;color:var(--text2);width:80px;flex-shrink:0;}
+    .k-bar{flex:1;height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+    .k-bar-fill{height:100%;border-radius:3px;transition:width 1s ease;}
+    .k-bar-count{font-size:0.68rem;color:var(--text3);width:24px;text-align:right;flex-shrink:0;}
+
+    /* ---- SYSTEM HEALTH ---- */
+    .card-health{grid-column:span 4;}
+    .health-badge{
+      font-size:0.62rem;font-weight:600;padding:2px 8px;border-radius:10px;
+    }
+    .health-badge.red{background:rgba(239,68,68,0.15);color:#fca5a5;}
+    .health-badge.yellow{background:rgba(245,158,11,0.12);color:#fcd34d;}
+    .health-badge.green{background:rgba(16,185,129,0.12);color:#6ee7b7;}
+
+    /* ---- PHASE EVOLUTION ---- */
+    .card-phase{grid-column:span 8;}
+    .phase-row{display:flex;align-items:center;gap:0;margin-top:var(--sp-4);}
+    .phase-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+    .phase-circle{
+      width:44px;height:44px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:0.85rem;border:2px solid;
+      transition:all var(--transition);
+    }
+    .phase-circle.done{background:rgba(16,185,129,0.2);border-color:var(--green);color:var(--green);}
+    .phase-circle.active{
+      background:rgba(99,102,241,0.2);border-color:var(--accent);color:#a5b4fc;
+      box-shadow:0 0 16px var(--accent-glow);
+    }
+    .phase-circle.future{background:rgba(255,255,255,0.04);border-color:var(--border);color:var(--text3);}
+    .phase-label{font-size:0.65rem;color:var(--text3);text-align:center;max-width:72px;line-height:1.3;}
+    .phase-label.active{color:var(--text2);}
+    .phase-connector{height:2px;flex:1;margin-bottom:20px;background:var(--border);}
+    .phase-connector.done{background:linear-gradient(90deg,var(--green),var(--accent));}
+    .phase-detail{
+      margin-top:var(--sp-4);padding:12px 16px;
+      background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.18);
+      border-radius:12px;
+    }
+    .phase-detail-title{font-size:0.8rem;font-weight:600;color:#a5b4fc;margin-bottom:6px;}
+    .phase-detail-list{display:flex;flex-wrap:wrap;gap:6px;}
+    .phase-tag{
+      font-size:0.68rem;padding:3px 8px;border-radius:6px;
+      background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.20);color:var(--text2);
+    }
+
+    /* ---- QUICK LINKS ---- */
+    .card-links{grid-column:span 4;}
+    .links-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:var(--sp-3);}
+    .link-btn{
+      padding:10px 12px;
+      background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;
+      font-size:0.75rem;color:var(--text2);cursor:pointer;
+      text-decoration:none;display:flex;align-items:center;gap:6px;
+      transition:all var(--transition);
+    }
+    .link-btn:hover{
+      background:rgba(99,102,241,0.10);border-color:rgba(99,102,241,0.35);
+      color:var(--text);transform:var(--hover-lift);
+    }
+    .link-icon{font-size:1rem;}
+
+    /* ---- E-LOG ---- */
+    .card-elog{grid-column:span 6;}
+    .elog-list{display:flex;flex-direction:column;gap:6px;margin-top:var(--sp-3);}
+    .elog-item{
+      display:grid;grid-template-columns:80px 60px 60px 1fr;gap:8px;align-items:center;
+      padding:8px 12px;background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);border-radius:10px;font-size:0.75rem;
+    }
+    .elog-cat{color:var(--text2);}
+    .elog-l1,.elog-l2{
+      padding:2px 6px;border-radius:4px;font-size:0.65rem;font-weight:600;text-align:center;
+    }
+    .elog-l1{background:rgba(249,115,22,0.15);color:#fdba74;}  /* オレンジ */
+    .elog-l2{background:rgba(168,85,247,0.15);color:#c084fc;}  /* パープル */
+    .elog-memo{color:var(--text3);font-size:0.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    /* ---- ALL SITES NAV ---- */
+    .card-allsites{grid-column:span 12;}
+    .allsites-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:var(--sp-4);}
+    .site-group{display:flex;flex-direction:column;gap:8px;}
+    .site-group-title{
+      font-size:0.68rem;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--text3);padding-bottom:8px;
+      border-bottom:1px solid var(--border);margin-bottom:2px;
+    }
+    .site-link{
+      display:flex;align-items:center;gap:8px;
+      padding:9px 12px;
+      background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;
+      font-size:0.78rem;color:var(--text2);text-decoration:none;
+      transition:all var(--transition);
+    }
+    .site-link:hover{
+      background:rgba(99,102,241,0.10);border-color:rgba(99,102,241,0.35);
+      color:var(--text);transform:var(--hover-lift);
+    }
+    .site-link-icon{font-size:1rem;flex-shrink:0;}
+    .site-link-sub{font-size:0.62rem;color:var(--text3);margin-left:auto;}
+
+    /* ---- GREETING BTN ---- */
+    .greeting-btn{
+      position:fixed;right:24px;bottom:24px;z-index:500;
+      width:48px;height:48px;border-radius:50%;
+      background:rgba(99,102,241,0.80);border:1px solid rgba(99,102,241,0.60);
+      color:#fff;font-size:1.2rem;cursor:pointer;
+      box-shadow:0 4px 20px rgba(99,102,241,0.40);
+      transition:all var(--transition);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .greeting-btn:hover{background:rgba(99,102,241,1);transform:scale(1.08);}
+
+    /* ---- TOAST ---- */
+    .toast{
+      position:fixed;right:84px;bottom:24px;z-index:500;
+      max-width:320px;
+      background:rgba(15,22,41,0.95);
+      border:1px solid rgba(99,102,241,0.40);
+      border-radius:16px;
+      padding:14px 18px;
+      font-size:0.88rem;line-height:1.6;color:var(--text);
+      backdrop-filter:blur(20px);
+      box-shadow:0 8px 32px rgba(0,0,0,0.5);
+      opacity:0;transform:translateX(12px);
+      transition:opacity 0.25s ease, transform 0.25s ease;
+      pointer-events:none;
+    }
+    .toast.show{opacity:1;transform:translateX(0);pointer-events:auto;}
+    .toast-close{
+      float:right;margin-left:10px;cursor:pointer;
+      color:var(--text3);font-size:0.8rem;
+    }
+    .toast-close:hover{color:var(--text);}
+    .toast-icon{margin-right:6px;}
+
+    /* ---- FOOTER ---- */
+    footer{
+      position:relative;z-index:1;
+      text-align:center;padding:16px;
+      font-size:0.68rem;color:var(--text3);
+      border-top:1px solid var(--border);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:768px){
+      main{grid-template-columns:1fr;padding:12px;}
+      .card-hero,.card-exam,.card-todo,.card-knowledge,
+      .card-health,.card-phase,.card-links,.card-elog,
+      .card-allsites,.card-mode{grid-column:span 1!important;}
+      .knowledge-grid{grid-template-columns:repeat(2,1fr);}
+      .allsites-grid{grid-template-columns:repeat(2,1fr);}
+      .morning-grid,.noon-grid,.night-grid{grid-template-columns:1fr!important;}
+    }
+    @media(max-width:480px){
+      .phase-row{flex-wrap:wrap;gap:12px;}
+      .phase-connector{display:none;}
+      .links-grid{grid-template-columns:1fr;}
+      .allsites-grid{grid-template-columns:1fr;}
+    }
+  .link-btn.pinned {
+    background: rgba(99,102,241,0.14);
+    border-color: rgba(99,102,241,0.40);
+  }
+  .link-pin-badge {
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(99,102,241,0.25);
+    color: #a5b4fc;
+    letter-spacing: .06em;
+    margin-left: auto;
+  }
+
+  /* 認知負荷インジケーター */
+  .cognitive-banner {
+    grid-column: span 12;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fade-in 0.5s ease;
+  }
+  .cognitive-banner.high {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    color: #fca5a5;
+  }
+  .cognitive-banner.normal {
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.20);
+    color: #a5b4fc;
+  }
+  .cognitive-banner.low {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.20);
+    color: #6ee7b7;
+  }
+  .card-exam.dimmed {
+    opacity: 0.5;
+    transform: scale(0.98);
+    transition: all 0.5s ease;
+  }
+  .card-todo.highlighted {
+    border-color: rgba(99,102,241,0.45) !important;
+    box-shadow: 0 0 24px rgba(99,102,241,0.15), 0 8px 32px var(--shadow) !important;
+  }
+  .card-knowledge.highlighted {
+    border-color: rgba(16,185,129,0.40) !important;
+    box-shadow: 0 0 24px rgba(16,185,129,0.12), 0 8px 32px var(--shadow) !important;
+  }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="orb-mode" id="orb-mode"></div>
+
+<header>
+  <span class="logo">⚡ Secretary v2</span>
+  <span class="header-meta" id="header-date"></span>
+  <span class="header-meta" id="last-updated" style="color:var(--text3);font-size:0.68rem;"></span>
+  <div class="header-right">
+    <span class="data-badge offline" id="data-badge">🔴 オフライン</span>
+    <span class="phase-badge">Phase 4 — AI分身化</span>
+    <div class="status-dot yellow" id="overall-dot" title="システム全体: 要対応あり"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <div class="card card-hero" data-card-id="hero">
+    <div class="card-label">Overview</div>
+    <div class="mode-badge morning" id="mode-badge">🌅 朝モード</div>
+    <div class="hero-clock" id="clock">--:--:--</div>
+    <div class="hero-greeting" id="greeting">おはようございます、古舘さん</div>
+    <div class="hero-date" id="hero-date"></div>
+    <div id="hero-focus-task" style="margin-bottom:16px;padding:12px 16px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.22);border-radius:12px;font-size:0.92rem;font-weight:600;color:rgba(255,255,255,0.92);line-height:1.4;">
+      <span style="font-size:0.62rem;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:rgba(34,211,238,0.7);display:block;margin-bottom:4px;">🎯 今日のフォーカス</span>
+      <span id="hero-focus-text">タスクを読み込み中...</span>
+    </div>
+    <div class="system-status-row">
+      <span class="sys-chip green"><span class="dot"></span>Wiki 3種 GitHub Pages稼働中</span>
+      <span class="sys-chip green"><span class="dot"></span>学習ダッシュボード 稼働中</span>
+      <span class="sys-chip green"><span class="dot"></span>電験メーラー 5種 稼働中</span>
+      <span class="sys-chip green"><span class="dot"></span>knowledge/ 充実 (<span id="k-total-chip">--</span>件)</span>
+    </div>
+  </div>
+
+  <!-- Exam Countdown -->
+  <div class="card card-exam" data-card-id="denken">
+    <div class="card-label">電験3種 試験まで</div>
+    <div class="exam-days" id="exam-days">--</div>
+    <div class="exam-name">第三種電気主任技術者</div>
+    <div class="exam-date">2026年8月 CBT試験</div>
+    <div class="exam-progress">
+      <div class="exam-progress-bar" id="exam-bar" style="width:0%"></div>
+    </div>
+    <div class="exam-score-row">
+      <div class="exam-score-item">
+        <span class="exam-score-val" id="study-notes">18</span>
+        <span class="exam-score-lbl">学習ノート</span>
+      </div>
+      <div class="exam-score-item">
+        <span class="exam-score-val" id="elog-count">3+</span>
+        <span class="exam-score-lbl">誤答ログ</span>
+      </div>
+      <div class="exam-score-item">
+        <span class="exam-score-val">4</span>
+        <span class="exam-score-lbl">科目</span>
+      </div>
+    </div>
+    <div class="exam-daily-target" id="exam-daily-target" style="
+      margin-top:10px;
+      padding:8px 14px;
+      background:rgba(34,211,238,0.08);
+      border:1px solid rgba(34,211,238,0.20);
+      border-radius:10px;
+      font-size:0.82rem;
+      color:var(--text2);
+      text-align:center;
+    ">
+      <span style="color:#22d3ee;font-weight:700;" id="daily-q-num">--</span> 問/日 のペースで完走できます
+    </div>
+  </div>
+
+  <!-- Dynamic Mode Section (Layer 1) -->
+  <div class="card card-mode" id="mode-section" data-card-id="mode">
+    <!-- Injected by renderMode() -->
+  </div>
+
+  <!-- Today's TODO -->
+  <div class="card card-todo" data-card-id="todo">
+    <div class="card-label">Today's TODO — <span id="todo-date-label">2026-04-08</span></div>
+    <div class="card-title">本日のタスク</div>
+    <div class="todo-list" id="todo-list">
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Secretary Portal v2を確認・活用する</span>
+        <span class="todo-tag normal">通常</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">セッション進捗ビジュアライザーを試す</span>
+        <span class="todo-tag normal">通常</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">health-monitor のパスエラーを修正する</span>
+        <span class="todo-tag normal">通常</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">電験学習ノートを1件更新する</span>
+        <span class="todo-tag low">低</span>
+      </div>
+    </div>
+    <button class="todo-add" id="todo-add-btn" onclick="copyTodoCommand()">＋ タスクを追加（コマンドをコピー）</button>
+  </div>
+
+  <!-- Knowledge Stats -->
+  <div class="card card-knowledge" data-card-id="knowledge" style="grid-column:span 12;">
+    <div class="card-label">Knowledge Base</div>
+    <div class="card-title">ナレッジ蓄積状況</div>
+    <div class="knowledge-grid">
+      <div class="k-stat">
+        <div class="k-stat-val" id="k-total">76</div>
+        <div class="k-stat-lbl">総ナレッジ数</div>
+        <div class="k-stat-sub">knowledge/ 合計</div>
+      </div>
+      <div class="k-stat">
+        <div class="k-stat-val" id="k-denken">18</div>
+        <div class="k-stat-lbl">電験3種ノート</div>
+        <div class="k-stat-sub">denken-study/ 合計</div>
+      </div>
+      <div class="k-stat">
+        <div class="k-stat-val" id="k-ideas">12</div>
+        <div class="k-stat-lbl">アイデア</div>
+        <div class="k-stat-sub">ideas/ 合計</div>
+      </div>
+      <div class="k-stat">
+        <div class="k-stat-val" id="k-research">20</div>
+        <div class="k-stat-lbl">リサーチ</div>
+        <div class="k-stat-sub">research/ 合計</div>
+      </div>
+    </div>
+    <div class="k-bar-wrap" style="margin-top:14px;">
+      <div class="k-bar-row">
+        <span class="k-bar-label">電気計装</span>
+        <div class="k-bar"><div class="k-bar-fill" id="kbar-ei" style="width:0%;background:linear-gradient(90deg,#6366f1,#818cf8);"></div></div>
+        <span class="k-bar-count" id="kbar-ei-n">9</span>
+      </div>
+      <div class="k-bar-row">
+        <span class="k-bar-label">法規</span>
+        <div class="k-bar"><div class="k-bar-fill" id="kbar-ai" style="width:0%;background:linear-gradient(90deg,#a855f7,#c084fc);"></div></div>
+        <span class="k-bar-count" id="kbar-ai-n">8</span>
+      </div>
+      <div class="k-bar-row">
+        <span class="k-bar-label">計装</span>
+        <div class="k-bar"><div class="k-bar-fill" id="kbar-dk" style="width:0%;background:linear-gradient(90deg,#22d3ee,#06b6d4);"></div></div>
+        <span class="k-bar-count" id="kbar-dk-n">6</span>
+      </div>
+      <div class="k-bar-row">
+        <span class="k-bar-label">設備管理</span>
+        <div class="k-bar"><div class="k-bar-fill" id="kbar-fm" style="width:0%;background:linear-gradient(90deg,#10b981,#059669);"></div></div>
+        <span class="k-bar-count" id="kbar-fm-n">4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Health (詳細は health-dashboard.html へ委譲) -->
+  <div class="card card-health" data-card-id="health">
+    <div class="card-label">System Health</div>
+    <div class="card-title">システム状態</div>
+    <div style="margin-top:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
+      <div style="display:flex;align-items:center;gap:var(--sp-3);">
+        <span id="k-health-badge" class="health-badge green">knowledge/ ✓ 正常 (42件)</span>
+      </div>
+      <a href="health-monitor/health-dashboard.html"
+         style="display:flex;align-items:center;justify-content:center;gap:8px;
+                padding:12px 0;border-radius:var(--radius-md);
+                background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.25);
+                color:var(--accent-h);font-size:0.88rem;font-weight:600;text-decoration:none;
+                transition:var(--transition);"
+         onmouseover="this.style.background='rgba(99,102,241,0.18)'"
+         onmouseout="this.style.background='rgba(99,102,241,0.10)'">
+        🏥 詳細ヘルスチェックを見る →
+      </a>
+    </div>
+  </div>
+
+  <!-- Phase Evolution -->
+  <div class="card card-phase" data-card-id="phase">
+    <div class="card-label">Project Phase Evolution</div>
+    <div class="card-title">secretaryシステム 成長フェーズ</div>
+    <div class="phase-row">
+      <div class="phase-node">
+        <div class="phase-circle done">✓</div>
+        <span class="phase-label">Phase 1<br>基盤構築</span>
+      </div>
+      <div class="phase-connector done"></div>
+      <div class="phase-node">
+        <div class="phase-circle done">✓</div>
+        <span class="phase-label">Phase 2<br>データ統合</span>
+      </div>
+      <div class="phase-connector done"></div>
+      <div class="phase-node">
+        <div class="phase-circle done">✓</div>
+        <span class="phase-label">Phase 3<br>自動化</span>
+      </div>
+      <div class="phase-connector done"></div>
+      <div class="phase-node">
+        <div class="phase-circle active">4</div>
+        <span class="phase-label active">Phase 4<br>AI分身化</span>
+      </div>
+    </div>
+    <div class="phase-detail">
+      <div class="phase-detail-title">📍 現在 Phase 4 — AI分身化</div>
+      <div class="phase-detail-list">
+        <span class="phase-tag">digital-twin 強化</span>
+        <span class="phase-tag">decision-log 蓄積・パターン分析</span>
+        <span class="phase-tag">furutan-bot 精度向上</span>
+        <span class="phase-tag">Wiki HTML生成</span>
+        <span class="phase-tag">Notion週次同期自動化</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Links -->
+  <div class="card card-links" data-card-id="links">
+    <div class="card-label">Quick Links</div>
+    <div class="card-title">よく使う操作</div>
+    <div class="links-grid">
+      <a class="link-btn" href="health-monitor/health-dashboard.html">
+        <span class="link-icon">🏥</span>ヘルスチェック
+      </a>
+      <a class="link-btn" href="session-progress.html">
+        <span class="link-icon">📊</span>セッション進捗
+      </a>
+      <a class="link-btn" href="http://localhost:8765/denken-study.html">
+        <span class="link-icon">⚡</span>電験学習
+      </a>
+      <a class="link-btn" href="knowledge/genai-db.html">
+        <span class="link-icon">🧠</span>AI知識DB
+      </a>
+      <a class="link-btn" id="today-todo-link" href="#">
+        <span class="link-icon">✅</span>今日のTODO
+      </a>
+    </div>
+  </div>
+
+  <!-- All Sites Navigation -->
+  <div class="card card-allsites" data-card-id="allsites">
+    <div class="card-label">Navigation Hub</div>
+    <div class="card-title">🗺️ Fカンパニー — 全サイト</div>
+    <div class="allsites-grid">
+
+      <div class="site-group">
+        <div class="site-group-title">⚡ 電験3種 学習</div>
+        <a class="site-link" href="http://localhost:8765/denken-study.html">
+          <span class="site-link-icon">📖</span>今日の学習（朝/昼/夜）
+        </a>
+        <a class="site-link" href="denken3-study-dashboard/index.html">
+          <span class="site-link-icon">📊</span>学習ダッシュボード
+        </a>
+        <a class="site-link" href="denken3-study-dashboard/quiz.html">
+          <span class="site-link-icon">📝</span>テスト記録
+        </a>
+        <a class="site-link" href="https://kfurufuru.github.io/denken-wiki-riron/" onclick="window.open(this.href,'_blank');return false;">
+          <span class="site-link-icon">📐</span>理論Wiki
+        </a>
+        <a class="site-link" href="https://kfurufuru.github.io/denken-wiki/" onclick="window.open(this.href,'_blank');return false;">
+          <span class="site-link-icon">📚</span>法規Wiki
+        </a>
+        <a class="site-link" href="https://kfurufuru.github.io/denken-wiki-denryoku/" onclick="window.open(this.href,'_blank');return false;">
+          <span class="site-link-icon">⚡</span>電力Wiki
+        </a>
+      </div>
+
+      <div class="site-group">
+        <div class="site-group-title">🧠 知識・システム</div>
+        <a class="site-link" href="knowledge/genai-db.html">
+          <span class="site-link-icon">🤖</span>生成AI データベース
+        </a>
+        <a class="site-link" href="health-monitor/health-dashboard.html">
+          <span class="site-link-icon">🏥</span>ヘルスダッシュボード
+        </a>
+        <a class="site-link" href="https://kfurufuru.github.io/ei-wiki/" onclick="window.open(this.href,'_blank');return false;">
+          <span class="site-link-icon">🔌</span>電気計装Wiki
+        </a>
+        <a class="site-link" href="session-progress.html">
+          <span class="site-link-icon">📈</span>セッション進捗
+        </a>
+      </div>
+
+      <div class="site-group">
+        <div class="site-group-title">👤 デジタルツイン</div>
+        <a class="site-link" href="digital-twin/marriage-dashboard.html">
+          <span class="site-link-icon">💍</span>結婚戦略ダッシュボード
+        </a>
+        <a class="site-link" href="people/portal.html">
+          <span class="site-link-icon">🧑‍💼</span>キャリアポートフォリオ
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- E-log snippet -->
+  <div class="card card-elog" data-card-id="elog">
+    <div class="card-label">E-log — 最近の誤答パターン</div>
+    <div class="card-title">電験3種 誤答ログ</div>
+    <div class="elog-list" id="elog-list">
+      <div style="display:grid;grid-template-columns:80px 60px 60px 1fr;gap:8px;padding:4px 12px;">
+        <span style="font-size:0.65rem;color:var(--text3);">カテゴリ</span>
+        <span style="font-size:0.65rem;color:var(--text3);">L1</span>
+        <span style="font-size:0.65rem;color:var(--text3);">L2</span>
+        <span style="font-size:0.65rem;color:var(--text3);">メモ</span>
+      </div>
+      <div class="elog-item">
+        <span class="elog-cat">電気主任<br>技術者</span>
+        <span class="elog-l1">DEF</span>
+        <span class="elog-l2">MAP</span>
+        <span class="elog-memo">43条か技術基準か混同</span>
+      </div>
+      <div class="elog-item">
+        <span class="elog-cat">絶縁抵抗</span>
+        <span class="elog-l1">COND</span>
+        <span class="elog-l2">ANCHOR</span>
+        <span class="elog-memo">D種/C種の数値混同</span>
+      </div>
+      <div class="elog-item">
+        <span class="elog-cat">需要率</span>
+        <span class="elog-l1">MODEL</span>
+        <span class="elog-l2">TRACK</span>
+        <span class="elog-memo">分子分母逆に記述</span>
+      </div>
+      <div class="elog-item">
+        <span class="elog-cat">交流回路</span>
+        <span class="elog-l1">MODEL</span>
+        <span class="elog-l2">ANCHOR</span>
+        <span class="elog-memo">インピーダンスの向き勘違い</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Secretary Portal v2 — <span id="footer-date"></span> | <span id="footer-time"></span> | データ: .secretary/ ローカルファイル参照
+</footer>
+
+<!-- Greeting button -->
+<button class="greeting-btn" id="greeting-btn" title="今日のグリーティングを表示" onclick="toggleToast()">💬</button>
+<div class="toast" id="greeting-toast">
+  <span class="toast-close" onclick="hideToast()">✕</span>
+  <span class="toast-icon">⚡</span><span id="toast-text"></span>
+</div>
+
+<script>
+/* =====================================================
+   LAYER 3: ライブデータ読み込み
+   ===================================================== */
+const FALLBACK = {
+  knowledge_total: 76,
+  denken_notes: 18,
+  ideas: 12,
+  research: 20,
+  elog_count: 0,
+  todo_count: 0,
+  todo_completed: 0,
+  exam_days_left: null,
+  exam_progress_pct: null,
+  k_bars: { ei: { pct: 68, n: 9 }, ai: { pct: 55, n: 8 }, dk: { pct: 40, n: 6 }, fm: { pct: 28, n: 4 } },
+  todos: null,
+  elogs: null
+};
+
+let DATA = { ...FALLBACK };
+
+async function loadData() {
+  try {
+    const res = await fetch('./portal-data.json?t=' + Date.now());
+    if (!res.ok) throw new Error('not ok');
+    const j = await res.json();
+    // collect_portal_data.py の nested schema → portal flat schema に正規化
+    const kc = j.knowledge?.by_category || {};
+    const maxK = Math.max(...Object.values(kc), 1);
+    DATA = {
+      knowledge_total: j.knowledge?.total ?? FALLBACK.knowledge_total,
+      denken_notes:    j.knowledge?.denken_notes ?? FALLBACK.denken_notes,
+      ideas:           j.knowledge?.ideas ?? FALLBACK.ideas,
+      research:        j.knowledge?.research ?? FALLBACK.research,
+      elog_count:      j.denken?.elog_count ?? FALLBACK.elog_count,
+      todo_count:      j.todos?.total ?? FALLBACK.todo_count,
+      todo_completed:  j.todos?.done ?? FALLBACK.todo_completed,
+      exam_days_left:  j.denken?.days_left ?? null,
+      exam_progress_pct: j.denken?.progress_pct ?? null,
+      focus_today:     j.focus_today ?? null,
+      k_bars: {
+        ei:  { pct: Math.round((kc.ei      || 0) / maxK * 100), n: kc.ei      || 0 },
+        ai:  { pct: Math.round((kc.houki   || 0) / maxK * 100), n: kc.houki   || 0 },
+        dk:  { pct: Math.round((kc.keiso   || 0) / maxK * 100), n: kc.keiso   || 0 },
+        fm:  { pct: Math.round((kc.trouble || 0) / maxK * 100), n: kc.trouble || 0 },
+      },
+      todos:  j.todos?.items ?? null,
+      elogs:  j.denken?.recent_errors ?? null,
+    };
+    document.getElementById('data-badge').className = 'data-badge live';
+    document.getElementById('data-badge').textContent = '🟢 ライブ';
+    const now = new Date();
+    const updStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} 更新`;
+    const el = document.getElementById('last-updated');
+    if (el) el.textContent = updStr;
+  } catch (err) {
+    DATA = { ...FALLBACK };
+    const badge = document.getElementById('data-badge');
+    if (badge) {
+      badge.className = 'data-badge offline';
+      badge.textContent = '🔴 オフライン';
+      badge.title = `エラー: ${err.message || 'JSON読み込み失敗'}`;
+    }
+    const lastUpd = document.getElementById('last-updated');
+    if (lastUpd) lastUpd.textContent = 'フォールバックデータ使用中';
+    console.warn('[portal] portal-data.json の読み込みに失敗しました:', err);
+  }
+  applyData();
+}
+
+function applyData() {
+  // Knowledge stats
+  setTxt('k-total', DATA.knowledge_total);
+  setTxt('k-denken', DATA.denken_notes);
+  setTxt('k-ideas', DATA.ideas);
+  setTxt('k-research', DATA.research);
+  setTxt('k-total-chip', DATA.knowledge_total);
+  setTxt('k-health-badge', `✓ 正常 (${DATA.knowledge_total}件)`);
+  document.getElementById('k-health-badge').className = 'health-badge green';
+
+  // K bars
+  const bars = DATA.k_bars;
+  animateBar('kbar-ei', bars.ei.pct + '%');
+  animateBar('kbar-ai', bars.ai.pct + '%');
+  animateBar('kbar-dk', bars.dk.pct + '%');
+  animateBar('kbar-fm', bars.fm.pct + '%');
+  setTxt('kbar-ei-n', bars.ei.n);
+  setTxt('kbar-ai-n', bars.ai.n);
+  setTxt('kbar-dk-n', bars.dk.n);
+  setTxt('kbar-fm-n', bars.fm.n);
+
+  // E-log count
+  setTxt('elog-count', DATA.elog_count + '+');
+
+  // Exam
+  if (DATA.exam_days_left !== null) setTxt('exam-days', DATA.exam_days_left);
+  if (DATA.exam_progress_pct !== null) {
+    document.getElementById('exam-bar').style.width = DATA.exam_progress_pct + '%';
+  }
+
+  // --- TODO list 再描画（portal-data.jsonのtodos.itemsを使用）---
+  if (DATA.todos && DATA.todos.length > 0) {
+    const list = document.getElementById('todo-list');
+    if (list) {
+      list.innerHTML = DATA.todos.map(t => `
+        <div class="todo-item ${t.priority === '高' ? 'high' : ''}">
+          <div class="todo-check ${t.done ? 'done' : ''}">${t.done ? '✓' : ''}</div>
+          <span class="todo-text" style="${t.done ? 'text-decoration:line-through;opacity:0.5;' : ''}">${t.text || t.content || ''}</span>
+          <span class="todo-tag ${t.priority === '高' ? 'high' : t.priority === '低' ? 'low' : 'normal'}">${t.priority || '通常'}</span>
+        </div>`).join('');
+    }
+  }
+
+  // --- E-log スニペット再描画 ---
+  const elogList = document.getElementById('elog-list');
+  if (elogList) {
+    const header = elogList.querySelector('div[style]');
+    if (DATA.elogs && DATA.elogs.length > 0) {
+      elogList.innerHTML = '';
+      if (header) elogList.appendChild(header);
+      DATA.elogs.forEach(e => {
+        const item = document.createElement('div');
+        item.className = 'elog-item';
+        item.innerHTML = `<span class="elog-cat">${e.category||e.cat||'--'}</span><span class="elog-l1">${e.l1||'--'}</span><span class="elog-l2">${e.l2||'--'}</span><span class="elog-memo">${e.memo||e.text||''}</span>`;
+        elogList.appendChild(item);
+      });
+    } else {
+      elogList.innerHTML = '';
+      if (header) elogList.appendChild(header);
+      const empty = document.createElement('div');
+      empty.className = 'elog-item';
+      empty.style.opacity = '0.4';
+      empty.innerHTML = `<span class="elog-cat">--</span><span class="elog-l1">--</span><span class="elog-l2">--</span><span class="elog-memo">「誤答記録」コマンドで追加してください</span>`;
+      elogList.appendChild(empty);
+    }
+  }
+
+  // --- ヒーロー フォーカスタスク更新 ---
+  const heroFocusText = document.getElementById('hero-focus-text');
+  if (heroFocusText) {
+    if (DATA.focus_today) {
+      heroFocusText.textContent = DATA.focus_today;
+    } else if (DATA.todos && DATA.todos.length > 0) {
+      const firstOpen = DATA.todos.find(t => !t.done);
+      heroFocusText.textContent = firstOpen
+        ? (firstOpen.text || firstOpen.content || 'タスクを確認してください')
+        : '全タスク完了 🎉';
+    } else {
+      heroFocusText.textContent = 'タスクファイルを確認してください';
+    }
+  }
+
+  // Re-render mode section with fresh data
+  renderMode();
+
+  // 認知負荷適応レイアウト
+  applyCognitiveLayout(DATA.todo_count, DATA.elog_count);
+}
+
+function applyCognitiveLayout(todoCount, elogCount) {
+  // 既存バナーを削除
+  const existingBanner = document.getElementById('cognitive-banner');
+  if (existingBanner) existingBanner.remove();
+
+  const examCard = document.querySelector('.card-exam');
+  const todoCard = document.querySelector('.card-todo');
+  const knowledgeCard = document.querySelector('.card-knowledge');
+  const mainEl = document.querySelector('main');
+
+  let mode, msg, emoji;
+  if (todoCount >= 5 || elogCount >= 5) {
+    mode = 'high';
+    emoji = '🔴';
+    msg = `高負荷モード — タスク${todoCount}件 / 誤答ログ${elogCount}件。電験より今日のタスクを片付けましょう。`;
+    if (examCard) examCard.classList.add('dimmed');
+    if (todoCard) todoCard.classList.add('highlighted');
+    if (knowledgeCard) knowledgeCard.classList.remove('highlighted');
+  } else if (todoCount <= 2 && elogCount <= 2) {
+    mode = 'low';
+    emoji = '🟢';
+    msg = `余裕モード — タスク${todoCount}件のみ。ナレッジ蓄積・電験学習に集中できます。`;
+    if (examCard) examCard.classList.remove('dimmed');
+    if (knowledgeCard) knowledgeCard.classList.add('highlighted');
+    if (todoCard) todoCard.classList.remove('highlighted');
+  } else {
+    mode = 'normal';
+    emoji = '🔵';
+    msg = `通常モード — タスク${todoCount}件 / 誤答ログ${elogCount}件。バランス良く進めましょう。`;
+    if (examCard) examCard.classList.remove('dimmed');
+    if (todoCard) todoCard.classList.remove('highlighted');
+    if (knowledgeCard) knowledgeCard.classList.remove('highlighted');
+  }
+
+  // バナーを挿入（mainの最初の子要素の前）
+  const banner = document.createElement('div');
+  banner.id = 'cognitive-banner';
+  banner.className = `cognitive-banner ${mode}`;
+  banner.innerHTML = `<span>${emoji}</span><span>${msg}</span>`;
+  if (mainEl && mainEl.firstChild) {
+    mainEl.insertBefore(banner, mainEl.firstChild);
+  }
+}
+
+function setTxt(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+function copyTodoCommand() {
+  const text = 'タスク追加 ';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('todo-add-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ 「タスク追加 」をコピーしました';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  }).catch(() => {
+    alert('Claude Codeに「タスク追加 [内容]」と入力してください');
+  });
+}
+function animateBar(id, w) {
+  const el = document.getElementById(id);
+  if (el) setTimeout(() => { el.style.width = w; }, 150);
+}
+
+/* =====================================================
+   CLOCK & DATE
+   ===================================================== */
+function tick() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+  document.getElementById('footer-time').textContent = `${h}:${m}`;
+}
+tick();
+setInterval(tick, 1000);
+
+const today = new Date();
+const days = ['日','月','火','水','木','金','土'];
+const dateStr = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日（${days[today.getDay()]}）`;
+document.getElementById('hero-date').textContent = dateStr;
+document.getElementById('header-date').textContent = dateStr;
+
+// Update todo date label
+const mm = String(today.getMonth()+1).padStart(2,'0');
+const dd = String(today.getDate()).padStart(2,'0');
+document.getElementById('todo-date-label').textContent = `${today.getFullYear()}-${mm}-${dd}`;
+
+// 今日のTODOリンクを動的に設定
+const todayTodoLink = document.getElementById('today-todo-link');
+if (todayTodoLink) {
+  todayTodoLink.href = `todos/${today.getFullYear()}-${mm}-${dd}.md`;
+}
+
+// フッター日付を動的に設定
+const footerDate = document.getElementById('footer-date');
+if (footerDate) footerDate.textContent = `${today.getFullYear()}-${mm}-${dd}`;
+
+/* =====================================================
+   EXAM COUNTDOWN
+   ===================================================== */
+const examDate = new Date(2026, 7, 1);
+const diffMs = examDate - today;
+const diffDays = Math.max(0, Math.ceil(diffMs / (1000*60*60*24)));
+document.getElementById('exam-days').textContent = diffDays > 0 ? diffDays : '当日';
+const studyStart = new Date(2026, 2, 1); // 2026-03-01
+const totalDays = Math.ceil((examDate - studyStart) / (1000*60*60*24));
+const elapsed = Math.max(0, Math.ceil((today - studyStart) / (1000*60*60*24)));
+const pct = Math.min(100, Math.round(elapsed / totalDays * 100));
+setTimeout(() => {
+  document.getElementById('exam-bar').style.width = pct + '%';
+}, 200);
+
+// 1日あたり推奨問題数（想定総問題数: 科目4×過去問10年×4択≒400問）
+const TOTAL_QUESTIONS = 400;
+const dailyTarget = diffDays > 0 ? Math.ceil(TOTAL_QUESTIONS / diffDays) : 0;
+document.getElementById('daily-q-num').textContent = dailyTarget > 0 ? dailyTarget : '最終調整';
+
+/* =====================================================
+   LAYER 1: 時間感応UI
+   ===================================================== */
+function getMode() {
+  const hr = new Date().getHours();
+  if (hr >= 5 && hr < 12) return 'morning';
+  if (hr >= 12 && hr < 18) return 'noon';
+  return 'night';
+}
+
+function renderMode() {
+  const mode = getMode();
+  const section = document.getElementById('mode-section');
+  const badge = document.getElementById('mode-badge');
+  const orbEl = document.getElementById('orb-mode');
+  const greeting = document.getElementById('greeting');
+
+  // Update badge & orb color
+  badge.className = 'mode-badge ' + mode;
+  if (mode === 'morning') {
+    badge.textContent = '🌅 朝モード';
+    orbEl.style.background = '#6366f1';
+    greeting.textContent = 'おはようございます、古舘さん';
+  } else if (mode === 'noon') {
+    badge.textContent = '☀️ 昼モード';
+    orbEl.style.background = '#f59e0b';
+    greeting.textContent = 'こんにちは、古舘さん';
+  } else {
+    badge.textContent = '🌙 夜モード';
+    orbEl.style.background = '#a855f7';
+    greeting.textContent = 'お疲れさまです、古舘さん';
+  }
+
+  section.innerHTML = buildModeHTML(mode);
+  section.style.animation = 'none';
+  requestAnimationFrame(() => { section.style.animation = 'fade-in 0.5s ease'; });
+
+  // モバイル時のみDynamic ModeをlocalStateで折りたたみ管理
+  if (window.innerWidth <= 768) {
+    const modeKey = 'portal_mode_expanded';
+    const isExpanded = localStorage.getItem(modeKey) !== 'false';
+    section.style.display = isExpanded ? '' : 'none';
+    // トグル用ボタンをカードラベルにセット
+    const label = section.querySelector('.card-label');
+    if (label && !label.querySelector('.mode-toggle')) {
+      const btn = document.createElement('button');
+      btn.className = 'mode-toggle';
+      btn.style.cssText = 'background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.75rem;margin-left:8px;';
+      btn.textContent = isExpanded ? '▲ 閉じる' : '▼ 開く';
+      btn.onclick = () => {
+        const exp = section.style.display !== 'none';
+        section.style.display = exp ? 'none' : '';
+        localStorage.setItem(modeKey, !exp);
+        btn.textContent = !exp ? '▲ 閉じる' : '▼ 開く';
+      };
+      label.appendChild(btn);
+    }
+  }
+
+  // Night: wire checkboxes
+  if (mode === 'night') {
+    section.querySelectorAll('.night-check-box').forEach(box => {
+      box.addEventListener('click', () => {
+        box.classList.toggle('checked');
+        box.textContent = box.classList.contains('checked') ? '✓' : '';
+      });
+    });
+  }
+}
+
+function buildModeHTML(mode) {
+  const todoItems = getTodoItems();
+  const completedCount = todoItems.filter(t => t.done).length;
+  const openCount = todoItems.filter(t => !t.done).length;
+  const firstOpen = todoItems.find(t => !t.done);
+  const focusTask = firstOpen ? firstOpen.text : 'タスクを確認してください';
+
+  if (mode === 'morning') {
+    return `
+      <div class="card-label">🌅 朝モード — フォーカス開始</div>
+      <div class="card-title">今日のフォーカス</div>
+      <div class="morning-grid" style="margin-top:12px;">
+        <div class="focus-card">
+          <span class="focus-label">最重要タスク</span>
+          <span class="focus-text">${focusTask}</span>
+          <span class="focus-sub">今日はこれだけでもOK</span>
+        </div>
+        <div class="focus-card" style="background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(6,182,212,0.07));border-color:rgba(34,211,238,0.28);">
+          <span class="focus-label" style="color:#67e8f9;">電験カウントダウン</span>
+          <span class="focus-text" style="font-size:2rem;font-weight:800;color:#22d3ee;">${diffDays}<span style="font-size:0.9rem;font-weight:400;color:var(--text2);"> 日</span></span>
+          <span class="focus-sub">学習進捗 ${pct}% — 目標まで継続</span>
+        </div>
+        <div class="focus-card" style="background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(5,150,105,0.06));border-color:rgba(16,185,129,0.25);">
+          <span class="focus-label" style="color:#6ee7b7;">本日のタスク</span>
+          <span class="focus-text">${todoItems.length} 件</span>
+          <span class="focus-sub">完了: ${completedCount} / 未着手: ${openCount}</span>
+        </div>
+      </div>`;
+  }
+
+  if (mode === 'noon') {
+    const openItems = todoItems.filter(t => !t.done);
+    const openHTML = openItems.length
+      ? openItems.map(t => `
+        <div class="todo-item">
+          <div class="todo-check"></div>
+          <span class="todo-text">${t.text}</span>
+          <span class="todo-tag normal">未完</span>
+        </div>`).join('')
+      : '<div style="padding:12px;color:var(--text2);font-size:0.85rem;">全タスク完了！</div>';
+
+    return `
+      <div class="card-label">☀️ 昼モード — 進捗確認</div>
+      <div class="card-title">午後の状況</div>
+      <div class="noon-grid" style="margin-top:12px;">
+        <div>
+          <div style="font-size:0.72rem;font-weight:600;letter-spacing:.08em;color:var(--text3);margin-bottom:8px;">未完タスク (${openCount}件)</div>
+          <div class="todo-list">${openHTML}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="focus-card" style="background:linear-gradient(135deg,rgba(99,102,241,0.14),rgba(168,85,247,0.07));border-color:rgba(99,102,241,0.25);">
+            <span class="focus-label">ナレッジ総数</span>
+            <span class="focus-text">${DATA.knowledge_total} 件</span>
+            <span class="focus-sub">ideas: ${DATA.ideas} / research: ${DATA.research}</span>
+          </div>
+          <div class="focus-card" style="background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(5,150,105,0.06));border-color:rgba(16,185,129,0.25);">
+            <span class="focus-label" style="color:#6ee7b7;">System Health</span>
+            <span class="focus-text">✅ Wiki 稼働中</span>
+            <span class="focus-sub">理論 / 法規 / 電力 Wiki — GitHub Pages</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // Night
+  return `
+    <div class="card-label">🌙 夜モード — 振り返り & 明日準備</div>
+    <div class="card-title">今日の振り返り</div>
+    <div class="night-grid" style="margin-top:12px;">
+      <div>
+        <div style="font-size:0.72rem;font-weight:600;letter-spacing:.08em;color:var(--text3);margin-bottom:8px;">本日の完了・未完</div>
+        ${todoItems.map(t => `
+          <div class="reflect-item" style="margin-bottom:6px;">
+            <span class="reflect-icon">${t.done ? '✅' : '🔲'}</span>
+            <span class="reflect-text">${t.text}</span>
+            <span class="reflect-status ${t.done ? 'done' : 'open'}">${t.done ? '完了' : '未完'}</span>
+          </div>`).join('')}
+      </div>
+      <div>
+        <div style="font-size:0.72rem;font-weight:600;letter-spacing:.08em;color:var(--text3);margin-bottom:8px;">明日の準備チェック</div>
+        <div class="night-checklist">
+          <div class="night-check-item"><div class="night-check-box" title="クリックでチェック"></div>TODO明日分を確認した</div>
+          <div class="night-check-item"><div class="night-check-box"></div>E-logを1件以上記録した</div>
+          <div class="night-check-item"><div class="night-check-box"></div>学習ノートを更新した</div>
+          <div class="night-check-item"><div class="night-check-box"></div>inboxを整理した</div>
+          <div class="night-check-item"><div class="night-check-box"></div>決定ログを記録した（判断があれば）</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getTodoItems() {
+  // Read from DOM todo-list (or DATA.todos if available)
+  if (DATA.todos) return DATA.todos;
+  const items = [];
+  document.querySelectorAll('#todo-list .todo-item').forEach(el => {
+    items.push({
+      text: el.querySelector('.todo-text')?.textContent || '',
+      done: el.querySelector('.todo-check.done') !== null
+    });
+  });
+  return items;
+}
+
+/* =====================================================
+   LAYER 2: グリーティングトースト
+   ===================================================== */
+function buildGreeting(mode) {
+  const openCount = getTodoItems().filter(t => !t.done).length;
+  const completedCount = getTodoItems().filter(t => t.done).length;
+  const focusTask = getTodoItems().find(t => !t.done)?.text || 'タスクを確認してください';
+  if (mode === 'morning') return `おはようございます、古舘さん。今日のフォーカスは「${focusTask}」です。`;
+  if (mode === 'noon') return `お昼です。未完タスクが${openCount}件あります。`;
+  return `お疲れ様です。今日は${completedCount}件完了しました。`;
+}
+
+let _toastTimer = null;
+function showToast() {
+  const text = buildGreeting(getMode());
+  document.getElementById('toast-text').textContent = text;
+  document.getElementById('greeting-toast').classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(hideToast, 6000);
+}
+function hideToast() {
+  document.getElementById('greeting-toast').classList.remove('show');
+}
+function toggleToast() {
+  const toast = document.getElementById('greeting-toast');
+  if (toast.classList.contains('show')) { hideToast(); } else { showToast(); }
+}
+function initGreeting() {
+  setTimeout(showToast, 1500);
+}
+
+/* =====================================================
+   INIT SEQUENCE
+   ===================================================== */
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Render mode UI first (sync)
+  renderMode();
+
+  // 2. Load live data (async)
+  await loadData();
+
+  // 5分ごとに差分リフレッシュ（フルリロードなし）
+  setInterval(async () => {
+    await loadData();
+  }, 5 * 60 * 1000);
+
+  // 3. Greeting toast
+  initGreeting();
+});
+
+/* =====================================================
+   QUICK LINKS — クリック頻度トラッキング
+   ===================================================== */
+function initQuickLinks() {
+  const counts = JSON.parse(localStorage.getItem('ql_counts') || '{}');
+  const grid = document.querySelector('.links-grid');
+  if (!grid) return;
+
+  const links = Array.from(grid.querySelectorAll('.link-btn'));
+
+  const linkData = links.map(a => ({
+    el: a,
+    href: a.getAttribute('href'),
+    count: counts[a.getAttribute('href')] || 0
+  }));
+
+  linkData.sort((a, b) => b.count - a.count);
+
+  linkData.forEach((item, i) => {
+    item.el.querySelectorAll('.link-pin-badge').forEach(b => b.remove());
+
+    if (item.count > 0 && i < 3) {
+      item.el.classList.add('pinned');
+      const badge = document.createElement('span');
+      badge.className = 'link-pin-badge';
+      badge.textContent = `★${item.count}`;
+      item.el.appendChild(badge);
+    } else {
+      item.el.classList.remove('pinned');
+    }
+    grid.appendChild(item.el);
+  });
+
+  links.forEach(a => {
+    a.addEventListener('click', () => {
+      const href = a.getAttribute('href');
+      const c = JSON.parse(localStorage.getItem('ql_counts') || '{}');
+      c[href] = (c[href] || 0) + 1;
+      localStorage.setItem('ql_counts', JSON.stringify(c));
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initQuickLinks);
+const _origApplyData = applyData;
+applyData = function() { _origApplyData(); initQuickLinks(); };
+</script>
+</body>
+</html>
