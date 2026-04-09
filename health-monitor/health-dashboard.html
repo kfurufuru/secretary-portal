@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F Company Health Dashboard</title>
+  <style>
+    /* ── CSS Custom Properties ─────────────────────────────── */
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --card:      #21262d;
+      --border:    #30363d;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --green:     #3fb950;
+      --yellow:    #e3b341;
+      --red:       #f85149;
+      --blue:      #58a6ff;
+      --font:      'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+    }
+
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Base ──────────────────────────────────────────────── */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Layout ────────────────────────────────────────────── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── Header ────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      flex: 1;
+    }
+    .header-meta {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* ── Badges ────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .badge.status-green  { background: rgba(63,185,80,.15);  color: var(--green);  border-color: var(--green);  }
+    .badge.status-yellow { background: rgba(227,179,65,.15); color: var(--yellow); border-color: var(--yellow); }
+    .badge.status-red    { background: rgba(248,81,73,.15);  color: var(--red);    border-color: var(--red);    }
+
+    /* ── Status dots ───────────────────────────────────────── */
+    .dot {
+      display: inline-block;
+      border-radius: 50%;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .dot.status-green  { background: var(--green);  }
+    .dot.status-yellow { background: var(--yellow); }
+    .dot.status-red    { background: var(--red);    }
+
+    /* ── Traffic Lights (Tier 1) ───────────────────────────── */
+    .tier1 {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .traffic-light-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      padding: 20px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      min-width: 140px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .traffic-light-link:hover {
+      border-color: var(--blue);
+      background: var(--card);
+    }
+    .traffic-light {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(0,0,0,.4);
+    }
+    .traffic-light.status-green  { background: var(--green);  box-shadow: 0 0 24px rgba(63,185,80,.4);  }
+    .traffic-light.status-yellow { background: var(--yellow); box-shadow: 0 0 24px rgba(227,179,65,.4); }
+    .traffic-light.status-red    { background: var(--red);    box-shadow: 0 0 24px rgba(248,81,73,.4);  }
+    .tl-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .tl-status {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .status-green-text  { color: var(--green);  }
+    .status-yellow-text { color: var(--yellow); }
+    .status-red-text    { color: var(--red);    }
+    .red-text           { color: var(--red);    }
+
+    /* ── Pulse animation ───────────────────────────────────── */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.6; }
+    }
+    .pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── Details / Summary (Tier 2) ────────────────────────── */
+    .tier2 {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .category-details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .category-summary {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 15px;
+      font-weight: 600;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .category-summary::-webkit-details-marker { display: none; }
+    .category-summary::before {
+      content: '▶';
+      font-size: 10px;
+      color: var(--muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    details[open] > .category-summary {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    details[open] > .category-summary::before {
+      transform: rotate(90deg);
+    }
+    .cat-label {
+      flex: 1;
+    }
+
+    /* ── Action hint（異常・注意時のアクションバー）────────── */
+    .action-hint {
+      margin: 0;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .action-hint-red    { background: rgba(248,81,73,.08);  color: var(--red);    border-top: 1px solid rgba(248,81,73,.3); }
+    .action-hint-yellow { background: rgba(227,179,65,.08); color: var(--yellow); border-top: 1px solid rgba(227,179,65,.3); }
+
+    /* ── Source cards grid ─────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+    .source-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .source-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .source-title {
+      font-weight: 600;
+      font-size: 13px;
+      flex: 1;
+    }
+    .action-link {
+      color: var(--blue);
+      font-size: 11px;
+      text-decoration: none;
+      margin-left: 4px;
+    }
+    .action-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Metrics Table ─────────────────────────────────────── */
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .metrics-table th {
+      padding: 5px 8px;
+      text-align: left;
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+    .metrics-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid rgba(48,54,61,.5);
+      vertical-align: middle;
+    }
+    .metrics-table .row-alt td {
+      background: rgba(255,255,255,.02);
+    }
+    .metrics-table .val {
+      font-family: 'Consolas', 'Courier New', monospace;
+      color: var(--blue);
+    }
+    .metrics-table .center {
+      text-align: center;
+    }
+
+    /* ── Footer (Tier 3) ───────────────────────────────────── */
+    .footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .footer-powered {
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(139,148,158,.5);
+    }
+
+    /* ── Summary bar（全体集計）─────────────────────────────── */
+    .summary-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      padding: 10px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .summary-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .summary-green  { color: var(--green);  }
+    .summary-yellow { color: var(--yellow); }
+    .summary-red    { color: var(--red);    }
+    .summary-total  { color: var(--muted); font-weight: 400; margin-left: 4px; }
+
+    /* ── Misc ──────────────────────────────────────────────── */
+    .muted {
+      color: var(--muted);
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .metric-threshold {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-left: 4px;
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .tier1 {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<a href="../portal-v2.html" style="position:fixed;top:14px;left:14px;z-index:9999;background:rgba(10,14,26,0.85);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc;padding:6px 14px;border-radius:20px;font-size:0.75rem;font-weight:600;text-decoration:none;backdrop-filter:blur(10px);font-family:Inter,sans-serif;letter-spacing:-.01em;">← ポータル</a>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-title">F Company Health Dashboard</div>
+      <span class="badge status-red"><span class="dot status-red" style="width:10px;height:10px;"></span> 異常</span>
+      <div class="header-meta">生成: 2026-04-01 22:00</div>
+    </header>
+
+    <!-- Summary bar（全体集計） -->
+    <div class="summary-bar"><span class="summary-item summary-yellow">⚠ 注意 3</span> <span class="summary-item summary-red">✗ 異常 1</span><span class="summary-total">/ 4 システム</span></div>
+
+    <!-- Tier 1: Traffic Lights -->
+    <p class="section-title">カテゴリ概要</p>
+    <div class="tier1">
+      
+      <a href="#cat-wiki" class="traffic-light-link">
+        <div class="traffic-light status-yellow pulse"></div>
+        <div class="tl-label">Wiki健全性</div>
+        <div class="tl-status status-yellow-text">注意</div>
+      </a>
+      <a href="#cat-study" class="traffic-light-link">
+        <div class="traffic-light status-red pulse"></div>
+        <div class="tl-label">学習システム</div>
+        <div class="tl-status status-red-text">異常</div>
+      </a>
+      <a href="#cat-gas" class="traffic-light-link">
+        <div class="traffic-light status-yellow pulse"></div>
+        <div class="tl-label">GASエラー</div>
+        <div class="tl-status status-yellow-text">注意</div>
+      </a>
+      <a href="#cat-scheduled" class="traffic-light-link">
+        <div class="traffic-light status-yellow pulse"></div>
+        <div class="tl-label">Scheduledタスク</div>
+        <div class="tl-status status-yellow-text">注意</div>
+      </a>
+    </div>
+
+    <!-- Tier 2: Detail Cards -->
+    <p class="section-title">詳細</p>
+    <div class="tier2">
+      
+    <details id="cat-wiki" class="category-details">
+      <summary class="category-summary">
+        <span class="cat-label">Wiki健全性</span>
+        <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+      </summary>
+      <p class="action-hint action-hint-yellow">⚠ 注意が必要な指標があります。内容を確認してください。</p>
+      <div class="cards-grid">
+        
+      <div class="source-card">
+        <div class="source-header">
+          <span class="source-title">法規Wiki <a class="action-link" href="https://github.com/kfurufuru/denken-wiki/actions" target="_blank">→ 詳細</a></span>
+          <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+        </div>
+        
+    <table class="metrics-table">
+      <thead>
+        <tr><th>指標</th><th>値</th><th class="center">状態</th></tr>
+      </thead>
+      <tbody>
+        <tr class="">
+          <td>最終コミット（日前）</td>
+          <td class="val">None</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+        <tr class="row-alt">
+          <td>ビルド警告数</td>
+          <td class="val">ビルド失敗</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+        <tr class="">
+          <td>テーマ進捗</td>
+          <td class="val">unknown</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+      <div class="source-card">
+        <div class="source-header">
+          <span class="source-title">理論Wiki <a class="action-link" href="https://github.com/kfurufuru/denken-wiki-riron/actions" target="_blank">→ 詳細</a></span>
+          <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+        </div>
+        
+    <table class="metrics-table">
+      <thead>
+        <tr><th>指標</th><th>値</th><th class="center">状態</th></tr>
+      </thead>
+      <tbody>
+        <tr class="">
+          <td>最終コミット（日前）</td>
+          <td class="val">None</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+        <tr class="row-alt">
+          <td>ビルド警告数</td>
+          <td class="val">ビルド失敗</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+        <tr class="">
+          <td>テーマ進捗</td>
+          <td class="val">unknown</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+      </div>
+    </details>
+    <details id="cat-study" class="category-details">
+      <summary class="category-summary">
+        <span class="cat-label">学習システム</span>
+        <span class="badge status-red"><span class="dot status-red" style="width:8px;height:8px;"></span> 異常</span>
+      </summary>
+      <p class="action-hint action-hint-red">✗ 異常を検知しています。詳細カードを確認して対処してください。</p>
+      <div class="cards-grid">
+        
+      <div class="source-card">
+        <div class="source-header">
+          <span class="source-title">メーラー <a class="action-link" href="file:///C:/Users/kfuru/.secretary/logs/api-cost.json" target="_blank">→ 詳細</a></span>
+          <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+        </div>
+        
+    <table class="metrics-table">
+      <thead>
+        <tr><th>指標</th><th>値</th><th class="center">状態</th></tr>
+      </thead>
+      <tbody>
+        <tr class="">
+          <td>直近7日の学習記録</td>
+          <td class="val">None</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+        <tr class="row-alt">
+          <td>月額予算消化率</td>
+          <td class="val">0</td>
+          <td class="center"><span class="dot status-green" style="width:10px;height:10px;"></span></td>
+        </tr>
+        <tr class="">
+          <td>本日API呼出数</td>
+          <td class="val">0</td>
+          <td class="center"><span class="dot status-green" style="width:10px;height:10px;"></span></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+      <div class="source-card">
+        <div class="source-header">
+          <span class="source-title">学習ダッシュボード <a class="action-link" href="file:///C:/Users/kfuru/.secretary/denken3-study-dashboard/index.html" target="_blank">→ 詳細</a></span>
+          <span class="badge status-red"><span class="dot status-red" style="width:8px;height:8px;"></span> 異常</span>
+        </div>
+        
+    <table class="metrics-table">
+      <thead>
+        <tr><th>指標</th><th>値</th><th class="center">状態</th></tr>
+      </thead>
+      <tbody>
+        <tr class="">
+          <td>HTMLファイル存在</td>
+          <td class="val">異常</td>
+          <td class="center"><span class="dot status-red" style="width:10px;height:10px;"></span></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+      </div>
+    </details>
+    <details id="cat-gas" class="category-details">
+      <summary class="category-summary">
+        <span class="cat-label">GASエラー</span>
+        <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+      </summary>
+      <p class="action-hint action-hint-yellow">⚠ 注意が必要な指標があります。内容を確認してください。</p>
+      <div class="cards-grid">
+        
+      <div class="source-card">
+        <div class="source-header">
+          <span class="source-title">Google Apps Script <a class="action-link" href="https://script.google.com/home" target="_blank">→ 詳細</a></span>
+          <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+        </div>
+        
+    <table class="metrics-table">
+      <thead>
+        <tr><th>指標</th><th>値</th><th class="center">状態</th></tr>
+      </thead>
+      <tbody>
+        <tr class="">
+          <td>エラーメール数</td>
+          <td class="val">None</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+      </div>
+    </details>
+    <details id="cat-scheduled" class="category-details">
+      <summary class="category-summary">
+        <span class="cat-label">Scheduledタスク</span>
+        <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+      </summary>
+      <p class="action-hint action-hint-yellow">⚠ 注意が必要な指標があります。内容を確認してください。</p>
+      <div class="cards-grid">
+        
+      <div class="source-card">
+        <div class="source-header">
+          <span class="source-title">8タスク <a class="action-link" href="file:///C:/Users/kfuru/OneDrive/%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88/Claude/Scheduled" target="_blank">→ 詳細</a></span>
+          <span class="badge status-yellow"><span class="dot status-yellow" style="width:8px;height:8px;"></span> 注意</span>
+        </div>
+        
+    <table class="metrics-table">
+      <thead>
+        <tr><th>指標</th><th>値</th><th class="center">状態</th></tr>
+      </thead>
+      <tbody>
+        <tr class="">
+          <td>SKILLファイル数</td>
+          <td class="val">0</td>
+          <td class="center"><span class="dot status-yellow" style="width:10px;height:10px;"></span></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+      </div>
+    </details>
+    </div>
+
+    <!-- Tier 3: Footer -->
+    <footer class="footer">
+      <div class="footer-row">
+        <span>生成日時: 2026-04-01 22:00</span>
+      </div>
+      <div class="footer-row">
+        <span>6/6 ソース成功</span>
+      </div>
+      <div class="footer-row">
+        <span>次回自動実行: 日曜 18:00</span>
+      </div>
+      <div class="footer-powered">Powered by F Company Health Monitor v1.0</div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function() {
+      var footerSpan = document.querySelector('footer .footer-row span');
+      var genText = footerSpan ? footerSpan.textContent : '';
+      var match = genText.match(/(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/);
+      if (match) {
+        var genDate = new Date(match[1].replace(' ', 'T'));
+        var now = new Date();
+        var diffHours = (now - genDate) / (1000 * 60 * 60);
+        if (diffHours > 24) {
+          var banner = document.createElement('div');
+          banner.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:#e3b341;color:#0d1117;text-align:center;padding:8px 16px;font-size:0.85rem;font-weight:600;z-index:10000;font-family:Inter,"Noto Sans JP",sans-serif;';
+          banner.textContent = '⚠ データが古くなっています（最終更新: ' + match[1] + '）。`ヘルスチェック` を実行してください';
+          document.body.insertBefore(banner, document.body.firstChild);
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

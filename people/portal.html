@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Portfolio — Furutachi</title>
+<script>
+(async function(){
+  var key = 'portal_auth';
+  if(sessionStorage.getItem(key) !== '1'){
+    var pw = prompt('パスワードを入力してください');
+    var HASH = '7f7c93761107bdebd12a243eec2abd030d1ce5d981f749fd827b9589bd34d5f3';
+    var enc = new TextEncoder().encode(pw || '');
+    var buf = await crypto.subtle.digest('SHA-256', enc);
+    var hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    if(hex !== HASH){
+      document.documentElement.innerHTML = '<a href="../portal-v2.html" style="position:fixed;top:14px;left:14px;z-index:9999;background:rgba(10,14,26,0.85);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc;padding:6px 14px;border-radius:20px;font-size:0.75rem;font-weight:600;text-decoration:none;backdrop-filter:blur(10px);font-family:Inter,sans-serif;letter-spacing:-.01em;">← ポータル</a>
+<body style="background:#0a0a0f;color:#e4e4e7;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:1.2rem;">アクセスが拒否されました。</body>';
+      throw new Error('auth failed');
+    }
+    sessionStorage.setItem(key, '1');
+  }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e4e4e7;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --accent: #6366f1;
+  --accent-soft: rgba(99,102,241,0.15);
+  --accent-glow: rgba(99,102,241,0.3);
+  --green: #22c55e;
+  --green-soft: rgba(34,197,94,0.15);
+  --amber: #f59e0b;
+  --amber-soft: rgba(245,158,11,0.15);
+  --red: #ef4444;
+  --red-soft: rgba(239,68,68,0.15);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --gap: 16px;
+  --font-ui: 'Inter', 'Noto Sans JP', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+.light {
+  --bg-primary: #f8f8fa;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(0,0,0,0.03);
+  --bg-card-hover: rgba(0,0,0,0.06);
+  --border: rgba(0,0,0,0.08);
+  --border-hover: rgba(0,0,0,0.15);
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --accent-soft: rgba(99,102,241,0.1);
+  --accent-glow: rgba(99,102,241,0.15);
+  --green-soft: rgba(34,197,94,0.1);
+  --amber-soft: rgba(245,158,11,0.1);
+  --red-soft: rgba(239,68,68,0.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+/* ===== TOP BAR ===== */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo {
+  font-family: var(--font-mono);
+  font-size: 14px; font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+/* View Toggle */
+.view-toggle {
+  display: flex; gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+}
+.view-btn {
+  padding: 6px 14px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none; border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-ui);
+}
+.view-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.view-btn:hover:not(.active) { color: var(--text-secondary); }
+/* Theme Toggle */
+.theme-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.theme-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+/* ===== BENTO GRID ===== */
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+.bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: auto;
+  gap: var(--gap);
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.card-badge {
+  font-size: 10px; font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+/* Span classes */
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-r2 { grid-row: span 2; }
+
+/* ===== PROFILE CARD ===== */
+.profile { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.profile-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+.profile-name { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+.profile-role { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+.profile-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.tag {
+  font-size: 11px; font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.tag.accent { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+
+/* ===== STAT CARDS ===== */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.stat-item {
+  text-align: center;
+  padding: 16px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 28px; font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.stat-value .unit { font-size: 14px; color: var(--text-muted); }
+.stat-label {
+  font-size: 11px; color: var(--text-muted);
+  margin-top: 4px; font-weight: 500;
+}
+
+/* ===== RADAR CHART ===== */
+.radar-toggles {
+  display: flex; gap: 4px; margin-bottom: 12px;
+}
+.radar-btn {
+  padding: 5px 12px;
+  font-size: 11px; font-weight: 500;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: all 0.2s;
+}
+.radar-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: transparent;
+}
+.chart-container {
+  position: relative;
+  width: 100%; max-width: 380px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+/* ===== CORE MESSAGE ===== */
+.core-message {
+  font-size: 14px; line-height: 1.8;
+  color: var(--text-secondary);
+  padding: 16px 20px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* ===== TIMELINE ===== */
+.filter-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 20px;
+}
+.chip {
+  font-size: 11px; font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: all 0.2s;
+}
+.chip.active, .chip:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: transparent;
+}
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 6px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent) 50%, transparent);
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 4px;
+  transition: opacity 0.3s;
+}
+.tl-item.hidden { display: none; }
+.tl-dot {
+  position: absolute; left: -21px; top: 6px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-primary);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.tl-year {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+.tl-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.tl-metric {
+  font-family: var(--font-mono);
+  font-size: 13px; font-weight: 500;
+  color: var(--green);
+  margin-bottom: 4px;
+}
+.tl-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.tl-tag {
+  font-size: 10px; padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+/* STAR expand */
+.star-toggle {
+  font-size: 11px; color: var(--accent);
+  cursor: pointer; margin-top: 6px;
+  font-weight: 500;
+  user-select: none;
+}
+.star-toggle:hover { text-decoration: underline; }
+.star-content {
+  display: none;
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.star-content.open { display: block; }
+.star-label {
+  font-weight: 600;
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+/* ===== MEMBER CARDS ===== */
+.member-card {
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: var(--gap);
+}
+.member-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.member-name { font-size: 16px; font-weight: 600; }
+.member-grade {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.grade-e1 { background: var(--amber-soft); color: var(--amber); }
+.grade-e3 { background: var(--green-soft); color: var(--green); }
+.member-trait {
+  font-size: 12px; color: var(--text-muted);
+  margin-bottom: 14px;
+}
+.score-row {
+  display: flex; align-items: center;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+.score-label {
+  font-size: 12px; color: var(--text-secondary);
+  width: 80px; flex-shrink: 0;
+}
+.score-bar-bg {
+  flex: 1; height: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.score-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.score-bar.high { background: var(--green); }
+.score-bar.mid { background: var(--amber); }
+.score-bar.low { background: var(--red); }
+.score-value {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  color: var(--text-muted);
+  width: 28px; text-align: right; flex-shrink: 0;
+}
+.member-focus {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.focus-title {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.focus-items { list-style: none; }
+.focus-items li {
+  font-size: 12px; color: var(--text-secondary);
+  padding: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.focus-items li::before {
+  content: '';
+  position: absolute; left: 0; top: 10px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ===== CAREER TARGETS ===== */
+.target-cards { display: flex; flex-direction: column; gap: 10px; }
+.target-card {
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.target-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.target-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.target-desc { font-size: 12px; color: var(--text-muted); }
+
+/* ===== CERT LIST ===== */
+.cert-list { list-style: none; }
+.cert-list li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.cert-list li:last-child { border-bottom: none; }
+.cert-status {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.cert-ok { background: var(--green-soft); color: var(--green); }
+.cert-wip { background: var(--amber-soft); color: var(--amber); }
+
+/* ===== PROFILE META ===== */
+.profile-meta {
+  width: 100%;
+  margin: 12px 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.meta-row {
+  display: flex; justify-content: space-between;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--bg-card);
+}
+.meta-label { font-size: 11px; color: var(--text-muted); }
+.meta-value { font-size: 12px; font-weight: 600; font-family: var(--font-mono); color: var(--text-primary); }
+
+/* ===== TOOLS ===== */
+.tools-grid { display: flex; flex-direction: column; gap: 12px; }
+.tool-group-label {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.tool-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.tool-chip {
+  font-size: 11px; font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.tool-chip.ai {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: transparent;
+}
+
+/* ===== ACTIVITIES ===== */
+.activity-list { display: flex; flex-direction: column; gap: 12px; }
+.activity-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.activity-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px; font-weight: 700;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+.activity-title { font-size: 13px; font-weight: 600; }
+.activity-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* ===== MEMBER DATES ===== */
+.member-dates {
+  display: flex; gap: 16px;
+  font-size: 11px; color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.member-dates strong { color: var(--text-secondary); }
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+  padding: 40px 24px 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.hero-tagline {
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+.hero-badges {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 8px;
+}
+.hero-badge {
+  font-size: 12px; font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.hero-badge.highlight {
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.hero-badge.green {
+  background: var(--green-soft);
+  border-color: transparent;
+  color: var(--green);
+}
+.hero-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  margin: 20px 0 0;
+}
+
+/* ===== BEFORE/AFTER ===== */
+.before-after {
+  display: flex; gap: 8px; align-items: stretch;
+  margin: 8px 0 4px;
+  font-size: 12px;
+}
+.ba-col {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+}
+.ba-col.before {
+  background: var(--red-soft);
+  border: 1px solid rgba(239,68,68,0.2);
+}
+.ba-col.after {
+  background: var(--green-soft);
+  border: 1px solid rgba(34,197,94,0.2);
+}
+.ba-label {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+.ba-col.before .ba-label { color: var(--red); }
+.ba-col.after .ba-label { color: var(--green); }
+.ba-text { color: var(--text-secondary); line-height: 1.4; }
+.ba-arrow {
+  display: flex; align-items: center;
+  color: var(--text-muted); font-size: 18px;
+  padding-top: 8px;
+}
+
+/* ===== EVAL BADGE ===== */
+.eval-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.08));
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+  color: var(--green);
+  margin-top: 8px;
+  font-family: var(--font-mono);
+}
+
+/* ===== CHANGE SUMMARY ===== */
+.change-summary {
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--green-soft);
+  border-left: 3px solid var(--green);
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.change-summary strong { color: var(--green); }
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .span-3, .span-4 { grid-column: span 2; }
+}
+@media (max-width: 640px) {
+  .bento { grid-template-columns: 1fr; }
+  .span-2, .span-3, .span-4 { grid-column: span 1; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .container { padding: 12px; }
+  .topbar { padding: 10px 14px; }
+  .view-toggle { display: none; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .container { padding: 8px; }
+  .topbar { padding: 8px 10px; }
+  .topbar-logo { font-size: 0.85rem; }
+  .profile-name { font-size: 1.1rem; }
+  .card { padding: 14px; }
+  .stat-value { font-size: 1.4rem; }
+  .member-dates { flex-direction: column; gap: 2px; }
+  .filter-chips { gap: 4px; }
+  .chip { font-size: 0.7rem; padding: 3px 8px; }
+  .tl-year { font-size: 0.7rem; }
+  .tl-title { font-size: 0.9rem; }
+}
+
+/* ===== PRINT ===== */
+@media print {
+  body { background: white !important; color: black !important; }
+  .card { background: white !important; border: 1px solid #ddd !important; break-inside: avoid; }
+  .topbar { display: none; }
+  .footer { display: none; }
+  [data-view="boss"] { display: none !important; }
+  .theme-btn { display: none; }
+  .stat-value, .tl-title, .member-name, .profile-name { color: black !important; }
+  .score-bar-bg { border-color: #ccc !important; }
+}
+
+/* ===== HIDDEN UTIL ===== */
+.view-hidden { display: none !important; }
+</style>
+</head>
+<body>
+<a href="../portal-v2.html" style="position:fixed;top:14px;left:14px;z-index:9999;background:rgba(10,14,26,0.85);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc;padding:6px 14px;border-radius:20px;font-size:0.75rem;font-weight:600;text-decoration:none;backdrop-filter:blur(10px);font-family:Inter,sans-serif;letter-spacing:-.01em;">← ポータル</a>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">PORTFOLIO//</div>
+  </div>
+  <div class="topbar-right">
+    <div class="view-toggle">
+      <button class="view-btn active" onclick="setView('all', event)">All</button>
+      <button class="view-btn" onclick="setView('interview', event)">Interview</button>
+      <button class="view-btn" onclick="setView('boss', event)">Report</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">
+      <span id="theme-icon">&#9790;</span>
+    </button>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<div class="hero-section">
+  <div class="hero-tagline">電気 × AI × マネジメント</div>
+  <div class="hero-sub">現場で11年鍛えた電気エンジニアが、生成AIと組織再生力で製造DXを実行フェーズまで引っ張る。<br>チーム崩壊状態からの再建、管理職1年目でのEX評価、億単位の設備投資完遂。</div>
+  <div class="hero-badges">
+    <span class="hero-badge highlight">★ 管理職 2年連続 EX評価（FEX / EX / ME / BE / BFE）</span>
+    <span class="hero-badge green">重/軽トラブル 0達成</span>
+    <span class="hero-badge green">コスト 1/6 削減</span>
+    <span class="hero-badge green">年間 300万円 削減</span>
+    <span class="hero-badge">11年 / 設備投資〜保全〜DX</span>
+  </div>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- ===== MAIN GRID ===== -->
+<div class="container">
+<div class="bento">
+
+  <!-- RADAR CHART (2x2) -->
+  <div class="card span-2 span-r2" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Skill Radar <span style="font-size:10px;color:var(--text-muted);text-transform:none;letter-spacing:0">(Self-assessment)</span></span>
+    </div>
+    <div class="radar-toggles">
+      <button class="radar-btn active" onclick="switchRadar('portable', event)">Portable</button>
+      <button class="radar-btn" onclick="switchRadar('technical', event)">Technical</button>
+    </div>
+    <div class="chart-container">
+      <canvas id="radarChart"></canvas>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="card" data-view="all interview">
+    <div class="profile">
+      <div class="profile-avatar">F</div>
+      <div class="profile-name">Furutachi Kazutoshi</div>
+      <div class="profile-role">Electrical & Instrumentation Team Leader<br>Mitsubishi Chemical Corporation</div>
+      <div class="profile-meta">
+        <div class="meta-row"><span class="meta-label">Experience</span><span class="meta-value">11 years (2014~)</span></div>
+        <div class="meta-row"><span class="meta-label">Team</span><span class="meta-value">2 members + 1 contractor</span></div>
+        <div class="meta-row"><span class="meta-label">CAPEX Scale</span><span class="meta-value">~billion JPY range</span></div>
+      </div>
+      <div class="eval-badge">FY2024-2025 Evaluation: EX × 2年連続 ★</div>
+      <div class="profile-tags">
+        <span class="tag accent">DX / GenAI</span>
+        <span class="tag accent">Team Rebuild</span>
+        <span class="tag accent">Energy Mgr</span>
+        <span class="tag">36y/o</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CERTIFICATIONS -->
+  <div class="card" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Certifications</span>
+    </div>
+    <ul class="cert-list">
+      <li><span class="cert-status cert-ok">2022</span>エネルギー管理士（電気）</li>
+      <li><span class="cert-status cert-ok">2018</span>保全技能士1級（電気）</li>
+      <li><span class="cert-status cert-ok">2013</span>第二種電気工事士</li>
+      <li><span class="cert-status cert-ok">2025</span>第一種衛生管理者</li>
+      <li><span class="cert-status cert-ok">済</span>高圧特別高圧電気取扱</li>
+      <li><span class="cert-status cert-wip">WIP</span>電験3種（学習中）</li>
+    </ul>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="card span-2" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Tools & Environment</span>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-group">
+        <div class="tool-group-label">PLC / Control</div>
+        <div class="tool-chips">
+          <span class="tool-chip">GX Works3</span><span class="tool-chip">GX Works2</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-label">DCS / SCADA</div>
+        <div class="tool-chips">
+          <span class="tool-chip">横河DCS</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-label">HMI / Touch Panel</div>
+        <div class="tool-chips">
+          <span class="tool-chip">三菱GOT</span><span class="tool-chip">Proface</span><span class="tool-chip">Schneider</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-label">Design / Mgmt</div>
+        <div class="tool-chips">
+          <span class="tool-chip">AutoCAD</span><span class="tool-chip">Plantia</span><span class="tool-chip">Spacely</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-label">Generative AI</div>
+        <div class="tool-chips">
+          <span class="tool-chip ai">Claude</span><span class="tool-chip ai">ChatGPT</span><span class="tool-chip ai">Gemini</span><span class="tool-chip ai">Copilot</span><span class="tool-chip ai">NotebookLM</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-label">Collaboration</div>
+        <div class="tool-chips">
+          <span class="tool-chip">Teams</span><span class="tool-chip">OneNote</span><span class="tool-chip">Planner</span><span class="tool-chip">MS365</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WG / PJ -->
+  <div class="card span-2" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Cross-Org Activities</span>
+      <span class="card-badge">2024-2025</span>
+    </div>
+    <div class="activity-list">
+      <div class="activity-item">
+        <div class="activity-icon">WG</div>
+        <div>
+          <div class="activity-title">ナレッジ活用ワーキンググループ</div>
+          <div class="activity-desc">月1参画。社内ナレッジ活用推進</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">PJ</div>
+        <div>
+          <div class="activity-title">全社DX推進プロジェクト</div>
+          <div class="activity-desc">Gemini / NotebookLM / ChatGPT / Copilot 検証・活用推進</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">会</div>
+        <div>
+          <div class="activity-title">関東電計会議 運営</div>
+          <div class="activity-desc">報告3回。各場所の課題共有・横展開を推進</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">GM</div>
+        <div>
+          <div class="activity-title">GM会議 参加</div>
+          <div class="activity-desc">年6回参加。有益情報を部署/SICへ展開</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="card span-2" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Key Numbers</span>
+      <span class="card-badge">FY2025</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item" style="background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(34,197,94,0.04));border-color:rgba(34,197,94,0.25)">
+        <div class="stat-value" style="color:var(--green)">EX</div>
+        <div class="stat-label" style="color:var(--green)">2年連続 EX（FY24-25）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" style="color:var(--green)">0</div>
+        <div class="stat-label">重/軽トラブル / 年</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">1/6</div>
+        <div class="stat-label">ベンダーコスト削減比</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">300<span class="unit">万</span></div>
+        <div class="stat-label">年間工数削減額</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">7<span class="unit"> SOP</span></div>
+        <div class="stat-label">標準化・改訂件数</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">5<span class="unit">日</span></div>
+        <div class="stat-label">全停電 垂直立上げ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE MESSAGE -->
+  <div class="card span-2" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Core Message</span>
+      <span class="card-badge">30sec</span>
+    </div>
+    <div class="core-message">
+      三菱ケミカルで11年間、電気設備の設計・保全・マネジメントをしてきました。ここ数年は生成AIの業務活用に力を入れており、自分のチームの業務効率化から社内への横展開まで主導しています。「現場の課題を知っていて、ITツールも自分で組める」という掛け合わせを活かして、製造現場のDXを実行フェーズまで引っ張れる人材として貢献したいと考えています。
+    </div>
+  </div>
+
+  <!-- MEMBER E CARD -->
+  <div class="card" data-view="all boss">
+    <div class="member-header">
+      <span class="member-name">Member E</span>
+      <span class="member-grade grade-e1">E1</span>
+    </div>
+    <div class="member-dates">
+      <span>前回面談: <strong>未定</strong></span>
+      <span>次回予定: <strong>未定</strong></span>
+    </div>
+    <div class="member-trait">設計業務が強い / ベテラン / 2025年度に姿勢が大きく改善</div>
+    <div class="score-row"><span class="score-label">力量</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="score-row"><span class="score-label">意欲</span><div class="score-bar-bg"><div class="score-bar mid" style="width:60%"></div></div><span class="score-value">3/5</span></div>
+    <div class="score-row"><span class="score-label">成長</span><div class="score-bar-bg"><div class="score-bar mid" style="width:60%"></div></div><span class="score-value">3/5</span></div>
+    <div class="score-row"><span class="score-label">問題解決</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="score-row"><span class="score-label">人材育成</span><div class="score-bar-bg"><div class="score-bar mid" style="width:60%"></div></div><span class="score-value">3/5</span></div>
+    <div class="score-row"><span class="score-label">報告連携</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="member-focus">
+      <div class="focus-title">Focus Areas (FY2026)</div>
+      <ul class="focus-items">
+        <li>トラブル初動対応力（OJT強化）</li>
+        <li>経験知のチーム展開（手順書化）</li>
+        <li>報告・連携の習慣化</li>
+        <li>電気主任技術者 社外講習</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MEMBER F CARD -->
+  <div class="card" data-view="all boss">
+    <div class="member-header">
+      <span class="member-name">Member F</span>
+      <span class="member-grade grade-e3">E3</span>
+    </div>
+    <div class="member-dates">
+      <span>前回面談: <strong>未定</strong></span>
+      <span>次回予定: <strong>未定</strong></span>
+    </div>
+    <div class="member-trait">行動力・フットワーク強み / 技術理解の浅さ・知ったかぶりが最大課題</div>
+    <div class="score-row"><span class="score-label">力量</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="score-row"><span class="score-label">意欲</span><div class="score-bar-bg"><div class="score-bar mid" style="width:60%"></div></div><span class="score-value">3/5</span></div>
+    <div class="score-row"><span class="score-label">成長</span><div class="score-bar-bg"><div class="score-bar mid" style="width:60%"></div></div><span class="score-value">3/5</span></div>
+    <div class="score-row"><span class="score-label">問題解決</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="score-row"><span class="score-label">努力</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="score-row"><span class="score-label">報告連携</span><div class="score-bar-bg"><div class="score-bar low" style="width:40%"></div></div><span class="score-value">2/5</span></div>
+    <div class="member-focus">
+      <div class="focus-title">Focus Areas (FY2026)</div>
+      <ul class="focus-items">
+        <li>自律的判断力（コーチング強化）</li>
+        <li>「知らないので教えて」を言える習慣</li>
+        <li>原理・原則に基づく説明力</li>
+        <li>情報隠蔽・ごまかしの是正</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CAREER TARGETS -->
+  <div class="card span-2" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Career Targets</span>
+    </div>
+    <div class="target-cards">
+      <div class="target-card" style="border-color:var(--accent);background:var(--accent-soft)">
+        <div class="target-label">Target A — 最優先</div>
+        <div class="target-title">DX推進リード / 生成AI活用推進</div>
+        <div class="target-desc">製造業DX推進リード、スマートファクトリーPM、全社AI活用推進。「現場を知るDX人材」として絵に描いた餅で終わらせない実行力を活かす。</div>
+      </div>
+      <div class="target-card">
+        <div class="target-label">Target B</div>
+        <div class="target-title">業務改善 / DXコンサルタント</div>
+        <div class="target-desc">製造業・プラント系に特化した業務改善・DXコンサル。現場経験11年 × 生成AI高度活用の掛け合わせで、クライアント現場の課題を上流から実装まで一貫して解決。</div>
+      </div>
+      <div class="target-card">
+        <div class="target-label">Target C</div>
+        <div class="target-title">現場改善 / スマートファクトリー実装</div>
+        <div class="target-desc">IoT・AI・自動化ツールを使った現場改善の設計・実装・定着支援。SIer（製造業特化）やメーカーDX部門で、PoC→運用定着まで引っ張るロール。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENT TIMELINE -->
+  <div class="card span-4" data-view="all interview">
+    <div class="card-header">
+      <span class="card-title">Achievement Timeline</span>
+      <span class="card-badge" id="timeline-badge">10 Records</span>
+    </div>
+    <div class="filter-chips">
+      <button class="chip active" onclick="filterTag('all', event)">All</button>
+      <button class="chip" onclick="filterTag('DX', event)">#DX</button>
+      <button class="chip" onclick="filterTag('コスト削減', event)">#Cost</button>
+      <button class="chip" onclick="filterTag('マネジメント', event)">#Mgmt</button>
+      <button class="chip" onclick="filterTag('標準化', event)">#Standard</button>
+      <button class="chip" onclick="filterTag('プロジェクト管理', event)">#PM</button>
+      <button class="chip" onclick="filterTag('設備投資', event)">#Investment</button>
+      <button class="chip" onclick="filterTag('トラブル対応', event)">#Trouble</button>
+    </div>
+    <div class="timeline" id="timeline">
+
+      <div class="tl-item" data-tags="DX コスト削減 プロジェクトリーダー 業務改善">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2024-2025</div>
+        <div class="tl-title">協力会社安全教育のオンデマンド化</div>
+        <div class="tl-metric">年間 300万円 工数削減</div>
+        <div class="tl-tags"><span class="tl-tag">#DX</span><span class="tl-tag">#コスト削減</span><span class="tl-tag">#PL</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 対面教育を毎日1h実施、年間で多大な工数。担当者退職で負担増大。<br>
+          <span class="star-label">T:</span> オンデマンド化の運用設計と社内承認を完遂すること。<br>
+          <span class="star-label">A:</span> 他工場の先行事例を調査、関係部署と連携しルール整備を主導。<br>
+          <span class="star-label">R:</span> 対面教育廃止。年間300万円工数削減を実現。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="DX 設備管理 業務改善 現場効率化">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2024-2025</div>
+        <div class="tl-title">工場プラントビュー（Spacely）導入・展開</div>
+        <div class="tl-metric">5エリア展開 / 現場確認工数 大幅削減</div>
+        <div class="tl-tags"><span class="tl-tag">#DX</span><span class="tl-tag">#現場効率化</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 現場確認に多大な工数。遠隔での状況把握が困難。<br>
+          <span class="star-label">T:</span> Googleストリートビュー型のプラントビューを導入・定着させること。<br>
+          <span class="star-label">A:</span> 成功事例調査→予算化→導入→説明・実演を繰り返し浸透。<br>
+          <span class="star-label">R:</span> 5エリアへ展開完了。社内に定着し現場確認工数を大幅削減。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="コスト削減 調達 マネジメント">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2025</div>
+        <div class="tl-title">新規ベンダー開拓によるコスト削減</div>
+        <div class="tl-metric">従来比 コスト 1/6 削減</div>
+        <div class="tl-tags"><span class="tl-tag">#コスト削減</span><span class="tl-tag">#マネジメント</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 既存ベンダー依存でコスト高止まり。少人数体制。<br>
+          <span class="star-label">T:</span> 品質・レスポンス維持しながらコスト削減。<br>
+          <span class="star-label">A:</span> TMES等新規ベンダーを調査・採用。レスポンス体制も確保。<br>
+          <span class="star-label">R:</span> コスト1/6に圧縮。品質・レスポンスも確保。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="プロジェクト管理 大規模案件 マネジメント リスク管理">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2025.11</div>
+        <div class="tl-title">5日間全停電 垂直立ち上げ達成</div>
+        <div class="tl-metric">過去事例なし / 前年比 大幅改善</div>
+        <div class="tl-tags"><span class="tl-tag">#プロジェクト管理</span><span class="tl-tag">#マネジメント</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> チーム崩壊状態の引き継ぎ。全停電・特高盤更新・定修ピーク同時。<br>
+          <span class="star-label">T:</span> 前例のない5日間全停電を計画通り完遂すること。<br>
+          <span class="star-label">A:</span> 体制案・役割分担・作業フローを資料化。他部署と密なコミュニケーション。<br>
+          <span class="star-label">R:</span> 全停電・定修を計画通り完遂。垂直立ち上げ達成。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="標準化 ナレッジ管理 組織改善">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2025</div>
+        <div class="tl-title">SOP標準化・チームナレッジ化</div>
+        <div class="tl-metric">SOP 7件整備 / 工事共通仕様書へ反映</div>
+        <div class="tl-tags"><span class="tl-tag">#標準化</span><span class="tl-tag">#組織改善</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 属人化が進み、個人の知見が組織資産にならない構造。<br>
+          <span class="star-label">T:</span> 個人の気づきを組織標準に変換する仕組みを構築。<br>
+          <span class="star-label">A:</span> SOP7件の読み合わせ・改定主導。原因整理〜標準改定〜横展開を一貫。<br>
+          <span class="star-label">R:</span> 脱属人化推進。再発防止を"標準化"として恒久対応へ。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="マネジメント 組織再生">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2023-2025</div>
+        <div class="tl-title">組織再生・チームビルディング</div>
+        <div class="tl-metric">重/軽トラブル 0 / クレーム 0</div>
+        <div class="tl-tags"><span class="tl-tag">#マネジメント</span><span class="tl-tag">#組織再生</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 前任者引き継ぎ皆無、派遣退職。チーム崩壊状態でTL就任。<br>
+          <span class="star-label">T:</span> 少人数体制で業務継続しつつチームを再建。<br>
+          <span class="star-label">A:</span> 電計MTG整備、PLANTIA入力徹底、応援体制構築、生成AI展開。<br>
+          <span class="star-label">R:</span> チーム再構築完了。重/軽トラブル0、定修クレーム0達成。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="DX 生成AI マネジメント 業務改善">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2025</div>
+        <div class="tl-title">生成AI活用の組織展開</div>
+        <div class="tl-metric">チームが自律的にSOP改定可能に</div>
+        <div class="tl-tags"><span class="tl-tag">#DX</span><span class="tl-tag">#生成AI</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 個人のAI活用は進んでいたが組織展開できていなかった。<br>
+          <span class="star-label">T:</span> チームメンバーが自律的にAI活用できるレベルへ引き上げ。<br>
+          <span class="star-label">A:</span> MTGでレクチャー・事例共有・実演を繰り返し。全社PJ参画。<br>
+          <span class="star-label">R:</span> メンバーが自律的にSOP改定・資料作成を実施できるレベルへ到達。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="設備投資 標準化 コスト削減 プロジェクト管理">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2016-2022</div>
+        <div class="tl-title">インライン検査機 7ライン導入・仕様統一化</div>
+        <div class="tl-metric">設計費 800万 → 100万 / 改造費 100万 → 20万</div>
+        <div class="tl-tags"><span class="tl-tag">#設備投資</span><span class="tl-tag">#コスト削減</span><span class="tl-tag">#標準化</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> ライン毎に仕様バラバラ。トラブル対応に多大な工数・費用。<br>
+          <span class="star-label">T:</span> 7ライン＋海外1ラインの仕様統一化。<br>
+          <span class="star-label">A:</span> 将来導入予定ラインの担当者も設計段階から参画させ統一仕様を設計。<br>
+          <span class="star-label">R:</span> ソフト設計費800万→100万。改造費100万→20万/回。海外展開もスムーズ。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="設備改善 現場改善 コスト削減 トラブル対応">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2018-2020</div>
+        <div class="tl-title">警報・インターロック可視化改善</div>
+        <div class="tl-metric">設技対応 週1回 → 2ヶ月1回 / 事業所受賞</div>
+        <div class="tl-tags"><span class="tl-tag">#トラブル対応</span><span class="tl-tag">#コスト削減</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 異常停止時にアラーム原因を特定できず設技への対応依頼が急増。<br>
+          <span class="star-label">T:</span> 現場オペレータが自力でトラブル原因を特定できるシステムへ改善。<br>
+          <span class="star-label">A:</span> オペレータ・プロセス担当と1対1で対話。TP画面にインターロック条件を個別表示。<br>
+          <span class="star-label">R:</span> 対応頻度を週1→2ヶ月1回に削減。垂直立ち上げ成功で事業所表彰。
+        </div>
+      </div>
+
+      <div class="tl-item" data-tags="業務改善 コスト削減 調達 標準化">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2025</div>
+        <div class="tl-title">20日締めまとめ発注制度設計</div>
+        <div class="tl-metric">2026年4月運用開始 / 事務工数削減</div>
+        <div class="tl-tags"><span class="tl-tag">#コスト削減</span><span class="tl-tag">#標準化</span></div>
+        <div class="star-toggle" onclick="toggleStar(this)">STAR Detail +</div>
+        <div class="star-content">
+          <span class="star-label">S:</span> 都度発注で事務工数大。調達リードタイムも長い。<br>
+          <span class="star-label">T:</span> 本社資材Gr・福岡電計と連携した発注ルール統一。<br>
+          <span class="star-label">A:</span> 「20日締め運用」をルールとして策定・合意。<br>
+          <span class="star-label">R:</span> 2026年4月運用開始。事務工数削減と調達早期化を実現。
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /bento -->
+</div><!-- /container -->
+
+<div class="footer">
+  Generated: 2026-03-29 | Source: .secretary/people/ | Career Portfolio System v1.0
+</div>
+
+<script>
+// ===== RADAR CHART =====
+const portableData = {
+  labels: ['組織マネジメント','プロジェクト管理','DX / AI活用','コスト最適化','業務標準化','人材育成','技術専門性'],
+  datasets: [{
+    label: 'Portable Skills',
+    data: [9, 9, 8, 8, 8, 7, 7],
+    backgroundColor: 'rgba(99,102,241,0.15)',
+    borderColor: 'rgba(99,102,241,0.8)',
+    borderWidth: 2,
+    pointBackgroundColor: '#6366f1',
+    pointRadius: 4,
+    pointHoverRadius: 6
+  }]
+};
+const technicalData = {
+  labels: ['PLC / 制御','電気設計','計装','保全管理','法令知識','DCS','トラブル対応'],
+  datasets: [{
+    label: 'Technical Skills',
+    data: [8, 7, 7, 8, 6, 7, 9],
+    backgroundColor: 'rgba(139,92,246,0.15)',
+    borderColor: 'rgba(139,92,246,0.8)',
+    borderWidth: 2,
+    pointBackgroundColor: '#8b5cf6',
+    pointRadius: 4,
+    pointHoverRadius: 6
+  }]
+};
+function getChartOptions() {
+  const isDark = !document.body.classList.contains('light');
+  const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  const labelColor = isDark ? '#a1a1aa' : '#52525b';
+  return {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        beginAtZero: true, min: 0, max: 10,
+        ticks: { stepSize: 2, color: labelColor, backdropColor: 'transparent', font: { size: 10 } },
+        grid: { color: gridColor },
+        angleLines: { color: gridColor },
+        pointLabels: { color: labelColor, font: { size: 11, family: "'Noto Sans JP', sans-serif" } }
+      }
+    }
+  };
+}
+const ctx = document.getElementById('radarChart').getContext('2d');
+let radarChart = new Chart(ctx, { type: 'radar', data: portableData, options: getChartOptions() });
+
+function switchRadar(type, e) {
+  document.querySelectorAll('.radar-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  radarChart.data = type === 'portable' ? portableData : technicalData;
+  radarChart.options = getChartOptions();
+  radarChart.update();
+}
+
+// ===== VIEW TOGGLE =====
+function setView(view, e) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll('[data-view]').forEach(el => {
+    const views = el.dataset.view.split(' ');
+    if (view === 'all' || views.includes(view) || views.includes('all')) {
+      el.classList.remove('view-hidden');
+    } else {
+      el.classList.add('view-hidden');
+    }
+  });
+}
+
+// ===== THEME TOGGLE =====
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  document.getElementById('theme-icon').innerHTML = isLight ? '&#9728;' : '&#9790;';
+  radarChart.options = getChartOptions();
+  radarChart.update();
+}
+
+// ===== TAG FILTER =====
+function filterTag(tag, e) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll('.tl-item').forEach(item => {
+    if (tag === 'all') {
+      item.classList.remove('hidden');
+    } else {
+      const tags = item.dataset.tags || '';
+      item.classList.toggle('hidden', !tags.includes(tag));
+    }
+  });
+}
+
+// ===== TIMELINE BADGE =====
+(function() {
+  const count = document.querySelectorAll('#timeline .tl-item').length;
+  const badge = document.getElementById('timeline-badge');
+  if (badge) badge.textContent = count + ' Records';
+})();
+
+// ===== STAR TOGGLE =====
+function toggleStar(el) {
+  const content = el.nextElementSibling;
+  content.classList.toggle('open');
+  el.textContent = content.classList.contains('open') ? 'STAR Detail -' : 'STAR Detail +';
+}
+</script>
+</body>
+</html>

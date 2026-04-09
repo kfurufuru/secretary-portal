@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Progress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #080c18;
+      --surface: rgba(12,18,36,0.70);
+      --border:  rgba(255,255,255,0.08);
+      --border-h:rgba(255,255,255,0.18);
+      --text:    rgba(255,255,255,0.90);
+      --text2:   rgba(255,255,255,0.58);
+      --text3:   rgba(255,255,255,0.30);
+      --accent:  #6366f1;
+      --green:   #10b981;
+      --yellow:  #f59e0b;
+      --red:     #ef4444;
+      --cyan:    #22d3ee;
+      --purple:  #a855f7;
+      --font-base:'Inter','Noto Sans JP',sans-serif;
+      --radius:14px;
+      --transition:0.2s ease;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:var(--font-base);
+      background:var(--bg);color:var(--text);
+      min-height:100vh;padding:24px;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* bg grid */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;
+      background-image:
+        linear-gradient(rgba(99,102,241,0.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(99,102,241,0.04) 1px,transparent 1px);
+      background-size:40px 40px;
+      pointer-events:none;
+    }
+
+    .wrapper{position:relative;z-index:1;max-width:720px;margin:0 auto;}
+
+    /* header */
+    .page-header{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:24px;
+    }
+    .page-title{
+      font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;
+      background:linear-gradient(135deg,#a5b4fc,#818cf8,#c084fc);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .session-meta{font-size:0.72rem;color:var(--text3);}
+    .back-btn{
+      font-size:0.72rem;color:var(--text2);text-decoration:none;
+      padding:5px 10px;border:1px solid var(--border);border-radius:8px;
+      transition:all var(--transition);
+    }
+    .back-btn:hover{border-color:var(--border-h);color:var(--text);}
+
+    /* token gauge */
+    .token-section{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:20px;margin-bottom:12px;
+      backdrop-filter:blur(16px);
+    }
+    .token-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;}
+    .token-label{font-size:0.65rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--text3);}
+    .token-val{font-size:1.8rem;font-weight:800;letter-spacing:-0.03em;}
+    .token-max{font-size:0.75rem;color:var(--text3);margin-left:4px;}
+    .gauge-track{
+      width:100%;height:10px;background:rgba(255,255,255,0.07);
+      border-radius:5px;overflow:hidden;margin-bottom:8px;
+    }
+    .gauge-fill{
+      height:100%;border-radius:5px;
+      background:linear-gradient(90deg,var(--green),var(--cyan),var(--accent));
+      transition:width 1s ease;
+      position:relative;
+    }
+    .gauge-fill::after{
+      content:'';position:absolute;right:0;top:0;bottom:0;width:4px;
+      background:white;border-radius:2px;opacity:0.6;
+      animation:gauge-tip 1.5s ease-in-out infinite;
+    }
+    @keyframes gauge-tip{0%,100%{opacity:.6;}50%{opacity:1;}}
+    .gauge-labels{display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text3);}
+    .gauge-warning{
+      margin-top:8px;padding:6px 10px;
+      background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);
+      border-radius:8px;font-size:0.72rem;color:#fcd34d;display:none;
+    }
+    .gauge-warning.show{display:block;}
+
+    /* steps timeline */
+    .steps-section{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:20px;margin-bottom:12px;
+      backdrop-filter:blur(16px);
+    }
+    .steps-header{
+      font-size:0.65rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--text3);margin-bottom:16px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .steps-count{font-size:0.75rem;color:var(--text2);font-weight:500;letter-spacing:0;}
+    .timeline{display:flex;flex-direction:column;gap:0;}
+    .step{
+      display:flex;align-items:flex-start;gap:12px;
+      padding:10px 0;
+      border-bottom:1px solid var(--border);
+      cursor:pointer;
+    }
+    .step:last-child{border-bottom:none;}
+    .step:hover .step-content{opacity:1;}
+    .step-indicator{
+      display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;
+    }
+    .step-dot{
+      width:28px;height:28px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:0.75rem;font-weight:700;flex-shrink:0;
+      transition:all var(--transition);
+    }
+    .step-dot.done{background:rgba(16,185,129,0.2);border:2px solid var(--green);color:var(--green);}
+    .step-dot.active{
+      background:rgba(99,102,241,0.2);border:2px solid var(--accent);color:#a5b4fc;
+      box-shadow:0 0 12px rgba(99,102,241,0.4);
+      animation:step-pulse 2s infinite;
+    }
+    .step-dot.pending{background:rgba(255,255,255,0.04);border:2px solid var(--border);color:var(--text3);}
+    .step-dot.skipped{background:rgba(255,255,255,0.04);border:2px dashed var(--border);color:var(--text3);}
+    @keyframes step-pulse{0%,100%{box-shadow:0 0 12px rgba(99,102,241,0.4);}50%{box-shadow:0 0 20px rgba(99,102,241,0.65);}}
+    .step-line{width:2px;flex:1;min-height:10px;background:var(--border);margin-top:2px;}
+    .step-line.done{background:linear-gradient(180deg,var(--green),var(--accent));}
+    .step-content{opacity:0.85;flex:1;padding-top:4px;}
+    .step-title{font-size:0.85rem;font-weight:500;margin-bottom:2px;}
+    .step-title.done{color:var(--text2);text-decoration:line-through;text-decoration-color:rgba(255,255,255,0.2);}
+    .step-title.active{color:var(--text);}
+    .step-title.pending{color:var(--text3);}
+    .step-desc{font-size:0.72rem;color:var(--text3);line-height:1.4;}
+    .step-tag{
+      display:inline-block;font-size:0.6rem;font-weight:600;
+      padding:1px 6px;border-radius:4px;margin-top:4px;
+    }
+    .step-tag.done{background:rgba(16,185,129,0.12);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);}
+    .step-tag.active{background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);}
+    .step-tag.pending{background:rgba(255,255,255,0.04);color:var(--text3);border:1px solid var(--border);}
+    .step-time{font-size:0.65rem;color:var(--text3);margin-left:auto;flex-shrink:0;padding-top:4px;}
+
+    /* summary row */
+    .summary-row{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;
+    }
+    .summary-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:14px 16px;
+      backdrop-filter:blur(16px);text-align:center;
+    }
+    .summary-val{font-size:1.6rem;font-weight:800;letter-spacing:-0.03em;line-height:1;}
+    .summary-val.green{color:var(--green);text-shadow:0 0 16px rgba(16,185,129,0.3);}
+    .summary-val.yellow{color:var(--yellow);text-shadow:0 0 16px rgba(245,158,11,0.3);}
+    .summary-val.purple{color:var(--purple);text-shadow:0 0 16px rgba(168,85,247,0.3);}
+    .summary-lbl{font-size:0.65rem;color:var(--text3);margin-top:4px;}
+
+    /* output log */
+    .output-section{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:20px;
+      backdrop-filter:blur(16px);
+    }
+    .output-header{
+      font-size:0.65rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--text3);margin-bottom:12px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .output-live-dot{
+      width:6px;height:6px;border-radius:50%;
+      background:var(--green);box-shadow:0 0 6px var(--green);
+      animation:pulse 1.5s infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+    .output-list{display:flex;flex-direction:column;gap:4px;}
+    .output-item{
+      display:flex;align-items:flex-start;gap:8px;
+      padding:7px 10px;border-radius:8px;font-size:0.75rem;
+      background:rgba(255,255,255,0.02);
+    }
+    .output-icon{font-size:0.85rem;flex-shrink:0;margin-top:1px;}
+    .output-text{flex:1;line-height:1.45;color:var(--text2);}
+    .output-text strong{color:var(--text);font-weight:500;}
+    .output-time{font-size:0.62rem;color:var(--text3);flex-shrink:0;}
+
+    /* edit controls */
+    .edit-panel{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:16px;margin-top:12px;
+      backdrop-filter:blur(16px);
+    }
+    .edit-title{font-size:0.65rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+    .edit-row{display:flex;gap:8px;flex-wrap:wrap;}
+    .edit-btn{
+      padding:7px 14px;border-radius:8px;font-size:0.75rem;font-weight:500;
+      border:1px solid var(--border);background:rgba(255,255,255,0.04);
+      color:var(--text2);cursor:pointer;font-family:inherit;
+      transition:all var(--transition);
+    }
+    .edit-btn:hover{background:rgba(99,102,241,0.12);border-color:rgba(99,102,241,0.35);color:var(--text);}
+    .edit-btn.primary{background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.35);color:#a5b4fc;}
+    .edit-btn.primary:hover{background:rgba(99,102,241,0.25);box-shadow:0 0 16px rgba(99,102,241,0.25);}
+
+    @media(max-width:480px){
+      body{padding:12px;}
+      .summary-row{grid-template-columns:repeat(3,1fr);}
+      .summary-val{font-size:1.2rem;}
+    }
+    @media(max-width:768px){
+      body{padding:16px;}
+      .summary-row{grid-template-columns:repeat(3,1fr);}
+      .summary-val{font-size:1.4rem;}
+      .wrapper{max-width:100%;}
+      .edit-row{flex-direction:column;}
+      .edit-btn{width:100%;text-align:center;}
+    }
+  </style>
+</head>
+<body>
+<a href="portal-v2.html" style="position:fixed;top:14px;left:14px;z-index:9999;background:rgba(10,14,26,0.85);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc;padding:6px 14px;border-radius:20px;font-size:0.75rem;font-weight:600;text-decoration:none;backdrop-filter:blur(10px);font-family:Inter,sans-serif;letter-spacing:-.01em;">← ポータル</a>
+<div class="wrapper">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">📊 Session Progress</div>
+      <div class="session-meta">セッション進捗ビジュアライザー | <span id="session-date"></span></div>
+    </div>
+  </div>
+
+  <!-- Token gauge -->
+  <div class="token-section">
+    <div class="token-header">
+      <div>
+        <div class="token-label">Token Usage</div>
+        <div>
+          <span class="token-val" id="token-used">~8,400</span>
+          <span class="token-max">/ 200,000 tokens</span>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:0.72rem;color:var(--text3);">消費率</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--cyan);" id="token-pct">4.2%</div>
+      </div>
+    </div>
+    <div class="gauge-track">
+      <div class="gauge-fill" id="gauge" style="width:4.2%"></div>
+    </div>
+    <div class="gauge-labels">
+      <span>0</span>
+      <span>⚠️ 75% (150k)</span>
+      <span>🔴 90% (180k)</span>
+      <span>200k</span>
+    </div>
+    <div class="gauge-warning" id="gauge-warn">
+      ⚠️ セッションが長くなっています。重要な内容を要約して新チャットを開始することを検討してください。
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-val green" id="done-count">2</div>
+      <div class="summary-lbl">完了ステップ</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val yellow" id="active-count">1</div>
+      <div class="summary-lbl">進行中</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val purple" id="pending-count">0</div>
+      <div class="summary-lbl">残りステップ</div>
+    </div>
+  </div>
+
+  <!-- Steps timeline -->
+  <div class="steps-section">
+    <div class="steps-header">
+      <span>Session Steps</span>
+      <span class="steps-count" id="steps-count-label">3 steps</span>
+    </div>
+    <div class="timeline" id="timeline">
+      <!-- JS で描画 -->
+    </div>
+  </div>
+
+  <!-- Output log -->
+  <div class="output-section">
+    <div class="output-header">
+      <div class="output-live-dot"></div>
+      <span>成果物ログ</span>
+    </div>
+    <div class="output-list" id="output-list">
+      <!-- JS で描画 -->
+    </div>
+  </div>
+
+  <!-- Edit panel -->
+  <div class="edit-panel">
+    <div class="edit-title">セッション操作</div>
+    <div class="edit-row">
+      <button class="edit-btn primary" onclick="addStep()">＋ ステップ追加</button>
+      <button class="edit-btn" onclick="completeActive()">✓ 現在のステップを完了</button>
+      <button class="edit-btn" onclick="resetSession()">↺ セッションリセット</button>
+      <button class="edit-btn" onclick="window.print()">🖨 印刷/PDF保存</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── State ──
+  const state = {
+    sessionStart: new Date(),
+    tokenUsed: 8400,
+    tokenMax: 200000,
+    steps: [
+      { id:1, title:'今日のTODOファイル作成', desc:'todos/2026-04-08.md を生成', status:'done', time:'今日 開始直後' },
+      { id:2, title:'Secretary Portal v2 作成', desc:'portal-v2.html — 実データ反映版ダッシュボード', status:'done', time:'数分前' },
+      { id:3, title:'セッション進捗ビジュアライザー作成', desc:'このファイル — session-progress.html', status:'active', time:'現在' },
+    ],
+    outputs: [
+      { icon:'📄', text:'<strong>todos/2026-04-08.md</strong> を作成 — 本日タスク4件', time:'今日' },
+      { icon:'🌐', text:'<strong>portal-v2.html</strong> を作成 — システム全体ダッシュボード', time:'数分前' },
+      { icon:'📊', text:'<strong>session-progress.html</strong> を作成 — 本ファイル', time:'現在' },
+    ]
+  };
+
+  // ── Date ──
+  const d = new Date();
+  document.getElementById('session-date').textContent =
+    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
+  // ── Token gauge ──
+  function updateGauge(){
+    const pct = (state.tokenUsed / state.tokenMax * 100).toFixed(1);
+    document.getElementById('gauge').style.width = pct + '%';
+    document.getElementById('token-pct').textContent = pct + '%';
+    document.getElementById('token-used').textContent = '~' + state.tokenUsed.toLocaleString();
+    if(parseFloat(pct) >= 75) document.getElementById('gauge-warn').classList.add('show');
+  }
+  updateGauge();
+
+  // ── Timeline ──
+  function renderTimeline(){
+    const tl = document.getElementById('timeline');
+    tl.innerHTML = '';
+    const done = state.steps.filter(s=>s.status==='done').length;
+    const active = state.steps.filter(s=>s.status==='active').length;
+    const pending = state.steps.filter(s=>s.status==='pending').length;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('active-count').textContent = active;
+    document.getElementById('pending-count').textContent = pending;
+    document.getElementById('steps-count-label').textContent = state.steps.length + ' steps';
+
+    state.steps.forEach((step, idx) => {
+      const isLast = idx === state.steps.length - 1;
+      const label = step.status==='done' ? '✓' : step.status==='active' ? '▶' : String(idx+1);
+      const el = document.createElement('div');
+      el.className = 'step';
+      el.innerHTML = `
+        <div class="step-indicator">
+          <div class="step-dot ${step.status}">${label}</div>
+          ${!isLast ? `<div class="step-line ${step.status==='done'?'done':''}"></div>` : ''}
+        </div>
+        <div class="step-content">
+          <div class="step-title ${step.status}">${step.title}</div>
+          <div class="step-desc">${step.desc}</div>
+          <span class="step-tag ${step.status}">${step.status==='done'?'完了':step.status==='active'?'進行中':'待機'}</span>
+        </div>
+        <div class="step-time">${step.time}</div>
+      `;
+      tl.appendChild(el);
+    });
+  }
+  renderTimeline();
+
+  // ── Output log ──
+  function renderOutputs(){
+    const ol = document.getElementById('output-list');
+    ol.innerHTML = state.outputs.map(o=>`
+      <div class="output-item">
+        <span class="output-icon">${o.icon}</span>
+        <span class="output-text">${o.text}</span>
+        <span class="output-time">${o.time}</span>
+      </div>
+    `).join('');
+  }
+  renderOutputs();
+
+  // ── Controls ──
+  function addStep(){
+    const titleRaw = prompt('新しいステップのタイトルを入力:');
+    if(!titleRaw) return;
+    const descRaw = prompt('説明（省略可）:') || '';
+    // Sanitize user input by creating text nodes (XSS prevention)
+    const tempTitle = document.createElement('span');
+    tempTitle.textContent = titleRaw;
+    const title = tempTitle.textContent;
+    const tempDesc = document.createElement('span');
+    tempDesc.textContent = descRaw;
+    const desc = tempDesc.textContent;
+    state.steps.push({
+      id: Date.now(), title, desc,
+      status: 'pending',
+      time: '追加'
+    });
+    state.tokenUsed += 200;
+    updateGauge();
+    renderTimeline();
+  }
+
+  function completeActive(){
+    const active = state.steps.find(s=>s.status==='active');
+    if(!active){ alert('進行中のステップがありません'); return; }
+    active.status = 'done';
+    active.time = '完了';
+    const next = state.steps.find(s=>s.status==='pending');
+    if(next) next.status = 'active';
+    renderTimeline();
+    state.outputs.unshift({
+      icon:'✅',
+      text:`<strong>${active.title}</strong> が完了しました`,
+      time:'今'
+    });
+    renderOutputs();
+  }
+
+  function resetSession(){
+    if(!confirm('セッションをリセットしますか？')) return;
+    state.steps.forEach(s=>{ s.status='pending'; });
+    if(state.steps.length > 0) state.steps[0].status = 'active';
+    state.tokenUsed = 0;
+    state.outputs = [];
+    updateGauge();
+    renderTimeline();
+    renderOutputs();
+  }
+
+  // Animate gauge on load
+  window.addEventListener('load',()=>{
+    const g = document.getElementById('gauge');
+    const target = g.style.width;
+    g.style.width = '0';
+    setTimeout(()=>{ g.style.width = target; }, 200);
+  });
+</script>
+</body>
+</html>
