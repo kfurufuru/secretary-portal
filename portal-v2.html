@@ -373,22 +373,6 @@
     }
     .link-icon{font-size:1rem;}
 
-    /* ---- E-LOG ---- */
-    .card-elog{grid-column:span 6;}
-    .elog-list{display:flex;flex-direction:column;gap:6px;margin-top:var(--sp-3);}
-    .elog-item{
-      display:grid;grid-template-columns:80px 60px 60px 1fr;gap:8px;align-items:center;
-      padding:8px 12px;background:rgba(255,255,255,0.03);
-      border:1px solid var(--border);border-radius:10px;font-size:0.75rem;
-    }
-    .elog-cat{color:var(--text2);}
-    .elog-l1,.elog-l2{
-      padding:2px 6px;border-radius:4px;font-size:0.65rem;font-weight:600;text-align:center;
-    }
-    .elog-l1{background:rgba(249,115,22,0.15);color:#fdba74;}  /* オレンジ */
-    .elog-l2{background:rgba(168,85,247,0.15);color:#c084fc;}  /* パープル */
-    .elog-memo{color:var(--text3);font-size:0.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
     /* ---- ALL SITES NAV ---- */
     .card-allsites{grid-column:span 12;}
     .allsites-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:var(--sp-4);}
@@ -459,7 +443,7 @@
     @media(max-width:768px){
       main{grid-template-columns:1fr;padding:12px;}
       .card-hero,.card-exam,.card-todo,.card-knowledge,
-      .card-health,.card-phase,.card-links,.card-elog,
+      .card-health,.card-phase,.card-links,
       .card-allsites,.card-mode{grid-column:span 1!important;}
       .knowledge-grid{grid-template-columns:repeat(2,1fr);}
       .allsites-grid{grid-template-columns:repeat(2,1fr);}
@@ -796,6 +780,9 @@
         <a class="site-link" href="https://kfurufuru.github.io/denken-wiki-denryoku/" onclick="window.open(this.href,'_blank');return false;">
           <span class="site-link-icon">⚡</span>電力Wiki
         </a>
+        <a class="site-link" href="https://github.com/kfurufuru/denken3-study" target="_blank">
+          <span class="site-link-icon">🐙</span>GitHub リポジトリ
+        </a>
       </div>
 
       <div class="site-group">
@@ -816,6 +803,9 @@
         <a class="site-link" href="session-progress.html">
           <span class="site-link-icon">📈</span>セッション進捗
         </a>
+        <a class="site-link" href="reflection/dashboard.html">
+          <span class="site-link-icon">🪞</span>振り返りダッシュボード
+        </a>
       </div>
 
       <div class="site-group">
@@ -831,43 +821,6 @@
     </div>
   </div>
 
-  <!-- E-log snippet -->
-  <div class="card card-elog" data-card-id="elog">
-    <div class="card-label">E-log — 最近の誤答パターン</div>
-    <div class="card-title">電験3種 誤答ログ</div>
-    <div class="elog-list" id="elog-list">
-      <div style="display:grid;grid-template-columns:80px 60px 60px 1fr;gap:8px;padding:4px 12px;">
-        <span style="font-size:0.65rem;color:var(--text3);">カテゴリ</span>
-        <span style="font-size:0.65rem;color:var(--text3);">L1</span>
-        <span style="font-size:0.65rem;color:var(--text3);">L2</span>
-        <span style="font-size:0.65rem;color:var(--text3);">メモ</span>
-      </div>
-      <div class="elog-item">
-        <span class="elog-cat">電気主任<br>技術者</span>
-        <span class="elog-l1">DEF</span>
-        <span class="elog-l2">MAP</span>
-        <span class="elog-memo">43条か技術基準か混同</span>
-      </div>
-      <div class="elog-item">
-        <span class="elog-cat">絶縁抵抗</span>
-        <span class="elog-l1">COND</span>
-        <span class="elog-l2">ANCHOR</span>
-        <span class="elog-memo">D種/C種の数値混同</span>
-      </div>
-      <div class="elog-item">
-        <span class="elog-cat">需要率</span>
-        <span class="elog-l1">MODEL</span>
-        <span class="elog-l2">TRACK</span>
-        <span class="elog-memo">分子分母逆に記述</span>
-      </div>
-      <div class="elog-item">
-        <span class="elog-cat">交流回路</span>
-        <span class="elog-l1">MODEL</span>
-        <span class="elog-l2">ANCHOR</span>
-        <span class="elog-memo">インピーダンスの向き勘違い</span>
-      </div>
-    </div>
-  </div>
 
 </main>
 
@@ -898,7 +851,6 @@ const FALLBACK = {
   exam_progress_pct: null,
   k_bars: { ei: { pct: 68, n: 9 }, ai: { pct: 55, n: 8 }, dk: { pct: 40, n: 6 }, fm: { pct: 28, n: 4 } },
   todos: null,
-  elogs: null
 };
 
 let DATA = { ...FALLBACK };
@@ -929,7 +881,6 @@ async function loadData() {
         fm:  { pct: Math.round((kc.trouble || 0) / maxK * 100), n: kc.trouble || 0 },
       },
       todos:  j.todos?.items ?? null,
-      elogs:  j.denken?.recent_errors ?? null,
     };
     document.getElementById('data-badge').className = 'data-badge live';
     document.getElementById('data-badge').textContent = '🟢 ライブ';
@@ -992,30 +943,6 @@ function applyData() {
           <span class="todo-text" style="${t.done ? 'text-decoration:line-through;opacity:0.5;' : ''}">${t.text || t.content || ''}</span>
           <span class="todo-tag ${t.priority === '高' ? 'high' : t.priority === '低' ? 'low' : 'normal'}">${t.priority || '通常'}</span>
         </div>`).join('');
-    }
-  }
-
-  // --- E-log スニペット再描画 ---
-  const elogList = document.getElementById('elog-list');
-  if (elogList) {
-    const header = elogList.querySelector('div[style]');
-    if (DATA.elogs && DATA.elogs.length > 0) {
-      elogList.innerHTML = '';
-      if (header) elogList.appendChild(header);
-      DATA.elogs.forEach(e => {
-        const item = document.createElement('div');
-        item.className = 'elog-item';
-        item.innerHTML = `<span class="elog-cat">${e.category||e.cat||'--'}</span><span class="elog-l1">${e.l1||'--'}</span><span class="elog-l2">${e.l2||'--'}</span><span class="elog-memo">${e.memo||e.text||''}</span>`;
-        elogList.appendChild(item);
-      });
-    } else {
-      elogList.innerHTML = '';
-      if (header) elogList.appendChild(header);
-      const empty = document.createElement('div');
-      empty.className = 'elog-item';
-      empty.style.opacity = '0.4';
-      empty.innerHTML = `<span class="elog-cat">--</span><span class="elog-l1">--</span><span class="elog-l2">--</span><span class="elog-memo">「誤答記録」コマンドで追加してください</span>`;
-      elogList.appendChild(empty);
     }
   }
 
@@ -1431,6 +1358,11 @@ function initQuickLinks() {
 document.addEventListener('DOMContentLoaded', initQuickLinks);
 const _origApplyData = applyData;
 applyData = function() { _origApplyData(); initQuickLinks(); };
+
+// localhost を現在のホストに置き換え（スマホ・PC共用対応）
+document.querySelectorAll('a[href*="localhost"]').forEach(a => {
+  a.href = a.href.replace('localhost', window.location.hostname);
+});
 </script>
 </body>
 </html>
