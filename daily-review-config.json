@@ -1,0 +1,8 @@
+{
+  "_comment": "Gmail設定。gmail_app_passwordはGoogleアカウント→セキュリティ→アプリパスワードで取得",
+  "gmail_user": "k.furu3291@gmail.com",
+  "gmail_app_password": "***REMOVED***",
+  "to_email": "k.furu3291@gmail.com",
+  "_comment2": "Claude API key。https://console.anthropic.com/settings/keys で取得",
+  "anthropic_api_key": "***REMOVED***"
+}
