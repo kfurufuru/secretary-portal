@@ -278,9 +278,10 @@ def judge_entry(client: anthropic.Anthropic, entry: str) -> dict:
             messages=[{"role": "user", "content": f"以下のエントリを判定してください:\n\n{entry}"}],
         )
         raw = resp.content[0].text.strip()
-        # JSONブロックを抽出（```json ... ``` を除去）
-        raw = re.sub(r"^```(?:json)?\n?", "", raw)
-        raw = re.sub(r"\n?```$", "", raw)
+        # JSONオブジェクト部分のみ抽出
+        m = re.search(r'\{.*\}', raw, re.DOTALL)
+        if m:
+            raw = m.group(0)
         return json.loads(raw)
     except Exception as e:
         return {"promote": False, "reason": f"判定エラー: {e}", "summary": ""}
@@ -304,8 +305,9 @@ def generate_knowledge(client: anthropic.Anthropic, entry: str, source_filename:
             }],
         )
         raw = resp.content[0].text.strip()
-        raw = re.sub(r"^```(?:json)?\n?", "", raw)
-        raw = re.sub(r"\n?```$", "", raw)
+        m = re.search(r'\{.*\}', raw, re.DOTALL)
+        if m:
+            raw = m.group(0)
         return json.loads(raw)
     except Exception as e:
         print(f"    ERROR 生成失敗: {e}")
