@@ -1,0 +1,178 @@
+[
+  {
+    "timestamp": "2026-04-21T13:25:17.800Z",
+    "session_id": "74f4738c-6dac-40db-9b3d-0ba87c3c98f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:27:35.522Z",
+    "session_id": "6ed254ec-df76-486f-a7a8-eefb227459cd",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:27:54.377Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:29:31.553Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:30:26.406Z",
+    "session_id": "e13403f6-e174-4873-88de-c31a7f70bec3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-21T13:30:35.140Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:30:42.291Z",
+    "session_id": "80ee77fc-668c-4f25-b9bf-5b4f94dd3dc2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:31:10.059Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:34:00.954Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:34:23.536Z",
+    "session_id": "6ed254ec-df76-486f-a7a8-eefb227459cd",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:34:33.030Z",
+    "session_id": "670deccd-532b-4c65-97b0-4bacd814de83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:35:57.487Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:36:36.928Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:36:54.765Z",
+    "session_id": "80ee77fc-668c-4f25-b9bf-5b4f94dd3dc2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:37:30.501Z",
+    "session_id": "6ed254ec-df76-486f-a7a8-eefb227459cd",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:37:57.330Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:38:03.883Z",
+    "session_id": "6ed254ec-df76-486f-a7a8-eefb227459cd",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:39:07.478Z",
+    "session_id": "b8a36855-549d-430e-8d05-21cf5558cc7e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-21T13:40:09.717Z",
+    "session_id": "670deccd-532b-4c65-97b0-4bacd814de83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:40:14.388Z",
+    "session_id": "b8a36855-549d-430e-8d05-21cf5558cc7e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-21T13:40:33.836Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:42:28.857Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  }
+]

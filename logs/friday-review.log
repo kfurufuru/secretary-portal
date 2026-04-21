@@ -1,0 +1,71 @@
+[2026-04-21 22:30:07] INFO: ============================================================
+[2026-04-21 22:30:07] INFO: Friday Review: STARTED
+[2026-04-21 22:30:07] INFO: ============================================================
+[2026-04-21 22:30:07] INFO: 対象週: 2026-04-20 ～ 2026-04-26
+[2026-04-21 22:30:07] INFO: 実行日: 2026-04-21
+[2026-04-21 22:30:07] INFO: 
+[Phase 1] Collecting week todos...
+[2026-04-21 22:30:07] INFO: ✓ 0/0 tasks (0.0%)
+[2026-04-21 22:30:07] INFO: 
+[Phase 2] Loading Monday TOP3...
+[2026-04-21 22:30:07] INFO: ✓ Monday TOP3: not found
+[2026-04-21 22:30:07] INFO: 
+[Phase 3] Running Haiku summary...
+[2026-04-21 22:30:07] INFO: Phase 1 (Haiku): Summarizing week...
+[2026-04-21 22:30:09] INFO: ✓ Haiku summary: accuracy=0%
+[2026-04-21 22:30:09] INFO: 
+[Phase 4] Running Sonnet next-week prediction...
+[2026-04-21 22:30:09] INFO: Phase 2 (Sonnet): Predicting next week TOP3...
+[2026-04-21 22:30:29] INFO: ✓ Sonnet prediction: 3 tasks
+[2026-04-21 22:30:29] INFO: 
+[Phase 5] Generating review file...
+[2026-04-21 22:30:29] INFO: 
+[DRY-RUN] Would write to: C:\Users\kfuru\.secretary\reviews\2026-04-21-weekly-review.md
+[2026-04-21 22:30:29] INFO: 
+--- Preview (first 400 chars) ---
+[2026-04-21 22:30:29] INFO: ---
+date: 2026-04-21
+type: weekly-review
+week: 2026-04-20 ～ 2026-04-26
+generated_at: 2026-04-21T22:30:29
+completion_rate: 0
+top3_accuracy: 0
+---
+
+# 週次振り返り 2026-04-20 ～ 2026-04-26
+
+> 
+
+## 実績サマリ
+
+- 完了率: **0%**
+- TOP3達成率: **0%**
+- 品質スコア: **0/10**
+
+## TOP3達成状況
+
+### 達成 ✓
+
+### 未達成 ✗
+
+
+## 主な成果
+
+- データ取得不可
+
+## 主な障害
+
+- タスク情報が記録されていない
+- TODOシステムとの連携不可
+- 週間実績データが存在しない
+
+## 来週繰り越し
+
+
+---
+
+## 来週TOP3予測（2026-04-27 
+[2026-04-21 22:30:29] INFO: 
+[2026-04-21 22:30:29] INFO: ============================================================
+[2026-04-21 22:30:29] INFO: Friday Review: SUCCESS (22.0s)
+[2026-04-21 22:30:29] INFO: ============================================================

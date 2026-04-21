@@ -1,0 +1,300 @@
+[2026-04-21 07:32:55] INFO: ============================================================
+[2026-04-21 07:32:55] INFO: TOP3 Fixation: STARTED
+[2026-04-21 07:32:55] INFO: ============================================================
+[2026-04-21 07:32:55] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 07:32:55] INFO: 実行日: 2026-04-21
+[2026-04-21 07:32:55] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 07:32:55] INFO: ✓ Analyzed 7 tasks from 2 files
+[2026-04-21 07:32:55] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 07:32:55] ERROR: ERROR: ANTHROPIC_API_KEY が未設定です
+[2026-04-21 21:20:38] INFO: ============================================================
+[2026-04-21 21:20:38] INFO: TOP3 Fixation: STARTED
+[2026-04-21 21:20:38] INFO: ============================================================
+[2026-04-21 21:20:38] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 21:20:38] INFO: 実行日: 2026-04-21
+[2026-04-21 21:20:38] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 21:20:38] INFO: ✓ Analyzed 7 tasks from 2 files
+[2026-04-21 21:20:38] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 21:20:38] ERROR: ERROR: ANTHROPIC_API_KEY が未設定です
+[2026-04-21 21:22:40] INFO: ============================================================
+[2026-04-21 21:22:40] INFO: TOP3 Fixation: STARTED
+[2026-04-21 21:22:40] INFO: ============================================================
+[2026-04-21 21:22:40] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 21:22:40] INFO: 実行日: 2026-04-21
+[2026-04-21 21:22:40] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 21:22:40] INFO: ✓ Analyzed 7 tasks from 2 files
+[2026-04-21 21:22:40] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 21:22:40] ERROR: ERROR: ANTHROPIC_API_KEY が未設定です
+[2026-04-21 21:22:40] INFO: ============================================================
+[2026-04-21 21:22:40] INFO: TOP3 Fixation: STARTED
+[2026-04-21 21:22:40] INFO: ============================================================
+[2026-04-21 21:22:40] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 21:22:40] INFO: 実行日: 2026-04-21
+[2026-04-21 21:22:40] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 21:22:40] INFO: ✓ Analyzed 7 tasks from 2 files
+[2026-04-21 21:22:40] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 21:22:40] ERROR: ERROR: ANTHROPIC_API_KEY が未設定です
+[2026-04-21 22:22:04] INFO: ============================================================
+[2026-04-21 22:22:04] INFO: TOP3 Fixation: STARTED
+[2026-04-21 22:22:04] INFO: ============================================================
+[2026-04-21 22:22:04] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 22:22:04] INFO: 実行日: 2026-04-21
+[2026-04-21 22:22:04] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 22:22:04] INFO: ✓ Analyzed 7 tasks from 2 files
+[2026-04-21 22:22:04] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 22:22:04] ERROR: ERROR: ANTHROPIC_API_KEY が未設定です
+[2026-04-21 22:23:28] INFO: ============================================================
+[2026-04-21 22:23:28] INFO: TOP3 Fixation: STARTED
+[2026-04-21 22:23:28] INFO: ============================================================
+[2026-04-21 22:23:28] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 22:23:28] INFO: 実行日: 2026-04-21
+[2026-04-21 22:23:28] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 22:23:28] INFO: ✓ Analyzed 7 tasks from 2 files
+[2026-04-21 22:23:28] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 22:23:28] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 22:23:34] ERROR: JSON parse error: Expecting value: line 1 column 1 (char 0)
+[2026-04-21 22:23:34] ERROR: Response (first 300 chars): ```json
+{
+  "completion_rate": 28.57,
+  "priority_distribution": {
+    "high": 0,
+    "normal": 7,
+    "low": 0
+  },
+  "overdue_count": 0,
+  "deadline_critical_count": 0,
+  "categories": [
+    "未分類/短縮表記",
+    "電気関連",
+    "情報技術関連"
+  ],
+  "top_challenges": [
+    "タスク命名の曖昧性 - 単文字・短縮表記が5個あり、内容が不明確",
+   
+[2026-04-21 22:23:34] WARNING: Using fallback value
+[2026-04-21 22:23:34] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-21 22:23:34] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-21 22:23:34] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-21 22:23:34] ERROR: API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-6-20250514'}, 'request_id': 'req_011CaGzJqM3NXm5Tj55UG1Gc'}
+[2026-04-21 22:23:34] ERROR: 
+============================================================
+[2026-04-21 22:23:34] ERROR: TOP3 Fixation: FAILED
+[2026-04-21 22:23:34] ERROR: ============================================================
+[2026-04-21 22:23:34] ERROR: Error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-6-20250514'}, 'request_id': 'req_011CaGzJqM3NXm5Tj55UG1Gc'}
+[2026-04-21 22:23:34] ERROR: Traceback (most recent call last):
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 520, in main
+    sonnet_scoring = run_sonnet_scoring(haiku_analysis, todos_data)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 373, in run_sonnet_scoring
+    response_text = call_with_retry(client, MODEL_SONNET, system_prompt, user_prompt)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 111, in call_with_retry
+    response = client.messages.create(
+        model=model,
+    ...<3 lines>...
+        messages=[{"role": "user", "content": user_prompt}]
+    )
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_utils\_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\resources\messages\messages.py", line 996, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1364, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1137, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.NotFoundError: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-6-20250514'}, 'request_id': 'req_011CaGzJqM3NXm5Tj55UG1Gc'}
+
+[2026-04-21 22:29:42] INFO: ============================================================
+[2026-04-21 22:29:42] INFO: TOP3 Fixation: STARTED
+[2026-04-21 22:29:42] INFO: ============================================================
+[2026-04-21 22:29:42] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 22:29:42] INFO: 実行日: 2026-04-21
+[2026-04-21 22:29:42] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 22:29:42] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-21 22:29:42] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 22:29:42] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 22:29:44] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-21 22:29:44] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-21 22:29:44] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-21 22:30:00] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-21 22:30:00] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-21 22:30:00] INFO: 
+[DRY-RUN] Would write to:
+[2026-04-21 22:30:00] INFO:   C:\Users\kfuru\.secretary\todos\2026-04-21.md
+[2026-04-21 22:30:00] INFO: 
+--- Content Preview (first 500 chars) ---
+[2026-04-21 22:30:00] INFO: ---
+date: 2026-04-21
+type: todo
+top3_auto_generated: true
+generated_at: 2026-04-21T22:30:00
+completion_rate_prev_week: 0.0
+---
+
+# 2026-04-21 （月曜日）
+
+## 最優先 [P1: 必須]
+
+### 1. 電験3種：理論科目 週次学習計画の策定と実施（2026年受験）
+- [ ] 実施 | 優先度: 高 | カテゴリ: 電験3種
+  - スコア: 41/50 | 見積: 3h
+  - 理由: 2026年受験まで約1年以内、理論は最難関科目のため早期着手が合格率を直結。週次ルーティン化できれば継続性が担保され、AI・電気計装への横展開も高い。
+
+### 2. 電計チーム：今週の育成課題・技術課題の棚卸しと優先度整理（週次1on1アジェンダ作成）
+- [ ] 実施 | 優先度: 高 | カテゴリ: チーム育成
+  - スコア: 39/50 | 見積: 1h
+  - 理由: タスク管理自体が空白だった前週を踏まえ、チームリーダーとして今週の課題を明示化する
+[2026-04-21 22:30:00] INFO: 
+[2026-04-21 22:30:00] INFO: ============================================================
+[2026-04-21 22:30:00] INFO: TOP3 Fixation: SUCCESS (18.0s)
+[2026-04-21 22:30:00] INFO: ============================================================
+[2026-04-21 22:30:00] INFO:   P1: 電験3種：理論科目 週次学習計画の策定と実施（2026年受験） (score=41)
+[2026-04-21 22:30:00] INFO:   P2: 電計チーム：今週の育成課題・技術課題の棚卸しと優先度整理（週次1on1アジェンダ作成） (score=39)
+[2026-04-21 22:30:00] INFO:   P3: 設備投資案件：現在進行中または検討中の設備投資リストの最新化・ステータス確認 (score=37)
+[2026-04-21 22:34:54] INFO: ============================================================
+[2026-04-21 22:34:54] INFO: TOP3 Fixation: STARTED
+[2026-04-21 22:34:54] INFO: ============================================================
+[2026-04-21 22:34:54] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 22:34:54] INFO: 実行日: 2026-04-21
+[2026-04-21 22:34:54] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 22:34:54] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-21 22:34:54] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 22:34:54] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 22:34:57] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-21 22:34:57] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-21 22:34:57] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-21 22:35:16] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-21 22:35:16] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-21 22:35:16] ERROR: ✗ Failed to write C:\Users\kfuru\.secretary\todos\2026-04-21.md: [Errno 2] No such file or directory: 'C:\\Users\\kfuru\\.secretary\\todos\\2026-04-21.md'
+[2026-04-21 22:35:16] ERROR: 
+[2026-04-21 22:35:16] ERROR: ============================================================
+[2026-04-21 22:35:16] ERROR: TOP3 Fixation: FAILED
+[2026-04-21 22:35:16] ERROR: ============================================================
+[2026-04-21 22:35:16] ERROR: Error: Failed to write todo file
+[2026-04-21 22:35:16] DEBUG: Traceback (most recent call last):
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 475, in main
+    raise RuntimeError("Failed to write todo file")
+RuntimeError: Failed to write todo file
+
+[2026-04-21 22:35:25] INFO: ============================================================
+[2026-04-21 22:35:25] INFO: TOP3 Fixation: STARTED
+[2026-04-21 22:35:25] INFO: ============================================================
+[2026-04-21 22:35:25] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 22:35:25] INFO: 実行日: 2026-04-21
+[2026-04-21 22:35:25] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 22:35:25] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-21 22:35:25] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 22:35:25] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 22:35:26] ERROR: API error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1DJBn4xhuWmq456viY'}
+[2026-04-21 22:35:26] ERROR: 
+[2026-04-21 22:35:26] ERROR: ============================================================
+[2026-04-21 22:35:26] ERROR: TOP3 Fixation: FAILED
+[2026-04-21 22:35:26] ERROR: ============================================================
+[2026-04-21 22:35:26] ERROR: Error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1DJBn4xhuWmq456viY'}
+[2026-04-21 22:35:26] DEBUG: Traceback (most recent call last):
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 459, in main
+    haiku_analysis = run_haiku_analysis(todos_data)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 250, in run_haiku_analysis
+    response_text = call_with_retry(client, MODEL_HAIKU, system_prompt, user_prompt)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 94, in call_with_retry
+    response = client.messages.create(
+        model=model,
+    ...<3 lines>...
+        messages=[{"role": "user", "content": user_prompt}]
+    )
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_utils\_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\resources\messages\messages.py", line 996, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1364, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1137, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1DJBn4xhuWmq456viY'}
+
+[2026-04-21 22:36:21] INFO: ============================================================
+[2026-04-21 22:36:21] INFO: TOP3 Fixation: STARTED
+[2026-04-21 22:36:21] INFO: ============================================================
+[2026-04-21 22:36:21] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 22:36:21] INFO: 実行日: 2026-04-21
+[2026-04-21 22:36:21] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 22:36:21] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-21 22:36:21] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 22:36:21] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 22:36:22] ERROR: API error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1HPbL3U4VGToprNHoZ'}
+[2026-04-21 22:36:22] ERROR: 
+[2026-04-21 22:36:22] ERROR: ============================================================
+[2026-04-21 22:36:22] ERROR: TOP3 Fixation: FAILED
+[2026-04-21 22:36:22] ERROR: ============================================================
+[2026-04-21 22:36:22] ERROR: Error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1HPbL3U4VGToprNHoZ'}
+[2026-04-21 22:36:22] DEBUG: Traceback (most recent call last):
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 459, in main
+    haiku_analysis = run_haiku_analysis(todos_data)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 250, in run_haiku_analysis
+    response_text = call_with_retry(client, MODEL_HAIKU, system_prompt, user_prompt)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 94, in call_with_retry
+    response = client.messages.create(
+        model=model,
+    ...<3 lines>...
+        messages=[{"role": "user", "content": user_prompt}]
+    )
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_utils\_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\resources\messages\messages.py", line 996, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1364, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1137, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1HPbL3U4VGToprNHoZ'}
+
