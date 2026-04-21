@@ -48,7 +48,7 @@ last_reviewed: "{created}"
 understanding_score: 2
 source: "{source}"
 tags: [{tags}]
-related: []
+related: [{related}]
 ---
 """
 
@@ -153,6 +153,65 @@ def get_existing_titles() -> set[str]:
     return titles
 
 
+def get_existing_files_meta() -> list[dict]:
+    """knowledge/ 内の既存ファイルのメタ情報を収集（クロスリンク候補用）"""
+    files = []
+    for f in KNOWLEDGE_DIR.glob("**/*.md"):
+        if f.name.startswith("_"):
+            continue
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            title_m = re.search(r'^title:\s*"(.+)"', content, re.MULTILINE)
+            cat_m = re.search(r'^category:\s*"(.+)"', content, re.MULTILINE)
+            tags_m = re.search(r'^tags:\s*\[(.+)\]', content, re.MULTILINE)
+            if title_m:
+                files.append({
+                    "filename": f.name,
+                    "title": title_m.group(1).strip(),
+                    "category": cat_m.group(1).strip() if cat_m else "",
+                    "tags": tags_m.group(1).strip() if tags_m else "",
+                })
+        except Exception:
+            pass
+    return files
+
+
+def suggest_related_files(
+    client: anthropic.Anthropic,
+    new_data: dict,
+    existing_files: list[dict],
+) -> list[str]:
+    """新規knowledgeに関連する既存ファイル名をHaikuで提案（最大5件）"""
+    if not existing_files:
+        return []
+    existing_summary = "\n".join(
+        f"- {f['filename']}: {f['title']} [{f['category']}] tags={f['tags']}"
+        for f in existing_files[:60]
+    )
+    prompt = (
+        f"新規ナレッジ:\n"
+        f"タイトル: {new_data.get('title')}\n"
+        f"カテゴリ: {new_data.get('category')}\n"
+        f"タグ: {new_data.get('tags')}\n"
+        f"概要: {new_data.get('tldr')}\n\n"
+        f"既存ナレッジ:\n{existing_summary}\n\n"
+        f"関連性の高いものをファイル名のみJSONリストで最大5件。なければ[]。\n"
+        f'例: ["file-a.md", "file-b.md"]'
+    )
+    try:
+        resp = client.messages.create(
+            model=MODEL_HAIKU,
+            max_tokens=200,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        raw = resp.content[0].text.strip()
+        raw = re.sub(r"^```(?:json)?\n?", "", raw)
+        raw = re.sub(r"\n?```$", "", raw)
+        return json.loads(raw)
+    except Exception:
+        return []
+
+
 def split_inbox_entries(content: str) -> list[str]:
     """
     inboxファイルからエントリを分割する。
@@ -253,15 +312,17 @@ def generate_knowledge(client: anthropic.Anthropic, entry: str, source_filename:
         return None
 
 
-def build_knowledge_file(data: dict, source_filename: str) -> str:
+def build_knowledge_file(data: dict, source_filename: str, related: list[str] | None = None) -> str:
     """frontmatter + body を組み立てる"""
     tags_str = ", ".join(f'"{t}"' for t in data.get("tags", []))
+    related_str = ", ".join(f'"[[{r}]]"' for r in (related or []))
     fm = FRONTMATTER_TEMPLATE.format(
         title=data["title"],
         category=data["category"],
         created=TODAY,
         source=f"inbox/{source_filename}",
         tags=tags_str,
+        related=related_str,
     )
     body = KNOWLEDGE_BODY_TEMPLATE.format(
         title=data["title"],
@@ -462,6 +523,7 @@ def process_file(
     client: anthropic.Anthropic,
     inbox_file: Path,
     existing_titles: set[str],
+    existing_files_meta: list[dict],
     dry_run: bool,
     process_all: bool,
 ) -> tuple[int, int]:
@@ -528,7 +590,14 @@ def process_file(
                     break
                 i += 1
 
-        knowledge_content = build_knowledge_file(data, inbox_file.name)
+        # クロスリンク候補取得（既存ファイルがある場合のみ）
+        related = []
+        if existing_files_meta:
+            related = suggest_related_files(client, data, existing_files_meta)
+            if related:
+                print(f"     関連: {', '.join(related)}")
+
+        knowledge_content = build_knowledge_file(data, inbox_file.name, related)
 
         print(f"  [OK] 昇格: \"{label}\" -> knowledge/{filename}")
 
@@ -536,6 +605,13 @@ def process_file(
             # knowledge/ に書き込み
             dest_path.write_text(knowledge_content, encoding="utf-8")
             existing_titles.add(title)
+            # 新ファイルをメタリストに追加（同バッチ内での後続エントリが参照できるよう）
+            existing_files_meta.append({
+                "filename": filename,
+                "title": data.get("title", ""),
+                "category": data.get("category", ""),
+                "tags": str(data.get("tags", [])),
+            })
 
             # inbox に昇格済みマークを付記
             modified_content = mark_as_promoted(modified_content, entry, filename)
@@ -558,6 +634,8 @@ def main():
     parser.add_argument("--list-drafts", action="store_true", help="レビュー待ちのdraftファイルを一覧表示")
     parser.add_argument("--auto-promote", action="store_true",
                         help="アクセスログ・クロスリファレンスでknowledge内を自動昇格（デフォルトDRY RUN）")
+    parser.add_argument("--rebuild-links", action="store_true",
+                        help="既存knowledge/ファイルのrelated:フィールドをHaikuで再生成")
     parser.add_argument("--log-access", metavar="FILE",
                         help="指定ファイルのアクセスをログに記録（例: ai-agent-memory-design.md）")
     parser.add_argument("--access-stats", action="store_true", help="アクセスログ統計を表示")
@@ -598,6 +676,37 @@ def main():
             print("-" * 60)
             for fp, days in rows[:30]:
                 print(f"{len(days):>10}日  {fp}")
+        sys.exit(0)
+
+    # --rebuild-links: 既存ファイルのrelated:を再生成して終了
+    if args.rebuild_links:
+        client = check_api_key()
+        all_meta = get_existing_files_meta()
+        if not all_meta:
+            print("[INFO] knowledge/ にファイルがありません")
+            sys.exit(0)
+        print(f"=== related: 再構築 ({len(all_meta)}件) ===")
+        for meta in all_meta:
+            fname = meta["filename"]
+            f = next(KNOWLEDGE_DIR.glob(f"**/{fname}"), None)
+            if not f:
+                continue
+            others = [m for m in all_meta if m["filename"] != fname]
+            related = suggest_related_files(client, meta, others)
+            if related:
+                related_str = ", ".join(f'"[[{r}]]"' for r in related)
+                content = f.read_text(encoding="utf-8", errors="ignore")
+                updated = re.sub(
+                    r"^related:\s*\[.*?\]",
+                    f"related: [{related_str}]",
+                    content,
+                    count=1,
+                    flags=re.MULTILINE,
+                )
+                f.write_text(updated, encoding="utf-8")
+                print(f"  [OK] {fname}: {', '.join(related)}")
+            else:
+                print(f"  [-] {fname}: 関連なし")
         sys.exit(0)
 
     # --auto-promote: アクセスログ・クロスリファレンスで自動昇格して終了
@@ -659,8 +768,9 @@ def main():
         print("（DRY RUN モード：ファイル書き込みなし）")
     print()
 
-    # 既存knowledgeタイトル収集
+    # 既存knowledge収集（タイトル重複チェック＋クロスリンク候補）
     existing_titles = get_existing_titles()
+    existing_files_meta = get_existing_files_meta()
 
     total_promoted = 0
     total_skipped = 0
@@ -670,6 +780,7 @@ def main():
             client,
             inbox_file,
             existing_titles,
+            existing_files_meta,
             dry_run=args.dry_run,
             process_all=args.process_all,
         )

@@ -174,5 +174,29 @@
     "types": [],
     "cost": 0,
     "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:43:03.542Z",
+    "session_id": "670deccd-532b-4c65-97b0-4bacd814de83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:44:02.661Z",
+    "session_id": "83fe9333-c182-4ea8-8912-91241b4e44c2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-21T13:45:06.164Z",
+    "session_id": "b8a36855-549d-430e-8d05-21cf5558cc7e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
   }
 ]
