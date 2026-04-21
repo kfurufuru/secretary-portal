@@ -1,13 +1,14 @@
 ---
 title: "top3-monday APIキー認証エラー（401）の対処手順"
 category: "AI活用"
-level: "review"
+level: "published"
 created: "2026-04-21"
-last_reviewed: "2026-04-21"
-understanding_score: 2
-source: "inbox/handoff-2026-04-21-secretary.md"
-tags: ["APIキー", "認証エラー", "自動化", "トラブルシュート"]
-related: []
+last_reviewed: "2026-04-22"
+understanding_score: 5
+source: "inbox/handoff-2026-04-21-secretary.md + denken-study/feynman-sessions/top3-monday-401-error-2026-04-22.md"
+verification_method: "コード走査（top3-generator.py）"
+tags: ["APIキー", "認証エラー", "自動化", "トラブルシュート", "Python", "Anthropic SDK"]
+related: ["denken-study/feynman-sessions/top3-monday-401-error-2026-04-22.md"]
 ---
 # top3-monday APIキー認証エラー（401）の対処手順
 
@@ -19,8 +20,9 @@ related: []
 ## ポイント
 - 症状は `logs/top3-monday.log` の `Error code: 401 - invalid x-api-key`
 - 原因は2系統：①設定ファイル `daily-review-config.json` のキーが古い、②環境変数 `ANTHROPIC_API_KEY` が未設定
-- まず設定ファイルのキーを確認するワンライナーで現状を把握し、その後手動実行で動作確認する流れが定石
-- `--dry-run` フラグで本番影響なく検証できる点を活用する
+- **環境変数が優先される**。設定ファイル更新だけでは無効。必ず両方確認する
+- `--dry-run` はAPIまで実行される（Phase 2・3の Haiku・Sonnet分析が走る）。ファイル書き込みのみスキップ
+- 診断フロー: 環変確認 → 設定ファイル確認 → `--dry-run` で検証 → 本番実行
 
 ## 詳細
 - 発生日時: 2026-04-21（月）08:08 自動実行
@@ -34,7 +36,9 @@ related: []
   ```bash
   python top3-generator.py --dry-run
   ```
-- 環境変数 `ANTHROPIC_API_KEY` が設定されている場合は設定ファイルより優先される可能性があるため、両方を確認する
+- **環境変数が存在すれば設定ファイルは読まれない**（top3-generator.py の `check_api_key()` で `if not api_key:` で判定、78-91行）
+- リトライ対象：Timeout（APITimeoutError）のみ、3回・指数バックオフ
+- 401エラーはリトライされない。ログ出力後、即座に例外終了
 
 ## 落とし穴
 - 設定ファイルのキーを更新しても環境変数が古いキーを上書きしているケースがあるため、必ず両方を確認する
@@ -46,4 +50,5 @@ related: []
 -
 
 ## メモ（実践接続）
--
+- 設定ファイルと環境変数の両方確認が鉄則。片方だけ更新して「直った」と思うのが再発の典型パターン
+- キー更新後は必ず `--dry-run` で先に検証。本番実行は確認後のみ

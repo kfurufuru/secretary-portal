@@ -1,10 +1,10 @@
 ---
 title: "promote.py アクセスログベース自動昇格機能"
 category: "AI活用"
-level: "review"
+level: "published"
 created: "2026-04-21"
-last_reviewed: "2026-04-21"
-understanding_score: 2
+last_reviewed: "2026-04-22"
+understanding_score: 5
 source: "inbox/handoff-2026-04-21-secretary.md"
 tags: ["promote.py", "自動昇格", "アクセスログ", "ナレッジ管理"]
 related: []
@@ -53,4 +53,5 @@ related: []
 -
 
 ## メモ（実践接続）
--
+- 週次サイクルで `py promote.py --auto-promote --verbose` を実行後、`--access-stats` でしきい値の実態を確認して調整する
+- 手動 `--log-access` の記録漏れがアクセス日数カウント過小評価の最大リスク。記録ルーティンを週次レビューに組み込む
