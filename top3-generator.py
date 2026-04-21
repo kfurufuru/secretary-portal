@@ -38,6 +38,7 @@ TODOS_DIR = SECRETARY_DIR / "todos"
 LOGS_DIR = SECRETARY_DIR / "logs"
 DIGITAL_TWIN_DIR = SECRETARY_DIR / "digital-twin"
 LOGS_DIR.mkdir(exist_ok=True)
+TODOS_DIR.mkdir(exist_ok=True)
 
 MODEL_HAIKU = "claude-haiku-4-5-20251001"
 MODEL_SONNET = "claude-sonnet-4-6"
@@ -77,7 +78,15 @@ logger = setup_logger()
 def check_api_key() -> anthropic.Anthropic:
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not api_key:
-        logger.error("ERROR: ANTHROPIC_API_KEY が未設定です")
+        config_path = SECRETARY_DIR / "daily-review-config.json"
+        try:
+            with open(config_path, encoding="utf-8") as f:
+                cfg = json.load(f)
+            api_key = cfg.get("anthropic_api_key", "")
+        except Exception:
+            pass
+    if not api_key or api_key.startswith("YOUR_"):
+        logger.error("ERROR: ANTHROPIC_API_KEY が未設定です（環境変数またはdaily-review-config.jsonに設定してください）")
         sys.exit(1)
     return anthropic.Anthropic(api_key=api_key)
 
