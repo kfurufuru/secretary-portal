@@ -510,6 +510,45 @@
     border-color: rgba(16,185,129,0.40) !important;
     box-shadow: 0 0 24px rgba(16,185,129,0.12), 0 8px 32px var(--shadow) !important;
   }
+
+  /* ---- KNOWLEDGE FEED ---- */
+  .card-kfeed { grid-column: span 12; }
+  .kfeed-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    cursor: default;
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .kfeed-item:hover { background: rgba(255,255,255,0.06); border-color: var(--border-h); }
+  .kfeed-title { flex: 1; color: var(--text); line-height: 1.4; }
+  .kfeed-date { font-size: 0.62rem; color: var(--text3); flex-shrink: 0; }
+  .kfeed-badge {
+    font-size: 0.6rem; font-weight: 600; padding: 2px 7px; border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .kfeed-badge.published { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.30); color: #6ee7b7; }
+  .kfeed-badge.review    { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.30); color: #fcd34d; }
+  .kfeed-badge.draft     { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; }
+  @media(max-width:768px){ .card-kfeed{ grid-column: span 1 !important; } }
+
+  /* ---- RANDOM REVIEW ---- */
+  .kfeed-random {
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.16), rgba(168,85,247,0.08));
+    border: 1px solid rgba(99,102,241,0.32);
+    border-radius: var(--radius-md);
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .kfeed-random-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .kfeed-random-body { flex: 1; }
+  .kfeed-random-label { font-size: 0.6rem; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: #a5b4fc; margin-bottom: 4px; }
+  .kfeed-random-title { font-size: 0.92rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .kfeed-random-meta  { font-size: 0.68rem; color: var(--text3); margin-top: 3px; }
   </style>
 </head>
 <body>
@@ -647,6 +686,11 @@
         <div class="k-stat-lbl">リサーチ</div>
         <div class="k-stat-sub">research/ 合計</div>
       </div>
+      <div class="k-stat" style="border-color:rgba(16,185,129,0.25);">
+        <div class="k-stat-val" id="k-effective" style="color:#6ee7b7;">--</div>
+        <div class="k-stat-lbl">実効知識数</div>
+        <div class="k-stat-sub">published + review のみ</div>
+      </div>
     </div>
     <div class="k-bar-wrap" style="margin-top:14px;">
       <div class="k-bar-row">
@@ -669,6 +713,16 @@
         <div class="k-bar"><div class="k-bar-fill" id="kbar-fm" style="width:0%;background:linear-gradient(90deg,#10b981,#059669);"></div></div>
         <span class="k-bar-count" id="kbar-fm-n">4</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Knowledge Feed -->
+  <div class="card card-kfeed" data-card-id="kfeed">
+    <div class="card-label">Knowledge Feed</div>
+    <div class="card-title" style="margin-bottom:var(--sp-3);">最新ナレッジ <span style="font-size:0.7rem;font-weight:400;color:var(--text3);margin-left:6px;">knowledge/_index.md より</span></div>
+    <div id="kfeed-random" class="kfeed-random" style="display:none;"></div>
+    <div id="kfeed-list" style="display:flex;flex-direction:column;gap:8px;">
+      <div style="color:var(--text3);font-size:0.82rem;">読み込み中...</div>
     </div>
   </div>
 
@@ -736,7 +790,7 @@
     <div class="card-title">よく使う操作</div>
     <div class="links-grid">
       <a class="link-btn" href="http://localhost:8096/dashboard.html" target="_blank" title="起動方法: ai-news/ai-news/start-server.bat を実行 → localhost:8096 が起動">⚡ AI News</a>
-      <a class="link-btn" href="http://localhost:8765/denken-study.html">
+      <a class="link-btn" href="http://localhost:8765/denken-study.html" title="起動方法: start-denken.bat をダブルクリック → localhost:8765 が起動">
         <span class="link-icon">⚡</span>電験学習
       </a>
       <a class="link-btn" href="https://kfurufuru.github.io/genai-db/">
@@ -756,7 +810,7 @@
 
       <div class="site-group">
         <div class="site-group-title">⚡ 電験3種 学習</div>
-        <a class="site-link" href="http://localhost:8765/denken-study.html">
+        <a class="site-link" href="http://localhost:8765/denken-study.html" title="起動方法: start-denken.bat をダブルクリック → localhost:8765 が起動">
           <span class="site-link-icon">📖</span>今日の学習（朝/昼/夜）
         </a>
         <a class="site-link" href="https://kfurufuru.github.io/denken3-study/">
@@ -776,6 +830,9 @@
         </a>
         <a class="site-link" href="https://github.com/kfurufuru/denken3-study" target="_blank">
           <span class="site-link-icon">🐙</span>GitHub リポジトリ
+        </a>
+        <a class="site-link" href="study-methods.html">
+          <span class="site-link-icon">🧠</span>勉強方法・記憶術 OS
         </a>
       </div>
 
@@ -1035,6 +1092,76 @@ function copyTodoCommand() {
 function animateBar(id, w) {
   const el = document.getElementById(id);
   if (el) setTimeout(() => { el.style.width = w; }, 150);
+}
+
+/* =====================================================
+   KNOWLEDGE FEED
+   ===================================================== */
+async function loadKnowledgeFeed() {
+  const list = document.getElementById('kfeed-list');
+  if (!list) return;
+  try {
+    const res = await fetch('knowledge/_index.md?t=' + Date.now());
+    if (!res.ok) throw new Error('not ok');
+    const text = await res.text();
+    const items = [];
+    const re = /\[\[([^\]]+)\]\]\s*[—\-]\s*([^(]+)\(([^)]+)\)/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      const [, file, title, meta] = m;
+      const parts = meta.split(',').map(p => p.trim());
+      items.push({ file, title: title.trim(), level: parts[0] || 'draft', date: parts[1] || '' });
+    }
+    const recent = items.slice(-6).reverse();
+    if (!recent.length) {
+      list.innerHTML = '<div style="color:var(--text3);font-size:0.82rem;">エントリなし</div>';
+      return;
+    }
+    const effectiveCount = items.filter(i => i.level === 'published' || i.level === 'review').length;
+    setTxt('k-effective', effectiveCount);
+
+    // ランダム復習ウィジェット（published/review から1件）
+    const reviewable = items.filter(i => i.level === 'published' || i.level === 'review');
+    if (reviewable.length > 0) {
+      const pick = reviewable[Math.floor(Math.random() * reviewable.length)];
+      const randomDiv = document.getElementById('kfeed-random');
+      if (randomDiv) {
+        randomDiv.innerHTML = `
+          <span class="kfeed-random-icon">🎲</span>
+          <div class="kfeed-random-body">
+            <div class="kfeed-random-label">今日のランダム復習</div>
+            <div class="kfeed-random-title">${pick.title}</div>
+            <div class="kfeed-random-meta">${pick.level} · ${pick.date}</div>
+          </div>`;
+        randomDiv.style.display = 'flex';
+      }
+    }
+
+    const now = new Date();
+    list.innerHTML = recent.map(item => {
+      // 鮮度バッジ計算
+      let freshBadge = '';
+      if (item.date) {
+        const itemDate = new Date(item.date);
+        const diffH = (now - itemDate) / (1000 * 60 * 60);
+        if (diffH <= 48) {
+          freshBadge = '<span style="font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);color:#6ee7b7;flex-shrink:0;">🔥 NEW</span>';
+        } else if (item.file.includes('ideas-from-news') && diffH > 48) {
+          freshBadge = '<span style="font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.30);color:#fcd34d;flex-shrink:0;">⏰ 期限</span>';
+        }
+      }
+      return `
+      <div class="kfeed-item">
+        <span style="font-size:1rem;flex-shrink:0;">📄</span>
+        <span class="kfeed-title">${item.title}</span>
+        ${freshBadge}
+        <span class="kfeed-date">${item.date}</span>
+        <span class="kfeed-badge ${item.level}">${item.level}</span>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    list.innerHTML = '<div style="color:var(--text3);font-size:0.82rem;">読み込み失敗 — ローカルサーバー経由で開いてください</div>';
+  }
 }
 
 /* =====================================================
@@ -1306,6 +1433,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2. Load live data (async)
   await loadData();
+  loadKnowledgeFeed();
 
   // 5分ごとに差分リフレッシュ（フルリロードなし）
   setInterval(async () => {

@@ -1,7 +1,7 @@
 ---
 title: "promote.py アクセスログベース自動昇格機能"
 category: "AI活用"
-level: "draft"
+level: "review"
 created: "2026-04-21"
 last_reviewed: "2026-04-21"
 understanding_score: 2

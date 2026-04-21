@@ -1,7 +1,7 @@
 ---
 title: "top3-monday APIキー認証エラー（401）の対処手順"
 category: "AI活用"
-level: "draft"
+level: "review"
 created: "2026-04-21"
 last_reviewed: "2026-04-21"
 understanding_score: 2
