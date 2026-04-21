@@ -407,6 +407,21 @@ def count_cross_references(filename: str) -> int:
     return count
 
 
+def parse_frontmatter(content: str) -> tuple[dict, str]:
+    """frontmatter を解析して (dict, body) を返す"""
+    m = re.match(r'^---\n([\s\S]+?)\n---\n([\s\S]*)$', content)
+    if not m:
+        return {}, content
+    fm_text = m.group(1)
+    body = m.group(2)
+    fm = {}
+    for line in fm_text.split('\n'):
+        if ':' in line:
+            key, val = line.split(':', 1)
+            fm[key.strip()] = val.strip().strip('"\'')
+    return fm, body
+
+
 def get_knowledge_meta(f: Path) -> dict:
     """knowledge/ ファイルのfrontmatterを解析して返す"""
     try:
@@ -436,6 +451,45 @@ def set_level(f: Path, new_level: str) -> None:
         flags=re.MULTILINE,
     )
     f.write_text(updated, encoding="utf-8")
+
+
+def build_index() -> None:
+    """knowledge/ 以下の全.mdファイルをスキャンしてカテゴリ別インデックスを生成"""
+    files_by_category: dict[str, list[tuple[str, str, str, str]]] = {}
+
+    for f in sorted(KNOWLEDGE_DIR.glob("**/*.md")):
+        if f.name.startswith("_"):
+            continue
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            fm, _ = parse_frontmatter(content)
+
+            title = fm.get("title", f.stem)
+            category = fm.get("category", "未分類")
+            level = fm.get("level", "draft")
+            created = fm.get("created", "----")
+
+            rel_filename = f.relative_to(KNOWLEDGE_DIR).as_posix()
+
+            if category not in files_by_category:
+                files_by_category[category] = []
+            files_by_category[category].append((rel_filename, title, level, created))
+        except Exception:
+            pass
+
+    index_content = "# Knowledge Index\n\n"
+
+    for category in sorted(files_by_category.keys()):
+        index_content += f"## {category}\n\n"
+        for filename, title, level, created in sorted(files_by_category[category]):
+            index_content += f"- [[{filename}]] — {title} ({level}, {created})\n"
+        index_content += "\n"
+
+    index_content += f"_generated: {TODAY}\n"
+
+    index_path = KNOWLEDGE_DIR / "_index.md"
+    index_path.write_text(index_content, encoding="utf-8")
+    print(f"[OK] インデックス生成: knowledge/_index.md ({len(files_by_category)}カテゴリ)")
 
 
 def auto_promote_knowledge(dry_run: bool = True, verbose: bool = False) -> None:
@@ -517,6 +571,74 @@ def auto_promote_knowledge(dry_run: bool = True, verbose: bool = False) -> None:
     print()
     if dry_run and promoted:
         print("実行するには --auto-promote --no-dry-run を指定してください")
+
+
+def lint_knowledge() -> None:
+    all_files = [f for f in KNOWLEDGE_DIR.glob("**/*.md") if not f.name.startswith("_")]
+    all_filenames = {f.name for f in all_files}
+
+    referenced: set[str] = set()
+    dead_links: list[tuple[str, str]] = []
+    stale_drafts: list[tuple[str, str, int]] = []
+
+    for f in all_files:
+        content = f.read_text(encoding="utf-8", errors="ignore")
+        fm, _ = parse_frontmatter(content)
+
+        related_raw = re.search(r'^related:\s*\[([^\]]*)\]', content, re.MULTILINE)
+        if related_raw:
+            for link in re.findall(r'\[\[([^\]]+)\]\]', related_raw.group(1)):
+                link_name = link if link.endswith(".md") else link + ".md"
+                referenced.add(link_name)
+                if link_name not in all_filenames:
+                    dead_links.append((f.name, link_name))
+
+        level = fm.get("level", "").strip().strip("\"'")
+        if level == "draft":
+            created_str = fm.get("created", "").strip().strip("\"'")
+            if created_str:
+                try:
+                    created_date = date.fromisoformat(created_str)
+                    elapsed = (date.today() - created_date).days
+                    if elapsed >= 30:
+                        stale_drafts.append((f.name, created_str, elapsed))
+                except ValueError:
+                    pass
+
+    orphans: list[tuple[str, str]] = []
+    for f in all_files:
+        refs = count_cross_references(f.name)
+        if refs == 0:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            fm, _ = parse_frontmatter(content)
+            title = fm.get("title", f.stem)
+            orphans.append((f.name, title))
+
+    print("=== knowledge/ ヘルスチェック ===")
+
+    if orphans:
+        print(f"[孤立ページ: {len(orphans)}件]")
+        for fname, title in orphans:
+            print(f"  - {fname} ({title})")
+    else:
+        print("[孤立ページ: 0件]")
+
+    if dead_links:
+        print(f"[デッドリンク: {len(dead_links)}件]")
+        for src, target in dead_links:
+            print(f"  - {src} → {target}")
+    else:
+        print("[デッドリンク: 0件]")
+
+    if stale_drafts:
+        print(f"[放置draft: {len(stale_drafts)}件]")
+        for fname, created, elapsed in stale_drafts:
+            print(f"  - {fname} (created: {created}, {elapsed}日経過)")
+    else:
+        print("[放置draft: 0件]")
+
+    if not orphans and not dead_links and not stale_drafts:
+        print("[問題なし]")
 
 
 # ─── メイン処理 ──────────────────────────────────────────
@@ -636,13 +758,21 @@ def main():
     parser.add_argument("--list-drafts", action="store_true", help="レビュー待ちのdraftファイルを一覧表示")
     parser.add_argument("--auto-promote", action="store_true",
                         help="アクセスログ・クロスリファレンスでknowledge内を自動昇格（デフォルトDRY RUN）")
+    parser.add_argument("--lint", action="store_true",
+                        help="knowledge/ のヘルスチェック（孤立ページ・デッドリンク・放置draft）")
     parser.add_argument("--rebuild-links", action="store_true",
                         help="既存knowledge/ファイルのrelated:フィールドをHaikuで再生成")
     parser.add_argument("--log-access", metavar="FILE",
                         help="指定ファイルのアクセスをログに記録（例: ai-agent-memory-design.md）")
     parser.add_argument("--access-stats", action="store_true", help="アクセスログ統計を表示")
+    parser.add_argument("--index", action="store_true", help="knowledge/_index.md を自動生成・更新")
     parser.add_argument("--verbose", action="store_true", help="スキップ理由も表示")
     args = parser.parse_args()
+
+    # --index: knowledge/_index.md を自動生成・更新して終了
+    if args.index:
+        build_index()
+        sys.exit(0)
 
     # --log-access: 指定ファイルのアクセスを記録して終了
     if args.log_access:
@@ -709,6 +839,11 @@ def main():
                 print(f"  [OK] {fname}: {', '.join(related)}")
             else:
                 print(f"  [-] {fname}: 関連なし")
+        sys.exit(0)
+
+    # --lint: knowledge/ ヘルスチェックして終了
+    if args.lint:
+        lint_knowledge()
         sys.exit(0)
 
     # --auto-promote: アクセスログ・クロスリファレンスで自動昇格して終了
