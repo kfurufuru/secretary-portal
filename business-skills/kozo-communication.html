@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>構造化コミュニケーションの5要素 | Business Skills</title>
+<meta property="og:title" content="構造化コミュニケーションの5要素 | Business Skills">
+<meta property="og:description" content="相手に情報が届き、判断を動かす設計能力の5軸と欠如が生む時間・承認ロスを解説。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="構造化コミュニケーションの5要素 | Business Skills">
+<meta name="twitter:description" content="相手に情報が届き、判断を動かす設計能力の5軸と欠如が生む時間・承認ロスを解説。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+
+.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav a { color: var(--accent); text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+/* ── 計算ボックス（①） ── */
+.calc-box { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.calc-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-core); margin-bottom: var(--sp-2); }
+.calc-formula { font-size: var(--fs-sm); color: #fde68a; font-family: monospace; line-height: 1.8; }
+.calc-result { font-size: 0.9rem; font-weight: 700; color: var(--accent-core); margin-top: var(--sp-2); }
+
+/* ── 抽象度スライダー（③） ── */
+.abs-wrap { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.abs-tabs { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-3); flex-wrap: wrap; }
+.abs-tab { padding: 6px 14px; border-radius: 20px; font-size: var(--fs-sm); font-weight: 600; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: var(--transition); font-family: inherit; }
+.abs-tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.abs-content { display: none; background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: var(--sp-4); font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.abs-content.active { display: block; animation: fadeIn 0.2s ease; }
+.abs-content strong { color: var(--text); }
+
+/* ── Prev/Next ── */
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+/* ── Top Nav ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,14,26,0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0 24px; height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: #94a3b8;
+  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
+}
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text {
+  font-size: 0.78rem; color: #8892a0; font-weight: 600;
+  letter-spacing: 0.06em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
+}
+.nav-spacer { width: 80px; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+/* ── Structure Map ── */
+.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
+.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
+.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
+.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
+.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.smap-band { width: 100%; max-width: 540px; }
+.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.smap-band-tag.core { color: var(--accent-core); }
+.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
+.smap-center { display: flex; justify-content: center; }
+.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
+.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
+.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
+.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
+.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
+.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
+.smap-node.core-node .sn-num { color: var(--accent-core); }
+.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
+.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
+.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
+.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
+.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
+.smap-axiom strong { color: var(--accent-core); }
+@media (max-width: 480px) {
+  .smap-node { max-width: 130px; }
+  .smap-node.core-node { max-width: 200px; }
+  .sn-name { font-size: 0.78rem; }
+  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+}
+</style>
+</head>
+<body>
+<div id="reading-progress" style="position:fixed;top:48px;left:0;width:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);z-index:200;transition:width 0.08s linear;pointer-events:none;"></div>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">構造化コミュニケーションの5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1><span>構造化コミュニケーション</span>の5要素</h1>
+  <p class="hero-sub">話し方の「うまさ」ではない。相手に情報が届き、判断を動かす。その設計能力の5つの軸と、欠如が引き起こす時間・承認・信頼のロス。</p>
+</header>
+
+<!-- Structure Map -->
+<section class="structmap-section">
+  <div class="structmap-card">
+    <div class="structmap-hd">
+      <h2 class="structmap-title">5要素の構造マップ</h2>
+      <p class="structmap-hint">クリックで詳細へジャンプ</p>
+    </div>
+    <div class="structmap-body">
+      <div class="smap-band">
+        <div class="smap-band-tag core">FOUNDATION — 伝える骨格</div>
+        <div class="smap-pair">
+          <button class="smap-node core-node" onclick="goAndScroll(0)">
+            <span class="sn-core-badge">CORE</span>
+            <span class="sn-num">01</span>
+            <span class="sn-name">BLUF構造</span>
+            <span class="sn-sub">結論ファースト</span>
+            <span class="sn-dmg">⚠ 62%が読まれない</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(1)">
+            <span class="sn-num">02</span>
+            <span class="sn-name">ピラミッド原則</span>
+            <span class="sn-sub">論理の3層構造</span>
+            <span class="sn-dmg">⚠ 承認率 38%低</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">ADAPTATION — 場に合わせる</div>
+        <div class="smap-center">
+          <button class="smap-node" onclick="goAndScroll(2)">
+            <span class="sn-num">03</span>
+            <span class="sn-name">抽象度の制御</span>
+            <span class="sn-sub">AI時代の翻訳力</span>
+            <span class="sn-dmg">⚠ 提案 6.2週遅延</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">EXECUTION — 対話・文脈</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(3)">
+            <span class="sn-num">04</span>
+            <span class="sn-name">質問設計</span>
+            <span class="sn-sub">ソクラテス問答法</span>
+            <span class="sn-dmg">⚠ 改善提案 76%少</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(4)">
+            <span class="sn-num">05</span>
+            <span class="sn-name">非言語と文脈</span>
+            <span class="sn-sub">Mehrabian則</span>
+            <span class="sn-dmg">⚠ 承認率 31%低</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-axiom">
+        <strong>①が欠けると②〜⑤は全て無効化される</strong> — 結論が1行目にない報告書は62%が最後まで読まれない
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)">
+      <span class="num">01</span><span class="tab-title">BLUF構造</span><span class="core-dot"></span>
+    </button>
+    <button class="tab" data-i="1" onclick="go(1)">
+      <span class="num">02</span><span class="tab-title">ピラミッド原則</span>
+    </button>
+    <button class="tab" data-i="2" onclick="go(2)">
+      <span class="num">03</span><span class="tab-title">抽象度制御</span><span class="feat-dot"></span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span><span class="tab-title">質問設計</span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span><span class="tab-title">非言語・文脈</span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  </div>
+</nav>
+
+<main class="panel-wrap">
+  <div class="panel" id="panel"></div>
+</main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：なぜこの順番で身につけるべきか</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①BLUF（出口設計）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②ピラミッド（構造化）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③抽象度（翻訳）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④質問（引き出し）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤文脈（タイミング）</div>
+    </div>
+    <p class="insight-text">
+      ①は情報配置の設計。結論をどこに置くかだけで、受け手の認知コストが半減する。<br>
+      ②は論理の骨格。「なんとなく説得力がない」は、ほぼ②の欠如から来ている。<br>
+      ③は翻訳エンジン。同じ事実を相手の言語・関心軸に変換する。AIが情報を生成するほど、翻訳力が人間の差別点になる。<br>
+      ④は双方向化。伝えるだけでなく、相手の思考を引き出すことでコミュニケーションが設計になる。<br>
+      ⑤は文脈設計。最高の内容も、場・タイミング・関係性が整っていなければ届かない。<br><br>
+      最初に鍛えるべきは①。どんな複雑な伝達も、結論が先頭に来ないかぎり残り4要素は機能しない。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。今週の自分のコミュニケーションを診断する。</p>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox" id="c1" onchange="updateScore()"><label for="c1"><strong>①</strong> 最後に書いたメール・報告書の1行目に結論が書かれていた</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" onchange="updateScore()"><label for="c2"><strong>②</strong> 提案の根拠を「3点」でスラスラ言えた場面があった</label></div>
+      <div class="check-item"><input type="checkbox" id="c3" onchange="updateScore()"><label for="c3"><strong>③</strong> 同じ内容を相手によって言い方を変えて伝えた</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" onchange="updateScore()"><label for="c4"><strong>④</strong> 答えを与えず「どう思う？」と問い返した場面があった</label></div>
+      <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 重要な提案をする前に「相手が聞く状態か」を確認した</label></div>
+    </div>
+    <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<section style="max-width:860px;margin:0 auto;padding:0 24px 48px;">
+  <a href="gakushuu-kouritu.html" style="display:flex;align-items:center;justify-content:space-between;background:#111827;border:1px solid rgba(56,189,248,0.2);border-radius:16px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color 0.2s,box-shadow 0.2s;" onmouseover="this.style.borderColor='rgba(56,189,248,0.5)';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(56,189,248,0.2)';this.style.boxShadow=''">
+    <div>
+      <div style="font-size:0.72rem;color:#38bdf8;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">次のシリーズ — 03</div>
+      <div style="font-size:1.1rem;font-weight:700;color:#f1f5f9;">学習効率の5要素</div>
+      <div style="font-size:0.82rem;color:#94a3b8;margin-top:4px;">脳科学が示す習得の設計</div>
+    </div>
+    <span style="color:#38bdf8;font-size:1.4rem;">→</span>
+  </a>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: 'BLUF構造（結論ファースト）', theory: 'Bottom Line Up Front',
+      icon: 'zap', core: true, badge: 'core', badgeText: 'CORE',
+      summary: '結論を冒頭に置き、根拠・背景を後続させる情報配置の設計。①が欠けると、どれだけ論理が整っていても②〜⑤が全部無効化される。「で、何が言いたいの？」は最も高コストな問い返しだ。',
+      theoryText: '軍事発祥の報告フォーマット。Barbara MintoのMECE/ピラミッド原則の起点でもある。上位者は結論だけ読む、詳細は必要に応じて読む、という認知コスト設計が基本思想。',
+      business: '上司へのメール1行目で「承認/却下/相談」が判断できる情報を置く。会議冒頭で「結論は○○です、理由3点」と宣言してから展開する。報告と提案を混在させない。',
+      customAfterGrid: `<div class="calc-box">
+        <div class="calc-label">📊 時間ロス計算式（ひろゆき式）</div>
+        <div class="calc-formula">週3回定例 × 10名参加 × 結論確認の追加質問2分<br>= 60分 / 週 = <strong>年間52時間</strong>のロス（1チーム）</div>
+        <div class="calc-result">→ 10チーム組織なら年間520時間 = 人件費換算で約780万円</div>
+      </div>`,
+      deficit: '結論が末尾にある報告書は<strong>62%が最後まで読まれない</strong>（Nielsen Norman Group 2021）。「読まれたが誤読」が最も危険で、承認ミス・差し戻しのサイクルが固定化する。上位者ほどBLUF違反への耐性が低い。',
+      check: '最後に書いたメール・報告書の1行目に結論があるか？「〜について報告します」で始まっていたら要修正。会議で最初に「結論は○○です」と言えているか？'
+    },
+    {
+      num: '02', title: 'ピラミッド原則', theory: '論理の3層構造 / MECE分解',
+      icon: 'triangle',
+      summary: '主張→根拠→事実・データの3層で論理を構造化する。「なんとなくそう思う」を「主張＋3つの根拠＋各データ」に変換する設計力。',
+      theoryText: 'Barbara Minto「ピラミッド原則」(1987)。MECE（Mutually Exclusive Collectively Exhaustive）：漏れなく重複なく。So What?（それで何が言えるか）とWhy So?（なぜそう言えるか）を往復して構造を精査する。',
+      business: '稟議書を「結論→理由3点→各根拠データ」で構成する。プレゼン1スライド=主張1つ。「コストが高い、品質が低い、納期が遅い」は並列に見えて構造が違う場合がある—MECEを確認する癖。',
+      deficit: '論理構造のない提案書は承認率が<strong>平均38%低い</strong>（Harvard Business Review, 2020）。「なんとなく説得力がない」という印象は、ピラミッド構造の欠如から来ていることがほとんど。差し戻し1回=平均3日のリードタイム増。',
+      check: '自分の主張の根拠を「3点」で即座に言えるか？ 各根拠に対応するデータ・事実があるか？「なんとなく」「経験的に」で終わっていないか？'
+    },
+    {
+      num: '03', title: '抽象度の制御', theory: '論理階型 × AI時代の翻訳力',
+      icon: 'sliders-horizontal', badge: 'feat', badgeText: 'AI時代の優位性',
+      summary: '相手の役割・知識レベル・関心に合わせて情報の粒度と言語を動的に変換する能力。AIが情報生成を代替するほど、「場の解像度を読んで翻訳する」人間側の能力が絶対的優位性になる。',
+      theoryText: 'Batesonの「論理階型」：具体↔抽象の階層を意識的に行き来する。コミュニケーション失敗の多くは抽象度ミスマッチ（具体すぎて本質が見えない/抽象すぎて行動できない）が原因。',
+      business: '同じ設備投資を「製造課→設備停止時間と安全性」「管理職→ROIと工数」「役員→競争優位と中計整合」で翻訳する。相手の「言葉」ではなく「関心軸」に合わせる。',
+      customAfterGrid: `<div class="abs-wrap">
+        <div class="detail-label" style="margin-bottom: var(--sp-3);">💡 同じ内容を3レベルで翻訳してみる（設備投資1,200万円の提案）</div>
+        <div class="abs-tabs">
+          <button class="abs-tab active" onclick="switchAbs(event, 'field')">現場担当者向け</button>
+          <button class="abs-tab" onclick="switchAbs(event, 'manager')">管理職向け</button>
+          <button class="abs-tab" onclick="switchAbs(event, 'exec')">役員向け</button>
+        </div>
+        <div class="abs-content active" id="abs-field"><strong>「今の設備、配線の絶縁が劣化してて点検のたびに不安じゃないですか。」</strong><br>新設備に切り替えると自己診断機能がついて、トラブル前に警報が出ます。去年3回あった緊急停止が0件になる計算です。工事は連休中の2日間で終わります。</div>
+        <div class="abs-content" id="abs-manager"><strong>「設備老朽化による緊急停止リスクを解消し、保全コストを削減します。」</strong><br>現状：年3回の緊急停止 × 停止時間4h × 損失単価30万 ＝ 年間360万円の機会損失。新設備：初期1,200万、LCC5年で850万削減。ROI 3.1年。保全人工も年間120h削減できます。</div>
+        <div class="abs-content" id="abs-exec"><strong>「設備基盤の信頼性を中計のKPIである稼働率99%に整合させます。」</strong><br>現状の老朽設備は中計の設備稼働率目標99%を達成できないリスクを持っています。本投資により稼働率を現状97.2%→99.1%に改善、5年LCCは競合比18%優位です。</div>
+      </div>`,
+      deficit: '抽象度ミスマッチによる提案却下・差し戻しは、プロジェクト立ち上げを<strong>平均6.2週間遅延</strong>させる（McKinsey 2021）。「なぜわかってくれないのか」の多くは、相手の抽象度に合っていない説明が原因。',
+      check: '同じテーマを「現場担当者/管理職/役員」の3バージョンで説明できるか？ 提案が通らないとき、「相手の関心軸と自分の説明の軸がずれていなかったか」を振り返っているか？'
+    },
+    {
+      num: '04', title: '質問設計', theory: 'ソクラテス問答法 × 5Why',
+      icon: 'message-circle-question',
+      summary: '相手の思考を深化させ、必要な情報を引き出す問いの構造設計。「何を言うか」ではなく「何を聞くか」がコミュニケーションの質を決める場面は思いのほか多い。',
+      theoryText: 'ソクラテス問答法：問い返しで相手の思考を深める。5Why：「なぜ？」を5回繰り返して根本原因に到達する。コーチングの基礎：TEDクエスチョン（Tell/Explain/Describe）で具体化を促す。',
+      business: '部下の問題報告に「なぜそう判断した？」「他の選択肢は検討した？」で思考を引き出す。要件定義で「それはなぜ必要か？」「何のためのゴールか？」を繰り返して本質ニーズを掘る。',
+      deficit: '指示型のみのマネジメントをするチームは、自発的な改善提案が<strong>平均76%少ない</strong>（Gallup Engagement Survey 2023）。「どう思う？」を聞かないリーダーのもとでは、メンバーの思考力が萎縮する。',
+      check: '1日の会話で「なぜ？」「どう思う？」「他にどんな選択肢があるか？」を何回使ったか？ 相手に答えを与えていないか？ 5Whyを最後まで掘ったか？'
+    },
+    {
+      num: '05', title: '非言語と文脈', theory: 'Mehrabian則 × 場の読解力',
+      icon: 'waves',
+      summary: '言葉以外の要素（タイミング・関係性・場の空気・語調）を読んで発信を最適化する。最高の内容でも、最悪のタイミングに投下すれば却下される。',
+      theoryText: 'Mehrabianの法則：感情・態度の伝達は内容7%・語調38%・非言語55%。ただし「内容は重要でない」ではなく「感情と態度は非言語で決まる」が正確な解釈。文脈依存コミュニケーション（Hall）：文化・関係性が意味を決める。',
+      business: '上司が会議直後で消耗しているときに重要案件を持ち込まない。会議終盤の疲弊した空気で新議題を追加しない。承認を取りたいなら、相手が「良い判断をしたい」と思える文脈を先に整える。',
+      deficit: 'タイミングを読めないマネジャーは提案承認率が<strong>平均31%低く</strong>、差し戻しの主因が「内容ではなく場面」であることに気づかないまま内容の修正を繰り返す（MIT Sloan Management Review, 2022）。',
+      check: '「なぜあの場面では通らなかったか」をタイミング・相手の状態・場の文脈から分析できるか？ 重要な提案をする前に「相手が聞く準備ができているか」を確認しているか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const item = items[i];
+    const panel = document.getElementById('panel');
+    panel.classList.toggle('core', !!item.core);
+
+    const badgeHTML = item.badge ? `<div class="badges"><span class="badge badge-${item.badge}">${item.badgeText}</span></div>` : '';
+    const customHTML = item.customAfterGrid || '';
+    const prev = i > 0 ? items[i - 1] : null;
+    const next = i < items.length - 1 ? items[i + 1] : null;
+
+    panel.innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${item.icon}" width="26" height="26"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${item.num}</div>
+          <div class="panel-title">${item.title}</div>
+          <div class="panel-theory">${item.theory}</div>
+        </div>
+        ${badgeHTML}
+      </div>
+      <div class="panel-summary">${item.summary}</div>
+      <div class="detail-grid">
+        <div class="detail-block"><div class="detail-label">理論背景</div><div class="detail-text">${item.theoryText}</div></div>
+        <div class="detail-block"><div class="detail-label">業務での発現</div><div class="detail-text">${item.business}</div></div>
+      </div>
+      ${customHTML}
+      <div class="deficit-block"><div class="deficit-label">⚠ 欠如した場合の実損</div><div class="deficit-text">${item.deficit}</div></div>
+      <div class="check-block"><div class="check-label">✓ セルフチェック</div><div class="check-text">${item.check}</div></div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label"><span class="nav-btn-hint">Prev</span><span>${prev ? prev.num + ' ' + prev.title.split('（')[0] : '最初です'}</span></div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label"><span class="nav-btn-hint">Next</span><span>${next ? next.num + ' ' + next.title.split('（')[0] : '最後です'}</span></div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+  }
+
+  function go(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 80;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  }
+  function goAndScroll(i) {
+    go(i);
+    const wrap = document.querySelector('.panel-wrap');
+    if (wrap) window.scrollTo({ top: wrap.offsetTop - 80, behavior: 'smooth' });
+  }
+
+  function switchAbs(e, level) {
+    e.stopPropagation();
+    document.querySelectorAll('.abs-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.abs-content').forEach(c => c.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('abs-' + level).classList.add('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['', '1つ：残り4つが今週の練習テーマ', '2つ：土台はある。③の翻訳力が次のレバー', '3つ：平均以上。①を完全習慣化すると一段上がる', '4つ：高水準。⑤の文脈設計が仕上げ', '5つ：構造化コミュニケーションが習慣になっている'];
+    document.getElementById('score-display').innerHTML = `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  go(0);
+
+    // 読書進捗バー
+    const rp = document.getElementById('reading-progress');
+    if (rp) {
+      window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        rp.style.width = (Math.min(window.scrollY / total * 100, 100)) + '%';
+      });
+    }
+}); // DOMContentLoaded
+</script>
+</body>
+</html>

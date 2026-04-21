@@ -391,50 +391,6 @@ body {
 .rank-jp { color: var(--accent-green); }
 .rank-below { color: var(--text-muted); }
 
-/* ── History chart card ── */
-.history-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: var(--sp-6);
-  margin-bottom: var(--sp-6); display: none;
-}
-.history-card.visible { display: block; }
-.history-card-title {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-4);
-}
-.history-chart-wrap { height: 140px; position: relative; }
-
-/* ── Declined skills alert ── */
-.declined-card {
-  background: rgba(244,63,94,0.06); border: 1px solid rgba(244,63,94,0.25);
-  border-radius: var(--radius-md); padding: var(--sp-4) var(--sp-6);
-  margin-bottom: var(--sp-6); display: none;
-}
-.declined-card.visible { display: block; }
-.declined-title {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--accent-red); margin-bottom: var(--sp-3);
-  display: flex; align-items: center; gap: var(--sp-2);
-}
-.declined-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 5px 0; border-bottom: 1px solid rgba(244,63,94,0.12);
-  font-size: var(--fs-sm);
-}
-.declined-item:last-child { border-bottom: none; }
-.declined-name { color: var(--text); font-weight: 600; }
-.declined-diff { color: var(--accent-red); font-weight: 700; font-size: 0.82rem; }
-
-/* ── Bias note ── */
-.bias-note {
-  display: flex; gap: var(--sp-3); align-items: flex-start;
-  background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2);
-  border-radius: var(--radius-sm); padding: var(--sp-4);
-  margin-bottom: var(--sp-6); font-size: var(--fs-sm); color: var(--text-muted);
-  line-height: 1.6;
-}
-.bias-note-icon { font-size: 1rem; flex-shrink: 0; color: var(--accent-amber); margin-top: 1px; }
-
 @media (max-width: 480px) {
   .quiz-card { padding: var(--sp-6); }
   .intro-meta { gap: var(--sp-6); }
@@ -536,18 +492,6 @@ body {
       </div>
     </div>
 
-    <!-- History Chart (shown when ≥2 records) -->
-    <div class="history-card" id="historyCard">
-      <div class="history-card-title">スコア推移（過去最大10回）</div>
-      <div class="history-chart-wrap"><canvas id="historyChart"></canvas></div>
-    </div>
-
-    <!-- Declined Skills Alert (shown when prev scores exist with decreases) -->
-    <div class="declined-card" id="declinedCard">
-      <div class="declined-title">⚠ 前回から下がったスキル</div>
-      <div id="declinedList"></div>
-    </div>
-
     <!-- Strength / Weakness -->
     <div class="sw-grid">
       <div class="sw-card sw-strength">
@@ -611,12 +555,6 @@ body {
       <div class="cases-section-title">スキル別 世界水準 事例</div>
       <div class="skill-tabs" id="caseTabs"></div>
       <div class="cases-grid" id="casesGrid"></div>
-    </div>
-
-    <!-- Bias Note -->
-    <div class="bias-note">
-      <div class="bias-note-icon">⚠</div>
-      <div>この診断は行動選択式ですが、<strong style="color:var(--accent-amber)">セルフ評価は実際より0.5〜1点高めになる傾向</strong>があります。「こうしたい」ではなく<strong>「実際にやっていること」</strong>で選んでいるか振り返ると、より正確な現状把握になります。</div>
     </div>
 
     <button class="btn-retry" onclick="resetQuiz()">もう一度診断する</button>
@@ -999,14 +937,7 @@ function showResults() {
 
   // Save current result
   const today = new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  const currentRecord = { date: today, scores: userScores, avg: parseFloat(userAvg.toFixed(2)) };
-  localStorage.setItem('bsk_result', JSON.stringify(currentRecord));
-
-  // Save to history (max 10)
-  const history = JSON.parse(localStorage.getItem('bsk_result_history') || '[]');
-  history.unshift(currentRecord);
-  if (history.length > 10) history.pop();
-  localStorage.setItem('bsk_result_history', JSON.stringify(history));
+  localStorage.setItem('bsk_result', JSON.stringify({ date: today, scores: userScores, avg: parseFloat(userAvg.toFixed(2)) }));
 
   // Show prev date note
   if (prev) {
@@ -1149,65 +1080,6 @@ function showResults() {
   document.getElementById('weaknessList').innerHTML = bot3.map(item =>
     `<div class="sw-item"><span><strong>${item.name}</strong> — ${item.s}.0 / 5</span><a href="${item.link}" class="sw-link sw-link-strengthen">強化する →</a></div>`
   ).join('');
-
-  // History chart
-  let historyChartInstance = null;
-  const allHistory = JSON.parse(localStorage.getItem('bsk_result_history') || '[]');
-  const historyCard = document.getElementById('historyCard');
-  if (allHistory.length >= 2) {
-    historyCard.classList.add('visible');
-    const hLabels = allHistory.map(r => r.date).reverse();
-    const hValues = allHistory.map(r => r.avg).reverse();
-    if (historyChartInstance) historyChartInstance.destroy();
-    const hCtx = document.getElementById('historyChart').getContext('2d');
-    historyChartInstance = new Chart(hCtx, {
-      type: 'line',
-      data: {
-        labels: hLabels,
-        datasets: [{
-          label: '総合スコア', data: hValues,
-          borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,0.1)',
-          borderWidth: 2, pointBackgroundColor: '#38bdf8', pointRadius: 4,
-          fill: true, tension: 0.35,
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false, animation: { duration: 600 },
-        scales: {
-          y: { min: 1, max: 5, ticks: { stepSize: 1, color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.06)' } },
-          x: { ticks: { color: '#64748b', maxRotation: 30 }, grid: { display: false } }
-        },
-        plugins: { legend: { display: false }, tooltip: {
-          backgroundColor: '#1e293b', titleColor: '#e2e8f0', bodyColor: '#94a3b8',
-          borderColor: 'rgba(255,255,255,0.08)', borderWidth: 1
-        }}
-      }
-    });
-  } else {
-    historyCard.classList.remove('visible');
-  }
-
-  // Declined skills
-  const declinedCard = document.getElementById('declinedCard');
-  const declinedList = document.getElementById('declinedList');
-  if (prevScores) {
-    const declined = SKILLS.map((s, i) => ({ name: s.name, diff: userScores[i] - prevScores[i], link: s.link }))
-      .filter(item => item.diff < 0)
-      .sort((a, b) => a.diff - b.diff);
-    if (declined.length > 0) {
-      declinedCard.classList.add('visible');
-      declinedList.innerHTML = declined.map(item =>
-        `<div class="declined-item">
-          <span class="declined-name">${item.name}</span>
-          <span class="declined-diff">${item.diff}</span>
-        </div>`
-      ).join('');
-    } else {
-      declinedCard.classList.remove('visible');
-    }
-  } else {
-    declinedCard.classList.remove('visible');
-  }
 
   initCaseTabs();
 }

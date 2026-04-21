@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文章力の5要素 | Business Skills</title>
+<meta property="og:title" content="文章力の5要素 | Business Skills">
+<meta property="og:description" content="書くことは考えること。曖昧な文章は曖昧な思考の証拠。結論先行・構造化・具体化・読者分析・編集力の5技術でビジネス文書を再現可能な設計に変える。">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+  --bg: #0a0e1a; --bg-card: #111827;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15); --border-core: rgba(245,158,11,0.5);
+}
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.nav-spacer { width: 80px; }
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; line-height: var(--lh-long); }
+.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge-core { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.bluf-chart { margin-bottom: var(--sp-3); }
+.bluf-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+.bluf-label { width: 140px; flex-shrink: 0; color: var(--text-muted); }
+.bluf-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
+.bluf-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.bluf-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+@media (max-width: 768px) { .hero h1 { font-size: 1.6rem; } .detail-grid { grid-template-columns: 1fr; } .panel-header { flex-wrap: wrap; } .panel { padding: var(--sp-6) var(--sp-4); } .tab { padding: 8px 12px; } .tab-title { display: none; } }
+@media (max-width: 480px) { .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); } .panel-title { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a class="nav-back" href="index.html"><i data-lucide="chevron-left" width="16" height="16"></i>Business Skills</a>
+  <span class="nav-title-text">文章力の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+<header class="hero">
+  <span class="hero-label">Business Skills Series · 14</span>
+  <h1><span>文章力</span>の5要素</h1>
+  <p class="hero-sub">書くことは考えること。曖昧な文章は曖昧な思考の証拠。結論先行・構造化・具体化・読者分析・編集力の5技術でビジネス文書を再現可能な設計に変える。</p>
+</header>
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)"><span class="num">01</span><span class="tab-title">結論先行</span><span class="core-dot"></span></button>
+    <button class="tab" data-i="1" onclick="go(1)"><span class="num">02</span><span class="tab-title">構造化</span></button>
+    <button class="tab" data-i="2" onclick="go(2)"><span class="num">03</span><span class="tab-title">具体化と数値化</span></button>
+    <button class="tab" data-i="3" onclick="go(3)"><span class="num">04</span><span class="tab-title">読者分析</span></button>
+    <button class="tab" data-i="4" onclick="go(4)"><span class="num">05</span><span class="tab-title">編集力</span></button>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill core" id="progress"></div></div></div>
+</nav>
+<main class="panel-wrap"><div class="panel" id="panel"></div></main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：文章が判断材料になる構造</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①結論先行</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②構造化</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③具体化</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④読者分析</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤編集</div>
+    </div>
+    <p class="insight-text">
+      ①結論先行は土台。読み手が最初の5秒で判断できる文書を作る。「読み終わらないと結論がわからない」構造を根絶する出発点。<br>
+      ②構造化（ピラミッド原則）で主張→根拠→事実の階層を作る。So What?/Why So?の検証が通れば、文章の論理に穴がない。<br>
+      ③具体化・数値化で情報を判断材料に変える。「早めに・コストが大きい・適切に」という曖昧語は情報ゼロ。5W1Hと数値に置き換える。<br>
+      ④読者分析で「誰に・何を届けるか」を起点にする。同じ事実でも相手が役員か部下かで文書の構成・語彙・強調点は全て変わる。<br>
+      ⑤編集（削る技術）で初稿を最終稿に変換する。30〜40%削れる文章は構造と具体化が機能した証拠。削ることへの抵抗感を捨てる。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。文書を書いたあと・送る前に確認する。</p>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox" id="c1" onchange="updateScore()"><label for="c1"><strong>①</strong> 文書の1行目（または件名・タイトル）に結論・依頼事項を書いた</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" onchange="updateScore()"><label for="c2"><strong>②</strong> ピラミッド構造（主張→根拠→事実）で文章を組み立て、So What?/Why So?の検証が通った</label></div>
+      <div class="check-item"><input type="checkbox" id="c3" onchange="updateScore()"><label for="c3"><strong>③</strong> 時間・コスト・数量を数値で記述し、「早めに・適切に・十分に」などの曖昧語を使わなかった</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" onchange="updateScore()"><label for="c4"><strong>④</strong> 読み手の役割・知識レベル・判断基準に合わせて内容を調整した</label></div>
+      <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 初稿を書いた後に削る編集プロセスを実施し、不要な敬語・クッション言葉・接続詞を除去した</label></div>
+    </div>
+    <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;"><i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧</a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;"><i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル</a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: '結論先行（BLUF）', theory: 'BLUF / ピラミッドの頂点 / 読み手の時間を最初に返す',
+      icon: 'triangle', core: true, badge: 'core',
+      summary: 'ビジネス文書の最大の失敗は「読み手が最後まで読まないと結論がわからない」構造。読み手は忙しく、全文を読む保証はない。結論を1行目に書くことで、読み手は最初の5秒で判断できる。BLUF（Bottom Line Up Front）はメールから報告書まで全ての文書に適用できる原則。',
+      theoryText: 'BLUF（米軍の通信原則）：「結論を最初に」。ピラミッド原則（Barbara Minto, McKinsey 1987）：主張→根拠→事実の順で構造化する。逆三角形構造（新聞記法）：最重要情報→重要情報→詳細の順。読み手はどこで読むのをやめても最重要情報を得ている。プロクター&ギャンブル（P&G）のライティング文化：「1ページメモ」で全ての意思決定を行う。',
+      business: '上司へのメール例：「NG：お世話になっております。先日ご依頼いただきました○○設備の調査について報告いたします。調査の結果、様々な観点から検討した結果、最終的には…（3段落後）…交換を推奨します。」OK：「結論：○○設備の即時交換を推奨します。理由：絶縁抵抗値が基準値の30%まで低下、継続使用で停止リスク高。費用：部品代80万、工期3日。詳細は以下。」読み手が5秒で判断できる。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">BLUF有無による読了率・理解度の差</div>
+        <div class="bluf-chart">
+          <div class="bluf-row">
+            <span class="bluf-label">BLUF有：読了率</span>
+            <div class="bluf-bar-wrap"><div class="bluf-bar" style="width:0%;background:#38bdf8" data-w="92"></div></div>
+            <span class="bluf-pct">92%</span>
+          </div>
+          <div class="bluf-row">
+            <span class="bluf-label">BLUF無：読了率</span>
+            <div class="bluf-bar-wrap"><div class="bluf-bar" style="width:0%;background:#f59e0b" data-w="54"></div></div>
+            <span class="bluf-pct">54%</span>
+          </div>
+          <div class="bluf-row">
+            <span class="bluf-label">BLUF有：即時判断</span>
+            <div class="bluf-bar-wrap"><div class="bluf-bar" style="width:0%;background:#38bdf8" data-w="88"></div></div>
+            <span class="bluf-pct">88%</span>
+          </div>
+          <div class="bluf-row">
+            <span class="bluf-label">BLUF無：即時判断</span>
+            <div class="bluf-bar-wrap"><div class="bluf-bar" style="width:0%;background:#ef4444" data-w="31"></div></div>
+            <span class="bluf-pct">31%</span>
+          </div>
+        </div>
+        <div class="detail-text" style="margin-top:8px;">読み手は平均11秒でスクロールを判断する（Nielsen Norman Group）。結論が見えない文書はその時点で脱落リスクが高い。</div>
+      </div>`,
+      deficit: '「なぜ・経緯・検討プロセス」から始まる文章は、読み手に「で、何が言いたいのか？」を強いる。3段落読んでも結論が出ない報告書は上司に「要点を言え」と言われる。稟議書で「背景→課題→検討→…→推奨案」という順序は、決裁者が結論を探して読み返す二度手間を生む。',
+      check: '文書の1行目（または件名・タイトル）に結論が書かれているか？ 「何をお願いしたいか・何を決めてほしいか」が冒頭で明確か？ 結論を先に読んだ人が本文を読まなくても判断できるか？'
+    },
+    {
+      num: '02', title: '構造化（ピラミッド原則）', theory: 'MECE / So What? / Why So? / グルーピング',
+      icon: 'layout',
+      summary: '構造化された文章は「主張→根拠（3つ以内）→事実」の階層を持つ。各層は「So What?（だから何？）」と「Why So?（なぜそう言えるか？）」で検証できる。構造なしの文章は「思いついた順の情報の羅列」になり、読み手が意味を組み立てなければならない。',
+      theoryText: 'ピラミッド原則（Barbara Minto）：演繹的グルーピング（主張→論拠）と帰納的グルーピング（事例→結論）の2パターン。MECE（Mutually Exclusive, Collectively Exhaustive）：根拠はダブりなく漏れなく。3の法則：根拠は3つ以内が記憶に残りやすい（7±2ミラーの法則の応用）。So What?/Why So?検証：上から下へ「なぜそう言えるか（Why So？）」、下から上へ「だから何か（So What？）」が成立すれば構造が機能している。',
+      business: '設備投資稟議の構造例：「主張：○○設備を今期中に更新すべき。根拠①：設備老朽化によるリスク（絶縁低下・停止確率30%増）、根拠②：更新コストvsダウンタイムコストの試算（ROI3年）、根拠③：補助金申請期限（今期末）。各根拠を事実・データで支持」。So What?検証：「老朽化データ→だから更新リスクがある（So What？）」が成立する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">ピラミッド構造の図解（稟議書の例）</div>
+        <div class="detail-text">
+          <strong style="color:var(--accent-core);">▲ 頂点：主張</strong> →「○○設備を今期中に更新すべき」<br><br>
+          <strong style="color:var(--text);">├ 根拠①</strong>：老朽化リスク（絶縁低下・停止確率30%増）<br>
+          <strong style="color:var(--text);">├ 根拠②</strong>：更新コストvs損失コスト（ROI3年）<br>
+          <strong style="color:var(--text);">└ 根拠③</strong>：補助金申請期限（今期末）<br><br>
+          各根拠の下に事実・データを配置。<br>
+          So What?（下→上）：「老朽化データ→だから更新リスクがある」<br>
+          Why So?（上→下）：「更新すべき→なぜならROIが3年だから」
+        </div>
+      </div>`,
+      deficit: '「Aについて、BとCがある。また、Dも重要で、さらにEの観点から…」という列挙型の文章は、何が主張で何が根拠かが読み手に伝わらない。情報が多いほど構造化が必要なのに、「情報が多い」を言い訳にする人は多い。構造なしの文章は時間と信頼を失う。',
+      check: '文章の各段落に「主張（何を言いたいか）」があるか？ 主張をサポートする根拠は3つ以内にまとまっているか？ So What?/Why So?の検証ができるか？'
+    },
+    {
+      num: '03', title: '具体化と数値化', theory: '曖昧語の排除 / 数値化の6パターン / 固有名詞化',
+      icon: 'hash',
+      summary: '「早めに対応します」「コストが大きい」「検討します」は情報ゼロの文章。読み手は「いつ・いくら・何を」を知りたい。曖昧語を具体的な固有名詞・数値・期日に置き換えることで、文章は判断材料になる。具体化とは「相手が行動できる情報に変換すること」。',
+      theoryText: '曖昧語禁止（行政文書指針から民間まで）：「速やかに→〇月〇日まで」「適切に→〇〇の基準で」「十分な→〇〇以上」。5W1H（Who/What/When/Where/Why/How）：具体化の網羅フレーム。数値化の6パターン（岡田著）：量・時間・コスト・確率・比率・順位。固有名詞化：「関係者」→「製造課・山田係長・外注A社」。「対策を実施」→「〇月〇日に〇〇を〇〇円で実施」。',
+      business: 'NG文例：「本設備は老朽化が進んでおり、早急な対応が必要です。コストはある程度かかりますが、安全面を考慮すると更新を検討すべきです。」OK文例：「本設備（制御盤○○）は製造から23年が経過し、絶縁抵抗値が0.3MΩ（基準値1MΩの30%）まで低下。2026年度中に更新しない場合、停止確率は年30%増と推定。更新費用：部品+工事=1,200万円。代替措置なし。推奨：2026年9月発注、11月施工完了。」',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">曖昧語 → 具体語 変換例</div>
+        <div class="detail-text">
+          <strong style="color:#f87171;">早めに</strong> → <strong style="color:#38bdf8;">2026年5月31日（金）17時まで</strong><br>
+          <strong style="color:#f87171;">コストが大きい</strong> → <strong style="color:#38bdf8;">部品+工事費 合計1,200万円</strong><br>
+          <strong style="color:#f87171;">検討します</strong> → <strong style="color:#38bdf8;">5月中に可否を回答します</strong><br>
+          <strong style="color:#f87171;">関係者に共有</strong> → <strong style="color:#38bdf8;">製造課長・電計チームリーダーに転送</strong><br>
+          <strong style="color:#f87171;">十分な品質</strong> → <strong style="color:#38bdf8;">絶縁抵抗値1MΩ以上・耐圧試験合格</strong><br>
+          <strong style="color:#f87171;">適切に対処</strong> → <strong style="color:#38bdf8;">手順書Rev.3の第4条に従い実施</strong>
+        </div>
+      </div>`,
+      deficit: '曖昧な報告を受けた管理職は「もう少し具体的に言ってくれ」と言わざるを得ず、1往復無駄になる。「コストが大きいので検討が必要」という稟議書は差し戻しが確実。具体化なしの文章は「ボールを相手に投げ返している」状態。作成者の思考が整理されていないことが文章に露出する。',
+      check: '時間・コスト・数量・確率の数値が入っているか？ 「早めに・適切に・十分に」などの曖昧語を具体的な期日・基準・数量に置き換えたか？ 「誰が・何を・いつまでに」が5W1Hで明確か？'
+    },
+    {
+      num: '04', title: '読者分析（相手視点）', theory: '読者ペルソナ / 情報の非対称性 / 相手の判断軸',
+      icon: 'user',
+      summary: '文章を書く目的は「書き手が言いたいことを書く」ではなく「読み手が行動・判断できる状態を作ること」。読み手が何を知っているか・何を気にしているか・何を決めたいかを起点に書く。同じ事実でも、相手が部下か上司かメーカーかで全く異なる文章になる。',
+      theoryText: 'コンテキスト分析：読み手の知識レベル・役割・関心・感情状態を推測する。知識の呪い（Curse of Knowledge）：一度知識を得ると「知らない状態」を想像できなくなる認知バイアス。専門家が専門用語で書く失敗の原因。相手の判断軸：意思決定者はコスト・リスク・期間・効果の4軸で判断する。これらを文頭に揃える。読者目線チェック：「この文書を読んだ人は次に何をするか・何を決めるか」を逆算して構成する。',
+      business: '同じ「設備更新」の文書でも：上司（役員）向け：コスト・リスク・効果・期間を3点セットで冒頭提示。技術的詳細は別添え。製造課向け：停止時間・作業影響・日程を冒頭。費用は後。外注業者向け：仕様・条件・回答期限を明示。曖昧表現禁止。若手担当者向け：なぜやるか（背景）→何をやるか（手順）→わからない時の連絡先。同じ事実から異なる文書を作る判断が読者分析。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">相手別 書き方変換表</div>
+        <div class="detail-text">
+          <strong style="color:var(--accent-core);">上司・役員</strong>：結論1行目→コスト・期間・効果の3点→詳細は別添え。本文10行以内。<br>
+          <strong style="color:var(--accent-core);">製造課</strong>：停止時間・影響範囲・日程を冒頭。費用・技術背景は後段。<br>
+          <strong style="color:var(--accent-core);">外注業者</strong>：仕様・条件・回答期限を箇条書きで明示。曖昧表現ゼロ。<br>
+          <strong style="color:var(--accent-core);">部下・若手</strong>：なぜやるか（背景）→何をやるか→不明時の連絡先。問い返し型で理解を確認。<br>
+          <strong style="color:var(--accent-core);">社外・メーカー</strong>：背景→要求仕様→回答期限を形式的・明確に。
+        </div>
+      </div>`,
+      deficit: '書き手中心の文章（「私が調査した結果、〇〇の観点から〇〇と考えます」）は、読み手に解釈の労力を強いる。技術者が技術者目線でエンジニアリング詳細を書いた報告書を経営者に送っても、経営者が必要な「意思決定情報」は得られない。文章力の差は「情報量」ではなく「相手に何を届けるか」の差。',
+      check: '読み手の「役割・知識レベル・関心・判断基準」を想定して書いたか？ 「読み手がこの文書を読んだ後に何をするか」を逆算して構成したか？ 専門用語・前提知識を読み手に合わせて調整したか？'
+    },
+    {
+      num: '05', title: '編集力（削る技術）', theory: '余剰語削除 / 1パラグラフ1メッセージ / 音読テスト',
+      icon: 'scissors',
+      summary: '良い文章は「書いた後に削る」プロセスで完成する。初稿は思考の記録であり、最終稿ではない。「削れる言葉は全部削る」原則に従うと、文章の明確さ・読みやすさ・信頼感が上がる。削ることへの抵抗感は「書いた努力を否定したくない」感情であり、読み手への価値とは無関係。',
+      theoryText: '「文章読本」（谷崎潤一郎・丸谷才一）：簡潔さは最大の美徳。Strunk & White「The Elements of Style」：Omit needless words（不必要な言葉を省け）。1パラグラフ1メッセージ：1段落に複数の主張を入れない。各段落の先頭文（トピックセンテンス）が主張で、残りは補足。音読テスト：読んでいて息が切れる文は長すぎる。「〜であり、〜であることから、〜のため、〜と考えられます。」は削減対象。',
+      business: '削除候補の典型パターン：「〜させていただきます」→「〜します」。「〜ということが考えられます」→「〜です」。「〜の観点から考えると」→（削除）。「以上のことから」→（削除）。「なるべく」→（削除または数値に置換）。稟議書から敬語・クッション言葉・接続詞を削ると、文量が30〜40%削減され、内容が明確になる。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">削除前後の文例比較</div>
+        <div class="detail-text">
+          <strong style="color:#f87171;">削除前（78字）</strong><br>
+          「本件につきましては、様々な観点から慎重に検討いたしました結果、安全面を考慮するとなるべく早めに対応することが望ましいと考えられますので、ご検討いただければ幸いです。」<br><br>
+          <strong style="color:#38bdf8;">削除後（29字）</strong><br>
+          「安全リスクのため、5月末日までに対応を決定してください。」<br><br>
+          削減率：63%。情報密度は上がり、読み手の行動が明確になる。
+        </div>
+      </div>`,
+      deficit: '「丁寧に書くことが礼儀」という思い込みが、読みにくく長い文章を生む。「させていただきます」を多用した10行の段落は、「します」で書き直した5行より礼儀正しくない。冗長な文章は「書いた努力」を示すが、読み手の時間を奪っている。A4半ページで伝わる内容をA4 2ページにする人と仕事をすると、時間の価値観が合わないと感じる。',
+      check: '初稿を書いた後に「削れる言葉を探す」プロセスを実施したか？ 各段落に1つのメッセージがあるか？ 「させていただきます・なるべく・ということ」を削ったか？ A4半ページ以内に収まっているか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const d = items[i];
+    const isCore = !!d.core;
+    const badgeHtml = d.badge === 'core' ? `<span class="badge-core">CORE</span>` : '';
+    const afterGrid = d.customAfterGrid || '';
+    document.getElementById('panel').className = `panel${isCore ? ' core' : ''}`;
+    document.getElementById('panel').innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${d.icon}" width="24" height="24"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${d.num}</div>
+          <div class="panel-title">${d.title}</div>
+          <div class="panel-theory">${d.theory}</div>
+        </div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <p class="panel-summary">${d.summary}</p>
+      <div class="detail-grid">
+        <div class="detail-block"><div class="detail-label">理論的根拠</div><div class="detail-text">${d.theoryText}</div></div>
+        <div class="detail-block"><div class="detail-label">現場への実装</div><div class="detail-text">${d.business}</div></div>
+      </div>
+      ${afterGrid}
+      <div class="deficit-block"><div class="deficit-label">⚠ 欠如事例・コスト</div><div class="deficit-text">${d.deficit}</div></div>
+      <div class="check-block"><div class="check-label">セルフチェック</div><div class="check-text">${d.check}</div></div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i-1})" ${i===0?'disabled':''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label"><span class="nav-btn-hint">PREV</span><span>${i>0?items[i-1].title:''}</span></div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i+1})" ${i===items.length-1?'disabled':''}>
+          <div class="nav-btn-label"><span class="nav-btn-hint">NEXT</span><span>${i<items.length-1?items[i+1].title:''}</span></div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+    animateBars(document.getElementById('panel'));
+  }
+
+  function animateBars(container) {
+    (container||document).querySelectorAll('.bluf-bar').forEach(bar => {
+      const w = bar.dataset.w; bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w+'%'; }, 100);
+    });
+  }
+
+  function go(i) {
+    if (i<0||i>=items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i===i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i+1)/items.length*100)+'%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 100;
+    if (window.scrollY > panelTop) window.scrollTo({top: panelTop, behavior: 'smooth'});
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName==='INPUT') return;
+    if (e.key==='ArrowRight') go(current+1);
+    if (e.key==='ArrowLeft') go(current-1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['','1つ：①から。次の文書の1行目に結論を置いて送信前に確認する','2つ：②ピラミッド構造でSo What?/Why So?の検証を加える','3つ：中級。③具体化・数値化で曖昧語ゼロの文書を作る習慣を定着させる','4つ：高水準。④読者分析を起点に相手別の文書設計を実践する','5つ：5要素が機能している。文章が再現可能な判断材料として機能している状態'];
+    document.getElementById('score-display').innerHTML = `<span id="score-num">${checked}</span> / 5 — ${messages[checked]||''}`;
+  }
+
+  go(0);
+});
+</script>
+</body>
+</html>

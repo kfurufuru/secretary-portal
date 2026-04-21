@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頭が良い人の5要素 | Business Skills</title>
+<meta property="og:title" content="頭が良い人の5要素 | Business Skills">
+<meta property="og:description" content="IQ・学歴でも賢さでもない。ビジネスで差がつく認知能力の5要素と実損を解剖する。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="頭が良い人の5要素 | Business Skills">
+<meta name="twitter:description" content="IQ・学歴でも賢さでもない。ビジネスで差がつく認知能力の5要素と実損を解剖する。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-base); background: var(--bg); color: var(--text);
+  line-height: var(--lh-body); font-size: var(--fs-body);
+  line-break: strict; overflow-wrap: break-word; word-break: normal;
+}
+
+/* ── Nav ── */
+.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav a { color: var(--accent); text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+
+/* ── Hero ── */
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+/* ── Sticky Tab Nav（今どこにいるかを常に示す） ── */
+.tab-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: var(--sp-3) var(--sp-4);
+}
+.tab-nav-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; gap: var(--sp-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+}
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  transition: var(--transition);
+}
+.tab.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--border);
+}
+.tab.active .num {
+  background: var(--accent);
+  color: var(--bg);
+}
+.tab.active.core {
+  background: var(--accent-core-dim);
+  color: var(--accent-core);
+  border-color: var(--border-core);
+}
+.tab.active.core .num {
+  background: var(--accent-core);
+  color: var(--bg);
+}
+.tab .core-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-core);
+  display: inline-block;
+}
+.tab .feat-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+/* ── Progress bar under tabs ── */
+.progress-wrap {
+  max-width: 900px; margin: 0 auto;
+  padding: 0 var(--sp-4);
+  margin-top: var(--sp-3);
+}
+.progress-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.progress-fill.core { background: var(--accent-core); }
+
+/* ── Main panel ── */
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  position: relative;
+  animation: fadeIn 0.25s ease;
+}
+.panel.core { border-color: var(--border-core); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header {
+  display: flex; align-items: flex-start; gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-6);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.panel-icon {
+  width: 52px; height: 52px;
+  background: var(--accent-dim);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--accent);
+}
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary {
+  font-size: 1rem;
+  color: var(--text);
+  line-height: var(--lh-long);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-4);
+  background: rgba(255,255,255,0.02);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+/* ── Prev / Next ── */
+.panel-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: var(--sp-8); padding-top: var(--sp-6);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  gap: var(--sp-3);
+}
+.nav-btn {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  flex: 1;
+  max-width: 45%;
+}
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ── Insight ── */
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+/* ── Self-check ── */
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+/* ── MI Theory ── */
+.mi-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.mi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.mi-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.mi-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.mi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); }
+.mi-item { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); border: 1px solid rgba(255,255,255,0.04); transition: var(--transition); }
+.mi-item:hover { background: var(--accent-dim); border-color: var(--border); }
+.mi-item-icon { width: 36px; height: 36px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--accent); margin-bottom: var(--sp-3); }
+.mi-item-name { font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.mi-item-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ── IQ×EQ ── */
+.iq-eq-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.iq-eq-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.iq-eq-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.iq-eq-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.iq-eq-grid { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: var(--sp-4); }
+.iq-col, .eq-col, .cross-col { border-radius: var(--radius-md); padding: var(--sp-5); }
+.iq-col { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.15); }
+.eq-col { background: rgba(251,146,60,0.06); border: 1px solid rgba(251,146,60,0.15); }
+.cross-col { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); }
+.col-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--sp-3); }
+.iq-col .col-label { color: var(--accent); }
+.eq-col .col-label { color: #fb923c; }
+.cross-col .col-label { color: #a78bfa; }
+.col-desc { font-size: 0.7rem; color: var(--text-dim); margin-bottom: var(--sp-4); }
+.col-items { display: flex; flex-direction: column; gap: var(--sp-2); }
+.col-item { font-size: var(--fs-sm); color: var(--text-muted); padding-left: var(--sp-3); position: relative; line-height: var(--lh-body); }
+.col-item::before { content: '·'; position: absolute; left: 0; }
+.iq-col .col-item::before { color: var(--accent); }
+.eq-col .col-item::before { color: #fb923c; }
+.cross-col .col-item { color: var(--text); font-weight: 600; }
+.cross-col .col-item::before { color: #a78bfa; }
+
+@media (max-width: 768px) {
+  .mi-grid { grid-template-columns: repeat(2, 1fr); }
+  .iq-eq-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Paradigm Shift ── */
+.paradigm-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.paradigm-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.paradigm-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.paradigm-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.paradigm-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-4); }
+.paradigm-era { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: var(--sp-6); }
+.paradigm-era.future { background: var(--accent-dim); border: 1px solid var(--border); }
+.paradigm-era-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.paradigm-era.future .paradigm-era-label { color: var(--accent); }
+.paradigm-era-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-3); }
+.paradigm-era ul { list-style: none; display: flex; flex-direction: column; gap: var(--sp-2); }
+.paradigm-era ul li { font-size: var(--fs-sm); color: var(--text-muted); padding-left: var(--sp-3); position: relative; line-height: var(--lh-body); }
+.paradigm-era ul li::before { content: '·'; position: absolute; left: 0; color: var(--text-dim); }
+.paradigm-era.future ul li { color: var(--text); }
+.paradigm-era.future ul li::before { color: var(--accent); }
+
+/* ── Habits ── */
+.habits-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.habits-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.habits-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.habits-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.habits-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-4); }
+.habit-item { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: var(--sp-6); }
+.habit-icon { width: 44px; height: 44px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--accent); margin-bottom: var(--sp-4); }
+.habit-name { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-2); }
+.habit-tag { font-size: 0.68rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--sp-3); }
+.habit-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+@media (max-width: 768px) {
+  .paradigm-grid, .habits-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Top Nav ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,14,26,0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0 24px; height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: #94a3b8;
+  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
+}
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text {
+  font-size: 0.78rem; color: #8892a0; font-weight: 600;
+  letter-spacing: 0.06em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
+}
+.nav-spacer { width: 80px; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+
+/* ── Structure Map ── */
+.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
+.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
+.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
+.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
+.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.smap-band { width: 100%; max-width: 540px; }
+.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.smap-band-tag.core { color: var(--accent-core); }
+.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
+.smap-center { display: flex; justify-content: center; }
+.smap-node {
+  flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition);
+  text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center;
+  font-family: inherit; color: inherit;
+}
+.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
+.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
+.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
+.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
+.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
+.smap-node.core-node .sn-num { color: var(--accent-core); }
+.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
+.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
+.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
+.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
+.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
+.smap-axiom strong { color: var(--accent-core); }
+@media (max-width: 480px) {
+  .smap-node { max-width: 130px; }
+  .smap-node.core-node { max-width: 200px; }
+  .sn-name { font-size: 0.78rem; }
+  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+}
+</style>
+</head>
+<body>
+<div id="reading-progress" style="position:fixed;top:48px;left:0;width:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);z-index:200;transition:width 0.08s linear;pointer-events:none;"></div>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">頭が良い人の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1>「<span>頭が良い</span>」とは何か</h1>
+  <p class="hero-sub">IQ・学歴でも「賢さ」でもない。ビジネスで差がつく認知能力の5要素と、それぞれの欠如が引き起こす実損。</p>
+</header>
+
+<!-- Structure Map -->
+<section class="structmap-section">
+  <div class="structmap-card">
+    <div class="structmap-hd">
+      <h2 class="structmap-title">5要素の構造マップ</h2>
+      <p class="structmap-hint">クリックで詳細へジャンプ</p>
+    </div>
+    <div class="structmap-body">
+      <div class="smap-band">
+        <div class="smap-band-tag">INPUT — 認知の燃料</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(0)">
+            <span class="sn-num">01</span>
+            <span class="sn-name">パターン抽出</span>
+            <span class="sn-sub">流動性知能</span>
+            <span class="sn-dmg">⚠ 解決時間 2.3倍</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(1)">
+            <span class="sn-num">02</span>
+            <span class="sn-name">知識転用</span>
+            <span class="sn-sub">結晶性知能</span>
+            <span class="sn-dmg">⚠ 生産性 ▼40%</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag core">CORE — エラー修正回路</div>
+        <div class="smap-center">
+          <button class="smap-node core-node" onclick="goAndScroll(2)">
+            <span class="sn-core-badge">CORE</span>
+            <span class="sn-num">03</span>
+            <span class="sn-name">メタ認知 &amp; エラー訂正</span>
+            <span class="sn-sub">ダブルループ学習</span>
+            <span class="sn-dmg">⚠ 同じミス 3.2回繰り返す</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">OUTPUT — 判断・協働への拡張</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(3)">
+            <span class="sn-num">04</span>
+            <span class="sn-name">確率的判断</span>
+            <span class="sn-sub">ベイズ更新</span>
+            <span class="sn-dmg">⚠ LCC +18%高</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(4)">
+            <span class="sn-num">05</span>
+            <span class="sn-name">他者モデリング</span>
+            <span class="sn-sub">Theory of Mind</span>
+            <span class="sn-dmg">⚠ 遅延率 2.1倍</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-axiom">
+        <strong>最初に鍛えるべきは③</strong> — 自己修正機能なしには、①② は誤方向への加速装置になる
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sticky Tab Nav -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab" data-i="0" onclick="go(0)">
+      <span class="num">01</span>
+      <span class="tab-title">パターン抽出</span>
+      <span class="feat-dot" title="AI時代の優位性"></span>
+    </button>
+    <button class="tab" data-i="1" onclick="go(1)">
+      <span class="num">02</span>
+      <span class="tab-title">知識転用</span>
+    </button>
+    <button class="tab core" data-i="2" onclick="go(2)">
+      <span class="num">03</span>
+      <span class="tab-title">メタ認知</span>
+      <span class="core-dot" title="CORE"></span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span>
+      <span class="tab-title">確率的判断</span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span>
+      <span class="tab-title">他者モデリング</span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  </div>
+</nav>
+
+<!-- Main panel -->
+<main class="panel-wrap">
+  <div class="panel" id="panel">
+    <!-- content injected by JS -->
+  </div>
+</main>
+
+<!-- Insight -->
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：なぜこの順番で鍛えるべきか</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①パターン抽出</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②知識転用</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③メタ認知（訂正）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④確率的判断</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤協働設計</div>
+    </div>
+    <p class="insight-text">
+      ①と②は認知の「燃料」。入力の質と既存知識の密度が出力を決める。<br>
+      ③は全体のエラー修正機構。ここが壊れていると、①②が優れていても誤った方向に高速で進む。<br>
+      ④は不確実性への対処。情報が揃わない状態で行動を選択するための計算エンジン。<br>
+      ⑤は社会的拡張。一人の認知能力を、組織・チームの集合知に増幅する仕組み。<br><br>
+      最初に鍛えるべきは③。自己修正機能がなければ、他の能力は全て誤った方向への加速装置になる。<br><br>
+      AI時代が求める「真の知能3本柱」：<strong style="color:var(--text);">地頭力（問いを立て、ルールを創る）</strong>、<strong style="color:var(--text);">メタ認知と知的謙虚さ（自らを疑い、更新する）</strong>、<strong style="color:var(--text);">EQと社会的知性（感情を動かし、協働する）</strong>。この3つはいずれも③メタ認知なしには機能しない。
+    </p>
+  </div>
+</section>
+
+<!-- MI Theory -->
+<section class="mi-section">
+  <div class="mi-card">
+    <h2 class="mi-title">多重知能理論（MI）：8つの認知エンジン</h2>
+    <p class="mi-sub">ハワード・ガードナーが提唱。人間に少なくとも8つの独立した知能が存在し、誰もがこれを複合的に持つ。「強弱のプロファイル」が個人の特性となる。</p>
+    <div class="mi-grid">
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="book-open" width="18" height="18"></i></div>
+        <div class="mi-item-name">言語・語学知能</div>
+        <div class="mi-item-desc">言葉を巧みに扱う</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="git-branch" width="18" height="18"></i></div>
+        <div class="mi-item-name">論理・数学的知能</div>
+        <div class="mi-item-desc">パターン・因果関係の解明</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="map" width="18" height="18"></i></div>
+        <div class="mi-item-name">視覚・空間的知能</div>
+        <div class="mi-item-desc">全体像の俯瞰的把握</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="music" width="18" height="18"></i></div>
+        <div class="mi-item-name">音楽・リズム知能</div>
+        <div class="mi-item-desc">音程・リズムの認識</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="activity" width="18" height="18"></i></div>
+        <div class="mi-item-name">身体・運動感覚知能</div>
+        <div class="mi-item-desc">身体を使った表現・操作</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="leaf" width="18" height="18"></i></div>
+        <div class="mi-item-name">博物学的知能</div>
+        <div class="mi-item-desc">事象の分類と共通点の発見</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="users" width="18" height="18"></i></div>
+        <div class="mi-item-name">対人的知能</div>
+        <div class="mi-item-desc">他者の感情・意図の読み取り</div>
+      </div>
+      <div class="mi-item">
+        <div class="mi-item-icon"><i data-lucide="user" width="18" height="18"></i></div>
+        <div class="mi-item-name">内省的知能</div>
+        <div class="mi-item-desc">自己の正確な把握と自律</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IQ×EQ -->
+<section class="iq-eq-section">
+  <div class="iq-eq-card">
+    <h2 class="iq-eq-title">IQとEQの交差点：真に賢い人の7つの特徴</h2>
+    <p class="iq-eq-sub">現代における「頭の良さ」は、情報処理能力（IQ）と心の知能指数（EQ）の高度な融合によって生まれる。</p>
+    <div class="iq-eq-grid">
+      <div class="iq-col">
+        <div class="col-label">IQ — 情報処理・論理</div>
+        <div class="col-desc">計算・推論・分析</div>
+        <div class="col-items">
+          <div class="col-item">客観的な視点での冷静な判断</div>
+          <div class="col-item">発想力と柔軟な応用力</div>
+          <div class="col-item">旺盛な知的好奇心</div>
+        </div>
+      </div>
+      <div class="cross-col">
+        <div class="col-label">IQ × EQ 共通</div>
+        <div class="col-desc">両方が交わる特徴</div>
+        <div class="col-items">
+          <div class="col-item">難しい概念を簡単な言葉で説明できる（説明力）</div>
+          <div class="col-item">知ったかぶりをしない（知的謙虚さ）</div>
+          <div class="col-item">自ら率先して行動する（主体性）</div>
+        </div>
+      </div>
+      <div class="eq-col">
+        <div class="col-label">EQ — 共感・胆力・統制</div>
+        <div class="col-desc">感情・関係・粘り強さ</div>
+        <div class="col-items">
+          <div class="col-item">感情のコントロール</div>
+          <div class="col-item">共感力と傾聴力</div>
+          <div class="col-item">困難への粘り強さ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Paradigm Shift -->
+<section class="paradigm-section">
+  <div class="paradigm-card">
+    <h2 class="paradigm-title">AI時代における「頭の良さ」の変遷</h2>
+    <p class="paradigm-sub">検索コストの低下と生成AIの台頭により、人間の知性が求められるレイヤーが根本的に変化している。</p>
+    <div class="paradigm-grid">
+      <div class="paradigm-era">
+        <div class="paradigm-era-label">過去 — 情報希少時代</div>
+        <div class="paradigm-era-name">物知り・暗記力</div>
+        <ul>
+          <li>定義：知識の蓄積量</li>
+          <li>暗記力と正確な情報再現</li>
+          <li>一つの定規で測る知性</li>
+        </ul>
+      </div>
+      <div class="paradigm-era">
+        <div class="paradigm-era-label">近代 — 情報過多・処理時代</div>
+        <div class="paradigm-era-name">IQ・論理的思考</div>
+        <ul>
+          <li>定義：情報処理スピード</li>
+          <li>正解を導くアルゴリズム的思考</li>
+          <li>IQによる数値化・序列化</li>
+        </ul>
+      </div>
+      <div class="paradigm-era future">
+        <div class="paradigm-era-label">AI時代〜未来 — VUCA</div>
+        <div class="paradigm-era-name">問いを立て、価値を創る</div>
+        <ul>
+          <li>定義：未知への適応・価値創造</li>
+          <li>AIが持てない「問いを立てる力」</li>
+          <li>「共感」「ルールの破壊と再構築」</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Habits -->
+<section class="habits-section">
+  <div class="habits-card">
+    <h2 class="habits-title">賢者の3つの思考習慣</h2>
+    <p class="habits-sub">常に集中している状態だけが生産的ではない。脳の潜在能力を引き出す「意図的な余白と遅延」の技術。</p>
+    <div class="habits-grid">
+      <div class="habit-item">
+        <div class="habit-icon"><i data-lucide="lightbulb" width="22" height="22"></i></div>
+        <div class="habit-tag">DMN活用</div>
+        <div class="habit-name">デフォルト・モード・ネットワーク</div>
+        <div class="habit-desc">「ぼーっとする」時間や散歩中にDMNが活性化し、過去の経験と知識を結びつけて斬新なアイデアを創出する。意図的なオフタイムは怠慢ではなく、創造性への投資。</div>
+      </div>
+      <div class="habit-item">
+        <div class="habit-icon"><i data-lucide="clock" width="22" height="22"></i></div>
+        <div class="habit-tag">あえて遅く考える</div>
+        <div class="habit-name">遅考術（Slow Thinking）</div>
+        <div class="habit-desc">最初に思いついた直感やバイアスをあえて一度否定し、真の因果関係を探ることで致命的なエラーを回避する。「即答」の癖が「深い誤り」を量産する。</div>
+      </div>
+      <div class="habit-item">
+        <div class="habit-icon"><i data-lucide="calendar" width="22" height="22"></i></div>
+        <div class="habit-tag">スケジュール設計</div>
+        <div class="habit-name">戦略的余白（Slack Time）</div>
+        <div class="habit-desc">受動的な予定を削り、主体的に使える「白い時間」を数単位の「スキマ時間」として厳格に確保する。埋まった予定表は思考の墓場。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Self-check -->
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。今の自分の認知能力を診断する。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <input type="checkbox" id="c1" onchange="updateScore()">
+        <label for="c1"><strong>①</strong> 別々の問題を「同じ構造だ」と接続できる頻度が高い</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c2" onchange="updateScore()">
+        <label for="c2"><strong>②</strong> 過去の成功・失敗を「なぜそうなったか」の構造で人に説明できる</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c3" onchange="updateScore()">
+        <label for="c3"><strong>③</strong> 先月の判断ミスを「自分の何が原因か」で3つ挙げられる</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4" onchange="updateScore()">
+        <label for="c4"><strong>④</strong> 意思決定時に「確率と期待値」を意識して選択している</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5" onchange="updateScore()">
+        <label for="c5"><strong>⑤</strong> 相手の「心配していること」を提案前に言語化できる</label>
+      </div>
+    </div>
+    <div class="score-display" id="score-display">
+      <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<section style="max-width:860px;margin:0 auto;padding:0 24px 48px;">
+  <a href="kozo-communication.html" style="display:flex;align-items:center;justify-content:space-between;background:#111827;border:1px solid rgba(56,189,248,0.2);border-radius:16px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color 0.2s,box-shadow 0.2s;" onmouseover="this.style.borderColor='rgba(56,189,248,0.5)';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(56,189,248,0.2)';this.style.boxShadow=''">
+    <div>
+      <div style="font-size:0.72rem;color:#38bdf8;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">次のシリーズ — 02</div>
+      <div style="font-size:1.1rem;font-weight:700;color:#f1f5f9;">構造化コミュニケーションの5要素</div>
+      <div style="font-size:0.82rem;color:#94a3b8;margin-top:4px;">伝わる設計の原則</div>
+    </div>
+    <span style="color:#38bdf8;font-size:1.4rem;">→</span>
+  </a>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+var go, goAndScroll;
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: 'パターン抽出と圧縮', theory: 'Fluid G（流動性知能）',
+      icon: 'scatter-chart', badge: 'feat', badgeText: 'AI時代の優位性',
+      summary: '無関係に見えるデータの束から、共通構造を見出して最小の変数で表現する能力。AIが情報検索・知識転用を代替するほど、「まだ名前のないパターンを発見する力」が人間の絶対的優位性になる。',
+      theoryText: 'Cattellの流動性知能（Fluid Intelligence）。新規問題への適応・帰納的推論・作業記憶の効率が構成要素。教育や経験に依存しない"素の処理能力"に近い。',
+      business: '複数設備のトラブル報告から「配線ルートの問題」という共通因子を即座に特定する。現場の断片情報から本質課題を1行で言語化できる。',
+      deficit: 'パターン認識が弱い技術者は毎回一から原因調査を行い、解決時間が平均<strong>2.3倍</strong>になる（GE Digital 2021）。同じ根因から発生するトラブルに何度も対処する属人的ループが固定化する。',
+      check: '「同じような失敗が別の部署・設備でも起きていないか」を定期的に意識しているか？ 報告を受けたとき、即座に「これは○○と同じ構造だ」と接続できるか？'
+    },
+    {
+      num: '02', title: '知識のトランスファー', theory: 'Crystallized G（結晶性知能）',
+      icon: 'brain',
+      summary: '過去の学習・経験を新しい文脈・領域へ転用する能力。学んだ知識がそのまま眠るのではなく、異なる問題への解として再活性化される。',
+      theoryText: 'Cattellの結晶性知能。言語能力・手続き記憶・蓄積された判断パターンが基盤。年齢とともに成長しやすいが、更新がなければ陳腐化する。',
+      business: '電気保全で身につけた絶縁管理の考え方を計装ループ点検に転用する。A工場の改善手順をそのままB工場に横展開せず、条件の違いを補正して適用できる。',
+      deficit: 'トランスファーが弱い組織ではノウハウが属人化し、キーマン離職で生産性が<strong>平均40%低下</strong>する（Deloitte Human Capital 2022）。毎回ゼロから学習する非効率が蓄積する。',
+      check: '過去の成功事例を「なぜうまくいったか」の構造で説明できるか？「前も同じことをやった」ではなく「あの時の○○の原理が今回も使える」と言えるか？'
+    },
+    {
+      num: '03', title: 'メタ認知とエラー訂正', theory: 'ダブルループ学習 × System 2',
+      icon: 'scan-search', core: true, badge: 'core', badgeText: 'CORE',
+      summary: '自分の思考プロセスを"外から"観察し、バイアスやミスのパターンを検出・修正する能力。他の4要素が「できる人の属性」なら、これだけが「自己改善の回路」そのもの。欠如すると同じミスを繰り返し続ける。',
+      theoryText: 'Argyrisのダブルループ学習：行動修正（シングル）ではなく判断の前提・価値観ごと問い直す（ダブル）。Kahnemanの「System 2」：直感に抗い意識的な推論を走らせる。メタ認知は「知識層（自己の特性・課題の性質・解決手立てを把握する）」と「活動層（現在のモニタリング→目標に向けたコントロール）」の2層が循環することで機能する。',
+      business: '「なぜその判断をしたか」を事後に言語化し、誤りのパターンを記録→意思決定チェックリストを自分で更新する。朝令暮改と見えるが、実は高速な前提更新。',
+      extra: { label: '陥りやすいバイアス', text: '①確証バイアス（反証を無視する）　②ダニング＝クルーガー効果（わかっていない領域ほど自信過剰になる）　③後知恵バイアス（「最初からわかっていた」という錯覚）' },
+      deficit: 'メタ認知が低い管理職は同じ意思決定ミスを<strong>平均3.2回</strong>繰り返す（McKinsey 2019）。振り返りをしないチームは、前回の失敗原因を「外部要因」と帰属し続け、改善サイクルが回らない。',
+      check: '① 先月の判断ミスを「自分の何が原因か」で3つ言えるか？　② 「自分はわかっている」と感じている分野で、実は理解が浅い領域を指摘された経験があるか？　③ 意思決定の事後レビューを習慣化しているか？'
+    },
+    {
+      num: '04', title: '確率的意思決定と長期視点', theory: 'ベイズ更新 × 期待効用理論',
+      icon: 'scale',
+      summary: '不確実な状況下で期待値とリスクを定量化し、短期損失を受け入れながら長期最適解を選ぶ能力。「気合い」ではなく「確率と期待値」で判断する。',
+      theoryText: 'ベイズ更新：新情報が入るたびに事前確率を更新し続ける。期待効用理論：各選択肢の結果×確率の積を比較して意思決定する。損失回避バイアス（Kahneman）に抗う知性。',
+      business: '設備投資を「初期費用が高い」ではなく「5年LCCで比較」して判断する。「絶対大丈夫か？」ではなく「この不確実性のもとで期待値は正か？」と問う意思決定フレーム。',
+      deficit: '損失回避バイアスが強いリーダーは最適な設備投資を先送りし、競合比LCCが<strong>平均18%高く</strong>なる（Boston Consulting Group 2023）。「何かあったらどうする」思考が合理的判断を上書きする。',
+      check: '意思決定のとき「確率は何%、期待値はいくら」を口に出せるか？「リスクゼロ」を求めていないか？ 過去の判断を「結果」ではなく「その時点の情報での妥当性」で評価できるか？'
+    },
+    {
+      num: '05', title: '他者モデリングと協働設計', theory: 'Theory of Mind × 心理的安全性',
+      icon: 'users',
+      summary: '他者の思考・動機・制約を内部モデル化し、協力関係そのものを設計する能力。AIが知識処理を代替する時代において、「共感」「信頼構築」「感情を動かす力」は人間固有の最大優位性となる。「あの人はなぜそう動くのか」を理解せずして、組織の力は引き出せない。',
+      theoryText: 'Theory of Mind：他者が異なる信念・知識・意図を持つことを理解する認知能力。Edmondsonの心理的安全性：発言コストを下げることでチームの情報流通が最大化される。',
+      business: '製造課への提案時に「彼らの最大関心事は設備停止時間」と事前にモデル化し、その言語で話す。上司の意思決定パターンを理解して、刺さるタイミング・切り口を選ぶ。',
+      deficit: '他者モデリングが弱いPMは利害関係者の抵抗を事前に読めず、プロジェクト遅延率が<strong>2.1倍</strong>になる（PMI 2022）。「なぜ反対するのかわからない」が最も危険なシグナル。',
+      check: '「この相手は今、何を心配しているか」を提案前に言語化できるか？ 自分の提案が通らなかったとき、相手の動機・制約から理由を説明できるか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const item = items[i];
+    const panel = document.getElementById('panel');
+    panel.classList.toggle('core', !!item.core);
+
+    const badgeHTML = item.badge
+      ? `<div class="badges"><span class="badge badge-${item.badge}">${item.badgeText}</span></div>`
+      : '';
+
+    const extraHTML = item.extra
+      ? `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+          <div class="detail-label">${item.extra.label}</div>
+          <div class="detail-text">${item.extra.text}</div>
+        </div>`
+      : '';
+
+    const prevItem = i > 0 ? items[i - 1] : null;
+    const nextItem = i < items.length - 1 ? items[i + 1] : null;
+
+    panel.innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${item.icon}" width="26" height="26"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${item.num}</div>
+          <div class="panel-title">${item.title}</div>
+          <div class="panel-theory">${item.theory}</div>
+        </div>
+        ${badgeHTML}
+      </div>
+      <div class="panel-summary">${item.summary}</div>
+      <div class="detail-grid">
+        <div class="detail-block">
+          <div class="detail-label">理論背景</div>
+          <div class="detail-text">${item.theoryText}</div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-label">業務での発現</div>
+          <div class="detail-text">${item.business}</div>
+        </div>
+      </div>
+      ${extraHTML}
+      <div class="deficit-block">
+        <div class="deficit-label">⚠ 欠如した場合の実損</div>
+        <div class="deficit-text">${item.deficit}</div>
+      </div>
+      <div class="check-block">
+        <div class="check-label">✓ セルフチェック</div>
+        <div class="check-text">${item.check}</div>
+      </div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">Prev</span>
+            <span>${prevItem ? prevItem.num + ' ' + prevItem.title : '最初です'}</span>
+          </div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">Next</span>
+            <span>${nextItem ? nextItem.num + ' ' + nextItem.title : '最後です'}</span>
+          </div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+
+    lucide.createIcons();
+  }
+
+  go = function(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 80;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  };
+  goAndScroll = function(i) {
+    go(i);
+    const wrap = document.querySelector('.panel-wrap');
+    if (wrap) window.scrollTo({ top: wrap.offsetTop - 80, behavior: 'smooth' });
+  };
+
+  // キーボード ← →
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['', '1つ該当：他の4つが伸びしろ', '2つ該当：強みを軸に弱点を補強', '3つ該当：平均以上。③の深化が次のレバー', '4つ該当：高水準。⑤を磨くと組織全体が変わる', '5つ全て：日常的に実践できている'];
+    document.getElementById('score-display').innerHTML =
+      `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  go(0);
+
+    // 読書進捗バー
+    const rp = document.getElementById('reading-progress');
+    if (rp) {
+      window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        rp.style.width = (Math.min(window.scrollY / total * 100, 100)) + '%';
+      });
+    }
+}); // DOMContentLoaded
+</script>
+</body>
+</html>

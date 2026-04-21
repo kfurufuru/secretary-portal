@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>説得・交渉の5要素 | Business Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+
+.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.nav-spacer { width: 80px; }
+
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.retention-chart { margin-bottom: var(--sp-3); }
+.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
+.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
+.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
+
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">説得・交渉の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1><span>説得・交渉</span>の5要素</h1>
+  <p class="hero-sub">「正しいことを言えば動く」は幻想。稟議を通す・ベンダーと交渉する・製造課を動かす——相手の関心を起点に設計された説得だけが機能する。</p>
+</header>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)">
+      <span class="num">01</span>
+      <span class="tab-title">相手の関心理解</span>
+      <span class="core-dot" title="CORE"></span>
+    </button>
+    <button class="tab" data-i="1" onclick="go(1)">
+      <span class="num">02</span>
+      <span class="tab-title">フレーミング</span>
+    </button>
+    <button class="tab" data-i="2" onclick="go(2)">
+      <span class="num">03</span>
+      <span class="tab-title">証拠設計</span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span>
+      <span class="tab-title">段階的合意</span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span>
+      <span class="tab-title">BATNA</span>
+      <span class="feat-dot" title="代替案の力"></span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill core" id="progress"></div></div>
+  </div>
+</nav>
+
+<main class="panel-wrap">
+  <div class="panel" id="panel"></div>
+</main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：説得が機能するプロセスの構造</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①相手の関心理解（前提）</div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-item" onclick="go(1)">②フレーミング（入口設計）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(2)">③証拠設計（納得の構造）</div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-item" onclick="go(3)">④段階的合意（摩擦低減）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(4)">⑤BATNA（交渉力の源泉）</div>
+    </div>
+    <p class="insight-text">
+      ①相手の関心理解が全ての前提。「正しい提案」ではなく「相手が動く提案」を作るには、相手が何を気にしているか・何を恐れているかを先に把握する必要がある。これなしに②〜⑤は空振りになる。<br>
+      ②フレーミングが入口を決める。同じ内容でも「コスト1,000万円」と「故障対応の年間コストから3年で回収」では聞こえ方が全く異なる。相手の関心軸に合わせた切り口で提案を包む。<br>
+      ③証拠設計が納得を作る。データだけでは動かない——数値＋ストーリー（なぜこの数値が意味を持つか）の組み合わせが判断を引き出す。上司には数値先、現場には事例先。<br>
+      ④段階的合意が摩擦を下げる。一気に大きな決断を迫ると抵抗が生まれる。「小さなYES」を積み重ねて、最終判断のコストを下げる。事前根回しはこの④の実装。<br>
+      ⑤BATNAが交渉力の源泉。代替案を持たずに交渉すると相手の言い値を受け入れるしかない。「他のベンダーへの切り替え可能性」「自前対応の試算」が交渉テーブルの外にある力になる。<br><br>
+      最初に鍛えるべきは①相手の関心理解。提案書を書き始める前に「この人は何を心配しているか」を3つ書き出す習慣だけで、却下率が大きく下がる。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。直近の提案・交渉場面を振り返る。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <input type="checkbox" id="c1" onchange="updateScore()">
+        <label for="c1"><strong>①</strong> 提案前に「相手が何を気にしているか」を3つ以上言語化した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c2" onchange="updateScore()">
+        <label for="c2"><strong>②</strong> 内容を相手の関心軸（コスト・リスク・面子など）で包んで提示した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c3" onchange="updateScore()">
+        <label for="c3"><strong>③</strong> データと具体事例（ストーリー）を両方用意した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4" onchange="updateScore()">
+        <label for="c4"><strong>④</strong> 本番前に事前根回し・小さな合意取りを行った</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5" onchange="updateScore()">
+        <label for="c5"><strong>⑤</strong> 交渉前に「この交渉が決裂した場合の代替案」を用意した</label>
+      </div>
+    </div>
+    <div class="score-display" id="score-display">
+      <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: '相手の関心理解', theory: 'Interest-Based / ハーバード流交渉術',
+      icon: 'ear', core: true, badge: 'core', badgeText: 'CORE',
+      summary: '説得の失敗の最大原因は「正しいことを言った」のに動かなかったケース。正しさは相手を動かさない。相手が何を気にし・何を恐れ・何を欲しているかを先に把握することが、機能する提案の唯一の出発点。',
+      theoryText: 'Fisher & Ury（Getting to YES, 1981）：ハーバード流交渉術の核心は「立場（Position）ではなく関心（Interest）を交渉する」こと。相手の立場（「値引きしろ」）の裏には関心（「予算内に収めたい」「上長に説明できる根拠がほしい」）がある。関心を理解すれば、立場を変えずに合意できる解が見つかる。',
+      business: '提案書を書く前に「この相手は何を心配しているか」を3つ書き出す。役員への稟議なら「投資回収」「リスク」「社内説明」。現場責任者なら「停止時間」「手間の増加」「前例がないこと」。ベンダーなら「利益確保」「工期」「技術的実現性」。これらを先に把握してから、解消・保証する形で提案を組む。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">相手別・主要な関心軸（社内提案の場合）</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">役員・上長</strong>：投資回収期間・リスクの定量化・他社事例・説明責任<br>
+          <strong style="color:var(--text);">製造課</strong>：停止時間・工事の手間・操作変更・故障リスク増減<br>
+          <strong style="color:var(--text);">調達・経理</strong>：コスト・支払条件・見積根拠・予算区分<br>
+          <strong style="color:var(--text);">ベンダー</strong>：利益・工期・仕様の明確さ・将来の受注見込み
+        </div>
+      </div>`,
+      deficit: '相手の関心を把握せずに「良い提案」を持ち込むと、相手は「なぜ今これが必要なのか」「自分たちへの影響は何か」が見えずに拒否する。却下された提案の多くは内容ではなく「相手の関心に刺さっていない」ことが原因。',
+      check: '提案前に相手の関心（恐れ・欲求・制約）を3つ以上言語化したか？ 相手の「立場」ではなく「なぜそう言うのか」を考えたか？ 相手の関心を解消する要素を提案に組み込んだか？'
+    },
+    {
+      num: '02', title: 'フレーミング', theory: 'Framing Effect / 損失回避 / Kahneman',
+      icon: 'frame',
+      summary: '同じ事実でも「どの枠で見せるか」で判断が変わる。「コスト1,000万円」と「年間故障損失500万円×3年＝1,500万円の回収」は同じ数字を使っていても、相手が感じる重さが全く異なる。フレーミングは内容の改ざんではなく、相手が受け取りやすい切り口の設計。',
+      theoryText: 'Kahneman & Tversky（プロスペクト理論, 1979）：人は「同額の利得」より「同額の損失」を2.25倍強く感じる（損失回避）。「95%助かる」と「5%死ぬ」は同じ事実だが判断が変わる。Entman（1993）：フレーミングとは「特定の側面を選択・強調することで、問題定義・原因診断・道徳判断・解決策推奨を形成すること」。',
+      business: '役員への設備投資稟議：「1,000万円のコスト（支出フレーム）」→「故障時の損失年500万×保全サイクル3年で回収、かつ突発停止リスクをゼロ化（損失回避＋ROIフレーム）」。現場への変更依頼：「作業が増える（負担フレーム）」→「この確認ステップを追加することで手戻り工事が防げる（損失回避フレーム）」。相手が「損失」として認識しているものを先に取り上げ、解消策として提案を包む。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">フレーミングの4パターン</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">損失回避</strong>：「やらないとこのリスクがある」→損失を先に見せる<br>
+          <strong style="color:var(--text);">ROIフレーム</strong>：「投資対効果○○%・回収○年」→数値で合理化する<br>
+          <strong style="color:var(--text);">社会的証明</strong>：「業界標準・他社事例・前例」→孤独なリスクを感じさせない<br>
+          <strong style="color:var(--text);">小さく始める</strong>：「まずトライアルで」→判断コストを下げる
+        </div>
+      </div>`,
+      deficit: '「正しいことを正確に伝えた」のに却下される場合、フレームが相手の関心軸と噛み合っていない。技術者が陥りやすい罠は「技術的正確さ」で伝えること——経営層が欲しいのはROIと損失回避の言語であり、仕様書の言語ではない。',
+      check: '提案を相手の関心軸（コスト・リスク・前例）のフレームで包んでいるか？ 損失回避の視点（やらないと何が起きるか）を先に提示しているか？ 専門用語を相手の言語に変換しているか？'
+    },
+    {
+      num: '03', title: '証拠設計', theory: 'データ×ストーリー / Logos・Pathos・Ethos',
+      icon: 'bar-chart-2',
+      summary: 'データだけでは人は動かない——「1,234件の事故データ」より「隣の工場で起きた設備破損の話」のほうが記憶に残り行動を引き出す。逆に事例だけでは一般化できない。「数値＋具体事例（なぜその数値が意味を持つか）」の組み合わせが最も強い証拠になる。',
+      theoryText: 'Aristotle（レトリック）：説得の3要素——Logos（論理・データ）、Pathos（感情・共感）、Ethos（信頼・権威）。3要素が揃って初めて説得力が完成する。Heath & Heath（Made to Stick, 2007）：記憶に残るメッセージの条件——Simple/Unexpected/Concrete/Credible/Emotional/Stories（SUCCESs）。数値は信頼（Credible）を作るが、記憶（Emotional×Stories）には具体事例が必要。',
+      business: '稟議書の証拠設計：①数値（故障頻度・損失額・回収期間）でLogosを作る、②「3年前に同型設備が破損してライン停止3日間」の事例でPathosを作る、③「国内同業他社の導入実績」でEthosを補強する。現場説得の証拠設計：過去のトラブル事例＋そのときの損失時間を先に見せ、「同じことが起きる前に」と接続する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">証拠の優先順位（相手別）</div>
+        <div class="retention-chart">
+          <div class="retention-row">
+            <span class="retention-label">役員・経営層</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#f59e0b" data-w="100"></div></div>
+            <span class="retention-pct">数値先</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">現場責任者</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="80"></div></div>
+            <span class="retention-pct">事例先</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">技術者・専門家</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="90"></div></div>
+            <span class="retention-pct">根拠先</span>
+          </div>
+        </div>
+      </div>`,
+      deficit: 'データだけの提案は「本当にそうなるか」という懐疑を生む。事例だけの提案は「それはたまたまでは？」という反論を生む。どちらかに偏った証拠設計は説得力の半分しか機能しない。',
+      check: '数値（定量）と事例（定性）の両方を用意したか？ 相手の種別（役員・現場・専門家）に合わせて証拠の順序を変えたか？ 信頼の担保（出典・前例・権威）を明示したか？'
+    },
+    {
+      num: '04', title: '段階的合意', theory: 'フット・イン・ザ・ドア / 根回し / 小さなYES',
+      icon: 'git-merge',
+      summary: '一気に大きな決断を迫ると抵抗が生まれる。人は「今まで言ってきたこと」と「今の判断」を一致させようとする（一貫性の法則）。小さなYESを先に積み上げることで、最終判断の心理的コストを下げる。「根回し」はこの原則の日本的実装。',
+      theoryText: 'Freedman & Fraser（1966）：フット・イン・ザ・ドア実験——小さな依頼に合意させた後で大きな依頼をすると承諾率が76%増加。Cialdini（影響力の武器, 1984）：一貫性の法則——「自分はそういう人間だ」という自己イメージを守るため、一度取った立場に合わせて行動する。承認フローが多い日本企業では、会議の場が「発表」ではなく「確認」になるよう事前設計することが合意コストを下げる。',
+      business: '大型投資稟議の根回し設計：①現場責任者に課題を共有（懸念先取り）→②同部門の別チームリーダーに相談（横連携）→③直属上長に概要を口頭で伝える（事前インプット）→④役員に1枚資料で問題提起（論点整理）→⑤正式稟議書提出。「会議で初めて知った」状態にさせない。各ステップで「何か懸念点はありますか？」と聞き、反論を事前に吸収する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">根回しの4ステップ</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">Step 1 課題共有</strong>：「こんな問題があって困っています」（味方化）<br>
+          <strong style="color:var(--text);">Step 2 意見収集</strong>：「どう思いますか？」（当事者化）<br>
+          <strong style="color:var(--text);">Step 3 修正反映</strong>：「ご意見を踏まえてこう変えました」（共同作成感）<br>
+          <strong style="color:var(--text);">Step 4 確認依頼</strong>：「方向性は合っていますか？」（小さなYES取得）
+        </div>
+      </div>`,
+      deficit: '根回しなしの正式提案は、会議の場で「初めて聞いた」反応を引き起こし、その場での判断を避けられて先送りになる。意思決定者が多い組織では、会議は判断の場ではなく確認の場として設計しなければ決定が出ない。',
+      check: '正式提案の前に関係者へ個別に論点を共有したか？ 各ステップで反論・懸念を事前に収集して提案に反映したか？ 意思決定者が「会議で初めて知る」状態になっていないか？'
+    },
+    {
+      num: '05', title: 'BATNA', theory: 'Best Alternative To a Negotiated Agreement',
+      icon: 'anchor',
+      summary: '交渉力は「相手が必要としている度合い」ではなく「自分の代替案の強さ」で決まる。交渉が決裂しても困らない代替案（BATNA）を持つ者が、譲歩を要求される側ではなく譲歩を引き出す側に立てる。BATNAがなければ相手の言い値を受け入れるしかない。',
+      theoryText: 'Fisher & Ury（Getting to YES, 1981）が命名。BATNAとは「この交渉が成立しなかった場合に自分が取れる最善の行動」。BATNAが強いほど「交渉を決裂させる意思」が生まれ、相手はより良い条件を出す必要に迫られる。相手のBATNAを知ることも重要——相手の代替案が弱ければ、自分の要求を高めても合意が成立する。ZOPA（Zone Of Possible Agreement）：双方のBATNA範囲が重なる合意可能ゾーン。',
+      business: 'ベンダー価格交渉前の準備：①他ベンダーへの見積もり依頼（競合BATNAの実体化）、②自前での対応コスト試算、③代替品・代替工法の検討。「他社からも見積もりをとっています」という事実は、価格交渉での最も強い根拠になる。社内稟議でも同様——「この投資をしない場合の損失（機会費用）」を計算しておくことで、「現状維持のほうが高くつく」という代替案の比較を作れる。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">BATNA強化の3ステップ</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">Step 1 列挙</strong>：交渉決裂時に自分が取れる行動を全て書き出す<br>
+          <strong style="color:var(--text);">Step 2 評価</strong>：各代替案の現実的な価値・コスト・リスクを試算する<br>
+          <strong style="color:var(--text);">Step 3 強化</strong>：最良の代替案を交渉前に実際に動かし始める（競合見積もり取得など）
+        </div>
+      </div>`,
+      deficit: 'BATNAを持たずに交渉すると「この業者に頼むしかない」「この稟議を通すしかない」という依存状態になる。依存が見えると相手は条件を下げる理由がなくなる。代替案がないことを相手に知られることが、交渉での最大の弱点になる。',
+      check: '交渉前に「決裂した場合の代替案」を3つ以上考えたか？ 競合見積もりや代替工法の試算を実際に動かしたか？ 相手のBATNA（相手の代替案の強さ）を推測したか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const d = items[i];
+    const isCore = !!d.core;
+    const badgeHtml = d.badge === 'core'
+      ? `<span class="badge badge-core">CORE</span>`
+      : d.badge === 'feat' ? `<span class="badge badge-feat">${d.badgeText}</span>` : '';
+    const afterGrid = d.customAfterGrid || '';
+
+    document.getElementById('panel').className = `panel${isCore ? ' core' : ''}`;
+    document.getElementById('panel').innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${d.icon}" width="24" height="24"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${d.num}</div>
+          <div class="panel-title">${d.title}</div>
+          <div class="panel-theory">${d.theory}</div>
+        </div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <p class="panel-summary">${d.summary}</p>
+      <div class="detail-grid">
+        <div class="detail-block">
+          <div class="detail-label">理論的根拠</div>
+          <div class="detail-text">${d.theoryText}</div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-label">現場への実装</div>
+          <div class="detail-text">${d.business}</div>
+        </div>
+      </div>
+      ${afterGrid}
+      <div class="deficit-block">
+        <div class="deficit-label">⚠ 欠如事例・コスト</div>
+        <div class="deficit-text">${d.deficit}</div>
+      </div>
+      <div class="check-block">
+        <div class="check-label">セルフチェック</div>
+        <div class="check-text">${d.check}</div>
+      </div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">PREV</span>
+            <span>${i > 0 ? items[i-1].title : ''}</span>
+          </div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">NEXT</span>
+            <span>${i < items.length - 1 ? items[i+1].title : ''}</span>
+          </div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+    animateBars(document.getElementById('panel'));
+  }
+
+  function animateBars(container) {
+    (container || document).querySelectorAll('.retention-bar').forEach(bar => {
+      const w = bar.dataset.w;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w + '%'; }, 100);
+    });
+  }
+
+  function go(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 100;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['', '1つ：①から。次の提案前に「相手が何を気にしているか」を3つ書き出す', '2つ：土台あり。②相手の関心軸に合わせたフレームで提案を組み直す', '3つ：平均以上。③数値と事例（ストーリー）を両方用意する習慣を作る', '4つ：高水準。④根回しの4ステップを次の稟議で実践する', '5つ：5要素が実践されている。説得・交渉が構造的に機能する状態'];
+    document.getElementById('score-display').innerHTML =
+      `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  go(0);
+});
+</script>
+</body>
+</html>

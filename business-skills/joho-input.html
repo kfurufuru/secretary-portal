@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情報収集・インプットの5要素 | Business Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+
+.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.nav-spacer { width: 80px; }
+
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.retention-chart { margin-bottom: var(--sp-3); }
+.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
+.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
+.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
+
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">情報収集・インプットの5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1><span>情報収集・インプット</span>の5要素</h1>
+  <p class="hero-sub">情報過多の時代に「たくさん情報を集める」は競争優位にならない。何を・どこから・どう処理し・どう知識に変換するか——インプットの質と構造が思考の質を決める。</p>
+</header>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)">
+      <span class="num">01</span>
+      <span class="tab-title">情報ニーズの明確化</span>
+      <span class="core-dot" title="CORE"></span>
+    </button>
+    <button class="tab" data-i="1" onclick="go(1)">
+      <span class="num">02</span>
+      <span class="tab-title">情報源の設計</span>
+    </button>
+    <button class="tab" data-i="2" onclick="go(2)">
+      <span class="num">03</span>
+      <span class="tab-title">情報処理の高速化</span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span>
+      <span class="tab-title">知識への変換</span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span>
+      <span class="tab-title">情報の棚卸しと廃棄</span>
+      <span class="feat-dot" title="古い情報は捨てる"></span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill core" id="progress"></div></div>
+  </div>
+</nav>
+
+<main class="panel-wrap">
+  <div class="panel" id="panel"></div>
+</main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：情報が「判断の武器」になるサイクル</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①問いの明確化（何を知るか）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②情報源の設計（どこから取るか）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③情報処理の高速化（どう読むか）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④知識への変換（どう使えるか）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤棚卸しと廃棄（何を捨てるか）</div>
+    </div>
+    <p class="insight-text">
+      ①問いの明確化が全ての起点。問いなしの情報収集は処理されない在庫を増やすだけ。「今の問いを1文で」書いてから情報を取りに行く。<br>
+      ②情報源の設計が質の基盤。一次情報に近いほど信頼性が高い。重要な判断ほど一次情報（実データ・技術資料）に当たる。<br>
+      ③情報処理の高速化が効率を上げる。均等に全部読むのをやめ、スキャン→必要部分だけ精読の段階分けで「読んだ気になる時間」をゼロにする。<br>
+      ④知識への変換が投資の回収。「読んだ」で終わらず「自分の言葉で書く・接続する・保存する」の3ステップを経て初めて後から使える知識になる。<br>
+      ⑤棚卸しと廃棄が知識の品質を保つ。古い知識は捨てなければ新しい正解を妨げる地雷になる。定期的なアンラーニングが知識の鮮度を守る。<br><br>
+      最初に鍛えるべきは①問いの明確化。情報収集を始める前に「今の問いを1文で」書く習慣だけで、使えないインプットの時間が激減する。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。直近のインプット行動を振り返る。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <input type="checkbox" id="c1" onchange="updateScore()">
+        <label for="c1"><strong>①</strong> 情報収集を始める前に「今の問いを1文で」書いたか</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c2" onchange="updateScore()">
+        <label for="c2"><strong>②</strong> 重要な判断の根拠に一次情報（実データ・技術資料）を使ったか</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c3" onchange="updateScore()">
+        <label for="c3"><strong>③</strong> 読んだ情報を「3行要約」に落とし込んだか（読んだだけで終わっていないか）</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4" onchange="updateScore()">
+        <label for="c4"><strong>④</strong> 情報を「自分の言葉で解釈し、既存知識と接続して」メモしたか</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5" onchange="updateScore()">
+        <label for="c5"><strong>⑤</strong> 四半期に1回「この知識はまだ正しいか」の棚卸しを実施しているか</label>
+      </div>
+    </div>
+    <div class="score-display" id="score-display">
+      <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: '情報ニーズの明確化', theory: 'プル型情報収集 / 問いドリブン',
+      icon: 'crosshair', core: true, badge: 'core', badgeText: 'CORE',
+      summary: '「とりあえず情報を集める」は最悪のインプット戦略。情報の海に飛び込む前に「自分が今必要な問いは何か」を1文で書くことで、必要な情報と不要な情報が瞬時に識別できる。問いがなければ全ての情報が等価に見え、判断に使える情報がゼロになる。',
+      theoryText: '安宅和人（イシューからはじめよ）：「犬の道」——大量の情報を集めてから答えを出そうとするアプローチは非効率。問いを先に立て、その問いに答える情報だけを収集する「イシュー起点の情報収集」が知的生産の基本。Pull型情報収集：受動的に流れてくる情報を処理するのではなく、問いを持って能動的に必要な情報を取りに行く。',
+      business: '情報収集を始める前に「今の自分の問いは何か」を付箋1枚に書く。設備投資検討なら「このポンプの更新コストと、故障時の損失コストの比較」が問い——この問いがあれば仕様書・修理履歴・類似機種の見積もりだけを集めればよく、関係ない情報を処理する時間がゼロになる。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">問い先行 vs 情報先行の生産性</div>
+        <div class="retention-chart">
+          <div class="retention-row">
+            <span class="retention-label">問い明確</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#f59e0b" data-w="100"></div></div>
+            <span class="retention-pct">100%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">問い曖昧</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="48"></div></div>
+            <span class="retention-pct">48%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">問いなし</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#64748b" data-w="19"></div></div>
+            <span class="retention-pct">19%</span>
+          </div>
+        </div>
+      </div>`,
+      deficit: '問いなしの情報収集は「面白いが使えない情報」の山を作る。読んだ本・記事・調査報告が判断に使われないまま積み重なる状態は「インプットの蓄積」ではなく「処理されない情報の在庫」。',
+      check: '情報収集を始める前に「今の問いを1文で」書いたか？ 集めた情報が「その問いの答えに使えるか」でフィルタリングしているか？ 問いに関係しない情報を読むのをやめる判断をしているか？'
+    },
+    {
+      num: '02', title: '情報源の設計', theory: '一次情報 vs 二次情報 / 情報源ポートフォリオ',
+      icon: 'database',
+      summary: '全ての情報源は等価ではない。一次情報（論文・実験データ・現場観察）と二次情報（記事・要約・SNS）では信頼性が異なる。重要な判断ほど一次情報に近い源泉から取る。同時に、異なる視点の情報源を意図的にポートフォリオとして持つことで認知バイアスを防ぐ。',
+      theoryText: '情報の信頼性ヒエラルキー：一次情報（実験・調査・現場）> 査読済み論文 > 専門家見解 > 一般メディア > SNS・口コミ。確証バイアス（Confirmation Bias）：自分の既存見解を支持する情報だけを集める傾向——意図的に「反対意見の情報源」を持つことで対抗する。ダイバーシティ原則：異なる分野・立場・国の情報源を組み合わせることで死角を減らす。',
+      business: '重要な意思決定（設備更新・工法変更）では必ず一次情報（メーカー技術資料・試験データ・現場実測値）を取る。情報源ポートフォリオを設計する——①専門誌（深い・遅い）②業界ニュース（広い・速い）③現場観察（一次・局所）④社外専門家（俯瞰・客観）の4種をバランスよく持つ。月1冊「自分と異なる立場の本」を読む。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">情報源ポートフォリオ（設備技術者の例）</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">専門誌</strong>：電気学会・計装学会（深い・遅い）<br>
+          <strong style="color:var(--text);">メーカー技術資料</strong>：仕様書・試験データ（一次情報・信頼性高）<br>
+          <strong style="color:var(--text);">現場点検記録</strong>：実測値・トラブル履歴（一次・局所）<br>
+          <strong style="color:var(--text);">業界セミナー・社外同業者</strong>：俯瞰・最新動向（客観・広範）
+        </div>
+      </div>`,
+      deficit: '同じ情報源だけを使い続けると、その情報源の偏り（バイアス・誤り・盲点）がそのまま自分の判断に入る。「ネットで調べた」が一次情報に近い調査と同等の信頼性を持つと思うのは危険な認知。',
+      check: '重要な判断の根拠に一次情報（実データ・技術資料）が含まれているか？ 自分の既存見解と反対の情報源を意識的に持っているか？ 情報源が偏っていないか（種類・立場・分野）？'
+    },
+    {
+      num: '03', title: '情報処理の高速化', theory: 'アクティブリーディング / SQ3R / 80/20読書法',
+      icon: 'zap',
+      summary: '速く読むことより「重要な部分を深く処理すること」が情報の質を決める。全部を同じ密度で読む「均等読み」は最も非効率。目的に合わせて「スキップ・ざっと・精読」の3段階で密度を変える。読んだ後に「3行で説明できるか」が処理できた証拠。',
+      theoryText: 'SQ3R（Survey/Question/Read/Recite/Review）：効果的な読書の5段階——全体を見渡す→問いを立てる→読む→要約する→振り返る。Mortimer Adler（本の読み方, 1940）：分析的読書——著者の論点・根拠・結論を能動的に追う。80/20法則の読書への適用：本の価値の80%は20%のページに集中している——全ページを均等に読む必要はない。',
+      business: '本・報告書・論文を手に取ったとき最初に「目次・序章・結論」だけ読む（3分）。自分の問いに関係しそうな章だけ精読する。精読後に「3行要約」を書く——書けなければ理解できていない。「面白かった」で終わらず「自分の仕事にどう使えるか」を必ず1行追記する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">3段階読み分け</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">①スキャン（3分）</strong>：全体把握・関係性判断——この情報は問いに関係するか？<br>
+          <strong style="color:var(--text);">②ざっと読み（15分）</strong>：主要論点の把握——何が言いたいか？<br>
+          <strong style="color:var(--text);">③精読（集中タイム）</strong>：重要箇所の深い処理——問いへの答えを取り出す
+        </div>
+      </div>`,
+      deficit: '全ページを均等に読む「完読バイアス」は、重要でない情報の処理に認知資源を浪費する。本を「読んだ」ことと「使える知識になった」ことは別——完読率よりも「使った情報の量」が正しい指標。',
+      check: '情報を読む前に「スキャン→必要部分だけ精読」の段階分けをしているか？ 読んだ後に「3行要約」を書いているか？ 「面白かった」で終わらず「仕事への応用」を1行書いているか？'
+    },
+    {
+      num: '04', title: '知識への変換', theory: 'ツェッテルカステン / 第二の脳 / 知識の外部化',
+      icon: 'layers',
+      summary: '情報は「読んだ」だけでは消える。メモ・整理・接続という変換プロセスを経て初めて「知識」になり、後から再利用できる。重要なのは「情報を保存すること」ではなく「考えた痕跡を残すこと」——自分の解釈・疑問・接続を書き残した情報だけが後から使える。',
+      theoryText: 'Niklas Luhmann（ツェッテルカステン）：カード形式のノートシステムで58年間に70冊以上の著書を生んだドイツの社会学者。ノートの核心は「情報の写し」ではなく「自分の言葉での再解釈」と「他のノートとの接続」。Tiago Forte（第二の脳, 2022）：PARA（Projects/Areas/Resources/Archive）システムで情報を「プロジェクト・役割・参考・保管」に整理し、必要なとき即取り出せる構造を作る。',
+      business: '読んだ情報を「自分の言葉で」メモする（写しではなく解釈）。メモには必ず「これは〇〇の問いへの答えになる」か「〇〇の事例と似ている」という接続を書く。ObsidianやNotionで「自分専用の知識DB」を作り、後から検索できる構造で保存する。月1回「知識の棚卸し」でよく使うノートと死んでいるノートを区別する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">知識変換の3ステップ</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">①自分の言葉で書く</strong>：情報の再解釈——「つまり〇〇ということ」<br>
+          <strong style="color:var(--text);">②既存知識との接続を書く</strong>：「〇〇と似ている」「〇〇の反例になる」<br>
+          <strong style="color:var(--text);">③再利用できる形で保存</strong>：タグ・フォルダ・リンクで後から検索可能に
+        </div>
+      </div>`,
+      deficit: '「後で読む」フォルダは永遠に読まれない墓場になる。ハイライトだらけの本は「読んだ証拠」を残すが、ハイライトが後から知識として使われることはほぼない。記録の目的は「自分の思考を助けること」であり「情報を保存すること」ではない。',
+      check: '情報を自分の言葉で（写しでなく解釈で）メモしているか？ メモに「既存知識との接続」を書いているか？ 後から検索・再利用できる構造で保存しているか？'
+    },
+    {
+      num: '05', title: '情報の棚卸しと廃棄', theory: '情報の半減期 / アンラーニング / 知識の陳腐化',
+      icon: 'trash-2', badge: 'feat', badgeText: 'FEAT',
+      summary: '知識は更新されなければ陳腐化し、最悪の場合「古い正解」が「現在の誤り」になる。情報を蓄積するだけでなく、定期的に「この知識はまだ有効か」を問い、アップデートまたは廃棄する習慣が、知識の質を維持する。',
+      theoryText: 'アンラーニング（Unlearning）：新しい環境に適応するために「以前の正解だった知識」を意図的に捨てる能力。変化が速い環境では学習速度より廃棄速度が競争力を決める場合がある。情報の半減期：技術情報（特にIT）の有効期限は数年で、蓄積した技術知識が陳腐化するスピードは分野によって異なる。Polanyi：「私たちは語れる以上のことを知っている（暗黙知）」——頭の中の古い知識は言語化されないまま判断に影響し続ける危険がある。',
+      business: '四半期に1回「この知識はまだ正しいか？」のレビューを30分実施する——特に規制・技術仕様・業界標準に関する知識。「自分がずっとそう思ってきた」という強固な信念ほど更新が必要な候補。新しい情報が古い知識と矛盾したとき「どちらが正しいか」を調査し、古い知識を更新または廃棄する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">知識の棚卸し3問</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">①古さ</strong>：この知識はいつ学んだか<br>
+          <strong style="color:var(--text);">②正確さ</strong>：この知識の根拠は今も有効か<br>
+          <strong style="color:var(--text);">③更新必要性</strong>：より新しい研究・規格・事例があるか
+        </div>
+      </div>`,
+      deficit: '「昔そう習った」「前の会社でそうしていた」「業界の常識」が実は10年前の情報に基づいている場合は多い。更新されない知識は判断の地雷になる——特に安全基準・材料特性・設備規格は定期更新が必須。',
+      check: '四半期に1回「この知識はまだ正しいか」を見直しているか？ 新しい情報が古い知識と矛盾したとき、古い知識を更新したか？ 「昔そう習った」で止まっている判断基準はないか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const d = items[i];
+    const isCore = !!d.core;
+    const badgeHtml = d.badge === 'core'
+      ? `<span class="badge badge-core">CORE</span>`
+      : d.badge === 'feat' ? `<span class="badge badge-feat">${d.badgeText}</span>` : '';
+    const afterGrid = d.customAfterGrid || '';
+
+    document.getElementById('panel').className = `panel${isCore ? ' core' : ''}`;
+    document.getElementById('panel').innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${d.icon}" width="24" height="24"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${d.num}</div>
+          <div class="panel-title">${d.title}</div>
+          <div class="panel-theory">${d.theory}</div>
+        </div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <p class="panel-summary">${d.summary}</p>
+      <div class="detail-grid">
+        <div class="detail-block">
+          <div class="detail-label">理論的根拠</div>
+          <div class="detail-text">${d.theoryText}</div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-label">現場への実装</div>
+          <div class="detail-text">${d.business}</div>
+        </div>
+      </div>
+      ${afterGrid}
+      <div class="deficit-block">
+        <div class="deficit-label">⚠ 欠如事例・コスト</div>
+        <div class="deficit-text">${d.deficit}</div>
+      </div>
+      <div class="check-block">
+        <div class="check-label">セルフチェック</div>
+        <div class="check-text">${d.check}</div>
+      </div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">PREV</span>
+            <span>${i > 0 ? items[i-1].title : ''}</span>
+          </div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">NEXT</span>
+            <span>${i < items.length - 1 ? items[i+1].title : ''}</span>
+          </div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+    animateBars(document.getElementById('panel'));
+  }
+
+  function animateBars(container) {
+    (container || document).querySelectorAll('.retention-bar').forEach(bar => {
+      const w = bar.dataset.w;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w + '%'; }, 100);
+    });
+  }
+
+  function go(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 100;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = [
+      '',
+      '1つ：①から。次に情報収集を始める前に問いを1文書いてみる',
+      '2つ：②次の判断で一次情報（メーカー資料・実測データ）に当たる',
+      '3つ：③今週読んだ情報を1つ3行要約する',
+      '4つ：④ノート1冊を開き、今日の気づきを自分の言葉＋接続で書く',
+      '5つ：5要素が実践されている。インプットが継続的に思考の質を上げている状態'
+    ];
+    document.getElementById('score-display').innerHTML =
+      `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  go(0);
+});
+</script>
+</body>
+</html>

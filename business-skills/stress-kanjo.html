@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ストレス・感情管理の5要素 | Business Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+
+.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.nav-spacer { width: 80px; }
+
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 540px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.retention-chart { margin-bottom: var(--sp-3); }
+.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+.retention-label { width: 140px; flex-shrink: 0; color: var(--text-muted); }
+.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
+.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
+
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">ストレス・感情管理の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1><span>ストレス・感情管理</span>の5要素</h1>
+  <p class="hero-sub">感情は排除すべき弱さではなく、情報として使うべき信号。ストレス反応の理解・感情の言語化・認知の再評価・回復設計・境界線——5つで感情を資産に変える。</p>
+</header>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)">
+      <span class="num">01</span>
+      <span class="tab-title">ストレス反応の理解</span>
+      <span class="core-dot" title="CORE"></span>
+    </button>
+    <button class="tab" data-i="1" onclick="go(1)">
+      <span class="num">02</span>
+      <span class="tab-title">感情の言語化</span>
+    </button>
+    <button class="tab" data-i="2" onclick="go(2)">
+      <span class="num">03</span>
+      <span class="tab-title">認知の再評価</span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span>
+      <span class="tab-title">回復の設計</span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span>
+      <span class="tab-title">境界線の設定</span>
+      <span class="feat-dot" title="NOと言える人間になる"></span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill core" id="progress"></div></div>
+  </div>
+</nav>
+
+<main class="panel-wrap">
+  <div class="panel" id="panel"></div>
+</main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：感情が「資産」になる管理構造</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①ストレス反応理解（解釈を変える）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②感情の言語化（信号を読む）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③認知の再評価（解釈を修正する）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④回復の設計（エネルギーを補充する）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤境界線の設定（持続可能にする）</div>
+    </div>
+    <p class="insight-text">
+      ①ストレス反応の理解が起点。「ストレスは有害」という信念を手放し「挑戦への準備」と解釈するだけで生理反応が変わる。<br>
+      ②感情の言語化がデータ収集。「なんとなく」を「具体的な感情名」に変換することで扁桃体活動が低下し、前頭前野が動き始める。<br>
+      ③認知の再評価が解釈を修正する。事実と解釈を分離し「別の解釈はあるか？」を問うことで、感情の出口を変えられる。<br>
+      ④回復の設計がエネルギーを補充する。消耗しっぱなしでは①〜③のどの技術も機能しない。睡眠・休憩・身体活動を意図的に設計する。<br>
+      ⑤境界線の設定が持続可能にする。NOを言えない構造は燃え尽きへの一本道。DESC法で攻撃も服従もせずに境界線を伝える。<br><br>
+      最初に鍛えるべきは②感情の言語化。今日感情が動いた場面を1行記録するだけで、自分の感情パターンへの理解が始まる。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。直近1週間の自分を振り返る。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <input type="checkbox" id="c1" onchange="updateScore()">
+        <label for="c1"><strong>①</strong> 強いストレスを「挑戦への準備」と再解釈できた（コントロール可能なものに集中した）</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c2" onchange="updateScore()">
+        <label for="c2"><strong>②</strong> 感情が動いた場面を具体的な感情名（苛立ち・焦り・不公平感等）まで言語化した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c3" onchange="updateScore()">
+        <label for="c3"><strong>③</strong> 強い感情の背後にある「解釈（信念）」を特定し、別の解釈を探した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4" onchange="updateScore()">
+        <label for="c4"><strong>④</strong> 睡眠7時間以上・意図的な休憩タイムを設計して実行した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5" onchange="updateScore()">
+        <label for="c5"><strong>⑤</strong> 引き受けすぎている依頼を断る・条件付きYESに変換する行動を取った</label>
+      </div>
+    </div>
+    <div class="score-display" id="score-display">
+      <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: 'ストレス反応の理解', theory: 'ストレス×マインドセット / ケリー・マクゴニガル',
+      icon: 'activity', core: true, badge: 'core', badgeText: 'CORE',
+      summary: 'ストレスを「有害」と信じる人より「有益な活性化」と捉える人のほうが、同じストレス下でパフォーマンスが高く、健康被害も少ない（スタンフォード研究）。ストレス反応（心拍上昇・集中力増加）は本来、挑戦に備えるための生理的準備。解釈が害を生む。',
+      theoryText: 'Kelly McGonigal（スタンフォードのストレスを力に変える科学, 2015）：「ストレスは有害だ」という信念が死亡リスクを43%高める。ストレスを「挑戦への準備」と再解釈するだけで血管の収縮反応が変化する。Yerkes-Dodson法則：ストレス（覚醒）が中程度のとき最高パフォーマンスが出る——ゼロも過多も有害。',
+      business: '緊張・焦り・プレッシャーを感じたとき「これは挑戦の準備反応だ」と声に出す（再解釈）。強いストレス反応が続くとき、原因が「脅威（コントロール不能）」か「挑戦（努力で変えられる）」かを分類する。コントロール不能なことへのストレスは手放し、挑戦可能なものに集中する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">ストレス解釈と成果（相対比較）</div>
+        <div class="retention-chart">
+          <div class="retention-row">
+            <span class="retention-label">挑戦と捉える</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#f59e0b" data-w="100"></div></div>
+            <span class="retention-pct">100%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">中立</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="68"></div></div>
+            <span class="retention-pct">68%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">脅威と捉える</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#64748b" data-w="41"></div></div>
+            <span class="retention-pct">41%</span>
+          </div>
+        </div>
+      </div>`,
+      deficit: 'ストレスを「有害なもの」として排除しようとすると、適度なプレッシャーも回避するようになる。プレッシャーのない仕事を求めた結果、成長機会も失う。ストレスの完全回避は成長の完全停止と同義。',
+      check: '強いストレスを感じたとき「挑戦の準備」と再解釈できているか？ ストレス源を「コントロール可能」と「不可能」に分類して、前者に集中しているか？ ストレス反応（心拍上昇・緊張）を敵ではなく信号として扱っているか？'
+    },
+    {
+      num: '02', title: '感情の言語化', theory: 'アフェクト・ラベリング / ブレイン・デコーディング',
+      icon: 'message-circle',
+      summary: '感情は「なんとなくモヤモヤする」のままでは行動を支配する。「これは焦りだ」「これは不公平感だ」と正確に名前をつけた瞬間に、扁桃体の活動が低下し、前頭前野による理性的処理が始まる。感情の語彙を持つことが感情制御の第一歩。',
+      theoryText: 'Matthew Lieberman（UCLA）：感情にラベルを貼る（Affect Labeling）だけで扁桃体活動が低下し、前頭前野が活性化する——感情を言語化するのは感情を抑圧するのではなく、調節するプロセス。Susan David（Emotional Agility, 2016）：感情の粒度（細かさ）が高い人ほど対処行動が適切になる——「悲しい」と「悔しい」は全く異なる行動を引き出す。',
+      business: '感情が動いた場面（ミーティングでの発言・部下の報告・上司からの指示）を日次で1行記録する——「何が起きたとき、何を感じたか（具体的な感情名）」。感情語彙を増やす：怒り系（苛立ち・焦り・不公平感・屈辱）、不安系（恐れ・心配・不確実感）、喜び系（達成感・高揚・感謝）の分類で記録する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">感情語彙の拡張</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">怒り系</strong>：苛立ち・焦り・不公平感・屈辱・軽蔑・憤慨・欲求不満<br>
+          <strong style="color:var(--text);">不安系</strong>：恐れ・心配・不確実感・圧迫感・孤立感<br>
+          <strong style="color:var(--text);">喜び系</strong>：達成感・高揚・感謝・充実・誇り<br><br>
+          精度が上がるほど対処が的確になる。「なんとなく」を許さない。
+        </div>
+      </div>`,
+      deficit: '「なんかイライラする」で止まると、感情の原因が特定できず同じ場面で同じ感情反応を繰り返す。管理職が感情語彙を持たないと、感情に行動を支配され「なぜあの場面であんな言い方をしたのか」が自分でもわからない状態になる。',
+      check: '感情が動いた場面を「感情名」まで特定できているか？ 「なんとなく」で終わらず具体的な感情語彙を使っているか？ 日次または週次で感情記録（1行）をつけているか？'
+    },
+    {
+      num: '03', title: '認知の再評価', theory: '認知行動療法（CBT）/ ABC理論 / コグニティブ・リフレーミング',
+      icon: 'refresh-cw',
+      summary: '感情を生むのは「出来事」ではなく「出来事への解釈」。同じミスを「自分はダメだ」と解釈する人と「次への学習データ」と解釈する人では、その後の行動が全く異なる。解釈（認知）を意識的に書き換えることで、感情の出口を変えられる。',
+      theoryText: 'Albert Ellis（ABC理論, 1950s）：Activating event（出来事）→Belief（信念・解釈）→Consequence（感情・行動）。感情を変えるにはBを変える。Aaron Beck（認知行動療法）：認知の歪み——全か無か思考・カタストロフィ化・個人化・マインドリーディングを特定し、より現実的な解釈に修正する。',
+      business: '強い感情が湧いたとき「事実は何か（出来事）」と「自分はこれを何だと解釈しているか（信念）」を分けて書く。次に「この解釈は現実的か？」「他の解釈はあるか？」を問う。「設備が止まった（事実）→自分の管理が悪い（解釈1）→老朽化の確率的故障（解釈2）」——複数の解釈を並べることで視野が広がる。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">認知の歪み4パターン</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">①全か無か思考</strong>：完璧でなければ失敗<br>
+          <strong style="color:var(--text);">②カタストロフィ化</strong>：最悪の結果しか見えない<br>
+          <strong style="color:var(--text);">③個人化</strong>：全て自分のせい<br>
+          <strong style="color:var(--text);">④マインドリーディング</strong>：相手の意図を決めつける<br><br>
+          気づいたら「別の解釈は？」と問いかける。
+        </div>
+      </div>`,
+      deficit: '解釈を変えない人は同じ出来事に対して毎回同じ感情反応をする。「あの人はいつも自分を軽視する」という解釈が固定されると、相手の全ての言動がその証拠に見え始める（確証バイアス）。',
+      check: '強い感情が湧いたとき「事実」と「解釈」を分離して書き出したか？ 自分の認知の歪みパターン（全か無か・カタストロフィ化等）を把握しているか？ 「別の解釈はあるか？」を問う習慣があるか？'
+    },
+    {
+      num: '04', title: '回復の設計', theory: 'ウルトラディアンリズム / 意図的回復 / ペリオダイゼーション',
+      icon: 'battery-charging',
+      summary: 'パフォーマンスは高強度の作業量ではなく「作業と回復のサイクル」で決まる。トップアスリートが「トレーニング量」ではなく「回復量」で差をつけるように、知的労働者も回復を意図的に設計しなければ慢性的な消耗から逃げられない。',
+      theoryText: 'Loehr & Schwartz（The Power of Full Engagement, 2003）：パフォーマンスは「エネルギー管理」——消費（ストレス）と回復のサイクルが基本。消費だけではオーバートレーニング、回復だけではスキルが上がらない。James Maas（Power Sleep）：睡眠は回復の最大インフラ——7〜9時間未満の慢性睡眠不足は認知能力を最大40%低下させる。',
+      business: '1日を90分作業ブロック×休憩20分で設計する（ウルトラディアンリズムに合わせた回復）。週単位の回復投資を設計する——完全オフの半日・深い睡眠・身体的運動のどれかを週3回以上確保する。「睡眠削って仕事する」は翌日のパフォーマンスを40%下げ、総産出量を減らすことを認識する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">睡眠時間と認知パフォーマンス</div>
+        <div class="retention-chart">
+          <div class="retention-row">
+            <span class="retention-label">8時間</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#f59e0b" data-w="100"></div></div>
+            <span class="retention-pct">100%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">6時間</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="70"></div></div>
+            <span class="retention-pct">70%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">4〜5時間</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#64748b" data-w="40"></div></div>
+            <span class="retention-pct">40%</span>
+          </div>
+        </div>
+      </div>`,
+      deficit: '「頑張ればいい」という思想で睡眠・休息を削り続けると、認知能力の低下が判断ミスを増やし、そのリカバリーにさらに時間がかかる負のサイクルに入る。消耗を美化する文化は組織全体の知的生産性を下げる。',
+      check: '1日の中に意図的な回復タイム（20分の休憩・昼食離席）を設けているか？ 平均睡眠時間は7時間以上確保できているか？ 週次で「完全回復の時間」（運動・睡眠・趣味）を設計しているか？'
+    },
+    {
+      num: '05', title: '境界線の設定', theory: 'バウンダリー / 自己開示 / アサーティブコミュニケーション',
+      icon: 'shield', badge: 'feat', badgeText: 'FEAT',
+      summary: '「断れない」「全部引き受けてしまう」は美徳ではなく、自分と周囲へのコストを高める行動パターン。境界線（バウンダリー）を設定することは「関係を壊す」のではなく「持続可能な関係を作る」行為。NOを言えない人間はYESの価値を下げ、燃え尽きる。',
+      theoryText: 'Brené Brown（Daring Greatly, 2012）：「境界線がない人間は最終的に怨恨を抱く」——引き受けすぎた人間は内部で怒りを蓄積し、関係を爆発的に壊す。アサーティブコミュニケーション（DESC法）：Describe（状況説明）→Express（感情表現）→Specify（要求）→Consequences（結果説明）の4ステップで、攻撃も服従もせずに自分の境界線を伝える。',
+      business: '断る際のフォーマット——「その依頼の重要性は理解しています。現在〇〇に集中しているため、今週中の対応は難しい状況です。〇〇日以降か、〇〇に相談することはできますか？」。「NO」を言う前に「代替案」を添える——完全拒否より「この条件ならYES」の形に変換する。週次で「引き受けすぎているもの」を1つ洗い出し、整理する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">DESC法の実装例</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">D（Describe）</strong>：「今週は〇〇プロジェクトの締め切りが重なっています」<br>
+          <strong style="color:var(--text);">E（Express）</strong>：「この状況でさらに引き受けると品質に影響が出ます」<br>
+          <strong style="color:var(--text);">S（Specify）</strong>：「来週月曜以降か、別の担当者にお願いできますか？」<br>
+          <strong style="color:var(--text);">C（Consequences）</strong>：「そうしていただければ確実に対応できます」
+        </div>
+      </div>`,
+      deficit: '境界線のない人間は「頼まれると断れない」「感謝されたいから引き受ける」を繰り返し、やがて燃え尽きる。燃え尽きたリーダーが与えるチームへの悪影響（判断力低下・感情的反応・不公平なタスク分配）は、個人の問題を超えて組織全体のパフォーマンスを下げる。',
+      check: '今週「断った」または「条件付きYES」に変換したケースはあったか？ 「引き受けすぎ」のサインを自分で把握しているか？ DESC法で自分の境界線を攻撃せず・服従せずに伝えられるか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const d = items[i];
+    const isCore = !!d.core;
+    const badgeHtml = d.badge === 'core'
+      ? `<span class="badge badge-core">CORE</span>`
+      : d.badge === 'feat' ? `<span class="badge badge-feat">${d.badgeText}</span>` : '';
+    const afterGrid = d.customAfterGrid || '';
+
+    document.getElementById('panel').className = `panel${isCore ? ' core' : ''}`;
+    document.getElementById('panel').innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${d.icon}" width="24" height="24"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${d.num}</div>
+          <div class="panel-title">${d.title}</div>
+          <div class="panel-theory">${d.theory}</div>
+        </div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <p class="panel-summary">${d.summary}</p>
+      <div class="detail-grid">
+        <div class="detail-block">
+          <div class="detail-label">理論的根拠</div>
+          <div class="detail-text">${d.theoryText}</div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-label">現場への実装</div>
+          <div class="detail-text">${d.business}</div>
+        </div>
+      </div>
+      ${afterGrid}
+      <div class="deficit-block">
+        <div class="deficit-label">⚠ 欠如事例・コスト</div>
+        <div class="deficit-text">${d.deficit}</div>
+      </div>
+      <div class="check-block">
+        <div class="check-label">セルフチェック</div>
+        <div class="check-text">${d.check}</div>
+      </div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">PREV</span>
+            <span>${i > 0 ? items[i-1].title : ''}</span>
+          </div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">NEXT</span>
+            <span>${i < items.length - 1 ? items[i+1].title : ''}</span>
+          </div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+    animateBars(document.getElementById('panel'));
+  }
+
+  function animateBars(container) {
+    (container || document).querySelectorAll('.retention-bar').forEach(bar => {
+      const w = bar.dataset.w;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w + '%'; }, 100);
+    });
+  }
+
+  function go(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 100;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = [
+      '',
+      '1つ：②から。今日感情が動いた場面を1つ、感情名まで言語化して記録してみる',
+      '2つ：③次に強い感情が湧いたとき、事実と解釈を分けて書き出す',
+      '3つ：④今週の睡眠時間を計測し、7時間以下の日があれば就寝時刻を30分前倒しする',
+      '4つ：⑤今週断れなかった依頼を1つ振り返り、DESC法で代替案を考える',
+      '5つ：5要素が実践されている。感情が情報として機能し、持続可能なパフォーマンスが出せている状態'
+    ];
+    document.getElementById('score-display').innerHTML =
+      `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  go(0);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>論理的思考力の5要素 | Business Skills</title>
+<meta property="og:title" content="論理的思考力の5要素 | Business Skills">
+<meta property="og:description" content="感覚・経験だけに頼らず筋道立てて考える力。演繹・帰納・仮説・MECE・因果分析の5技術と、論理崩壊が生む意思決定ミスの構造。">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15); --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.nav-spacer { width: 80px; }
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.retention-chart { margin-bottom: var(--sp-3); }
+.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
+.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
+.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+@media (max-width: 768px) { .hero h1 { font-size: 1.6rem; } .detail-grid { grid-template-columns: 1fr; } .insight-flow { flex-direction: column; align-items: flex-start; } .panel-header { flex-wrap: wrap; } .panel { padding: var(--sp-6) var(--sp-4); } .tab { padding: 8px 12px; } .tab-title { display: none; } }
+@media (max-width: 480px) { .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); } .panel-title { font-size: 1.2rem; } }
+/* ── Structure Map ── */
+.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
+.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
+.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
+.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
+.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.smap-band { width: 100%; max-width: 540px; }
+.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.smap-band-tag.core { color: var(--accent-core); }
+.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
+.smap-center { display: flex; justify-content: center; }
+.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
+.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
+.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
+.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
+.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
+.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
+.smap-node.core-node .sn-num { color: var(--accent-core); }
+.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
+.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
+.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
+.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
+.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
+.smap-axiom strong { color: var(--accent-core); }
+@media (max-width: 480px) {
+  .smap-node { max-width: 130px; }
+  .smap-node.core-node { max-width: 200px; }
+  .sn-name { font-size: 0.78rem; }
+  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a class="nav-back" href="index.html"><i data-lucide="chevron-left" width="16" height="16"></i>Business Skills</a>
+  <span class="nav-title-text">論理的思考力の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+<header class="hero">
+  <span class="hero-label">Business Skills Series · 10</span>
+  <h1><span>論理的思考力</span>の5要素</h1>
+  <p class="hero-sub">「なんとなくそう思う」は根拠にならない。演繹・帰納・仮説・MECE・因果分析の5技術で、思考を再現可能な構造に変える。</p>
+</header>
+
+<!-- Structure Map -->
+<section class="structmap-section">
+  <div class="structmap-card">
+    <div class="structmap-hd">
+      <h2 class="structmap-title">5要素の構造マップ</h2>
+      <p class="structmap-hint">クリックで詳細へジャンプ</p>
+    </div>
+    <div class="structmap-body">
+      <div class="smap-band">
+        <div class="smap-band-tag core">LOGIC BASE — 論理の基礎</div>
+        <div class="smap-pair">
+          <button class="smap-node core-node" onclick="goAndScroll(0)">
+            <span class="sn-core-badge">CORE</span>
+            <span class="sn-num">01</span>
+            <span class="sn-name">演繹推論</span>
+            <span class="sn-sub">三段論法 / 前提検証</span>
+            <span class="sn-dmg">⚠ 前提ミスで対策が外れる</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(1)">
+            <span class="sn-num">02</span>
+            <span class="sn-name">帰納推論</span>
+            <span class="sn-sub">蓋然性 / 反例検証</span>
+            <span class="sn-dmg">⚠ 反例1つで法則崩れる</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">HYPOTHESIS — 仮説と検証</div>
+        <div class="smap-center">
+          <button class="smap-node" onclick="goAndScroll(2)">
+            <span class="sn-num">03</span>
+            <span class="sn-name">仮説思考</span>
+            <span class="sn-sub">アブダクション / 高速検証</span>
+            <span class="sn-dmg">⚠ 調査に時間を使い切る</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">STRUCTURE & CAUSE — 構造化と因果</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(3)">
+            <span class="sn-num">04</span>
+            <span class="sn-name">MECE構造化</span>
+            <span class="sn-sub">ロジックツリー</span>
+            <span class="sn-dmg">⚠ 漏れが本質原因を隠す</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(4)">
+            <span class="sn-num">05</span>
+            <span class="sn-name">因果分析</span>
+            <span class="sn-sub">因果推論 / 交絡因子</span>
+            <span class="sn-dmg">⚠ 相関誤認で数百万の誤対策</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-axiom">
+        <strong>①前提検証なしの演繹は「正しく間違った方向に走る」論理</strong> — どれだけ完璧な推論も前提が崩れれば結論は誤る
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)"><span class="num">01</span><span class="tab-title">演繹推論</span><span class="core-dot"></span></button>
+    <button class="tab" data-i="1" onclick="go(1)"><span class="num">02</span><span class="tab-title">帰納推論</span></button>
+    <button class="tab" data-i="2" onclick="go(2)"><span class="num">03</span><span class="tab-title">仮説思考</span></button>
+    <button class="tab" data-i="3" onclick="go(3)"><span class="num">04</span><span class="tab-title">MECE構造化</span></button>
+    <button class="tab" data-i="4" onclick="go(4)"><span class="num">05</span><span class="tab-title">因果分析</span></button>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill core" id="progress"></div></div></div>
+</nav>
+<main class="panel-wrap"><div class="panel" id="panel"></div></main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：論理が機能する思考の構造</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①演繹（前提→結論）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(1)">②帰納（事例→法則）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(2)">③仮説（不完全情報→検証）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(3)">④MECE（漏れなくダブりなく）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(4)">⑤因果（相関≠因果）</div>
+    </div>
+    <p class="insight-text">
+      ①演繹は「前提が正しければ結論は必然」という堅い論理。前提を確認せずに結論を出すのは演繹の失敗。<br>
+      ②帰納は「事例から法則を導く」ため、必然ではなく蓋然性（確からしさ）の推論。反例が1つあれば法則は崩れる。<br>
+      ③仮説思考は現実のビジネスで最も実用的。全情報が揃う前に動かなければならない場面で「最も確からしい答え」を先に設定し、検証で修正する。<br>
+      ④MECEは思考の網羅性・整理の原則。分解に漏れがあると本当の原因を見逃し、ダブりがあると同じ場所に二重の努力をかける。<br>
+      ⑤因果と相関の混同は論理エラーの代表格。「Aの後にBが起きた」「AとBが同時に動く」は因果ではない。介入実験または理論的根拠がなければ「相関がある」止まりが正確。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。直近の分析・報告・提案への対応を振り返る。</p>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox" id="c1" onchange="updateScore()"><label for="c1"><strong>①</strong> 結論を述べる前に「前提は何か・前提は正しいか」を確認した</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" onchange="updateScore()"><label for="c2"><strong>②</strong> 複数の事例から法則を導く際に「反例がないか」を確認した</label></div>
+      <div class="check-item"><input type="checkbox" id="c3" onchange="updateScore()"><label for="c3"><strong>③</strong> 情報が不完全な状況で「最も確からしい仮説」を先に立て、検証する順序で動いた</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" onchange="updateScore()"><label for="c4"><strong>④</strong> 分解・整理の際に「MECE（漏れなくダブりなく）になっているか」を確認した</label></div>
+      <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 「AだからB」と言う前に、相関ではなく因果関係があることを根拠付きで確認した</label></div>
+    </div>
+    <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;"><i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧</a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;"><i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル</a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: '演繹推論', theory: '三段論法 / 条件文 / 前提検証',
+      icon: 'arrow-right', core: true, badge: 'core',
+      summary: '演繹は「前提が正しければ結論は必然的に正しい」という論理形式。三段論法（大前提→小前提→結論）が基本形。ビジネスで演繹が崩れる最大原因は「前提を確認しないまま結論を出す」こと。前提が間違っていれば、どれだけ完璧な論理を積んでも結論は誤る。',
+      theoryText: 'アリストテレスの三段論法：「すべての人は死ぬ（大前提）→ソクラテスは人だ（小前提）→ソクラテスは死ぬ（結論）」。条件文の構造：「もしPならばQ（P→Q）」。P→Qが成立しても、Qが成立してもPとは限らない（後件肯定の誤謬）。前件否定（Pでないから、Qでない）も誤りの代表例。',
+      business: '設備停止の原因分析：「電気系トラブルは過電流で止まる（大前提）→今回の停止は過電流トリップだ（小前提）→電気系トラブルだ（結論）」。しかし「大前提」が本当に正しいか確認が必要。過電流の原因は機械系負荷増大・電気系絶縁劣化・両方など複数ある。前提を確認せずに「電気系」と断定すると誤った原因に対策を打つ。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">演繹の典型的エラー</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">後件肯定の誤謬</strong>：P→QのときQからPを結論する（例：「雨なら道が濡れる」→「道が濡れているから雨だ」→散水車かもしれない）<br>
+          <strong style="color:var(--text);">前提の隠蔽</strong>：自明に見えて実は検証が必要な大前提を確認せずに進む<br>
+          <strong style="color:var(--text);">確証バイアス</strong>：結論に合う前提だけを選ぶ
+        </div>
+      </div>`,
+      deficit: '「この設備は劣化すると電流が上がる（前提）→今電流が上がっている→劣化だ（結論）」という演繹に見えて、前提自体が不完全なケースは多い。前提未検証の演繹から出た対策は、原因を特定しないまま部品を交換することになり、同じトラブルが再発する。',
+      check: '結論を出す前に「前提は何か」を言語化したか？ 前提は本当に正しいか検証したか？ 結論が前提から必然的に導けるか確認したか？'
+    },
+    {
+      num: '02', title: '帰納推論', theory: '蓋然性 / パターン認識 / 反例検証',
+      icon: 'trending-up',
+      summary: '帰納は「複数の事例から共通法則を導く」推論。「3回とも電流上昇→停止のパターンだった→電流上昇は停止の前兆だ」のように事例から一般化する。演繹と異なり結論の確実性は100%でなく「高い確率で正しい」止まり。反例が1つあれば法則は崩れる。',
+      theoryText: 'フランシス・ベーコン（帰納法の体系化）：多数の事例を観察→共通要素を抽出→法則を形成。反証可能性（カール・ポパー）：科学的な法則は「反証できる形で記述」されなければならない。反証できない法則は科学ではなくメタファー。ベイズ推論：事例が増えるほど法則の確信度（事後確率）が更新される。',
+      business: '設備保全での帰納：「過去5年間のトラブル記録を分析すると、7〜9月の高温期に絶縁不良が集中する（事例）→夏季は絶縁劣化が進む（法則）→7月前に絶縁測定を実施する（対策）」。ただし反例確認が必須：「冬季の絶縁不良はなかったか？」「他の要因が重なっていないか？」。反例なしで初めて法則として扱える。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">帰納の強度を高める方法</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">事例数を増やす</strong>：3件より30件。例外が少ないほど法則の信頼度が上がる<br>
+          <strong style="color:var(--text);">多様な条件で確認</strong>：同じ条件の繰り返しより、異なる条件でも成立することを確認<br>
+          <strong style="color:var(--text);">反例を積極的に探す</strong>：「法則を崩す事例はないか」を意図的に調査する
+        </div>
+      </div>`,
+      deficit: '事例数が少ない帰納から「法則だ」と確信するのは早計。3件の事例から「必ずこうなる」と結論した対策は、4件目の反例で崩れる。保全計画で「今まで問題なかったから大丈夫」は帰納の誤用。「今まで」が将来を保証しないことを認識する。',
+      check: '法則を導いた事例数は十分か？ 反例を積極的に探したか？ 「確実」ではなく「高い確率で」という蓋然性の表現で結論を述べているか？'
+    },
+    {
+      num: '03', title: '仮説思考', theory: 'アブダクション / 仮説先行 / 高速検証',
+      icon: 'lightbulb',
+      summary: '現実のビジネスでは全情報が揃う前に動かなければならない。仮説思考とは「現時点で最も確からしい答え（仮説）を先に設定し、検証で修正する」アプローチ。調査してから考えるのではなく、考えてから最小限の調査で検証する。マッキンゼーが問題解決の起点として体系化。',
+      theoryText: 'アブダクション（C.S.パース）：「最も良い説明への推論」。演繹・帰納に次ぐ第三の推論形式。「観察→最も自然な説明を仮説として採用→検証」の流れ。イシューからはじめよ（安宅和人）：「答えが出る前提でイシュー（問い）を設定し、仮説を持って分析に入る」。仮説のない調査はデータ収集であり、問題解決ではない。',
+      business: '電気設備の不具合対応例：「計器表示が不安定（現象）→仮説①：センサー不良、仮説②：接地不良、仮説③：ノイズ混入。確率が高いのは①（最近類似品が多発）→センサー単体テストを実施→確認。確定後に交換」。仮説なしで手当たり次第にテストすると、確認に3倍の時間がかかる。仮説の精度が調査効率を決める。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">仮説の質を高める問い</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">「最も確からしい原因は何か？」</strong>：経験・データ・理論から優先度をつける<br>
+          <strong style="color:var(--text);">「この仮説が正しければ、何を観察すれば確認できるか？」</strong>：検証可能な形で仮説を記述する<br>
+          <strong style="color:var(--text);">「この仮説を崩す反証は何か？」</strong>：反証を先に想定して検証設計をする
+        </div>
+      </div>`,
+      deficit: '仮説なしに「全部調べる」アプローチは、情報収集に時間を使い切って考える時間がなくなる。「データが揃ってから判断する」と言い続ける人は、データが揃うころには判断のタイミングを逃している。仮説思考がない組織は「調査報告書」を作るが「提案書」を作れない。',
+      check: '調査・分析の前に「最も確からしい答えは何か」を言語化したか？ 仮説を「検証できる形」で記述したか？ 「調べてから考える」ではなく「考えてから最小限調べる」順序で動いているか？'
+    },
+    {
+      num: '04', title: 'MECE構造化', theory: 'MECE / ロジックツリー / ピラミッド原則',
+      icon: 'layers',
+      summary: 'MECEとは「Mutually Exclusive（重複なし）・Collectively Exhaustive（漏れなし）」の原則。問題・原因・選択肢を整理する際に、ダブりなく・漏れなく分解する。漏れがあると本質的な原因を見逃し、ダブりがあると同じ問題に二重の資源を投入する。',
+      theoryText: 'McKinsey & Company が問題解決の基本手法として体系化。ピラミッド原則（バーバラ・ミント）：メッセージを結論（頂点）から始め、根拠を階層的に展開する。横のロジック（同レベルの項目はMECE）・縦のロジック（上位概念を下位概念が支持する）の二原則。4M分解（人・設備・方法・材料）は製造業でのMECEな問題分解フレームの代表例。',
+      business: '設備の生産性低下原因をMECEで分解：「Man（人）：技術習熟・作業手順遵守」「Machine（設備）：経年劣化・精度低下」「Method（方法）：工程設計・段取り時間」「Material（材料）：品質変動・規格外れ」。この4軸はダブりなく漏れなく原因をカバーする。次に各軸を数値で評価し、どの軸の寄与が最大かを特定して対策を絞る。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">MECE判定チェック</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">漏れ確認</strong>：「この分解に入らないものはないか？」を確認する。入らないものがあれば漏れ<br>
+          <strong style="color:var(--text);">ダブり確認</strong>：「どちらのカテゴリにも入るものはないか？」。あればダブり<br>
+          <strong style="color:var(--text);">フレームの活用</strong>：4M・3C・SWOT・時系列など既存フレームはMECE設計済み。使えるフレームは車輪を再発明しない
+        </div>
+      </div>`,
+      deficit: 'MECEでない分解は「思いついた順の箇条書き」になる。製造ラインの問題を「人と設備と段取り」で整理したつもりで、「材料品質」の観点が全体から抜けていたために根本原因を見逃したケースは頻発する。論点が整理されていない会議では、同じ話を繰り返すか、解決策が出ないまま時間切れになる。',
+      check: '分解した項目に「漏れ」はないか？ 分解した項目に「ダブり」はないか？ 同レベルの項目は同じ切り口（軸）で分解されているか？'
+    },
+    {
+      num: '05', title: '因果分析', theory: '因果推論 / 交絡因子 / 介入実験',
+      icon: 'git-merge',
+      summary: '「AとBが同時に動く（相関）」と「AがBを引き起こす（因果）」は全く異なる。因果を誤認すると、原因でない要素に対策を打ち、問題は再発し続ける。論理的思考の中で最も誤りやすく、最もコストが高いエラーが因果と相関の混同。',
+      theoryText: '因果推論（Judea Pearl）：データだけから因果は証明できない。介入（do演算子）が必要。「XをYに変えたとき、Zが変わったか」という実験的確認が因果の根拠になる。交絡因子：AとBが相関して見えるのに、実際は第三の要因CがAとB両方に影響しているケース（アイスの売上と溺死者数の相関は夏という交絡因子で説明できる）。5Why（トヨタ）：「なぜ」を繰り返すことで表面の相関から根本的因果へ掘り下げる手法。',
+      business: '電気設備の例：「昨年から絶縁抵抗値が下がり始め、同時期から電力使用量も増えている（相関）→電力使用量増加が絶縁劣化を引き起こしているのか？（因果の問い）→実際は夏季の温度上昇が両方に影響（交絡因子）」。電力削減対策では絶縁劣化は止まらない。正しい対策は夏季の空調管理と絶縁材料の耐熱グレードアップ。因果を特定しないと対策が外れる。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">因果確認の3ステップ</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">①時間的順序</strong>：原因は結果より前に起きているか？（必要条件）<br>
+          <strong style="color:var(--text);">②共変関係</strong>：原因が変化すると結果も変化するか？（相関の確認）<br>
+          <strong style="color:var(--text);">③交絡因子の排除</strong>：第三の要因で説明できないか？（因果の確認）。すべて満たして初めて「因果がある」と言える
+        </div>
+      </div>`,
+      deficit: 'ある工場で「ベテランが多いラインの不良率が低い（相関）→ベテランを増やせば不良率が下がる（因果の誤認）」という判断をしたが、実際は「ベテランが多いラインは工程が単純なラインであり、工程の複雑度が不良率を決めていた」。ベテラン増員の効果はなく、工程簡素化で不良率が改善した。相関を因果と誤認した対策コストは数百万円。',
+      check: '「AだからB」と言う前に、時間的順序・共変関係・交絡因子の排除を確認したか？ 「相関がある」と「因果がある」を明確に区別して表現しているか？ 因果と判断できる実験的根拠または理論的根拠があるか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const d = items[i];
+    const isCore = !!d.core;
+    const badgeHtml = d.badge === 'core' ? `<span class="badge badge-core">CORE</span>` : '';
+    const afterGrid = d.customAfterGrid || '';
+    document.getElementById('panel').className = `panel${isCore ? ' core' : ''}`;
+    document.getElementById('panel').innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${d.icon}" width="24" height="24"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${d.num}</div>
+          <div class="panel-title">${d.title}</div>
+          <div class="panel-theory">${d.theory}</div>
+        </div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <p class="panel-summary">${d.summary}</p>
+      <div class="detail-grid">
+        <div class="detail-block"><div class="detail-label">理論的根拠</div><div class="detail-text">${d.theoryText}</div></div>
+        <div class="detail-block"><div class="detail-label">現場への実装</div><div class="detail-text">${d.business}</div></div>
+      </div>
+      ${afterGrid}
+      <div class="deficit-block"><div class="deficit-label">⚠ 欠如事例・コスト</div><div class="deficit-text">${d.deficit}</div></div>
+      <div class="check-block"><div class="check-label">セルフチェック</div><div class="check-text">${d.check}</div></div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i-1})" ${i===0?'disabled':''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label"><span class="nav-btn-hint">PREV</span><span>${i>0?items[i-1].title:''}</span></div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i+1})" ${i===items.length-1?'disabled':''}>
+          <div class="nav-btn-label"><span class="nav-btn-hint">NEXT</span><span>${i<items.length-1?items[i+1].title:''}</span></div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+    animateBars(document.getElementById('panel'));
+  }
+
+  function animateBars(container) {
+    (container||document).querySelectorAll('.retention-bar').forEach(bar => {
+      const w = bar.dataset.w; bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w+'%'; }, 100);
+    });
+  }
+
+  function go(i) {
+    if (i<0||i>=items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i===i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i+1)/items.length*100)+'%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 100;
+    if (window.scrollY > panelTop) window.scrollTo({top: panelTop, behavior: 'smooth'});
+  }
+  function goAndScroll(i) {
+    go(i);
+    const wrap = document.querySelector('.panel-wrap');
+    if (wrap) window.scrollTo({ top: wrap.offsetTop - 80, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName==='INPUT') return;
+    if (e.key==='ArrowRight') go(current+1);
+    if (e.key==='ArrowLeft') go(current-1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['','1つ：①から。次の結論を出す前に「前提は何か」を言語化する習慣を作る','2つ：土台あり。③仮説思考を加える。「調べてから考える」を「考えてから最小限調べる」に変える','3つ：中級レベル。④MECEで分解を構造化する習慣を加える','4つ：高水準。⑤因果分析を加えて対策の精度を高める','5つ：5要素が実践されている。論理が再現可能なスキルとして機能している状態'];
+    document.getElementById('score-display').innerHTML = `<span id="score-num">${checked}</span> / 5 — ${messages[checked]||''}`;
+  }
+
+  go(0);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>再現性づくりの5要素 | Business Skills</title>
+<meta property="og:title" content="再現性づくりの5要素 | Business Skills">
+<meta property="og:description" content="毎回ゼロから頑張る人は消耗する。強い人は努力を仕組みに変える。標準化・形式知化・仕組み化・改善サイクル・展開力の5技術で、個人の能力を組織の資産に変換する。">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+  --bg: #0a0e1a; --bg-card: #111827;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15); --border-core: rgba(245,158,11,0.5);
+}
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.nav-spacer { width: 80px; }
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; line-height: var(--lh-long); }
+.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge-core { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.step-flow { display: flex; align-items: stretch; gap: 0; margin-bottom: var(--sp-3); flex-wrap: nowrap; overflow-x: auto; }
+.step-item { flex: 1; min-width: 80px; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); border-radius: 0; padding: var(--sp-3) var(--sp-2); text-align: center; position: relative; }
+.step-item:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.step-item:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.step-item + .step-item { border-left: none; }
+.step-item::after { content: '→'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.8rem; z-index: 1; pointer-events: none; }
+.step-item:last-child::after { display: none; }
+.step-num { font-size: 0.62rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 2px; }
+.step-label { font-size: 0.72rem; font-weight: 700; color: var(--text); }
+.matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: var(--sp-3); }
+.matrix-cell { padding: var(--sp-3); border-radius: var(--radius-sm); font-size: var(--fs-sm); line-height: 1.5; }
+.matrix-cell.hi-hi { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); }
+.matrix-cell.hi-lo { background: rgba(56,189,248,0.10); border: 1px solid rgba(56,189,248,0.25); }
+.matrix-cell.lo-hi { background: rgba(100,116,139,0.12); border: 1px solid rgba(100,116,139,0.3); }
+.matrix-cell.lo-lo { background: rgba(71,85,105,0.08); border: 1px solid rgba(71,85,105,0.2); }
+.matrix-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.hi-hi .matrix-label { color: var(--accent-core); }
+.hi-lo .matrix-label { color: var(--accent); }
+.lo-hi .matrix-label { color: #94a3b8; }
+.lo-lo .matrix-label { color: var(--text-dim); }
+.matrix-text { color: var(--text-muted); font-size: var(--fs-sm); }
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+@media (max-width: 768px) { .hero h1 { font-size: 1.6rem; } .detail-grid { grid-template-columns: 1fr; } .panel-header { flex-wrap: wrap; } .panel { padding: var(--sp-6) var(--sp-4); } .tab { padding: 8px 12px; } .tab-title { display: none; } .step-flow { flex-wrap: wrap; } .step-item { min-width: calc(50% - 8px); border-radius: var(--radius-sm) !important; border-left: 1px solid rgba(56,189,248,0.2) !important; } .step-item::after { display: none; } }
+@media (max-width: 480px) { .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); } .panel-title { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a class="nav-back" href="index.html"><i data-lucide="chevron-left" width="16" height="16"></i>Business Skills</a>
+  <span class="nav-title-text">再現性づくりの5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+<header class="hero">
+  <span class="hero-label">Business Skills Series · 15</span>
+  <h1><span>再現性づくり</span>の5要素</h1>
+  <p class="hero-sub">毎回ゼロから頑張る人は消耗する。強い人は努力を仕組みに変える。標準化・形式知化・仕組み化・改善サイクル・展開力の5技術で、個人の能力を組織の資産に変換する。</p>
+</header>
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)"><span class="num">01</span><span class="tab-title">標準化</span><span class="core-dot"></span></button>
+    <button class="tab" data-i="1" onclick="go(1)"><span class="num">02</span><span class="tab-title">形式知化</span></button>
+    <button class="tab" data-i="2" onclick="go(2)"><span class="num">03</span><span class="tab-title">仕組み化</span></button>
+    <button class="tab" data-i="3" onclick="go(3)"><span class="num">04</span><span class="tab-title">継続的改善</span></button>
+    <button class="tab" data-i="4" onclick="go(4)"><span class="num">05</span><span class="tab-title">展開と教育</span></button>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill core" id="progress"></div></div></div>
+</nav>
+<main class="panel-wrap"><div class="panel" id="panel"></div></main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：努力が仕組みに変わる構造</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①標準化</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②形式知化</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③仕組み化</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④改善サイクル</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤展開・教育</div>
+    </div>
+    <p class="insight-text">
+      ①標準化が起点。「誰が・いつやっても同じ結果が出る手順」を設計することで、プロセスを人から分離し組織資産にする。属人化している状態は再現性ゼロ。<br>
+      ②形式知化で、熟練者の「コツ・感覚・判断軸」を言語化・数値化する。暗黙知のまま放置すると退職・異動でその知識は組織から消える。形式知化した知識だけが次のステップに使える。<br>
+      ③仕組み化で「毎回考えなくても良い判断」をルール・フロー・システムに落とす。人が毎回判断するコストを削減し、本当に重要な判断への集中を作る。<br>
+      ④継続的改善で標準の劣化を防ぐ。設備・人・工程が変われば標準も変わる。更新されない手順書は「あるだけ」の文書になる。改善サイクルを日常業務に組み込む。<br>
+      ⑤展開と教育で仕組みを組織に定着させる。手順書が「存在する」だけでは再現性は生まれない。Tell→Show→Do→Checkの4ステップで「使える状態」まで仕上げる。5要素が連動して初めて、個人の努力が組織の再現可能な資産になる。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。今月の仕事の仕組み化状況を振り返る。</p>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox" id="c1" onchange="updateScore()"><label for="c1"><strong>①</strong> 担当外の人が手順書だけで作業の半分以上できる状態を作った</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" onchange="updateScore()"><label for="c2"><strong>②</strong> 「コツ・感覚・経験則」として持っている知識を文書に書き出した</label></div>
+      <div class="check-item"><input type="checkbox" id="c3" onchange="updateScore()"><label for="c3"><strong>③</strong> 月3回以上繰り返している作業をルール・テンプレート・自動化で仕組み化した</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" onchange="updateScore()"><label for="c4"><strong>④</strong> 手順書・ルールを現場変化に合わせて更新した（または更新の仕組みを設計した）</label></div>
+      <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 教育でTell→Show→Do→Checkの4ステップを実施し、習得を確認した</label></div>
+    </div>
+    <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;"><i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧</a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;"><i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル</a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: '標準化（CORE）', theory: '手順書 / チェックリスト / DoD（完了の定義）',
+      icon: 'file-text', core: true, badge: 'core',
+      summary: '再現性の起点は「誰が・いつやっても同じ結果が出る手順」の設計。属人化（特定の人しかできない状態）は組織の脆弱性。手順書・チェックリストで「プロセスの知識」を人から分離し、組織の資産にする。完璧な手順書より「使われる手順書」が価値を持つ。',
+      theoryText: 'チェックリスト宣言（Atul Gawande）：医療・航空など高度専門職でさえチェックリストが死亡率・事故率を劇的に下げる。人間の記憶・注意力の限界を補う仕組み。ISO 9001（品質マネジメントシステム）：作業手順の文書化・管理を品質の基礎とする国際標準。Work Instructions（作業指示書）：誰でも実行できる粒度（5W1H + 判断基準）で記述。TWI（Training Within Industry）：トヨタ生産システムの基礎。標準作業の定義と訓練。',
+      business: '電計チームの手順書設計：「制御盤停電作業手順書」を「①停電許可申請手順→②作業前確認チェックリスト→③作業手順（ステップ番号付き）→④復電確認チェックリスト→⑤引き渡し手順」の5段構成で作成。新人でも6割の作業を一人でできるレベルに。ポイント：「いつも頭の中でやっていること」を書き出す作業が標準化の核心。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">属人化度チェックリスト</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">属人化が進んでいるサイン</strong><br>
+          ・「〇〇さんしかわからない」が会話に出る<br>
+          ・担当者不在で判断が止まる<br>
+          ・引き継ぎに1ヶ月以上かかる<br>
+          ・手順書が存在しない or 3年以上更新されていない<br><br>
+          <strong style="color:var(--text);">標準化のターゲット優先順位</strong><br>
+          <strong style="color:var(--accent-core);">最優先</strong>：安全に直結する作業・止まると困る設備の操作<br>
+          <strong style="color:var(--accent);">優先</strong>：月1回以上繰り返す作業・判断基準が曖昧な業務<br>
+          <strong style="color:var(--text-dim);">後回し可</strong>：年1回未満・担当者固定が合理的な高度専門業務
+        </div>
+      </div>`,
+      deficit: '担当者が休んだ・辞めたときに「あの人しかわからない」が発生する組織は、属人化が進みすぎている。電気設備の特定機種の設定変更が一人しかできず、その人の体調不良で設備停止が延長したケースは製造業で頻発する。属人化は「個人の強み」ではなく「組織の弱点」。',
+      check: '担当外の人が手順書だけで作業の6割を実行できるか？ チェックリストで判断が必要な箇所の基準を明示しているか？ 「口頭でしか伝えられていないこと」を文書化したか？'
+    },
+    {
+      num: '02', title: '暗黙知の形式知化', theory: '知識変換モデル（SECI）/ ナレッジマネジメント / 気づきの言語化',
+      icon: 'book-open',
+      summary: '経験豊富な人が持つ「コツ・感覚・判断軸」は暗黙知。言語化できていない知識は伝達できない。暗黙知を「なぜその判断をするのか」「どんな兆候を見ているのか」という形式知に変換することで、組織の知的資産を蓄積できる。',
+      theoryText: '野中郁次郎「知識創造の経営」SECIモデル：共同化（暗黙知→暗黙知）→表出化（暗黙知→形式知）→結合化（形式知→形式知）→内面化（形式知→暗黙知）の4段階。形式知化（表出化）が組織学習の核心。タシット知識（Polanyi）：「私たちは言葉にできる以上のことを知っている」。熟練者の判断は言語化しないと消える。',
+      business: '設備保全の暗黙知形式知化例：「ポンプの異音で劣化を判断する（暗黙知）」→「周波数分析で〇Hzのピークが〇dB以上かつ〇〇の状態が2週間以上継続した場合（形式知）」。フェインマン技法の適用：「なぜそう判断するのか、5歳児に説明するとしたら？」という問いで暗黙知を引き出す。ベテランへのインタビューを構造化し、判断フローを文書化する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">暗黙知→形式知の変換例</div>
+        <div class="detail-text">
+          <strong style="color:var(--text);">変換前（暗黙知）</strong>：「なんとなく音がおかしいときは止める」<br>
+          <strong style="color:var(--text);">変換後（形式知）</strong>：「異音発生時チェックリスト ①周波数〇Hz以上の高音 ②振動値〇mm/s超過 ③潤滑油温度〇℃以上のいずれか2項目以上→即停止・報告」<br><br>
+          <strong style="color:var(--text);">引き出しのための問い</strong><br>
+          ・「どんな状態のときに判断を変えますか？」<br>
+          ・「その判断の基準（数値・状態）は何ですか？」<br>
+          ・「例外（いつもと違う判断をしたケース）はありましたか？」
+        </div>
+      </div>`,
+      deficit: '技術的な暗黙知が形式知化されないまま定年退職・退職が起きると、その知識は組織から消える。「見て覚えろ」文化は教える側の暗黙知を言語化せず、伝達効率が低く再現性もない。設備老朽化・複雑化が進む中、暗黙知に依存した保全は継続不可能になる。',
+      check: '「コツ・感覚・経験則」として持っている知識を言語化・文書化したか？ 判断の「基準・閾値・判断フロー」を形式知として残したか？ 後任者が文書だけで8割の判断を再現できるか？'
+    },
+    {
+      num: '03', title: '仕組み化（自動化・ルール化）', theory: 'システム思考 / ルールベース管理 / 自動化設計',
+      icon: 'settings',
+      summary: '仕組み化とは「毎回考えなくても良い判断をルール・フロー・システムに落とす」こと。人が毎回判断するコスト（時間・ミス・バラつき）を削減し、重要な判断に集中できる状態を作る。「例外を作らないルール設計」と「例外の処理フロー」がセットで機能する。',
+      theoryText: 'システム思考（Peter Senge）：個人の行動ではなく、システム（構造）が結果を生む。構造を変えれば行動が変わる。ルールベースシステム（認知工学）：熟練者の判断ルールを明示的なif-then形式に変換する。ゼロベース思考：「なぜこのプロセスが存在するのか」を問い直し、目的から仕組みを設計する。デフォルト設計（行動経済学）：多数の人が「何も考えずに」正しい行動を取れるようにデフォルトを設計する。',
+      business: '電計チームの仕組み化例：「月次保全記録の集計→自動集計フォーム化（手作業廃止）」「工事前確認→チェックシートを標準書類化（毎回ゼロ作成を廃止）」「部品発注→在庫アラート設定（担当者が確認しなくても発注タイミングがわかる）」。仕組み化の判断基準：「月に3回以上同じ判断・作業をしているなら仕組み化を検討する」。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">仕組み化の対象判断マトリクス（繰り返し頻度 × 判断難度）</div>
+        <div class="matrix-grid">
+          <div class="matrix-cell hi-hi"><div class="matrix-label">高頻度 × 高難度</div><div class="matrix-text">最優先で仕組み化<br>→ <strong style="color:var(--accent-core);">フロー化＋ルール化</strong></div></div>
+          <div class="matrix-cell hi-lo"><div class="matrix-label">高頻度 × 低難度</div><div class="matrix-text">自動化・テンプレート化<br>→ <strong style="color:var(--accent);">即仕組み化</strong></div></div>
+          <div class="matrix-cell lo-hi"><div class="matrix-label">低頻度 × 高難度</div><div class="matrix-text">チェックリスト化<br>→ <strong style="color:#94a3b8;">判断軸を文書化</strong></div></div>
+          <div class="matrix-cell lo-lo"><div class="matrix-label">低頻度 × 低難度</div><div class="matrix-text">現状維持or廃止検討<br>→ <strong style="color:var(--text-dim);">ROI確認後判断</strong></div></div>
+        </div>
+      </div>`,
+      deficit: '「仕組みを作る時間がない」と言い続ける組織は、毎週同じ問題を同じコストで処理し続ける。仕組み化に1時間かけると100時間の繰り返し作業が不要になる投資効率が計算できる場面は多い。仕組みを作る時間がないのではなく、仕組みがないから時間がない。',
+      check: '月に3回以上繰り返している判断・作業を特定したか？ それをルール・テンプレート・自動化で仕組み化したか？ 仕組み化のROI（投資時間vs削減時間）を計算したか？'
+    },
+    {
+      num: '04', title: '継続的改善（仕組みの更新）', theory: 'PDCA / カイゼン / 標準の劣化防止',
+      icon: 'refresh-cw',
+      summary: '標準は作って終わりではなく、現場の変化とともに更新し続けなければ劣化する。「使われない手順書」「誰も守らないルール」は更新が止まった標準の末路。改善を日常業務に組み込むサイクルを作り、標準が生きた文書として機能し続ける状態を維持する。',
+      theoryText: '改善（Kaizen, Toyota Production System）：小さな改善を日常的に全員が実施する文化。大きな改革より継続的な小改善が長期的な競争優位を生む。標準作業の更新サイクル（ISO 9001）：変化（設備・人・工程変更）があれば手順書を更新。更新記録（版管理）で最新版を確認できる状態に保つ。Standards vs Standardization（Drucker）：標準化は目的ではなく手段。目的（品質・安全・効率）が変われば標準も変わる。',
+      business: '手順書更新の仕組み例：「設備変更・工程変更時は手順書更新をチェックリストの必須項目に追加」「年1回の全手順書レビュー（内容が現状と合っているか確認）」「現場作業者からの改善提案を手順書に反映するフロー設計」。更新されない手順書の見分け方：「最終更新日が3年以上前・現場で実際に使われていない・内容と実作業が乖離している」。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">標準劣化の兆候チェックリスト</div>
+        <div class="detail-text">
+          <strong style="color:#f87171;">劣化サイン（1つでもあれば要更新）</strong><br>
+          ・最終更新日が3年以上前<br>
+          ・「この手順書通りにやると実際とズレる」という声が現場から出ている<br>
+          ・ISO取得後に棚に入ったまま<br>
+          ・版番号・改訂履歴が記録されていない<br>
+          ・設備変更・工程変更があったのに手順書が変わっていない<br><br>
+          <strong style="color:var(--accent);">更新の仕組みを作る3点セット</strong><br>
+          ①変更トリガー定義（何があったら更新するか）<br>
+          ②更新責任者の明確化（誰が更新するか）<br>
+          ③年次レビュー日程の固定（いつ確認するか）
+        </div>
+      </div>`,
+      deficit: '10年前に作った手順書が更新されないまま「あるだけ」の状態になっている組織は多い。設備が変わっても、工程が変わっても、手順書が変わらなければ手順書は「参考にならない文書」になる。ISO取得のために作った書類が、取得後は引き出しの中に眠るのは「作ること」を目的にしたから。',
+      check: '手順書・ルールに「最終更新日」が明記されているか？ 変更（設備・人・工程）があったとき、関連手順書を更新する仕組みがあるか？ 現場作業者が「この手順書は実際の作業と合っている」と言えるか？'
+    },
+    {
+      num: '05', title: '展開と教育（仕組みを機能させる）', theory: 'OJT設計 / 教育効果測定 / 組織への浸透',
+      icon: 'users',
+      summary: '手順書・仕組みは「存在する」だけでは機能しない。人が理解し・使い・改善できる状態にして初めて組織の再現性になる。教育は「伝えること」ではなく「相手が使えるようになること」を目的とする。教えた後の確認（習得の測定）がなければ教育は完了していない。',
+      theoryText: 'ブルームのタキソノミー：知識→理解→応用→分析→評価→創造の6段階。「知っている」と「使える」は別。効果的なOJT設計（TWI）：Tell（説明）→Show（見せる）→Do（やらせる）→Check（確認する）の4ステップ。エビングハウス忘却曲線：学習後24時間で67%が忘れる。復習・実践なしの一回きり教育は定着しない。測定可能な教育目標：「この手順を一人でできる・この判断を基準書なしでできる」という行動目標で設定する。',
+      business: 'チームへの手順書展開例：「①担当者が手順書を読む（知識）→②責任者が手順を説明・デモ（理解）→③担当者が監視下で実施（応用）→④担当者が単独で実施・責任者が確認（習得判定）→⑤定期的な習熟確認（維持）」。教育完了の定義：「手順書なしで7割の作業ができる状態」など測定可能な基準で設定する。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom:var(--sp-4);">
+        <div class="detail-label">教育の4ステップ（Tell → Show → Do → Check）</div>
+        <div class="step-flow">
+          <div class="step-item">
+            <div class="step-num">STEP 1</div>
+            <div class="step-label">Tell</div>
+            <div style="font-size:0.68rem;color:var(--text-muted);margin-top:4px;">手順・目的を説明する</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">STEP 2</div>
+            <div class="step-label">Show</div>
+            <div style="font-size:0.68rem;color:var(--text-muted);margin-top:4px;">実際にやって見せる</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">STEP 3</div>
+            <div class="step-label">Do</div>
+            <div style="font-size:0.68rem;color:var(--text-muted);margin-top:4px;">監視下でやらせる</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">STEP 4</div>
+            <div class="step-label">Check</div>
+            <div style="font-size:0.68rem;color:var(--text-muted);margin-top:4px;">習得を確認・判定する</div>
+          </div>
+        </div>
+        <div class="detail-text" style="margin-top:8px;">教育完了の判定基準は「伝えた側」ではなく「習得した側」が基準。「説明した」は教育完了ではない。「一人で正確にできた」が完了。</div>
+      </div>`,
+      deficit: '「資料を送ったから大丈夫」「説明したから伝わったはず」という思い込みで教育を終わりにする組織では、同じミスが繰り返される。電気工事の安全手順を「教えた」つもりでも、作業者が手順書を読んでいない・理解が不完全なまま実施して事故になるケースは現実に起きる。教育の完了は「伝えた側」ではなく「習得した側」が決める。',
+      check: 'Tell→Show→Do→Checkの4ステップで教育を実施したか？ 習得の確認（一人でできるかの確認）まで行ったか？ 教育対象者が「使える状態」になっているか（知っているだけでなく）？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const d = items[i];
+    const isCore = !!d.core;
+    const badgeHtml = d.badge === 'core' ? `<span class="badge-core">CORE</span>` : '';
+    const afterGrid = d.customAfterGrid || '';
+    document.getElementById('panel').className = `panel${isCore ? ' core' : ''}`;
+    document.getElementById('panel').innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${d.icon}" width="24" height="24"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${d.num}</div>
+          <div class="panel-title">${d.title}</div>
+          <div class="panel-theory">${d.theory}</div>
+        </div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <p class="panel-summary">${d.summary}</p>
+      <div class="detail-grid">
+        <div class="detail-block"><div class="detail-label">理論的根拠</div><div class="detail-text">${d.theoryText}</div></div>
+        <div class="detail-block"><div class="detail-label">現場への実装</div><div class="detail-text">${d.business}</div></div>
+      </div>
+      ${afterGrid}
+      <div class="deficit-block"><div class="deficit-label">⚠ 欠如事例・コスト</div><div class="deficit-text">${d.deficit}</div></div>
+      <div class="check-block"><div class="check-label">セルフチェック</div><div class="check-text">${d.check}</div></div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i-1})" ${i===0?'disabled':''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label"><span class="nav-btn-hint">PREV</span><span>${i>0?items[i-1].title:''}</span></div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i+1})" ${i===items.length-1?'disabled':''}>
+          <div class="nav-btn-label"><span class="nav-btn-hint">NEXT</span><span>${i<items.length-1?items[i+1].title:''}</span></div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+  }
+
+  function go(i) {
+    if (i<0||i>=items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i===i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i+1)/items.length*100)+'%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 100;
+    if (window.scrollY > panelTop) window.scrollTo({top: panelTop, behavior: 'smooth'});
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName==='INPUT') return;
+    if (e.key==='ArrowRight') go(current+1);
+    if (e.key==='ArrowLeft') go(current-1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = [
+      '',
+      '1つ：①から。まず1つの作業を手順書化し、担当外の人が使えるか確認する',
+      '2つ：②暗黙知の言語化を進める。「コツ」を1件文書化することから始める',
+      '3つ：中級。③月次繰り返し作業の仕組み化で時間を解放する',
+      '4つ：高水準。④更新の仕組みを設計して標準の劣化を防ぐ',
+      '5つ：5要素が機能している。個人の努力が組織の再現可能な資産になっている状態'
+    ];
+    document.getElementById('score-display').innerHTML = `<span id="score-num">${checked}</span> / 5 — ${messages[checked]||''}`;
+  }
+
+  go(0);
+});
+</script>
+</body>
+</html>

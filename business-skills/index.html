@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Skills | 思考・行動の設計図</title>
+<meta name="description" content="「できる人」の行動を分解し、再現可能な5要素に落とし込むビジネススキルシリーズ。認知能力・コミュニケーション・学習効率など全5シリーズ。">
+<meta property="og:title" content="Business Skills | 思考・行動の設計図">
+<meta property="og:description" content="感覚・才能を分解し、再現可能な構造に変換するビジネス能力の体系。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Business Skills | 思考・行動の設計図">
+<meta name="twitter:description" content="感覚・才能を分解し、再現可能な5要素に落とし込むビジネススキルシリーズ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.6rem; --fs-h2: 1.5rem; --fs-h3: 1.1rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.3; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px; --sp-16: 64px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #8892a0;
+  --border: rgba(56,189,248,0.15); --border-hover: rgba(56,189,248,0.45);
+  --nav-bg: rgba(15,23,42,0.85);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+body {
+  font-family: var(--font-base); background: var(--bg); color: var(--text);
+  line-height: var(--lh-body); font-size: var(--fs-body);
+  line-break: strict; overflow-wrap: break-word; word-break: normal;
+  min-height: 100vh;
+}
+
+/* ── Nav ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: var(--nav-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0 var(--sp-6);
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-back {
+  display: flex; align-items: center; gap: var(--sp-2);
+  text-decoration: none; color: var(--text-muted);
+  font-size: var(--fs-sm); font-weight: 600;
+  transition: color var(--transition);
+}
+.nav-back:hover { color: var(--accent); }
+.nav-title {
+  font-size: var(--fs-sm); color: var(--text-dim);
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.nav-spacer { width: 80px; }
+
+/* ── Hero ── */
+.hero {
+  max-width: 860px; margin: 0 auto;
+  padding: var(--sp-16) var(--sp-6) var(--sp-12);
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+.eyebrow-line { flex: 1; height: 1px; background: var(--border); }
+.eyebrow-text { font-size: 0.72rem; color: var(--accent); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; }
+
+.hero h1 {
+  font-size: var(--fs-h1); font-weight: var(--fw-bold);
+  line-height: var(--lh-heading); letter-spacing: 0.02em;
+  margin-bottom: var(--sp-6);
+}
+.hero h1 .accent { color: var(--accent); }
+.hero h1 .dim { color: var(--text-muted); font-weight: var(--fw-normal); }
+
+.hero-desc {
+  color: var(--text-muted); font-size: 1rem; line-height: var(--lh-long);
+  max-width: 560px; margin-bottom: var(--sp-8);
+}
+
+.hero-stats {
+  display: flex; gap: var(--sp-8); flex-wrap: wrap; align-items: flex-end;
+}
+.stat { display: flex; flex-direction: column; }
+.stat-num { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.stat-label { font-size: var(--fs-sm); color: var(--text-dim); margin-top: 4px; }
+
+/* 進捗バー */
+.progress-stat { display: flex; flex-direction: column; gap: var(--sp-2); }
+.progress-label { font-size: var(--fs-sm); color: var(--text-dim); }
+.progress-bar-wrap {
+  width: 120px; height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent), #818cf8);
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-fraction { font-size: 0.72rem; color: var(--text-dim); }
+
+/* ── Series Grid ── */
+.series-section {
+  max-width: 860px; margin: 0 auto;
+  padding: 0 var(--sp-6) var(--sp-16);
+}
+.section-header {
+  display: flex; align-items: center; gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+}
+.section-label { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-6);
+}
+
+/* カード出現アニメーション */
+.series-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  text-decoration: none;
+  color: inherit;
+  display: flex; flex-direction: column;
+  transition: var(--transition), box-shadow var(--transition);
+  position: relative; overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.series-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease, border-color var(--transition), box-shadow var(--transition);
+}
+.series-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 60%);
+  opacity: 0; transition: var(--transition);
+}
+.series-card:not(.coming):hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(56,189,248,0.1); }
+.series-card:not(.coming):hover::after { opacity: 1; }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--sp-6); }
+.card-num-badge {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--text-dim); background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 3px 8px; border-radius: 4px;
+}
+.card-icon-wrap {
+  width: 40px; height: 40px;
+  background: var(--accent-dim); border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); flex-shrink: 0;
+}
+
+.card-title {
+  font-size: var(--fs-h3); font-weight: var(--fw-bold);
+  margin-bottom: var(--sp-2); line-height: 1.3;
+}
+.card-subtitle {
+  font-size: var(--fs-sm); color: var(--accent);
+  margin-bottom: var(--sp-4); font-weight: 600;
+}
+.card-desc {
+  font-size: var(--fs-sm); color: var(--text-muted);
+  line-height: var(--lh-long); flex: 1; margin-bottom: var(--sp-6);
+}
+
+.card-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-6); }
+.c-tag {
+  font-size: 0.7rem; padding: 2px 8px; border-radius: 20px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-dim);
+}
+
+.card-core {
+  display: flex; align-items: center; gap: var(--sp-2);
+  background: var(--accent-core-dim); border: 1px solid rgba(245,158,11,0.25);
+  border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+.core-label { font-size: 0.65rem; font-weight: 700; color: var(--accent-core); letter-spacing: 0.08em; }
+.core-text { font-size: var(--fs-sm); color: var(--text); font-weight: 600; }
+
+.card-cta {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: var(--fs-sm); color: var(--accent); font-weight: 600;
+}
+
+/* ── Coming soon card ── */
+.series-card.coming {
+  border-style: dashed;
+  border-color: rgba(255,255,255,0.08);
+  cursor: default;
+  opacity: 0;
+}
+.series-card.coming.visible {
+  opacity: 0.55;
+  transform: translateY(0);
+}
+.series-card.coming:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.08); }
+.series-card.coming::after { display: none; }
+.coming-badge { font-size: 0.68rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 8px; border-radius: 4px; }
+
+/* ── NEW badge ── */
+.new-badge {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff; padding: 2px 7px; border-radius: 4px;
+  text-transform: uppercase; white-space: nowrap;
+}
+
+/* ── 更新日 ── */
+.card-updated {
+  font-size: 0.65rem; color: var(--text-dim);
+  padding-top: var(--sp-3); margin-top: auto;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ── 気になるボタン ── */
+.interest-btn {
+  width: 100%; margin-top: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(56,189,248,0.06);
+  border: 1px dashed rgba(56,189,248,0.28);
+  border-radius: var(--radius-sm);
+  color: var(--accent); font-size: var(--fs-sm); font-weight: 600;
+  cursor: pointer; font-family: var(--font-base);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  transition: var(--transition);
+}
+.interest-btn:hover { background: rgba(56,189,248,0.14); border-color: rgba(56,189,248,0.5); }
+.interest-btn.marked {
+  background: rgba(56,189,248,0.12); border-style: solid;
+  border-color: var(--accent);
+}
+
+/* ── Philosophy strip ── */
+.philosophy {
+  max-width: 860px; margin: 0 auto;
+  padding: 0 var(--sp-6) var(--sp-16);
+}
+.phil-card {
+  background: linear-gradient(135deg, rgba(56,189,248,0.06) 0%, rgba(15,23,42,0) 60%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-6);
+}
+.phil-item { display: flex; flex-direction: column; gap: var(--sp-2); }
+.phil-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 700; }
+.phil-value { font-size: 0.9rem; color: var(--text); line-height: var(--lh-long); }
+.phil-value strong { color: var(--accent); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding: var(--sp-8) var(--sp-6);
+  text-align: center;
+  color: var(--text-dim); font-size: var(--fs-sm);
+}
+footer a:hover { color: var(--accent) !important; }
+
+/* ── フィルターバー ── */
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+}
+.filter-btn {
+  font-family: var(--font-base); font-size: 0.75rem; font-weight: 600;
+  padding: 5px 14px; border-radius: 99px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04); color: var(--text-muted);
+  transition: var(--transition); white-space: nowrap;
+}
+.filter-btn:hover { border-color: rgba(56,189,248,0.35); color: var(--accent); background: var(--accent-dim); }
+.filter-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+/* ── hero scroll CTA ── */
+.hero-scroll {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  margin-top: var(--sp-6); text-decoration: none;
+  color: var(--text-dim); font-size: var(--fs-sm); font-weight: 600;
+  transition: color var(--transition);
+}
+.hero-scroll:hover { color: var(--accent); }
+
+/* カード非表示アニメ */
+.series-card.hidden { display: none; }
+.series-card.filter-visible { opacity: 1 !important; transform: translateY(0) scale(1) !important; pointer-events: auto; display: flex !important; }
+
+/* ── Diagnostic Banner ── */
+.diag-banner {
+  max-width: 860px; margin: 0 auto var(--sp-8);
+  padding: 0 var(--sp-6);
+}
+.diag-card {
+  background: linear-gradient(135deg, rgba(56,189,248,0.1) 0%, rgba(129,140,248,0.08) 50%, rgba(245,158,11,0.06) 100%);
+  border: 1px solid rgba(56,189,248,0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6) var(--sp-8);
+  display: flex; align-items: center; gap: var(--sp-6);
+  text-decoration: none; color: inherit;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  position: relative; overflow: hidden;
+}
+.diag-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.6), rgba(129,140,248,0.4), transparent);
+}
+.diag-card:hover { border-color: rgba(56,189,248,0.55); box-shadow: 0 8px 32px rgba(56,189,248,0.12); }
+.diag-icon {
+  width: 52px; height: 52px; border-radius: var(--radius-md); flex-shrink: 0;
+  background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.diag-body { flex: 1; }
+.diag-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.diag-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+.diag-desc { font-size: var(--fs-sm); color: var(--text-muted); }
+.diag-badges { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+.diag-badge { font-size: 0.65rem; font-weight: 700; padding: 2px 10px; border-radius: 99px; white-space: nowrap; }
+.db-red   { color: #f43f5e; background: rgba(244,63,94,0.1);  border: 1px solid rgba(244,63,94,0.25); }
+.db-amber { color: #f59e0b; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); }
+.db-green { color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); }
+.diag-arrow {
+  font-size: 1.4rem; color: var(--accent); opacity: 0.6; flex-shrink: 0;
+  transition: transform var(--transition), opacity var(--transition);
+}
+.diag-card:hover .diag-arrow { transform: translateX(4px); opacity: 1; }
+@media (max-width: 480px) {
+  .diag-card { padding: var(--sp-5); flex-wrap: wrap; }
+  .diag-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+}
+
+/* ── Back to Top ── */
+#back-top {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3);
+  color: #38bdf8; font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease, background 0.2s ease;
+  font-family: var(--font-base);
+}
+#back-top.visible { opacity: 1; pointer-events: auto; }
+#back-top:hover { background: rgba(56,189,248,0.28); }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.75rem; }
+  .series-grid { grid-template-columns: 1fr; }
+  .phil-card { grid-template-columns: 1fr; }
+  .hero-stats { gap: var(--sp-4); }
+  .nav-title { display: none; }
+  .progress-bar-wrap { width: 100px; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .hero h1 { font-size: 1.5rem; }
+  .series-section { padding: 0 var(--sp-4) var(--sp-8); }
+  .philosophy { padding: 0 var(--sp-4) var(--sp-8); }
+  .filter-bar { gap: 6px; }
+  .filter-btn { font-size: 0.7rem; padding: 4px 10px; }
+  .stat-num { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <a class="nav-back" href="../portal-v2.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    ポータルへ戻る
+  </a>
+  <span class="nav-title">⚡ Fカンパニー / Business Skills</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="eyebrow-line"></div>
+    <span class="eyebrow-text">Business Skills Series</span>
+    <div class="eyebrow-line"></div>
+  </div>
+  <h1>
+    思考・行動の<br>
+    <span class="accent">設計図</span><span class="dim">。</span>
+  </h1>
+  <p class="hero-desc">
+    「できる人」の行動を分解し、再現可能な5要素に落とし込む。感覚・センス・才能ではなく、設計できるビジネス能力の体系。
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">24</span>
+      <span class="stat-label">シリーズ公開中</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">120+</span>
+      <span class="stat-label">要素（5×24）</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">70+</span>
+      <span class="stat-label">実損エビデンス</span>
+    </div>
+    <div class="progress-stat">
+      <span class="progress-label">シリーズ進捗</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-fraction">24 / 24 公開済み</span>
+    </div>
+  </div>
+  <a class="hero-scroll" href="#series">
+    <i data-lucide="chevrons-down" width="15" height="15"></i>
+    シリーズを見る
+  </a>
+</section>
+
+<!-- Diagnostic Banner -->
+<div class="diag-banner">
+  <a class="diag-card" href="skill-dashboard.html">
+    <div class="diag-icon">⚡</div>
+    <div class="diag-body">
+      <div class="diag-eyebrow">Skill Diagnostic</div>
+      <div class="diag-title">あなたはどのレベル？ — 11問で診断</div>
+      <div class="diag-desc">McKinsey / GAFA PM / 日本の優秀な管理職。どのランクに近いか、レーダーチャートで可視化します。</div>
+      <div class="diag-badges">
+        <span class="diag-badge db-red">McKinsey社員</span>
+        <span class="diag-badge db-amber">GAFA PM</span>
+        <span class="diag-badge db-green">日本の優秀な管理職</span>
+      </div>
+    </div>
+    <div class="diag-arrow">→</div>
+  </a>
+</div>
+
+<section class="series-section" id="series">
+  <div class="section-header">
+    <span class="section-label">Series</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">すべて</button>
+    <button class="filter-btn" data-filter="思考・認知">思考・認知</button>
+    <button class="filter-btn" data-filter="コミュニケーション">コミュニケーション</button>
+    <button class="filter-btn" data-filter="学習">学習</button>
+    <button class="filter-btn" data-filter="生産性">生産性</button>
+    <button class="filter-btn" data-filter="意思決定">意思決定</button>
+    <button class="filter-btn" data-filter="マネジメント">マネジメント</button>
+    <button class="filter-btn" data-filter="人間力">人間力</button>
+    <button class="filter-btn" data-filter="セルフマネジメント">セルフマネジメント</button>
+    <button class="filter-btn" data-filter="全体像">全体像</button>
+  </div>
+  <div class="series-grid">
+
+    <!-- 01 頭が良い人 -->
+    <a class="series-card" href="atama-ga-ii.html" data-category="思考・認知">
+      <div class="card-top">
+        <span class="card-num-badge">01</span>
+        <div class="card-icon-wrap"><i data-lucide="brain" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">頭が良い人の5要素</div>
+      <div class="card-subtitle">認知能力の解剖</div>
+      <p class="card-desc">IQ・学歴でも「賢さ」でもない。ビジネスで差がつく認知能力の5要素と、欠如が引き起こす実損。</p>
+      <div class="card-tags">
+        <span class="c-tag">Fluid G</span>
+        <span class="c-tag">Crystallized G</span>
+        <span class="c-tag">メタ認知</span>
+        <span class="c-tag">確率的意思決定</span>
+        <span class="c-tag">他者モデリング</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">メタ認知とエラー訂正</span>
+      </div>
+      <div class="card-cta">
+        <span>5要素を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2025/03/10</div>
+    </a>
+
+    <!-- 02 構造化コミュニケーション -->
+    <a class="series-card" href="kozo-communication.html" data-category="コミュニケーション">
+      <div class="card-top">
+        <span class="card-num-badge">02</span>
+        <div class="card-icon-wrap"><i data-lucide="message-square" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">構造化コミュニケーションの5要素</div>
+      <div class="card-subtitle">伝わる設計の原則</div>
+      <p class="card-desc">話し方の「うまさ」ではない。相手に情報が届き、判断を動かす設計能力の5軸と欠如が生む時間・承認ロス。</p>
+      <div class="card-tags">
+        <span class="c-tag">BLUF</span>
+        <span class="c-tag">ピラミッド原則</span>
+        <span class="c-tag">抽象度制御</span>
+        <span class="c-tag">質問設計</span>
+        <span class="c-tag">非言語</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">BLUF構造（結論ファースト）</span>
+      </div>
+      <div class="card-cta">
+        <span>設計原則を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2025/03/18</div>
+    </a>
+
+    <!-- 03 学習効率 -->
+    <a class="series-card" href="gakushuu-kouritu.html" data-category="学習">
+      <div class="card-top">
+        <span class="card-num-badge">03</span>
+        <div class="card-icon-wrap"><i data-lucide="zap" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">学習効率の5要素</div>
+      <div class="card-subtitle">脳科学が示す習得の設計</div>
+      <p class="card-desc">「長時間勉強した」は成果の根拠にならない。記憶定着率を決める5原則と、やっているつもりで効果ゼロの罠。</p>
+      <div class="card-tags">
+        <span class="c-tag">スペーシング</span>
+        <span class="c-tag">アクティブリコール</span>
+        <span class="c-tag">インターリービング</span>
+        <span class="c-tag">誤答分析</span>
+        <span class="c-tag">メタ学習</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">アクティブリコール</span>
+      </div>
+      <div class="card-cta">
+        <span>習得法則を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2025/03/25</div>
+    </a>
+
+    <!-- 04 時間設計 -->
+    <a class="series-card" href="jikan-sekkei.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">04</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="zap" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">時間設計の5要素</div>
+      <div class="card-subtitle">意思決定の前提を整える</div>
+      <p class="card-desc">タスク管理ではなく、エネルギー・注意・判断力の配分設計。GTD・Time Blocking・認知負荷理論を統合。</p>
+      <div class="card-tags">
+        <span class="c-tag">Time Blocking</span>
+        <span class="c-tag">認知負荷</span>
+        <span class="c-tag">GTD</span>
+        <span class="c-tag">エネルギー管理</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">エネルギー波乗り（ウルトラディアンリズム）</span>
+      </div>
+      <div class="card-cta">
+        <span>配分設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/10</div>
+    </a>
+
+    <!-- 05 構造把握力 -->
+    <a class="series-card" href="kozo-haaku.html" data-category="思考・認知">
+      <div class="card-top">
+        <span class="card-num-badge">05</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="layers" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">構造把握力の5要素</div>
+      <div class="card-subtitle">頭の良さの本質を解剖する</div>
+      <p class="card-desc">知識量でも処理速度でもない。複雑な現実から本質的な構造を見抜き、正しい支点に力をかける5つの技術。</p>
+      <div class="card-tags">
+        <span class="c-tag">即反応停止</span>
+        <span class="c-tag">枝葉と幹</span>
+        <span class="c-tag">システム思考</span>
+        <span class="c-tag">問いの設計</span>
+        <span class="c-tag">抽象⇔具体</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">即反応停止（一拍置く）</span>
+      </div>
+      <div class="card-cta">
+        <span>構造技術を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/18</div>
+    </a>
+
+    <!-- 06 判断の質 -->
+    <a class="series-card" href="handan-no-shitsu.html" data-category="意思決定">
+      <div class="card-top">
+        <span class="card-num-badge">06</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="git-branch" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">判断の質の5要素</div>
+      <div class="card-subtitle">不確実性下での意思決定</div>
+      <p class="card-desc">「直感 vs 分析」ではなく、状況に応じた判断モードの使い分け。意思決定バイアスの体系と解除法。</p>
+      <div class="card-tags">
+        <span class="c-tag">System 1/2</span>
+        <span class="c-tag">バイアス</span>
+        <span class="c-tag">プレモーテム</span>
+        <span class="c-tag">第二意見</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">判断モード選択（System 1/2）</span>
+      </div>
+      <div class="card-cta">
+        <span>判断設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+    </a>
+
+    <!-- 07 問題解決 -->
+    <a class="series-card" href="mondai-kaiketsu.html" data-category="思考・認知">
+      <div class="card-top">
+        <span class="card-num-badge">07</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="search" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">問題解決の5要素</div>
+      <div class="card-subtitle">再現性ある問題解決サイクル</div>
+      <p class="card-desc">「答えを出す」のではなく「正しい問いを解く」。問題定義から実行・検証まで、5つの技術で問題解決を設計する。</p>
+      <div class="card-tags">
+        <span class="c-tag">問題定義</span>
+        <span class="c-tag">MECE分解</span>
+        <span class="c-tag">5Why</span>
+        <span class="c-tag">解決策生成</span>
+        <span class="c-tag">PDCA</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">問題定義（イシュー起点）</span>
+      </div>
+      <div class="card-cta">
+        <span>解決サイクルを確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 08 リーダーシップ -->
+    <a class="series-card" href="leadership.html" data-category="マネジメント">
+      <div class="card-top">
+        <span class="card-num-badge">08</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="users" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">リーダーシップの5要素</div>
+      <div class="card-subtitle">チームの出力を最大化する設計</div>
+      <p class="card-desc">「引っ張る」のではなく「機能させる」。心理的安全性・期待の明文化・フィードバック・権限委譲・自己認識の5原則。</p>
+      <div class="card-tags">
+        <span class="c-tag">心理的安全性</span>
+        <span class="c-tag">OKR</span>
+        <span class="c-tag">SBIフィードバック</span>
+        <span class="c-tag">権限委譲</span>
+        <span class="c-tag">自己認識</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">心理的安全性（チームの土台）</span>
+      </div>
+      <div class="card-cta">
+        <span>リーダー設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 09 説得・交渉 -->
+    <a class="series-card" href="setoku-kousho.html" data-category="コミュニケーション">
+      <div class="card-top">
+        <span class="card-num-badge">09</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="handshake" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">説得・交渉の5要素</div>
+      <div class="card-subtitle">稟議を通す・交渉を制する</div>
+      <p class="card-desc">「正しいことを言えば動く」は幻想。相手の関心理解・フレーミング・証拠設計・段階的合意・BATNAで説得を設計する。</p>
+      <div class="card-tags">
+        <span class="c-tag">相手の関心</span>
+        <span class="c-tag">フレーミング</span>
+        <span class="c-tag">損失回避</span>
+        <span class="c-tag">根回し</span>
+        <span class="c-tag">BATNA</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">相手の関心理解（提案前の前提）</span>
+      </div>
+      <div class="card-cta">
+        <span>説得設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 10 数字で語る -->
+    <a class="series-card" href="suji-de-kataru.html" data-category="思考・認知">
+      <div class="card-top">
+        <span class="card-num-badge">10</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="hash" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">数字で語る5要素</div>
+      <div class="card-subtitle">「感想」を「根拠」に変換する</div>
+      <p class="card-desc">「多い・少ない・高い」は主張にならない。定量化・比較基準・図表設計・不確実性・データストーリーの5技術で数値を武器にする。</p>
+      <div class="card-tags">
+        <span class="c-tag">定量化</span>
+        <span class="c-tag">比較基準</span>
+        <span class="c-tag">図表設計</span>
+        <span class="c-tag">不確実性</span>
+        <span class="c-tag">データストーリー</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">定量化の習慣（感想→数値）</span>
+      </div>
+      <div class="card-cta">
+        <span>数値設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 11 会議設計 -->
+    <a class="series-card" href="kaigi-sekkei.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">11</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="calendar-check" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">会議設計の5要素</div>
+      <div class="card-subtitle">「集まること」と「機能すること」は別</div>
+      <p class="card-desc">目的・参加者・アジェンダ・ファシリテーション・アクション管理——5つを揃えると会議時間は半分になり、決定の質は上がる。</p>
+      <div class="card-tags">
+        <span class="c-tag">目的の明文化</span>
+        <span class="c-tag">RACI</span>
+        <span class="c-tag">タイムボックス</span>
+        <span class="c-tag">ファシリテーション</span>
+        <span class="c-tag">アクション管理</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">目的の明文化（何を決めるか）</span>
+      </div>
+      <div class="card-cta">
+        <span>会議設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 12 優先順位設計 -->
+    <a class="series-card" href="yusen-junii.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">12</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="grid" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">優先順位設計の5要素</div>
+      <div class="card-subtitle">「頑張る」ではなく「選ぶ」</div>
+      <p class="card-desc">重要度×緊急度・影響×実現性・依存関係・委譲と削減・撤退基準——5軸で「やること」より「やらないこと」を決める技術。</p>
+      <div class="card-tags">
+        <span class="c-tag">アイゼンハワー</span>
+        <span class="c-tag">ICEスコア</span>
+        <span class="c-tag">クリティカルパス</span>
+        <span class="c-tag">EDSE</span>
+        <span class="c-tag">撤退基準</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">重要×緊急マトリクス（第2象限）</span>
+      </div>
+      <div class="card-cta">
+        <span>優先順位設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 13 育成・コーチング -->
+    <a class="series-card" href="ikusei-coaching.html" data-category="マネジメント">
+      <div class="card-top">
+        <span class="card-num-badge">13</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="compass" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">育成・コーチングの5要素</div>
+      <div class="card-subtitle">「教える」ではなく「考えさせる」</div>
+      <p class="card-desc">ティーチング/コーチング切り替え・問いかけ・経験設計・振り返り・内発的動機——5つで人が育つ環境を設計する。</p>
+      <div class="card-tags">
+        <span class="c-tag">Situational Leadership</span>
+        <span class="c-tag">GROWモデル</span>
+        <span class="c-tag">ストレッチ課題</span>
+        <span class="c-tag">KPT</span>
+        <span class="c-tag">自己決定理論</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">ティーチング/コーチングの使い分け</span>
+      </div>
+      <div class="card-cta">
+        <span>育成設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 14 ストレス・感情管理 -->
+    <a class="series-card" href="stress-kanjo.html" data-category="セルフマネジメント">
+      <div class="card-top">
+        <span class="card-num-badge">14</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="activity" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">ストレス・感情管理の5要素</div>
+      <div class="card-subtitle">「感情を抑える」のではなく「使う」</div>
+      <p class="card-desc">ストレス反応の再解釈・感情の言語化・認知の再評価・回復設計・境界線——感情を情報として使い、持続可能なパフォーマンスを設計する。</p>
+      <div class="card-tags">
+        <span class="c-tag">ストレス再解釈</span>
+        <span class="c-tag">感情言語化</span>
+        <span class="c-tag">CBT認知</span>
+        <span class="c-tag">回復設計</span>
+        <span class="c-tag">バウンダリー</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">ストレス反応の理解（挑戦への準備）</span>
+      </div>
+      <div class="card-cta">
+        <span>感情設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 15 戦略思考 -->
+    <a class="series-card" href="senryaku-shiko.html" data-category="思考・認知">
+      <div class="card-top">
+        <span class="card-num-badge">15</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="layers" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">戦略思考の5要素</div>
+      <div class="card-subtitle">「目の前の仕事」を「全体の文脈」に置く</div>
+      <p class="card-desc">目的の階層化・トレードオフ設計・環境変化の読み方・長短バランス・意思決定の学習——日常の判断を戦略的文脈に置く5技術。</p>
+      <div class="card-tags">
+        <span class="c-tag">目的階層化</span>
+        <span class="c-tag">トレードオフ</span>
+        <span class="c-tag">PEST</span>
+        <span class="c-tag">両利きの経営</span>
+        <span class="c-tag">意思決定ログ</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">目的の階層化（Why→How→What）</span>
+      </div>
+      <div class="card-cta">
+        <span>戦略思考を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 16 全体像 -->
+    <a class="series-card" href="business-skill-map.html" data-category="全体像">
+      <div class="card-top">
+        <span class="card-num-badge">MAP</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap" style="background:rgba(245,158,11,0.12);color:#f59e0b;"><i data-lucide="map" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">必要なビジネススキル全体像</div>
+      <div class="card-subtitle" style="color:#f59e0b;">スキル地図 — 4柱×7核心</div>
+      <p class="card-desc">「考える・動かす・伝える・整える」4つの柱と7つの核心スキル。初級〜上級の習熟段階とAI時代の再定義。</p>
+      <div class="card-tags">
+        <span class="c-tag">4つの柱</span>
+        <span class="c-tag">7コアスキル</span>
+        <span class="c-tag">習熟段階</span>
+        <span class="c-tag">AI時代</span>
+      </div>
+      <div class="card-core" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.3);">
+        <span class="core-label">結論</span>
+        <span class="core-text">問い→整理→伝達→実行→結果</span>
+      </div>
+      <div class="card-cta" style="color:#f59e0b;">
+        <span>全体像を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 16 段取り力 -->
+    <a class="series-card" href="dandori-ryoku.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">16</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="calendar-check" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">段取り力の5要素</div>
+      <div class="card-subtitle">準備が成果の8割を決める</div>
+      <p class="card-desc">ゴール設定・タスク分解・リソース配分・リスク先読み・進捗管理の5技術。「最終日に間に合わない」を構造的に防ぐ段取りの設計法。</p>
+      <div class="card-tags">
+        <span class="c-tag">WBS</span>
+        <span class="c-tag">クリティカルパス</span>
+        <span class="c-tag">FMEA</span>
+        <span class="c-tag">バッファ設計</span>
+        <span class="c-tag">EVM</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">完了の定義（DoD）</span>
+      </div>
+      <div class="card-cta">
+        <span>段取り設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 17 論理的思考力 -->
+    <a class="series-card" href="ronriteki-shiko.html" data-category="思考・認知">
+      <div class="card-top">
+        <span class="card-num-badge">17</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="git-merge" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">論理的思考力の5要素</div>
+      <div class="card-subtitle">思考を再現可能な構造に変える</div>
+      <p class="card-desc">演繹・帰納・仮説思考・MECE・因果分析の5技術。「なんとなくそう思う」を根拠ある判断に変換し、対策の精度を上げる。</p>
+      <div class="card-tags">
+        <span class="c-tag">演繹・帰納</span>
+        <span class="c-tag">仮説思考</span>
+        <span class="c-tag">MECE</span>
+        <span class="c-tag">因果分析</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">演繹推論（前提を検証する）</span>
+      </div>
+      <div class="card-cta">
+        <span>論理構造を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 18 実行力 -->
+    <a class="series-card" href="jikkouryoku.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">18</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="zap" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">実行力の5要素</div>
+      <div class="card-subtitle">アイデアを結果に変える力</div>
+      <p class="card-desc">即断即行・完遂・適応・自律管理・実行後学習の5技術。「考えているだけ」「始めたけど終わらない」を構造的に解決する。</p>
+      <div class="card-tags">
+        <span class="c-tag">即断即行</span>
+        <span class="c-tag">Grit</span>
+        <span class="c-tag">適応力</span>
+        <span class="c-tag">AAR</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">即断即行（60%で動き始める）</span>
+      </div>
+      <div class="card-cta">
+        <span>実行技術を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 19 優先順位付け -->
+    <a class="series-card" href="yusen-juni.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">19</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="list-ordered" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">優先順位付けの5要素</div>
+      <div class="card-subtitle">限られた時間を最大成果に変える</div>
+      <p class="card-desc">重要度×緊急度・パレート・ROI評価・委任削除・ディープワークの5技術。「すべてに全力」が成果を最小化する理由を構造で理解する。</p>
+      <div class="card-tags">
+        <span class="c-tag">アイゼンハワー</span>
+        <span class="c-tag">80/20</span>
+        <span class="c-tag">ROI</span>
+        <span class="c-tag">委任</span>
+        <span class="c-tag">ディープワーク</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">第2象限投資（重要×非緊急）</span>
+      </div>
+      <div class="card-cta">
+        <span>優先設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 20 人としての成長 -->
+    <a class="series-card" href="ningen-seichou.html" data-category="人間力">
+      <div class="card-top">
+        <span class="card-num-badge">20</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="sprout" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">人としての成長 5要素</div>
+      <div class="card-subtitle">スキルより先に問われる人格の構造</div>
+      <p class="card-desc">自己認識・内省・成長マインドセット・他者性・目的意識——心理学研究（Dweck・Eurich・Kegan・Frankl）が示す「成長できる人」の5要素を分解する。</p>
+      <div class="card-tags">
+        <span class="c-tag">自己認識</span>
+        <span class="c-tag">内省</span>
+        <span class="c-tag">成長マインドセット</span>
+        <span class="c-tag">他者性</span>
+        <span class="c-tag">目的意識</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">自己認識（成長の出発点）</span>
+      </div>
+      <div class="card-cta">
+        <span>成長の構造を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 21 交渉力 -->
+    <a class="series-card" href="kosho-ryoku.html" data-category="コミュニケーション">
+      <div class="card-top">
+        <span class="card-num-badge">21</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="handshake" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">交渉力の5要素</div>
+      <div class="card-subtitle">全員が得する合意をデザインする</div>
+      <p class="card-desc">勝ち負けではなく、全員が得する合意をデザインする。ハーバード交渉術を起点に、利害分離・BATNA・価値創造・合意設計の5技術で交渉を再現可能な構造に変える。</p>
+      <div class="card-tags">
+        <span class="c-tag">利害分離</span>
+        <span class="c-tag">BATNA</span>
+        <span class="c-tag">価値創造</span>
+        <span class="c-tag">ハーバード交渉術</span>
+        <span class="c-tag">合意設計</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">利害の分離（立場ではなく関心）</span>
+      </div>
+      <div class="card-cta">
+        <span>交渉設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 22 文章力 -->
+    <a class="series-card" href="bunsho-ryoku.html" data-category="コミュニケーション">
+      <div class="card-top">
+        <span class="card-num-badge">22</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="pen-line" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">文章力の5要素</div>
+      <div class="card-subtitle">書くことは考えること</div>
+      <p class="card-desc">曖昧な文章は曖昧な思考の証拠。結論先行・構造化・具体化・読者分析・編集力の5技術でビジネス文書を再現可能な設計に変える。</p>
+      <div class="card-tags">
+        <span class="c-tag">結論先行</span>
+        <span class="c-tag">構造化</span>
+        <span class="c-tag">具体化</span>
+        <span class="c-tag">読者分析</span>
+        <span class="c-tag">編集力</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">結論先行（BLUF構造）</span>
+      </div>
+      <div class="card-cta">
+        <span>文章設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 23 再現性づくり -->
+    <a class="series-card" href="saigensei.html" data-category="生産性">
+      <div class="card-top">
+        <span class="card-num-badge">23</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="repeat" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">再現性づくりの5要素</div>
+      <div class="card-subtitle">努力を仕組みに変える</div>
+      <p class="card-desc">毎回ゼロから頑張る人は消耗する。標準化・形式知化・仕組み化・改善サイクル・展開力の5技術で、個人の能力を組織の資産に変換する。</p>
+      <div class="card-tags">
+        <span class="c-tag">標準化</span>
+        <span class="c-tag">形式知化</span>
+        <span class="c-tag">仕組み化</span>
+        <span class="c-tag">改善サイクル</span>
+        <span class="c-tag">展開力</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">標準化（属人知を手順書へ）</span>
+      </div>
+      <div class="card-cta">
+        <span>再現設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+    <!-- 24 情報収集・インプット -->
+    <a class="series-card" href="joho-input.html" data-category="学習">
+      <div class="card-top">
+        <span class="card-num-badge">24</span>
+        <span class="new-badge">NEW</span>
+        <div class="card-icon-wrap"><i data-lucide="antenna" width="20" height="20"></i></div>
+      </div>
+      <div class="card-title">情報収集・インプットの5要素</div>
+      <div class="card-subtitle">量より質・ノイズより信号</div>
+      <p class="card-desc">情報過多の時代に「読んだ・見た」で終わる人と知識に変換できる人の差。目的設定・一次情報・フィルタリング・構造化・アウトプット変換の5技術。</p>
+      <div class="card-tags">
+        <span class="c-tag">目的設定</span>
+        <span class="c-tag">一次情報</span>
+        <span class="c-tag">フィルタリング</span>
+        <span class="c-tag">構造化</span>
+        <span class="c-tag">アウトプット変換</span>
+      </div>
+      <div class="card-core">
+        <span class="core-label">CORE</span>
+        <span class="core-text">目的起点の収集（何のため？）</span>
+      </div>
+      <div class="card-cta">
+        <span>インプット設計を確認する</span>
+        <i data-lucide="arrow-right" width="16" height="16"></i>
+      </div>
+      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- 設計哲学 -->
+<section class="philosophy">
+  <div class="phil-card">
+    <div class="phil-item">
+      <span class="phil-label">設計思想</span>
+      <span class="phil-value">感覚・才能を<strong>分解</strong>し、再現可能な構造に変換する</span>
+    </div>
+    <div class="phil-item">
+      <span class="phil-label">エビデンス基準</span>
+      <span class="phil-value">各項目に<strong>実損データ</strong>（時間・コスト・正答率）を付与。感想ではなく根拠で語る</span>
+    </div>
+    <div class="phil-item">
+      <span class="phil-label">活用法</span>
+      <span class="phil-value">カードを開き、<strong>欠如事例</strong>で自分の弱点を特定。セルフチェックで今週から動く</span>
+    </div>
+  </div>
+</section>
+
+<button id="back-top" aria-label="ページトップへ">↑</button>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="../portal-v2.html" style="color:var(--text-dim);text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:color 0.2s ease;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+    <a href="../health-monitor/health-dashboard.html" style="color:var(--text-dim);text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:color 0.2s ease;">
+      <i data-lucide="activity" width="13" height="13"></i>ヘルス
+    </a>
+    <a href="../dashboard.html" style="color:var(--text-dim);text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:color 0.2s ease;">
+      <i data-lucide="book-open" width="13" height="13"></i>知識DB
+    </a>
+  </div>
+  <p style="font-size:0.72rem;">⚡ Fカンパニー — Business Skills Series &nbsp;·&nbsp; 思考・行動の設計図 &nbsp;·&nbsp; © 2026</p>
+</footer>
+
+<script>
+  function init() {
+    lucide.createIcons();
+
+  // カード出現アニメーション
+  const cards = document.querySelectorAll('.series-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const card = entry.target;
+        const index = Array.from(cards).indexOf(card);
+        setTimeout(() => card.classList.add('visible'), index * 80);
+        observer.unobserve(card);
+      }
+    });
+  }, { threshold: 0.1 });
+  cards.forEach(card => observer.observe(card));
+
+  // 進捗バー
+  setTimeout(() => {
+    const fill = document.getElementById('progress-fill');
+    if (fill) fill.style.width = '100%';
+  }, 400);
+
+  // タグフィルター
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const allCards = document.querySelectorAll('.series-grid .series-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      allCards.forEach(card => {
+        const match = f === 'all' || card.dataset.category === f;
+        if (match) {
+          card.classList.remove('hidden');
+          requestAnimationFrame(() => card.classList.add('filter-visible'));
+        } else {
+          card.classList.remove('filter-visible');
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // 気になるボタン（localStorage永続化）
+  document.querySelectorAll('.interest-btn').forEach(btn => {
+    const key = btn.dataset.key;
+    const restore = () => {
+      if (localStorage.getItem(key)) {
+        btn.classList.add('marked');
+        btn.innerHTML = '<i data-lucide="check" width="14" height="14"></i> 気になる登録済み';
+      }
+    };
+    restore();
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (btn.classList.contains('marked')) {
+        localStorage.removeItem(key);
+        btn.classList.remove('marked');
+        btn.innerHTML = '<i data-lucide="bookmark" width="14" height="14"></i> 気になる';
+      } else {
+        localStorage.setItem(key, '1');
+        btn.classList.add('marked');
+        btn.innerHTML = '<i data-lucide="check" width="14" height="14"></i> 気になる登録済み';
+      }
+      lucide.createIcons();
+    });
+  });
+  // Back to top
+  const backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('visible', window.scrollY > 300);
+  });
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  } // end init()
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
+</body>
+</html>

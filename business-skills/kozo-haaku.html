@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>構造把握力の5要素 | Business Skills</title>
+<meta property="og:title" content="構造把握力の5要素 | Business Skills">
+<meta property="og:description" content="複雑な現実から本質的な構造を見抜き、正しい支点に力をかける5つの技術。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="構造把握力の5要素 | Business Skills">
+<meta name="twitter:description" content="複雑な現実から本質的な構造を見抜き、正しい支点に力をかける5つの技術。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+
+.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav a { color: var(--accent); text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+/* ── calc-box (01) ── */
+.calc-box { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.calc-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-core); margin-bottom: var(--sp-2); }
+.calc-formula { font-size: var(--fs-sm); color: #fde68a; font-family: monospace; line-height: 1.8; }
+.calc-result { font-size: 0.9rem; font-weight: 700; color: var(--accent-core); margin-top: var(--sp-2); }
+
+/* ── 4層分解タブ (04) ── */
+.layer-wrap { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.layer-scenario-tabs { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-3); flex-wrap: wrap; }
+.layer-tab { padding: 6px 14px; border-radius: 20px; font-size: var(--fs-sm); font-weight: 600; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: var(--transition); font-family: inherit; }
+.layer-tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.layer-content { display: none; }
+.layer-content.active { display: block; animation: fadeIn 0.2s ease; }
+.layer-rows { display: flex; flex-direction: column; gap: var(--sp-2); }
+.layer-row { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-3); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); border-left: 3px solid transparent; }
+.layer-row.l1 { border-left-color: #64748b; }
+.layer-row.l2 { border-left-color: #f97316; }
+.layer-row.l3 { border-left-color: var(--accent); }
+.layer-row.l4 { border-left-color: #22c55e; }
+.layer-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: 4px; margin-top: 2px; }
+.layer-row.l1 .layer-tag { background: rgba(100,116,139,0.2); color: #94a3b8; }
+.layer-row.l2 .layer-tag { background: rgba(249,115,22,0.15); color: #fb923c; }
+.layer-row.l3 .layer-tag { background: var(--accent-dim); color: var(--accent); }
+.layer-row.l4 .layer-tag { background: rgba(34,197,94,0.12); color: #4ade80; }
+.layer-body { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.layer-body strong { color: var(--text); }
+
+/* ── Prev/Next ── */
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+/* ── Top Nav ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,14,26,0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0 24px; height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: #94a3b8;
+  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
+}
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text {
+  font-size: 0.78rem; color: #8892a0; font-weight: 600;
+  letter-spacing: 0.06em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
+}
+.nav-spacer { width: 80px; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+/* ── Structure Map ── */
+.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
+.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
+.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
+.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
+.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.smap-band { width: 100%; max-width: 540px; }
+.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.smap-band-tag.core { color: var(--accent-core); }
+.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
+.smap-center { display: flex; justify-content: center; }
+.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
+.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
+.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
+.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
+.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
+.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
+.smap-node.core-node .sn-num { color: var(--accent-core); }
+.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
+.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
+.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
+.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
+.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
+.smap-axiom strong { color: var(--accent-core); }
+@media (max-width: 480px) {
+  .smap-node { max-width: 130px; }
+  .smap-node.core-node { max-width: 200px; }
+  .sn-name { font-size: 0.78rem; }
+  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+}
+</style>
+</head>
+<body>
+<div id="reading-progress" style="position:fixed;top:48px;left:0;width:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);z-index:200;transition:width 0.08s linear;pointer-events:none;"></div>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">構造把握力の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1>頭の良さの本質は<span>「構造把握力」</span></h1>
+  <p class="hero-sub">知識量でも処理速度でもない。複雑な現実から本質的な構造を見抜き、正しい支点に力をかける。その5つの技術と、欠如が引き起こすモグラ叩きのコスト。</p>
+</header>
+
+<!-- Structure Map -->
+<section class="structmap-section">
+  <div class="structmap-card">
+    <div class="structmap-hd">
+      <h2 class="structmap-title">5要素の構造マップ</h2>
+      <p class="structmap-hint">クリックで詳細へジャンプ</p>
+    </div>
+    <div class="structmap-body">
+      <div class="smap-band">
+        <div class="smap-band-tag core">PAUSE & IDENTIFY — 反応を止めて構造を見る</div>
+        <div class="smap-pair">
+          <button class="smap-node core-node" onclick="goAndScroll(0)">
+            <span class="sn-core-badge">CORE</span>
+            <span class="sn-num">01</span>
+            <span class="sn-name">即反応停止</span>
+            <span class="sn-sub">System 1 → System 2</span>
+            <span class="sn-dmg">⚠ 再発率 67%</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(1)">
+            <span class="sn-num">02</span>
+            <span class="sn-name">枝葉と幹を分ける</span>
+            <span class="sn-sub">レバレッジポイント</span>
+            <span class="sn-dmg">⚠ 再発 2.3倍</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">SYSTEM VIEW — 立体的に捉える</div>
+        <div class="smap-center">
+          <button class="smap-node" onclick="goAndScroll(2)">
+            <span class="sn-num">03</span>
+            <span class="sn-name">点ではなく立体で見る</span>
+            <span class="sn-sub">システム思考・氷山モデル</span>
+            <span class="sn-dmg">⚠ 12ヶ月以内に再発 73%</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">DESIGN & TRANSFER — 問いと抽象化</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(3)">
+            <span class="sn-num">04</span>
+            <span class="sn-name">問いの設計</span>
+            <span class="sn-sub">4層分解</span>
+            <span class="sn-dmg">⚠ 同一議題 2.7回再浮上</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(4)">
+            <span class="sn-num">05</span>
+            <span class="sn-name">抽象化⇔具体化の往復</span>
+            <span class="sn-sub">Bateson 論理階型</span>
+            <span class="sn-dmg">⚠ 1年の経験を10回繰り返す</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-axiom">
+        <strong>①がなければ②〜⑤は「速い対症療法」のループに落ちる</strong> — 症状対応は3ヶ月以内に67%が再発する
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab core" data-i="0" onclick="go(0)">
+      <span class="num">01</span><span class="tab-title">即反応停止</span><span class="core-dot"></span>
+    </button>
+    <button class="tab" data-i="1" onclick="go(1)">
+      <span class="num">02</span><span class="tab-title">枝葉と幹</span>
+    </button>
+    <button class="tab" data-i="2" onclick="go(2)">
+      <span class="num">03</span><span class="tab-title">立体で見る</span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span><span class="tab-title">問いの設計</span><span class="feat-dot"></span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span><span class="tab-title">抽象⇔具体</span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  </div>
+</nav>
+
+<main class="panel-wrap">
+  <div class="panel" id="panel"></div>
+</main>
+
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：構造を見る力はどう積み重なるか</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(0)">①反応停止（観察の確保）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(1)">②幹の発見（支点特定）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(2)">③立体化（関係把握）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(3)">④問いの設計（層の分解）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" onclick="go(4)">⑤往復（再現性化）</div>
+    </div>
+    <p class="insight-text">
+      ①は土台。反射で動いている間は、構造が目に入らない。一拍置いて「何が起きているのか」を見る習慣がなければ、②〜⑤は全部空転する。<br>
+      ②は効率の源泉。力をかける場所を間違えると、頑張っても前進しない。20%の幹を見つけることで、80%の結果に近道できる。<br>
+      ③は深度。点で見るか立体で見るかは、問題解決の解像度を決定的に変える。再発防止は③なしには不可能。<br>
+      ④は精度。問いの層を1段上げるだけで、打ち手の有効性が跳ね上がる。「現象の問い」で終わると、永遠に同じ問題が繰り返される。<br>
+      ⑤は再現性。①〜④を繰り返すだけでは経験が蓄積されない。抽象化と再具体化の往復が、経験を知恵に変える唯一の回路。<br><br>
+      最初に鍛えるべきは①。反応を止めなければ、構造は永遠に見えない。
+    </p>
+  </div>
+</section>
+
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。今週の自分の思考を診断する。</p>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox" id="c1" onchange="updateScore()"><label for="c1"><strong>①</strong> 問題が起きたとき「なぜ起きる仕組みか」まで掘った場面があった</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" onchange="updateScore()"><label for="c2"><strong>②</strong> 複数の課題の中から「これを解くと全体が動く」という1点を特定した</label></div>
+      <div class="check-item"><input type="checkbox" id="c3" onchange="updateScore()"><label for="c3"><strong>③</strong> 出来事を「誰かのせい」ではなく「どんな構造が引き起こしているか」で整理した</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" onchange="updateScore()"><label for="c4"><strong>④</strong> 問題を「現象・原因・構造・打ち手」の4層で分けて考えた</label></div>
+      <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 今週の経験から「次に使えるパターン（一般則）」を言語化した</label></div>
+    </div>
+    <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<section style="max-width:860px;margin:0 auto;padding:0 24px 48px;">
+  <a href="index.html" style="display:flex;align-items:center;justify-content:space-between;background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.2);border-radius:16px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color 0.2s,box-shadow 0.2s;" onmouseover="this.style.borderColor='rgba(56,189,248,0.5)';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(56,189,248,0.2)';this.style.boxShadow=''">
+    <div>
+      <div style="font-size:0.72rem;color:#38bdf8;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">シリーズ完了</div>
+      <div style="font-size:1.1rem;font-weight:700;color:#f1f5f9;">Business Skills 一覧へ戻る</div>
+      <div style="font-size:0.82rem;color:#94a3b8;margin-top:4px;">全5シリーズを確認する</div>
+    </div>
+    <span style="color:#38bdf8;font-size:1.4rem;">↩</span>
+  </a>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const items = [
+    {
+      num: '01', title: '即反応停止（一拍置く）', theory: 'System 1 → System 2 切り替え',
+      icon: 'pause-circle', core: true, badge: 'core', badgeText: 'CORE',
+      summary: '問題が起きた瞬間に動き出す反射は、構造の見えない脳（System 1）が走っている。「これは症状か、原因か」と一拍置くだけで対応の方向が変わる。構造把握力の土台は、反射を一時停止する習慣だ。',
+      theoryText: 'Kahnemanの「Thinking, Fast and Slow」—System 1（高速・自動・パターン認識）vs System 2（低速・論理・構造分析）。問題の「見せ方」が解空間を決める。最初の問いが間違っていると、完璧な答えが間違った方向を向く。',
+      business: 'トラブル発生時に「誰がやったか」より「なぜ仕組みが防げなかったか」を先に問う。メール返信前に「これは私が解くべき問題か」を確認する。会議で反射的に発言する前に「この議論は何を決めようとしているか」を整理する。',
+      customAfterGrid: `<div class="calc-box">
+        <div class="calc-label">📊 モグラ叩きコスト試算（System 1対応のみの場合）</div>
+        <div class="calc-formula">週3件の「症状対応」→根本未解決 × 平均1時間の再発対応<br>= 156時間 / 年（1担当者）</div>
+        <div class="calc-result">→ 5名チームなら年間780時間 ≈ 人件費換算 約117万円のモグラ叩きコスト</div>
+      </div>`,
+      deficit: '問題の再発率は「症状対応」だと<strong>平均67%が3ヶ月以内に再発</strong>（Gartner 2021）。「また同じミスが起きた」は問題者の注意力の問題ではなく、System 1 が構造を飛ばした問題対応の必然的帰結。速い反応が生む遅い前進、これが「頑張っても進まない」の正体。',
+      check: '今週解決した問題のうち、「なぜ起きたか（構造）」まで掘ったものは何件あるか？ 「また起きたらどうするか」より「なぜ起きる仕組みか」を先に問えているか？'
+    },
+    {
+      num: '02', title: '枝葉と幹を分ける', theory: 'レバレッジポイント（Meadows） × パレート原則',
+      icon: 'git-branch',
+      summary: '全事象に等しく向き合うと力が分散する。構造が見える人は「ここを変えると全体が動く」支点を探す。80%の結果を生む20%の原因を見つける力は、情報量ではなく構造把握から来る。',
+      theoryText: 'Donella Meadowsの「Thinking in Systems」—システムには変化への抵抗が大きい要素（幹）と小さい要素（枝葉）がある。最も効果的な介入点を「レバレッジポイント」と呼ぶ。パレートの法則：原因の20%が結果の80%を支配する。',
+      business: '品質トラブルの発生要因を階層分析（なぜなぜ5回）して根幹1点を特定する。メンバー育成で「全員に同じ指導」ではなく「成長を制限している1つの要因」にアプローチする。業務改善で「たくさん改善」より「瓶のネック1点」を解消する。',
+      deficit: '枝葉対応が多いチームは、同じ問題の再発回数が<strong>平均2.3倍</strong>（Lean Six Sigma Institute 2022）。「また起きた、また対処した」のループは、幹を見ていないことの直接的な結果。改善件数が多くても成果が乏しい場合、ほぼ枝葉への対応が原因。',
+      check: '今抱えている問題のうち「根本（幹）」と「表れ（枝葉）」を分けて書けるものはいくつあるか？ 「幹を変えると何が変わるか」を説明できるか？'
+    },
+    {
+      num: '03', title: '点ではなく立体で見る', theory: 'システム思考（Senge） × 氷山モデル',
+      icon: 'network',
+      summary: '出来事を孤立したエラーとして処理すると、構造は見えない。問題を「複数要素の関係」として立体的に捉えることで、誰も気づいていなかった連鎖と根本メカニズムが浮かび上がる。',
+      theoryText: 'Peter Sengeの「The Fifth Discipline」—強化ループ・バランスループ・遅延・境界条件・メンタルモデルの5要素。氷山モデル：見えている事象の下に、行動パターン→システム構造→メンタルモデルが積み重なる。事象に反応するだけでは最上層しか触れない。',
+      business: '残業が増えた→個人の効率ではなく「業務フロー上どこに遅延ループがあるか」を見る。品質低下→担当者のミスではなく「何が判断精度を下げる仕組みになっているか」を問う。離職増加→環境・待遇・評価・信頼の関係図を描いてから手を打つ。',
+      deficit: '「担当者への指導」だけで対処した問題は、<strong>73%が12ヶ月以内に再発または形を変えて再出現</strong>（McKinsey Organizational Health 2023）。システムを変えずに人を変えると、同じパターンが別の人で再現する。これが「人を変えても変わらない」の正体。',
+      check: '最近対処した問題を「氷山モデル」で分解できるか（事象→パターン→構造→前提）？ 「この問題はいつ、なぜ発生する仕組みか」を因果関係で説明できるか？'
+    },
+    {
+      num: '04', title: '問いの設計（4層分解）', theory: 'ソクラテス問答法 × 問題の4層構造',
+      icon: 'layers', badge: 'feat', badgeText: '実践ツール',
+      summary: '答えの質は問いの質で決まる。「なぜ起きているか」という問いより「どの層の問題か」という問いの方が、解空間を一段上げる。問いの設計が変わると、見えている世界が変わる。',
+      theoryText: '問題の4層：①現象（何が起きているか）→②原因（なぜ起きているか）→③構造（それを生む仕組みは何か）→④打ち手（どこを変えると全体が動くか）。Argyrisのダブルループ学習：単ループ=ルールを守る、ダブルループ=ルール自体を問い直す。層が深いほど再発防止力が高い。',
+      business: 'トラブル報告書の「再発防止策」が③の構造にアクセスしているか確認する。メンバーへのフィードバックで「何をしたか（現象）」ではなく「どういう判断軸だったか（構造）」を問う。改善提案で「問題を解決する」ではなく「問題を生む仕組みを変える」を起点にする。',
+      customAfterGrid: `<div class="layer-wrap">
+        <div class="detail-label" style="margin-bottom: var(--sp-3);">💡 同じ問題を4層に分解してみる</div>
+        <div class="layer-scenario-tabs">
+          <button class="layer-tab active" onclick="switchLayer(event, 'miss')">ミスが多い</button>
+          <button class="layer-tab" onclick="switchLayer(event, 'meeting')">会議が長い</button>
+          <button class="layer-tab" onclick="switchLayer(event, 'study')">学習が進まない</button>
+        </div>
+        <div class="layer-content active" id="layer-miss">
+          <div class="layer-rows">
+            <div class="layer-row l1"><span class="layer-tag">現象</span><div class="layer-body"><strong>同じミスが繰り返される</strong> — ヒヤリハットも含め、似たパターンのミスが止まらない</div></div>
+            <div class="layer-row l2"><span class="layer-tag">原因</span><div class="layer-body"><strong>確認不足・疲労・習慣化</strong> — 忙しい時期に集中し、個人の注意力依存になっている</div></div>
+            <div class="layer-row l3"><span class="layer-tag">構造</span><div class="layer-body"><strong>チェック工程が属人的で仕組み化されていない</strong> — 何を・いつ・誰が確認するかが暗黙知のまま。疲弊した人が担当すると確認が抜ける設計になっている</div></div>
+            <div class="layer-row l4"><span class="layer-tag">打ち手</span><div class="layer-body"><strong>確認工程のリスト化・チェックリスト導入</strong> — 注意力に依存せず、工程ごとに「確認済み」を可視化できる仕組みに設計変更する</div></div>
+          </div>
+        </div>
+        <div class="layer-content" id="layer-meeting">
+          <div class="layer-rows">
+            <div class="layer-row l1"><span class="layer-tag">現象</span><div class="layer-body"><strong>会議が毎回時間超過する</strong> — 終了時間になっても決まらず、次回への持ち越しが続く</div></div>
+            <div class="layer-row l2"><span class="layer-tag">原因</span><div class="layer-body"><strong>議題が多い・脱線しやすい</strong> — 話が広がり、「で、何を決めるか」が曖昧なまま進む</div></div>
+            <div class="layer-row l3"><span class="layer-tag">構造</span><div class="layer-body"><strong>目的設定と意思決定者が会議前に不明確</strong> — 「何を決めるか」と「誰が決めるか」が会議内で共有されていない。報告・共有・決定が混在している</div></div>
+            <div class="layer-row l4"><span class="layer-tag">打ち手</span><div class="layer-body"><strong>アジェンダ3点・決定事項を最初に宣言する設計</strong> — 会議開始時に「今日決めること」「決定者」「時間配分」を明示し、議題の種類（報告/議論/決定）を分離する</div></div>
+          </div>
+        </div>
+        <div class="layer-content" id="layer-study">
+          <div class="layer-rows">
+            <div class="layer-row l1"><span class="layer-tag">現象</span><div class="layer-body"><strong>勉強時間をとってもなかなか定着しない</strong> — 読んだはずが試験・業務で出てこない</div></div>
+            <div class="layer-row l2"><span class="layer-tag">原因</span><div class="layer-body"><strong>理解が浅い・反復が少ない</strong> — 読むことが中心で、思い出す練習をしていない</div></div>
+            <div class="layer-row l3"><span class="layer-tag">構造</span><div class="layer-body"><strong>「読む＝学習完了」という設計になっている</strong> — インプットに時間をかけているが、記憶定着に必要なアウトプット・検索負荷が設計に入っていない</div></div>
+            <div class="layer-row l4"><span class="layer-tag">打ち手</span><div class="layer-body"><strong>アクティブリコール（自己テスト）の組み込み</strong> — 読んだ後に「何が言えるか」を何も見ずに再現する工程を毎回入れる。読む時間を減らしても定着率が上がる</div></div>
+          </div>
+        </div>
+      </div>`,
+      deficit: '問いの質が低いチームは、同じ会議テーマが3ヶ月で<strong>平均2.7回再浮上</strong>（Gallup Workplace Survey 2022）。「また同じ話し合いをしている」は、決定が「現象層」で終わって「構造層」に届いていない証拠。問いを1層深めるだけで、同じ会議が2度と要らなくなる。',
+      check: '直近の問題で「打ち手を決めたが根本に届いているか」を4層で検証できるか？ 自分の問いが「現象」を扱っているか「構造」を扱っているか、区別できているか？'
+    },
+    {
+      num: '05', title: '抽象化⇔具体化の往復', theory: 'Bateson 論理階型 × 経験学習サイクル（Kolb）',
+      icon: 'repeat',
+      summary: '構造を掴むとは、具体から抽象を見出し、抽象を新しい具体に返せる能力だ。「この案件のパターンは何か」「そのパターンは次の問題にどう使えるか」を往復できる人は、経験を再現性に変えられる。',
+      theoryText: 'Batesonの論理階型：具体的事例→抽象パターン→メタ原則→存在論的前提の4層。Kolbの経験学習サイクル：具体的経験→省察的観察→抽象的概念化→能動的実験。往復しない学習は「経験の蓄積」ではなく「同じ経験の繰り返し」になる。',
+      business: '「今回のトラブルを知識化する（次に使えるパターンとして言語化する）」まで対応が終わったと見なす。新しい問題に直面したとき「これは過去のどのパターンと同じか」を最初に問う。学んだ知識を「自分の業務のどの場面で使えるか」に落とし込まないと知識は眠る。',
+      deficit: '経験年数と問題解決力が相関しない人のほとんどは、抽象化ステップを踏んでいない。「10年の経験」が「<strong>1年の経験を10回繰り返しただけ</strong>」になる分岐点は、抽象化の有無（Peter Senge）。経験を知恵に変えないかぎり、成長曲線は数年で横ばいになる。',
+      check: '最近解決した問題を「一般化した教訓（パターン）」として言語化できるか？ 学んだことを「次の別の問題で使うとしたらどう使うか」を問えているか？'
+    }
+  ];
+
+  let current = 0;
+
+  function render(i) {
+    const item = items[i];
+    const panel = document.getElementById('panel');
+    panel.classList.toggle('core', !!item.core);
+
+    const badgeHTML = item.badge ? `<div class="badges"><span class="badge badge-${item.badge}">${item.badgeText}</span></div>` : '';
+    const customHTML = item.customAfterGrid || '';
+    const prev = i > 0 ? items[i - 1] : null;
+    const next = i < items.length - 1 ? items[i + 1] : null;
+
+    panel.innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${item.icon}" width="26" height="26"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${item.num}</div>
+          <div class="panel-title">${item.title}</div>
+          <div class="panel-theory">${item.theory}</div>
+        </div>
+        ${badgeHTML}
+      </div>
+      <div class="panel-summary">${item.summary}</div>
+      <div class="detail-grid">
+        <div class="detail-block"><div class="detail-label">理論背景</div><div class="detail-text">${item.theoryText}</div></div>
+        <div class="detail-block"><div class="detail-label">業務での発現</div><div class="detail-text">${item.business}</div></div>
+      </div>
+      ${customHTML}
+      <div class="deficit-block"><div class="deficit-label">⚠ 欠如した場合の実損</div><div class="deficit-text">${item.deficit}</div></div>
+      <div class="check-block"><div class="check-label">✓ セルフチェック</div><div class="check-text">${item.check}</div></div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label"><span class="nav-btn-hint">Prev</span><span>${prev ? prev.num + ' ' + prev.title.split('（')[0] : '最初です'}</span></div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label"><span class="nav-btn-hint">Next</span><span>${next ? next.num + ' ' + next.title.split('（')[0] : '最後です'}</span></div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+    lucide.createIcons();
+  }
+
+  function go(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 80;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  }
+  function goAndScroll(i) {
+    go(i);
+    const wrap = document.querySelector('.panel-wrap');
+    if (wrap) window.scrollTo({ top: wrap.offsetTop - 80, behavior: 'smooth' });
+  }
+
+  function switchLayer(e, scenario) {
+    e.stopPropagation();
+    document.querySelectorAll('.layer-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.layer-content').forEach(c => c.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('layer-' + scenario).classList.add('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['', '1つ：②「幹を探す」から始めてみよう', '2つ：基礎はある。③「立体で見る」が次のレバー', '3つ：構造把握の素地がある。①の習慣化が土台を固める', '4つ：高水準。⑤「抽象化の往復」で経験が知恵に変わる', '5つ：構造把握が日常の思考習慣になっている'];
+    document.getElementById('score-display').innerHTML = `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  go(0);
+
+    // 読書進捗バー
+    const rp = document.getElementById('reading-progress');
+    if (rp) {
+      window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        rp.style.width = (Math.min(window.scrollY / total * 100, 100)) + '%';
+      });
+    }
+}); // DOMContentLoaded
+</script>
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習効率の5要素 | Business Skills</title>
+<meta property="og:title" content="学習効率の5要素 | Business Skills">
+<meta property="og:description" content="記憶定着率を決める5原則と、やっているつもりで効果ゼロの罠を脳科学で解説。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="学習効率の5要素 | Business Skills">
+<meta name="twitter:description" content="記憶定着率を決める5原則と、やっているつもりで効果ゼロの罠を脳科学で解説。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<style>
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
+  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
+  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
+  --fw-normal: 400; --fw-bold: 700;
+  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+  --transition: 0.2s ease;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+
+  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
+  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
+  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
+  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+  --border: rgba(56,189,248,0.15);
+  --border-hover: rgba(56,189,248,0.5);
+  --border-core: rgba(245,158,11,0.5);
+}
+
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+
+.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav a { color: var(--accent); text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+
+.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
+.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
+.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
+.hero h1 span { color: var(--accent); }
+.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+
+/* ── Sticky Tab Nav ── */
+.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
+.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
+.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
+.tab.active .num { background: var(--accent); color: var(--bg); }
+.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
+.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
+.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
+.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+/* ── Progress bar ── */
+.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
+.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.progress-fill.core { background: var(--accent-core); }
+
+/* ── Main panel ── */
+.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
+.panel.core { border-color: var(--border-core); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
+.panel-title-wrap { flex: 1; }
+.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
+.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.panel.core .panel-theory { color: var(--accent-core); }
+
+.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
+.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
+.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+
+.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.panel.core .panel-summary { border-left-color: var(--accent-core); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
+.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.deficit-text strong { color: #f87171; }
+
+.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
+.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
+
+/* ── Prev / Next ── */
+.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
+.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
+.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.prev { justify-content: flex-start; }
+.nav-btn.next { justify-content: flex-end; margin-left: auto; }
+.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
+.nav-btn.next .nav-btn-label { align-items: flex-end; }
+.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ── 保持率比較バー ── */
+.retention-chart { margin-bottom: var(--sp-3); }
+.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
+.retention-label { width: 110px; flex-shrink: 0; color: var(--text-muted); }
+.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
+.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.retention-pct { width: 36px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; }
+
+/* ── 学習タイプ診断（⑤専用） ── */
+.type-quiz { margin-bottom: var(--sp-4); }
+.type-q { margin-bottom: var(--sp-4); }
+.type-q-label { font-size: var(--fs-sm); font-weight: 600; color: var(--text); margin-bottom: var(--sp-2); }
+.type-options { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.type-opt {
+  padding: 6px 14px; border-radius: 20px; font-size: var(--fs-sm);
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+  cursor: pointer; transition: var(--transition); font-family: inherit;
+}
+.type-opt.selected { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.type-result {
+  display: none; margin-top: var(--sp-4);
+  background: rgba(56,189,248,0.08); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: var(--sp-4);
+}
+.type-result.show { display: block; animation: fadeIn 0.3s ease; }
+.type-result-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: var(--sp-2); }
+.type-result-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+/* ── Insight ── */
+.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.flow-item:hover { background: var(--accent); color: var(--bg); }
+.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
+.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
+
+/* ── Self-check ── */
+.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.check-item:hover { background: rgba(255,255,255,0.04); }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.check-item label strong { color: var(--text); }
+.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
+.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+
+/* ── Top Nav ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,14,26,0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0 24px; height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: #94a3b8;
+  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
+}
+.nav-back:hover { color: #38bdf8; }
+.nav-title-text {
+  font-size: 0.78rem; color: #8892a0; font-weight: 600;
+  letter-spacing: 0.06em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
+}
+.nav-spacer { width: 80px; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .insight-flow { flex-direction: column; align-items: flex-start; }
+  .panel-header { flex-wrap: wrap; }
+  .panel { padding: var(--sp-6) var(--sp-4); }
+  .tab { padding: 8px 12px; }
+  .tab-title { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
+  .panel-title { font-size: 1.2rem; }
+}
+/* ── Structure Map ── */
+.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
+.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
+.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
+.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
+.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.smap-band { width: 100%; max-width: 540px; }
+.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.smap-band-tag.core { color: var(--accent-core); }
+.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
+.smap-center { display: flex; justify-content: center; }
+.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
+.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
+.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
+.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
+.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
+.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
+.smap-node.core-node .sn-num { color: var(--accent-core); }
+.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
+.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
+.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
+.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
+.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
+.smap-axiom strong { color: var(--accent-core); }
+@media (max-width: 480px) {
+  .smap-node { max-width: 130px; }
+  .smap-node.core-node { max-width: 200px; }
+  .sn-name { font-size: 0.78rem; }
+  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+}
+</style>
+</head>
+<body>
+<div id="reading-progress" style="position:fixed;top:48px;left:0;width:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);z-index:200;transition:width 0.08s linear;pointer-events:none;"></div>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">学習効率の5要素</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Business Skills Series</span>
+  <h1><span>学習効率</span>の5要素</h1>
+  <p class="hero-sub">「長時間勉強した」は成果の根拠にならない。脳科学・認知心理学が示す、学習の質を決める5つの設計原則と、やっているつもりで効果ゼロになる罠。</p>
+</header>
+
+<!-- Structure Map -->
+<section class="structmap-section">
+  <div class="structmap-card">
+    <div class="structmap-hd">
+      <h2 class="structmap-title">5要素の構造マップ</h2>
+      <p class="structmap-hint">クリックで詳細へジャンプ</p>
+    </div>
+    <div class="structmap-body">
+      <div class="smap-band">
+        <div class="smap-band-tag">TIMING — いつ・どう学ぶか</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(0)">
+            <span class="sn-num">01</span>
+            <span class="sn-name">スペーシング効果</span>
+            <span class="sn-sub">分散学習</span>
+            <span class="sn-dmg">⚠ 保持率 58%低</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node core-node" onclick="goAndScroll(1)">
+            <span class="sn-core-badge">CORE</span>
+            <span class="sn-num">02</span>
+            <span class="sn-name">アクティブリコール</span>
+            <span class="sn-sub">Testing Effect</span>
+            <span class="sn-dmg">⚠ 正答率 38%低</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">STRATEGY — 混ぜて強化する</div>
+        <div class="smap-center">
+          <button class="smap-node" onclick="goAndScroll(2)">
+            <span class="sn-num">03</span>
+            <span class="sn-name">インターリービング</span>
+            <span class="sn-sub">交互学習</span>
+            <span class="sn-dmg">⚠ 転移率 32%低</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-v-arr">↓</div>
+      <div class="smap-band">
+        <div class="smap-band-tag">FEEDBACK — 修正・最適化</div>
+        <div class="smap-pair">
+          <button class="smap-node" onclick="goAndScroll(3)">
+            <span class="sn-num">04</span>
+            <span class="sn-name">フィードバックループ</span>
+            <span class="sn-sub">即時エラー訂正</span>
+            <span class="sn-dmg">⚠ 定着効率 54%低下</span>
+          </button>
+          <span class="smap-h-arr">→</span>
+          <button class="smap-node" onclick="goAndScroll(4)">
+            <span class="sn-num">05</span>
+            <span class="sn-name">メタ学習</span>
+            <span class="sn-sub">学習の学習</span>
+            <span class="sn-dmg">⚠ 時間と成果が比例しない</span>
+          </button>
+        </div>
+      </div>
+      <div class="smap-axiom">
+        <strong>学習の質は②想起の反復で決まる</strong> — 読む≠覚える。「思い出す」行為が記憶回路を強化する
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sticky Tab Nav -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab" data-i="0" onclick="go(0)">
+      <span class="num">01</span>
+      <span class="tab-title">スペーシング</span>
+    </button>
+    <button class="tab core" data-i="1" onclick="go(1)">
+      <span class="num">02</span>
+      <span class="tab-title">アクティブリコール</span>
+      <span class="core-dot" title="CORE"></span>
+    </button>
+    <button class="tab" data-i="2" onclick="go(2)">
+      <span class="num">03</span>
+      <span class="tab-title">インターリービング</span>
+    </button>
+    <button class="tab" data-i="3" onclick="go(3)">
+      <span class="num">04</span>
+      <span class="tab-title">フィードバック</span>
+    </button>
+    <button class="tab" data-i="4" onclick="go(4)">
+      <span class="num">05</span>
+      <span class="tab-title">メタ学習</span>
+      <span class="feat-dot" title="AI時代の優位性"></span>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  </div>
+</nav>
+
+<!-- Main panel -->
+<main class="panel-wrap">
+  <div class="panel" id="panel">
+    <!-- content injected by JS -->
+  </div>
+</main>
+
+<!-- Insight -->
+<section class="insight-section">
+  <div class="insight-card">
+    <h2 class="insight-title">5要素の統合：効率的な学習者がやっていること</h2>
+    <div class="insight-flow">
+      <div class="flow-item" onclick="go(4)">⑤メタ学習（設計）</div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-item" onclick="go(0)">①スペーシング（間隔）</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-item" onclick="go(2)">③インターリービング（順序）</div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-item" onclick="go(1)">②アクティブリコール（実行）</div>
+      <span class="flow-arrow">↓</span>
+      <div class="flow-item" onclick="go(3)">④フィードバック（修正）</div>
+    </div>
+    <p class="insight-text">
+      ⑤メタ学習が上位設計。「何を・いつ・どの順番で・どう覚えるか」の設計なしに①〜④を実行しても効率は半分以下になる。<br>
+      ①と③は「いつ・何を」の時間設計。スペーシングで間隔を管理し、インターリービングで順序を乱すことで記憶の強度が上がる。<br>
+      ②が最重要の実行手段。どれだけ時間をかけても、想起なき学習は定着しない。<br>
+      ④がエラー収束。②で発生した誤りを当日中に消化するループが、最速で正答率を上げる。<br><br>
+      最初に鍛えるべきは②アクティブリコール。読む時間の半分を「閉じて思い出す」に使うだけで、同じ学習時間の定着率が2倍近くになる。
+    </p>
+  </div>
+</section>
+
+<!-- Self-check -->
+<section class="selfcheck-section">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック</h2>
+    <p class="selfcheck-sub">5問。今週の自分の学習を診断する。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <input type="checkbox" id="c1" onchange="updateScore()">
+        <label for="c1"><strong>①</strong> 学んだ内容を1週間後に見直す予定を入れた</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c2" onchange="updateScore()">
+        <label for="c2"><strong>②</strong> 教科書・資料を閉じて「思い出す」練習をした</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c3" onchange="updateScore()">
+        <label for="c3"><strong>③</strong> 異なる科目・テーマを混ぜて学習した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c4" onchange="updateScore()">
+        <label for="c4"><strong>④</strong> 間違えた問題の原因を当日中に言語化した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="c5" onchange="updateScore()">
+        <label for="c5"><strong>⑤</strong> 学習計画を実績に基づいて修正した</label>
+      </div>
+    </div>
+    <div class="score-display" id="score-display">
+      <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<section style="max-width:860px;margin:0 auto;padding:0 24px 48px;">
+  <a href="jikan-sekkei.html" style="display:flex;align-items:center;justify-content:space-between;background:#111827;border:1px solid rgba(56,189,248,0.2);border-radius:16px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color 0.2s,box-shadow 0.2s;" onmouseover="this.style.borderColor='rgba(56,189,248,0.5)';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(56,189,248,0.2)';this.style.boxShadow=''">
+    <div>
+      <div style="font-size:0.72rem;color:#38bdf8;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">次のシリーズ — 04</div>
+      <div style="font-size:1.1rem;font-weight:700;color:#f1f5f9;">時間設計の5要素</div>
+      <div style="font-size:0.82rem;color:#94a3b8;margin-top:4px;">意思決定の前提を整える</div>
+    </div>
+    <span style="color:#38bdf8;font-size:1.4rem;">→</span>
+  </a>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
+    <a href="index.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-grid" width="13" height="13"></i>シリーズ一覧
+    </a>
+    <a href="../portal-v2.html" style="color:#8892a0;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;">
+      <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
+    </a>
+  </div>
+  <p style="font-size:0.72rem;color:#64748b;">⚡ Fカンパニー — Business Skills Series · © 2026</p>
+</footer>
+
+<script>
+  const items = [
+    {
+      num: '01', title: 'スペーシング効果', theory: '分散学習 / 間隔反復（Ebbinghaus）',
+      icon: 'calendar-clock',
+      summary: '同じ内容を一度に集中するより、時間を空けて繰り返す方が記憶定着率が格段に高い。試験前夜の一夜漬けは「一時的な保持」であり、1週間後にはほぼ消える。',
+      theoryText: 'Ebbinghaus（1885）の忘却曲線：学習直後から急速に忘却が進み、復習のタイミングを分散させるほど保持率が高まる。最適間隔は記憶の強さに応じて変動（間隔反復アルゴリズムの基礎）。',
+      business: '資格勉強を「週末に6時間」ではなく「毎日20分」に分散する。新しい業務知識を学んだ翌日・1週間後・1ヶ月後に意図的に見直す。SRS（Anki等）を活用した間隔反復管理。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">1週間後の保持率比較</div>
+        <div class="retention-chart">
+          <div class="retention-row">
+            <span class="retention-label">分散学習</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="80"></div></div>
+            <span class="retention-pct">80%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">集中学習</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#64748b" data-w="34"></div></div>
+            <span class="retention-pct">34%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">一夜漬け</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#ef4444" data-w="18"></div></div>
+            <span class="retention-pct">18%</span>
+          </div>
+        </div>
+      </div>`,
+      deficit: '集中型の学習者は1週間後の保持率が分散型比較で<strong>58%低い</strong>（Cepeda et al., 2006）。「昨日勉強したのに覚えていない」は能力の問題ではなく、間隔設計の問題。',
+      check: '学んだ内容を1週間後に復習する予定を入れているか？ まとめてやる「休日学習型」になっていないか？ 復習のタイミングが「気が向いたとき」になっていないか？'
+    },
+    {
+      num: '02', title: 'アクティブリコール', theory: 'Testing Effect / 能動的想起',
+      icon: 'brain-circuit', core: true, badge: 'core', badgeText: 'CORE',
+      summary: '読む・聴く・ハイライトするではなく、「思い出す」行為を繰り返すことで記憶を強化する。「読んだ＝わかった」錯覚が最も多くの学習者を罠にかける。テストなき反復は想起筋をゼロのまま終わらせる。',
+      theoryText: 'Roediger & Karpicke（2006）のTesting Effect：テストを受けることが記憶を強化する。読み直しより問題演習の方が定着率が高い理由は、「引き出す（想起）」という行為そのものが記憶の回路を強化するから。',
+      business: '教科書を読んだ後、閉じて「今読んだ内容を白紙に書き出す」。勉強会後に「3つの重要ポイントを口頭で説明する」。自分に問いかけてから答えを確認する順序が重要。',
+      customAfterGrid: `<div class="detail-block" style="margin-bottom: var(--sp-4);">
+        <div class="detail-label">学習手法別・想起テスト正答率（Karpicke 2008）</div>
+        <div class="retention-chart">
+          <div class="retention-row">
+            <span class="retention-label">テスト→確認</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#f59e0b" data-w="80"></div></div>
+            <span class="retention-pct">80%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">繰り返し学習</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#38bdf8" data-w="54"></div></div>
+            <span class="retention-pct">54%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">再読のみ</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#64748b" data-w="42"></div></div>
+            <span class="retention-pct">42%</span>
+          </div>
+          <div class="retention-row">
+            <span class="retention-label">ハイライトのみ</span>
+            <div class="retention-bar-wrap"><div class="retention-bar" style="width:0%;background:#ef4444" data-w="34"></div></div>
+            <span class="retention-pct">34%</span>
+          </div>
+        </div>
+      </div>`,
+      deficit: '再読・ハイライトのみの学習者は想起テストで正答率が<strong>平均38%低い</strong>（Karpicke & Roediger, 2008）。「わかった気がする」（流暢性の錯覚）は最も危険な学習バイアス。資格試験の「勉強したのに落ちた」の最大原因。',
+      check: '学習後に「教科書を閉じて再現できるか」を試しているか？ 問題を解く前に答えを見ていないか？ 「なんとなく知っている」と「問われたら答えられる」を区別しているか？'
+    },
+    {
+      num: '03', title: 'インターリービング', theory: '交互学習 / 転移能力の強化',
+      icon: 'shuffle',
+      summary: '同一科目を連続でやる（ブロック学習）より、複数科目・問題タイプを混ぜて学ぶ（インターリービング）方が、転移能力と長期保持が高まる。苦しいが、その苦しさが学習を強化する。',
+      theoryText: 'Kornell & Bjork（2008）：ブロック学習中はパターン認識が容易で「できた感」があるが、転移テストで大きく差が出る。問題タイプを混在させることで、「どの解法を選ぶか」という判断そのものが鍛えられる。',
+      business: '電験3種なら「理論→電力→機械→法規」を章ごとに完結させるより、毎日混合演習する。業務研修でも「設計→保全→安全」を交互に学ぶと横断的な問題解決力が付く。',
+      deficit: 'ブロック学習者は転移テストの正答率が混合学習比<strong>平均32%低い</strong>（Taylor & Rohrer, 2010）。「この章はできた」が実際は「この章の問題パターンに慣れただけ」であることが試験本番で判明する。',
+      check: '「この章を全部終わらせてから次へ」という順序で学んでいないか？ 模擬試験（混合問題）で実力を確認しているか？ 「問題を見て解法を選ぶ」練習をしているか？'
+    },
+    {
+      num: '04', title: 'フィードバックループ', theory: '即時エラー訂正 / 誤答分析',
+      icon: 'refresh-cw',
+      summary: 'ミスの原因を即座に特定・修正することで、誤った回路の固定化を防ぐ。「間違えた」だけで終わる人と「なぜ間違えたかを当日中に言語化する」人では、1ヶ月後の正答率に決定的な差が出る。',
+      theoryText: 'Schmidt & Bjork（1992）：即時フィードバックは初期習得を加速するが、遅延フィードバックは長期保持を強化する側面もある。ただし「エラーの放置」は別問題。誤答は定着させると修正コストが指数的に増加する。',
+      business: '過去問を解いたら当日中に誤答分析→「知識不足か／計算ミスか／問題文の読み違いか」を区別して記録する。「間違えた問題」ノートではなく「なぜ間違えたか分類」ノートを作る。',
+      deficit: 'エラー放置3日後の修正は即時修正比で定着効率が<strong>54%低下</strong>（Schmidt & Bjork, 1992）。同じ間違いを繰り返す回数が平均2.8倍になる。「やった問題数」でなく「消化した誤答数」が実力の指標。',
+      check: '間違えた問題を当日中に「なぜ間違えたか」まで言語化しているか？ 誤答の原因を「知識不足/読み違い/計算ミス」に分類しているか？ 同じ問題を再び間違えていないか？'
+    },
+    {
+      num: '05', title: 'メタ学習', theory: '学習の学習 / 認知特性の把握',
+      icon: 'settings-2', badge: 'feat', badgeText: 'AI時代の優位性',
+      summary: '自分の認知特性・学習パターン・最適な環境を理解し、学習設計そのものを最適化する能力。AIが①〜④の実行を代替するほど、「自分の学びをどう設計するか」という人間側の設計力が差別点になる。',
+      theoryText: 'Flavell（1979）のメタ認知：自分の思考・学習プロセスを客観的に把握する能力。「何がわかっていないかがわかる」状態がメタ認知の起点。Dunning-Kruger効果：能力が低いほど自己評価が高くなるバイアスをメタ学習が修正する。',
+      business: '「自分は朝と夜どちらが集中できるか」「視覚型か言語型か」「どの科目でつまずくパターンがあるか」を把握して学習計画を設計する。AIツールを自分の認知特性に合わせてカスタマイズする。',
+      customAfterGrid: `<div class="type-quiz" onclick="event.stopPropagation()">
+        <div class="detail-label" style="margin-bottom: var(--sp-3);">🎯 自分の学習タイプを診断する（3問）</div>
+        <div class="type-q">
+          <div class="type-q-label">Q1. 新しい概念を理解するとき？</div>
+          <div class="type-options">
+            <button class="type-opt" data-q="1" data-v="A" onclick="selectOpt(this)">図や構造で整理したい</button>
+            <button class="type-opt" data-q="1" data-v="B" onclick="selectOpt(this)">実例・事例で理解したい</button>
+            <button class="type-opt" data-q="1" data-v="C" onclick="selectOpt(this)">定義から論理的に理解したい</button>
+          </div>
+        </div>
+        <div class="type-q">
+          <div class="type-q-label">Q2. 最も集中できる時間帯は？</div>
+          <div class="type-options">
+            <button class="type-opt" data-q="2" data-v="morning" onclick="selectOpt(this)">朝（6〜10時）</button>
+            <button class="type-opt" data-q="2" data-v="noon" onclick="selectOpt(this)">昼（10〜16時）</button>
+            <button class="type-opt" data-q="2" data-v="night" onclick="selectOpt(this)">夜（20時以降）</button>
+          </div>
+        </div>
+        <div class="type-q">
+          <div class="type-q-label">Q3. 間違えたとき、まず何をする？</div>
+          <div class="type-options">
+            <button class="type-opt" data-q="3" data-v="X" onclick="selectOpt(this)">答えを見てすぐ確認</button>
+            <button class="type-opt" data-q="3" data-v="Y" onclick="selectOpt(this)">もう一度考えてから確認</button>
+            <button class="type-opt" data-q="3" data-v="Z" onclick="selectOpt(this)">なぜ間違えたか先に考える</button>
+          </div>
+        </div>
+        <div class="type-result" id="type-result">
+          <div class="type-result-title" id="type-result-title"></div>
+          <div class="type-result-text" id="type-result-text"></div>
+        </div>
+      </div>`,
+      deficit: 'メタ学習なしでは学習時間の投下量と成果が比例しない。「1000時間勉強しても合格しない」は多くの場合、学習設計の問題。自己評価が不正確なため、すでに得意な分野を過剰学習し、苦手分野を放置するパターンが固定化する。',
+      check: '自分が最も集中できる時間・環境を把握しているか？ 「苦手な分野」の原因を「理解不足か/演習不足か/忘却か」に分類できるか？ 学習計画を週次でレビューして修正しているか？'
+    }
+  ];
+
+  let current = 0;
+  let typeAnswers = {};
+
+  function render(i) {
+    const item = items[i];
+    const panel = document.getElementById('panel');
+    panel.classList.toggle('core', !!item.core);
+
+    // タブ切替時に診断リセット
+    typeAnswers = {};
+
+    const badgeHTML = item.badge
+      ? `<div class="badges"><span class="badge badge-${item.badge}">${item.badgeText}</span></div>`
+      : '';
+    const customHTML = item.customAfterGrid || '';
+
+    const prevItem = i > 0 ? items[i - 1] : null;
+    const nextItem = i < items.length - 1 ? items[i + 1] : null;
+
+    panel.innerHTML = `
+      <div class="panel-header">
+        <div class="panel-icon"><i data-lucide="${item.icon}" width="26" height="26"></i></div>
+        <div class="panel-title-wrap">
+          <div class="panel-num">ELEMENT ${item.num}</div>
+          <div class="panel-title">${item.title}</div>
+          <div class="panel-theory">${item.theory}</div>
+        </div>
+        ${badgeHTML}
+      </div>
+      <div class="panel-summary">${item.summary}</div>
+      <div class="detail-grid">
+        <div class="detail-block">
+          <div class="detail-label">理論背景</div>
+          <div class="detail-text">${item.theoryText}</div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-label">業務での発現</div>
+          <div class="detail-text">${item.business}</div>
+        </div>
+      </div>
+      ${customHTML}
+      <div class="deficit-block">
+        <div class="deficit-label">⚠ 欠如した場合の実損</div>
+        <div class="deficit-text">${item.deficit}</div>
+      </div>
+      <div class="check-block">
+        <div class="check-label">✓ セルフチェック</div>
+        <div class="check-text">${item.check}</div>
+      </div>
+      <div class="panel-nav">
+        <button class="nav-btn prev" onclick="go(${i - 1})" ${i === 0 ? 'disabled' : ''}>
+          <i data-lucide="arrow-left" width="16" height="16"></i>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">Prev</span>
+            <span>${prevItem ? prevItem.num + ' ' + prevItem.title : '最初です'}</span>
+          </div>
+        </button>
+        <button class="nav-btn next" onclick="go(${i + 1})" ${i === items.length - 1 ? 'disabled' : ''}>
+          <div class="nav-btn-label">
+            <span class="nav-btn-hint">Next</span>
+            <span>${nextItem ? nextItem.num + ' ' + nextItem.title : '最後です'}</span>
+          </div>
+          <i data-lucide="arrow-right" width="16" height="16"></i>
+        </button>
+      </div>
+    `;
+
+    lucide.createIcons();
+
+    // 棒グラフアニメーション
+    animateBars(panel);
+  }
+
+  function animateBars(container) {
+    (container || document).querySelectorAll('.retention-bar').forEach(bar => {
+      const w = bar.dataset.w;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w + '%'; }, 100);
+    });
+  }
+
+  function go(i) {
+    if (i < 0 || i >= items.length) return;
+    current = i;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+    const fill = document.getElementById('progress');
+    fill.style.width = ((i + 1) / items.length * 100) + '%';
+    fill.classList.toggle('core', !!items[i].core);
+    render(i);
+    const panelTop = document.querySelector('.panel-wrap').offsetTop - 80;
+    if (window.scrollY > panelTop) window.scrollTo({ top: panelTop, behavior: 'smooth' });
+  }
+  function goAndScroll(i) {
+    go(i);
+    const wrap = document.querySelector('.panel-wrap');
+    if (wrap) window.scrollTo({ top: wrap.offsetTop - 80, behavior: 'smooth' });
+  }
+
+  // キーボード ← →
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  // 学習タイプ診断
+  function selectOpt(btn) {
+    const q = btn.dataset.q;
+    btn.closest('.type-options').querySelectorAll('.type-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    typeAnswers[q] = btn.dataset.v;
+    if (Object.keys(typeAnswers).length === 3) showTypeResult();
+  }
+
+  function showTypeResult() {
+    const resultEl = document.getElementById('type-result');
+    const titleEl = document.getElementById('type-result-title');
+    const textEl = document.getElementById('type-result-text');
+    if (!resultEl) return;
+
+    const v1 = typeAnswers['1'], v3 = typeAnswers['3'];
+    let title, text;
+
+    if (v3 === 'Z') {
+      title = '🔍 分析型：エラー訂正が強い学習者';
+      text = 'フィードバックループ（④）が自然に身についています。次は②アクティブリコールを意識的に取り入れると、「わかった気がする」罠を脱出できます。';
+    } else if (v3 === 'Y') {
+      title = '🎯 熟考型：深い理解を志向する学習者';
+      text = '「もう一度考える」は良い習慣です。ただし時間をかけすぎると①スペーシングの間隔が崩れやすい。タイマーを使って制限時間内の想起練習を取り入れましょう。';
+    } else {
+      title = '⚡ 速習型：スピード重視の学習者';
+      text = '即確認の癖は効率的に見えますが「流暢性の錯覚」に陥りやすい。答えを見る前に30秒だけ考える習慣を加えるだけで②アクティブリコールの効果が得られます。';
+    }
+
+    if (v1 === 'A') text += ' 図解・マインドマップを活用すると定着がさらに加速します。';
+    else if (v1 === 'B') text += ' 具体例から抽象化する帰納的アプローチが向いています。事例ベースで演習を積みましょう。';
+    else text += ' 定義・論理から入る演繹型。公式・原理の理解を先に固めると応用が効きやすいです。';
+
+    titleEl.textContent = title;
+    textEl.textContent = text;
+    resultEl.classList.add('show');
+  }
+
+  function updateScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = ['', '1つ：②だけでも今週から実践。閉じて思い出す時間を作る', '2つ：土台あり。④の誤答分析を今日から当日中に', '3つ：平均以上。⑤で学習計画を週次レビューすると加速する', '4つ：高水準。③インターリービングで転移能力を強化できる', '5つ：5要素が習慣化している。あとは継続と設計の精度を上げるだけ'];
+    document.getElementById('score-display').innerHTML =
+      `<span id="score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    go(0);
+
+    // 読書進捗バー
+    const rp = document.getElementById('reading-progress');
+    if (rp) {
+      window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        rp.style.width = (Math.min(window.scrollY / total * 100, 100)) + '%';
+      });
+    }
+  });
+</script>
+</body>
+</html>

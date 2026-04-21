@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0e1a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="630" fill="rgba(56,189,248,0.03)"/>
+  <!-- accent bar -->
+  <rect x="80" y="180" width="5" height="120" fill="url(#accent)" rx="3"/>
+  <!-- series badge -->
+  <rect x="104" y="176" width="180" height="28" rx="14" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.3)" stroke-width="1"/>
+  <text x="194" y="194" font-family="'Inter',sans-serif" font-size="13" font-weight="700" fill="#38bdf8" text-anchor="middle" letter-spacing="2">BUSINESS SKILLS</text>
+  <!-- main title -->
+  <text x="104" y="260" font-family="'Inter','Noto Sans JP',sans-serif" font-size="64" font-weight="700" fill="#f1f5f9">思考・行動の</text>
+  <text x="104" y="340" font-family="'Inter','Noto Sans JP',sans-serif" font-size="64" font-weight="700" fill="url(#accent)">設計図。</text>
+  <!-- subtitle -->
+  <text x="104" y="400" font-family="'Inter','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8">感覚・才能を分解し、再現可能な5要素に落とし込む</text>
+  <!-- stats -->
+  <text x="104" y="490" font-family="'Inter',sans-serif" font-size="36" font-weight="700" fill="#38bdf8">5</text>
+  <text x="148" y="490" font-family="'Inter','Noto Sans JP',sans-serif" font-size="16" fill="#64748b">シリーズ</text>
+  <text x="240" y="490" font-family="'Inter',sans-serif" font-size="36" font-weight="700" fill="#38bdf8">25</text>
+  <text x="290" y="490" font-family="'Inter','Noto Sans JP',sans-serif" font-size="16" fill="#64748b">要素</text>
+  <text x="370" y="490" font-family="'Inter',sans-serif" font-size="36" font-weight="700" fill="#38bdf8">15+</text>
+  <text x="430" y="490" font-family="'Inter','Noto Sans JP',sans-serif" font-size="16" fill="#64748b">実損エビデンス</text>
+  <!-- brand -->
+  <text x="104" y="575" font-family="'Inter',sans-serif" font-size="18" fill="#475569">⚡ Fカンパニー</text>
+  <!-- decorative circles -->
+  <circle cx="980" cy="200" r="180" fill="rgba(56,189,248,0.04)" stroke="rgba(56,189,248,0.08)" stroke-width="1"/>
+  <circle cx="980" cy="200" r="110" fill="rgba(56,189,248,0.05)" stroke="rgba(56,189,248,0.1)" stroke-width="1"/>
+  <circle cx="980" cy="200" r="50" fill="rgba(56,189,248,0.08)"/>
+</svg>
