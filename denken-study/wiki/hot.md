@@ -1,23 +1,25 @@
 ---
 type: meta
 title: "Hot Cache"
-updated: 2026-04-22T20:30:00
+updated: 2026-04-22T21:00:00
 ---
 # Recent Context
 
 ## Last Updated
-2026-04-22 — 電験3種 Wiki 初期スキャフォールド完了
+2026-04-22 — 電験王 法規・理論 過去問PDF 2冊 ingest完了
 
 ## Key Recent Facts
-- Mode F（Book/Course）+ E（Research）で初期化
-- 4分野: 理論・電力・機械・法規。ドメインタグ #theory #power #machine #regulation
-- 矛盾検出優先: 公式導出と暗記値の食い違いには必ず `[!contradiction]` フラグ
-- .raw/ はソース置き場（読み取り専用）。ingest後にwiki/が充実する
+- **法規PDF** (343p): 平成23〜令和3年11年分。3分野: 電気事業法・電気設備技術基準及びその解釈・電気施設管理
+- **理論PDF** (363p): 平成23〜令和3年11年分。4分野: 電磁気・電気回路・電子理論・電気及び電子計測
+- **頻出TOP**: 法規=接地工事の数値（A/B/C/D種）・需要率/負荷率/不等率計算。理論=テブナン定理・三相交流・RLC共振
+- **実務接続**: DGR/SGRの保護協調→電気施設管理そのもの。接地抵抗の整定値→電気設備技術基準の数値直結
 
 ## Recent Changes
-- Created: [[Wiki Index]], [[Wiki Log]], [[電気理論]], [[電力]], [[機械]], [[法規]]
-- Scaffolded: wiki/concepts/, wiki/themes/, wiki/entities/, wiki/synthesis/, wiki/questions/, wiki/meta/
+- Created: [[電験王-法規-令和4年度版]], [[電験王-理論-令和4年度版]]（sources/）
+- Created: [[電気事業法]], [[電気設備技術基準及びその解釈]], [[電気施設管理]]（entities/）
+- Created: [[電磁気]], [[電気回路]], [[電子理論]], [[電気及び電子計測]]（entities/）
 
 ## Active Threads
-- ユーザーは2026年電験3種受験に向けて学習中
-- Open question: まだソースがingestされていない。最初のテキストを.raw/に置く待ち
+- 電力・機械PDFがあれば追加ingestで4科目カバレッジ完成
+- 個別過去問ページ（questions/）は次のセッションで重要問題から作成可能
+- 接地工事の数値は法規の最重要。[[電気設備技術基準及びその解釈]]に詳細あり
