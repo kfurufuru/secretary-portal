@@ -1,7 +1,7 @@
 ---
 title: 引き継ぎ: knowledge自動蓄積ツール実装
 date: 2026-04-22
-status: in-progress
+status: done
 ---
 
 ## 完了済み（このセッションで実装）
