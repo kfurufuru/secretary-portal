@@ -164,119 +164,51 @@ body {
   .card-header, .card-body-inner { padding-left: var(--sp-4); padding-right: var(--sp-4); }
 }
 
-/* ── Dashboard Section Styling ── */
-.dashboard-section {
-  margin-top: 3rem;
-  padding: 1.5rem;
-  border: 1px solid var(--accent);
+/* ── Pinned "今週の1個" ── */
+.pin-section { max-width: 860px; margin: 0 auto; padding: 0 var(--sp-6) var(--sp-4); }
+.pin-box {
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-6);
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: rgba(45, 212, 191, 0.02);
 }
+.pin-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; white-space: nowrap; }
+.pin-content { flex: 1; color: var(--text); font-size: 0.9rem; line-height: 1.6; }
+.pin-content.empty { color: var(--text-muted); font-style: italic; }
+.pin-jump { background: transparent; border: 1px solid var(--border); color: var(--accent); font-family: inherit; font-size: 0.76rem; font-weight: 600; padding: 6px 12px; border-radius: 99px; cursor: pointer; transition: .2s; }
+.pin-jump:hover { background: var(--accent-dim); border-color: var(--accent); }
+.pin-jump.clear { color: var(--text-dim); }
 
-.dashboard-section h3 {
-  font-size: var(--fs-h3);
-  font-weight: var(--fw-bold);
-  margin-bottom: 1rem;
-  color: var(--accent);
+/* ── Pin button on card ── */
+.card-actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+.card-pin-btn, .card-tried-btn {
+  background: transparent; border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-dim); cursor: pointer;
+  width: 30px; height: 30px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: .2s;
 }
+.card-pin-btn:hover, .card-tried-btn:hover { border-color: var(--accent); color: var(--accent); }
+.item-card.is-pinned .card-pin-btn { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+.item-card.is-tried { opacity: 0.75; }
+.item-card.is-tried .card-tried-btn { color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.1); }
+.item-card.is-tried.visible { opacity: 0.75; }
 
-/* ── Level Tags ── */
-.level-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-bold);
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
+/* ── Copy button ── */
+.snippet-pre { position: relative; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted); font-family: inherit; font-size: 0.7rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: .2s;
 }
+.copy-btn:hover { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.copy-btn.copied { background: rgba(16,185,129,0.15); color: #10b981; border-color: #10b981; }
 
-.level-draft {
-  background: #fbbf24;
-  color: #1f2937;
-}
-
-.level-review {
-  background: #3b82f6;
-  color: #ffffff;
-}
-
-.level-published {
-  background: #10b981;
-  color: #ffffff;
-}
-
-/* ── L1 Candidates List ── */
-.l1-candidate-item {
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  border-left: 3px solid var(--accent);
-  background: rgba(45, 212, 191, 0.04);
-  border-radius: var(--radius-sm);
-}
-
-.l1-candidate-item .meta {
-  font-size: var(--fs-sm);
-  color: #8b949e;
-  margin-top: 0.5rem;
-}
-
-/* ── L2 Sections Container ── */
-.l2-level-group {
-  margin-bottom: 2rem;
-}
-
-.l2-level-group h4 {
-  font-size: 1rem;
-  font-weight: var(--fw-bold);
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--accent);
-}
-
-.l2-articles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
-.l2-article-card {
-  padding: 1rem;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-md);
-  background: rgba(45, 212, 191, 0.04);
-  transition: all var(--transition);
-}
-
-.l2-article-card:hover {
-  transform: var(--hover-lift);
-  border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
-}
-
-.l2-article-card .title {
-  font-weight: var(--fw-bold);
-  margin-bottom: 0.5rem;
-  color: var(--text);
-}
-
-.l2-article-card .score {
-  display: inline-block;
-  font-size: var(--fs-sm);
-  color: #8b949e;
-  margin: 0.5rem 0;
-}
-
-/* ── Responsive Dashboard ── */
+/* ── Responsive Pin ── */
 @media (max-width: 768px) {
-  .dashboard-section {
-    padding: 1rem;
-    margin-top: 2rem;
-  }
-
-  .l2-articles-grid {
-    grid-template-columns: 1fr;
-  }
+  .pin-box { flex-wrap: wrap; }
 }
 </style>
 </head>
@@ -335,32 +267,19 @@ body {
   </div>
 </section>
 
-<!-- ── Grid ── -->
-<section class="grid-section">
-  <svg id="flow-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;display:none;z-index:0;" data-flow-visible="false"></svg>
-  <div class="item-grid" id="item-grid"></div>
+<!-- ── Pinned "今週の1個" ── -->
+<section class="pin-section">
+  <div class="pin-box" id="pin-box">
+    <span class="pin-label"><i data-lucide="pin" width="12" height="12" style="vertical-align:-2px;"></i> 今週の1個</span>
+    <span class="pin-content empty" id="pin-content">カード右上の📌でピン留め。まず1個、試す対象を決める。</span>
+    <button class="pin-jump" id="pin-jump" style="display:none;">ジャンプ</button>
+    <button class="pin-jump clear" id="pin-clear" style="display:none;">解除</button>
+  </div>
 </section>
 
-<!-- ── Dashboard ── -->
-<section style="max-width: 860px; margin: 0 auto; padding: 0 var(--sp-6);">
-  <div class="dashboard-section" id="dashboard" style="display: none;">
-    <h3>知識昇格ダッシュボード</h3>
-
-    <div id="l1-candidates" class="dashboard-section">
-      <h4 style="margin-top: 0;">L1: 昇格候補（Inbox未昇格）</h4>
-      <div id="l1-list"></div>
-    </div>
-
-    <div id="l2-sections" class="dashboard-section">
-      <h4 style="margin-top: 0;">L2: 昇格済み知見</h4>
-      <div id="l2-content"></div>
-    </div>
-
-    <div id="l3-entities" class="dashboard-section" style="display: none;">
-      <h4 style="margin-top: 0;">L3: 意思決定原則（将来予約）</h4>
-      <div id="l3-list"></div>
-    </div>
-  </div>
+<!-- ── Grid ── -->
+<section class="grid-section">
+  <div class="item-grid" id="item-grid"></div>
 </section>
 
 <!-- ── Footer ── -->
@@ -386,31 +305,13 @@ const CATEGORIES = {
   hardware:  { label: "ハード接続", icon: "cpu",     color: "#f59e0b" }
 };
 
-// ── Pattern colors for flow arrows ──────────────────────────────────────────
-const PATTERN_COLORS = {
-  dataflow:  "#3b82f6",  // blue
-  aitype:    "#a855f7",  // purple
-  control:   "#eab308"   // yellow
-};
-
-// ── Tool relationship definitions ───────────────────────────────────────────
-const FLOW_CONNECTIONS = [
-  // dataflow: data-oriented tools
-  { from: "excel-auto", to: "pandas-aggregate", pattern: "dataflow" },
-  { from: "pdf-extract", to: "pandas-aggregate", pattern: "dataflow" },
-  { from: "web-scraping", to: "pandas-aggregate", pattern: "dataflow" },
-  { from: "pandas-aggregate", to: "graph-visual", pattern: "dataflow" },
-  { from: "pandas-aggregate", to: "streamlit-dashboard", pattern: "dataflow" },
-  { from: "pandas-aggregate", to: "elec-calc", pattern: "dataflow" },
-  // aitype: LLM and AI tools
-  { from: "ocr-extract", to: "claude-gpt-api", pattern: "aitype" },
-  { from: "mail-auto", to: "claude-gpt-api", pattern: "aitype" },
-  // control: hardware and system orchestration
-  { from: "subprocess-os", to: "docker-scheduler", pattern: "control" },
-  { from: "pytest-auto", to: "docker-scheduler", pattern: "control" },
-  { from: "plc-modbus", to: "raspi-gpio", pattern: "control" },
-  { from: "raspi-gpio", to: "docker-scheduler", pattern: "control" }
-];
+// ── State (localStorage) ────────────────────────────────────────────────────
+const LS_KEY_TRIED = "py-catalog-tried-v1";
+const LS_KEY_PIN = "py-catalog-pin-v1";
+function loadTried() { try { return new Set(JSON.parse(localStorage.getItem(LS_KEY_TRIED) || "[]")); } catch { return new Set(); } }
+function saveTried(set) { localStorage.setItem(LS_KEY_TRIED, JSON.stringify([...set])); }
+function loadPin() { return localStorage.getItem(LS_KEY_PIN) || ""; }
+function savePin(id) { if (id) localStorage.setItem(LS_KEY_PIN, id); else localStorage.removeItem(LS_KEY_PIN); }
 
 // ── Items array ───────────────────────────────────────────────────────────
 // NOTE: この配列を差し替えてデータを更新します。
@@ -598,6 +499,9 @@ function escapeHtml(str) {
 }
 
 // ── Render cards ──
+const triedSet = loadTried();
+let pinnedId = loadPin();
+
 function renderCards() {
   const grid = document.getElementById("item-grid");
   grid.innerHTML = "";
@@ -610,6 +514,8 @@ function renderCards() {
 
     const card = document.createElement("div");
     card.className = "item-card";
+    if (triedSet.has(item.id)) card.classList.add("is-tried");
+    if (pinnedId === item.id) card.classList.add("is-pinned");
     card.dataset.category = item.category;
     card.dataset.id = item.id;
 
@@ -620,6 +526,14 @@ function renderCards() {
             <i data-lucide="${escapeHtml(item.icon)}" width="18" height="18"></i>
           </div>
           <span class="cat-chip cat-${escapeHtml(item.category)}">${escapeHtml(cat.label)}</span>
+          <div class="card-actions">
+            <button class="card-tried-btn" data-action="tried" title="試した" aria-label="試した">
+              <i data-lucide="check" width="14" height="14"></i>
+            </button>
+            <button class="card-pin-btn" data-action="pin" title="今週の1個にピン留め" aria-label="ピン留め">
+              <i data-lucide="pin" width="14" height="14"></i>
+            </button>
+          </div>
         </div>
         <h3 class="card-title">${escapeHtml(item.title)}</h3>
         <p class="card-can">${escapeHtml(item.can)}</p>
@@ -640,7 +554,7 @@ function renderCards() {
           </div>` : ""}
           <div class="snippet-wrap">
             <div class="detail-label">最小コード</div>
-            <pre class="snippet-pre"><code>${escapeHtml(item.snippet)}</code></pre>
+            <pre class="snippet-pre"><button class="copy-btn" data-action="copy">COPY</button><code>${escapeHtml(item.snippet)}</code></pre>
           </div>
         </div>
       </div>
@@ -654,10 +568,38 @@ function renderCards() {
       btn.setAttribute("aria-expanded", isExpanded);
       header.setAttribute("aria-expanded", isExpanded);
     }
-    header.addEventListener("click", toggleCard);
+    header.addEventListener("click", e => {
+      if (e.target.closest("[data-action]")) return;
+      toggleCard();
+    });
+
+    // action buttons (pin / tried)
+    card.querySelector('[data-action="pin"]').addEventListener("click", e => {
+      e.stopPropagation();
+      togglePin(item.id);
+    });
+    card.querySelector('[data-action="tried"]').addEventListener("click", e => {
+      e.stopPropagation();
+      toggleTried(item.id);
+    });
+
+    // copy button
+    card.querySelector('[data-action="copy"]').addEventListener("click", async e => {
+      e.stopPropagation();
+      const btnEl = e.currentTarget;
+      try {
+        await navigator.clipboard.writeText(item.snippet);
+        btnEl.textContent = "COPIED";
+        btnEl.classList.add("copied");
+        setTimeout(() => { btnEl.textContent = "COPY"; btnEl.classList.remove("copied"); }, 1500);
+      } catch {
+        btnEl.textContent = "失敗";
+      }
+    });
 
     // keyboard
     header.addEventListener("keydown", e => {
+      if (e.target.closest("[data-action]")) return;
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleCard(); }
       if (e.key === "Escape" && card.classList.contains("expanded")) { toggleCard(); }
     });
@@ -672,83 +614,49 @@ function renderCards() {
 
   // stats
   document.getElementById("stat-total").textContent = ITEMS.length;
-
-  // draw arrows (Phase 1b: SVG flow visualization)
-  // wait for entrance animations + layout to settle
-  setTimeout(drawArrows, ITEMS.length * 60 + 100);
-  window.addEventListener("resize", drawArrows);
+  renderPinBox();
 }
 
-// ── SVG Arrow Flow Visualization ────────────────────────────────────────────
-function drawArrows() {
-  try {
-    const svg = document.getElementById("flow-svg");
-    if (!svg) return;
-
-    // clear previous
-    svg.innerHTML = "";
-
-    // get all cards
-    const cards = document.querySelectorAll(".item-card");
-    if (cards.length === 0) return;
-
-    // iterate over connections and draw arrows
-    FLOW_CONNECTIONS.forEach(conn => {
-      const fromCard = document.querySelector(`[data-id="${conn.from}"]`);
-      const toCard = document.querySelector(`[data-id="${conn.to}"]`);
-
-      if (!fromCard || !toCard) return;
-
-      // get positions (absolute coords)
-      const fromRect = fromCard.getBoundingClientRect();
-      const toRect = toCard.getBoundingClientRect();
-      const svgRect = svg.parentElement.getBoundingClientRect();
-
-      // relative to grid-section
-      const x1 = fromRect.left - svgRect.left + fromRect.width / 2;
-      const y1 = fromRect.top - svgRect.top + fromRect.height;
-      const x2 = toRect.left - svgRect.left + toRect.width / 2;
-      const y2 = toRect.top - svgRect.top;
-
-      // color by pattern
-      const color = PATTERN_COLORS[conn.pattern] || "#999";
-
-      // draw line
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", x1);
-      line.setAttribute("y1", y1);
-      line.setAttribute("x2", x2);
-      line.setAttribute("y2", y2);
-      line.setAttribute("stroke", color);
-      line.setAttribute("stroke-width", "2");
-      line.setAttribute("stroke-linecap", "round");
-      svg.appendChild(line);
-
-      // draw arrowhead (triangle)
-      const dx = x2 - x1;
-      const dy = y2 - y1;
-      const angle = Math.atan2(dy, dx);
-      const arrowSize = 8;
-
-      // arrowhead points
-      const ax1 = x2 - arrowSize * Math.cos(angle - Math.PI / 6);
-      const ay1 = y2 - arrowSize * Math.sin(angle - Math.PI / 6);
-      const ax2 = x2 - arrowSize * Math.cos(angle + Math.PI / 6);
-      const ay2 = y2 - arrowSize * Math.sin(angle + Math.PI / 6);
-
-      const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-      arrowhead.setAttribute("points", `${x2},${y2} ${ax1},${ay1} ${ax2},${ay2}`);
-      arrowhead.setAttribute("fill", color);
-      svg.appendChild(arrowhead);
-    });
-
-    // set visible if connections exist
-    if (FLOW_CONNECTIONS.length > 0) {
-      svg.style.display = "block";
-    }
-  } catch (e) {
-    console.error("drawArrows error:", e);
+// ── Pin / Tried state management ────────────────────────────────────────────
+function togglePin(id) {
+  pinnedId = (pinnedId === id) ? "" : id;
+  savePin(pinnedId);
+  document.querySelectorAll(".item-card").forEach(c => {
+    c.classList.toggle("is-pinned", c.dataset.id === pinnedId);
+  });
+  renderPinBox();
+}
+function toggleTried(id) {
+  if (triedSet.has(id)) triedSet.delete(id); else triedSet.add(id);
+  saveTried(triedSet);
+  const card = document.querySelector(`.item-card[data-id="${id}"]`);
+  if (card) card.classList.toggle("is-tried", triedSet.has(id));
+}
+function renderPinBox() {
+  const content = document.getElementById("pin-content");
+  const jumpBtn = document.getElementById("pin-jump");
+  const clearBtn = document.getElementById("pin-clear");
+  if (!pinnedId) {
+    content.textContent = "カード右上の📌でピン留め。まず1個、試す対象を決める。";
+    content.classList.add("empty");
+    jumpBtn.style.display = "none";
+    clearBtn.style.display = "none";
+    return;
   }
+  const item = ITEMS.find(i => i.id === pinnedId);
+  if (!item) { pinnedId = ""; savePin(""); renderPinBox(); return; }
+  content.innerHTML = `<strong>${escapeHtml(item.title)}</strong> — ${escapeHtml(item.can)}`;
+  content.classList.remove("empty");
+  jumpBtn.style.display = "inline-block";
+  clearBtn.style.display = "inline-block";
+  jumpBtn.onclick = () => {
+    const card = document.querySelector(`.item-card[data-id="${pinnedId}"]`);
+    if (card) {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (!card.classList.contains("expanded")) card.querySelector(".card-header").click();
+    }
+  };
+  clearBtn.onclick = () => togglePin(pinnedId);
 }
 
 // ── Filter ──
@@ -789,131 +697,6 @@ window.addEventListener("load", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
 });
 
-// ── Dashboard: Load data from dashboard-data.json ──
-async function loadDashboardData() {
-  try {
-    const response = await fetch("./dashboard-data.json");
-    if (!response.ok) {
-      console.warn("dashboard-data.json not found, skipping dashboard");
-      return null;
-    }
-    return await response.json();
-  } catch (e) {
-    console.warn("Failed to load dashboard data:", e);
-    return null;
-  }
-}
-
-// ── Dashboard: Render L1 candidates ──
-function renderL1Section(data) {
-  const container = document.getElementById("l1-list");
-  if (!data || !data.l1_candidates || data.l1_candidates.length === 0) {
-    container.innerHTML = "<p style='color: var(--text-muted);'>昇格候補なし</p>";
-    return;
-  }
-
-  const html = data.l1_candidates
-    .map(item => `
-      <div class="l1-candidate-item">
-        <strong>${item.date ? item.date : "未記入"}</strong> — ${item.path}
-        <div class="meta">
-          <span class="level-tag level-draft">未昇格</span>
-          ${item.type ? `<span style="font-size: var(--fs-sm); color: var(--text-muted);">型: ${item.type}</span>` : ""}
-          ${item.topic ? `<span style="font-size: var(--fs-sm); color: var(--text-muted);">テーマ: ${item.topic}</span>` : ""}
-        </div>
-      </div>
-    `)
-    .join("");
-
-  container.innerHTML = html;
-}
-
-// ── Dashboard: Render L2 sections (grouped by level) ──
-function renderL2Sections(data) {
-  const container = document.getElementById("l2-content");
-
-  const levels = [
-    { key: "l2_draft", label: "Draft（草案）", tagClass: "level-draft" },
-    { key: "l2_review", label: "Review（レビュー中）", tagClass: "level-review" },
-    { key: "l2_published", label: "Published（公開）", tagClass: "level-published" }
-  ];
-
-  let allEmpty = true;
-  const html = levels
-    .map(level => {
-      const items = data[level.key] || [];
-      if (items.length === 0) return "";
-      allEmpty = false;
-
-      const itemsHtml = items
-        .map(item => `
-          <div class="l2-article-card">
-            <div class="title">${item.title}</div>
-            <div style="font-size: var(--fs-sm); color: var(--text-muted); margin-bottom: 0.5rem;">
-              ${item.category || "未分類"}
-            </div>
-            <span class="level-tag ${level.tagClass}">${level.label}</span>
-            <div class="score">理解度: ${item.understanding_score || 0}/5</div>
-            ${item.tags && item.tags.length > 0 ? `
-              <div style="font-size: var(--fs-sm); color: var(--text-muted); margin-top: 0.5rem;">
-                ${item.tags.map(tag => `<span style="margin-right: 0.5rem;">#${tag}</span>`).join("")}
-              </div>
-            ` : ""}
-          </div>
-        `)
-        .join("");
-
-      return `
-        <div class="l2-level-group">
-          <h4>${level.label} (${items.length}件)</h4>
-          <div class="l2-articles-grid">
-            ${itemsHtml}
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  if (allEmpty) {
-    container.innerHTML = "<p style='color: var(--text-muted);'>昇格済み知見なし</p>";
-  } else {
-    container.innerHTML = html;
-  }
-}
-
-// ── Dashboard: Render L3 entities (stub) ──
-function renderL3Section(data) {
-  // Placeholder for L3 entities — keep hidden for Phase 3
-  if (!data || !data.l3_entities || data.l3_entities.length === 0) {
-    return;
-  }
-  // Will be enabled in future phase
-}
-
-// ── Dashboard: Init and show ──
-async function initDashboard() {
-  const data = await loadDashboardData();
-  if (!data) return;
-
-  const dashboardEl = document.getElementById("dashboard");
-  if (dashboardEl) {
-    dashboardEl.style.display = "block";
-  }
-
-  renderL1Section(data);
-  renderL2Sections(data);
-  renderL3Section(data);
-
-  // Log metadata
-  if (data.metadata) {
-    console.log("Dashboard loaded:", data.metadata);
-  }
-}
-
-// ── Init Dashboard on DOM ready ──
-document.addEventListener("DOMContentLoaded", () => {
-  initDashboard();
-});
 </script>
 </body>
 </html>
