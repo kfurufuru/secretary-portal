@@ -43,6 +43,8 @@
       --status-critical: #ef4444;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    /* 日本語禁則処理 (web-ui-style.md 準拠) */
+    html { line-break: strict; overflow-wrap: break-word; word-break: normal; }
     body{
       font-family:var(--font-base);
       background:var(--bg); color:var(--text);
@@ -549,6 +551,61 @@
   .kfeed-random-label { font-size: 0.6rem; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: #a5b4fc; margin-bottom: 4px; }
   .kfeed-random-title { font-size: 0.92rem; font-weight: 600; color: var(--text); line-height: 1.4; }
   .kfeed-random-meta  { font-size: 0.68rem; color: var(--text3); margin-top: 3px; }
+  /* ---- SKILLS CARD ---- */
+  .card-skills { grid-column: span 12; }
+  .skills-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .skills-filter {
+    flex: 1; min-width: 160px; max-width: 280px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 12px;
+    color: var(--text); font-size: 0.82rem; font-family: var(--font-base);
+    outline: none; transition: border-color var(--transition);
+  }
+  .skills-filter:focus { border-color: var(--accent); }
+  .skills-filter::placeholder { color: var(--text3); }
+  .skills-group { margin-bottom: 18px; }
+  .skills-group-title {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
+    color: var(--text3); padding: 0 4px 8px; border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .skills-table { width: 100%; border-collapse: collapse; }
+  .skills-table tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .skills-table tr:last-child { border-bottom: none; }
+  .skills-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .skills-table td { padding: 7px 8px; vertical-align: middle; }
+  .skill-cmd {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--accent); white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .skill-desc { font-size: 0.80rem; color: var(--text2); line-height: 1.4; }
+  .skill-cost {
+    font-size: 0.65rem; font-weight: 700; padding: 2px 7px;
+    border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+  }
+  .skill-cost.green { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28); color: #6ee7b7; }
+  .skill-cost.yellow { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.28); color: #fcd34d; }
+  .skill-cost.red { background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.28); color: #fca5a5; }
+  .copy-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); padding: 2px 4px; border-radius: 4px;
+    font-size: 0.8rem; transition: color var(--transition), background var(--transition);
+    line-height: 1;
+  }
+  .copy-btn:hover { color: var(--accent); background: rgba(34,211,238,0.08); }
+  .copy-btn.copied { color: var(--green); }
+  .skills-toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.40);
+    color: #6ee7b7; font-size: 0.78rem; font-weight: 600;
+    padding: 8px 20px; border-radius: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease; z-index: 999;
+  }
+  .skills-toast.show { opacity: 1; }
+  @media(max-width:768px){ .card-skills{ grid-column: span 1 !important; } }
   </style>
 </head>
 <body>
@@ -734,16 +791,28 @@
       <div style="display:flex;align-items:center;gap:var(--sp-3);">
         <span id="k-health-badge" class="health-badge green">knowledge/ ✓ 正常 (42件)</span>
       </div>
-      <a href="health-monitor/health-dashboard.html"
-         style="display:flex;align-items:center;justify-content:center;gap:8px;
-                padding:12px 0;border-radius:var(--radius-md);
-                background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.25);
-                color:var(--accent-h);font-size:0.88rem;font-weight:600;text-decoration:none;
-                transition:var(--transition);"
-         onmouseover="this.style.background='rgba(99,102,241,0.18)'"
-         onmouseout="this.style.background='rgba(99,102,241,0.10)'">
-        🏥 詳細ヘルスチェックを見る →
-      </a>
+      <div id="link-check-summary"
+           style="display:flex;flex-direction:column;gap:6px;
+                  padding:12px;border-radius:var(--radius-md);
+                  background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.20);
+                  font-size:0.82rem;color:var(--text-dim);">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-weight:600;color:var(--text);">🔗 リンクチェック</span>
+          <span id="lc-status" class="health-badge green">読込中…</span>
+        </div>
+        <div id="lc-detail" style="font-size:0.76rem;line-height:1.5;">—</div>
+      </div>
+      <div id="heal-log-summary"
+           style="display:flex;flex-direction:column;gap:6px;
+                  padding:12px;border-radius:var(--radius-md);
+                  background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.20);
+                  font-size:0.82rem;color:var(--text-dim);">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-weight:600;color:var(--text);">🩹 セルフヒール</span>
+          <span id="hl-status" class="health-badge green">読込中…</span>
+        </div>
+        <div id="hl-detail" style="font-size:0.76rem;line-height:1.5;">—</div>
+      </div>
     </div>
   </div>
 
@@ -874,6 +943,9 @@
         <a class="site-link" href="business-skills/index.html">
           <span class="site-link-icon">🧠</span>ビジネススキル
         </a>
+        <a class="site-link" href="business-skills/python-dekirukoto.html">
+          <span class="site-link-icon">🐍</span>Pythonでできること
+        </a>
         <a class="site-link" href="denken3-study-dashboard/index.html">
           <span class="site-link-icon">📚</span>電験3種 学習システム（ローカル）
         </a>
@@ -882,8 +954,122 @@
     </div>
   </div>
 
+  <div class="card card-skills" data-card-id="skills">
+    <div class="card-label">Command Reference</div>
+    <div class="card-title">🛠️ スキル一覧</div>
+    <div class="skills-header">
+      <input class="skills-filter" id="skills-filter" placeholder="🔍 コマンド検索..." oninput="filterSkills(this.value)">
+      <span style="font-size:0.72rem;color:var(--text3);" id="skills-count"></span>
+    </div>
+    <div id="skills-body"></div>
+  </div>
 
 </main>
+
+<div class="skills-toast" id="skills-toast">コピーしました ✓</div>
+
+<script>
+const SKILLS = [
+  { group: "🗺️ 知識グラフ", cmd: "/知識グラフ",              desc: "[[wiki-link]] → vis.js インタラクティブHTMLグラフ生成", cost: "green" },
+  { group: "🗺️ 知識グラフ", cmd: "/接続",                    desc: "全ナレッジ走査 → wiki-link 自動補完（重複なし）", cost: "yellow" },
+  { group: "🗺️ 知識グラフ", cmd: "/パイプライン [テーマ]",   desc: "海外リサーチ → ナレッジ化 → 接続 → 品質チェック → 投稿素材", cost: "yellow" },
+  { group: "🗺️ 知識グラフ", cmd: "/検証",                    desc: "重複・粒度・タグ不統一・旧情報の品質チェック", cost: "yellow" },
+  { group: "🗺️ 知識グラフ", cmd: "/last30days",              desc: "30日間の知識代謝レポート（孤立ノード・成長トピック）", cost: "yellow" },
+  { group: "⚡ 知識DB",      cmd: "知識追加 [テーマ]",        desc: "knowledge/ に新規ナレッジを追加", cost: "yellow" },
+  { group: "⚡ 知識DB",      cmd: "知識検索 [KW]",            desc: "キーワードで knowledge/ を横断検索", cost: "yellow" },
+  { group: "⚡ 知識DB",      cmd: "トラブル知識化",            desc: "factory/trouble-log から knowledge/ へ昇格", cost: "yellow" },
+  { group: "⚡ 知識DB",      cmd: "仮公開",                   desc: "level: draft → review に更新", cost: "green" },
+  { group: "⚡ 知識DB",      cmd: "知識棚卸し",               desc: "knowledge/ 全体の状況確認・整理提案", cost: "yellow" },
+  { group: "🔄 知識昇格",    cmd: "知識昇格",                 desc: "promote.py 実行 → L1→L2 自動昇格", cost: "yellow" },
+  { group: "🔄 知識昇格",    cmd: "昇格プレビュー",           desc: "py promote.py --dry-run で昇格候補を確認", cost: "green" },
+  { group: "🔄 知識昇格",    cmd: "昇格ログ",                 desc: "py promote.py --list-drafts でレビュー待ち一覧", cost: "green" },
+  { group: "🤝 Fカンパニー", cmd: "判断セッション [議題]",    desc: "マンガー・ダリオ・羽生が議題を多角分析", cost: "yellow" },
+  { group: "🤝 Fカンパニー", cmd: "実行セッション [タスク]",  desc: "ホリエモン・マスク・ひろゆきが実行を推進", cost: "yellow" },
+  { group: "🤝 Fカンパニー", cmd: "学習セッション [テーマ]",  desc: "テスラ・池谷・オークレーが学習設計", cost: "yellow" },
+  { group: "🤝 Fカンパニー", cmd: "設計セッション [設備名]",  desc: "デミング・豊田・落合陽一が設備設計", cost: "yellow" },
+  { group: "🤝 Fカンパニー", cmd: "戦略セッション",           desc: "孫・シネック・ホフマンが中長期戦略", cost: "red" },
+  { group: "🤝 Fカンパニー", cmd: "レビューセッション [成果物]", desc: "ジョブズ・ひろゆき・ホリエモンが成果物検証", cost: "yellow" },
+  { group: "🤝 Fカンパニー", cmd: "感情セッション",           desc: "さんま・オプラ・ミシェルが感情整理", cost: "green" },
+  { group: "🧠 発想支援",    cmd: "ブレスト [テーマ]",        desc: "発散思考でアイデア列挙", cost: "green" },
+  { group: "🧠 発想支援",    cmd: "ブレスト+",                desc: "制約・逆説・類推を加えた深堀りブレスト", cost: "yellow" },
+  { group: "🧠 発想支援",    cmd: "アイデアフォース [テーマ]", desc: "SCAMPER × 強制連想でアイデア発散", cost: "yellow" },
+  { group: "🧠 発想支援",    cmd: "強制発想",                 desc: "ランダム単語と課題を強制結合", cost: "yellow" },
+  { group: "📋 業務",        cmd: "日報作って",               desc: "本日の活動から日報を自動生成", cost: "yellow" },
+  { group: "📋 業務",        cmd: "育成計画作成 [メンバー]",  desc: "メンバー別育成計画を作成", cost: "yellow" },
+  { group: "📋 業務",        cmd: "受信箱整理",               desc: "Gmail MCP → 優先度・対応提案を構造化", cost: "yellow" },
+  { group: "📋 業務",        cmd: "朝のブリーフィング",        desc: "前日タスク・学習進捗の定時レポート生成", cost: "yellow" },
+  { group: "✍️ 生成",        cmd: "note記事を書いて [テーマ]", desc: "note.com有料記事（フィクション対応）", cost: "yellow" },
+  { group: "✍️ 生成",        cmd: "[名前] 作って",            desc: "HTML/React等のUI生成（67スタイル対応）", cost: "yellow" },
+  { group: "🔍 リサーチ",    cmd: "Xリサーチ",                desc: "X（旧Twitter）で最新動向をリサーチ", cost: "yellow" },
+  { group: "🔍 リサーチ",    cmd: "YTリサーチ",               desc: "YouTube で関連動画・知識収集", cost: "yellow" },
+  { group: "🏗️ 設備投資",   cmd: "仕様検討 [設備名]",        desc: "設備投資の仕様・要件を整理", cost: "yellow" },
+  { group: "🏗️ 設備投資",   cmd: "設備投資レビュー",          desc: "設備投資計画の多角レビュー", cost: "yellow" },
+  { group: "🏗️ 設備投資",   cmd: "稟議資料作成支援",          desc: "稟議書のドラフトを生成", cost: "yellow" },
+  { group: "🤖 デジタルツイン", cmd: "決定記録",              desc: "重要な意思決定を digital-twin/ に記録", cost: "yellow" },
+  { group: "🤖 デジタルツイン", cmd: "パターン分析",          desc: "判断ログから思考パターンを抽出", cost: "yellow" },
+  { group: "🤖 デジタルツイン", cmd: "ツイン参照",            desc: "digital-twin/ の判断軸を参照", cost: "yellow" },
+  { group: "🎓 フェインマン", cmd: "フェインマン [テーマ]",   desc: "理解度確認 → 弱点抽出 → 再説明", cost: "yellow" },
+  { group: "🎓 フェインマン", cmd: "学習プラン",              desc: "電験学習スケジュールを最適化", cost: "yellow" },
+  { group: "🎓 フェインマン", cmd: "誤答記録 [カテゴリ] [L1] [L2]", desc: "誤答を e-log に記録", cost: "green" },
+  { group: "🌍 ダイジェスト", cmd: "世界ダイジェスト",        desc: "海外ニュースを5分野で要約 ⚠️重い", cost: "red" },
+  { group: "🌍 ダイジェスト", cmd: "ダイジェスト深掘り [番号]", desc: "ダイジェスト特定トピックを深掘り", cost: "yellow" },
+  { group: "🔧 メタ",        cmd: "Skill作って [要件]",       desc: "新規SKILL.mdを設計・雛形生成", cost: "yellow" },
+  { group: "🔧 メタ",        cmd: "レビューして [対象]",      desc: "HTML・Skill・コード品質レポート", cost: "yellow" },
+  { group: "🔧 メタ",        cmd: "コンテキスト確認",         desc: "現在のコンテキスト・設定状況を確認", cost: "green" },
+];
+
+function renderSkills(data) {
+  const body = document.getElementById('skills-body');
+  const groups = {};
+  data.forEach(s => { (groups[s.group] = groups[s.group] || []).push(s); });
+  const costLabel = { green: '🟢 軽', yellow: '🟡 中', red: '🔴 重' };
+  body.innerHTML = Object.entries(groups).map(([g, items]) => `
+    <div class="skills-group">
+      <div class="skills-group-title">${g}</div>
+      <table class="skills-table">
+        ${items.map(s => `
+          <tr>
+            <td style="width:1%;padding-right:4px;">
+              <button class="copy-btn" onclick="copyCmd(this,'${s.cmd.replace(/'/g,"\\'")}')">⎘</button>
+            </td>
+            <td style="width:40%;"><span class="skill-cmd">${escHtml(s.cmd)}</span></td>
+            <td><span class="skill-desc">${escHtml(s.desc)}</span></td>
+            <td style="width:1%;text-align:right;"><span class="skill-cost ${s.cost}">${costLabel[s.cost]}</span></td>
+          </tr>`).join('')}
+      </table>
+    </div>`).join('');
+  document.getElementById('skills-count').textContent = `${data.length} コマンド`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function filterSkills(q) {
+  const kw = q.trim().toLowerCase();
+  renderSkills(kw ? SKILLS.filter(s =>
+    s.cmd.toLowerCase().includes(kw) ||
+    s.desc.toLowerCase().includes(kw) ||
+    s.group.toLowerCase().includes(kw)
+  ) : SKILLS);
+}
+
+let toastTimer;
+function copyCmd(btn, cmd) {
+  navigator.clipboard.writeText(cmd).then(() => {
+    btn.classList.add('copied');
+    btn.textContent = '✓';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '⎘'; }, 1500);
+    const toast = document.getElementById('skills-toast');
+    toast.textContent = `「${cmd}」をコピーしました`;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}
+
+renderSkills(SKILLS);
+</script>
 
 <footer>
   Secretary Portal v2 — <span id="footer-date"></span> | <span id="footer-time"></span> | データ: .secretary/ ローカルファイル参照
@@ -973,6 +1159,54 @@ function applyData() {
   setTxt('k-total-chip', DATA.knowledge_total);
   setTxt('k-health-badge', `✓ 正常 (${DATA.knowledge_total}件)`);
   document.getElementById('k-health-badge').className = 'health-badge green';
+
+  fetch('health-monitor/link-check-results.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => {
+      const st = document.getElementById('lc-status');
+      const dt = document.getElementById('lc-detail');
+      const broken = d.broken || 0;
+      const warn = d.warnings || 0;
+      const ok = d.ok || 0;
+      st.textContent = broken > 0 ? `✕ ${broken}件NG` : (warn > 0 ? `△ ${warn}件警告` : '✓ 異常なし');
+      st.className = 'health-badge ' + (broken > 0 ? 'red' : (warn > 0 ? 'yellow' : 'green'));
+      const checkedAt = d.checked_at ? new Date(d.checked_at) : null;
+      const when = checkedAt ? checkedAt.toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+      const hoursAgo = checkedAt ? (Date.now() - checkedAt.getTime()) / 3600000 : Infinity;
+      const staleLabel = hoursAgo > 168 ? ' <span style="color:#f87171;font-weight:600">⚠ cron停止?</span>' : (hoursAgo > 24 ? ' <span style="color:#fbbf24">△ 24h超</span>' : ' <span style="color:#34d399">✓ 最新</span>');
+      dt.innerHTML = `OK ${ok} / NG ${broken} / 警告 ${warn}　<span style="opacity:.7">(${when})</span>${staleLabel}`;
+    })
+    .catch(e => {
+      const st = document.getElementById('lc-status');
+      const dt = document.getElementById('lc-detail');
+      if (st) { st.textContent = '未取得'; st.className = 'health-badge yellow'; }
+      if (dt) dt.textContent = 'link-check-results.json 読込失敗';
+    });
+
+  fetch('health-monitor/heal_log.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => {
+      const st = document.getElementById('hl-status');
+      const dt = document.getElementById('hl-detail');
+      const entries = d.entries || [];
+      const latest = entries[entries.length - 1];
+      if (!latest) { st.textContent='ログなし'; st.className='health-badge yellow'; dt.textContent='—'; return; }
+      const last24h = Date.now() - 86400000;
+      const recent = entries.filter(e => new Date(e.timestamp).getTime() > last24h);
+      const flagged = recent.filter(e => !e.healed).length;
+      const healed = recent.filter(e => e.healed).length;
+      st.textContent = flagged > 0 ? `△ ${flagged}件要対応` : (recent.length > 0 ? `✓ ${healed}件自動修復` : '✓ 安定');
+      st.className = 'health-badge ' + (flagged > 0 ? 'yellow' : 'green');
+      const cats = [...new Set(recent.map(e=>e.cat_id))].join(' / ') || '—';
+      const when = new Date(latest.timestamp).toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+      dt.innerHTML = `直近24h: ${recent.length}件 [${cats}]　<span style="opacity:.7">(最終 ${when})</span>`;
+    })
+    .catch(e => {
+      const st = document.getElementById('hl-status');
+      const dt = document.getElementById('hl-detail');
+      if (st) { st.textContent = '未取得'; st.className = 'health-badge yellow'; }
+      if (dt) dt.textContent = 'heal_log.json 読込失敗';
+    });
 
   // K bars
   const bars = DATA.k_bars;

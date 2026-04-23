@@ -18,6 +18,7 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
 :root {
   --font-base: 'Inter', 'Noto Sans JP', sans-serif;
@@ -395,6 +396,64 @@ footer a:hover { color: var(--accent) !important; }
   .filter-btn { font-size: 0.7rem; padding: 4px 10px; }
   .stat-num { font-size: 1.6rem; }
 }
+
+/* ── Tracker Summary ── */
+.tracker-summary {
+  max-width: 860px; margin: var(--sp-4) auto var(--sp-2);
+  padding: 0 var(--sp-6);
+}
+.tsum-inner {
+  display: flex; align-items: center; gap: var(--sp-6); flex-wrap: wrap;
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(56,189,248,0.18);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-6);
+  font-size: var(--fs-sm);
+}
+.tsum-stat { display: flex; align-items: baseline; gap: 4px; }
+.tsum-num { font-size: 1.1rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.tsum-mastered { color: #10b981; }
+.tsum-label { color: var(--text-dim); font-size: 0.72rem; }
+.tsum-sep { flex: 1; }
+.tsum-recent { color: var(--text-dim); font-size: 0.72rem; margin-left: auto; }
+.tsum-link {
+  font-size: 0.72rem; color: var(--accent); font-weight: 600;
+  text-decoration: none; white-space: nowrap;
+  transition: opacity var(--transition);
+}
+.tsum-link:hover { opacity: 0.7; }
+.level-badge {
+  position: absolute; top: var(--sp-3); right: var(--sp-3);
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em;
+  padding: 2px 6px; border-radius: 4px;
+  display: none;
+}
+.level-badge.lv-active   { display: inline-block; background: rgba(56,189,248,0.15);  color: var(--accent);  border: 1px solid rgba(56,189,248,0.35); }
+.level-badge.lv-practice { display: inline-block; background: rgba(245,158,11,0.15);  color: var(--accent-core); border: 1px solid rgba(245,158,11,0.35); }
+.level-badge.lv-mastered { display: inline-block; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.35); }
+
+/* ── Light Mode ── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc; --bg-card: #ffffff; --bg-hover: #f1f5f9;
+    --text: #0f172a; --text-muted: #475569; --text-dim: #64748b;
+    --border: rgba(56,189,248,0.25); --border-hover: rgba(56,189,248,0.6);
+    --nav-bg: rgba(248,250,252,0.90);
+    --accent-dim: rgba(56,189,248,0.10);
+    --accent-core-dim: rgba(245,158,11,0.10);
+  }
+  body { background: var(--bg); }
+  .series-card { box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .series-card:not(.coming):hover { box-shadow: 0 4px 16px rgba(56,189,248,0.18); }
+  .c-tag { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.10); color: #475569; }
+  .card-cta { border-top-color: rgba(0,0,0,0.08); }
+  .section-line { background: rgba(0,0,0,0.08); }
+  .phil-card { background: linear-gradient(135deg, rgba(56,189,248,0.06) 0%, rgba(248,250,252,0) 60%); border-color: rgba(56,189,248,0.2); }
+  .tsum-inner { background: rgba(56,189,248,0.05); border-color: rgba(56,189,248,0.2); }
+  .diag-card { background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(129,140,248,0.05) 50%, rgba(245,158,11,0.04) 100%); }
+  #back-top { background: rgba(56,189,248,0.12); }
+  footer { border-top-color: rgba(0,0,0,0.08); }
+}
 </style>
 </head>
 <body>
@@ -424,15 +483,15 @@ footer a:hover { color: var(--accent) !important; }
   </p>
   <div class="hero-stats">
     <div class="stat">
-      <span class="stat-num">24</span>
+      <span class="stat-num" id="stat-total">35</span>
       <span class="stat-label">シリーズ公開中</span>
     </div>
     <div class="stat">
-      <span class="stat-num">120+</span>
-      <span class="stat-label">要素（5×24）</span>
+      <span class="stat-num" id="stat-elements">175+</span>
+      <span class="stat-label">要素（5×35）</span>
     </div>
     <div class="stat">
-      <span class="stat-num">70+</span>
+      <span class="stat-num">80+</span>
       <span class="stat-label">実損エビデンス</span>
     </div>
     <div class="progress-stat">
@@ -440,7 +499,7 @@ footer a:hover { color: var(--accent) !important; }
       <div class="progress-bar-wrap">
         <div class="progress-bar-fill" id="progress-fill"></div>
       </div>
-      <span class="progress-fraction">24 / 24 公開済み</span>
+      <span class="progress-fraction" id="stat-fraction">35 / 35 公開済み</span>
     </div>
   </div>
   <a class="hero-scroll" href="#series">
@@ -467,6 +526,23 @@ footer a:hover { color: var(--accent) !important; }
   </a>
 </div>
 
+<!-- Skill Progress Summary -->
+<div class="tracker-summary" id="tracker-summary" style="display:none">
+  <div class="tsum-inner">
+    <div class="tsum-stat">
+      <span class="tsum-num" id="tsum-active">0</span>
+      <span class="tsum-label">学習中</span>
+    </div>
+    <div class="tsum-stat">
+      <span class="tsum-num tsum-mastered" id="tsum-mastered">0</span>
+      <span class="tsum-label">習熟済み</span>
+    </div>
+    <div class="tsum-sep"></div>
+    <div class="tsum-recent" id="tsum-recent">最近: —</div>
+    <a class="tsum-link" href="skill-dashboard.html">診断へ →</a>
+  </div>
+</div>
+
 <section class="series-section" id="series">
   <div class="section-header">
     <span class="section-label">Series</span>
@@ -483,700 +559,11 @@ footer a:hover { color: var(--accent) !important; }
     <button class="filter-btn" data-filter="人間力">人間力</button>
     <button class="filter-btn" data-filter="セルフマネジメント">セルフマネジメント</button>
     <button class="filter-btn" data-filter="全体像">全体像</button>
+    <button class="filter-btn" data-filter="AI活用">AI活用</button>
   </div>
   <div class="series-grid">
 
-    <!-- 01 頭が良い人 -->
-    <a class="series-card" href="atama-ga-ii.html" data-category="思考・認知">
-      <div class="card-top">
-        <span class="card-num-badge">01</span>
-        <div class="card-icon-wrap"><i data-lucide="brain" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">頭が良い人の5要素</div>
-      <div class="card-subtitle">認知能力の解剖</div>
-      <p class="card-desc">IQ・学歴でも「賢さ」でもない。ビジネスで差がつく認知能力の5要素と、欠如が引き起こす実損。</p>
-      <div class="card-tags">
-        <span class="c-tag">Fluid G</span>
-        <span class="c-tag">Crystallized G</span>
-        <span class="c-tag">メタ認知</span>
-        <span class="c-tag">確率的意思決定</span>
-        <span class="c-tag">他者モデリング</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">メタ認知とエラー訂正</span>
-      </div>
-      <div class="card-cta">
-        <span>5要素を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2025/03/10</div>
-    </a>
-
-    <!-- 02 構造化コミュニケーション -->
-    <a class="series-card" href="kozo-communication.html" data-category="コミュニケーション">
-      <div class="card-top">
-        <span class="card-num-badge">02</span>
-        <div class="card-icon-wrap"><i data-lucide="message-square" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">構造化コミュニケーションの5要素</div>
-      <div class="card-subtitle">伝わる設計の原則</div>
-      <p class="card-desc">話し方の「うまさ」ではない。相手に情報が届き、判断を動かす設計能力の5軸と欠如が生む時間・承認ロス。</p>
-      <div class="card-tags">
-        <span class="c-tag">BLUF</span>
-        <span class="c-tag">ピラミッド原則</span>
-        <span class="c-tag">抽象度制御</span>
-        <span class="c-tag">質問設計</span>
-        <span class="c-tag">非言語</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">BLUF構造（結論ファースト）</span>
-      </div>
-      <div class="card-cta">
-        <span>設計原則を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2025/03/18</div>
-    </a>
-
-    <!-- 03 学習効率 -->
-    <a class="series-card" href="gakushuu-kouritu.html" data-category="学習">
-      <div class="card-top">
-        <span class="card-num-badge">03</span>
-        <div class="card-icon-wrap"><i data-lucide="zap" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">学習効率の5要素</div>
-      <div class="card-subtitle">脳科学が示す習得の設計</div>
-      <p class="card-desc">「長時間勉強した」は成果の根拠にならない。記憶定着率を決める5原則と、やっているつもりで効果ゼロの罠。</p>
-      <div class="card-tags">
-        <span class="c-tag">スペーシング</span>
-        <span class="c-tag">アクティブリコール</span>
-        <span class="c-tag">インターリービング</span>
-        <span class="c-tag">誤答分析</span>
-        <span class="c-tag">メタ学習</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">アクティブリコール</span>
-      </div>
-      <div class="card-cta">
-        <span>習得法則を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2025/03/25</div>
-    </a>
-
-    <!-- 04 時間設計 -->
-    <a class="series-card" href="jikan-sekkei.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">04</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="zap" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">時間設計の5要素</div>
-      <div class="card-subtitle">意思決定の前提を整える</div>
-      <p class="card-desc">タスク管理ではなく、エネルギー・注意・判断力の配分設計。GTD・Time Blocking・認知負荷理論を統合。</p>
-      <div class="card-tags">
-        <span class="c-tag">Time Blocking</span>
-        <span class="c-tag">認知負荷</span>
-        <span class="c-tag">GTD</span>
-        <span class="c-tag">エネルギー管理</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">エネルギー波乗り（ウルトラディアンリズム）</span>
-      </div>
-      <div class="card-cta">
-        <span>配分設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/10</div>
-    </a>
-
-    <!-- 05 構造把握力 -->
-    <a class="series-card" href="kozo-haaku.html" data-category="思考・認知">
-      <div class="card-top">
-        <span class="card-num-badge">05</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="layers" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">構造把握力の5要素</div>
-      <div class="card-subtitle">頭の良さの本質を解剖する</div>
-      <p class="card-desc">知識量でも処理速度でもない。複雑な現実から本質的な構造を見抜き、正しい支点に力をかける5つの技術。</p>
-      <div class="card-tags">
-        <span class="c-tag">即反応停止</span>
-        <span class="c-tag">枝葉と幹</span>
-        <span class="c-tag">システム思考</span>
-        <span class="c-tag">問いの設計</span>
-        <span class="c-tag">抽象⇔具体</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">即反応停止（一拍置く）</span>
-      </div>
-      <div class="card-cta">
-        <span>構造技術を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/18</div>
-    </a>
-
-    <!-- 06 判断の質 -->
-    <a class="series-card" href="handan-no-shitsu.html" data-category="意思決定">
-      <div class="card-top">
-        <span class="card-num-badge">06</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="git-branch" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">判断の質の5要素</div>
-      <div class="card-subtitle">不確実性下での意思決定</div>
-      <p class="card-desc">「直感 vs 分析」ではなく、状況に応じた判断モードの使い分け。意思決定バイアスの体系と解除法。</p>
-      <div class="card-tags">
-        <span class="c-tag">System 1/2</span>
-        <span class="c-tag">バイアス</span>
-        <span class="c-tag">プレモーテム</span>
-        <span class="c-tag">第二意見</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">判断モード選択（System 1/2）</span>
-      </div>
-      <div class="card-cta">
-        <span>判断設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-    </a>
-
-    <!-- 07 問題解決 -->
-    <a class="series-card" href="mondai-kaiketsu.html" data-category="思考・認知">
-      <div class="card-top">
-        <span class="card-num-badge">07</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="search" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">問題解決の5要素</div>
-      <div class="card-subtitle">再現性ある問題解決サイクル</div>
-      <p class="card-desc">「答えを出す」のではなく「正しい問いを解く」。問題定義から実行・検証まで、5つの技術で問題解決を設計する。</p>
-      <div class="card-tags">
-        <span class="c-tag">問題定義</span>
-        <span class="c-tag">MECE分解</span>
-        <span class="c-tag">5Why</span>
-        <span class="c-tag">解決策生成</span>
-        <span class="c-tag">PDCA</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">問題定義（イシュー起点）</span>
-      </div>
-      <div class="card-cta">
-        <span>解決サイクルを確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 08 リーダーシップ -->
-    <a class="series-card" href="leadership.html" data-category="マネジメント">
-      <div class="card-top">
-        <span class="card-num-badge">08</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="users" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">リーダーシップの5要素</div>
-      <div class="card-subtitle">チームの出力を最大化する設計</div>
-      <p class="card-desc">「引っ張る」のではなく「機能させる」。心理的安全性・期待の明文化・フィードバック・権限委譲・自己認識の5原則。</p>
-      <div class="card-tags">
-        <span class="c-tag">心理的安全性</span>
-        <span class="c-tag">OKR</span>
-        <span class="c-tag">SBIフィードバック</span>
-        <span class="c-tag">権限委譲</span>
-        <span class="c-tag">自己認識</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">心理的安全性（チームの土台）</span>
-      </div>
-      <div class="card-cta">
-        <span>リーダー設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 09 説得・交渉 -->
-    <a class="series-card" href="setoku-kousho.html" data-category="コミュニケーション">
-      <div class="card-top">
-        <span class="card-num-badge">09</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="handshake" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">説得・交渉の5要素</div>
-      <div class="card-subtitle">稟議を通す・交渉を制する</div>
-      <p class="card-desc">「正しいことを言えば動く」は幻想。相手の関心理解・フレーミング・証拠設計・段階的合意・BATNAで説得を設計する。</p>
-      <div class="card-tags">
-        <span class="c-tag">相手の関心</span>
-        <span class="c-tag">フレーミング</span>
-        <span class="c-tag">損失回避</span>
-        <span class="c-tag">根回し</span>
-        <span class="c-tag">BATNA</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">相手の関心理解（提案前の前提）</span>
-      </div>
-      <div class="card-cta">
-        <span>説得設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 10 数字で語る -->
-    <a class="series-card" href="suji-de-kataru.html" data-category="思考・認知">
-      <div class="card-top">
-        <span class="card-num-badge">10</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="hash" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">数字で語る5要素</div>
-      <div class="card-subtitle">「感想」を「根拠」に変換する</div>
-      <p class="card-desc">「多い・少ない・高い」は主張にならない。定量化・比較基準・図表設計・不確実性・データストーリーの5技術で数値を武器にする。</p>
-      <div class="card-tags">
-        <span class="c-tag">定量化</span>
-        <span class="c-tag">比較基準</span>
-        <span class="c-tag">図表設計</span>
-        <span class="c-tag">不確実性</span>
-        <span class="c-tag">データストーリー</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">定量化の習慣（感想→数値）</span>
-      </div>
-      <div class="card-cta">
-        <span>数値設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 11 会議設計 -->
-    <a class="series-card" href="kaigi-sekkei.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">11</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="calendar-check" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">会議設計の5要素</div>
-      <div class="card-subtitle">「集まること」と「機能すること」は別</div>
-      <p class="card-desc">目的・参加者・アジェンダ・ファシリテーション・アクション管理——5つを揃えると会議時間は半分になり、決定の質は上がる。</p>
-      <div class="card-tags">
-        <span class="c-tag">目的の明文化</span>
-        <span class="c-tag">RACI</span>
-        <span class="c-tag">タイムボックス</span>
-        <span class="c-tag">ファシリテーション</span>
-        <span class="c-tag">アクション管理</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">目的の明文化（何を決めるか）</span>
-      </div>
-      <div class="card-cta">
-        <span>会議設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 12 優先順位設計 -->
-    <a class="series-card" href="yusen-junii.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">12</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="grid" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">優先順位設計の5要素</div>
-      <div class="card-subtitle">「頑張る」ではなく「選ぶ」</div>
-      <p class="card-desc">重要度×緊急度・影響×実現性・依存関係・委譲と削減・撤退基準——5軸で「やること」より「やらないこと」を決める技術。</p>
-      <div class="card-tags">
-        <span class="c-tag">アイゼンハワー</span>
-        <span class="c-tag">ICEスコア</span>
-        <span class="c-tag">クリティカルパス</span>
-        <span class="c-tag">EDSE</span>
-        <span class="c-tag">撤退基準</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">重要×緊急マトリクス（第2象限）</span>
-      </div>
-      <div class="card-cta">
-        <span>優先順位設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 13 育成・コーチング -->
-    <a class="series-card" href="ikusei-coaching.html" data-category="マネジメント">
-      <div class="card-top">
-        <span class="card-num-badge">13</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="compass" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">育成・コーチングの5要素</div>
-      <div class="card-subtitle">「教える」ではなく「考えさせる」</div>
-      <p class="card-desc">ティーチング/コーチング切り替え・問いかけ・経験設計・振り返り・内発的動機——5つで人が育つ環境を設計する。</p>
-      <div class="card-tags">
-        <span class="c-tag">Situational Leadership</span>
-        <span class="c-tag">GROWモデル</span>
-        <span class="c-tag">ストレッチ課題</span>
-        <span class="c-tag">KPT</span>
-        <span class="c-tag">自己決定理論</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">ティーチング/コーチングの使い分け</span>
-      </div>
-      <div class="card-cta">
-        <span>育成設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 14 ストレス・感情管理 -->
-    <a class="series-card" href="stress-kanjo.html" data-category="セルフマネジメント">
-      <div class="card-top">
-        <span class="card-num-badge">14</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="activity" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">ストレス・感情管理の5要素</div>
-      <div class="card-subtitle">「感情を抑える」のではなく「使う」</div>
-      <p class="card-desc">ストレス反応の再解釈・感情の言語化・認知の再評価・回復設計・境界線——感情を情報として使い、持続可能なパフォーマンスを設計する。</p>
-      <div class="card-tags">
-        <span class="c-tag">ストレス再解釈</span>
-        <span class="c-tag">感情言語化</span>
-        <span class="c-tag">CBT認知</span>
-        <span class="c-tag">回復設計</span>
-        <span class="c-tag">バウンダリー</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">ストレス反応の理解（挑戦への準備）</span>
-      </div>
-      <div class="card-cta">
-        <span>感情設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 15 戦略思考 -->
-    <a class="series-card" href="senryaku-shiko.html" data-category="思考・認知">
-      <div class="card-top">
-        <span class="card-num-badge">15</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="layers" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">戦略思考の5要素</div>
-      <div class="card-subtitle">「目の前の仕事」を「全体の文脈」に置く</div>
-      <p class="card-desc">目的の階層化・トレードオフ設計・環境変化の読み方・長短バランス・意思決定の学習——日常の判断を戦略的文脈に置く5技術。</p>
-      <div class="card-tags">
-        <span class="c-tag">目的階層化</span>
-        <span class="c-tag">トレードオフ</span>
-        <span class="c-tag">PEST</span>
-        <span class="c-tag">両利きの経営</span>
-        <span class="c-tag">意思決定ログ</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">目的の階層化（Why→How→What）</span>
-      </div>
-      <div class="card-cta">
-        <span>戦略思考を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 16 全体像 -->
-    <a class="series-card" href="business-skill-map.html" data-category="全体像">
-      <div class="card-top">
-        <span class="card-num-badge">MAP</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap" style="background:rgba(245,158,11,0.12);color:#f59e0b;"><i data-lucide="map" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">必要なビジネススキル全体像</div>
-      <div class="card-subtitle" style="color:#f59e0b;">スキル地図 — 4柱×7核心</div>
-      <p class="card-desc">「考える・動かす・伝える・整える」4つの柱と7つの核心スキル。初級〜上級の習熟段階とAI時代の再定義。</p>
-      <div class="card-tags">
-        <span class="c-tag">4つの柱</span>
-        <span class="c-tag">7コアスキル</span>
-        <span class="c-tag">習熟段階</span>
-        <span class="c-tag">AI時代</span>
-      </div>
-      <div class="card-core" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.3);">
-        <span class="core-label">結論</span>
-        <span class="core-text">問い→整理→伝達→実行→結果</span>
-      </div>
-      <div class="card-cta" style="color:#f59e0b;">
-        <span>全体像を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 16 段取り力 -->
-    <a class="series-card" href="dandori-ryoku.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">16</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="calendar-check" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">段取り力の5要素</div>
-      <div class="card-subtitle">準備が成果の8割を決める</div>
-      <p class="card-desc">ゴール設定・タスク分解・リソース配分・リスク先読み・進捗管理の5技術。「最終日に間に合わない」を構造的に防ぐ段取りの設計法。</p>
-      <div class="card-tags">
-        <span class="c-tag">WBS</span>
-        <span class="c-tag">クリティカルパス</span>
-        <span class="c-tag">FMEA</span>
-        <span class="c-tag">バッファ設計</span>
-        <span class="c-tag">EVM</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">完了の定義（DoD）</span>
-      </div>
-      <div class="card-cta">
-        <span>段取り設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 17 論理的思考力 -->
-    <a class="series-card" href="ronriteki-shiko.html" data-category="思考・認知">
-      <div class="card-top">
-        <span class="card-num-badge">17</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="git-merge" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">論理的思考力の5要素</div>
-      <div class="card-subtitle">思考を再現可能な構造に変える</div>
-      <p class="card-desc">演繹・帰納・仮説思考・MECE・因果分析の5技術。「なんとなくそう思う」を根拠ある判断に変換し、対策の精度を上げる。</p>
-      <div class="card-tags">
-        <span class="c-tag">演繹・帰納</span>
-        <span class="c-tag">仮説思考</span>
-        <span class="c-tag">MECE</span>
-        <span class="c-tag">因果分析</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">演繹推論（前提を検証する）</span>
-      </div>
-      <div class="card-cta">
-        <span>論理構造を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 18 実行力 -->
-    <a class="series-card" href="jikkouryoku.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">18</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="zap" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">実行力の5要素</div>
-      <div class="card-subtitle">アイデアを結果に変える力</div>
-      <p class="card-desc">即断即行・完遂・適応・自律管理・実行後学習の5技術。「考えているだけ」「始めたけど終わらない」を構造的に解決する。</p>
-      <div class="card-tags">
-        <span class="c-tag">即断即行</span>
-        <span class="c-tag">Grit</span>
-        <span class="c-tag">適応力</span>
-        <span class="c-tag">AAR</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">即断即行（60%で動き始める）</span>
-      </div>
-      <div class="card-cta">
-        <span>実行技術を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 19 優先順位付け -->
-    <a class="series-card" href="yusen-juni.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">19</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="list-ordered" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">優先順位付けの5要素</div>
-      <div class="card-subtitle">限られた時間を最大成果に変える</div>
-      <p class="card-desc">重要度×緊急度・パレート・ROI評価・委任削除・ディープワークの5技術。「すべてに全力」が成果を最小化する理由を構造で理解する。</p>
-      <div class="card-tags">
-        <span class="c-tag">アイゼンハワー</span>
-        <span class="c-tag">80/20</span>
-        <span class="c-tag">ROI</span>
-        <span class="c-tag">委任</span>
-        <span class="c-tag">ディープワーク</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">第2象限投資（重要×非緊急）</span>
-      </div>
-      <div class="card-cta">
-        <span>優先設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 20 人としての成長 -->
-    <a class="series-card" href="ningen-seichou.html" data-category="人間力">
-      <div class="card-top">
-        <span class="card-num-badge">20</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="sprout" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">人としての成長 5要素</div>
-      <div class="card-subtitle">スキルより先に問われる人格の構造</div>
-      <p class="card-desc">自己認識・内省・成長マインドセット・他者性・目的意識——心理学研究（Dweck・Eurich・Kegan・Frankl）が示す「成長できる人」の5要素を分解する。</p>
-      <div class="card-tags">
-        <span class="c-tag">自己認識</span>
-        <span class="c-tag">内省</span>
-        <span class="c-tag">成長マインドセット</span>
-        <span class="c-tag">他者性</span>
-        <span class="c-tag">目的意識</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">自己認識（成長の出発点）</span>
-      </div>
-      <div class="card-cta">
-        <span>成長の構造を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 21 交渉力 -->
-    <a class="series-card" href="kosho-ryoku.html" data-category="コミュニケーション">
-      <div class="card-top">
-        <span class="card-num-badge">21</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="handshake" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">交渉力の5要素</div>
-      <div class="card-subtitle">全員が得する合意をデザインする</div>
-      <p class="card-desc">勝ち負けではなく、全員が得する合意をデザインする。ハーバード交渉術を起点に、利害分離・BATNA・価値創造・合意設計の5技術で交渉を再現可能な構造に変える。</p>
-      <div class="card-tags">
-        <span class="c-tag">利害分離</span>
-        <span class="c-tag">BATNA</span>
-        <span class="c-tag">価値創造</span>
-        <span class="c-tag">ハーバード交渉術</span>
-        <span class="c-tag">合意設計</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">利害の分離（立場ではなく関心）</span>
-      </div>
-      <div class="card-cta">
-        <span>交渉設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 22 文章力 -->
-    <a class="series-card" href="bunsho-ryoku.html" data-category="コミュニケーション">
-      <div class="card-top">
-        <span class="card-num-badge">22</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="pen-line" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">文章力の5要素</div>
-      <div class="card-subtitle">書くことは考えること</div>
-      <p class="card-desc">曖昧な文章は曖昧な思考の証拠。結論先行・構造化・具体化・読者分析・編集力の5技術でビジネス文書を再現可能な設計に変える。</p>
-      <div class="card-tags">
-        <span class="c-tag">結論先行</span>
-        <span class="c-tag">構造化</span>
-        <span class="c-tag">具体化</span>
-        <span class="c-tag">読者分析</span>
-        <span class="c-tag">編集力</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">結論先行（BLUF構造）</span>
-      </div>
-      <div class="card-cta">
-        <span>文章設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 23 再現性づくり -->
-    <a class="series-card" href="saigensei.html" data-category="生産性">
-      <div class="card-top">
-        <span class="card-num-badge">23</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="repeat" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">再現性づくりの5要素</div>
-      <div class="card-subtitle">努力を仕組みに変える</div>
-      <p class="card-desc">毎回ゼロから頑張る人は消耗する。標準化・形式知化・仕組み化・改善サイクル・展開力の5技術で、個人の能力を組織の資産に変換する。</p>
-      <div class="card-tags">
-        <span class="c-tag">標準化</span>
-        <span class="c-tag">形式知化</span>
-        <span class="c-tag">仕組み化</span>
-        <span class="c-tag">改善サイクル</span>
-        <span class="c-tag">展開力</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">標準化（属人知を手順書へ）</span>
-      </div>
-      <div class="card-cta">
-        <span>再現設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
-    <!-- 24 情報収集・インプット -->
-    <a class="series-card" href="joho-input.html" data-category="学習">
-      <div class="card-top">
-        <span class="card-num-badge">24</span>
-        <span class="new-badge">NEW</span>
-        <div class="card-icon-wrap"><i data-lucide="antenna" width="20" height="20"></i></div>
-      </div>
-      <div class="card-title">情報収集・インプットの5要素</div>
-      <div class="card-subtitle">量より質・ノイズより信号</div>
-      <p class="card-desc">情報過多の時代に「読んだ・見た」で終わる人と知識に変換できる人の差。目的設定・一次情報・フィルタリング・構造化・アウトプット変換の5技術。</p>
-      <div class="card-tags">
-        <span class="c-tag">目的設定</span>
-        <span class="c-tag">一次情報</span>
-        <span class="c-tag">フィルタリング</span>
-        <span class="c-tag">構造化</span>
-        <span class="c-tag">アウトプット変換</span>
-      </div>
-      <div class="card-core">
-        <span class="core-label">CORE</span>
-        <span class="core-text">目的起点の収集（何のため？）</span>
-      </div>
-      <div class="card-cta">
-        <span>インプット設計を確認する</span>
-        <i data-lucide="arrow-right" width="16" height="16"></i>
-      </div>
-      <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>2026/04/19</div>
-    </a>
-
+  
   </div>
 </section>
 
@@ -1205,9 +592,6 @@ footer a:hover { color: var(--accent) !important; }
     <a href="../portal-v2.html" style="color:var(--text-dim);text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:color 0.2s ease;">
       <i data-lucide="layout-dashboard" width="13" height="13"></i>ポータル
     </a>
-    <a href="../health-monitor/health-dashboard.html" style="color:var(--text-dim);text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:color 0.2s ease;">
-      <i data-lucide="activity" width="13" height="13"></i>ヘルス
-    </a>
     <a href="../dashboard.html" style="color:var(--text-dim);text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:color 0.2s ease;">
       <i data-lucide="book-open" width="13" height="13"></i>知識DB
     </a>
@@ -1215,89 +599,169 @@ footer a:hover { color: var(--accent) !important; }
   <p style="font-size:0.72rem;">⚡ Fカンパニー — Business Skills Series &nbsp;·&nbsp; 思考・行動の設計図 &nbsp;·&nbsp; © 2026</p>
 </footer>
 
+<script src="skill-tracker.js"></script>
 <script>
-  function init() {
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderCard(s) {
+    const newBadge = s.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const tags = s.tags.map(t => '<span class="c-tag">' + escapeHtml(t) + '</span>').join('');
+    const comingClass = s.coming ? ' coming' : '';
+    return [
+      '<a class="series-card' + comingClass + '" href="' + s.href + '" data-category="' + s.category + '">',
+      '  <div class="card-top">',
+      '    <span class="card-num-badge">' + s.num + '</span>',
+      '    ' + newBadge,
+      '    <div class="card-icon-wrap"><i data-lucide="' + s.icon + '" width="20" height="20"></i></div>',
+      '  </div>',
+      '  <div class="card-title">' + escapeHtml(s.title) + '</div>',
+      '  <div class="card-subtitle">' + escapeHtml(s.subtitle) + '</div>',
+      '  <p class="card-desc">' + escapeHtml(s.desc) + '</p>',
+      '  <div class="card-tags">' + tags + '</div>',
+      '  <div class="card-core">',
+      '    <span class="core-label">CORE</span>',
+      '    <span class="core-text">' + escapeHtml(s.core) + '</span>',
+      '  </div>',
+      '  <div class="card-cta">',
+      '    <span>5要素を確認する</span>',
+      '    <i data-lucide="arrow-right" width="16" height="16"></i>',
+      '  </div>',
+      '  <span class="level-badge" id="lb-' + s.id + '"></span>',
+      '  <div class="card-updated"><i data-lucide="clock" width="11" height="11"></i>' + s.updated + '</div>',
+      '</a>'
+    ].join('
+    ');
+  }
+
+  function init(data) {
+    // カード注入
+    const grid = document.querySelector('.series-grid');
+    const html = data.skills.map(renderCard).join('
+    ');
+    grid.insertAdjacentHTML('beforeend', html);
+
+    // stat 更新
+    const total = data.meta.totalSkills;
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-elements').textContent = (total * 5) + '+';
+    document.getElementById('stat-fraction').textContent = total + ' / ' + total + ' 公開済み';
+
     lucide.createIcons();
 
-  // カード出現アニメーション
-  const cards = document.querySelectorAll('.series-card');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        const card = entry.target;
-        const index = Array.from(cards).indexOf(card);
-        setTimeout(() => card.classList.add('visible'), index * 80);
-        observer.unobserve(card);
-      }
-    });
-  }, { threshold: 0.1 });
-  cards.forEach(card => observer.observe(card));
-
-  // 進捗バー
-  setTimeout(() => {
-    const fill = document.getElementById('progress-fill');
-    if (fill) fill.style.width = '100%';
-  }, 400);
-
-  // タグフィルター
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const allCards = document.querySelectorAll('.series-grid .series-card');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.filter;
-      allCards.forEach(card => {
-        const match = f === 'all' || card.dataset.category === f;
-        if (match) {
-          card.classList.remove('hidden');
-          requestAnimationFrame(() => card.classList.add('filter-visible'));
-        } else {
-          card.classList.remove('filter-visible');
-          card.classList.add('hidden');
+    // カード出現アニメーション
+    const cards = document.querySelectorAll('.series-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const index = Array.from(cards).indexOf(card);
+          setTimeout(() => card.classList.add('visible'), index * 80);
+          observer.unobserve(card);
         }
       });
+    }, { threshold: 0.1 });
+    cards.forEach(card => observer.observe(card));
+
+    // 進捗バー
+    setTimeout(() => {
+      const fill = document.getElementById('progress-fill');
+      if (fill) fill.style.width = '100%';
+    }, 400);
+
+    // タグフィルター
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const allCards = document.querySelectorAll('.series-grid .series-card');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        allCards.forEach(card => {
+          const match = f === 'all' || card.dataset.category === f;
+          if (match) {
+            card.classList.remove('hidden');
+            requestAnimationFrame(() => card.classList.add('filter-visible'));
+          } else {
+            card.classList.remove('filter-visible');
+            card.classList.add('hidden');
+          }
+        });
+      });
     });
-  });
 
-  // 気になるボタン（localStorage永続化）
-  document.querySelectorAll('.interest-btn').forEach(btn => {
-    const key = btn.dataset.key;
-    const restore = () => {
-      if (localStorage.getItem(key)) {
-        btn.classList.add('marked');
-        btn.innerHTML = '<i data-lucide="check" width="14" height="14"></i> 気になる登録済み';
-      }
-    };
-    restore();
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      if (btn.classList.contains('marked')) {
-        localStorage.removeItem(key);
-        btn.classList.remove('marked');
-        btn.innerHTML = '<i data-lucide="bookmark" width="14" height="14"></i> 気になる';
-      } else {
-        localStorage.setItem(key, '1');
-        btn.classList.add('marked');
-        btn.innerHTML = '<i data-lucide="check" width="14" height="14"></i> 気になる登録済み';
-      }
-      lucide.createIcons();
+    // 気になるボタン（localStorage永続化）
+    document.querySelectorAll('.interest-btn').forEach(btn => {
+      const key = btn.dataset.key;
+      const restore = () => {
+        if (localStorage.getItem(key)) {
+          btn.classList.add('marked');
+          btn.innerHTML = '<i data-lucide="check" width="14" height="14"></i> 気になる登録済み';
+        }
+      };
+      restore();
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        if (btn.classList.contains('marked')) {
+          localStorage.removeItem(key);
+          btn.classList.remove('marked');
+          btn.innerHTML = '<i data-lucide="bookmark" width="14" height="14"></i> 気になる';
+        } else {
+          localStorage.setItem(key, '1');
+          btn.classList.add('marked');
+          btn.innerHTML = '<i data-lucide="check" width="14" height="14"></i> 気になる登録済み';
+        }
+        lucide.createIcons();
+      });
     });
-  });
-  // Back to top
-  const backTop = document.getElementById('back-top');
-  window.addEventListener('scroll', () => {
-    backTop.classList.toggle('visible', window.scrollY > 300);
-  });
-  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  } // end init()
+    // Back to top
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('visible', window.scrollY > 300);
+    });
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+    // SkillTracker 進捗バッジ
+    if (window.SkillTracker) {
+      const summary = SkillTracker.getSummary();
+      let activeCount = 0, masteredCount = 0, recentTitle = '';
+      let recentDate = '';
+      summary.forEach(sk => {
+        if (sk.level === '認知' || sk.level === '実践') activeCount++;
+        if (sk.level === '習熟') masteredCount++;
+        if (sk.lastVisit > recentDate) { recentDate = sk.lastVisit; recentTitle = sk.title; }
+        // カードにバッジ注入
+        const badge = document.getElementById('lb-' + sk.skillId);
+        if (!badge) return;
+        if (sk.level === '認知') { badge.textContent = '認知'; badge.className = 'level-badge lv-active'; }
+        else if (sk.level === '実践') { badge.textContent = '実践'; badge.className = 'level-badge lv-practice'; }
+        else if (sk.level === '習熟') { badge.textContent = '習熟'; badge.className = 'level-badge lv-mastered'; }
+      });
+      if (activeCount + masteredCount > 0) {
+        document.getElementById('tsum-active').textContent = activeCount;
+        document.getElementById('tsum-mastered').textContent = masteredCount;
+        if (recentTitle) document.getElementById('tsum-recent').textContent = '最近: ' + recentTitle;
+        document.getElementById('tracker-summary').style.display = '';
+      }
+    }
+
+    // URLクエリ ?filter=カテゴリ で自動フィルタ
+    const urlFilter = new URLSearchParams(location.search).get('filter');
+    if (urlFilter) {
+      const targetBtn = [...filterBtns].find(b => b.dataset.filter === urlFilter);
+      if (targetBtn) targetBtn.click();
+    }
   }
+
+  fetch('data/skills.json')
+    .then(r => r.json())
+    .then(data => init(data))
+    .catch(err => {
+      console.error('skills.json 読み込みエラー:', err);
+      document.querySelector('.series-grid').innerHTML = '<p style="color:#f87171;padding:2rem;">データ読み込みに失敗しました</p>';
+    });
 </script>
 </body>
 </html>

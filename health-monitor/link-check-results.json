@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-04-23T13:42:00.665240+00:00",
+  "total_links": 4,
+  "ok": 4,
+  "broken": 0,
+  "warnings": 0,
+  "files": [
+    {
+      "file": "business-skills/python-dekirukoto.html",
+      "ok": 4,
+      "broken": 0,
+      "warnings": 0,
+      "links": []
+    }
+  ]
+}
