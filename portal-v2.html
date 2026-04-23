@@ -812,6 +812,9 @@
           <span id="hl-status" class="health-badge green">読込中…</span>
         </div>
         <div id="hl-detail" style="font-size:0.76rem;line-height:1.5;">—</div>
+        <div style="position:relative;height:56px;margin-top:8px;">
+          <canvas id="hl-sparkline"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -859,7 +862,7 @@
     <div class="card-title">よく使う操作</div>
     <div class="links-grid">
       <a class="link-btn" href="http://localhost:8096/dashboard.html" target="_blank" title="起動方法: ai-news/ai-news/start-server.bat を実行 → localhost:8096 が起動">⚡ AI News</a>
-      <a class="link-btn" href="http://localhost:8765/denken-study.html" title="起動方法: start-denken.bat をダブルクリック → localhost:8765 が起動">
+      <a class="link-btn" href="https://kfurufuru.github.io/denken3-study/denken-study.html">
         <span class="link-icon">⚡</span>電験学習
       </a>
       <a class="link-btn" href="https://kfurufuru.github.io/genai-db/">
@@ -879,7 +882,7 @@
 
       <div class="site-group">
         <div class="site-group-title">⚡ 電験3種 学習</div>
-        <a class="site-link" href="http://localhost:8765/denken-study.html" title="起動方法: start-denken.bat をダブルクリック → localhost:8765 が起動">
+        <a class="site-link" href="https://kfurufuru.github.io/denken3-study/denken-study.html">
           <span class="site-link-icon">📖</span>今日の学習（朝/昼/夜）
         </a>
         <a class="site-link" href="https://kfurufuru.github.io/denken3-study/">
@@ -930,6 +933,9 @@
         <a class="site-link" href="https://kfurufuru.github.io/ei-wiki/" onclick="window.open(this.href,'_blank');return false;">
           <span class="site-link-icon">🔌</span>電気計装Wiki
         </a>
+        <a class="site-link" href="claude-code-guide.html">
+          <span class="site-link-icon">🤖</span>Claude Code 操作ガイド
+        </a>
       </div>
 
       <div class="site-group">
@@ -968,6 +974,7 @@
 
 <div class="skills-toast" id="skills-toast">コピーしました ✓</div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 const SKILLS = [
   { group: "🗺️ 知識グラフ", cmd: "/知識グラフ",              desc: "[[wiki-link]] → vis.js インタラクティブHTMLグラフ生成", cost: "green" },
@@ -1216,6 +1223,39 @@ function applyData() {
       const cats = [...new Set(recent.map(e=>e.cat_id))].join(' / ') || '—';
       const when = new Date(latest.timestamp).toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
       dt.innerHTML = `直近24h: ${recent.length}件 [${cats}]　<span style="opacity:.7">(最終 ${when})</span>`;
+      // sparkline: cat_id別 直近7日推移
+      const canvas = document.getElementById('hl-sparkline');
+      if (canvas && entries.length > 0) {
+        const days = 7, now7 = Date.now(), dayMs = 86400000;
+        const labels = Array.from({length:days}, (_,i) => {
+          const d = new Date(now7 - (days-1-i)*dayMs);
+          return `${d.getMonth()+1}/${d.getDate()}`;
+        });
+        const catIds = [...new Set(entries.map(e=>e.cat_id))];
+        const palette = ['#38bdf8','#f59e0b','#10b981','#f43f5e','#84cc16','#c084fc'];
+        const datasets = catIds.map((cat,i) => ({
+          label: cat,
+          data: Array.from({length:days}, (_,j) => {
+            const s = now7 - (days-1-j)*dayMs, e2 = s + dayMs;
+            return entries.filter(e => e.cat_id===cat && new Date(e.timestamp).getTime()>=s && new Date(e.timestamp).getTime()<e2).length;
+          }),
+          borderColor: palette[i % palette.length],
+          backgroundColor: 'transparent',
+          tension: 0.4, pointRadius: 2, borderWidth: 1.5,
+        }));
+        new Chart(canvas, {
+          type: 'line',
+          data: {labels, datasets},
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {legend:{display:true, labels:{color:'#94a3b8',font:{size:9},boxWidth:10,padding:6}}},
+            scales: {
+              x: {ticks:{color:'#64748b',font:{size:8}}, grid:{color:'rgba(255,255,255,0.05)'}},
+              y: {ticks:{color:'#64748b',font:{size:8},stepSize:1}, grid:{color:'rgba(255,255,255,0.05)'}, min:0}
+            }
+          }
+        });
+      }
     })
     .catch(e => {
       const st = document.getElementById('hl-status');
