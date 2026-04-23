@@ -38,7 +38,23 @@
 2. Phase 3 投資判断（3層マップの優先度は？）
 3. 実装順序の確定（Phase 2 は必要か？スキップしていいか？）
 
-## ハンドオフ完了
+## Opus 検証結果（2026-04-23 クローズ）
 
-Opus は この md を読んで実装続行して。
-詳細は `business-skills/python-dekirukoto.html` (579行) 参照。
+### 判断
+- **Phase 3（3層マップ）: 不採用**
+  - 理由: L1/L2/L3 はナレッジ管理タクソノミー。Pythonツールカタログにドメイン不一致。ROIほぼゼロ。
+  - 知識体系の可視化が必要なら `portal-v2.html` 側で別途検討。
+- **Phase 2: スキップ**（定義なし・不要）
+- **Phase 1a: 確定**
+
+### Phase 1a 検証時に発見したバグ（修正済み）
+1. ITEMS配列後に重複/破損コード26行 → JS構文エラーで全機能停止 → 削除
+2. `.grid-section` に `position: relative` 欠落 → SVG座標が画面基準になりズレ → 追加
+3. SVG高さ固定500px → 下方の矢印クリップ → `100%` に変更
+4. drawArrows が入場アニメ前に実行 → 座標誤差 → setTimeout + resize対応
+
+### 最終状態
+- カード15枚・矢印12本（青dataflow 6 / 紫aitype 2 / 黄control 4）描画確認済み
+- 検証URL: http://localhost:8092/business-skills/python-dekirukoto.html
+
+## ハンドオフクローズ
