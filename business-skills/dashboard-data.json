@@ -9,6 +9,14 @@
       "relative_path": "inbox/1on1-agenda-2026-04-22.md"
     },
     {
+      "path": "handoff-2026-04-21-secretary.md",
+      "date": "2026-04-21",
+      "type": "handoff",
+      "topic": "secretary改修セッション完了・APIキー障害",
+      "escalated": false,
+      "relative_path": "inbox/handoff-2026-04-21-secretary.md"
+    },
+    {
       "path": "handoff-2026-04-22-ai-framework.md",
       "date": "2026-04-22",
       "type": "handoff",
@@ -35,7 +43,7 @@
     {
       "path": "handoff-2026-04-22-effort-level.md",
       "date": "2026-04-22",
-      "type": "",
+      "type": "handoff",
       "topic": "effortLevel設定変更",
       "escalated": false,
       "relative_path": "inbox/handoff-2026-04-22-effort-level.md"
@@ -43,7 +51,7 @@
     {
       "path": "handoff-2026-04-22-knowledge-review.md",
       "date": "2026-04-22",
-      "type": "",
+      "type": "handoff",
       "topic": "knowledge/ draft残り4件の対応",
       "escalated": false,
       "relative_path": "inbox/handoff-2026-04-22-knowledge-review.md"
@@ -51,7 +59,7 @@
     {
       "path": "handoff-2026-04-22-knowledge-tools.md",
       "date": "2026-04-22",
-      "type": "",
+      "type": "handoff",
       "topic": "",
       "escalated": false,
       "relative_path": "inbox/handoff-2026-04-22-knowledge-tools.md"
@@ -73,17 +81,17 @@
       "relative_path": "inbox/handoff-2026-04-22-portal-linkcheck.md"
     },
     {
-      "path": "handoff-2026-04-23-next-session.md",
-      "date": "",
-      "type": "",
+      "path": "handoff-2026-04-23-Dashboard-Phase5.md",
+      "date": "2026-04-23",
+      "type": "handoff",
       "topic": "",
       "escalated": false,
-      "relative_path": "inbox/handoff-2026-04-23-next-session.md"
+      "relative_path": "inbox/handoff-2026-04-23-Dashboard-Phase5.md"
     },
     {
       "path": "handoff-2026-04-23-Phase3-Decision.md",
-      "date": "",
-      "type": "",
+      "date": "2026-04-23",
+      "type": "handoff",
       "topic": "",
       "escalated": false,
       "relative_path": "inbox/handoff-2026-04-23-Phase3-Decision.md"
@@ -107,7 +115,7 @@
     {
       "path": "handoff-2026-04-23-rss-dashboard-phase3b.md",
       "date": "2026-04-23",
-      "type": "",
+      "type": "handoff",
       "topic": "",
       "escalated": false,
       "relative_path": "inbox/handoff-2026-04-23-rss-dashboard-phase3b.md"
@@ -115,15 +123,15 @@
     {
       "path": "handoff-2026-04-23-rss-phase6.md",
       "date": "2026-04-23",
-      "type": "",
+      "type": "handoff",
       "topic": "",
       "escalated": false,
       "relative_path": "inbox/handoff-2026-04-23-rss-phase6.md"
     },
     {
       "path": "note-article-2026-04-23-python-catalog.md",
-      "date": "",
-      "type": "",
+      "date": "2026-04-23",
+      "type": "note-article",
       "topic": "",
       "escalated": false,
       "relative_path": "inbox/note-article-2026-04-23-python-catalog.md"
@@ -147,22 +155,6 @@
         "MongoDB"
       ],
       "relative_path": "knowledge/agentic-graphrag-architecture.md"
-    },
-    {
-      "title": "Claude長編集での構文破壊リスクと検証プロトコル",
-      "category": "AI活用",
-      "level": "review",
-      "created": "2026-04-23",
-      "last_reviewed": "2026-04-23",
-      "understanding_score": 4,
-      "tags": [
-        "Claude",
-        "HTML",
-        "検証",
-        "Haiku",
-        "構文"
-      ],
-      "relative_path": "knowledge/claude-long-edit-syntax-risk.md"
     },
     {
       "title": "MCP — Claudeを実行AIに変える接続基盤",
@@ -198,6 +190,22 @@
         "設備管理"
       ],
       "relative_path": "knowledge/ai-gyomu-sentaku.md"
+    },
+    {
+      "title": "Claude長編集での構文破壊リスクと検証プロトコル",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-23",
+      "last_reviewed": "2026-04-23",
+      "understanding_score": 4,
+      "tags": [
+        "Claude",
+        "HTML",
+        "検証",
+        "Haiku",
+        "構文"
+      ],
+      "relative_path": "knowledge/claude-long-edit-syntax-risk.md"
     },
     {
       "title": "頭の良さの本質は「構造把握力」",
@@ -267,11 +275,11 @@
   ],
   "l3_entities": [],
   "metadata": {
-    "scanned_at": "2026-04-23T21:18:20.159927",
-    "total_l1": 16,
+    "scanned_at": "2026-04-23T22:37:58.694141",
+    "total_l1": 17,
     "total_l2_draft": 0,
-    "total_l2_review": 3,
-    "total_l2_published": 5,
+    "total_l2_review": 2,
+    "total_l2_published": 6,
     "total_l3": 0
   }
 }
