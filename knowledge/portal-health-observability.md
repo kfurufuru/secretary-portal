@@ -1,9 +1,11 @@
 ---
 title: "Fカンパニーポータルの健全性可視化パターン（点→線化＋セルフ診断）"
 category: "システム設計"
-level: "draft"
+level: "review"
 created: "2026-04-23"
 last_reviewed: "2026-04-23"
+review_promoted: "2026-04-23"
+review_notes: "AI社員議論（マンガー/ダリオ/羽生）で再現性検証と改定容易性確保のためreview止め。1ヶ月後にdenken-news/ai-newsへの適用性を再評価しpublished判定。"
 understanding_score: 4
 source: "2026-04-23 セッション（Fカンパニー導線診断→link_checker拡張→cron化）"
 verification_method: "link-check-results.json / heal_log.json の実データ検証"
