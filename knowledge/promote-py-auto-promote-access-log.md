@@ -3,10 +3,10 @@ title: "promote.py アクセスログベース自動昇格機能"
 category: "AI活用"
 level: "published"
 created: "2026-04-21"
-last_reviewed: "2026-04-22"
+last_reviewed: "2026-04-23"
 understanding_score: 5
 source: "inbox/handoff-2026-04-21-secretary.md"
-tags: ["promote.py", "自動昇格", "アクセスログ", "ナレッジ管理"]
+tags: ["promote.py", "自動昇格", "アクセスログ", "ナレッジ管理", "ダッシュボード"]
 related: []
 ---
 # promote.py アクセスログベース自動昇格機能
@@ -55,3 +55,12 @@ related: []
 ## メモ（実践接続）
 - 週次サイクルで `py promote.py --auto-promote --verbose` を実行後、`--access-stats` でしきい値の実態を確認して調整する
 - 手動 `--log-access` の記録漏れがアクセス日数カウント過小評価の最大リスク。記録ルーティンを週次レビューに組み込む
+
+## 2026-04-23 追記: 知識ダッシュボード連動
+
+- `promote.py` の `main()` 末尾に `business-skills/scan-dashboard.py` の自動実行を追加（`--dry-run` 以外）
+- 昇格完了→ `business-skills/dashboard-data.json` 自動更新→ `python-dekirukoto.html` に L1/L2 件数反映
+- 連動フロー: 月曜08:00 `promote.py --auto-promote` → scan-dashboard.py → ダッシュボード更新
+- scan-dashboard.py は inbox/*.md（L1候補）と knowledge/*.md frontmatter（L2 draft/review/published）を分類
+- 失敗時は `[WARN]` ログのみで promote 本体の処理は継続する（疎結合）
+- 落とし穴: scan-dashboard.py を削除すると連動も切れるため、`business-skills/` のスクリプト群をまとめてバックアップ対象にする
