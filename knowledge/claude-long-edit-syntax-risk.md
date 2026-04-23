@@ -1,7 +1,7 @@
 ---
 title: "Claude長編集での構文破壊リスクと検証プロトコル"
 category: "AI活用"
-level: "review"
+level: "published"
 created: "2026-04-23"
 last_reviewed: "2026-04-23"
 understanding_score: 4
