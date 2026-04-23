@@ -927,6 +927,15 @@ def main():
     print()
     print(f"[DONE] 合計: {total_promoted}件昇格 / {total_skipped}件スキップ")
 
+    if not args.dry_run:
+        try:
+            import subprocess
+            scan = Path(__file__).parent / "business-skills" / "scan-dashboard.py"
+            if scan.exists():
+                subprocess.run([sys.executable, str(scan)], check=False)
+        except Exception as e:
+            print(f"[WARN] dashboard scan failed: {e}")
+
 
 if __name__ == "__main__":
     main()
