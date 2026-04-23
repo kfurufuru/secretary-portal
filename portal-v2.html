@@ -1174,7 +1174,23 @@ function applyData() {
       const when = checkedAt ? checkedAt.toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
       const hoursAgo = checkedAt ? (Date.now() - checkedAt.getTime()) / 3600000 : Infinity;
       const staleLabel = hoursAgo > 168 ? ' <span style="color:#f87171;font-weight:600">⚠ cron停止?</span>' : (hoursAgo > 24 ? ' <span style="color:#fbbf24">△ 24h超</span>' : ' <span style="color:#34d399">✓ 最新</span>');
-      dt.innerHTML = `OK ${ok} / NG ${broken} / 警告 ${warn}　<span style="opacity:.7">(${when})</span>${staleLabel}`;
+      // warning詳細から停止中サーバを抽出して起動コマンド提示
+      const downPorts = new Set();
+      (d.files || []).forEach(fi => (fi.links || []).forEach(l => {
+        if (l.status === 'warning' && l.reason && l.reason.startsWith('localhost_server_down')) {
+          const m = l.href && l.href.match(/localhost:(\d+)/);
+          if (m) downPorts.add(m[1]);
+        }
+      }));
+      const portBatMap = {'8765':'start-denken.bat','8096':'ai-news\\ai-news\\start-server.bat'};
+      let fixHint = '';
+      if (downPorts.size > 0) {
+        const bats = [...downPorts].map(p => portBatMap[p]).filter(Boolean);
+        fixHint = '<div style="margin-top:6px;font-size:0.72rem;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><span style="opacity:.7">停止中:</span>' +
+          bats.map(b => `<button onclick="navigator.clipboard.writeText('${b}');this.textContent='✓ copied';setTimeout(()=>this.textContent='📋 ${b}',1500);" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);color:#fbbf24;padding:2px 8px;border-radius:6px;font-size:0.7rem;cursor:pointer;font-family:inherit;">📋 ${b}</button>`).join('') +
+          '</div>';
+      }
+      dt.innerHTML = `OK ${ok} / NG ${broken} / 警告 ${warn}　<span style="opacity:.7">(${when})</span>${staleLabel}${fixHint}`;
     })
     .catch(e => {
       const st = document.getElementById('lc-status');
