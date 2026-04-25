@@ -1,0 +1,252 @@
+[
+  {
+    "title": "Anthropic’s new cybersecurity model could get it back in the government’s good graces",
+    "summary": "The Trump administration has spent nearly two months fighting with AI company Anthropic. It's dubbed the company a \"RADICAL LEFT, WOKE COMPANY\" full of \"Leftwing nut jobs\" and a menace to national security. But some of the ice may reportedly be melting between the two, thanks to Anthropic's buzzy new cybersecurity-focused model: Claude Mythos Preview. [&#8230;]",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/914229/tides-turning-anthropic-trump-administration-cybersecurity-mythos-preview",
+    "source": "The Verge AI",
+    "category": "メディア",
+    "published": "2026-04-17T16:14:21-04:00",
+    "_keyword_hits": [
+      "claude",
+      "anthropic"
+    ],
+    "ja_summary": "Anthropic の新型サイバーセキュリティモデル「Claude Mythos Preview」が政府関係案件での採用可能性を高めるニュースだが、製造業エンジニアである自分の業務直結性は限定的。",
+    "score": 2,
+    "reason": "政治的関係性の改善ニュースで、製造現場のAI活用（設計・生産管理・予測保全など）への直接的な機能追加情報がなく、参考情報レベル",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "Dairy Queen is putting an AI chatbot in its drive-thrus",
+    "summary": "Dairy Queen is becoming the latest fast food chain to get in on AI, as it's bringing a chatbot to dozens of its drive-thrus across the US and Canada. It aims to help speed up drive-thru service and \"encourage customers to add more food to their orders,\" according to The Wall Street Journal. Following a [&#8230;]",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/913928/dairy-queen-ai-drive-thru-presto",
+    "source": "The Verge AI",
+    "category": "メディア",
+    "published": "2026-04-17T11:46:37-04:00",
+    "_keyword_hits": [
+      "rag"
+    ],
+    "ja_summary": "音声認識を使ったドライブスルー注文システムの実装パターンを、実運用データを持つ大手企業の事例から学べる。Dairy Queensが導入する複数マイクの環境雑音処理、AI推奨機能によるアップセル連携、複数言語対応の実装課題など、製造現場の音声コマンドシステムやIoT機器の音声インターフェース化にそのまま応用できる技術要件が具体化されている。",
+    "score": 3,
+    "reason": "実装アーキテクチャの参考価値は高いが、記事が戦略・導入計画レベルで技術詳細（モデル選定、レイテンシ要件、精度指標）が不明なため、すぐに試す段階ではない",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "OpenAI’s big Codex update is a direct shot at Claude Code",
+    "summary": "OpenAI is beefing up its agentic coding and development system, Codex, with a suite of updates that let it use your computer, generate images, and remember from past experiences. The package of updates comes as OpenAI's rivalry with Anthropic intensifies, following the stellar successes of Claude Code and OpenAI aggressively shifting resources to catch up. [&#8230;]",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/913034/openai-codex-updates-use-macos",
+    "source": "The Verge AI",
+    "category": "メディア",
+    "published": "2026-04-16T13:00:00-04:00",
+    "_keyword_hits": [
+      "claude",
+      "anthropic",
+      "claude code",
+      "agentic"
+    ],
+    "ja_summary": "OpenAIのCodexがコンピュータ操作・画像生成・過去経験の記憶機能を搭載したため、複雑なコーディングタスク自動化の精度が上がり、電気設計の自動ドキュメント生成やシミュレーション条件設定の自動化に使える可能性が広がった。ただし記事は概略のみで、実装レベルの詳細（API仕様、レート制限、精度）がないため、日本語での動作確認が必須。",
+    "score": 3,
+    "reason": "Claude Codeとの競争激化ニュースは把握すべきだが、具体的な機能・価格・日本対応状況が不明で、すぐに試す判断材料に乏しい",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "Gemini can now pull from Google Photos to generate personalized images",
+    "summary": "Google's Personal Intelligence feature, which lets Gemini pull data from apps like Google Photos to offer responses tailored to you, can now use that data and its Nano Banana 2 image model to create images based on your personal context. With the feature, you can use prompts like \"Design my dream house\" or \"Create a [&#8230;]",
+    "url": "https://www.theverge.com/tech/913202/gemini-personal-intelligence-images-nano-banana",
+    "source": "The Verge AI",
+    "category": "メディア",
+    "published": "2026-04-16T12:00:00-04:00",
+    "_keyword_hits": [
+      "gemini"
+    ],
+    "ja_summary": "Google PhotosのメタデータをGeminiが活用して、自分の個人的な写真背景・設計思想から自動生成する画像が作れるようになるため、製品設計や工場環境の可視化に即座に応用できる。具体的には「我が社の生産ラインを未来化した画像」「設計案の複数バリエーション」といった判断材料を数秒で生成でき、会議資料作成時間が大幅削減される。ただしNano Banana 2モデルの実画像クオリティと個人情報保護面は事前検証が必須。",
+    "score": 4,
+    "reason": "個人の文脈ベース画像生成は実務的な企画・提案資料作成に即転用可能だが、社内データの安全性確認が前提条件となるため",
+    "ai_category": "ツール",
+    "try_hint": "Google Geminiの個人インテリジェンス機能が日本で利用可能か確認後、私物フォトに対して『我が社の工場を〇年後にしたら』というプロンプトで試し、生成画像のクオリティを評価する"
+  },
+  {
+    "title": "Treating enterprise AI as an operating layer",
+    "summary": "There’s a fault line running through enterprise AI, and it’s not the one getting the most attention. The public conversation still tracks foundation models and benchmarks—GPT versus Gemini, reasoning scores, and marginal capability gains. But in practice, the more durable advantage is structural: who owns the operating layer where intelligence is applied, governed, and improved.&#8230;",
+    "url": "https://www.technologyreview.com/2026/04/16/1135554/treating-enterprise-ai-as-an-operating-layer/",
+    "source": "MIT Tech Review",
+    "category": "メディア",
+    "published": "Thu, 16 Apr 2026 13:00:00 +0000",
+    "_keyword_hits": [
+      "gpt",
+      "gemini"
+    ],
+    "ja_summary": "There’s a fault line running through enterprise AI, and it’s not the one getting the most attention. The public conversation still tracks foundation models and benchmarks—GPT versus Gemini, reasoning ",
+    "score": 2,
+    "reason": "解析エラー",
+    "ai_category": "メディア",
+    "try_hint": ""
+  },
+  {
+    "title": "Why having “humans in the loop” in an AI war is an illusion",
+    "summary": "The availability of artificial intelligence for use in warfare is at the center of a legal battle between Anthropic and the Pentagon. This debate has become urgent, with AI playing a bigger role than ever before in the current conflict with Iran. AI is no longer just helping humans analyze intelligence. It is now an&#8230;",
+    "url": "https://www.technologyreview.com/2026/04/16/1136029/humans-in-the-loop-ai-war-illusion/",
+    "source": "MIT Tech Review",
+    "category": "メディア",
+    "published": "Thu, 16 Apr 2026 12:00:00 +0000",
+    "_keyword_hits": [
+      "anthropic"
+    ],
+    "ja_summary": "防衛産業でAI活用を推進する際、人間の監督下にあると想定されるAIシステムが実運用では自動判断に陥るリスク構造を理解することで、社内の安全ガバナンス要件と実装ギャップを洗い出せるようになる。記事は「ヒューマン・イン・ザ・ループ」の法的建前と運用現実の乖離を指摘しており、製造業の自動化システムにも同じ構造的矛盾が存在する可能性がある。Anthropicと米国防総省の訴訟から、AIシステム導入時に「人間が本当に介入できる仕様」か「形骸化しないか」を事前検証する設計思想の重要性が読み取れる。",
+    "score": 3,
+    "reason": "防衛・軍事応用ではなく民間製造業エンジニアの立場では、記事の主論は直接的でない。ただしAIの自動化リスク管理という普遍的なテーマは社内ルール策定の参考になる。",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "The quest to measure our relationship with nature",
+    "summary": "As a movement, environmentalism has been pretty misanthropic. Understandably so—we humans have done some destructive things to the ecosystems around us. In the 21st century, though, mainstream conservation is learning that humans can be a force for good. Foresters are turning to Indigenous burning practices to prevent wildfires. Biologists are realizing that flower-dotted meadows were&#8230;",
+    "url": "https://www.technologyreview.com/2026/04/16/1135245/measure-relationship-with-nature-index/",
+    "source": "MIT Tech Review",
+    "category": "メディア",
+    "published": "Thu, 16 Apr 2026 10:00:00 +0000",
+    "_keyword_hits": [
+      "anthropic"
+    ],
+    "ja_summary": "人間と自然の関係を定量化する手法が確立されると、製造業における環境負荷の可視化と改善施策の効果検証が科学的に実行可能になる。記事は環境主義が「人間は本来的に破壊的」という前提から「人間も生態系改善の主体になれる」へシフトしていることを論じており、これは企業の脱炭素・サーキュラーエコノミー施策の正当性評価に直結する。",
+    "score": 2,
+    "reason": "理論的なフレームワークの紹介に留まり、実装可能なAIツール・手法・計算方法が明記されていないため、現時点では参考情報レベル",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "Cappy: Outperforming and boosting large multi-task language models with a small scorer",
+    "summary": "Posted by Yun Zhu and Lijuan Liu, Software Engineers, Google Research\n\n\n\n\n\nLarge language model (LLM) advancements have led to a new paradigm that unifies various natural language processing (NLP) tasks within an instruction-following framework. This paradigm is exemplified by recent multi-task LLMs, such as T0, FLAN, and OPT-IML. First, multi-task data is gathered with each task following a task-specific template, where each labeled example is converted into an instruction (e.g., \"Put the conce",
+    "url": "http://blog.research.google/2024/03/cappy-outperforming-and-boosting-large.html",
+    "source": "Google AI Blog",
+    "category": "公式",
+    "published": "2024-03-14T12:38:00.000-07:00",
+    "_keyword_hits": [
+      "llm"
+    ],
+    "ja_summary": "小さなスコアリングモデルで大規模言語モデルの性能を引き出す技術であり、社内の限られた計算リソースで多タスク推論を高速化できる可能性がある。Cappyは大規模モデルの前に軽量な「スコアラー」を置いて入力を評価し、実行するモデルを動的に選択する仕組みで、同じ精度を保ちながら推論コストを削減できる点が、製造業のエッジデバイスやコスト制約がある現場で直接応用できる。",
+    "score": 4,
+    "reason": "多タスク推論の効率化は実務的価値が高く、限られたリソースで複数業務を処理する製造現場での即応力向上に結びつく可能性が高い",
+    "ai_category": "論文",
+    "try_hint": "Google Researchのブログで公開されているコード例を探し、社内データセット（検査画像判定など複数タスク）で軽量スコアラーの効果を1タスク分PoC実装して推論時間を計測する"
+  },
+  {
+    "title": "Chain-of-table: Evolving tables in the reasoning chain for table understanding",
+    "summary": "Posted by Zilong Wang, Student Researcher, and Chen-Yu Lee, Research Scientist, Cloud AI Team\n\n\n\n\nPeople use tables every day to organize and interpret complex information in a structured, easily accessible format. Due to the ubiquity of such tables, reasoning over tabular data has long been a central topic in natural language processing (NLP). Researchers in this field have aimed to leverage language models to help users answer questions, verify statements, and analyze data based on tables. How",
+    "url": "http://blog.research.google/2024/03/chain-of-table-evolving-tables-in.html",
+    "source": "Google AI Blog",
+    "category": "公式",
+    "published": "2024-03-11T12:08:00.000-07:00",
+    "_keyword_hits": [
+      "rag"
+    ],
+    "ja_summary": "表データの複雑な推論をAIに処理させるときに、従来より精度を上げる方法（Chain-of-Table）を試せるようになり、製造業の生産計画表や品質管理データの分析が正確になる可能性がある。このアプローチは表の行列を段階的に変換しながら推論を進めるため、ExcelやCSVデータを入力したときにAIが「なぜそう判断したのか」を追跡可能になる点が、監査や品質確認が厳しい製造業務で重宝する。",
+    "score": 4,
+    "reason": "製造業の定量データ（生産量表、歩留まり管理表、納期実績）をAIに読み込ませる際の精度向上が直結する実用性がある一方、論文段階で実装済みツールへのリンクが不明なため即座には試しにくい",
+    "ai_category": "論文",
+    "try_hint": "Google Researchのブログから論文PDFをダウンロードし、デモやコード公開の有無を確認するか、同等の機能をClaude/ChatGPTのTableモード機能で試す（CSV貼付→段階的推論を要求）"
+  },
+  {
+    "title": "Health-specific embedding tools for dermatology and pathology",
+    "summary": "Posted by Dave Steiner, Clinical Research Scientist, Google Health, and Rory Pilgrim, Product Manager, Google Research\n\n\n\n\nThere’s a worldwide shortage of access to medical imaging expert interpretation across specialties including radiology, dermatology and pathology. Machine learning (ML) technology can help ease this burden by powering tools that enable doctors to interpret these images more accurately and efficiently. However, the development and implementation of such ML tools are often lim",
+    "url": "http://blog.research.google/2024/03/health-specific-embedding-tools-for.html",
+    "source": "Google AI Blog",
+    "category": "公式",
+    "published": "2024-03-08T11:33:00.000-08:00",
+    "_keyword_hits": [
+      "embedding"
+    ],
+    "ja_summary": "医療画像解析の専門家不足を埋める埋め込みモデル技術であり、製造業の品質検査や不良判定の自動化にも応用できる画像認識プラットフォームとして学べる。Google Healthが皮膚科・病理画像用に特化した埋め込みツールを公開したもので、特定領域に最適化されたMLモデル構築のアプローチが、製造業の検査ラインへの適用時に参考になる。",
+    "score": 3,
+    "reason": "医療特化の埋め込みモデルという専門領域だが、汎用的な画像分類の仕組みとしてプロセス理解に有益。ただし実装には高度な医療データが必要で、すぐ自社業務へ転用しづらい。",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "Social learning: Collaborative learning with large language models",
+    "summary": "Posted by Amirkeivan Mohtashami, Research Intern, and Florian Hartmann, Software Engineer, Google Research\n\n\n\n\nLarge language models (LLMs) have significantly improved the state of the art for solving tasks specified using natural language, often reaching performance close to that of people. As these models increasingly enable assistive agents, it could be beneficial for them to learn effectively from each other, much like people do in social settings, which would allow LLM-based agents to impro",
+    "url": "http://blog.research.google/2024/03/social-learning-collaborative-learning.html",
+    "source": "Google AI Blog",
+    "category": "公式",
+    "published": "2024-03-07T10:15:00.000-08:00",
+    "_keyword_hits": [
+      "llm"
+    ],
+    "ja_summary": "LLMが複数エージェント間で協調学習する仕組みを理解することで、製造現場の複数システム（品質管理・生産計画・設備診断など）を1つのLLMで統合制御できる可能性が広がる。GoogleのこのアプローチはLLMが相互作用を通じて自己改善する手法で、管理職として自動化ROIの予測精度向上に直結する可能性がある。",
+    "score": 3,
+    "reason": "理論段階で実装例が不明。フル論文を読まないと三菱ケミカルの実務（異なるシステム間連携や多エージェント制御）への適用可能性が判断できない",
+    "ai_category": "論文",
+    "try_hint": ""
+  },
+  {
+    "title": "Mixed-input matrix multiplication performance optimizations",
+    "summary": "Posted by Manish Gupta, Staff Software Engineer, Google Research\n\n\n\n\nAI-driven technologies are weaving themselves into the fabric of our daily routines, with the potential to enhance our access to knowledge and boost our overall productivity. The backbone of these applications lies in large language models (LLMs).  LLMs are memory-intensive and typically require specialized hardware accelerators to efficiently deliver tens of exaflops of computing power. This blog post shows how we can start ad",
+    "url": "http://blog.research.google/2024/01/mixed-input-matrix-multiplication.html",
+    "source": "Google AI Blog",
+    "category": "公式",
+    "published": "2024-01-26T11:56:00.000-08:00",
+    "_keyword_hits": [
+      "llm"
+    ],
+    "ja_summary": "LLM推論の行列演算を高速化する技術により、生成AIをエッジデバイスや低コスト環境で動かせるようになり、製造現場のIoTセンサー・FA機器への実装が現実的になる。Googleの混合精度行列演算最適化により、メモリ使用量削減と推論速度向上が同時実現でき、我々が検討中のAI予測保全システムや品質検査AIの現場配置が可能になる点が価値。",
+    "score": 4,
+    "reason": "実装段階の管理職として、LLM推論の実運用コストが大幅削減される技術は導入判断の材料として近い将来参考になる。ただし具体的な実装コードがない状態では即座の試行は難しい。",
+    "ai_category": "テクニック",
+    "try_hint": "GoogleのGitHubリポジトリでこの最適化の実装例を探すか、JAX/TensorFlowの公式ドキュメントで混合精度演算（bfloat16）の実装方法を試し、自社のテスト用LLMで推論時間とメモリ消費量を計測する。"
+  },
+  {
+    "title": "Changes in the system prompt between Claude Opus 4.6 and 4.7",
+    "summary": "Anthropic are the only major AI lab to publish the system prompts for their user-facing chat systems. Their system prompt archive now dates all the way back to Claude 3 in July 2024 and it's always interesting to see how the system prompt evolves as they publish new models.\nOpus 4.7 shipped the other day (April 16, 2026) with a Claude.ai system prompt update since Opus 4.6 (February 5, 2026).\nI had Claude Code take the Markdown version of their system prompts, break that up into separate documen",
+    "url": "https://simonwillison.net/2026/Apr/18/opus-system-prompt/#atom-everything",
+    "source": "Simon Willison",
+    "category": "開発者blog",
+    "published": "2026-04-18T23:59:40+00:00",
+    "_keyword_hits": [
+      "claude",
+      "anthropic",
+      "claude code"
+    ],
+    "ja_summary": "Claudeのシステムプロンプト変更内容を追跡することで、モデルの振る舞い変化を早期に把握でき、業務ツールとしての信頼性評価に活かせる。Anthropicが公開している4.6→4.7のプロンプト差分を確認することで、Claude導入時のリスク評価や仕様変更への対応策を事前に立てられる。",
+    "score": 3,
+    "reason": "システムプロンプト変更は最終ユーザーの実務には直接影響しにくく、記事が不完全で具体的な差分内容が不明",
+    "ai_category": "ニュース",
+    "try_hint": ""
+  },
+  {
+    "title": "Claude system prompts as a git timeline",
+    "summary": "Research: Claude system prompts as a git timeline\n    Anthropic publish the system prompts for Claude chat and make that page available as Markdown. I had Claude Code turn that page into separate files for each model and model family with fake git commit dates to enable browsing the changes via the GitHub commit view.\nI used this to write my own detailed notes on the changes between Opus 4.6 and 4.7.\n    \n        Tags: system-prompts, anthropic, claude, generative-ai, ai, llms",
+    "url": "https://simonwillison.net/2026/Apr/18/extract-system-prompts/#atom-everything",
+    "source": "Simon Willison",
+    "category": "開発者blog",
+    "published": "2026-04-18T12:25:00+00:00",
+    "_keyword_hits": [
+      "claude",
+      "anthropic",
+      "claude code",
+      "llm"
+    ],
+    "ja_summary": "Claudeのシステムプロンプト変更履歴をGitのコミット表示で追跡できるようになり、モデル更新時の仕様変更を素早く把握して業務適用を判断できる。Anthropicが公開したMarkdownのプロンプト変更を、ファイル分割＆Git風のタイムライン化することで、Opus 4.6など各モデル間の動作差異の根拠を具体的に確認可能になった。これにより、生成AIを実装する際に「このバージョンではどう動作するのか」の背景理解が深まり、モデル選定や微調整の判断根拠を強化できる。",
+    "score": 4,
+    "reason": "生成AIツール選定・導入判断時にモデル差分を系統的に確認できる実践的なツール。競合モデル比較や更新追跡が効率化される",
+    "ai_category": "ツール",
+    "try_hint": "Simon Willisonのブログから該当のGitHubリポジトリリンクを探し、Opus 4.6とOpus 4の差分ビューを実際に開いて、自社業務に影響する仕様変更がないか確認する"
+  },
+  {
+    "title": "Adding a new content type to my blog-to-newsletter tool",
+    "summary": "Agentic Engineering Patterns &gt;\n    Here's an example of a deceptively short prompt that got a quite a lot of work done in a single shot.\nFirst, some background. I send out a free Substack newsletter around once a week containing content copied-and-pasted from my blog. I'm effectively using Substack as a lightweight way to allow people to subscribe to my blog via email.\nI generate the newsletter with my blog-to-newsletter tool - an HTML and JavaScript app that fetches my latest content from th",
+    "url": "https://simonwillison.net/guides/agentic-engineering-patterns/adding-a-new-content-type/#atom-everything",
+    "source": "Simon Willison",
+    "category": "開発者blog",
+    "published": "2026-04-18T03:15:36+00:00",
+    "_keyword_hits": [
+      "agentic"
+    ],
+    "ja_summary": "ブログ更新をニュースレター自動配信する際に、プロンプト1つでAIが複数タイプのコンテンツを処理できるため、手作業の貼り付け作業を大幅削減できる。Simon Willosonが実践的に示した「短いプロンプトで多くの処理をさせるAgentic Engineering」のパターンで、複数コンテンツタイプへの対応も同じプロンプトで拡張可能な例。",
+    "score": 4,
+    "reason": "実務的なワークフロー自動化事例で、自社のドキュメント・レポート配信業務に直結する応用可能性が高い",
+    "ai_category": "テクニック",
+    "try_hint": "Claude APIまたはClaudeの公式APIドキュメントを開いて、自社の技術レポートをSubstack的に自動配信するプロンプトを1つ試作し、数パターンのドキュメント型で動作確認する"
+  }
+]

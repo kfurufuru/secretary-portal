@@ -1,0 +1,166 @@
+対象: 51 HTMLファイル | ルート: C:\Users\kfuru\.secretary
+
+🔗 リンクチェック結果
+
+📄 ai-news/ai-news/dashboard.html
+  ✅ 1 links OK
+
+📄 ai-news/claude-code-non-engineer-report.html
+  ✅ 0 links OK
+
+📄 business-skills/ai-gyomu-sentaku.html
+  ✅ 4 links OK
+
+📄 business-skills/aimai-taisei.html
+  ✅ 3 links OK
+
+📄 business-skills/anmokuchi-gengoka.html
+  ✅ 3 links OK
+
+📄 business-skills/asa-shigoto.html
+  ✅ 3 links OK
+
+📄 business-skills/atama-ga-ii.html
+  ✅ 5 links OK
+
+📄 business-skills/bunsho-ryoku.html
+  ✅ 4 links OK
+
+📄 business-skills/business-skill-map.html
+  ✅ 4 links OK
+
+📄 business-skills/dandori-ryoku.html
+  ✅ 4 links OK
+
+📄 business-skills/gakushuu-kouritu.html
+  ✅ 5 links OK
+
+📄 business-skills/handan-no-shitsu.html
+  ✅ 4 links OK
+
+📄 business-skills/ikusei-coaching.html
+  ✅ 4 links OK
+
+📄 business-skills/index.html
+  ✅ 7 links OK
+
+📄 business-skills/jikan-sekkei.html
+  ✅ 5 links OK
+
+📄 business-skills/jikkouryoku.html
+  ✅ 4 links OK
+
+📄 business-skills/joho-input.html
+  ✅ 4 links OK
+
+📄 business-skills/kaigi-sekkei.html
+  ✅ 4 links OK
+
+📄 business-skills/kangae-wo-fukaku.html
+  ✅ 3 links OK
+
+📄 business-skills/kosho-ryoku.html
+  ✅ 4 links OK
+
+📄 business-skills/kozo-communication.html
+  ✅ 5 links OK
+
+📄 business-skills/kozo-haaku.html
+  ✅ 5 links OK
+
+📄 business-skills/leadership.html
+  ✅ 4 links OK
+
+📄 business-skills/meta-ninchi.html
+  ✅ 3 links OK
+
+📄 business-skills/mondai-kaiketsu.html
+  ✅ 4 links OK
+
+📄 business-skills/ningen-seichou.html
+  ✅ 4 links OK
+
+📄 business-skills/python-catalog-presentation.html
+  ✅ 0 links OK
+
+📄 business-skills/python-dekirukoto.html
+  ✅ 4 links OK
+
+📄 business-skills/ronriteki-shiko.html
+  ✅ 4 links OK
+
+📄 business-skills/saigensei.html
+  ✅ 4 links OK
+
+📄 business-skills/senryaku-shiko.html
+  ✅ 4 links OK
+
+📄 business-skills/setoku-kousho.html
+  ✅ 4 links OK
+
+📄 business-skills/shippai-hokoku.html
+  ✅ 3 links OK
+
+📄 business-skills/shukan-review.html
+  ✅ 3 links OK
+
+📄 business-skills/skill-dashboard.html
+  ✅ 2 links OK
+
+📄 business-skills/stress-kanjo.html
+  ✅ 4 links OK
+
+📄 business-skills/suji-de-kataru.html
+  ✅ 4 links OK
+
+📄 business-skills/tettai-handan.html
+  ✅ 3 links OK
+
+📄 business-skills/unlearning.html
+  ✅ 3 links OK
+
+📄 business-skills/yoru-routine.html
+  ✅ 3 links OK
+
+📄 business-skills/yusen-juni.html
+  ✅ 4 links OK
+
+📄 dashboard.html
+  ✅ 1 links OK
+
+📄 denken-news/index.html
+  ✅ 2 links OK
+
+📄 denken-study.html
+  ✅ 1 links OK
+
+📄 denken3-study-dashboard/denken-map.html
+  ✅ 1 links OK
+
+📄 denken3-study-dashboard/index.html
+  ✅ 3 links OK
+
+📄 denken3-study-dashboard/stats.html
+  ✅ 1 links OK
+
+📄 denken3-study-dashboard/study-weakness-ranking.html
+  ✅ 1 links OK
+
+📄 knowledge/knowledge-graph.html
+  ✅ 0 links OK
+
+📄 portal-v2.html
+  ✅ 7 links OK
+  ⚠️  4 warning:
+    L861: href="http://localhost:8096/dashboard.html" → localhost_server_down
+    L862: href="http://localhost:8765/denken-study.html" → localhost_server_down
+    L882: href="http://localhost:8765/denken-study.html" → localhost_server_down
+    L926: href="http://localhost:8096/dashboard.html" → localhost_server_down
+
+📄 study-methods.html
+  ✅ 2 links OK
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+合計: 172 links / 168 OK / 0 broken / 4 warning
+
+📝 結果を保存しました: C:\Users\kfuru\.secretary\health-monitor\link-check-results.json

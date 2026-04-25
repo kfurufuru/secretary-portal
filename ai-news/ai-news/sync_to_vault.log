@@ -1,0 +1,110 @@
+2026-04-23 06:13:54,467 [INFO] === JSON to Markdown Sync Started ===
+2026-04-23 06:13:54,468 [INFO] Feeds directory: C:\Users\kfuru\.secretary\ai-news\feeds
+2026-04-23 06:13:54,468 [ERROR] news.json not found: C:\Users\kfuru\.secretary\ai-news\news.json
+2026-04-23 06:13:54,468 [INFO] === Sync Completed ===
+2026-04-23 06:16:13,642 [INFO] === JSON to Markdown Sync Started ===
+2026-04-23 06:16:13,643 [INFO] Feeds directory: C:\Users\kfuru\.secretary\ai-news\feeds
+2026-04-23 06:16:13,644 [INFO]   [DRY-RUN] 2026-04-17-Anthropic_s_new_cybersecurity_model_could_get_it_b.md
+2026-04-23 06:16:13,644 [INFO]     Title: Anthropic’s new cybersecurity model could get it back in the government’s good graces
+2026-04-23 06:16:13,645 [INFO]     Score: 2
+2026-04-23 06:16:13,645 [INFO]   [DRY-RUN] 2026-04-17-Dairy_Queen_is_putting_an_AI_chatbot_in_its_drive.md
+2026-04-23 06:16:13,646 [INFO]     Title: Dairy Queen is putting an AI chatbot in its drive-thrus
+2026-04-23 06:16:13,646 [INFO]     Score: 3
+2026-04-23 06:16:13,646 [INFO]   [DRY-RUN] 2026-04-16-OpenAI_s_big_Codex_update_is_a_direct_shot_at_Clau.md
+2026-04-23 06:16:13,646 [INFO]     Title: OpenAI’s big Codex update is a direct shot at Claude Code
+2026-04-23 06:16:13,646 [INFO]     Score: 3
+2026-04-23 06:16:13,646 [INFO]   [DRY-RUN] 2026-04-16-Gemini_can_now_pull_from_Google_Photos_to_generate.md
+2026-04-23 06:16:13,646 [INFO]     Title: Gemini can now pull from Google Photos to generate personalized images
+2026-04-23 06:16:13,646 [INFO]     Score: 4
+2026-04-23 06:16:13,646 [INFO]   [DRY-RUN] -Treating_enterprise_AI_as_an_operating_layer.md
+2026-04-23 06:16:13,646 [INFO]     Title: Treating enterprise AI as an operating layer
+2026-04-23 06:16:13,646 [INFO]     Score: 2
+2026-04-23 06:16:13,647 [INFO]   [DRY-RUN] -Why_having__humans_in_the_loop__in_an_AI_war_is_an.md
+2026-04-23 06:16:13,647 [INFO]     Title: Why having “humans in the loop” in an AI war is an illusion
+2026-04-23 06:16:13,647 [INFO]     Score: 3
+2026-04-23 06:16:13,647 [INFO]   [DRY-RUN] -The_quest_to_measure_our_relationship_with_nature.md
+2026-04-23 06:16:13,647 [INFO]     Title: The quest to measure our relationship with nature
+2026-04-23 06:16:13,647 [INFO]     Score: 2
+2026-04-23 06:16:13,647 [INFO]   [DRY-RUN] 2024-03-14-Cappy__Outperforming_and_boosting_large_multi-task.md
+2026-04-23 06:16:13,647 [INFO]     Title: Cappy: Outperforming and boosting large multi-task language models with a small scorer
+2026-04-23 06:16:13,647 [INFO]     Score: 4
+2026-04-23 06:16:13,647 [INFO]   [DRY-RUN] 2024-03-11-Chain-of-table__Evolving_tables_in_the_reasoning_c.md
+2026-04-23 06:16:13,647 [INFO]     Title: Chain-of-table: Evolving tables in the reasoning chain for table understanding
+2026-04-23 06:16:13,647 [INFO]     Score: 4
+2026-04-23 06:16:13,647 [INFO]   [DRY-RUN] 2024-03-08-Health-specific_embedding_tools_for_dermatology_an.md
+2026-04-23 06:16:13,647 [INFO]     Title: Health-specific embedding tools for dermatology and pathology
+2026-04-23 06:16:13,647 [INFO]     Score: 3
+2026-04-23 06:16:13,648 [INFO]   [DRY-RUN] 2024-03-07-Social_learning__Collaborative_learning_with_large.md
+2026-04-23 06:16:13,648 [INFO]     Title: Social learning: Collaborative learning with large language models
+2026-04-23 06:16:13,648 [INFO]     Score: 3
+2026-04-23 06:16:13,648 [INFO]   [DRY-RUN] 2024-01-26-Mixed-input_matrix_multiplication_performance_opti.md
+2026-04-23 06:16:13,648 [INFO]     Title: Mixed-input matrix multiplication performance optimizations
+2026-04-23 06:16:13,648 [INFO]     Score: 4
+2026-04-23 06:16:13,648 [INFO]   [DRY-RUN] 2026-04-18-Changes_in_the_system_prompt_between_Claude_Opus_4.md
+2026-04-23 06:16:13,648 [INFO]     Title: Changes in the system prompt between Claude Opus 4.6 and 4.7
+2026-04-23 06:16:13,648 [INFO]     Score: 3
+2026-04-23 06:16:13,648 [INFO]   [DRY-RUN] 2026-04-18-Claude_system_prompts_as_a_git_timeline.md
+2026-04-23 06:16:13,648 [INFO]     Title: Claude system prompts as a git timeline
+2026-04-23 06:16:13,648 [INFO]     Score: 4
+2026-04-23 06:16:13,648 [INFO]   [DRY-RUN] 2026-04-18-Adding_a_new_content_type_to_my_blog-to-newsletter.md
+2026-04-23 06:16:13,648 [INFO]     Title: Adding a new content type to my blog-to-newsletter tool
+2026-04-23 06:16:13,648 [INFO]     Score: 4
+2026-04-23 06:16:13,649 [INFO] Sync completed: 0 new files created
+2026-04-23 06:16:13,649 [INFO] === Sync Completed ===
+2026-04-23 06:19:12,546 [INFO] === JSON to Markdown Sync Started ===
+2026-04-23 06:19:12,547 [INFO] Feeds directory: C:\Users\kfuru\.secretary\ai-news\feeds
+2026-04-23 06:19:12,548 [INFO]   [CREATED] 2026-04-17-Anthropic_s_new_cybersecurity_model_could_get_it_b.md (score: 2)
+2026-04-23 06:19:12,549 [INFO]   [CREATED] 2026-04-17-Dairy_Queen_is_putting_an_AI_chatbot_in_its_drive.md (score: 3)
+2026-04-23 06:19:12,549 [INFO]   [CREATED] 2026-04-16-OpenAI_s_big_Codex_update_is_a_direct_shot_at_Clau.md (score: 3)
+2026-04-23 06:19:12,550 [INFO]   [CREATED] 2026-04-16-Gemini_can_now_pull_from_Google_Photos_to_generate.md (score: 4)
+2026-04-23 06:19:12,551 [INFO]   [CREATED] -Treating_enterprise_AI_as_an_operating_layer.md (score: 2)
+2026-04-23 06:19:12,552 [INFO]   [CREATED] -Why_having__humans_in_the_loop__in_an_AI_war_is_an.md (score: 3)
+2026-04-23 06:19:12,552 [INFO]   [CREATED] -The_quest_to_measure_our_relationship_with_nature.md (score: 2)
+2026-04-23 06:19:12,553 [INFO]   [CREATED] 2024-03-14-Cappy__Outperforming_and_boosting_large_multi-task.md (score: 4)
+2026-04-23 06:19:12,554 [INFO]   [CREATED] 2024-03-11-Chain-of-table__Evolving_tables_in_the_reasoning_c.md (score: 4)
+2026-04-23 06:19:12,554 [INFO]   [CREATED] 2024-03-08-Health-specific_embedding_tools_for_dermatology_an.md (score: 3)
+2026-04-23 06:19:12,555 [INFO]   [CREATED] 2024-03-07-Social_learning__Collaborative_learning_with_large.md (score: 3)
+2026-04-23 06:19:12,555 [INFO]   [CREATED] 2024-01-26-Mixed-input_matrix_multiplication_performance_opti.md (score: 4)
+2026-04-23 06:19:12,556 [INFO]   [CREATED] 2026-04-18-Changes_in_the_system_prompt_between_Claude_Opus_4.md (score: 3)
+2026-04-23 06:19:12,557 [INFO]   [CREATED] 2026-04-18-Claude_system_prompts_as_a_git_timeline.md (score: 4)
+2026-04-23 06:19:12,557 [INFO]   [CREATED] 2026-04-18-Adding_a_new_content_type_to_my_blog-to-newsletter.md (score: 4)
+2026-04-23 06:19:12,558 [INFO] Sync completed: 15 new files created
+2026-04-23 06:19:12,558 [INFO] === Sync Completed ===
+2026-04-23 06:22:07,563 [INFO] === JSON to Markdown Sync Started ===
+2026-04-23 06:22:07,563 [INFO] Feeds directory: C:\Users\kfuru\.secretary\ai-news\feeds
+2026-04-23 06:22:07,564 [INFO]   [SKIP] 2026-04-17-Anthropic_s_new_cybersecurity_model_could_get_it_b.md (already exists)
+2026-04-23 06:22:07,564 [INFO]   [SKIP] 2026-04-17-Dairy_Queen_is_putting_an_AI_chatbot_in_its_drive.md (already exists)
+2026-04-23 06:22:07,564 [INFO]   [SKIP] 2026-04-16-OpenAI_s_big_Codex_update_is_a_direct_shot_at_Clau.md (already exists)
+2026-04-23 06:22:07,564 [INFO]   [SKIP] 2026-04-16-Gemini_can_now_pull_from_Google_Photos_to_generate.md (already exists)
+2026-04-23 06:22:07,565 [INFO]   [SKIP] -Treating_enterprise_AI_as_an_operating_layer.md (already exists)
+2026-04-23 06:22:07,565 [INFO]   [SKIP] -Why_having__humans_in_the_loop__in_an_AI_war_is_an.md (already exists)
+2026-04-23 06:22:07,565 [INFO]   [SKIP] -The_quest_to_measure_our_relationship_with_nature.md (already exists)
+2026-04-23 06:22:07,565 [INFO]   [SKIP] 2024-03-14-Cappy__Outperforming_and_boosting_large_multi-task.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2024-03-11-Chain-of-table__Evolving_tables_in_the_reasoning_c.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2024-03-08-Health-specific_embedding_tools_for_dermatology_an.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2024-03-07-Social_learning__Collaborative_learning_with_large.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2024-01-26-Mixed-input_matrix_multiplication_performance_opti.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2026-04-18-Changes_in_the_system_prompt_between_Claude_Opus_4.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2026-04-18-Claude_system_prompts_as_a_git_timeline.md (already exists)
+2026-04-23 06:22:07,566 [INFO]   [SKIP] 2026-04-18-Adding_a_new_content_type_to_my_blog-to-newsletter.md (already exists)
+2026-04-23 06:22:07,566 [INFO] Sync completed: 0 new files created
+2026-04-23 06:22:07,566 [INFO] === Sync Completed ===
+2026-04-23 06:27:26,455 [INFO] === JSON to Markdown Sync Started ===
+2026-04-23 06:27:26,455 [INFO] Feeds directory: C:\Users\kfuru\.secretary\ai-news\feeds
+2026-04-23 06:27:26,456 [INFO]   [SKIP] 2026-04-17-Anthropic_s_new_cybersecurity_model_could_get_it_b.md (already exists)
+2026-04-23 06:27:26,456 [INFO]   [SKIP] 2026-04-17-Dairy_Queen_is_putting_an_AI_chatbot_in_its_drive.md (already exists)
+2026-04-23 06:27:26,456 [INFO]   [SKIP] 2026-04-16-OpenAI_s_big_Codex_update_is_a_direct_shot_at_Clau.md (already exists)
+2026-04-23 06:27:26,456 [INFO]   [SKIP] 2026-04-16-Gemini_can_now_pull_from_Google_Photos_to_generate.md (already exists)
+2026-04-23 06:27:26,456 [INFO]   [SKIP] -Treating_enterprise_AI_as_an_operating_layer.md (already exists)
+2026-04-23 06:27:26,456 [INFO]   [SKIP] -Why_having__humans_in_the_loop__in_an_AI_war_is_an.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] -The_quest_to_measure_our_relationship_with_nature.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2024-03-14-Cappy__Outperforming_and_boosting_large_multi-task.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2024-03-11-Chain-of-table__Evolving_tables_in_the_reasoning_c.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2024-03-08-Health-specific_embedding_tools_for_dermatology_an.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2024-03-07-Social_learning__Collaborative_learning_with_large.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2024-01-26-Mixed-input_matrix_multiplication_performance_opti.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2026-04-18-Changes_in_the_system_prompt_between_Claude_Opus_4.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2026-04-18-Claude_system_prompts_as_a_git_timeline.md (already exists)
+2026-04-23 06:27:26,457 [INFO]   [SKIP] 2026-04-18-Adding_a_new_content_type_to_my_blog-to-newsletter.md (already exists)
+2026-04-23 06:27:26,457 [INFO] Sync completed: 0 new files created
+2026-04-23 06:27:26,457 [INFO] === Sync Completed ===

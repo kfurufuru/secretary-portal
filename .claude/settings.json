@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "Stop": {
+      "command": "py \"C:/Users/kfuru/.secretary/ai-news/ai-news/sync_to_vault.py\""
+    }
+  }
+}

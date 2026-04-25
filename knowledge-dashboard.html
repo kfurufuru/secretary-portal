@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #0a0e1a;
+      --surface:     rgba(15,22,41,0.60);
+      --surface2:    rgba(15,22,41,0.85);
+      --border:      rgba(255,255,255,0.08);
+      --border-h:    rgba(255,255,255,0.18);
+      --text:        rgba(255,255,255,0.92);
+      --text2:       rgba(255,255,255,0.60);
+      --text3:       rgba(255,255,255,0.35);
+      --accent:      #22d3ee;
+      --accent-h:    #67e8f9;
+      --accent-glow: rgba(34,211,238,0.20);
+      --accent-sub:  #6366f1;
+      --accent-sub-h:#818cf8;
+      --green:       #10b981;
+      --yellow:      #f59e0b;
+      --red:         #ef4444;
+      --cyan:        #22d3ee;
+      --shadow:      rgba(0,0,0,0.5);
+      --header-bg:   rgba(10,14,26,0.90);
+      --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+      --sp-6:24px; --sp-8:32px; --sp-12:48px; --sp-16:64px;
+      --font-base: 'Inter','Noto Sans JP',sans-serif;
+      --fs-h1:2rem; --fs-h2:1.5rem; --fs-h3:1.25rem;
+      --fs-body: clamp(0.875rem, 2.5vw, 1rem); --fs-sm:0.78rem; --lh-body:1.6;
+      --fw-normal:400; --fw-bold:700;
+      --radius-sm:6px; --radius-md:14px; --radius-lg:20px;
+      --transition:0.2s ease;
+      --hover-lift: translateY(-2px);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html { line-break: strict; overflow-wrap: break-word; word-break: normal; }
+    body{
+      font-family:var(--font-base);
+      background:var(--bg); color:var(--text);
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ---- ORBS ---- */
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+    .orb-1{width:520px;height:520px;background:#6366f1;opacity:.05;top:-160px;left:-120px;}
+    .orb-2{width:360px;height:360px;background:#06b6d4;opacity:.04;top:50%;right:-80px;}
+    .orb-3{width:280px;height:280px;background:#a855f7;opacity:.03;bottom:80px;left:38%;}
+
+    /* ---- HEADER ---- */
+    header{
+      position:sticky;top:0;z-index:200;
+      padding:12px 32px;
+      background:var(--header-bg);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:12px;
+    }
+    .header-nav{
+      font-size:0.9rem;color:var(--text2);cursor:pointer;
+      transition:color var(--transition);
+    }
+    .header-nav:hover{color:var(--text);}
+    .header-title{
+      font-size:1rem;font-weight:600;letter-spacing:-0.01em;
+      margin-left:8px;
+    }
+    .header-right{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+    /* ---- MAIN ---- */
+    main{
+      position:relative;z-index:1;
+      max-width:1200px;margin:0 auto;
+      padding:24px 24px 80px;
+    }
+
+    /* ---- STATS BAR ---- */
+    .stats-bar{
+      display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;
+    }
+    .stat-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;
+      border:1px solid;letter-spacing:0.02em;
+    }
+    .stat-badge.total{
+      background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.35);color:#a5b4fc;
+    }
+    .stat-badge.published{
+      background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;
+    }
+    .stat-badge.review{
+      background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.35);color:#fcd34d;
+    }
+    .stat-badge.draft{
+      background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.35);color:#93c5fd;
+    }
+    .stat-count{
+      font-weight:700;
+    }
+
+    /* ---- SPOTLIGHT CARD ---- */
+    .spotlight-card{
+      background:linear-gradient(135deg,rgba(99,102,241,0.14) 0%,rgba(168,85,247,0.07) 50%,rgba(15,22,41,0.60) 100%);
+      border:1px solid rgba(99,102,241,0.20);
+      border-radius:var(--radius-lg);
+      padding:var(--sp-8);
+      margin-bottom:24px;
+      position:relative;overflow:hidden;
+      box-shadow:0 8px 32px var(--shadow),inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .spotlight-card::before{
+      content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+      background:linear-gradient(180deg,#6366f1,#a855f7 60%,transparent);
+      border-radius:var(--radius-lg) 0 0 var(--radius-lg);
+    }
+    .spotlight-label{
+      font-size:0.65rem;font-weight:600;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--text3);margin-bottom:var(--sp-3);
+    }
+    .spotlight-title{
+      font-size:1.25rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:8px;
+      color:var(--text);
+    }
+    .spotlight-date{
+      font-size:0.8rem;color:var(--text2);margin-bottom:var(--sp-4);
+    }
+    .spotlight-status{
+      display:inline-block;
+      padding:4px 10px;border-radius:12px;font-size:0.7rem;font-weight:600;
+      text-transform:uppercase;letter-spacing:0.04em;
+    }
+    .spotlight-status.published{
+      background:rgba(16,185,129,0.20);color:#6ee7b7;
+    }
+    .spotlight-status.review{
+      background:rgba(245,158,11,0.20);color:#fcd34d;
+    }
+    .spotlight-status.draft{
+      background:rgba(59,130,246,0.20);color:#93c5fd;
+    }
+
+    /* ---- CONTROLS ---- */
+    .controls{
+      display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;
+      align-items:center;
+    }
+    .filter-group{
+      display:flex;gap:6px;flex-wrap:wrap;
+    }
+    .filter-btn{
+      padding:6px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;
+      border:1px solid var(--border);color:var(--text2);cursor:pointer;
+      background:transparent;transition:all var(--transition);
+    }
+    .filter-btn:hover{
+      border-color:var(--border-h);color:var(--text);
+    }
+    .filter-btn.active{
+      background:var(--accent-sub);color:#fff;border-color:var(--accent-sub);
+    }
+    .search-box{
+      flex:1;min-width:200px;
+      padding:6px 12px;border-radius:8px;font-size:0.85rem;
+      background:rgba(15,22,41,0.85);border:1px solid var(--border);
+      color:var(--text);font-family:inherit;
+      transition:border-color var(--transition);
+    }
+    .search-box:focus{
+      outline:none;border-color:var(--accent);
+    }
+
+    /* ---- KNOWLEDGE LIST ---- */
+    .knowledge-list{
+      display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+    }
+    .knowledge-card{
+      background:var(--surface);
+      backdrop-filter:blur(8px) saturate(160%);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:var(--sp-6);
+      box-shadow:0 8px 32px var(--shadow),inset 0 1px 0 rgba(255,255,255,0.05);
+      transition:border-color var(--transition),transform var(--transition);
+      cursor:pointer;
+    }
+    .knowledge-card:hover{
+      border-color:var(--border-h);
+      transform:var(--hover-lift);
+    }
+    .knowledge-header{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+      margin-bottom:var(--sp-3);
+    }
+    .knowledge-title{
+      font-size:0.95rem;font-weight:600;letter-spacing:-0.01em;
+      margin-bottom:4px;flex:1;line-height:1.4;
+    }
+    .knowledge-status{
+      padding:3px 8px;border-radius:8px;font-size:0.65rem;font-weight:600;
+      text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap;
+      flex-shrink:0;
+    }
+    .knowledge-status.published{
+      background:rgba(16,185,129,0.18);color:#6ee7b7;
+    }
+    .knowledge-status.review{
+      background:rgba(245,158,11,0.18);color:#fcd34d;
+    }
+    .knowledge-status.draft{
+      background:rgba(59,130,246,0.18);color:#93c5fd;
+    }
+    .knowledge-category{
+      font-size:0.7rem;color:var(--text3);margin-bottom:var(--sp-2);
+      letter-spacing:0.05em;text-transform:uppercase;
+    }
+    .knowledge-date{
+      font-size:0.75rem;color:var(--text2);
+      margin-top:var(--sp-4);padding-top:var(--sp-3);
+      border-top:1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ---- EMPTY STATE ---- */
+    .empty-state{
+      text-align:center;padding:48px 24px;
+      color:var(--text2);
+    }
+    .empty-state-icon{
+      font-size:3rem;margin-bottom:16px;opacity:0.5;
+    }
+    .empty-state-text{
+      font-size:0.95rem;margin-bottom:8px;
+    }
+
+    /* ---- ERROR STATE ---- */
+    .error-state{
+      background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.30);
+      border-radius:var(--radius-lg);padding:var(--sp-6);color:#fca5a5;
+      text-align:center;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width:768px) {
+      header{padding:12px 16px;}
+      main{padding:16px 16px 60px;}
+      .knowledge-list{grid-template-columns:1fr;}
+      .stats-bar{flex-direction:column;}
+    }
+    @media (max-width:480px) {
+      header{flex-wrap:wrap;gap:8px;}
+      .header-title{font-size:0.85rem;}
+      .controls{flex-direction:column;}
+      .search-box{min-width:100%;}
+    }
+  </style>
+</head>
+<body>
+  <!-- ORBS -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-nav" onclick="window.location.href='portal-v2.html'">← ポータルに戻る</div>
+    <div class="header-title">🧠 Knowledge Dashboard</div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- STATS BAR -->
+    <div class="stats-bar" id="stats">
+      <div class="stat-badge total">
+        <span>Total</span>
+        <span class="stat-count" id="total-count">0</span>
+      </div>
+      <div class="stat-badge published">
+        <span>Published</span>
+        <span class="stat-count" id="published-count">0</span>
+      </div>
+      <div class="stat-badge review">
+        <span>Review</span>
+        <span class="stat-count" id="review-count">0</span>
+      </div>
+      <div class="stat-badge draft">
+        <span>Draft</span>
+        <span class="stat-count" id="draft-count">0</span>
+      </div>
+    </div>
+
+    <!-- SPOTLIGHT CARD -->
+    <div id="spotlight-container"></div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="published">Published</button>
+        <button class="filter-btn" data-filter="review">Review</button>
+        <button class="filter-btn" data-filter="draft">Draft</button>
+      </div>
+      <input type="text" class="search-box" id="search-input" placeholder="Search by title...">
+    </div>
+
+    <!-- KNOWLEDGE LIST -->
+    <div class="knowledge-list" id="knowledge-list">
+      <div class="empty-state">
+        <div class="empty-state-icon">📚</div>
+        <div class="empty-state-text">Loading knowledge base...</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let knowledgeData = [];
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // === DATA LOADING ===
+    async function loadKnowledge() {
+      try {
+        // Get base URL (handle both direct file and server contexts)
+        const baseUrl = window.location.href.replace(/[^/]*$/, '');
+        const fetchUrl = baseUrl + 'knowledge/_index.md';
+
+        console.log('Attempting to fetch from:', fetchUrl);
+        const response = await fetch(fetchUrl, { mode: 'cors', cache: 'no-cache' });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const text = await response.text();
+        knowledgeData = parseIndex(text);
+
+        console.log('Loaded', knowledgeData.length, 'knowledge items');
+        renderStats();
+        renderSpotlight();
+        renderList();
+        attachEventListeners();
+      } catch (error) {
+        console.error('Error loading knowledge:', error);
+        showError(`Failed to load knowledge base. Please ensure you are accessing this file via a local server (e.g., python -m http.server). Error: ${error.message}`);
+      }
+    }
+
+    function parseIndex(text) {
+      const items = [];
+      const lines = text.split('\n');
+
+      for (const line of lines) {
+        // Match: - [[file.md]] — Title (status, YYYY-MM-DD)
+        const match = line.match(/^-\s+\[\[([^\]]+)\]\]\s+—\s+([^(]+)\s+\(([^,]+),\s+(\d{4}-\d{2}-\d{2})\)/);
+        if (match) {
+          items.push({
+            file: match[1],
+            title: match[2].trim(),
+            status: match[3].trim(),
+            date: match[4],
+          });
+        }
+      }
+
+      // Sort by date descending
+      items.sort((a, b) => new Date(b.date) - new Date(a.date));
+      return items;
+    }
+
+    function renderStats() {
+      const total = knowledgeData.length;
+      const published = knowledgeData.filter(k => k.status === 'published').length;
+      const review = knowledgeData.filter(k => k.status === 'review').length;
+      const draft = knowledgeData.filter(k => k.status === 'draft').length;
+
+      document.getElementById('total-count').textContent = total;
+      document.getElementById('published-count').textContent = published;
+      document.getElementById('review-count').textContent = review;
+      document.getElementById('draft-count').textContent = draft;
+    }
+
+    function renderSpotlight() {
+      if (knowledgeData.length === 0) return;
+
+      const randomItem = knowledgeData[Math.floor(Math.random() * knowledgeData.length)];
+      const statusClass = randomItem.status;
+
+      const html = `
+        <div class="spotlight-card">
+          <div class="spotlight-label">🌟 Random Highlight</div>
+          <div class="spotlight-title">${escapeHtml(randomItem.title)}</div>
+          <div class="spotlight-date">${randomItem.date}</div>
+          <span class="spotlight-status ${statusClass}">${randomItem.status}</span>
+        </div>
+      `;
+
+      document.getElementById('spotlight-container').innerHTML = html;
+    }
+
+    function filterAndSearch() {
+      let filtered = knowledgeData;
+
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(k => k.status === currentFilter);
+      }
+
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(k => k.title.toLowerCase().includes(q));
+      }
+
+      return filtered;
+    }
+
+    function renderList() {
+      const filtered = filterAndSearch();
+      const container = document.getElementById('knowledge-list');
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <div class="empty-state-icon">🔍</div>
+            <div class="empty-state-text">No knowledge items found</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="knowledge-card" onclick="openKnowledge('${escapeAttr(item.file)}')">
+          <div class="knowledge-header">
+            <div>
+              <div class="knowledge-category">${extractCategory(item.file)}</div>
+              <div class="knowledge-title">${escapeHtml(item.title)}</div>
+            </div>
+            <span class="knowledge-status ${item.status}">${item.status}</span>
+          </div>
+          <div class="knowledge-date">📅 ${item.date}</div>
+        </div>
+      `).join('');
+    }
+
+    function extractCategory(filename) {
+      const parts = filename.split('/');
+      if (parts.length > 1) {
+        return parts[0];
+      }
+      return 'Knowledge';
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    function escapeAttr(text) {
+      return text.replace(/'/g, '&#039;');
+    }
+
+    function showError(message) {
+      const container = document.getElementById('knowledge-list');
+      container.innerHTML = `<div class="error-state">${escapeHtml(message)}</div>`;
+    }
+
+    function openKnowledge(file) {
+      window.location.href = `knowledge/${file}`;
+    }
+
+    function attachEventListeners() {
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilter = e.target.dataset.filter;
+          renderList();
+        });
+      });
+
+      // Search box
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderList();
+      });
+    }
+
+    // === INIT ===
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', loadKnowledge);
+    } else {
+      loadKnowledge();
+    }
+  </script>
+</body>
+</html>

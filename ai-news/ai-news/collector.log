@@ -1,0 +1,521 @@
+2026-04-09 07:02:30,605 [INFO] ============================================================
+2026-04-09 07:02:30,605 [INFO] AI News Collector 開始: 2026-04-09 07:02
+2026-04-09 07:02:30,605 [INFO] ============================================================
+2026-04-09 07:02:30,605 [INFO]   RSS取得: Anthropic Blog
+2026-04-09 07:02:34,248 [INFO]   RSS取得: OpenAI Blog
+2026-04-09 07:02:34,978 [INFO]   RSS取得: Hacker News AI
+2026-04-09 07:02:37,509 [INFO]   RSS取得: The Verge AI
+2026-04-09 07:02:37,675 [INFO]   RSS取得: MIT Tech Review
+2026-04-09 07:02:37,929 [INFO]   RSS取得: Google AI Blog
+2026-04-09 07:02:40,483 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-09 07:02:40,852 [INFO]   RSS取得: Simon Willison
+2026-04-09 07:02:41,198 [INFO] RSS合計: 75 件取得
+2026-04-09 07:02:41,199 [INFO] フィルタ後: 28 件（→ 上位20件をAPIへ）
+2026-04-09 07:02:41,200 [INFO] [DRY-RUN] API呼び出しをスキップ
+2026-04-09 07:02:41,200 [INFO] news.json 保存: 新規20件 / 合計26件
+2026-04-09 07:02:41,200 [INFO] 完了!
+2026-04-09 07:02:41,201 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-09 07:14:53,632 [INFO] ============================================================
+2026-04-09 07:14:53,632 [INFO] AI News Collector 開始: 2026-04-09 07:14
+2026-04-09 07:14:53,632 [INFO] ============================================================
+2026-04-09 07:14:53,632 [INFO]   RSS取得: Anthropic Blog
+2026-04-09 07:14:54,009 [INFO]   RSS取得: OpenAI Blog
+2026-04-09 07:14:56,807 [INFO]   RSS取得: Hacker News AI
+2026-04-09 07:14:58,905 [INFO]   RSS取得: The Verge AI
+2026-04-09 07:14:59,171 [INFO]   RSS取得: MIT Tech Review
+2026-04-09 07:14:59,353 [INFO]   RSS取得: Google AI Blog
+2026-04-09 07:15:01,808 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-09 07:15:04,620 [INFO]   RSS取得: Simon Willison
+2026-04-09 07:15:04,870 [INFO] RSS合計: 75 件取得
+2026-04-09 07:15:04,871 [INFO] フィルタ後: 28 件（→ 上位20件をAPIへ）
+2026-04-09 07:15:05,160 [INFO]   API [1/20]: The vibes are off at OpenAI
+2026-04-09 07:15:10,105 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:10,120 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:10,120 [INFO]   API [2/20]: A new Anthropic model found security problems &#8216;in ever
+2026-04-09 07:15:12,140 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:12,141 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:12,141 [INFO]   API [3/20]: Gemini is making it faster for distressed users to reach men
+2026-04-09 07:15:14,480 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:14,481 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:14,481 [INFO]   API [4/20]: Enabling agent-first process redesign
+2026-04-09 07:15:17,913 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:17,914 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:17,914 [INFO]   API [5/20]: The one piece of data that could actually shed light on your
+2026-04-09 07:15:20,244 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:20,244 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:20,244 [INFO]   API [6/20]: Fuel prices are soaring. Plastic could be next.
+2026-04-09 07:15:22,483 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:22,484 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:22,484 [INFO]   API [7/20]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-09 07:15:25,983 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:25,983 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:25,984 [INFO]   API [8/20]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-09 07:15:29,321 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:29,322 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:29,322 [INFO]   API [9/20]: Health-specific embedding tools for dermatology and patholog
+2026-04-09 07:15:31,446 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:31,447 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:31,447 [INFO]   API [10/20]: Social learning: Collaborative learning with large language 
+2026-04-09 07:15:33,713 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:33,714 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:33,714 [INFO]   API [11/20]: Mixed-input matrix multiplication performance optimizations
+2026-04-09 07:15:35,797 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:35,798 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:35,798 [INFO]   API [12/20]: GLM-5.1: Towards Long-Horizon Tasks
+2026-04-09 07:15:38,779 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:38,780 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:38,780 [INFO]   API [13/20]: Anthropic's Project Glasswing - restricting Claude Mythos to
+2026-04-09 07:15:40,971 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:40,972 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:40,972 [INFO]   API [14/20]: Cleanup Claude Code Paste
+2026-04-09 07:15:44,517 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:44,518 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:44,518 [INFO]   API [15/20]: Eight years of wanting, three months of building with AI
+2026-04-09 07:15:47,983 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:47,984 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:47,984 [INFO]   API [16/20]: Quoting Chengpeng Mou
+2026-04-09 07:15:51,467 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:51,467 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:51,467 [INFO]   API [17/20]: scan-for-secrets 0.1
+2026-04-09 07:15:54,244 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:54,244 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:54,244 [INFO]   API [18/20]: research-llm-apis 2026-04-04
+2026-04-09 07:15:56,994 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:56,995 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:56,996 [INFO]   API [19/20]: The cognitive impact of coding agents
+2026-04-09 07:15:59,865 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:15:59,866 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:15:59,866 [INFO]   API [20/20]: Quoting Daniel Stenberg
+2026-04-09 07:16:02,286 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:16:02,287 [WARNING]   API解析失敗: Expecting value: line 1 column 1 (char 0)
+2026-04-09 07:16:02,288 [INFO] news.json 保存: 新規0件 / 合計26件
+2026-04-09 07:16:02,288 [INFO] スコア4以上のアイテムなし。todos追記スキップ
+2026-04-09 07:16:02,288 [INFO] 完了!
+2026-04-09 07:16:02,288 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-09 07:16:47,819 [INFO] ============================================================
+2026-04-09 07:16:47,819 [INFO] AI News Collector 開始: 2026-04-09 07:16
+2026-04-09 07:16:47,819 [INFO] ============================================================
+2026-04-09 07:16:47,819 [INFO]   RSS取得: Anthropic Blog
+2026-04-09 07:16:51,806 [INFO]   RSS取得: OpenAI Blog
+2026-04-09 07:16:52,701 [INFO]   RSS取得: Hacker News AI
+2026-04-09 07:16:53,561 [INFO]   RSS取得: The Verge AI
+2026-04-09 07:16:53,736 [INFO]   RSS取得: MIT Tech Review
+2026-04-09 07:16:53,913 [INFO]   RSS取得: Google AI Blog
+2026-04-09 07:16:56,759 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-09 07:16:57,122 [INFO]   RSS取得: Simon Willison
+2026-04-09 07:16:57,325 [INFO] RSS合計: 75 件取得
+2026-04-09 07:16:57,326 [INFO] フィルタ後: 28 件（→ 上位20件をAPIへ）
+2026-04-09 07:16:57,584 [INFO]   API [1/20]: The vibes are off at OpenAI
+2026-04-09 07:17:00,077 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:00,092 [INFO]   API [2/20]: A new Anthropic model found security problems &#8216;in ever
+2026-04-09 07:17:02,476 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:02,477 [INFO]   API [3/20]: Gemini is making it faster for distressed users to reach men
+2026-04-09 07:17:04,916 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:04,917 [INFO]   API [4/20]: Enabling agent-first process redesign
+2026-04-09 07:17:08,649 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:08,650 [INFO]   API [5/20]: The one piece of data that could actually shed light on your
+2026-04-09 07:17:11,114 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:11,115 [INFO]   API [6/20]: Fuel prices are soaring. Plastic could be next.
+2026-04-09 07:17:13,407 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:13,408 [INFO]   API [7/20]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-09 07:17:15,768 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:15,769 [INFO]   API [8/20]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-09 07:17:19,196 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:19,197 [INFO]   API [9/20]: Health-specific embedding tools for dermatology and patholog
+2026-04-09 07:17:21,338 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:21,339 [INFO]   API [10/20]: Social learning: Collaborative learning with large language 
+2026-04-09 07:17:23,707 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:23,708 [INFO]   API [11/20]: Mixed-input matrix multiplication performance optimizations
+2026-04-09 07:17:25,998 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:25,999 [INFO]   API [12/20]: GLM-5.1: Towards Long-Horizon Tasks
+2026-04-09 07:17:29,135 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:29,136 [INFO]   API [13/20]: Anthropic's Project Glasswing - restricting Claude Mythos to
+2026-04-09 07:17:32,830 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:32,831 [INFO]   API [14/20]: Cleanup Claude Code Paste
+2026-04-09 07:17:35,409 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:35,410 [INFO]   API [15/20]: Eight years of wanting, three months of building with AI
+2026-04-09 07:17:38,080 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:38,081 [INFO]   API [16/20]: Quoting Chengpeng Mou
+2026-04-09 07:17:40,287 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:40,288 [INFO]   API [17/20]: scan-for-secrets 0.1
+2026-04-09 07:17:43,007 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:43,008 [INFO]   API [18/20]: research-llm-apis 2026-04-04
+2026-04-09 07:17:45,474 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:45,475 [INFO]   API [19/20]: The cognitive impact of coding agents
+2026-04-09 07:17:48,334 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:48,334 [INFO]   API [20/20]: Quoting Daniel Stenberg
+2026-04-09 07:17:50,831 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:17:50,833 [INFO] news.json 保存: 新規0件 / 合計26件
+2026-04-09 07:17:50,833 [WARNING] todosファイルが存在しません: C:\Users\kfuru\.secretary\todos\2026-04-09.md（追記スキップ）
+2026-04-09 07:17:50,833 [INFO] 完了!
+2026-04-09 07:17:50,833 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-09 07:19:00,789 [INFO] ============================================================
+2026-04-09 07:19:00,789 [INFO] AI News Collector 開始: 2026-04-09 07:19
+2026-04-09 07:19:00,789 [INFO] ============================================================
+2026-04-09 07:19:00,789 [INFO]   RSS取得: Anthropic Blog
+2026-04-09 07:19:04,525 [INFO]   RSS取得: OpenAI Blog
+2026-04-09 07:19:19,288 [INFO]   RSS取得: Hacker News AI
+2026-04-09 07:19:20,311 [INFO]   RSS取得: The Verge AI
+2026-04-09 07:19:20,486 [INFO]   RSS取得: MIT Tech Review
+2026-04-09 07:19:20,665 [INFO]   RSS取得: Google AI Blog
+2026-04-09 07:19:22,658 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-09 07:19:26,204 [INFO]   RSS取得: Simon Willison
+2026-04-09 07:19:26,384 [INFO] RSS合計: 75 件取得
+2026-04-09 07:19:26,385 [INFO] フィルタ後: 28 件（→ 上位20件をAPIへ）
+2026-04-09 07:19:26,644 [INFO]   API [1/20]: The vibes are off at OpenAI
+2026-04-09 07:19:29,628 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:29,643 [INFO]   API [2/20]: A new Anthropic model found security problems &#8216;in ever
+2026-04-09 07:19:32,490 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:32,505 [INFO]   API [3/20]: Gemini is making it faster for distressed users to reach men
+2026-04-09 07:19:34,592 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:34,593 [INFO]   API [4/20]: Enabling agent-first process redesign
+2026-04-09 07:19:37,996 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:37,997 [INFO]   API [5/20]: The one piece of data that could actually shed light on your
+2026-04-09 07:19:40,227 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:40,229 [INFO]   API [6/20]: Fuel prices are soaring. Plastic could be next.
+2026-04-09 07:19:42,403 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:42,404 [INFO]   API [7/20]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-09 07:19:44,653 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:44,654 [INFO]   API [8/20]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-09 07:19:48,342 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:48,352 [INFO]   API [9/20]: Health-specific embedding tools for dermatology and patholog
+2026-04-09 07:19:51,095 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:51,096 [INFO]   API [10/20]: Social learning: Collaborative learning with large language 
+2026-04-09 07:19:52,997 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:52,998 [INFO]   API [11/20]: Mixed-input matrix multiplication performance optimizations
+2026-04-09 07:19:55,502 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:55,502 [INFO]   API [12/20]: GLM-5.1: Towards Long-Horizon Tasks
+2026-04-09 07:19:59,346 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:19:59,346 [INFO]   API [13/20]: Anthropic's Project Glasswing - restricting Claude Mythos to
+2026-04-09 07:20:01,493 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:01,493 [INFO]   API [14/20]: Cleanup Claude Code Paste
+2026-04-09 07:20:04,100 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:04,101 [INFO]   API [15/20]: Eight years of wanting, three months of building with AI
+2026-04-09 07:20:09,061 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:09,062 [INFO]   API [16/20]: Quoting Chengpeng Mou
+2026-04-09 07:20:11,534 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:11,535 [INFO]   API [17/20]: scan-for-secrets 0.1
+2026-04-09 07:20:14,304 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:14,304 [INFO]   API [18/20]: research-llm-apis 2026-04-04
+2026-04-09 07:20:21,279 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:21,279 [INFO]   API [19/20]: The cognitive impact of coding agents
+2026-04-09 07:20:23,360 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:23,361 [INFO]   API [20/20]: Quoting Daniel Stenberg
+2026-04-09 07:20:25,993 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 07:20:25,994 [INFO] news.json 保存: 新規20件 / 合計20件
+2026-04-09 07:20:25,995 [WARNING] todosファイルが存在しません: C:\Users\kfuru\.secretary\todos\2026-04-09.md（追記スキップ）
+2026-04-09 07:20:25,995 [INFO] 完了!
+2026-04-09 07:20:25,995 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-09 22:39:41,048 [INFO] ============================================================
+2026-04-09 22:39:41,048 [INFO] AI News Collector 開始: 2026-04-09 22:39
+2026-04-09 22:39:41,048 [INFO] ============================================================
+2026-04-09 22:39:41,048 [INFO]   RSS取得: Anthropic Blog
+2026-04-09 22:39:45,856 [INFO]   RSS取得: OpenAI Blog
+2026-04-09 22:39:47,445 [INFO]   RSS取得: Hacker News AI
+2026-04-09 22:39:48,669 [INFO]   RSS取得: The Verge AI
+2026-04-09 22:39:48,914 [INFO]   RSS取得: MIT Tech Review
+2026-04-09 22:39:49,243 [INFO]   RSS取得: Google AI Blog
+2026-04-09 22:39:51,580 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-09 22:39:51,888 [INFO]   RSS取得: Simon Willison
+2026-04-09 22:39:52,147 [INFO] RSS合計: 75 件取得
+2026-04-09 22:39:52,148 [INFO] フィルタ後: 27 件（→ 上位20件をAPIへ）
+2026-04-09 22:39:52,150 [INFO] [DRY-RUN] API呼び出しをスキップ
+2026-04-09 22:39:52,151 [INFO] news.json 保存: 新規2件 / 合計22件
+2026-04-09 22:39:52,151 [INFO] 完了!
+2026-04-09 22:39:52,151 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-09 22:53:51,633 [INFO] ============================================================
+2026-04-09 22:53:51,633 [INFO] AI News Collector 開始: 2026-04-09 22:53
+2026-04-09 22:53:51,634 [INFO] ============================================================
+2026-04-09 22:53:51,634 [INFO]   RSS取得: Anthropic Blog
+2026-04-09 22:53:54,906 [INFO]   RSS取得: OpenAI Blog
+2026-04-09 22:53:55,339 [INFO]   RSS取得: Hacker News AI
+2026-04-09 22:54:03,625 [INFO]   RSS取得: The Verge AI
+2026-04-09 22:54:04,150 [INFO]   RSS取得: MIT Tech Review
+2026-04-09 22:54:04,532 [INFO]   RSS取得: Google AI Blog
+2026-04-09 22:54:07,067 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-09 22:54:07,454 [INFO]   RSS取得: Simon Willison
+2026-04-09 22:54:07,743 [INFO] RSS合計: 75 件取得
+2026-04-09 22:54:07,744 [INFO] フィルタ後: 27 件（→ 上位20件をAPIへ）
+2026-04-09 22:54:08,033 [INFO]   API [1/20]: Gemini gets notebooks to help you organize projects
+2026-04-09 22:54:11,517 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:11,536 [INFO]   API [2/20]: The vibes are off at OpenAI
+2026-04-09 22:54:13,761 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:13,762 [INFO]   API [3/20]: A new Anthropic model found security problems &#8216;in ever
+2026-04-09 22:54:15,925 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:15,926 [INFO]   API [4/20]: Enabling agent-first process redesign
+2026-04-09 22:54:18,643 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:18,644 [INFO]   API [5/20]: The one piece of data that could actually shed light on your
+2026-04-09 22:54:21,032 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:21,033 [INFO]   API [6/20]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-09 22:54:25,743 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:25,744 [INFO]   API [7/20]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-09 22:54:29,044 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:29,045 [INFO]   API [8/20]: Health-specific embedding tools for dermatology and patholog
+2026-04-09 22:54:30,990 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:30,991 [INFO]   API [9/20]: Social learning: Collaborative learning with large language 
+2026-04-09 22:54:33,804 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:33,805 [INFO]   API [10/20]: Mixed-input matrix multiplication performance optimizations
+2026-04-09 22:54:36,079 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:36,080 [INFO]   API [11/20]: Meta's new model is Muse Spark, and meta.ai chat has some in
+2026-04-09 22:54:39,555 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:39,556 [INFO]   API [12/20]: GLM-5.1: Towards Long-Horizon Tasks
+2026-04-09 22:54:41,923 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:41,924 [INFO]   API [13/20]: Anthropic's Project Glasswing - restricting Claude Mythos to
+2026-04-09 22:54:44,437 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:44,447 [INFO]   API [14/20]: Cleanup Claude Code Paste
+2026-04-09 22:54:46,517 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:46,518 [INFO]   API [15/20]: Eight years of wanting, three months of building with AI
+2026-04-09 22:54:49,400 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:49,401 [INFO]   API [16/20]: Quoting Chengpeng Mou
+2026-04-09 22:54:55,030 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:55,031 [INFO]   API [17/20]: scan-for-secrets 0.1
+2026-04-09 22:54:57,458 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:54:57,459 [INFO]   API [18/20]: research-llm-apis 2026-04-04
+2026-04-09 22:55:00,070 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:55:00,071 [INFO]   API [19/20]: The cognitive impact of coding agents
+2026-04-09 22:55:02,495 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:55:02,496 [INFO]   API [20/20]: Quoting Daniel Stenberg
+2026-04-09 22:55:05,090 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-09 22:55:05,092 [INFO] news.json 保存: 新規0件 / 合計22件
+2026-04-09 22:55:05,092 [WARNING] todosファイルが存在しません: C:\Users\kfuru\.secretary\todos\2026-04-09.md（追記スキップ）
+2026-04-09 22:55:05,093 [INFO] 完了!
+2026-04-09 22:55:05,093 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-12 14:29:21,292 [INFO] ============================================================
+2026-04-12 14:29:21,292 [INFO] AI News Collector 開始: 2026-04-12 14:29
+2026-04-12 14:29:21,292 [INFO] ============================================================
+2026-04-12 14:29:21,292 [INFO]   RSS取得: Anthropic Blog
+2026-04-12 14:29:22,047 [INFO]   RSS取得: OpenAI Blog
+2026-04-12 14:29:22,549 [INFO]   RSS取得: Hacker News AI
+2026-04-12 14:29:46,889 [INFO]   RSS取得: The Verge AI
+2026-04-12 14:29:47,302 [INFO]   RSS取得: MIT Tech Review
+2026-04-12 14:29:47,527 [INFO]   RSS取得: Google AI Blog
+2026-04-12 14:29:50,196 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-12 14:29:50,392 [INFO]   RSS取得: Simon Willison
+2026-04-12 14:29:50,784 [INFO] RSS合計: 75 件取得
+2026-04-12 14:29:50,785 [INFO] フィルタ後: 20 件（→ 上位20件をAPIへ）
+2026-04-12 14:29:51,108 [INFO]   API [1/20]: Microsoft starts removing Copilot buttons from Windows 11 ap
+2026-04-12 14:29:55,312 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:29:55,335 [WARNING]   API解析失敗: Expecting ',' delimiter: line 2 column 171 (char 172)
+2026-04-12 14:29:55,336 [INFO]   API [2/20]: ChatGPT has a new $100 per month Pro subscription
+2026-04-12 14:29:58,678 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:29:58,679 [INFO]   API [3/20]: Enabling agent-first process redesign
+2026-04-12 14:30:04,007 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:04,008 [INFO]   API [4/20]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-12 14:30:07,536 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:07,536 [INFO]   API [5/20]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-12 14:30:12,441 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:12,442 [INFO]   API [6/20]: Health-specific embedding tools for dermatology and patholog
+2026-04-12 14:30:16,093 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:16,094 [INFO]   API [7/20]: Social learning: Collaborative learning with large language 
+2026-04-12 14:30:21,541 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:21,542 [INFO]   API [8/20]: Mixed-input matrix multiplication performance optimizations
+2026-04-12 14:30:25,292 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:25,293 [INFO]   API [9/20]: ChatGPT voice mode is a weaker model
+2026-04-12 14:30:28,135 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:28,137 [INFO]   API [10/20]: Meta's new model is Muse Spark, and meta.ai chat has some in
+2026-04-12 14:30:31,893 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:31,894 [INFO]   API [11/20]: GLM-5.1: Towards Long-Horizon Tasks
+2026-04-12 14:30:35,680 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:35,688 [INFO]   API [12/20]: Anthropic's Project Glasswing - restricting Claude Mythos to
+2026-04-12 14:30:38,824 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:38,825 [INFO]   API [13/20]: Cleanup Claude Code Paste
+2026-04-12 14:30:41,707 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:41,708 [INFO]   API [14/20]: Eight years of wanting, three months of building with AI
+2026-04-12 14:30:46,314 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:46,333 [INFO]   API [15/20]: Quoting Chengpeng Mou
+2026-04-12 14:30:49,787 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:49,789 [INFO]   API [16/20]: scan-for-secrets 0.1
+2026-04-12 14:30:52,875 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:52,881 [INFO]   API [17/20]: research-llm-apis 2026-04-04
+2026-04-12 14:30:56,966 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:30:56,967 [INFO]   API [18/20]: The cognitive impact of coding agents
+2026-04-12 14:31:00,262 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:31:00,263 [INFO]   API [19/20]: Quoting Daniel Stenberg
+2026-04-12 14:31:03,932 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:31:03,933 [INFO]   API [20/20]: Can JavaScript Escape a CSP Meta Tag Inside an Iframe?
+2026-04-12 14:31:08,210 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-12 14:31:08,213 [INFO] news.json 保存: 新規4件 / 合計26件
+2026-04-12 14:31:08,214 [WARNING] todosファイルが存在しません: C:\Users\kfuru\.secretary\todos\2026-04-12.md（追記スキップ）
+2026-04-12 14:31:08,214 [INFO] 完了!
+2026-04-12 14:31:08,214 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-19 10:22:13,471 [INFO] ============================================================
+2026-04-19 10:22:13,472 [INFO] AI News Collector 開始: 2026-04-19 10:22
+2026-04-19 10:22:13,472 [INFO] ============================================================
+2026-04-19 10:22:13,472 [INFO]   RSS取得: Anthropic Blog
+2026-04-19 10:22:17,707 [INFO]   RSS取得: OpenAI Blog
+2026-04-19 10:22:18,053 [INFO]   RSS取得: Hacker News AI
+2026-04-19 10:22:27,322 [INFO]   RSS取得: Hacker News General AI
+2026-04-19 10:22:28,172 [INFO]   RSS取得: The Verge AI
+2026-04-19 10:22:28,380 [INFO]   RSS取得: MIT Tech Review
+2026-04-19 10:22:28,522 [INFO]   RSS取得: Google AI Blog
+2026-04-19 10:22:30,865 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-19 10:22:31,052 [INFO]   RSS取得: Simon Willison
+2026-04-19 10:22:31,261 [INFO]   RSS取得: GitHub: Claude Code Rel
+2026-04-19 10:22:31,653 [INFO]   RSS取得: GitHub: Claude Code Disc
+2026-04-19 10:22:32,046 [INFO]   RSS取得: Reddit: ClaudeAI
+2026-04-19 10:22:33,632 [INFO]   RSS取得: Reddit: MachineLearning
+2026-04-19 10:22:35,282 [INFO]   RSS取得: Dev.to: claudeai
+2026-04-19 10:22:36,452 [INFO]   RSS取得: Dev.to: claude
+2026-04-19 10:22:37,340 [INFO]   RSS取得: YouTube: Anthropic
+2026-04-19 10:22:37,635 [INFO]   RSS取得: YouTube: Karpathy
+2026-04-19 10:22:37,738 [INFO]   RSS取得: YouTube: AI Explained
+2026-04-19 10:22:37,838 [INFO]   RSS取得: YouTube: Matthew Berman
+2026-04-19 10:22:37,969 [INFO]   RSS取得: YouTube: Fireship
+2026-04-19 10:22:38,086 [INFO]   RSS取得: YouTube: AI Jason
+2026-04-19 10:22:38,350 [INFO] RSS合計: 159 件取得
+2026-04-19 10:22:38,351 [INFO] フィルタ後: 87 件（→ 上位15件をAPIへ）
+2026-04-19 10:22:38,351 [INFO] [DRY-RUN] API呼び出しをスキップ
+2026-04-19 10:22:38,352 [INFO] news.json 保存: 新規15件 / 合計15件
+2026-04-19 10:22:38,352 [INFO] 完了!
+2026-04-19 10:22:38,353 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-19 10:48:53,513 [INFO] ============================================================
+2026-04-19 10:48:53,513 [INFO] AI News Collector 開始: 2026-04-19 10:48
+2026-04-19 10:48:53,513 [INFO] ============================================================
+2026-04-19 10:48:53,513 [INFO]   RSS取得: Anthropic Blog
+2026-04-19 10:48:54,414 [INFO]   RSS取得: OpenAI Blog
+2026-04-19 10:48:54,964 [INFO]   RSS取得: Hacker News AI
+2026-04-19 10:49:11,543 [INFO]   RSS取得: Hacker News General AI
+2026-04-19 10:49:12,604 [INFO]   RSS取得: The Verge AI
+2026-04-19 10:49:12,885 [INFO]   RSS取得: MIT Tech Review
+2026-04-19 10:49:13,064 [INFO]   RSS取得: Google AI Blog
+2026-04-19 10:49:14,983 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-19 10:49:15,152 [INFO]   RSS取得: Simon Willison
+2026-04-19 10:49:15,419 [INFO]   RSS取得: GitHub: Claude Code Rel
+2026-04-19 10:49:15,871 [INFO]   RSS取得: GitHub: Claude Code Disc
+2026-04-19 10:49:16,182 [INFO]   RSS取得: Reddit: ClaudeAI
+2026-04-19 10:49:17,765 [INFO]   RSS取得: Reddit: MachineLearning
+2026-04-19 10:49:19,296 [INFO]   RSS取得: Dev.to: claudeai
+2026-04-19 10:49:20,440 [INFO]   RSS取得: Dev.to: claude
+2026-04-19 10:49:20,971 [INFO]   RSS取得: YouTube: Anthropic
+2026-04-19 10:49:21,095 [INFO]   RSS取得: YouTube: Karpathy
+2026-04-19 10:49:21,198 [INFO]   RSS取得: YouTube: AI Explained
+2026-04-19 10:49:21,315 [INFO]   RSS取得: YouTube: Matthew Berman
+2026-04-19 10:49:21,605 [INFO]   RSS取得: YouTube: Fireship
+2026-04-19 10:49:21,722 [INFO]   RSS取得: YouTube: AI Jason
+2026-04-19 10:49:21,833 [INFO] RSS合計: 159 件取得
+2026-04-19 10:49:21,835 [INFO] フィルタ後: 86 件（→ 上位15件をAPIへ）
+2026-04-19 10:49:21,836 [INFO] [DRY-RUN] API呼び出しをスキップ
+2026-04-19 10:49:21,837 [INFO] news.json 保存: 新規0件 / 合計15件
+2026-04-19 10:49:21,837 [INFO] 完了!
+2026-04-19 10:49:21,837 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-19 10:50:13,183 [INFO] ============================================================
+2026-04-19 10:50:13,183 [INFO] AI News Collector 開始: 2026-04-19 10:50
+2026-04-19 10:50:13,183 [INFO] ============================================================
+2026-04-19 10:50:13,183 [INFO]   RSS取得: Anthropic Blog
+2026-04-19 10:50:34,255 [INFO]   RSS取得: OpenAI Blog
+2026-04-19 10:50:49,613 [INFO]   RSS取得: Hacker News AI
+2026-04-19 10:50:50,453 [INFO]   RSS取得: Hacker News General AI
+2026-04-19 10:51:06,466 [INFO]   RSS取得: The Verge AI
+2026-04-19 10:51:06,758 [INFO]   RSS取得: MIT Tech Review
+2026-04-19 10:51:06,931 [INFO]   RSS取得: Google AI Blog
+2026-04-19 10:51:09,120 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-19 10:51:09,307 [INFO]   RSS取得: Simon Willison
+2026-04-19 10:51:09,452 [INFO]   RSS取得: GitHub: Claude Code Rel
+2026-04-19 10:51:10,003 [INFO]   RSS取得: GitHub: Claude Code Disc
+2026-04-19 10:51:10,322 [INFO]   RSS取得: Reddit: ClaudeAI
+2026-04-19 10:51:11,926 [INFO]   RSS取得: Reddit: MachineLearning
+2026-04-19 10:51:13,479 [INFO]   RSS取得: Dev.to: claudeai
+2026-04-19 10:51:13,681 [INFO]   RSS取得: Dev.to: claude
+2026-04-19 10:51:13,875 [INFO]   RSS取得: YouTube: Anthropic
+2026-04-19 10:51:13,980 [INFO]   RSS取得: YouTube: Karpathy
+2026-04-19 10:51:14,090 [INFO]   RSS取得: YouTube: AI Explained
+2026-04-19 10:51:14,193 [INFO]   RSS取得: YouTube: Matthew Berman
+2026-04-19 10:51:14,299 [INFO]   RSS取得: YouTube: Fireship
+2026-04-19 10:51:14,577 [INFO]   RSS取得: YouTube: AI Jason
+2026-04-19 10:51:14,851 [INFO] RSS合計: 159 件取得
+2026-04-19 10:51:14,852 [INFO] フィルタ後: 86 件（→ 上位15件をAPIへ）
+2026-04-19 10:51:15,182 [INFO]   API [1/15]: Anthropic’s new cybersecurity model could get it back in the
+2026-04-19 10:51:21,732 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:21,749 [INFO]   API [2/15]: Dairy Queen is putting an AI chatbot in its drive-thrus
+2026-04-19 10:51:25,795 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:25,797 [INFO]   API [3/15]: OpenAI’s big Codex update is a direct shot at Claude Code
+2026-04-19 10:51:30,511 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:30,512 [INFO]   API [4/15]: Gemini can now pull from Google Photos to generate personali
+2026-04-19 10:51:34,625 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:34,626 [INFO]   API [5/15]: Treating enterprise AI as an operating layer
+2026-04-19 10:51:38,932 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:38,933 [INFO]   API [6/15]: Why having “humans in the loop” in an AI war is an illusion
+2026-04-19 10:51:42,687 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:42,688 [INFO]   API [7/15]: The quest to measure our relationship with nature
+2026-04-19 10:51:46,627 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:46,628 [INFO]   API [8/15]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-19 10:51:50,611 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:50,611 [INFO]   API [9/15]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-19 10:51:55,710 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:55,710 [INFO]   API [10/15]: Health-specific embedding tools for dermatology and patholog
+2026-04-19 10:51:59,921 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:51:59,921 [INFO]   API [11/15]: Social learning: Collaborative learning with large language 
+2026-04-19 10:52:04,222 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:52:04,223 [INFO]   API [12/15]: Mixed-input matrix multiplication performance optimizations
+2026-04-19 10:52:07,499 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:52:07,500 [INFO]   API [13/15]: Changes in the system prompt between Claude Opus 4.6 and 4.7
+2026-04-19 10:52:10,846 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:52:10,847 [INFO]   API [14/15]: Claude system prompts as a git timeline
+2026-04-19 10:52:14,447 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:52:14,448 [INFO]   API [15/15]: Adding a new content type to my blog-to-newsletter tool
+2026-04-19 10:52:19,038 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:52:19,039 [INFO] news.json 保存: 新規0件 / 合計15件
+2026-04-19 10:52:19,040 [INFO] todos追記: C:\Users\kfuru\.secretary\todos\2026-04-19.md に 3 件
+2026-04-19 10:52:19,040 [INFO] 完了!
+2026-04-19 10:52:19,040 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html
+2026-04-19 10:54:09,452 [INFO] ============================================================
+2026-04-19 10:54:09,452 [INFO] AI News Collector 開始: 2026-04-19 10:54
+2026-04-19 10:54:09,452 [INFO] ============================================================
+2026-04-19 10:54:09,452 [INFO]   RSS取得: Anthropic Blog
+2026-04-19 10:54:10,636 [INFO]   RSS取得: OpenAI Blog
+2026-04-19 10:54:10,928 [INFO]   RSS取得: Hacker News AI
+2026-04-19 10:54:11,758 [INFO]   RSS取得: Hacker News General AI
+2026-04-19 10:54:12,571 [INFO]   RSS取得: The Verge AI
+2026-04-19 10:54:12,808 [INFO]   RSS取得: MIT Tech Review
+2026-04-19 10:54:12,963 [INFO]   RSS取得: Google AI Blog
+2026-04-19 10:54:14,490 [INFO]   RSS取得: ArXiv CS.AI
+2026-04-19 10:54:14,718 [INFO]   RSS取得: Simon Willison
+2026-04-19 10:54:14,880 [INFO]   RSS取得: GitHub: Claude Code Rel
+2026-04-19 10:54:15,366 [INFO]   RSS取得: GitHub: Claude Code Disc
+2026-04-19 10:54:15,645 [INFO]   RSS取得: Reddit: ClaudeAI
+2026-04-19 10:54:17,444 [INFO]   RSS取得: Reddit: MachineLearning
+2026-04-19 10:54:18,854 [INFO]   RSS取得: Dev.to: claudeai
+2026-04-19 10:54:19,068 [INFO]   RSS取得: Dev.to: claude
+2026-04-19 10:54:19,208 [INFO]   RSS取得: YouTube: Anthropic
+2026-04-19 10:54:19,503 [INFO]   RSS取得: YouTube: Karpathy
+2026-04-19 10:54:19,794 [INFO]   RSS取得: YouTube: AI Explained
+2026-04-19 10:54:20,087 [INFO]   RSS取得: YouTube: Matthew Berman
+2026-04-19 10:54:20,414 [INFO]   RSS取得: YouTube: Fireship
+2026-04-19 10:54:20,699 [INFO]   RSS取得: YouTube: AI Jason
+2026-04-19 10:54:20,967 [INFO] RSS合計: 159 件取得
+2026-04-19 10:54:20,968 [INFO] フィルタ後: 86 件（→ 上位15件をAPIへ）
+2026-04-19 10:54:21,316 [INFO]   API [1/15]: Anthropic’s new cybersecurity model could get it back in the
+2026-04-19 10:54:26,615 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:26,640 [INFO]   API [2/15]: Dairy Queen is putting an AI chatbot in its drive-thrus
+2026-04-19 10:54:30,275 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:30,276 [INFO]   API [3/15]: OpenAI’s big Codex update is a direct shot at Claude Code
+2026-04-19 10:54:33,384 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:33,385 [INFO]   API [4/15]: Gemini can now pull from Google Photos to generate personali
+2026-04-19 10:54:38,203 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:38,204 [INFO]   API [5/15]: Treating enterprise AI as an operating layer
+2026-04-19 10:54:43,879 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:43,880 [WARNING]   API解析失敗: JSONオブジェクトが見つかりません: '```json\n{\n  "ja_summary": "AIの基盤モデルの性能差よりも、企業内でAIを統治・改善・適用する『運用層』をどこが支配するかが、実務的な競争優位性を左右する構造を理解することで'
+2026-04-19 10:54:43,880 [INFO]   API [6/15]: Why having “humans in the loop” in an AI war is an illusion
+2026-04-19 10:54:48,133 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:48,134 [INFO]   API [7/15]: The quest to measure our relationship with nature
+2026-04-19 10:54:51,625 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:51,626 [INFO]   API [8/15]: Cappy: Outperforming and boosting large multi-task language 
+2026-04-19 10:54:55,961 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:54:55,962 [INFO]   API [9/15]: Chain-of-table: Evolving tables in the reasoning chain for t
+2026-04-19 10:55:00,861 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:00,862 [INFO]   API [10/15]: Health-specific embedding tools for dermatology and patholog
+2026-04-19 10:55:04,651 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:04,652 [INFO]   API [11/15]: Social learning: Collaborative learning with large language 
+2026-04-19 10:55:09,275 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:09,275 [INFO]   API [12/15]: Mixed-input matrix multiplication performance optimizations
+2026-04-19 10:55:13,800 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:13,814 [INFO]   API [13/15]: Changes in the system prompt between Claude Opus 4.6 and 4.7
+2026-04-19 10:55:16,613 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:16,614 [INFO]   API [14/15]: Claude system prompts as a git timeline
+2026-04-19 10:55:21,011 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:21,012 [INFO]   API [15/15]: Adding a new content type to my blog-to-newsletter tool
+2026-04-19 10:55:25,186 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 10:55:25,188 [INFO] news.json 保存: 新規15件 / 合計15件
+2026-04-19 10:55:25,189 [INFO] todos追記: C:\Users\kfuru\.secretary\todos\2026-04-19.md に 3 件
+2026-04-19 10:55:25,189 [INFO] 完了!
+2026-04-19 10:55:25,189 [INFO] ダッシュボード: C:/Users/kfuru/.secretary/ai-news/dashboard.html

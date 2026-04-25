@@ -1,0 +1,207 @@
+{
+  "main": {
+    "id": "23645316d586bf90",
+    "type": "split",
+    "children": [
+      {
+        "id": "53434054c1be824e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cd1bb3bdea9927f9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "knowledge/denken-wiki-過去問頻出マーカー実装パターン.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "denken-wiki-過去問頻出マーカー実装パターン"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e03a76480f05a224",
+    "type": "split",
+    "children": [
+      {
+        "id": "6fccfda594f17205",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0c13c646d164975c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "ファイルエクスプローラ"
+            }
+          },
+          {
+            "id": "ab69366b4de617ea",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "検索"
+            }
+          },
+          {
+            "id": "67a9b81177e6dcba",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "ブックマーク"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "0f047f460dad98da",
+    "type": "split",
+    "children": [
+      {
+        "id": "2ebbbdd760c0b641",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ccbcf5a85db9d7ac",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "knowledge/denken-wiki-過去問頻出マーカー実装パターン.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "denken-wiki-過去問頻出マーカー実装パターンへのバックリンク"
+            }
+          },
+          {
+            "id": "4f5359cbe0755f8e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "knowledge/denken-wiki-過去問頻出マーカー実装パターン.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "denken-wiki-過去問頻出マーカー実装パターンからのアウトゴーイングリンク"
+            }
+          },
+          {
+            "id": "d814c8c6b64b5c07",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "タグ"
+            }
+          },
+          {
+            "id": "6b72c63d8c6355d1",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "すべてのプロパティ"
+            }
+          },
+          {
+            "id": "f9ab88666e314ae4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "knowledge/denken-wiki-過去問頻出マーカー実装パターン.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "denken-wiki-過去問頻出マーカー実装パターンのアウトライン"
+            }
+          },
+          {
+            "id": "00b2fc5e3f028d70",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:クイックスイッチャーを開く": false,
+      "graph:グラフビューを開く": false,
+      "canvas:新規キャンバスを作成": false,
+      "daily-notes:今日のデイリーノートを開く": false,
+      "templates:テンプレートを挿入": false,
+      "command-palette:コマンドパレットを開く": false,
+      "bases:新規ベースを作成": false,
+      "templater-obsidian:Templater": false,
+      "obsidian-git:Open Git source control": false
+    }
+  },
+  "active": "cd1bb3bdea9927f9",
+  "lastOpenFiles": [
+    "logs/mailer-2026-04-17.log",
+    "knowledge/windows-シェル非依存スクリプト設計.md",
+    "knowledge/python-windows-utf8-stdout-ラップ問題.md",
+    "knowledge/npn-pnp-センサ選定完全ガイド.md",
+    "knowledge/claude-code-stop-hook-実装完全ガイド.md",
+    "dashboard.md"
+  ]
+}

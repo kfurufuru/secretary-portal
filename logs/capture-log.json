@@ -3693,5 +3693,13 @@
     "types": [],
     "cost": 0,
     "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T15:02:18.898Z",
+    "session_id": "4ac67831-625e-437d-986a-f8e6e7260a7d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
   }
 ]

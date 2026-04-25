@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /c/Users/kfuru/.secretary/.claude/rules)",
+      "Bash(cp /c/Users/kfuru/.secretary/.claude/worktrees/agent-a6412324/.claude/rules/*.md /c/Users/kfuru/.secretary/.claude/rules/)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:hnrss.org)",
+      "WebFetch(domain:www.theverge.com)",
+      "WebFetch(domain:simonwillison.net)",
+      "WebFetch(domain:blog.research.google)",
+      "Bash(mkdir -p /c/Users/kfuru/.claude/skills/knowledge-verify)",
+      "Bash(mkdir -p /c/Users/kfuru/.claude/skills/last30days)",
+      "Bash(py -3 -c ' *)",
+      "WebFetch(domain:feeds.feedburner.com)",
+      "Bash(python3 scan-dashboard.py)",
+      "Bash(py scan-dashboard.py)",
+      "WebSearch",
+      "Bash(python -m http.server 8092 --directory \"C:/Users/kfuru/.secretary\")",
+      "PowerShell(Start-Process python -ArgumentList \"-m\",\"http.server\",\"8092\",\"--directory\",\"C:\\\\Users\\\\kfuru\\\\.secretary\" -WindowStyle Hidden -PassThru)",
+      "PowerShell(Start-Sleep -Seconds 2; try { $r = Invoke-WebRequest -Uri \"http://localhost:8092/claude-code-guide.html\" -TimeoutSec 3; \"OK: $\\($r.StatusCode\\)\" } catch { \"NG: $_\" })",
+      "PowerShell($p = Get-Process python -ErrorAction SilentlyContinue; if \\($p\\) { \"起動中 PID=$\\($p.Id\\)\" } else { \"未起動\" })",
+      "PowerShell(netstat -ano)",
+      "PowerShell(Start-Process -FilePath \"python\" -ArgumentList \"-m\", \"http.server\", \"8092\", \"--directory\", \"C:\\\\Users\\\\kfuru\\\\.secretary\" -WindowStyle Hidden)",
+      "Bash(python top3-generator.py)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(python3 -c ' *)",
+      "mcp__10ecf44d-862f-43c1-affd-e1f1bce1dee2__notion-search"
+    ]
+  }
+}
