@@ -103,7 +103,7 @@ header h1 { font-size: 0.95rem; font-weight: 700; color: var(--accent); white-sp
 <header>
   <h1>🗺 古舘ナレッジベース — 知識探索マップ</h1>
   <div class="stats">
-    <span>ノード: 16</span><span>エッジ: 8</span>
+    <span>ノード: 16</span><span>エッジ: 29</span>
     <span style="background:#064e3b;color:#6ee7b7;border:none">★ published 13</span>
     <span style="background:#1e3a5f;color:#93c5fd;border:none">◆ review 2</span>
     <span style="background:#2d1f3d;color:#c4b5fd;border:none">● draft 1</span>
@@ -304,6 +304,7 @@ const CAT_TO_HUB = {
 
 // Existing knowledge edges with relationship types
 const RAW_EDGES = [
+  // ── 既存エッジ（9本）──────────────────────────────────────────────
   { from: 'agentic-graphrag-architecture.md', to: 'promote-py-auto-promote-access-log.md', rel: '応用' },
   { from: 'business-skill-gap-analysis.md', to: 'f-company-session-framework.md', rel: '関連' },
   { from: 'cc-playbook.md', to: 'mcp-claude-integration.md', rel: '手段' },
@@ -313,6 +314,67 @@ const RAW_EDGES = [
   { from: 'claude-long-edit-syntax-risk.md', to: 'mcp-claude-integration.md', rel: '関連' },
   { from: 'mcp-claude-integration.md', to: 'agentic-graphrag-architecture.md', rel: '前提' },
   { from: 'ideas-from-news/2026-04-20.md', to: 'ideas-from-news/2026-04-21.md', rel: '関連' },
+
+  // ── 新規エッジ（20本）────────────────────────────────────────────
+  // promote.py は knowledge-pipeline の実行エンジン（前提）
+  { from: 'claude-code-knowledge-pipeline.md', to: 'promote-py-auto-promote-access-log.md', rel: '前提' },
+
+  // GraphRAG はナレッジパイプラインの検索層を担う（応用）
+  { from: 'agentic-graphrag-architecture.md', to: 'claude-code-knowledge-pipeline.md', rel: '応用' },
+
+  // MCP で自動化する際に Anthropic SDK 認証エラー（401）は必ず踏む落とし穴（関連）
+  { from: 'top3-monday-api-key-401-error.md', to: 'mcp-claude-integration.md', rel: '関連' },
+
+  // CLI/シェルの基礎知識が MCP 操作・Claude Code 実行の前提（前提）
+  { from: 'terminal-shell-cli.md', to: 'mcp-claude-integration.md', rel: '前提' },
+
+  // CLI の基礎が cc-playbook（Context Engineering）実践の土台（前提）
+  { from: 'terminal-shell-cli.md', to: 'cc-playbook.md', rel: '前提' },
+
+  // AI化対象業務の選定フレームワークは設備AI導入判断記事（2026-04-21）の理論的前提（前提）
+  { from: 'ai-gyomu-sentaku.md', to: 'ideas-from-news/2026-04-21.md', rel: '前提' },
+
+  // 設備APIファースト設計（2026-04-20）はAI化業務選定の実装ケース（応用）
+  { from: 'ai-gyomu-sentaku.md', to: 'ideas-from-news/2026-04-20.md', rel: '応用' },
+
+  // Fカンパニーセッションでビジネススキルギャップを議論した（手段）
+  { from: 'f-company-session-framework.md', to: 'business-skill-gap-analysis.md', rel: '手段' },
+
+  // 構造把握力はビジネススキルギャップ分析の核心スキル（関連）
+  { from: 'kozo-haaku-ryoku.md', to: 'business-skill-gap-analysis.md', rel: '関連' },
+
+  // 構造把握力は問題解決・AI業務選定の判断軸に応用できる（応用）
+  { from: 'kozo-haaku-ryoku.md', to: 'ai-gyomu-sentaku.md', rel: '応用' },
+
+  // ポータル可観測性パターンは MCP の自動化・監視実装の応用例（応用）
+  { from: 'portal-health-observability.md', to: 'mcp-claude-integration.md', rel: '応用' },
+
+  // cron/自動化パターンはナレッジパイプラインの自動昇格にも適用可能（関連）
+  { from: 'portal-health-observability.md', to: 'promote-py-auto-promote-access-log.md', rel: '関連' },
+
+  // Claude 長編集リスクはポータル HTML 保守で実際に踏んだ問題（関連）
+  { from: 'claude-long-edit-syntax-risk.md', to: 'portal-health-observability.md', rel: '関連' },
+
+  // cc-playbook の Hooks/TDD はAPIキー401エラーの再発防止設計に直結（改善）
+  { from: 'cc-playbook.md', to: 'top3-monday-api-key-401-error.md', rel: '改善' },
+
+  // GraphRAG + MCP は設備異常診断 AI の検索バックエンドとして応用可能（応用）
+  { from: 'agentic-graphrag-architecture.md', to: 'ideas-from-news/2026-04-21.md', rel: '応用' },
+
+  // terminal/CLI の知識が設備 APIファースト設計（HMI廃棄→API）の前提スキル（前提）
+  { from: 'terminal-shell-cli.md', to: 'ideas-from-news/2026-04-20.md', rel: '前提' },
+
+  // promote.py のアクセスログ解析は GraphRAG 知識グラフのノード優先度付けに応用できる（関連）
+  { from: 'promote-py-auto-promote-access-log.md', to: 'agentic-graphrag-architecture.md', rel: '関連' },
+
+  // Fカンパニーセッションで AI化業務選定を議題にした（応用）
+  { from: 'f-company-session-framework.md', to: 'ai-gyomu-sentaku.md', rel: '応用' },
+
+  // APIキー401エラーの解決手順は自動化パイプライン全般の信頼性設計に関連（関連）
+  { from: 'top3-monday-api-key-401-error.md', to: 'claude-code-knowledge-pipeline.md', rel: '関連' },
+
+  // 構造把握力はシステム思考として設備 AI 導入ガバナンス（フェーズゲート）に応用（応用）
+  { from: 'kozo-haaku-ryoku.md', to: 'ideas-from-news/2026-04-21.md', rel: '応用' },
 ];
 
 // ─── BUILD VIS DATASETS ───────────────────────────────────────────────────────
