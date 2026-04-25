@@ -603,7 +603,6 @@ function openPanel(nodeId) {
   }).join('');
 
   const tagHtml = (n._tags || []).map(t => `<span class="dp-tag">${t}</span>`).join('');
-  const fileBase = n.id.replace('.md', '');
 
   dpContent.innerHTML = `
     <button class="dp-close" id="dp-close">✕</button>
@@ -614,7 +613,7 @@ function openPanel(nodeId) {
     ${n._summary ? `<div class="dp-section"><div class="dp-section-title">概要</div><p style="color:var(--sub);font-size:0.78rem;line-height:1.7">${n._summary}</p></div>` : ''}
     ${tagHtml ? `<div class="dp-section"><div class="dp-section-title">タグ</div><div class="dp-tags">${tagHtml}</div></div>` : ''}
     ${relatedLinks ? `<div class="dp-section"><div class="dp-section-title">関連ノード</div><div class="dp-related">${relatedLinks}</div></div>` : ''}
-    <a class="dp-open-btn" href="http://localhost:8092/knowledge/${fileBase}" target="_blank">📄 ナレッジを開く</a>`;
+    <a class="dp-open-btn" href="http://localhost:8092/knowledge/${n.id}" target="_blank">📄 ナレッジを開く</a>`;
 
   document.getElementById('dp-close').style.display = '';
   document.getElementById('dp-close').addEventListener('click', closePanel);
