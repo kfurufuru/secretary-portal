@@ -1,6 +1,7 @@
 ---
 title: Claude Code 会話 → 知識昇格パイプライン
 created: 2026-04-24
+updated: 2026-04-26
 category: AI活用 / secretary運用
 tags: [Claude Code, 知識昇格, パイプライン, JSONL, extract_claude_code]
 level: published
@@ -71,6 +72,39 @@ knowledge/ or denken-study/ にファイル化
 - **週1回**: `CC知識スキャン` を実行 → 候補Markdownを確認
 - **その場昇格**: 会話中に「これ知識化して」→ 直接 `knowledge/` にファイル化
 - **ダッシュボード確認**: `dashboard.html` の「CC 知識昇格タスク」カードで残件数を把握
+
+---
+
+## Stop Hook 自動commit
+
+セッション終了時に知識ファイルの変更を自動でgit commitするhookを実装済み。
+
+### 設計判断
+
+- **hookファイルパス**: `C:/Users/kfuru/.claude/hooks/secretary-auto-commit.js`
+- **登録先**: `C:/Users/kfuru/.claude/settings.json` → Stop hooks（3番目に登録）
+- **対象ディレクトリ**: `knowledge/` `inbox/` `denken-study/` の変更のみをステージ
+- **変更なし時の挙動**: commitをスキップ（空コミット防止済み、動作確認済み）
+
+### commit message形式
+
+```
+auto: knowledge snapshot YYYY-MM-DD_HH:MM (N files)
+```
+
+例: `auto: knowledge snapshot 2026-04-22_09:00 (3 files)`
+- ファイル数を含める（落合陽一提案を採用）
+- 日時は実行時のローカルタイムスタンプ
+
+### 既存hookとの棲み分けルール
+
+| hook | 対象ファイル | 目的 |
+|------|------------|------|
+| `secretary-github-sync.js` | HTML5ファイルのみ（portal, dashboardなど） | GitHub Pages への同期 |
+| `secretary-auto-commit.js` | 知識ファイルのみ（knowledge/ inbox/ denken-study/） | ローカル知識の自動スナップショット |
+
+- 両hookは独立して動作。対象が重複しないため競合なし
+- HTML5ファイルの知識化が必要な場合は手動commitで対応
 
 ---
 
