@@ -103,10 +103,10 @@ header h1 { font-size: 0.95rem; font-weight: 700; color: var(--accent); white-sp
 <header>
   <h1>🗺 古舘ナレッジベース — 知識探索マップ</h1>
   <div class="stats">
-    <span>ノード: 16</span><span>エッジ: 29</span>
-    <span style="background:#064e3b;color:#6ee7b7;border:none">★ published 13</span>
+    <span>ノード: 16</span><span>エッジ: 33</span>
+    <span style="background:#064e3b;color:#6ee7b7;border:none">★ published 14</span>
     <span style="background:#1e3a5f;color:#93c5fd;border:none">◆ review 2</span>
-    <span style="background:#2d1f3d;color:#c4b5fd;border:none">● draft 1</span>
+    <span style="background:#2d1f3d;color:#c4b5fd;border:none">● draft 0</span>
   </div>
   <span class="gen-time">2026-04-25 更新</span>
 </header>
@@ -204,7 +204,7 @@ const RAW_NODES = [
     category: '業務改善', level: 'published', score: 4,
     tags: ['ai','業務改善','意思決定','フレームワーク','設備管理'],
     summary: '学習性と失敗許容度の2軸でAI化対象業務を選定するフレームワーク。',
-    related: [] },
+    related: ['ideas-from-news/2026-04-21.md','ideas-from-news/2026-04-20.md'] },
   { id: 'business-skill-gap-analysis.md',
     title: 'ビジネススキルマップ ギャップ分析（AI社員3名の議論）',
     category: 'ビジネススキル', level: 'published', score: null,
@@ -216,13 +216,13 @@ const RAW_NODES = [
     category: 'Claude Code', level: 'published', score: 4,
     tags: ['Claude Code','Context Engineering','Hooks','Skills','TDD','トークン最適化'],
     summary: 'Claude Codeの公式プレイブック17スライドを凝縮。Context Engineering・Hooks・Skills運用の核心。',
-    related: ['mcp-claude-integration.md','claude-code-knowledge-pipeline.md','f-company-session-framework.md'] },
+    related: ['mcp-claude-integration.md','claude-code-knowledge-pipeline.md','f-company-session-framework.md','top3-monday-api-key-401-error.md'] },
   { id: 'claude-code-knowledge-pipeline.md',
     title: 'Claude Code 会話 → 知識昇格パイプライン',
     category: 'Claude Code', level: 'published', score: null,
     tags: ['Claude Code','知識昇格','パイプライン','JSONL','extract_claude_code'],
     summary: 'AI会話ログをJSONL変換→promote.pyで自動分類・昇格させるパイプラインの構造。',
-    related: ['f-company-session-framework.md','promote-py-auto-promote-access-log.md'] },
+    related: ['f-company-session-framework.md'] },
   { id: 'claude-long-edit-syntax-risk.md',
     title: 'Claude長編集での構文破壊リスクと検証プロトコル',
     category: 'Claude Code', level: 'published', score: 4,
@@ -230,10 +230,10 @@ const RAW_NODES = [
     summary: '長いHTMLファイルを一括編集する際の構文破壊リスクと、node -c/preview_evalによる検証手順。',
     related: ['mcp-claude-integration.md'] },
   { id: 'dataview-query-template.md',
-    title: 'dataview-query-template',
-    category: 'Claude Code', level: 'draft', score: null,
-    tags: [],
-    summary: 'Obsidian Dataviewクエリのテンプレート集（作成中）。',
+    title: 'Dataview Query Templates for .secretary Vault',
+    category: 'AI活用', level: 'published', score: 3,
+    tags: ['Obsidian','Dataview','ダッシュボード','検索'],
+    summary: 'Obsidian DataviewのAI News・Denken Study統合検索・可視化クエリ集。',
     related: [] },
   { id: 'f-company-session-framework.md',
     title: 'Fカンパニー 高付加価値セッション設計フレームワーク',
@@ -245,38 +245,38 @@ const RAW_NODES = [
     title: '頭の良さの本質は「構造把握力」',
     category: 'ビジネススキル', level: 'published', score: 4,
     tags: ['構造把握力','思考法','問題解決','システム思考','内向型'],
-    summary: '頭の良さを「構造把握力」として定義し、問題解決・意思決定への応用を論じた知見。',
-    related: [] },
+    summary: '頭の良さを「構造把握力」として定義し、問題解決・意思決定への応用を論じた知見。（実際のcategory: 組織・マネジメント）',
+    related: ['business-skill-gap-analysis.md','ai-gyomu-sentaku.md','ideas-from-news/2026-04-21.md'] },
   { id: 'mcp-claude-integration.md',
     title: 'MCP — Claudeを実行AIに変える接続基盤',
     category: 'Claude Code', level: 'review', score: 4,
     tags: ['MCP','Claude','自動化','GitHub','Notion','Slack'],
     summary: 'MCPの概念・設計・実装パターン。Claude→GitHub/Notion/Slack連携を可能にする接続基盤。',
-    related: ['agentic-graphrag-architecture.md','cc-playbook.md'] },
+    related: ['agentic-graphrag-architecture.md','terminal-shell-cli.md','portal-health-observability.md','top3-monday-api-key-401-error.md'] },
   { id: 'portal-health-observability.md',
     title: 'Fカンパニーポータルの健全性可視化パターン（点→線化＋セルフ診断）',
     category: '業務改善', level: 'published', score: 4,
     tags: ['ポータル','ヘルスチェック','link_checker','セルフヒール','可観測性','cron'],
     summary: 'ポータルのリンク切れ検知→自動修復まで「点→線」化した可観測性パターン。cronで自動運用。',
-    related: [] },
+    related: ['mcp-claude-integration.md','promote-py-auto-promote-access-log.md','claude-long-edit-syntax-risk.md'] },
   { id: 'promote-py-auto-promote-access-log.md',
     title: 'promote.py アクセスログベース自動昇格機能',
     category: 'Claude Code', level: 'published', score: 5,
     tags: ['promote.py','自動昇格','アクセスログ','ナレッジ管理','ダッシュボード'],
     summary: 'アクセスログを解析してよく参照するL1ファイルを自動でL2候補に昇格させる仕組み。',
-    related: ['agentic-graphrag-architecture.md','claude-code-knowledge-pipeline.md'] },
+    related: ['claude-code-knowledge-pipeline.md','portal-health-observability.md','agentic-graphrag-architecture.md'] },
   { id: 'terminal-shell-cli.md',
     title: 'ターミナル・シェル・CLIの違い',
     category: 'AI活用', level: 'published', score: 4,
     tags: ['CLI','ターミナル','シェル','Linux','コマンドライン','IT基礎'],
     summary: 'ターミナル・シェル・CLIを正確に区別し、コマンドライン操作の土台を固める基礎知識。',
-    related: [] },
+    related: ['mcp-claude-integration.md','cc-playbook.md','ideas-from-news/2026-04-20.md'] },
   { id: 'top3-monday-api-key-401-error.md',
     title: 'top3-monday APIキー認証エラー（401）の対処手順',
     category: 'Claude Code', level: 'published', score: 5,
     tags: ['APIキー','認証エラー','自動化','トラブルシュート','Python','Anthropic SDK'],
     summary: 'Anthropic SDK使用時の401エラー原因（APIキー設定ミス）と確実な解決手順。',
-    related: [] },
+    related: ['mcp-claude-integration.md','claude-code-knowledge-pipeline.md'] },
   { id: 'ideas-from-news/2026-04-20.md',
     title: '製造現場AIファースト設計：UI廃棄戦略と工場音声IoT転用（2026-04-20蒸留）',
     category: '設備技術', level: 'published', score: 3,
@@ -375,6 +375,19 @@ const RAW_EDGES = [
 
   // 構造把握力はシステム思考として設備 AI 導入ガバナンス（フェーズゲート）に応用（応用）
   { from: 'kozo-haaku-ryoku.md', to: 'ideas-from-news/2026-04-21.md', rel: '応用' },
+
+  // ── related: 同期エッジ（4本）─────────────────────────────────────────────
+  // mcp-claude-integration の related に portal-health-observability が追加された（相互参照）
+  { from: 'mcp-claude-integration.md', to: 'portal-health-observability.md', rel: '応用' },
+
+  // mcp-claude-integration の related に top3-monday が追加された（相互参照）
+  { from: 'mcp-claude-integration.md', to: 'top3-monday-api-key-401-error.md', rel: '関連' },
+
+  // promote-py の related に portal-health-observability が追加された（相互参照）
+  { from: 'promote-py-auto-promote-access-log.md', to: 'portal-health-observability.md', rel: '関連' },
+
+  // portal-health-observability の related に claude-long-edit-syntax-risk が追加された（相互参照）
+  { from: 'portal-health-observability.md', to: 'claude-long-edit-syntax-risk.md', rel: '関連' },
 ];
 
 // ─── BUILD VIS DATASETS ───────────────────────────────────────────────────────
