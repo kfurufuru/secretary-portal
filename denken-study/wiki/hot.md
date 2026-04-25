@@ -20,11 +20,12 @@ updated: 2026-04-25T00:00:00
 
 ## Recent Changes（2026-04-25）
 - Created: [[SI単位]]（concepts/）— 7基本単位・電気系組立単位の因果関係・接頭語・落とし穴
+- Created: R03法規 問02〜03・05〜06・09〜10・12（7件 stub形式・answer_quality: needs-source）
 - Cross-refs: [[電磁気]] ↔ [[SI単位]], [[電気及び電子計測]] ↔ [[SI単位]]
-- Updated: concepts/_index.md, wiki/index.md（SI単位エントリ追加）
+- Updated: wiki/index.md（R03法規 全13問コンプリート表示）
 
 ## Active Threads
-- 残タスク（R03法規 questions/）: 問02・03・05・06・09・10・12 の7件未作成
-  → PDFページ 22, 23, 25, 29, 31, 35, 37, 40, 46 をfitzで画像変換して追加
+- **R03法規 問02/03/05/06/09/10/12 は needs-source**：電験王 法規 R03 PDFで問題文・正解を確認後 answer_quality → solid に更新
+  → PDFページ 22, 23, 25, 29, 31, 35, 37, 40, 46 が未変換（fitz変換で画像追加可能）
 - 他科目（R03理論・機械・電力）の過去問ページ化は次セッション以降
 - Dataviewダッシュボード（wiki/meta/dashboard.md）の動作確認 → Obsidianで開く
