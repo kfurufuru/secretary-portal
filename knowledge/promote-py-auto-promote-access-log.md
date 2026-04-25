@@ -7,7 +7,7 @@ last_reviewed: "2026-04-23"
 understanding_score: 5
 source: "inbox/handoff-2026-04-21-secretary.md"
 tags: ["promote.py", "自動昇格", "アクセスログ", "ナレッジ管理", "ダッシュボード"]
-related: ["knowledge/claude-code-knowledge-pipeline.md", "knowledge/portal-health-observability.md", "knowledge/agentic-graphrag-architecture.md"]
+related: ["knowledge/claude-code-knowledge-pipeline.md", "knowledge/portal-health-observability.md", "knowledge/agentic-graphrag-architecture.md", "knowledge/mcp-claude-integration.md"]
 ---
 # promote.py アクセスログベース自動昇格機能
 
