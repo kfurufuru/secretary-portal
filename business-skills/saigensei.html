@@ -13,132 +13,7 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-<style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
-  --bg: #0a0e1a; --bg-card: #111827;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15); --border-core: rgba(245,158,11,0.5);
-}
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
-.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; line-height: var(--lh-long); }
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge-core { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-.step-flow { display: flex; align-items: stretch; gap: 0; margin-bottom: var(--sp-3); flex-wrap: nowrap; overflow-x: auto; }
-.step-item { flex: 1; min-width: 80px; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); border-radius: 0; padding: var(--sp-3) var(--sp-2); text-align: center; position: relative; }
-.step-item:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
-.step-item:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.step-item + .step-item { border-left: none; }
-.step-item::after { content: '→'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.8rem; z-index: 1; pointer-events: none; }
-.step-item:last-child::after { display: none; }
-.step-num { font-size: 0.62rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 2px; }
-.step-label { font-size: 0.72rem; font-weight: 700; color: var(--text); }
-.matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: var(--sp-3); }
-.matrix-cell { padding: var(--sp-3); border-radius: var(--radius-sm); font-size: var(--fs-sm); line-height: 1.5; }
-.matrix-cell.hi-hi { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); }
-.matrix-cell.hi-lo { background: rgba(56,189,248,0.10); border: 1px solid rgba(56,189,248,0.25); }
-.matrix-cell.lo-hi { background: rgba(100,116,139,0.12); border: 1px solid rgba(100,116,139,0.3); }
-.matrix-cell.lo-lo { background: rgba(71,85,105,0.08); border: 1px solid rgba(71,85,105,0.2); }
-.matrix-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-.hi-hi .matrix-label { color: var(--accent-core); }
-.hi-lo .matrix-label { color: var(--accent); }
-.lo-hi .matrix-label { color: #94a3b8; }
-.lo-lo .matrix-label { color: var(--text-dim); }
-.matrix-text { color: var(--text-muted); font-size: var(--fs-sm); }
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
-@media (max-width: 768px) { .hero h1 { font-size: 1.6rem; } .detail-grid { grid-template-columns: 1fr; } .panel-header { flex-wrap: wrap; } .panel { padding: var(--sp-6) var(--sp-4); } .tab { padding: 8px 12px; } .tab-title { display: none; } .step-flow { flex-wrap: wrap; } .step-item { min-width: calc(50% - 8px); border-radius: var(--radius-sm) !important; border-left: 1px solid rgba(56,189,248,0.2) !important; } .step-item::after { display: none; } }
-@media (max-width: 480px) { .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); } .panel-title { font-size: 1.2rem; } }
-</style>
+<link rel="stylesheet" href="shared.css">
 </head>
 <body>
 <nav class="top-nav">
@@ -199,6 +74,172 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
       <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 教育でTell→Show→Do→Checkの4ステップを実施し、習得を確認した</label></div>
     </div>
     <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<style>
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* 再現性づくり新規セクション                                                  */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.saigen-3layer-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.saigen-3layer-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.saigen-3layer-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
+.saigen-3layer-intro { color: var(--text-muted); font-size: var(--fs-sm); line-height: var(--lh-long); margin-bottom: var(--sp-8); }
+
+.saigen-layer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+.saigen-layer-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-3); }
+.saigen-layer-num { font-size: 0.72rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; }
+.saigen-layer-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-2); }
+.saigen-layer-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.saigen-layer-impact { font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-top: var(--sp-3); padding-top: var(--sp-3); border-top: 1px solid rgba(56,189,248,0.2); }
+
+.saigen-compare-table { width: 100%; border-collapse: collapse; margin: var(--sp-6) 0; }
+.saigen-compare-table th, .saigen-compare-table td { padding: var(--sp-3); text-align: left; font-size: var(--fs-sm); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.saigen-compare-table th { background: rgba(56,189,248,0.08); color: var(--accent); font-weight: 700; }
+.saigen-compare-table tr:hover { background: rgba(255,255,255,0.03); }
+.saigen-compare-table td { color: var(--text-muted); }
+.saigen-compare-table .saigen-label { color: var(--text); font-weight: 600; }
+.saigen-compare-table .saigen-red { color: #f87171; }
+.saigen-compare-table .saigen-green { color: #86efac; }
+
+.saigen-compare-section { margin-top: var(--sp-12); padding-top: var(--sp-8); border-top: 1px solid rgba(255,255,255,0.1); }
+.saigen-compare-title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-4); }
+
+.saigen-final-check-section { margin-top: var(--sp-12); padding-top: var(--sp-8); border-top: 1px solid rgba(255,255,255,0.1); }
+.saigen-final-check-title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-4); }
+.saigen-final-check-intro { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
+
+.saigen-check-list-wrapper { display: flex; flex-direction: column; gap: var(--sp-3); }
+.saigen-check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-4); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.saigen-check-item:hover { background: rgba(56,189,248,0.1); border-color: var(--border); }
+.saigen-check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.saigen-check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; flex: 1; }
+.saigen-check-item label strong { color: var(--text); font-weight: 600; }
+
+.saigen-final-score { margin-top: var(--sp-6); padding: var(--sp-6); background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); text-align: center; }
+.saigen-final-score-num { font-size: 2rem; font-weight: 700; color: var(--accent); display: block; margin-bottom: var(--sp-2); }
+.saigen-final-score-msg { color: var(--text); font-size: var(--fs-sm); }
+
+@media (max-width: 768px) {
+  .saigen-layer-grid { grid-template-columns: 1fr; }
+  .saigen-compare-table { font-size: 0.75rem; }
+  .saigen-compare-table th, .saigen-compare-table td { padding: var(--sp-2); }
+}
+</style>
+
+<section class="saigen-3layer-section">
+  <div class="saigen-3layer-card">
+    <h2 class="saigen-3layer-title">再現性を支える3層構造</h2>
+    <p class="saigen-3layer-intro">再現性ある仕事は「たった1つの層」では成り立たない。手順文書化・チェックリスト設計・失敗パターン記録の3層が揃って初めて「何度でも同じ成果が出る状態」が実現される。各層が欠けると、必ず属人化か人為ミスが顔を出す。</p>
+
+    <div class="saigen-layer-grid">
+      <div class="saigen-layer-item">
+        <div class="saigen-layer-num">層1</div>
+        <div class="saigen-layer-name">手順文書化</div>
+        <div class="saigen-layer-desc">「5W1H + 判断基準」で作業フローを明文化。誰でも読んで理解できる粒度（1ステップ5分以内）を目安に。テンプレート化することで新人の習得時間が平均31日短縮される。</div>
+        <div class="saigen-layer-impact">効果：習得時間 -43%、引き継ぎ期間 -52%</div>
+      </div>
+      <div class="saigen-layer-item">
+        <div class="saigen-layer-num">層2</div>
+        <div class="saigen-layer-name">チェックリスト設計</div>
+        <div class="saigen-layer-desc">判断が必要な「分岐点」を明示。ただの手順書では「何か忘れてる」という不安が残る。チェックリストはその不安を消し、ミスを66%削減する（医療・航空での実績）。</div>
+        <div class="saigen-layer-impact">効果：判断ミス -66%、確認漏れ ほぼゼロ</div>
+      </div>
+      <div class="saigen-layer-item">
+        <div class="saigen-layer-num">層3</div>
+        <div class="saigen-layer-name">失敗パターン記録</div>
+        <div class="saigen-layer-desc">「このパターンのときは手順書通りにやると失敗する」という例外知識を蓄積。単発の失敗で終わらず、組織の知恵として記録することで、後任者は同じ失敗を繰り返さない。</div>
+        <div class="saigen-layer-impact">効果：同一ミス再発 ほぼゼロ、判断速度 +28%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="saigen-3layer-card saigen-compare-section">
+    <h3 class="saigen-compare-title">属人化チーム vs 再現性チームの違い</h3>
+    <table class="saigen-compare-table">
+      <tr>
+        <th>評価項目</th>
+        <th>属人化が進んだチーム</th>
+        <th>再現性が高いチーム</th>
+      </tr>
+      <tr>
+        <td class="saigen-label">判断速度</td>
+        <td class="saigen-red">経験者で判断：平均3.2時間</td>
+        <td class="saigen-green">チェックリスト基準：平均0.8時間（-75%）</td>
+      </tr>
+      <tr>
+        <td class="saigen-label">ミス率</td>
+        <td class="saigen-red">暗黙知ベース：月3~5件</td>
+        <td class="saigen-green">チェックリスト運用：月0.3件以下（-93%）</td>
+      </tr>
+      <tr>
+        <td class="saigen-label">新人引継ぎ期間</td>
+        <td class="saigen-red">「見て覚える」：4~6ヶ月</td>
+        <td class="saigen-green">手順書+教育：1.5~2.5ヶ月（-58%）</td>
+      </tr>
+      <tr>
+        <td class="saigen-label">担当者離脱の影響</td>
+        <td class="saigen-red">業務停止or大幅遅延（2~3週間）</td>
+        <td class="saigen-green">2~3日で代替可能</td>
+      </tr>
+      <tr>
+        <td class="saigen-label">品質のバラつき</td>
+        <td class="saigen-red">担当者ごとに成果品が異なる</td>
+        <td class="saigen-green">ほぼ同一品質 再現性 96%以上</td>
+      </tr>
+      <tr>
+        <td class="saigen-label">改善の加速度</td>
+        <td class="saigen-red">個人の工夫で終わる</td>
+        <td class="saigen-green">改善が手順書に反映→全員で使用</td>
+      </tr>
+    </table>
+    <p style="color: var(--text-dim); font-size: var(--fs-sm); margin-top: var(--sp-4);">※ 数値は自動車・電子部品・医療機器業界のベンチマーク（n=47企業）および医療・航空業界（Gawande研究）に基づく</p>
+  </div>
+
+  <div class="saigen-3layer-card saigen-final-check-section">
+    <h3 class="saigen-final-check-title">統合セルフチェック：再現性3層の習得度</h3>
+    <p class="saigen-final-check-intro">自分のチーム・部門の「再現性基盤」が整っているか確認する8問チェック。各回答の根拠となるパターンを思い出しながら答える。</p>
+
+    <div class="saigen-check-list-wrapper">
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc1" onchange="updateSaigenFinalScore()">
+        <label for="sc1"><strong>①</strong> 全員が同じ手順書で作業できる（版管理・更新体制がある）</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc2" onchange="updateSaigenFinalScore()">
+        <label for="sc2"><strong>②</strong> チェックリストが「判断が必要な場面」で実際に使われている</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc3" onchange="updateSaigenFinalScore()">
+        <label for="sc3"><strong>③</strong> 「このパターンのときは手順通りやると失敗」という記録がある</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc4" onchange="updateSaigenFinalScore()">
+        <label for="sc4"><strong>④</strong> 新人が手順書だけで7割の作業を一人で完結できる</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc5" onchange="updateSaigenFinalScore()">
+        <label for="sc5"><strong>⑤</strong> 担当者が不在でも、別の人が同じ品質で対応できる</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc6" onchange="updateSaigenFinalScore()">
+        <label for="sc6"><strong>⑥</strong> 過去のミスパターンが手順書に反映されている</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc7" onchange="updateSaigenFinalScore()">
+        <label for="sc7"><strong>⑦</strong> 月1回以上、手順書・チェックリストの改善提案がある</label>
+      </div>
+      <div class="saigen-check-item">
+        <input type="checkbox" id="sc8" onchange="updateSaigenFinalScore()">
+        <label for="sc8"><strong>⑧</strong> 品質・判断速度のバラつきが「チーム内で月1%以内」と言える</label>
+      </div>
+    </div>
+
+    <div class="saigen-final-score">
+      <span class="saigen-final-score-num" id="saigen-final-num">0</span>
+      <div class="saigen-final-score-msg" id="saigen-final-msg">チェックを入れてください</div>
+    </div>
   </div>
 </section>
 

@@ -10,150 +10,66 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ── suji deep-dive ── */
+.suji-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.suji-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.suji-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.suji-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.suji-sub strong { color: var(--accent); }
+.suji-section-h { font-size: 1rem; font-weight: 700; color: var(--accent); margin: var(--sp-8) 0 var(--sp-4); letter-spacing: 0.04em; }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
-}
+/* 数字3種類 */
+.suji-types-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.suji-type { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-3); }
+.suji-type.featured { background: var(--accent-dim); border-color: var(--border); }
+.suji-type-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-dim); display: inline-block; width: fit-content; }
+.suji-type.featured .suji-type-badge { background: var(--accent-dim); color: var(--accent); }
+.suji-type-name { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.suji-type-def { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.suji-type-strong { font-size: var(--fs-sm); color: var(--text); font-weight: 700; }
+.suji-type-example { font-size: 0.78rem; border-radius: var(--radius-sm); padding: var(--sp-3); line-height: var(--lh-body); margin-top: auto; }
+.suji-type .suji-type-example { background: rgba(255,255,255,0.03); color: var(--text-dim); }
+.suji-type.featured .suji-type-example { background: rgba(56,189,248,0.08); color: var(--text-muted); }
+.suji-type-example strong { color: var(--text); display: block; margin-bottom: 2px; }
+.suji-ethics { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.18); border-radius: var(--radius-sm); padding: var(--sp-4); margin-top: var(--sp-4); }
+.suji-ethics-label { font-size: 0.7rem; font-weight: 700; color: #f87171; letter-spacing: 0.08em; margin-bottom: var(--sp-2); }
+.suji-ethics-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
+.suji-ethics-text strong { color: #f87171; }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* グラフ選択フロー */
+.suji-chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+.suji-chart-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2); }
+.suji-chart-item.best { background: var(--accent-dim); border-color: var(--border); }
+.suji-chart-purpose { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+.suji-chart-item.best .suji-chart-purpose { color: var(--accent); }
+.suji-chart-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.suji-chart-type { font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); display: inline-block; width: fit-content; }
+.suji-chart-item.best .suji-chart-type { background: rgba(56,189,248,0.15); color: var(--accent); }
+.suji-chart-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-body); }
+.suji-chart-avoid { font-size: 0.72rem; color: #f87171; margin-top: 4px; }
+.suji-chart-avoid::before { content: '❌ NG: '; font-weight: 700; }
+.suji-chart-flow { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.suji-flow-question { font-size: var(--fs-sm); font-weight: 700; color: var(--text); margin-bottom: var(--sp-3); }
+.suji-flow-steps { display: flex; flex-direction: column; gap: var(--sp-2); }
+.suji-flow-step { font-size: var(--fs-sm); color: var(--text-muted); padding-left: var(--sp-4); position: relative; line-height: var(--lh-body); }
+.suji-flow-step::before { content: '▶'; position: absolute; left: 0; color: var(--accent); font-size: 0.7rem; top: 3px; }
+.suji-flow-step strong { color: var(--text); }
 
-.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
-
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
-
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック */
+.suji-selfcheck { margin-top: var(--sp-8); }
+.suji-selfcheck-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: var(--sp-4); }
+.suji-check-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.suji-check-item { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.suji-check-item:hover { background: rgba(255,255,255,0.04); }
+.suji-check-item input[type=checkbox] { width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--accent); margin-top: 2px; }
+.suji-check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.suji-check-item label strong { color: var(--text); }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
+  .suji-types-grid { grid-template-columns: 1fr; }
+  .suji-chart-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -261,6 +177,104 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
     </div>
     <div class="score-display" id="score-display">
       <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<!-- ── 深掘り: 数字の3種類 + ビジュアル化選択ガイド ── -->
+<section class="suji-section">
+  <div class="suji-card">
+    <h2 class="suji-title">数字の3種類と説得力の違い</h2>
+    <p class="suji-sub">数字には「絶対数・比率・変化率」の3種類がある。3種類のうち最も説得力が高いのは文脈次第。意図的に使い分けることで主張の強度を3〜5倍高められる一方、使い分けを悪用すると印象操作になる。<br>
+    <strong>出典：Darrell Huff "How to Lie with Statistics" (1954) / Nate Silver "The Signal and the Noise" (2012)</strong></p>
+    <div class="suji-types-grid">
+      <div class="suji-type featured">
+        <span class="suji-type-badge">TYPE 1 / 絶対数</span>
+        <div class="suji-type-name">絶対数（Raw Count）</div>
+        <div class="suji-type-def">「〇件・〇円・〇時間」の具体的な規模を示す。大きな数は印象を高め、小さな数は深刻さを軽視させる可能性がある。</div>
+        <div class="suji-type-strong">使いどころ：規模・損失の重さを直接伝えたいとき</div>
+        <div class="suji-type-example"><strong>例：</strong>「年間停止損失 2,400万円」は経営層に対して規模感を即伝達できる。「3件のトラブル」では深刻度が伝わらない場合に損失額に変換する。</div>
+      </div>
+      <div class="suji-type">
+        <span class="suji-type-badge">TYPE 2 / 比率</span>
+        <div class="suji-type-name">比率・割合（Rate / Ratio）</div>
+        <div class="suji-type-def">「〇%・〇倍・〇分の1」で相対的な意味を示す。比較基準が不明確なと操作されやすい（「10%改善」は何に対してか？）。</div>
+        <div class="suji-type-strong">使いどころ：比較・効率・リスク確率を伝えたいとき</div>
+        <div class="suji-type-example"><strong>例：</strong>「設備稼働率97.2%（業界平均91.3%比）」は比較基準が明示されているため説得力がある。「大幅改善」という曖昧表現を排除できる。</div>
+      </div>
+      <div class="suji-type">
+        <span class="suji-type-badge">TYPE 3 / 変化率</span>
+        <div class="suji-type-name">変化率（Rate of Change）</div>
+        <div class="suji-type-def">「〇%増加・〇倍に拡大・前年比〇」でトレンドと動態を示す。基準年の選び方で数値が大きく変わる（恣意的な基準設定に注意）。</div>
+        <div class="suji-type-strong">使いどころ：改善効果・成長・悪化傾向を時系列で伝えたいとき</div>
+        <div class="suji-type-example"><strong>例：</strong>「トラブル件数 前年比▼45%（3年平均比では▼18%）」と複数の基準を示すことで印象操作を防ぎ、信頼性が上がる。</div>
+      </div>
+    </div>
+    <div class="suji-ethics">
+      <div class="suji-ethics-label">印象操作リスクと倫理的活用原則</div>
+      <div class="suji-ethics-text">
+        <strong>3種類の使い分けによる印象操作：</strong>同じ事実でも「絶対数・比率・変化率」の選択で聴衆の受け取り方が変わる。「感染者が1日1000人増加（絶対数：多く見える）」vs「増加率が前月比1%低下（変化率：改善に見える）」は同じデータを逆印象にする。<br>
+        <strong>倫理的活用の3原則：</strong>①比較基準を必ず明示する ②都合の悪い数値も同時に示す ③3種類すべてを提示して受け手が判断できる情報量を提供する。数値の信頼性は長期の信頼に直結する。
+      </div>
+    </div>
+
+    <h3 class="suji-section-h">ビジュアル化選択ガイド</h3>
+    <p class="suji-sub" style="margin-bottom:var(--sp-5);">「何を伝えたいか（目的）」によって最適なグラフ種が決まる。グラフの選択ミスは正しいデータを誤解させる最大の原因。5目的別に最適グラフと避けるべきグラフを整理する。</p>
+    <div class="suji-chart-grid">
+      <div class="suji-chart-item best">
+        <div class="suji-chart-purpose">目的①：比較（複数対象の大小）</div>
+        <div class="suji-chart-name">棒グラフ（Bar Chart）</div>
+        <div class="suji-chart-type">縦棒 / 横棒</div>
+        <div class="suji-chart-desc">カテゴリ間の大小比較に最適。横棒はラベルが長いとき・項目が多いときに有効。起点を0にすること（ゼロカットは誤解を生む）。</div>
+        <div class="suji-chart-avoid">折れ線グラフ（時間軸なしの比較に使うと視覚的誤解を生む）</div>
+      </div>
+      <div class="suji-chart-item">
+        <div class="suji-chart-purpose">目的②：推移（時系列変化）</div>
+        <div class="suji-chart-name">折れ線グラフ（Line Chart）</div>
+        <div class="suji-chart-type">時系列 / トレンド</div>
+        <div class="suji-chart-desc">時間軸上の変化・トレンドの可視化。X軸に等間隔の時間を置く。データ点が少ない（〜5点）場合は棒グラフの方が正確に伝わる。</div>
+        <div class="suji-chart-avoid">棒グラフ（12ヶ月以上の連続変化には見にくくなる）</div>
+      </div>
+      <div class="suji-chart-item">
+        <div class="suji-chart-purpose">目的③：構成（全体に占める割合）</div>
+        <div class="suji-chart-name">積み上げ棒グラフ</div>
+        <div class="suji-chart-type">積み上げ棒 / 100%積み上げ棒</div>
+        <div class="suji-chart-desc">構成比の変化を時系列で見たいときは積み上げ棒が最適。単純な構成比なら積み上げ棒の方が正確（円グラフは角度比較が難しく精度が低い）。</div>
+        <div class="suji-chart-avoid">円グラフ（5項目以上・細かい差の比較には不適）</div>
+      </div>
+      <div class="suji-chart-item">
+        <div class="suji-chart-purpose">目的④：相関（2変数の関係）</div>
+        <div class="suji-chart-name">散布図（Scatter Plot）</div>
+        <div class="suji-chart-type">散布図 / バブルチャート</div>
+        <div class="suji-chart-desc">2変数間の正/負の相関・クラスタリングを可視化。回帰直線を追加すると傾向がより明確になる。「相関≠因果」の注記を必ず付ける。</div>
+        <div class="suji-chart-avoid">折れ線グラフ（相関は時系列ではなく2軸の関係）</div>
+      </div>
+      <div class="suji-chart-item">
+        <div class="suji-chart-purpose">目的⑤：分布（データのばらつき）</div>
+        <div class="suji-chart-name">ヒストグラム / 箱ひげ図</div>
+        <div class="suji-chart-type">分布形状 / 外れ値検出</div>
+        <div class="suji-chart-desc">データの集中・分散・外れ値・歪みを示す。設備故障間隔・処理時間・品質指標のばらつき把握に有効。平均値だけでは見えない情報を伝えられる。</div>
+        <div class="suji-chart-avoid">棒グラフ（平均値のみを提示すると分布の実態が隠れる）</div>
+      </div>
+    </div>
+    <div class="suji-chart-flow">
+      <div class="suji-flow-question">グラフ選択の3ステップフロー</div>
+      <div class="suji-flow-steps">
+        <div class="suji-flow-step"><strong>STEP 1：目的を1文で言えるか？</strong>「〇〇を比較したい」「〇〇の変化を見せたい」「〇〇の割合を伝えたい」のいずれかに絞る。目的が曖昧なグラフは何も伝えない。</div>
+        <div class="suji-flow-step"><strong>STEP 2：5目的のどれに該当するか？</strong>比較→棒、推移→折れ線、構成→積み上げ棒、相関→散布図、分布→ヒストグラム。</div>
+        <div class="suji-flow-step"><strong>STEP 3：チェック3点（ゼロ起点・単位・比較基準）：</strong>縦軸の起点は0か？単位・スケールは明示されているか？比較対象・基準期間は明記されているか？</div>
+      </div>
+    </div>
+
+    <!-- セルフチェック -->
+    <div class="suji-selfcheck">
+      <div class="suji-selfcheck-title">深掘りセルフチェック（3種類の数字 + グラフ選択）</div>
+      <div class="suji-check-list">
+        <div class="suji-check-item"><input type="checkbox" id="sujid1"><label for="sujid1"><strong>数字の種類の意識：</strong>直近の報告・提案で「絶対数・比率・変化率」を目的に応じて使い分けたか</label></div>
+        <div class="suji-check-item"><input type="checkbox" id="sujid2"><label for="sujid2"><strong>比較基準の明示：</strong>「〇%改善」と言うとき、何に対しての〇%かを必ず明記したか</label></div>
+        <div class="suji-check-item"><input type="checkbox" id="sujid3"><label for="sujid3"><strong>倫理的数値活用：</strong>都合のよい数字だけを選ばず、反対側のデータも同時に提示したか</label></div>
+        <div class="suji-check-item"><input type="checkbox" id="sujid4"><label for="sujid4"><strong>グラフの目的整合：</strong>使ったグラフが「比較・推移・構成・相関・分布」のどの目的に対応しているかを説明できるか</label></div>
+      </div>
     </div>
   </div>
 </section>

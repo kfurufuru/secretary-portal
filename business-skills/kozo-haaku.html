@@ -17,223 +17,142 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
-
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
+/* ── khaak Deep-Dive Sections ── */
+.khaak-deep { max-width: 900px; margin: 0 auto var(--sp-12); padding: 0 var(--sp-4); }
+.khaak-deep-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  margin-bottom: var(--sp-8);
 }
-
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
-
-.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
-.nav a { color: var(--accent); text-decoration: none; }
-.nav a:hover { text-decoration: underline; }
-
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
-
-.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-/* ── calc-box (01) ── */
-.calc-box { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.calc-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-core); margin-bottom: var(--sp-2); }
-.calc-formula { font-size: var(--fs-sm); color: #fde68a; font-family: monospace; line-height: 1.8; }
-.calc-result { font-size: 0.9rem; font-weight: 700; color: var(--accent-core); margin-top: var(--sp-2); }
-
-/* ── 4層分解タブ (04) ── */
-.layer-wrap { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.layer-scenario-tabs { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-3); flex-wrap: wrap; }
-.layer-tab { padding: 6px 14px; border-radius: 20px; font-size: var(--fs-sm); font-weight: 600; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: var(--transition); font-family: inherit; }
-.layer-tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
-.layer-content { display: none; }
-.layer-content.active { display: block; animation: fadeIn 0.2s ease; }
-.layer-rows { display: flex; flex-direction: column; gap: var(--sp-2); }
-.layer-row { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-3); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); border-left: 3px solid transparent; }
-.layer-row.l1 { border-left-color: #64748b; }
-.layer-row.l2 { border-left-color: #f97316; }
-.layer-row.l3 { border-left-color: var(--accent); }
-.layer-row.l4 { border-left-color: #22c55e; }
-.layer-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: 4px; margin-top: 2px; }
-.layer-row.l1 .layer-tag { background: rgba(100,116,139,0.2); color: #94a3b8; }
-.layer-row.l2 .layer-tag { background: rgba(249,115,22,0.15); color: #fb923c; }
-.layer-row.l3 .layer-tag { background: var(--accent-dim); color: var(--accent); }
-.layer-row.l4 .layer-tag { background: rgba(34,197,94,0.12); color: #4ade80; }
-.layer-body { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-.layer-body strong { color: var(--text); }
-
-/* ── Prev/Next ── */
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
-
-/* ── Top Nav ── */
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
+.khaak-deep-label {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--accent-dim); padding: 3px 10px; border-radius: 20px;
+  margin-bottom: var(--sp-4);
 }
-.nav-back {
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none; color: #94a3b8;
-  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
+.khaak-deep-title {
+  font-size: var(--fs-h2); font-weight: var(--fw-bold);
+  line-height: var(--lh-heading); margin-bottom: var(--sp-3); letter-spacing: 0.03em;
 }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text {
-  font-size: 0.78rem; color: #8892a0; font-weight: 600;
-  letter-spacing: 0.06em; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
+.khaak-deep-sub {
+  color: var(--text-muted); font-size: 0.88rem; line-height: var(--lh-long);
+  margin-bottom: var(--sp-6);
 }
-.nav-spacer { width: 80px; }
-
+/* 認知科学グリッド */
+.khaak-cog-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4); margin-bottom: var(--sp-6);
+}
+.khaak-cog-card {
+  background: rgba(56,189,248,0.04); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: var(--sp-4);
+  transition: var(--transition);
+}
+.khaak-cog-card:hover { border-color: var(--border-hover); background: var(--bg-hover); }
+.khaak-cog-icon { font-size: 1.8rem; margin-bottom: var(--sp-2); line-height: 1; }
+.khaak-cog-name { font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.khaak-cog-theory { font-size: 0.75rem; color: var(--text-dim); margin-bottom: var(--sp-3); }
+.khaak-cog-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: var(--sp-3); }
+.khaak-cog-data {
+  font-size: 0.78rem; background: rgba(248,113,113,0.08);
+  border-left: 2px solid #f87171; color: #fca5a5;
+  padding: var(--sp-2) var(--sp-3); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+/* 7±2ブロック */
+.khaak-chunk-visual {
+  display: flex; align-items: center; justify-content: center;
+  gap: var(--sp-2); flex-wrap: wrap; margin: var(--sp-4) 0;
+  padding: var(--sp-4); background: rgba(56,189,248,0.04);
+  border-radius: var(--radius-md); border: 1px solid var(--border);
+}
+.khaak-chunk-item {
+  width: 40px; height: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+  border: 2px solid rgba(56,189,248,0.3);
+  color: var(--accent-core);
+}
+.khaak-chunk-item.active { background: rgba(245,158,11,0.15); border-color: var(--accent-core); }
+.khaak-chunk-item.overload { background: rgba(248,113,113,0.15); border-color: #f87171; color: #f87171; }
+.khaak-chunk-caption { font-size: 0.78rem; color: var(--text-dim); text-align: center; margin-top: var(--sp-2); }
+/* 5ステップ */
+.khaak-step-list { display: flex; flex-direction: column; gap: 0; margin-bottom: var(--sp-6); }
+.khaak-step-item {
+  display: flex; gap: var(--sp-4); padding: var(--sp-4);
+  border-left: 2px solid var(--border);
+  position: relative; transition: var(--transition);
+}
+.khaak-step-item:hover { background: var(--bg-hover); border-radius: var(--radius-sm); }
+.khaak-step-item:first-child { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.khaak-step-item:last-child { border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+.khaak-step-num {
+  min-width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent-dim); border: 2px solid var(--accent);
+  color: var(--accent); font-size: 0.85rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.khaak-step-body {}
+.khaak-step-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.khaak-step-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin-bottom: var(--sp-2); }
+.khaak-step-tool {
+  font-size: 0.78rem; color: var(--accent-core);
+  background: var(--accent-core-dim); padding: 3px 8px;
+  border-radius: 12px; display: inline-block;
+}
+/* 実損数値バー */
+.khaak-loss-bar-wrap { margin: var(--sp-4) 0 var(--sp-6); }
+.khaak-loss-bar-item { margin-bottom: var(--sp-3); }
+.khaak-loss-bar-header { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 6px; }
+.khaak-loss-bar-label { color: var(--text-muted); }
+.khaak-loss-bar-val { color: #f87171; font-weight: 700; }
+.khaak-loss-bar-track {
+  height: 8px; background: rgba(255,255,255,0.06);
+  border-radius: 4px; overflow: hidden;
+}
+.khaak-loss-bar-fill {
+  height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, #f87171, #fbbf24);
+  transition: width 1s ease;
+}
+/* セルフチェック */
+.khaak-check-section { margin-top: var(--sp-6); }
+.khaak-check-title {
+  font-size: 0.85rem; font-weight: 700; color: var(--accent-core);
+  margin-bottom: var(--sp-4); display: flex; align-items: center; gap: var(--sp-2);
+}
+.khaak-check-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.khaak-check-item {
+  display: flex; align-items: flex-start; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(245,158,11,0.04);
+  border: 1px solid rgba(245,158,11,0.15);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: var(--transition); user-select: none;
+}
+.khaak-check-item:hover { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.35); }
+.khaak-check-item.checked { background: rgba(245,158,11,0.12); border-color: var(--accent-core); }
+.khaak-check-box {
+  width: 18px; height: 18px; min-width: 18px;
+  border: 2px solid rgba(245,158,11,0.5); border-radius: 4px; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; color: var(--accent-core); transition: var(--transition);
+}
+.khaak-check-item.checked .khaak-check-box { background: var(--accent-core); border-color: var(--accent-core); color: #000; }
+.khaak-check-text { font-size: 0.87rem; color: var(--text-muted); line-height: 1.55; }
+.khaak-score-display {
+  margin-top: var(--sp-4); padding: var(--sp-3) var(--sp-4);
+  background: rgba(56,189,248,0.06); border: 1px solid var(--border);
+  border-radius: var(--radius-md); text-align: center; font-size: 0.88rem;
+}
+.khaak-score-num { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
-}
-/* ── Structure Map ── */
-.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
-.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
-.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
-.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
-.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
-.smap-band { width: 100%; max-width: 540px; }
-.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.smap-band-tag.core { color: var(--accent-core); }
-.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
-.smap-center { display: flex; justify-content: center; }
-.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
-.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
-.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
-.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
-.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
-.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
-.smap-node.core-node .sn-num { color: var(--accent-core); }
-.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
-.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
-.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
-.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
-.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
-.smap-axiom strong { color: var(--accent-core); }
-@media (max-width: 480px) {
-  .smap-node { max-width: 130px; }
-  .smap-node.core-node { max-width: 200px; }
-  .sn-name { font-size: 0.78rem; }
-  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+  .khaak-cog-grid { grid-template-columns: 1fr; }
+  .khaak-deep-card { padding: var(--sp-4); }
 }
 </style>
 </head>
@@ -397,6 +316,173 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
     <span style="color:#38bdf8;font-size:1.4rem;">↩</span>
   </a>
 </section>
+
+<!-- Deep Dive: 認知科学 + 5ステップ -->
+<div class="khaak-deep">
+
+  <!-- Section A: 認知科学・チャンキング -->
+  <div class="khaak-deep-card">
+    <span class="khaak-deep-label">Deep Dive A</span>
+    <h2 class="khaak-deep-title">構造把握の認知科学：チャンキングと作業記憶</h2>
+    <p class="khaak-deep-sub">「情報が多すぎて整理できない」の正体は、作業記憶の容量限界にある。George Miller（1956）が発見した「7±2則」とチャンキング理論が、なぜ構造化が認知負荷を下げるかを説明する。構造化はスキルではなく、脳の制約への対処設計だ。</p>
+
+    <div class="khaak-cog-grid">
+      <div class="khaak-cog-card">
+        <div class="khaak-cog-icon">🧠</div>
+        <div class="khaak-cog-name">7±2則（Miller's Law）</div>
+        <div class="khaak-cog-theory">出典：G.A.Miller「The Magical Number Seven」(Psychological Review, 1956)</div>
+        <div class="khaak-cog-desc">人間の作業記憶（ワーキングメモリ）が同時に保持できる情報の「塊（チャンク）」は5〜9個。電話番号が7〜8桁に設計されているのはこの制約による。会議で10個以上の情報を同時提示すると、参加者の理解保持率は急落する。</div>
+        <div class="khaak-cog-data">10項目のリストを提示した場合、3日後の再現率は平均<strong>17%</strong>（3〜4項目の構造化グループに分けると<strong>68%</strong>）（Bower et al., 1969）</div>
+      </div>
+      <div class="khaak-cog-card">
+        <div class="khaak-cog-icon">🔗</div>
+        <div class="khaak-cog-name">チャンキング理論</div>
+        <div class="khaak-cog-theory">出典：Chase & Simon「Perception in Chess」(Cognitive Psychology, 1973)</div>
+        <div class="khaak-cog-desc">チャンキングとは、複数の小さな情報を「意味のある塊」として1チャンクに圧縮する認知操作。チェスの達人はボードの配置を個々のコマではなく「攻撃パターン」という塊で認識する。構造化とは意識的なチャンキング設計だ。</div>
+        <div class="khaak-cog-data">エキスパートは同じ情報を<strong>5〜7チャンク</strong>で認識。初学者は<strong>20〜30の断片</strong>として処理 → エキスパートの作業記憶使用量は初学者の<strong>1/4</strong></div>
+      </div>
+      <div class="khaak-cog-card">
+        <div class="khaak-cog-icon">⚡</div>
+        <div class="khaak-cog-name">認知負荷理論（CLT）</div>
+        <div class="khaak-cog-theory">出典：Sweller「Cognitive Load During Problem Solving」(Cognitive Science, 1988)</div>
+        <div class="khaak-cog-desc">認知負荷は「内在的負荷（課題の難易度）」「外在的負荷（情報の提示方法）」「生成的負荷（学習処理）」の3種に分類される。構造化は外在的負荷を削減し、本質課題への認知リソースを最大化する設計手法だ。</div>
+        <div class="khaak-cog-data">非構造化資料での会議は構造化資料比で意思決定エラー率が<strong>2.4倍</strong>（Clark & Sweller, 2006）。外在的負荷が高い状態では重要判断を避ける傾向が<strong>38%増加</strong>。</div>
+      </div>
+      <div class="khaak-cog-card">
+        <div class="khaak-cog-icon">📐</div>
+        <div class="khaak-cog-name">構造化の作業記憶解放効果</div>
+        <div class="khaak-cog-theory">実務への適用：構造把握力の本質的根拠</div>
+        <div class="khaak-cog-desc">情報を「カテゴリ×優先度×因果」の3軸で構造化すると、同じ情報量でも作業記憶の占有チャンク数は平均で1/3以下に圧縮される。解放された認知リソースが「判断の質・創造性・リスク感知」に回る。</div>
+        <div class="khaak-cog-data">構造化された会議資料を使用したチームは、意思決定速度<strong>40%向上</strong>・決定後の変更率<strong>51%減少</strong>（McKinsey Org Design, 2023）</div>
+      </div>
+    </div>
+
+    <div class="khaak-chunk-visual">
+      <div style="width:100%;text-align:center;font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;">作業記憶の限界と構造化の効果（7チャンク上限の可視化）</div>
+      <div class="khaak-chunk-item active">A</div>
+      <div class="khaak-chunk-item active">B</div>
+      <div class="khaak-chunk-item active">C</div>
+      <div class="khaak-chunk-item active">D</div>
+      <div class="khaak-chunk-item active">E</div>
+      <div class="khaak-chunk-item active">F</div>
+      <div class="khaak-chunk-item active">G</div>
+      <div class="khaak-chunk-item overload">+8</div>
+      <div class="khaak-chunk-item overload">+9</div>
+      <div class="khaak-chunk-item overload">...</div>
+    </div>
+    <div class="khaak-chunk-caption">7チャンクまで（A〜G）が保持限界。8個目以降（赤）は既存情報の押し出しや混乱を招く。<br>構造化はこの7枠を「塊」で効率使用する技術だ。</div>
+
+    <div class="khaak-loss-bar-wrap">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--text-muted);margin-bottom:var(--sp-3);">非構造化による実損データ</div>
+      <div class="khaak-loss-bar-item">
+        <div class="khaak-loss-bar-header">
+          <span class="khaak-loss-bar-label">非構造化資料の決定後変更率（構造化比）</span>
+          <span class="khaak-loss-bar-val">+51%</span>
+        </div>
+        <div class="khaak-loss-bar-track"><div class="khaak-loss-bar-fill" style="width:51%"></div></div>
+      </div>
+      <div class="khaak-loss-bar-item">
+        <div class="khaak-loss-bar-header">
+          <span class="khaak-loss-bar-label">10項目リスト vs 構造化グループの3日後再現率差</span>
+          <span class="khaak-loss-bar-val">−51pt（17% vs 68%）</span>
+        </div>
+        <div class="khaak-loss-bar-track"><div class="khaak-loss-bar-fill" style="width:51%"></div></div>
+      </div>
+      <div class="khaak-loss-bar-item">
+        <div class="khaak-loss-bar-header">
+          <span class="khaak-loss-bar-label">認知負荷過剰時の重要判断回避傾向増加率</span>
+          <span class="khaak-loss-bar-val">+38%</span>
+        </div>
+        <div class="khaak-loss-bar-track"><div class="khaak-loss-bar-fill" style="width:38%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section B: 5ステップ -->
+  <div class="khaak-deep-card">
+    <span class="khaak-deep-label">Deep Dive B</span>
+    <h2 class="khaak-deep-title">複雑情報を構造化する5ステップ</h2>
+    <p class="khaak-deep-sub">「なんとなく複雑」の状態から「支点が見えた」状態へ移行するための標準プロセス。頭の中だけで行うと作業記憶の限界に阻まれる。各ステップで外部化ツールを使うことが必須条件だ。</p>
+
+    <div class="khaak-step-list">
+      <div class="khaak-step-item">
+        <div class="khaak-step-num">1</div>
+        <div class="khaak-step-body">
+          <div class="khaak-step-name">全体収集 — まず「全部出す」</div>
+          <div class="khaak-step-desc">頭の中にある情報・懸念・関係者・制約をすべて外部化する。判断・評価・分類は一切しない。「書いていないものは存在しない」前提で、とにかく発散する。この段階でフィルタリングすると重要な要素を見落とす。時間目安：5〜10分。</div>
+          <span class="khaak-step-tool">ツール: ポストイット / マインドマップ / ブレインダンプメモ</span>
+        </div>
+      </div>
+      <div class="khaak-step-item">
+        <div class="khaak-step-num">2</div>
+        <div class="khaak-step-body">
+          <div class="khaak-step-name">要素分解 — 「これは何の話か」を問う</div>
+          <div class="khaak-step-desc">収集した情報を「人 / 物 / 金 / 時間 / 情報」などの基本軸、または「原因 / 症状 / 影響 / 対策」の因果軸でカテゴリに分ける。1つの要素が複数カテゴリに属する場合は主眼で決定し、二重計上を避ける（MECE原則）。</div>
+          <span class="khaak-step-tool">ツール: MECE分解 / Issue Tree / KJ法</span>
+        </div>
+      </div>
+      <div class="khaak-step-item">
+        <div class="khaak-step-num">3</div>
+        <div class="khaak-step-body">
+          <div class="khaak-step-name">関係性マッピング — 「何が何を動かしているか」を図示</div>
+          <div class="khaak-step-desc">要素間の「因果・依存・時系列・重複」関係を矢印で表現する。この段階で初めて「ボトルネック」「レバレッジポイント」「循環ループ」が見えてくる。線形リストでは発見できない構造的洞察がここで得られる。フィードバックループの存在に特に注意する。</div>
+          <span class="khaak-step-tool">ツール: 因果ループ図 / システム思考マップ / 矢印付きA3整理</span>
+        </div>
+      </div>
+      <div class="khaak-step-item">
+        <div class="khaak-step-num">4</div>
+        <div class="khaak-step-body">
+          <div class="khaak-step-name">階層整理 — 「粒度を揃える」</div>
+          <div class="khaak-step-desc">マップから「戦略レベル / 戦術レベル / オペレーションレベル」の階層を分離し、各階層内の情報が同じ抽象度であることを確認する。異なる粒度の情報が同列に並んでいる状態が「混乱した議論」の構造的原因だ。ピラミッド原則の縦軸（抽象度）を揃える作業。</div>
+          <span class="khaak-step-tool">ツール: ピラミッド構造図 / ロジックツリー / 抽象度スケール</span>
+        </div>
+      </div>
+      <div class="khaak-step-item">
+        <div class="khaak-step-num">5</div>
+        <div class="khaak-step-body">
+          <div class="khaak-step-name">要約 — 「一言で言うと何か」を結論化</div>
+          <div class="khaak-step-desc">ステップ4までで整理した構造を「この問題の本質は○○だ」という1文に圧縮する。1文にできない場合は、まだ構造が見えていないサインだ。この1文が会議の冒頭・報告書の冒頭・稟議の要旨になる。抽象化思考の完成形がここにある。</div>
+          <span class="khaak-step-tool">ツール: BLUF文の作成 / エレベーターピッチ30秒 / 新聞の見出し作成法</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- セルフチェック -->
+    <div class="khaak-check-section">
+      <div class="khaak-check-title">
+        <i data-lucide="check-square" width="16" height="16"></i>
+        セルフチェック — 直近の問題整理・分析作業で確認（5問）
+      </div>
+      <div class="khaak-check-list" id="khaak-checks">
+        <div class="khaak-check-item" onclick="khaakToggle(this)">
+          <div class="khaak-check-box"></div>
+          <div class="khaak-check-text">直近の複雑問題で「まず全部出す」ブレインダンプを紙またはツールで行ったか？（評価・分類より先に）</div>
+        </div>
+        <div class="khaak-check-item" onclick="khaakToggle(this)">
+          <div class="khaak-check-box"></div>
+          <div class="khaak-check-text">情報をMECE（重複なし・漏れなし）で分解し、カテゴリ名を明示したか？</div>
+        </div>
+        <div class="khaak-check-item" onclick="khaakToggle(this)">
+          <div class="khaak-check-box"></div>
+          <div class="khaak-check-text">要素間の「因果・依存・ループ」関係を図（矢印）で表現したか？（頭の中だけで行っていない）</div>
+        </div>
+        <div class="khaak-check-item" onclick="khaakToggle(this)">
+          <div class="khaak-check-box"></div>
+          <div class="khaak-check-text">戦略・戦術・オペレーションの階層を分離し、同じ抽象度の情報を同列に並べたか？</div>
+        </div>
+        <div class="khaak-check-item" onclick="khaakToggle(this)">
+          <div class="khaak-check-box"></div>
+          <div class="khaak-check-text">最終的に「この問題の本質は○○だ」という1文に圧縮できたか？（1文にできない場合は構造未整理）</div>
+        </div>
+      </div>
+      <div class="khaak-score-display">
+        <div><span class="khaak-score-num" id="khaak-score">0</span> / 5</div>
+        <div id="khaak-score-msg" style="color:var(--text-muted);font-size:0.82rem;margin-top:4px;">直近の整理・分析作業を振り返ってください</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <footer>
   <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:12px;">
@@ -589,6 +675,16 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 }); // DOMContentLoaded
+
+// khaak セルフチェック
+function khaakToggle(el) {
+  el.classList.toggle('checked');
+  el.querySelector('.khaak-check-box').textContent = el.classList.contains('checked') ? '✓' : '';
+  const total = document.querySelectorAll('#khaak-checks .khaak-check-item.checked').length;
+  document.getElementById('khaak-score').textContent = total;
+  const msgs = ['直近の整理・分析作業を振り返ってください','まだ1/5。特定のステップがスキップされている。','2/5。関係性マッピング（図示）を省略しやすい傾向がある。','3/5。半分以上実践。5ステップを1セットとして習慣化しよう。','4/5。高水準。残り1項目を意識することで判断の質が上がる。','5/5 — 5ステップが体系的に実践されている。'];
+  document.getElementById('khaak-score-msg').textContent = msgs[total];
+}
 </script>
 </body>
 </html>

@@ -267,57 +267,6 @@
     }
     .night-check-box.checked{background:rgba(168,85,247,0.40);border-color:#c084fc;color:#fff;}
 
-    /* ---- TODO card ---- */
-    .card-todo{grid-column:span 6;}
-    .todo-list{display:flex;flex-direction:column;gap:6px;margin-top:var(--sp-3);}
-    .todo-item{
-      display:flex;align-items:flex-start;gap:10px;
-      padding:9px 12px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid var(--border);border-radius:10px;
-      font-size:0.82rem;line-height:1.45;
-      transition:background var(--transition),border-color var(--transition);
-    }
-    .todo-item:hover{background:rgba(255,255,255,0.06);border-color:var(--border-h);}
-    .todo-check{
-      width:16px;height:16px;border-radius:4px;border:1px solid var(--border-h);
-      flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;
-      font-size:10px;
-    }
-    .todo-check.done{background:var(--green);border-color:var(--green);color:#fff;}
-    .todo-item.high .todo-check{border-color:rgba(239,68,68,0.5);}
-    .todo-text{flex:1;}
-    .todo-tag{
-      font-size:0.6rem;font-weight:600;padding:2px 6px;border-radius:4px;
-      letter-spacing:.06em;flex-shrink:0;align-self:center;
-    }
-    .todo-tag.high{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);}
-    .todo-tag.normal{background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);}
-    .todo-tag.low{background:rgba(255,255,255,0.05);color:var(--text3);border:1px solid var(--border);}
-    .todo-add{
-      margin-top:8px;width:100%;padding:8px 12px;
-      background:rgba(99,102,241,0.06);border:1px dashed rgba(99,102,241,0.25);
-      border-radius:10px;color:var(--text3);font-size:0.78rem;font-family:inherit;
-      cursor:pointer;text-align:left;transition:all var(--transition);
-    }
-    .todo-add:hover{background:rgba(99,102,241,0.12);color:var(--accent-h);border-color:rgba(99,102,241,0.45);}
-
-    /* ---- KNOWLEDGE STATS ---- */
-    .card-knowledge{grid-column:span 6;}
-    .knowledge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:var(--sp-3);}
-    .k-stat{
-      padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;
-    }
-    .k-stat-val{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--text);}
-    .k-stat-lbl{font-size:0.68rem;color:var(--text3);margin-top:2px;}
-    .k-stat-sub{font-size:0.7rem;color:var(--text2);margin-top:4px;}
-    .k-bar-wrap{margin-top:12px;}
-    .k-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-    .k-bar-label{font-size:0.7rem;color:var(--text2);width:80px;flex-shrink:0;}
-    .k-bar{flex:1;height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
-    .k-bar-fill{height:100%;border-radius:3px;transition:width 1s ease;}
-    .k-bar-count{font-size:0.68rem;color:var(--text3);width:24px;text-align:right;flex-shrink:0;}
-
     /* ---- SYSTEM HEALTH ---- */
     .card-health{grid-column:span 4;}
     .health-badge{
@@ -326,38 +275,6 @@
     .health-badge.red{background:rgba(239,68,68,0.15);color:#fca5a5;}
     .health-badge.yellow{background:rgba(245,158,11,0.12);color:#fcd34d;}
     .health-badge.green{background:rgba(16,185,129,0.12);color:#6ee7b7;}
-
-    /* ---- PHASE EVOLUTION ---- */
-    .card-phase{grid-column:span 8;}
-    .phase-row{display:flex;align-items:center;gap:0;margin-top:var(--sp-4);}
-    .phase-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
-    .phase-circle{
-      width:44px;height:44px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;font-size:0.85rem;border:2px solid;
-      transition:all var(--transition);
-    }
-    .phase-circle.done{background:rgba(16,185,129,0.2);border-color:var(--green);color:var(--green);}
-    .phase-circle.active{
-      background:rgba(99,102,241,0.2);border-color:var(--accent);color:#a5b4fc;
-      box-shadow:0 0 16px var(--accent-glow);
-    }
-    .phase-circle.future{background:rgba(255,255,255,0.04);border-color:var(--border);color:var(--text3);}
-    .phase-label{font-size:0.65rem;color:var(--text3);text-align:center;max-width:72px;line-height:1.3;}
-    .phase-label.active{color:var(--text2);}
-    .phase-connector{height:2px;flex:1;margin-bottom:20px;background:var(--border);}
-    .phase-connector.done{background:linear-gradient(90deg,var(--green),var(--accent));}
-    .phase-detail{
-      margin-top:var(--sp-4);padding:12px 16px;
-      background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.18);
-      border-radius:12px;
-    }
-    .phase-detail-title{font-size:0.8rem;font-weight:600;color:#a5b4fc;margin-bottom:6px;}
-    .phase-detail-list{display:flex;flex-wrap:wrap;gap:6px;}
-    .phase-tag{
-      font-size:0.68rem;padding:3px 8px;border-radius:6px;
-      background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.20);color:var(--text2);
-    }
 
     /* ---- QUICK LINKS ---- */
     .card-links{grid-column:span 4;}
@@ -444,10 +361,9 @@
     /* ---- RESPONSIVE ---- */
     @media(max-width:768px){
       main{grid-template-columns:1fr;padding:12px;}
-      .card-hero,.card-exam,.card-todo,.card-knowledge,
-      .card-health,.card-phase,.card-links,
+      .card-hero,.card-exam,
+      .card-health,.card-links,
       .card-allsites,.card-mode{grid-column:span 1!important;}
-      .knowledge-grid{grid-template-columns:repeat(2,1fr);}
       .allsites-grid{grid-template-columns:repeat(2,1fr);}
       .morning-grid,.noon-grid,.night-grid{grid-template-columns:1fr!important;}
     }
@@ -504,108 +420,6 @@
     transform: scale(0.98);
     transition: all 0.5s ease;
   }
-  .card-todo.highlighted {
-    border-color: rgba(99,102,241,0.45) !important;
-    box-shadow: 0 0 24px rgba(99,102,241,0.15), 0 8px 32px var(--shadow) !important;
-  }
-  .card-knowledge.highlighted {
-    border-color: rgba(16,185,129,0.40) !important;
-    box-shadow: 0 0 24px rgba(16,185,129,0.12), 0 8px 32px var(--shadow) !important;
-  }
-
-  /* ---- KNOWLEDGE FEED ---- */
-  .card-kfeed { grid-column: span 12; }
-  .kfeed-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 0.82rem;
-    cursor: default;
-    transition: background var(--transition), border-color var(--transition);
-  }
-  .kfeed-item:hover { background: rgba(255,255,255,0.06); border-color: var(--border-h); }
-  .kfeed-title { flex: 1; color: var(--text); line-height: 1.4; }
-  .kfeed-date { font-size: 0.62rem; color: var(--text3); flex-shrink: 0; }
-  .kfeed-badge {
-    font-size: 0.6rem; font-weight: 600; padding: 2px 7px; border-radius: 8px;
-    flex-shrink: 0;
-  }
-  .kfeed-badge.published { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.30); color: #6ee7b7; }
-  .kfeed-badge.review    { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.30); color: #fcd34d; }
-  .kfeed-badge.draft     { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; }
-  @media(max-width:768px){ .card-kfeed{ grid-column: span 1 !important; } }
-
-  /* ---- RANDOM REVIEW ---- */
-  .kfeed-random {
-    margin-bottom: 12px;
-    padding: 14px 16px;
-    background: linear-gradient(135deg, rgba(99,102,241,0.16), rgba(168,85,247,0.08));
-    border: 1px solid rgba(99,102,241,0.32);
-    border-radius: var(--radius-md);
-    display: flex; align-items: flex-start; gap: 12px;
-  }
-  .kfeed-random-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
-  .kfeed-random-body { flex: 1; }
-  .kfeed-random-label { font-size: 0.6rem; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: #a5b4fc; margin-bottom: 4px; }
-  .kfeed-random-title { font-size: 0.92rem; font-weight: 600; color: var(--text); line-height: 1.4; }
-  .kfeed-random-meta  { font-size: 0.68rem; color: var(--text3); margin-top: 3px; }
-  /* ---- SKILLS CARD ---- */
-  .card-skills { grid-column: span 12; }
-  .skills-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-  .skills-filter {
-    flex: 1; min-width: 160px; max-width: 280px;
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-    border-radius: 8px; padding: 6px 12px;
-    color: var(--text); font-size: 0.82rem; font-family: var(--font-base);
-    outline: none; transition: border-color var(--transition);
-  }
-  .skills-filter:focus { border-color: var(--accent); }
-  .skills-filter::placeholder { color: var(--text3); }
-  .skills-group { margin-bottom: 18px; }
-  .skills-group-title {
-    font-size: 0.65rem; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
-    color: var(--text3); padding: 0 4px 8px; border-bottom: 1px solid var(--border);
-    margin-bottom: 8px;
-  }
-  .skills-table { width: 100%; border-collapse: collapse; }
-  .skills-table tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .skills-table tr:last-child { border-bottom: none; }
-  .skills-table tr:hover td { background: rgba(255,255,255,0.03); }
-  .skills-table td { padding: 7px 8px; vertical-align: middle; }
-  .skill-cmd {
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    font-size: 0.82rem; font-weight: 600;
-    color: var(--accent); white-space: nowrap;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .skill-desc { font-size: 0.80rem; color: var(--text2); line-height: 1.4; }
-  .skill-cost {
-    font-size: 0.65rem; font-weight: 700; padding: 2px 7px;
-    border-radius: 6px; white-space: nowrap; flex-shrink: 0;
-  }
-  .skill-cost.green { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28); color: #6ee7b7; }
-  .skill-cost.yellow { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.28); color: #fcd34d; }
-  .skill-cost.red { background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.28); color: #fca5a5; }
-  .copy-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--text3); padding: 2px 4px; border-radius: 4px;
-    font-size: 0.8rem; transition: color var(--transition), background var(--transition);
-    line-height: 1;
-  }
-  .copy-btn:hover { color: var(--accent); background: rgba(34,211,238,0.08); }
-  .copy-btn.copied { color: var(--green); }
-  .skills-toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.40);
-    color: #6ee7b7; font-size: 0.78rem; font-weight: 600;
-    padding: 8px 20px; border-radius: 20px;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.2s ease; z-index: 999;
-  }
-  .skills-toast.show { opacity: 1; }
-  @media(max-width:768px){ .card-skills{ grid-column: span 1 !important; } }
   </style>
 </head>
 <body>
@@ -692,170 +506,20 @@
     <!-- Injected by renderMode() -->
   </div>
 
-  <!-- Today's TODO -->
-  <div class="card card-todo" data-card-id="todo">
-    <div class="card-label">Today's TODO — <span id="todo-date-label">2026-04-08</span></div>
-    <div class="card-title">本日のタスク</div>
-    <div class="todo-list" id="todo-list">
-      <div class="todo-item">
-        <div class="todo-check"></div>
-        <span class="todo-text">Secretary Portal v2を確認・活用する</span>
-        <span class="todo-tag normal">通常</span>
-      </div>
-      <div class="todo-item">
-        <div class="todo-check"></div>
-        <span class="todo-text">セッション進捗ビジュアライザーを試す</span>
-        <span class="todo-tag normal">通常</span>
-      </div>
-      <div class="todo-item">
-        <div class="todo-check"></div>
-        <span class="todo-text">health-monitor のパスエラーを修正する</span>
-        <span class="todo-tag normal">通常</span>
-      </div>
-      <div class="todo-item">
-        <div class="todo-check"></div>
-        <span class="todo-text">電験学習ノートを1件更新する</span>
-        <span class="todo-tag low">低</span>
-      </div>
-    </div>
-    <button class="todo-add" id="todo-add-btn" onclick="copyTodoCommand()">＋ タスクを追加（コマンドをコピー）</button>
-  </div>
-
-  <!-- Knowledge Stats -->
-  <div class="card card-knowledge" data-card-id="knowledge" style="grid-column:span 12;">
-    <div class="card-label">Knowledge Base</div>
-    <div class="card-title">ナレッジ蓄積状況</div>
-    <div class="knowledge-grid">
-      <div class="k-stat">
-        <div class="k-stat-val" id="k-total">76</div>
-        <div class="k-stat-lbl">総ナレッジ数</div>
-        <div class="k-stat-sub">knowledge/ 合計</div>
-      </div>
-      <div class="k-stat">
-        <div class="k-stat-val" id="k-denken">18</div>
-        <div class="k-stat-lbl">電験3種ノート</div>
-        <div class="k-stat-sub">denken-study/ 合計</div>
-      </div>
-      <div class="k-stat">
-        <div class="k-stat-val" id="k-ideas">12</div>
-        <div class="k-stat-lbl">アイデア</div>
-        <div class="k-stat-sub">ideas/ 合計</div>
-      </div>
-      <div class="k-stat">
-        <div class="k-stat-val" id="k-research">20</div>
-        <div class="k-stat-lbl">リサーチ</div>
-        <div class="k-stat-sub">research/ 合計</div>
-      </div>
-      <div class="k-stat" style="border-color:rgba(16,185,129,0.25);">
-        <div class="k-stat-val" id="k-effective" style="color:#6ee7b7;">--</div>
-        <div class="k-stat-lbl">実効知識数</div>
-        <div class="k-stat-sub">published + review のみ</div>
-      </div>
-    </div>
-    <div class="k-bar-wrap" style="margin-top:14px;">
-      <div class="k-bar-row">
-        <span class="k-bar-label">電気計装</span>
-        <div class="k-bar"><div class="k-bar-fill" id="kbar-ei" style="width:0%;background:linear-gradient(90deg,#6366f1,#818cf8);"></div></div>
-        <span class="k-bar-count" id="kbar-ei-n">9</span>
-      </div>
-      <div class="k-bar-row">
-        <span class="k-bar-label">法規</span>
-        <div class="k-bar"><div class="k-bar-fill" id="kbar-ai" style="width:0%;background:linear-gradient(90deg,#a855f7,#c084fc);"></div></div>
-        <span class="k-bar-count" id="kbar-ai-n">8</span>
-      </div>
-      <div class="k-bar-row">
-        <span class="k-bar-label">計装</span>
-        <div class="k-bar"><div class="k-bar-fill" id="kbar-dk" style="width:0%;background:linear-gradient(90deg,#22d3ee,#06b6d4);"></div></div>
-        <span class="k-bar-count" id="kbar-dk-n">6</span>
-      </div>
-      <div class="k-bar-row">
-        <span class="k-bar-label">設備管理</span>
-        <div class="k-bar"><div class="k-bar-fill" id="kbar-fm" style="width:0%;background:linear-gradient(90deg,#10b981,#059669);"></div></div>
-        <span class="k-bar-count" id="kbar-fm-n">4</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Knowledge Feed -->
-  <div class="card card-kfeed" data-card-id="kfeed">
-    <div class="card-label">Knowledge Feed</div>
-    <div class="card-title" style="margin-bottom:var(--sp-3);">最新ナレッジ <span style="font-size:0.7rem;font-weight:400;color:var(--text3);margin-left:6px;">knowledge/_index.md より</span></div>
-    <div id="kfeed-random" class="kfeed-random" style="display:none;"></div>
-    <div id="kfeed-list" style="display:flex;flex-direction:column;gap:8px;">
-      <div style="color:var(--text3);font-size:0.82rem;">読み込み中...</div>
-    </div>
-  </div>
-
   <!-- System Health (詳細は health-dashboard.html へ委譲) -->
   <div class="card card-health" data-card-id="health">
     <div class="card-label">System Health</div>
     <div class="card-title">システム状態</div>
-    <div style="margin-top:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
-      <div style="display:flex;align-items:center;gap:var(--sp-3);">
-        <span id="k-health-badge" class="health-badge green">knowledge/ ✓ 正常 (42件)</span>
+    <div style="margin-top:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2);">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span id="k-health-badge" class="health-badge green">knowledge/ ✓ 正常</span>
+        <span id="lc-status" class="health-badge green">リンクチェック</span>
       </div>
-      <div id="link-check-summary"
-           style="display:flex;flex-direction:column;gap:6px;
-                  padding:12px;border-radius:var(--radius-md);
-                  background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.20);
-                  font-size:0.82rem;color:var(--text-dim);">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-weight:600;color:var(--text);">🔗 リンクチェック</span>
-          <span id="lc-status" class="health-badge green">読込中…</span>
-        </div>
-        <div id="lc-detail" style="font-size:0.76rem;line-height:1.5;">—</div>
-      </div>
-      <div id="heal-log-summary"
-           style="display:flex;flex-direction:column;gap:6px;
-                  padding:12px;border-radius:var(--radius-md);
-                  background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.20);
-                  font-size:0.82rem;color:var(--text-dim);">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-weight:600;color:var(--text);">🩹 セルフヒール</span>
-          <span id="hl-status" class="health-badge green">読込中…</span>
-        </div>
-        <div id="hl-detail" style="font-size:0.76rem;line-height:1.5;">—</div>
-        <div style="position:relative;height:56px;margin-top:8px;">
-          <canvas id="hl-sparkline"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Phase Evolution -->
-  <div class="card card-phase" data-card-id="phase">
-    <div class="card-label">Project Phase Evolution</div>
-    <div class="card-title">secretaryシステム 成長フェーズ</div>
-    <div class="phase-row">
-      <div class="phase-node">
-        <div class="phase-circle done">✓</div>
-        <span class="phase-label">Phase 1<br>基盤構築</span>
-      </div>
-      <div class="phase-connector done"></div>
-      <div class="phase-node">
-        <div class="phase-circle done">✓</div>
-        <span class="phase-label">Phase 2<br>データ統合</span>
-      </div>
-      <div class="phase-connector done"></div>
-      <div class="phase-node">
-        <div class="phase-circle done">✓</div>
-        <span class="phase-label">Phase 3<br>自動化</span>
-      </div>
-      <div class="phase-connector done"></div>
-      <div class="phase-node">
-        <div class="phase-circle active">4</div>
-        <span class="phase-label active">Phase 4<br>AI分身化</span>
-      </div>
-    </div>
-    <div class="phase-detail">
-      <div class="phase-detail-title">📍 現在 Phase 4 — AI分身化</div>
-      <div class="phase-detail-list">
-        <span class="phase-tag">digital-twin 強化</span>
-        <span class="phase-tag">decision-log 蓄積・パターン分析</span>
-        <span class="phase-tag">furutan-bot 精度向上</span>
-        <span class="phase-tag">Wiki HTML生成</span>
-        <span class="phase-tag">Notion週次同期自動化</span>
-      </div>
+      <a href="health-monitor/link-check-results.json" target="_blank"
+         style="font-size:0.72rem;color:var(--text3);text-decoration:none;margin-top:4px;display:inline-block;"
+         onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text3)'">
+        詳細を確認 →
+      </a>
     </div>
   </div>
 
@@ -905,6 +569,9 @@
         </a>
         <a class="site-link" href="https://github.com/kfurufuru/denken3-study" target="_blank">
           <span class="site-link-icon">🐙</span>GitHub リポジトリ
+        </a>
+        <a class="site-link" href="https://gitdiagram.com/kfurufuru/denken3-study" target="_blank" title="リポジトリ構造をツリー図で可視化">
+          <span class="site-link-icon">🗂️</span>構造図（gitdiagram）
         </a>
         <a class="site-link" href="study-methods.html">
           <span class="site-link-icon">🧠</span>勉強方法・記憶術 OS
@@ -964,128 +631,23 @@
         <a class="site-link" href="memory-dashboard.html">
           <span class="site-link-icon">🧠</span>Claude Memory Dashboard
         </a>
+        <a class="site-link" href="https://gitdiagram.com" target="_blank" title="URLの github.com → gitdiagram.com に変えるだけでリポジトリ構造が即可視化">
+          <span class="site-link-icon">🗂️</span>gitdiagram
+          <span class="site-link-sub">github.com → gitdiagram.com</span>
+        </a>
+        <a class="site-link" href="skills-reference.html">
+          <span class="site-link-icon">🛠️</span>コマンドリファレンス
+        </a>
       </div>
 
     </div>
   </div>
 
-  <div class="card card-skills" data-card-id="skills">
-    <div class="card-label">Command Reference</div>
-    <div class="card-title">🛠️ スキル一覧</div>
-    <div class="skills-header">
-      <input class="skills-filter" id="skills-filter" placeholder="🔍 コマンド検索..." oninput="filterSkills(this.value)">
-      <span style="font-size:0.72rem;color:var(--text3);" id="skills-count"></span>
-    </div>
-    <div id="skills-body"></div>
-  </div>
 
 </main>
 
-<div class="skills-toast" id="skills-toast">コピーしました ✓</div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
-const SKILLS = [
-  { group: "🗺️ 知識グラフ", cmd: "/知識グラフ",              desc: "[[wiki-link]] → vis.js インタラクティブHTMLグラフ生成", cost: "green" },
-  { group: "🗺️ 知識グラフ", cmd: "/接続",                    desc: "全ナレッジ走査 → wiki-link 自動補完（重複なし）", cost: "yellow" },
-  { group: "🗺️ 知識グラフ", cmd: "/パイプライン [テーマ]",   desc: "海外リサーチ → ナレッジ化 → 接続 → 品質チェック → 投稿素材", cost: "yellow" },
-  { group: "🗺️ 知識グラフ", cmd: "/検証",                    desc: "重複・粒度・タグ不統一・旧情報の品質チェック", cost: "yellow" },
-  { group: "🗺️ 知識グラフ", cmd: "/last30days",              desc: "30日間の知識代謝レポート（孤立ノード・成長トピック）", cost: "yellow" },
-  { group: "⚡ 知識DB",      cmd: "知識追加 [テーマ]",        desc: "knowledge/ に新規ナレッジを追加", cost: "yellow" },
-  { group: "⚡ 知識DB",      cmd: "知識検索 [KW]",            desc: "キーワードで knowledge/ を横断検索", cost: "yellow" },
-  { group: "⚡ 知識DB",      cmd: "トラブル知識化",            desc: "factory/trouble-log から knowledge/ へ昇格", cost: "yellow" },
-  { group: "⚡ 知識DB",      cmd: "仮公開",                   desc: "level: draft → review に更新", cost: "green" },
-  { group: "⚡ 知識DB",      cmd: "知識棚卸し",               desc: "knowledge/ 全体の状況確認・整理提案", cost: "yellow" },
-  { group: "🔄 知識昇格",    cmd: "知識昇格",                 desc: "promote.py 実行 → L1→L2 自動昇格", cost: "yellow" },
-  { group: "🔄 知識昇格",    cmd: "昇格プレビュー",           desc: "py promote.py --dry-run で昇格候補を確認", cost: "green" },
-  { group: "🔄 知識昇格",    cmd: "昇格ログ",                 desc: "py promote.py --list-drafts でレビュー待ち一覧", cost: "green" },
-  { group: "🤝 Fカンパニー", cmd: "判断セッション [議題]",    desc: "マンガー・ダリオ・羽生が議題を多角分析", cost: "yellow" },
-  { group: "🤝 Fカンパニー", cmd: "実行セッション [タスク]",  desc: "ホリエモン・マスク・ひろゆきが実行を推進", cost: "yellow" },
-  { group: "🤝 Fカンパニー", cmd: "学習セッション [テーマ]",  desc: "テスラ・池谷・オークレーが学習設計", cost: "yellow" },
-  { group: "🤝 Fカンパニー", cmd: "設計セッション [設備名]",  desc: "デミング・豊田・落合陽一が設備設計", cost: "yellow" },
-  { group: "🤝 Fカンパニー", cmd: "戦略セッション",           desc: "孫・シネック・ホフマンが中長期戦略", cost: "red" },
-  { group: "🤝 Fカンパニー", cmd: "レビューセッション [成果物]", desc: "ジョブズ・ひろゆき・ホリエモンが成果物検証", cost: "yellow" },
-  { group: "🤝 Fカンパニー", cmd: "感情セッション",           desc: "さんま・オプラ・ミシェルが感情整理", cost: "green" },
-  { group: "🧠 発想支援",    cmd: "ブレスト [テーマ]",        desc: "発散思考でアイデア列挙", cost: "green" },
-  { group: "🧠 発想支援",    cmd: "ブレスト+",                desc: "制約・逆説・類推を加えた深堀りブレスト", cost: "yellow" },
-  { group: "🧠 発想支援",    cmd: "アイデアフォース [テーマ]", desc: "SCAMPER × 強制連想でアイデア発散", cost: "yellow" },
-  { group: "🧠 発想支援",    cmd: "強制発想",                 desc: "ランダム単語と課題を強制結合", cost: "yellow" },
-  { group: "📋 業務",        cmd: "日報作って",               desc: "本日の活動から日報を自動生成", cost: "yellow" },
-  { group: "📋 業務",        cmd: "育成計画作成 [メンバー]",  desc: "メンバー別育成計画を作成", cost: "yellow" },
-  { group: "📋 業務",        cmd: "受信箱整理",               desc: "Gmail MCP → 優先度・対応提案を構造化", cost: "yellow" },
-  { group: "📋 業務",        cmd: "朝のブリーフィング",        desc: "前日タスク・学習進捗の定時レポート生成", cost: "yellow" },
-  { group: "✍️ 生成",        cmd: "note記事を書いて [テーマ]", desc: "note.com有料記事（フィクション対応）", cost: "yellow" },
-  { group: "✍️ 生成",        cmd: "[名前] 作って",            desc: "HTML/React等のUI生成（67スタイル対応）", cost: "yellow" },
-  { group: "🔍 リサーチ",    cmd: "Xリサーチ",                desc: "X（旧Twitter）で最新動向をリサーチ", cost: "yellow" },
-  { group: "🔍 リサーチ",    cmd: "YTリサーチ",               desc: "YouTube で関連動画・知識収集", cost: "yellow" },
-  { group: "🏗️ 設備投資",   cmd: "仕様検討 [設備名]",        desc: "設備投資の仕様・要件を整理", cost: "yellow" },
-  { group: "🏗️ 設備投資",   cmd: "設備投資レビュー",          desc: "設備投資計画の多角レビュー", cost: "yellow" },
-  { group: "🏗️ 設備投資",   cmd: "稟議資料作成支援",          desc: "稟議書のドラフトを生成", cost: "yellow" },
-  { group: "🤖 デジタルツイン", cmd: "決定記録",              desc: "重要な意思決定を digital-twin/ に記録", cost: "yellow" },
-  { group: "🤖 デジタルツイン", cmd: "パターン分析",          desc: "判断ログから思考パターンを抽出", cost: "yellow" },
-  { group: "🤖 デジタルツイン", cmd: "ツイン参照",            desc: "digital-twin/ の判断軸を参照", cost: "yellow" },
-  { group: "🎓 フェインマン", cmd: "フェインマン [テーマ]",   desc: "理解度確認 → 弱点抽出 → 再説明", cost: "yellow" },
-  { group: "🎓 フェインマン", cmd: "学習プラン",              desc: "電験学習スケジュールを最適化", cost: "yellow" },
-  { group: "🎓 フェインマン", cmd: "誤答記録 [カテゴリ] [L1] [L2]", desc: "誤答を e-log に記録", cost: "green" },
-  { group: "🌍 ダイジェスト", cmd: "世界ダイジェスト",        desc: "海外ニュースを5分野で要約 ⚠️重い", cost: "red" },
-  { group: "🌍 ダイジェスト", cmd: "ダイジェスト深掘り [番号]", desc: "ダイジェスト特定トピックを深掘り", cost: "yellow" },
-  { group: "🔧 メタ",        cmd: "Skill作って [要件]",       desc: "新規SKILL.mdを設計・雛形生成", cost: "yellow" },
-  { group: "🔧 メタ",        cmd: "レビューして [対象]",      desc: "HTML・Skill・コード品質レポート", cost: "yellow" },
-  { group: "🔧 メタ",        cmd: "コンテキスト確認",         desc: "現在のコンテキスト・設定状況を確認", cost: "green" },
-];
-
-function renderSkills(data) {
-  const body = document.getElementById('skills-body');
-  const groups = {};
-  data.forEach(s => { (groups[s.group] = groups[s.group] || []).push(s); });
-  const costLabel = { green: '🟢 軽', yellow: '🟡 中', red: '🔴 重' };
-  body.innerHTML = Object.entries(groups).map(([g, items]) => `
-    <div class="skills-group">
-      <div class="skills-group-title">${g}</div>
-      <table class="skills-table">
-        ${items.map(s => `
-          <tr>
-            <td style="width:1%;padding-right:4px;">
-              <button class="copy-btn" onclick="copyCmd(this,'${s.cmd.replace(/'/g,"\\'")}')">⎘</button>
-            </td>
-            <td style="width:40%;"><span class="skill-cmd">${escHtml(s.cmd)}</span></td>
-            <td><span class="skill-desc">${escHtml(s.desc)}</span></td>
-            <td style="width:1%;text-align:right;"><span class="skill-cost ${s.cost}">${costLabel[s.cost]}</span></td>
-          </tr>`).join('')}
-      </table>
-    </div>`).join('');
-  document.getElementById('skills-count').textContent = `${data.length} コマンド`;
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function filterSkills(q) {
-  const kw = q.trim().toLowerCase();
-  renderSkills(kw ? SKILLS.filter(s =>
-    s.cmd.toLowerCase().includes(kw) ||
-    s.desc.toLowerCase().includes(kw) ||
-    s.group.toLowerCase().includes(kw)
-  ) : SKILLS);
-}
-
-let toastTimer;
-function copyCmd(btn, cmd) {
-  navigator.clipboard.writeText(cmd).then(() => {
-    btn.classList.add('copied');
-    btn.textContent = '✓';
-    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '⎘'; }, 1500);
-    const toast = document.getElementById('skills-toast');
-    toast.textContent = `「${cmd}」をコピーしました`;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-  });
-}
-
-renderSkills(SKILLS);
-</script>
 
 <footer>
   Secretary Portal v2 — <span id="footer-date"></span> | <span id="footer-time"></span> | データ: .secretary/ ローカルファイル参照
@@ -1167,11 +729,6 @@ async function loadData() {
 }
 
 function applyData() {
-  // Knowledge stats
-  setTxt('k-total', DATA.knowledge_total);
-  setTxt('k-denken', DATA.denken_notes);
-  setTxt('k-ideas', DATA.ideas);
-  setTxt('k-research', DATA.research);
   setTxt('k-total-chip', DATA.knowledge_total);
   setTxt('k-health-badge', `✓ 正常 (${DATA.knowledge_total}件)`);
   document.getElementById('k-health-badge').className = 'health-badge green';
@@ -1180,109 +737,15 @@ function applyData() {
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(d => {
       const st = document.getElementById('lc-status');
-      const dt = document.getElementById('lc-detail');
       const broken = d.broken || 0;
       const warn = d.warnings || 0;
-      const ok = d.ok || 0;
       st.textContent = broken > 0 ? `✕ ${broken}件NG` : (warn > 0 ? `△ ${warn}件警告` : '✓ 異常なし');
       st.className = 'health-badge ' + (broken > 0 ? 'red' : (warn > 0 ? 'yellow' : 'green'));
-      const checkedAt = d.checked_at ? new Date(d.checked_at) : null;
-      const when = checkedAt ? checkedAt.toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
-      const hoursAgo = checkedAt ? (Date.now() - checkedAt.getTime()) / 3600000 : Infinity;
-      const staleLabel = hoursAgo > 168 ? ' <span style="color:#f87171;font-weight:600">⚠ cron停止?</span>' : (hoursAgo > 24 ? ' <span style="color:#fbbf24">△ 24h超</span>' : ' <span style="color:#34d399">✓ 最新</span>');
-      // warning詳細から停止中サーバを抽出して起動コマンド提示
-      const downPorts = new Set();
-      (d.files || []).forEach(fi => (fi.links || []).forEach(l => {
-        if (l.status === 'warning' && l.reason && l.reason.startsWith('localhost_server_down')) {
-          const m = l.href && l.href.match(/localhost:(\d+)/);
-          if (m) downPorts.add(m[1]);
-        }
-      }));
-      const portBatMap = {'8765':'start-denken.bat','8096':'ai-news\\ai-news\\start-server.bat'};
-      let fixHint = '';
-      if (downPorts.size > 0) {
-        const bats = [...downPorts].map(p => portBatMap[p]).filter(Boolean);
-        fixHint = '<div style="margin-top:6px;font-size:0.72rem;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><span style="opacity:.7">停止中:</span>' +
-          bats.map(b => `<button onclick="navigator.clipboard.writeText('${b}');this.textContent='✓ copied';setTimeout(()=>this.textContent='📋 ${b}',1500);" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);color:#fbbf24;padding:2px 8px;border-radius:6px;font-size:0.7rem;cursor:pointer;font-family:inherit;">📋 ${b}</button>`).join('') +
-          '</div>';
-      }
-      dt.innerHTML = `OK ${ok} / NG ${broken} / 警告 ${warn}　<span style="opacity:.7">(${when})</span>${staleLabel}${fixHint}`;
     })
-    .catch(e => {
+    .catch(() => {
       const st = document.getElementById('lc-status');
-      const dt = document.getElementById('lc-detail');
       if (st) { st.textContent = '未取得'; st.className = 'health-badge yellow'; }
-      if (dt) dt.textContent = 'link-check-results.json 読込失敗';
     });
-
-  fetch('health-monitor/heal_log.json', {cache:'no-store'})
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
-    .then(d => {
-      const st = document.getElementById('hl-status');
-      const dt = document.getElementById('hl-detail');
-      const entries = d.entries || [];
-      const latest = entries[entries.length - 1];
-      if (!latest) { st.textContent='ログなし'; st.className='health-badge yellow'; dt.textContent='—'; return; }
-      const last24h = Date.now() - 86400000;
-      const recent = entries.filter(e => new Date(e.timestamp).getTime() > last24h);
-      const flagged = recent.filter(e => !e.healed).length;
-      const healed = recent.filter(e => e.healed).length;
-      st.textContent = flagged > 0 ? `△ ${flagged}件要対応` : (recent.length > 0 ? `✓ ${healed}件自動修復` : '✓ 安定');
-      st.className = 'health-badge ' + (flagged > 0 ? 'yellow' : 'green');
-      const cats = [...new Set(recent.map(e=>e.cat_id))].join(' / ') || '—';
-      const when = new Date(latest.timestamp).toLocaleString('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-      dt.innerHTML = `直近24h: ${recent.length}件 [${cats}]　<span style="opacity:.7">(最終 ${when})</span>`;
-      // sparkline: cat_id別 直近7日推移
-      const canvas = document.getElementById('hl-sparkline');
-      if (canvas && entries.length > 0) {
-        const days = 7, now7 = Date.now(), dayMs = 86400000;
-        const labels = Array.from({length:days}, (_,i) => {
-          const d = new Date(now7 - (days-1-i)*dayMs);
-          return `${d.getMonth()+1}/${d.getDate()}`;
-        });
-        const catIds = [...new Set(entries.map(e=>e.cat_id))];
-        const palette = ['#38bdf8','#f59e0b','#10b981','#f43f5e','#84cc16','#c084fc'];
-        const datasets = catIds.map((cat,i) => ({
-          label: cat,
-          data: Array.from({length:days}, (_,j) => {
-            const s = now7 - (days-1-j)*dayMs, e2 = s + dayMs;
-            return entries.filter(e => e.cat_id===cat && new Date(e.timestamp).getTime()>=s && new Date(e.timestamp).getTime()<e2).length;
-          }),
-          borderColor: palette[i % palette.length],
-          backgroundColor: 'transparent',
-          tension: 0.4, pointRadius: 2, borderWidth: 1.5,
-        }));
-        new Chart(canvas, {
-          type: 'line',
-          data: {labels, datasets},
-          options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: {legend:{display:true, labels:{color:'#94a3b8',font:{size:9},boxWidth:10,padding:6}}},
-            scales: {
-              x: {ticks:{color:'#64748b',font:{size:8}}, grid:{color:'rgba(255,255,255,0.05)'}},
-              y: {ticks:{color:'#64748b',font:{size:8},stepSize:1}, grid:{color:'rgba(255,255,255,0.05)'}, min:0}
-            }
-          }
-        });
-      }
-    })
-    .catch(e => {
-      const st = document.getElementById('hl-status');
-      const dt = document.getElementById('hl-detail');
-      if (st) { st.textContent = '未取得'; st.className = 'health-badge yellow'; }
-      if (dt) dt.textContent = 'heal_log.json 読込失敗';
-    });
-
-  // K bars
-  const bars = DATA.k_bars;
-  animateBar('kbar-ei', bars.ei.pct + '%');
-  animateBar('kbar-ai', bars.ai.pct + '%');
-  animateBar('kbar-dk', bars.dk.pct + '%');
-  animateBar('kbar-fm', bars.fm.pct + '%');
-  setTxt('kbar-ei-n', bars.ei.n);
-  setTxt('kbar-ai-n', bars.ai.n);
-  setTxt('kbar-dk-n', bars.dk.n);
-  setTxt('kbar-fm-n', bars.fm.n);
 
   // E-log count
   setTxt('elog-count', DATA.elog_count + '+');
@@ -1291,19 +754,6 @@ function applyData() {
   if (DATA.exam_days_left !== null) setTxt('exam-days', DATA.exam_days_left);
   if (DATA.exam_progress_pct !== null) {
     document.getElementById('exam-bar').style.width = DATA.exam_progress_pct + '%';
-  }
-
-  // --- TODO list 再描画（portal-data.jsonのtodos.itemsを使用）---
-  if (DATA.todos && DATA.todos.length > 0) {
-    const list = document.getElementById('todo-list');
-    if (list) {
-      list.innerHTML = DATA.todos.map(t => `
-        <div class="todo-item ${t.priority === '高' ? 'high' : ''}">
-          <div class="todo-check ${t.done ? 'done' : ''}">${t.done ? '✓' : ''}</div>
-          <span class="todo-text" style="${t.done ? 'text-decoration:line-through;opacity:0.5;' : ''}">${t.text || t.content || ''}</span>
-          <span class="todo-tag ${t.priority === '高' ? 'high' : t.priority === '低' ? 'low' : 'normal'}">${t.priority || '通常'}</span>
-        </div>`).join('');
-    }
   }
 
   // --- ヒーロー フォーカスタスク更新 ---
@@ -1334,8 +784,6 @@ function applyCognitiveLayout(todoCount, elogCount) {
   if (existingBanner) existingBanner.remove();
 
   const examCard = document.querySelector('.card-exam');
-  const todoCard = document.querySelector('.card-todo');
-  const knowledgeCard = document.querySelector('.card-knowledge');
   const mainEl = document.querySelector('main');
 
   let mode, msg, emoji;
@@ -1344,22 +792,16 @@ function applyCognitiveLayout(todoCount, elogCount) {
     emoji = '🔴';
     msg = `高負荷モード — タスク${todoCount}件 / 誤答ログ${elogCount}件。電験より今日のタスクを片付けましょう。`;
     if (examCard) examCard.classList.add('dimmed');
-    if (todoCard) todoCard.classList.add('highlighted');
-    if (knowledgeCard) knowledgeCard.classList.remove('highlighted');
   } else if (todoCount <= 2 && elogCount <= 2) {
     mode = 'low';
     emoji = '🟢';
     msg = `余裕モード — タスク${todoCount}件のみ。ナレッジ蓄積・電験学習に集中できます。`;
     if (examCard) examCard.classList.remove('dimmed');
-    if (knowledgeCard) knowledgeCard.classList.add('highlighted');
-    if (todoCard) todoCard.classList.remove('highlighted');
   } else {
     mode = 'normal';
     emoji = '🔵';
     msg = `通常モード — タスク${todoCount}件 / 誤答ログ${elogCount}件。バランス良く進めましょう。`;
     if (examCard) examCard.classList.remove('dimmed');
-    if (todoCard) todoCard.classList.remove('highlighted');
-    if (knowledgeCard) knowledgeCard.classList.remove('highlighted');
   }
 
   // バナーを挿入（mainの最初の子要素の前）
@@ -1376,91 +818,9 @@ function setTxt(id, val) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;
 }
-function copyTodoCommand() {
-  const text = 'タスク追加 ';
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('todo-add-btn');
-    const orig = btn.textContent;
-    btn.textContent = '✓ 「タスク追加 」をコピーしました';
-    btn.style.color = 'var(--green)';
-    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
-  }).catch(() => {
-    alert('Claude Codeに「タスク追加 [内容]」と入力してください');
-  });
-}
 function animateBar(id, w) {
   const el = document.getElementById(id);
   if (el) setTimeout(() => { el.style.width = w; }, 150);
-}
-
-/* =====================================================
-   KNOWLEDGE FEED
-   ===================================================== */
-async function loadKnowledgeFeed() {
-  const list = document.getElementById('kfeed-list');
-  if (!list) return;
-  try {
-    const res = await fetch('knowledge/_index.md?t=' + Date.now());
-    if (!res.ok) throw new Error('not ok');
-    const text = await res.text();
-    const items = [];
-    const re = /\[\[([^\]]+)\]\]\s*[—\-]\s*([^(]+)\(([^)]+)\)/g;
-    let m;
-    while ((m = re.exec(text)) !== null) {
-      const [, file, title, meta] = m;
-      const parts = meta.split(',').map(p => p.trim());
-      items.push({ file, title: title.trim(), level: parts[0] || 'draft', date: parts[1] || '' });
-    }
-    const recent = items.slice(-6).reverse();
-    if (!recent.length) {
-      list.innerHTML = '<div style="color:var(--text3);font-size:0.82rem;">エントリなし</div>';
-      return;
-    }
-    const effectiveCount = items.filter(i => i.level === 'published' || i.level === 'review').length;
-    setTxt('k-effective', effectiveCount);
-
-    // ランダム復習ウィジェット（published/review から1件）
-    const reviewable = items.filter(i => i.level === 'published' || i.level === 'review');
-    if (reviewable.length > 0) {
-      const pick = reviewable[Math.floor(Math.random() * reviewable.length)];
-      const randomDiv = document.getElementById('kfeed-random');
-      if (randomDiv) {
-        randomDiv.innerHTML = `
-          <span class="kfeed-random-icon">🎲</span>
-          <div class="kfeed-random-body">
-            <div class="kfeed-random-label">今日のランダム復習</div>
-            <div class="kfeed-random-title">${pick.title}</div>
-            <div class="kfeed-random-meta">${pick.level} · ${pick.date}</div>
-          </div>`;
-        randomDiv.style.display = 'flex';
-      }
-    }
-
-    const now = new Date();
-    list.innerHTML = recent.map(item => {
-      // 鮮度バッジ計算
-      let freshBadge = '';
-      if (item.date) {
-        const itemDate = new Date(item.date);
-        const diffH = (now - itemDate) / (1000 * 60 * 60);
-        if (diffH <= 48) {
-          freshBadge = '<span style="font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);color:#6ee7b7;flex-shrink:0;">🔥 NEW</span>';
-        } else if (item.file.includes('ideas-from-news') && diffH > 48) {
-          freshBadge = '<span style="font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.30);color:#fcd34d;flex-shrink:0;">⏰ 期限</span>';
-        }
-      }
-      return `
-      <div class="kfeed-item">
-        <span style="font-size:1rem;flex-shrink:0;">📄</span>
-        <span class="kfeed-title">${item.title}</span>
-        ${freshBadge}
-        <span class="kfeed-date">${item.date}</span>
-        <span class="kfeed-badge ${item.level}">${item.level}</span>
-      </div>`;
-    }).join('');
-  } catch (e) {
-    list.innerHTML = '<div style="color:var(--text3);font-size:0.82rem;">読み込み失敗 — ローカルサーバー経由で開いてください</div>';
-  }
 }
 
 /* =====================================================
@@ -1483,12 +843,9 @@ const dateStr = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDat
 document.getElementById('hero-date').textContent = dateStr;
 document.getElementById('header-date').textContent = dateStr;
 
-// Update todo date label
+// 今日のTODOリンクを動的に設定
 const mm = String(today.getMonth()+1).padStart(2,'0');
 const dd = String(today.getDate()).padStart(2,'0');
-document.getElementById('todo-date-label').textContent = `${today.getFullYear()}-${mm}-${dd}`;
-
-// 今日のTODOリンクを動的に設定
 const todayTodoLink = document.getElementById('today-todo-link');
 if (todayTodoLink) {
   todayTodoLink.href = `todos/${today.getFullYear()}-${mm}-${dd}.md`;
@@ -1732,7 +1089,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2. Load live data (async)
   await loadData();
-  loadKnowledgeFeed();
 
   // 5分ごとに差分リフレッシュ（フルリロードなし）
   setInterval(async () => {

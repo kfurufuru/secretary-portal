@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>スキル診断 | Business Skills</title>
-<meta name="description" content="McKinsey / GAFA PM / 日本の優秀な管理職 — あなたのビジネススキルはどのレベルか。11問で診断。">
+<meta name="description" content="McKinsey / GAFA PM / 日本の優秀な管理職 — あなたのビジネススキルはどのレベルか。18問で診断。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="shared.css">
 <style>
 :root {
   --font-base: 'Inter', 'Noto Sans JP', sans-serif;
@@ -414,14 +415,14 @@ body {
   <div class="intro-wrap">
     <div class="intro-eyebrow">Business Skills Diagnostic</div>
     <h1 class="intro-title">あなたは<span>どのレベル</span>か</h1>
-    <p class="intro-desc">11の職場シナリオに「自分ならどうするか」で答えるだけ。自己評価ではなく行動で測るスキル診断。</p>
+    <p class="intro-desc">18の職場シナリオに「自分ならどうするか」で答えるだけ。自己評価ではなく行動で測るスキル診断。</p>
     <div class="intro-badges">
       <div class="intro-badge badge-mckinsey">McKinsey社員</div>
       <div class="intro-badge badge-gafa">GAFA PM</div>
       <div class="intro-badge badge-jp">日本の優秀な管理職</div>
     </div>
     <div class="intro-meta">
-      <div class="meta-item"><div class="meta-num">11</div><div class="meta-label">問</div></div>
+      <div class="meta-item"><div class="meta-num">18</div><div class="meta-label">問</div></div>
       <div class="meta-item"><div class="meta-num">2</div><div class="meta-label">分</div></div>
       <div class="meta-item"><div class="meta-num">3</div><div class="meta-label">ランク比較</div></div>
     </div>
@@ -509,6 +510,9 @@ body {
         <div id="weaknessList"></div>
       </div>
     </div>
+
+    <!-- Weak Category Links -->
+    <div id="weak-links-bar" style="display:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;"></div>
 
     <!-- World Profiles -->
     <div class="world-section">
@@ -696,21 +700,87 @@ const SKILLS = [
       '4の内容に加え「何のために成長するか（Why）」を言語化し、困難な状況でもブレない判断軸になっている',
     ]
   },
+  {
+    key: 'meta', name: 'メタ認知', category: 'セルフ', link: 'meta-ninchi.html',
+    situation: '重要な意思決定の場面で「なぜか判断が遅くなる」と感じている。原因が自分でも掴めない。',
+    options: [
+      '「今は忙しいから」と外部要因に帰因し、自分の思考パターンは振り返らない',
+      '「自分は慎重すぎるかも」と漠然と気づいているが、具体的に何が起きているかはわからない',
+      '判断が遅い場面を記録し「情報不足のとき」「上司の反応が読めないとき」に集中すると特定できた',
+      '特定の場面でバイアス（確証バイアス・承認欲求）が判断を歪めていると気づき、それを除外した判断ができる',
+      '4の内容に加え、判断前に「今の自分の状態（疲労・感情・前提）」を30秒でチェックし、毎回メタ認知を設計に組み込んでいる',
+    ]
+  },
+  {
+    key: 'unlearning', name: 'アンラーニング', category: '学習', link: 'unlearning.html',
+    situation: 'AI・デジタル化の波が来ているが、「今のやり方で十分回っている」という感覚が抜けない。',
+    options: [
+      '「今まで問題なかったし、わざわざ変える必要はない」と思っている',
+      '「変えた方がいいとは思うが、何を変えるかわからない」と感じている',
+      '「今の業務フローのうち、AIに代替できそうな手順」をリストアップして整理した',
+      '過去の成功パターン（手書き帳票・目視巡回）を意図的に疑い、「なぜこの手順が存在するか」を問い直して3つ廃止した',
+      '4の内容に加え「捨てた前提・廃止した手順」を記録し、年1回棚卸しするアンラーニングサイクルを個人に組み込んでいる',
+    ]
+  },
+  {
+    key: 'tettai', name: '撤退判断', category: '判断', link: 'tettai-handan.html',
+    situation: '半年間進めてきた設備改善プロジェクトが費用対効果で当初想定を大きく下回ることが明確になった。',
+    options: [
+      '「ここまで時間とコストをかけたのだから続けるべき」と継続を選択する',
+      '「もう少し様子を見てから判断する」と決断を先送りにする',
+      '費用・工期・効果の現状値を整理し、「このままいけば損失はXX万円」と数値化して上司に報告する',
+      '「撤退を推奨します。根拠3点：①累積費用、②効果の頭打ち、③代替案の費用対効果。撤退損失はXX万円です」と明確に報告する',
+      '4の内容に加え、次回プロジェクト開始時に「撤退基準（効果がYY%を下回ったら中止）」を開始時点で文書化する仕組みを導入した',
+    ]
+  },
+  {
+    key: 'aimai', name: '曖昧耐性', category: '認知', link: 'aimai-taisei.html',
+    situation: '原因不明の設備異常が発生。停止すべきか運転継続すべきか、情報が揃わないまま判断が必要。',
+    options: [
+      '「わからないから判断できない」と情報収集を待ち続け、結果的に現場に判断を委ねる',
+      '「とりあえず止めておこう」と最悪ケース回避のみで判断（機会損失の考慮なし）',
+      '「現時点でわかること・不明なこと」を整理し、安全基準に照らして運転継続可否の閾値を設定する',
+      '「仮説A：センサー誤報（70%）、仮説B：軸受け異常（30%）」と確率で並行保持し、各仮説への対応を同時準備する',
+      '4の内容に加え、段階的コミット（30分後・2時間後の判断ゲートを設定）とリバース可能判断（仮停止→確認→再開）で意思決定を設計した',
+    ]
+  },
+  {
+    key: 'shippai', name: '失敗報告', category: '伝達', link: 'shippai-hokoku.html',
+    situation: '担当設備で軽微な事故（ケガなし、生産影響2時間）が発生した。上司への第一報のタイミングと内容を判断している。',
+    options: [
+      '「原因が特定できてから報告しよう」と考え、調査が終わるまで2日間報告しなかった',
+      '即時報告はしたが「○○で事故がありました」のみで、影響範囲や対応状況は伝えられなかった',
+      '事故発生30分以内に「事実・影響範囲・現在の対応状況」を3点セットで報告した',
+      '「事実：▲▲で停止2時間。影響：生産XX個減。推定原因：軸受け摩耗（確認中）。暫定対策：手動切替。根本対策：明日XX時までに提示」と構造化報告した',
+      '4の内容に加え、部下からの報告フォーマット（事実/影響/原因仮説/暫定対策）を定型化し、チーム全体の報告品質を底上げした',
+    ]
+  },
+  {
+    key: 'anmoku', name: '暗黙知の言語化', category: 'AI活用', link: 'anmokuchi-gengoka.html',
+    situation: 'ベテラン作業員（定年3年前）が「音と振動でポンプの異常を察知する」スキルを持っている。この知識をマニュアル・AI化したい。',
+    options: [
+      '「本人に聞けばわかる」で放置。引退後に初めて「知識が消えた」と気づく',
+      '「異常音がしたら点検する」というレベルのマニュアルを作ったが、再現性がない',
+      '「どんな音のとき、どの設備で、何をするか」をインタビューで聞き起こし、行動レベルで書き出した',
+      '判断ポイント（「この音は正常、この音は異常」の分岐）を特定し、「もし○○音なら→△△を確認→□□のとき停止」というif-thenルールに変換した',
+      '4のif-thenルールをAIプロンプト（「以下の状態のとき、次に何を確認すべきか順番に教えて」）に変換し、現場タブレットで検証・運用開始した',
+    ]
+  },
 ];
 
 // ── Benchmarks (scores per skill, 1-5 scale) ──
 const BENCHMARKS = {
   mckinsey: {
     label: 'McKinsey社員', color: '#f43f5e',
-    scores: [4.7, 4.8, 4.6, 4.7, 4.5, 4.5, 4.2, 4.4, 4.5, 4.7, 4.6, 4.8]
+    scores: [4.7, 4.8, 4.6, 4.7, 4.5, 4.5, 4.2, 4.4, 4.5, 4.7, 4.6, 4.8, 4.6, 4.5, 4.8, 4.7, 4.4, 3.8]
   },
   gafa: {
     label: 'GAFA PM', color: '#f59e0b',
-    scores: [4.0, 4.0, 4.2, 4.0, 4.0, 4.3, 4.0, 4.2, 4.2, 4.2, 4.0, 4.5]
+    scores: [4.0, 4.0, 4.2, 4.0, 4.0, 4.3, 4.0, 4.2, 4.2, 4.2, 4.0, 4.5, 4.2, 4.6, 4.3, 4.5, 3.8, 4.6]
   },
   jp: {
     label: '日本の優秀な管理職', color: '#10b981',
-    scores: [3.0, 2.8, 3.0, 3.0, 3.2, 3.0, 3.5, 3.0, 3.5, 2.8, 2.8, 3.2]
+    scores: [3.0, 2.8, 3.0, 3.0, 3.2, 3.0, 3.5, 3.0, 3.5, 2.8, 2.8, 3.2, 2.5, 2.2, 2.8, 2.5, 3.5, 2.0]
   }
 };
 
@@ -813,6 +883,7 @@ function initCaseTabs() {
 let currentIdx = 0;
 let answers = new Array(SKILLS.length).fill(null);
 let radarChartInstance = null;
+let autoAdvTimer = null;
 
 function avg(arr) { return arr.reduce((s, v) => s + v, 0) / arr.length; }
 function categoryAvg(scores, indices) { return avg(indices.map(i => scores[i])); }
@@ -875,17 +946,19 @@ function selectOption(val) {
   });
   document.getElementById('btnNext').classList.add('enabled');
 
-  // auto-advance after short delay
-  setTimeout(() => {
+  // auto-advance after short delay (cancel any pending timer first)
+  if (autoAdvTimer) clearTimeout(autoAdvTimer);
+  autoAdvTimer = setTimeout(() => {
+    autoAdvTimer = null;
     if (currentIdx < SKILLS.length - 1) {
       currentIdx++;
       renderQuestion();
     }
-    // last question: just enable button, don't auto-advance
   }, 320);
 }
 
 function nextQuestion() {
+  if (autoAdvTimer) { clearTimeout(autoAdvTimer); autoAdvTimer = null; }
   if (answers[currentIdx] === null) return;
   if (currentIdx < SKILLS.length - 1) {
     currentIdx++;
@@ -896,6 +969,7 @@ function nextQuestion() {
 }
 
 function prevQuestion() {
+  if (autoAdvTimer) { clearTimeout(autoAdvTimer); autoAdvTimer = null; }
   if (currentIdx > 0) {
     currentIdx--;
     renderQuestion();
@@ -1081,7 +1155,43 @@ function showResults() {
     `<div class="sw-item"><span><strong>${item.name}</strong> — ${item.s}.0 / 5</span><a href="${item.link}" class="sw-link sw-link-strengthen">強化する →</a></div>`
   ).join('');
 
+  // Show weak category links
+  showWeakCategoryLinks(CATEGORIES, catUserScores);
+
   initCaseTabs();
+}
+
+function showWeakCategoryLinks(categories, scores) {
+  const bar = document.getElementById('weak-links-bar');
+  if (!bar) return;
+  bar.innerHTML = '';
+
+  // Find weak categories (score <= 3.5)
+  const weakCategories = categories
+    .map((cat, i) => ({ label: cat.label, score: scores[i], idx: i }))
+    .filter(c => c.score <= 3.5)
+    .sort((a, b) => a.score - b.score);
+
+  if (weakCategories.length === 0) return;
+
+  // Add label
+  const label = document.createElement('span');
+  label.style.cssText = 'font-size:0.72rem;color:#94a3b8;align-self:center;flex-shrink:0;';
+  label.textContent = '弱点カテゴリを絞り込む:';
+  bar.appendChild(label);
+
+  // Add buttons for each weak category
+  weakCategories.forEach(cat => {
+    const a = document.createElement('a');
+    a.href = 'index.html?filter=' + encodeURIComponent(cat.label);
+    a.style.cssText = 'font-size:0.72rem;padding:3px 10px;border-radius:99px;background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);color:#f43f5e;text-decoration:none;font-weight:600;white-space:nowrap;transition:var(--transition);';
+    a.textContent = cat.label + ' (' + cat.score.toFixed(1) + ')';
+    a.onmouseover = () => { a.style.background = 'rgba(244,63,94,0.2)'; a.style.borderColor = '#f43f5e'; };
+    a.onmouseout = () => { a.style.background = 'rgba(244,63,94,0.1)'; a.style.borderColor = 'rgba(244,63,94,0.3)'; };
+    bar.appendChild(a);
+  });
+
+  bar.style.display = 'flex';
 }
 </script>
 </body>

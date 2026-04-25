@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-04-23T13:42:20.818148+00:00",
-  "total_links": 4,
-  "ok": 4,
+  "checked_at": "2026-04-25T12:32:03.007515+00:00",
+  "total_links": 1,
+  "ok": 1,
   "broken": 0,
   "warnings": 0,
   "files": [
     {
-      "file": "business-skills/python-dekirukoto.html",
-      "ok": 4,
+      "file": "denken-study.html",
+      "ok": 1,
       "broken": 0,
       "warnings": 0,
       "links": []

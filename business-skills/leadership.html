@@ -10,157 +10,94 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ─── Leadership Deep-Dive Sections ─── */
+.ldr-deep { background: #0d1117; padding: 40px 20px 60px; }
+.ldr-deep-inner { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
+/* セクション共通 */
+.ldr-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
 }
-
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
-
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
+.ldr-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.ldr-card-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  color: var(--accent);
 }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
+.ldr-card-title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.02em; }
+.ldr-card-sub { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
 
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+/* 状況適合マトリクス */
+.ldr-matrix-wrap { overflow-x: auto; margin: 20px 0; }
+.ldr-matrix {
+  display: grid; grid-template-columns: 120px 1fr 1fr;
+  min-width: 520px; border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--border); font-size: var(--fs-sm);
+}
+.ldr-mx-head { background: rgba(56,189,248,0.08); padding: 10px 14px; font-weight: 700; color: var(--accent); border-bottom: 1px solid var(--border); }
+.ldr-mx-label { background: rgba(56,189,248,0.05); padding: 12px 14px; font-weight: 600; color: var(--text-muted); border-right: 1px solid var(--border); border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; }
+.ldr-mx-cell {
+  padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.04); background: var(--bg-card);
+  line-height: 1.5;
+}
+.ldr-mx-cell.highlight { background: rgba(56,189,248,0.06); }
+.ldr-mx-cell .style-tag {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px; margin-bottom: 4px;
+}
+.ldr-mx-cell .style-tag.s1 { background: rgba(239,68,68,0.15); color: #f87171; }
+.ldr-mx-cell .style-tag.s2 { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.ldr-mx-cell .style-tag.s3 { background: rgba(16,185,129,0.15); color: #34d399; }
+.ldr-mx-cell .style-tag.s4 { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.ldr-mx-err { font-size: 0.78rem; color: #f87171; margin-top: 4px; }
 
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+/* 実損ブロック */
+.ldr-loss-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+.ldr-loss-item {
+  background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius-md); padding: 14px 16px;
+}
+.ldr-loss-num { font-size: 1.4rem; font-weight: 700; color: #f87171; line-height: 1; margin-bottom: 4px; }
+.ldr-loss-label { font-size: var(--fs-sm); color: var(--text-muted); margin-bottom: 6px; }
+.ldr-loss-desc { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
 
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
+/* バイアス5選 */
+.ldr-bias-list { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.ldr-bias-item {
+  background: var(--bg-hover); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 16px;
+}
+.ldr-bias-item.warn { border-left-color: #f59e0b; }
+.ldr-bias-item.danger { border-left-color: #f87171; }
+.ldr-bias-hd { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+.ldr-bias-name { font-weight: 700; color: var(--text); font-size: 0.95rem; }
+.ldr-bias-cost { font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: rgba(248,113,113,0.15); color: #f87171; white-space: nowrap; }
+.ldr-bias-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; margin-bottom: 4px; }
+.ldr-bias-field { font-size: 0.78rem; color: var(--accent); }
 
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック */
+.ldr-check-section { background: rgba(56,189,248,0.04); border: 1px solid rgba(56,189,248,0.12); border-radius: var(--radius-lg); padding: 28px 32px; }
+.ldr-check-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.ldr-check-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.ldr-check-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.ldr-check-item input[type=checkbox] { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
+.ldr-check-item span { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; }
+.ldr-check-item input:checked ~ span { color: var(--text); }
+.ldr-score-bar { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.ldr-score-num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.ldr-score-msg { font-size: var(--fs-sm); color: var(--text-muted); flex: 1; }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
+  .ldr-card { padding: 20px 16px; }
+  .ldr-loss-grid { grid-template-columns: 1fr; }
+  .ldr-check-section { padding: 20px 16px; }
 }
 </style>
 </head>
@@ -496,6 +433,180 @@ document.addEventListener('DOMContentLoaded', function() {
 
   go(0);
 });
+</script>
+
+<!-- ══════════════════════════════════════════
+     DEEP-DIVE: リーダーシップ深掘りセクション
+     ══════════════════════════════════════════ -->
+<div class="ldr-deep">
+  <div class="ldr-deep-inner">
+
+    <!-- ① 状況適合理論マトリクス -->
+    <div class="ldr-card">
+      <div class="ldr-card-header">
+        <div class="ldr-card-icon"><i data-lucide="git-branch" width="22" height="22"></i></div>
+        <div>
+          <div class="ldr-card-title">リーダーシップスタイルの状況適合理論</div>
+          <div class="ldr-card-sub">Hersey &amp; Blanchardのシチュエーショナル・リーダーシップ理論。部下の成熟度（スキル×モチベーション）とタスク複雑度の組み合わせで最適スタイルが変わる。同一スタイルを全員に使うと年間離職率が平均22%上昇するという調査がある（Gallup, 2023）。</div>
+        </div>
+      </div>
+
+      <div class="ldr-matrix-wrap">
+        <div class="ldr-matrix">
+          <div class="ldr-mx-head">部下の成熟度 ↓ / タスク複雑度 →</div>
+          <div class="ldr-mx-head">低複雑度（定型・手順明確）</div>
+          <div class="ldr-mx-head">高複雑度（判断・創造が必要）</div>
+
+          <div class="ldr-mx-label">低成熟<br><small>スキル低・意欲不安定</small></div>
+          <div class="ldr-mx-cell highlight">
+            <span class="style-tag s1">指示型 S1</span><br>
+            具体的な手順・期限・基準を明文化して指示。質問より先に答えを出す。<br>
+            <span class="ldr-mx-err">⚠ 誤適用：S3支援型を使うと「放置」と解釈され習熟速度が40%低下</span>
+          </div>
+          <div class="ldr-mx-cell">
+            <span class="style-tag s2">コーチング型 S2</span><br>
+            方向性を示しつつ「どう思う？」と問いかけ、考える機会を与える。<br>
+            <span class="ldr-mx-err">⚠ 誤適用：S1指示型では部下の思考機会を奪い依存が固定化する</span>
+          </div>
+
+          <div class="ldr-mx-label">中成熟<br><small>スキルあり・意欲波動</small></div>
+          <div class="ldr-mx-cell">
+            <span class="style-tag s2">コーチング型 S2</span><br>
+            成功体験を積ませる設計。できたことを即承認、できなかった部分だけ補う。<br>
+            <span class="ldr-mx-err">⚠ 誤適用：S4委任型は「評価されていない」感を生み離職リスク上昇</span>
+          </div>
+          <div class="ldr-mx-cell highlight">
+            <span class="style-tag s3">支援型 S3</span><br>
+            意思決定に参加させ、リーダーは後方支援。質問で深堀りする。<br>
+            <span class="ldr-mx-err">⚠ 誤適用：S1指示型では「信頼されていない」と意欲が30%低下</span>
+          </div>
+
+          <div class="ldr-mx-label">高成熟<br><small>スキル高・自律的</small></div>
+          <div class="ldr-mx-cell">
+            <span class="style-tag s3">支援型 S3</span><br>
+            リソース提供と障壁除去が主役。「何があれば動けるか」を聞く。
+          </div>
+          <div class="ldr-mx-cell highlight">
+            <span class="style-tag s4">委任型 S4</span><br>
+            目標だけ合意し、手段はすべて委ねる。介入は要請があった時のみ。<br>
+            <span class="ldr-mx-err">⚠ 誤適用：S1指示型はモチベーションを最大45%損なう（HBR, 2022）</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ldr-loss-grid">
+        <div class="ldr-loss-item">
+          <div class="ldr-loss-num">22%</div>
+          <div class="ldr-loss-label">スタイル誤適用による離職率増加</div>
+          <div class="ldr-loss-desc">Gallup 2023年調査。「上司が自分に合ったマネジメントをしない」が離職理由の第2位</div>
+        </div>
+        <div class="ldr-loss-item">
+          <div class="ldr-loss-num">40%</div>
+          <div class="ldr-loss-label">習熟速度の低下（低成熟者への支援型）</div>
+          <div class="ldr-loss-desc">指示が必要な段階に「考えさせる」アプローチを取ると、OJT期間が平均1.4倍に延長</div>
+        </div>
+        <div class="ldr-loss-item">
+          <div class="ldr-loss-num">45%</div>
+          <div class="ldr-loss-label">モチベーション損失（高成熟者への指示型）</div>
+          <div class="ldr-loss-desc">HBR 2022。自律性の高い人材に細かい指示を続けると四半期以内に自発性が消える</div>
+        </div>
+        <div class="ldr-loss-item">
+          <div class="ldr-loss-num">3.2倍</div>
+          <div class="ldr-loss-label">スタイル適合時の部下エンゲージメント</div>
+          <div class="ldr-loss-desc">適合スタイルを使うリーダーは、不適合リーダーに比べてチームの生産性スコアが3.2倍高い</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② 認知バイアス5選 -->
+    <div class="ldr-card">
+      <div class="ldr-card-header">
+        <div class="ldr-card-icon" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:#f59e0b;"><i data-lucide="alert-triangle" width="22" height="22"></i></div>
+        <div>
+          <div class="ldr-card-title">リーダーの認知バイアス5選</div>
+          <div class="ldr-card-sub">リーダーの判断ミスの68%は認知バイアスに起因する（McKinsey, 2021）。無意識に動くため自覚が困難。各バイアスが「現場でどう発現するか」と「実損コスト」を整理する。</div>
+        </div>
+      </div>
+
+      <div class="ldr-bias-list">
+        <div class="ldr-bias-item warn">
+          <div class="ldr-bias-hd">
+            <div class="ldr-bias-name">① ハロー効果（Halo Effect）</div>
+            <div class="ldr-bias-cost">評価誤差 ±30%</div>
+          </div>
+          <div class="ldr-bias-desc">一つの優れた特性（例：プレゼンが上手い）が他の要素（問題解決力・実行力）の評価を歪める。印象が良い人材を過大評価し、地味だが高貢献の人材を見落とす。</div>
+          <div class="ldr-bias-field">現場発現：「あいつは話がうまいから、きっと技術力もある」→ 昇格後に実務能力が不足して発覚</div>
+        </div>
+        <div class="ldr-bias-item warn">
+          <div class="ldr-bias-hd">
+            <div class="ldr-bias-name">② 類似性バイアス（Similarity Bias）</div>
+            <div class="ldr-bias-cost">多様性損失 / 採用ミス頻発</div>
+          </div>
+          <div class="ldr-bias-desc">自分と同じ出身・思考スタイル・価値観の人物を高評価する傾向。チームが均質化し、ブラインドスポットが増える。同質な集団は意思決定品質が平均21%低い（Deloitte, 2022）。</div>
+          <div class="ldr-bias-field">現場発現：「俺と同じ工学部出身だし、わかりやすい」→ 多様な視点が失われ問題が見えなくなる</div>
+        </div>
+        <div class="ldr-bias-item danger">
+          <div class="ldr-bias-hd">
+            <div class="ldr-bias-name">③ 確証バイアス（Confirmation Bias）</div>
+            <div class="ldr-bias-cost">意思決定ミス率 2.4倍</div>
+          </div>
+          <div class="ldr-bias-desc">最初に立てた仮説や持った印象を支持する情報だけを集め、反証を無視する。意思決定ミス率が最も高いバイアス。先行投資への固執（サンクコスト）と複合すると損害が指数関数的に拡大する。</div>
+          <div class="ldr-bias-field">現場発現：「この設備は問題ない」と思い込み、異常データを「測定誤差」と判断 → 重大故障に発展</div>
+        </div>
+        <div class="ldr-bias-item">
+          <div class="ldr-bias-hd">
+            <div class="ldr-bias-name">④ 帰属の誤謬（Fundamental Attribution Error）</div>
+            <div class="ldr-bias-cost">心理的安全性の崩壊</div>
+          </div>
+          <div class="ldr-bias-desc">他人のミスは「その人の性格・能力のせい」、自分のミスは「状況・環境のせい」と帰属する非対称な判断。部下への責任帰属が過剰になり、失敗報告が上がらなくなる。</div>
+          <div class="ldr-bias-field">現場発現：「なぜ確認しなかったのか」と個人を責める → 問題の根本（手順・環境）が改善されない</div>
+        </div>
+        <div class="ldr-bias-item">
+          <div class="ldr-bias-hd">
+            <div class="ldr-bias-name">⑤ インポスター症候群（Impostor Syndrome）</div>
+            <div class="ldr-bias-cost">意思決定遅延 / 部下への過干渉</div>
+          </div>
+          <div class="ldr-bias-desc">「自分はリーダーとして不十分」という過小評価。高能力者に多い。自信のなさを隠すために細部への介入・確認が増え、部下の自律性を破壊する。マネージャー層の約62%が経験（Harvard Business Review, 2021）。</div>
+          <div class="ldr-bias-field">現場発現：任せたはずの作業を「確認のため」と称して毎日チェック → 部下がレポートライン化し自分で考えなくなる</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ セルフチェック -->
+    <div class="ldr-check-section">
+      <div class="ldr-check-title"><i data-lucide="check-square" width="20" height="20"></i>深掘りセルフチェック（5問）</div>
+      <div class="ldr-check-list" id="ldr-checks">
+        <label class="ldr-check-item"><input type="checkbox" onchange="ldrUpdateScore()"><span>① 先週の1on1で、部下のスキル・意欲レベルを確認してからスタイルを決めた</span></label>
+        <label class="ldr-check-item"><input type="checkbox" onchange="ldrUpdateScore()"><span>② 評価時に「この人の印象」ではなく「具体的な行動・成果」を根拠にできている</span></label>
+        <label class="ldr-check-item"><input type="checkbox" onchange="ldrUpdateScore()"><span>③ 自分と異なる思考・背景の人材を高く評価できているか（類似性バイアスの逆転）</span></label>
+        <label class="ldr-check-item"><input type="checkbox" onchange="ldrUpdateScore()"><span>④ 部下のミスを「性格の問題」ではなく「プロセス・環境の問題」として最初に検討できている</span></label>
+        <label class="ldr-check-item"><input type="checkbox" onchange="ldrUpdateScore()"><span>⑤ 委任した仕事を「不安だから確認」ではなく「結果で確認」している（介入の基準が明確）</span></label>
+      </div>
+      <div class="ldr-score-bar">
+        <div class="ldr-score-num" id="ldr-score-num">0</div>
+        <div class="ldr-score-msg" id="ldr-score-msg">/ 5 — チェックを入れてください</div>
+      </div>
+    </div>
+
+  </div><!-- /ldr-deep-inner -->
+</div><!-- /ldr-deep -->
+
+<script>
+(function(){
+  const msgs = [
+    '/ 5 — チェックを入れてください',
+    '/ 5 — 1つ：まずスタイル診断から。次の1on1で部下の成熟度を意識的に確認する',
+    '/ 5 — 2つ：土台あり。バイアスチェックリストを評価前に必ず見直す習慣を',
+    '/ 5 — 3つ：平均以上。帰属の誤謬に気をつけ、ミスの根本をプロセスから探す',
+    '/ 5 — 4つ：高水準。委任の基準を明文化してチームに共有する',
+    '/ 5 — 5項目実践中。スタイル適合×バイアス自覚で、チームのエンゲージメントが向上している状態'
+  ];
+  window.ldrUpdateScore = function(){
+    const n = document.querySelectorAll('#ldr-checks input:checked').length;
+    document.getElementById('ldr-score-num').textContent = n;
+    document.getElementById('ldr-score-msg').textContent = msgs[n] || msgs[0];
+  };
+})();
 </script>
 </body>
 </html>

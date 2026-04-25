@@ -298,3 +298,261 @@ anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'ty
     raise self._make_status_error_from_response(err.response) from None
 anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'Invalid authentication credentials'}, 'request_id': 'req_011CaH1HPbL3U4VGToprNHoZ'}
 
+[2026-04-21 23:05:30] INFO: ============================================================
+[2026-04-21 23:05:30] INFO: TOP3 Fixation: STARTED
+[2026-04-21 23:05:30] INFO: ============================================================
+[2026-04-21 23:05:30] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 23:05:30] INFO: 実行日: 2026-04-21
+[2026-04-21 23:05:30] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 23:05:30] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-21 23:05:30] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 23:05:30] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 23:05:32] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-21 23:05:32] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-21 23:05:32] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-21 23:05:48] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-21 23:05:48] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-21 23:05:48] INFO: 
+[DRY-RUN] Would write to:
+[2026-04-21 23:05:48] INFO:   C:\Users\kfuru\.secretary\todos\2026-04-21.md
+[2026-04-21 23:05:48] INFO: 
+--- Content Preview (first 500 chars) ---
+[2026-04-21 23:05:48] INFO: ---
+date: 2026-04-21
+type: todo
+top3_auto_generated: true
+generated_at: 2026-04-21T23:05:48
+completion_rate_prev_week: 0.0
+---
+
+# 2026-04-21 （月曜日）
+
+## 最優先 [P1: 必須]
+
+### 1. 電験3種 過去問演習（理論・電力 各1単元）
+- [ ] 実施 | 優先度: 高 | カテゴリ: 電験3種
+  - スコア: 41/50 | 見積: 2h
+  - 理由: 2026年受験まで残り約1年、週次積み上げが合否を左右する。前週タスク未登録のリセット週として基礎習慣を再確立する最優先機会。
+
+### 2. 電計チーム 週次1on1アジェンダ作成・実施
+- [ ] 実施 | 優先度: 高 | カテゴリ: チーム育成
+  - スコア: 39/50 | 見積: 1.5h
+  - 理由: 前週完了率0%はチームへの情報伝達・育成機会の損失と直結する。管理職として週次リズムの再構築が最高インパクト。
+
+### 3. 設備投資案件 現状課題の棚卸しメモ
+[2026-04-21 23:05:48] INFO: 
+[2026-04-21 23:05:48] INFO: ============================================================
+[2026-04-21 23:05:48] INFO: TOP3 Fixation: SUCCESS (18.2s)
+[2026-04-21 23:05:48] INFO: ============================================================
+[2026-04-21 23:05:48] INFO:   P1: 電験3種 過去問演習（理論・電力 各1単元） (score=41)
+[2026-04-21 23:05:48] INFO:   P2: 電計チーム 週次1on1アジェンダ作成・実施 (score=39)
+[2026-04-21 23:05:48] INFO:   P3: 設備投資案件 現状課題の棚卸しメモ作成（A4一枚） (score=37)
+[2026-04-21 23:05:59] INFO: ============================================================
+[2026-04-21 23:05:59] INFO: TOP3 Fixation: STARTED
+[2026-04-21 23:05:59] INFO: ============================================================
+[2026-04-21 23:05:59] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-21 23:05:59] INFO: 実行日: 2026-04-21
+[2026-04-21 23:05:59] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-21 23:05:59] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-21 23:05:59] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-21 23:05:59] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-21 23:06:03] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-21 23:06:03] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-21 23:06:03] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-21 23:06:18] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-21 23:06:18] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-21 23:06:18] INFO: ✓ Written: C:\Users\kfuru\.secretary\todos\2026-04-21.md
+[2026-04-21 23:06:18] INFO: 
+[2026-04-21 23:06:18] INFO: ============================================================
+[2026-04-21 23:06:18] INFO: TOP3 Fixation: SUCCESS (18.9s)
+[2026-04-21 23:06:18] INFO: ============================================================
+[2026-04-21 23:06:18] INFO:   P1: 今週のタスクリスト作成・登録（週次計画立案） (score=43)
+[2026-04-21 23:06:18] INFO:   P2: 電計チーム週次1on1アジェンダ作成・実施 (score=38)
+[2026-04-21 23:06:18] INFO:   P3: 電験3種：今週学習範囲の設定と30分着手（理論 or 電力） (score=34)
+[2026-04-22 07:01:03] INFO: ============================================================
+[2026-04-22 07:01:03] INFO: TOP3 Fixation: STARTED
+[2026-04-22 07:01:03] INFO: ============================================================
+[2026-04-22 07:01:03] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-22 07:01:03] INFO: 実行日: 2026-04-22
+[2026-04-22 07:01:03] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-22 07:01:03] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-22 07:01:03] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-22 07:01:03] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-22 07:01:06] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-22 07:01:06] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-22 07:01:06] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-22 07:01:21] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-22 07:01:21] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-22 07:01:21] INFO: 
+[DRY-RUN] Would write to:
+[2026-04-22 07:01:21] INFO:   C:\Users\kfuru\.secretary\todos\2026-04-22.md
+[2026-04-22 07:01:21] INFO: 
+--- Content Preview (first 500 chars) ---
+[2026-04-22 07:01:21] INFO: ---
+date: 2026-04-22
+type: todo
+top3_auto_generated: true
+generated_at: 2026-04-22T07:01:21
+completion_rate_prev_week: 0.0
+---
+
+# 2026-04-22 （月曜日）
+
+## 最優先 [P1: 必須]
+
+### 1. 電計チーム週次タスク棚卸し・優先度リスト作成
+- [ ] 実施 | 優先度: 高 | カテゴリ: チーム育成・管理
+  - スコア: 43/50 | 見積: 1h
+  - 理由: 前週タスク登録ゼロという根本課題を解消する最優先アクション。タスク管理基盤がなければ他の優先度判断も機能しないため、今週中に実施して継続運用の起点を作る。
+
+### 2. 設備投資案件の現状ステータス確認・次アクション明確化
+- [ ] 実施 | 優先度: 高 | カテゴリ: 設備投資
+  - スコア: 40/50 | 見積: 2h
+  - 理由: 設備投資はユーザー優先度最上位かつ設備停止リスクに直結。タスク不在期間中に進捗が止まっている可能性が高く、今週早期に現状把握
+[2026-04-22 07:01:21] INFO: 
+[2026-04-22 07:01:21] INFO: ============================================================
+[2026-04-22 07:01:21] INFO: TOP3 Fixation: SUCCESS (18.4s)
+[2026-04-22 07:01:21] INFO: ============================================================
+[2026-04-22 07:01:21] INFO:   P1: 電計チーム週次タスク棚卸し・優先度リスト作成 (score=43)
+[2026-04-22 07:01:21] INFO:   P2: 設備投資案件の現状ステータス確認・次アクション明確化 (score=40)
+[2026-04-22 07:01:21] INFO:   P3: 電験3種：今週の学習単元1テーマ完了（理論または電力の基礎単元） (score=35)
+[2026-04-22 07:22:45] INFO: ============================================================
+[2026-04-22 07:22:45] INFO: TOP3 Fixation: STARTED
+[2026-04-22 07:22:45] INFO: ============================================================
+[2026-04-22 07:22:45] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-22 07:22:45] INFO: 実行日: 2026-04-22
+[2026-04-22 07:22:45] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-22 07:22:45] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-22 07:22:45] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-22 07:22:45] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-22 07:22:47] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-22 07:22:47] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-22 07:22:47] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-22 07:23:03] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-22 07:23:03] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-22 07:23:03] INFO: 
+[DRY-RUN] Would write to:
+[2026-04-22 07:23:03] INFO:   C:\Users\kfuru\.secretary\todos\2026-04-22.md
+[2026-04-22 07:23:03] INFO: 
+--- Content Preview (first 500 chars) ---
+[2026-04-22 07:23:03] INFO: ---
+date: 2026-04-22
+type: todo
+top3_auto_generated: true
+generated_at: 2026-04-22T07:23:03
+completion_rate_prev_week: 0.0
+---
+
+# 2026-04-22 （月曜日）
+
+## 最優先 [P1: 必須]
+
+### 1. 電験3種 過去問演習（理論・電力 各1年分）
+- [ ] 実施 | 優先度: 高 | カテゴリ: 電験3種
+  - スコア: 41/50 | 見積: 3h
+  - 理由: 2026年受験まで実質的な学習期間が限られており、週次の演習継続が合否を左右する。前週タスク登録ゼロのため継続性スコアを高く設定し、今週からの習慣再構築を最優先とする。
+
+### 2. 電計チーム向け週次進捗レビュー・課題棚卸し（アジェンダ作成＋実施）
+- [ ] 実施 | 優先度: 高 | カテゴリ: チーム育成・管理
+  - スコア: 38/50 | 見積: 2h
+  - 理由: 前週タスク管理が機能していなかった原因がチーム運営の停滞に波及するリスクがある。週明け早期に実施
+[2026-04-22 07:23:03] INFO: 
+[2026-04-22 07:23:03] INFO: ============================================================
+[2026-04-22 07:23:03] INFO: TOP3 Fixation: SUCCESS (18.6s)
+[2026-04-22 07:23:03] INFO: ============================================================
+[2026-04-22 07:23:03] INFO:   P1: 電験3種 過去問演習（理論・電力 各1年分） (score=41)
+[2026-04-22 07:23:03] INFO:   P2: 電計チーム向け週次進捗レビュー・課題棚卸し（アジェンダ作成＋実施） (score=38)
+[2026-04-22 07:23:03] INFO:   P3: 設備投資候補案件の優先順位リスト作成（費用対効果・停止リスク評価） (score=36)
+[2026-04-22 20:25:52] INFO: ============================================================
+[2026-04-22 20:25:52] INFO: TOP3 Fixation: STARTED
+[2026-04-22 20:25:52] INFO: ============================================================
+[2026-04-22 20:25:52] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-22 20:25:52] INFO: 実行日: 2026-04-22
+[2026-04-22 20:25:52] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-22 20:25:52] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-22 20:25:52] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-22 20:25:52] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-22 20:25:54] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-22 20:25:54] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-22 20:25:54] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-22 20:26:13] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-22 20:26:13] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-22 20:26:13] INFO: 
+[DRY-RUN] Would write to:
+[2026-04-22 20:26:13] INFO:   C:\Users\kfuru\.secretary\todos\2026-04-22.md
+[2026-04-22 20:26:13] INFO: 
+--- Content Preview (first 500 chars) ---
+[2026-04-22 20:26:13] INFO: ---
+date: 2026-04-22
+type: todo
+top3_auto_generated: true
+generated_at: 2026-04-22T20:26:13
+completion_rate_prev_week: 0.0
+---
+
+# 2026-04-22 （月曜日）
+
+## 最優先 [P1: 必須]
+
+### 1. 電験3種「電力」過去問5年分の出題傾向分析と重点単元リスト作成
+- [ ] 実施 | 優先度: 高 | カテゴリ: 電験3種
+  - スコア: 43/50 | 見積: 2h
+  - 理由: 2026年受験まで残り約1年、今から体系的な弱点把握をしないと直前期に詰め込みが発生する。1回の作業で以降の学習計画全体を最適化できるレバレッジ効果が最大。
+
+### 2. 電計チーム向け「設備異常予兆検知」AI活用ユースケース1件の業務要件定義書（A4 1枚）作成
+- [ ] 実施 | 優先度: 高 | カテゴリ: 設備投資・AI活用
+  - スコア: 41/50 | 見積: 2h
+  - 理由: 設備投資判断の上流工程であり管理職としての最優先領域に直結。A
+[2026-04-22 20:26:13] INFO: 
+[2026-04-22 20:26:13] INFO: ============================================================
+[2026-04-22 20:26:13] INFO: TOP3 Fixation: SUCCESS (21.0s)
+[2026-04-22 20:26:13] INFO: ============================================================
+[2026-04-22 20:26:13] INFO:   P1: 電験3種「電力」過去問5年分の出題傾向分析と重点単元リスト作成 (score=43)
+[2026-04-22 20:26:13] INFO:   P2: 電計チーム向け「設備異常予兆検知」AI活用ユースケース1件の業務要件定義書（A4 1枚）作成 (score=41)
+[2026-04-22 20:26:13] INFO:   P3: 電計チームメンバー1名との1on1（30分）実施＋育成課題を1項目明文化 (score=38)
+[2026-04-25 07:42:35] INFO: ============================================================
+[2026-04-25 07:42:35] INFO: TOP3 Fixation: STARTED
+[2026-04-25 07:42:35] INFO: ============================================================
+[2026-04-25 07:42:35] INFO: 分析対象: 2026-04-13 ～ 2026-04-19
+[2026-04-25 07:42:35] INFO: 実行日: 2026-04-25
+[2026-04-25 07:42:35] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-25 07:42:35] INFO: ✓ Analyzed 0 tasks from 0 files
+[2026-04-25 07:42:35] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-25 07:42:35] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-25 07:42:38] INFO: ✓ Haiku analysis complete: 0.0% completion
+[2026-04-25 07:42:38] INFO: 
+[Phase 3] Running Sonnet scoring...
+[2026-04-25 07:42:38] INFO: Phase 2 (Sonnet): Scoring & prioritization...
+[2026-04-25 07:42:55] INFO: ✓ Sonnet scoring complete: 3 candidates
+[2026-04-25 07:42:55] INFO: 
+[Phase 4] Generating todo file...
+[2026-04-25 07:42:55] INFO: ✓ Written: C:\Users\kfuru\.secretary\todos\2026-04-25.md
+[2026-04-25 07:42:55] INFO: 
+[2026-04-25 07:42:55] INFO: ============================================================
+[2026-04-25 07:42:55] INFO: TOP3 Fixation: SUCCESS (20.0s)
+[2026-04-25 07:42:55] INFO: ============================================================
+[2026-04-25 07:42:55] INFO:   P1: 今週のTODOリスト作成・タスク管理システム運用開始 (score=44)
+[2026-04-25 07:42:55] INFO:   P2: 電計チーム今週の課題ヒアリング＆週次優先度合意 (score=40)
+[2026-04-25 07:42:55] INFO:   P3: 電験3種：今週学習テーマ1単元の問題演習（30問） (score=35)

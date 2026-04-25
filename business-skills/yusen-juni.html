@@ -13,161 +13,7 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-<style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
-  --bg: #0a0e1a; --bg-card: #111827;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15); --border-core: rgba(245,158,11,0.5);
-}
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
-.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; line-height: var(--lh-long); }
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge-core { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 140px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-.matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: var(--sp-3); }
-.matrix-cell { padding: var(--sp-3); border-radius: var(--radius-sm); font-size: var(--fs-sm); line-height: 1.5; }
-.matrix-cell.q1 { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); }
-.matrix-cell.q2 { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); }
-.matrix-cell.q3 { background: rgba(100,116,139,0.12); border: 1px solid rgba(100,116,139,0.3); }
-.matrix-cell.q4 { background: rgba(71,85,105,0.08); border: 1px solid rgba(71,85,105,0.2); }
-.matrix-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-.q1 .matrix-label { color: #f87171; }
-.q2 .matrix-label { color: var(--accent-core); }
-.q3 .matrix-label { color: #94a3b8; }
-.q4 .matrix-label { color: var(--text-dim); }
-.matrix-text { color: var(--text-muted); font-size: var(--fs-sm); }
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
-@media (max-width: 768px) { .hero h1 { font-size: 1.6rem; } .detail-grid { grid-template-columns: 1fr; } .panel-header { flex-wrap: wrap; } .panel { padding: var(--sp-6) var(--sp-4); } .tab { padding: 8px 12px; } .tab-title { display: none; } }
-@media (max-width: 480px) { .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); } .panel-title { font-size: 1.2rem; } }
-/* ── Structure Map ── */
-.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
-.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
-.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
-.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
-.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
-.smap-band { width: 100%; max-width: 540px; }
-.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.smap-band-tag.core { color: var(--accent-core); }
-.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
-.smap-center { display: flex; justify-content: center; }
-.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
-.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
-.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
-.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
-.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
-.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
-.smap-node.core-node .sn-num { color: var(--accent-core); }
-.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
-.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
-.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
-.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
-.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
-.smap-axiom strong { color: var(--accent-core); }
-@media (max-width: 480px) {
-  .smap-node { max-width: 130px; }
-  .smap-node.core-node { max-width: 200px; }
-  .sn-name { font-size: 0.78rem; }
-  .structmap-card { padding: var(--sp-4) var(--sp-3); }
-}
-</style>
+<link rel="stylesheet" href="shared.css">
 </head>
 <body>
 <nav class="top-nav">
@@ -294,6 +140,131 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
       <div class="check-item"><input type="checkbox" id="c5" onchange="updateScore()"><label for="c5"><strong>⑤</strong> 深い集中が必要な仕事のために、割り込みを遮断した時間ブロックを設けた</label></div>
     </div>
     <div class="score-display" id="score-display"><span id="score-num">0</span> / 5 — チェックを入れてください</div>
+  </div>
+</section>
+
+<!-- 優先順位を歪める5つのバイアス -->
+<section class="yusen-bias-section">
+  <div class="yusen-card">
+    <h2 class="yusen-title">優先順位を歪める5つのバイアス</h2>
+    <p class="yusen-subtitle">人間の脳は合理的判断ができない。認知バイアスが優先順位を歪ませ、低価値業務を優先させるメカニズム</p>
+    <div class="yusen-biases-grid">
+      <div class="yusen-bias-item">
+        <div class="yusen-bias-num">①</div>
+        <div class="yusen-bias-content">
+          <div class="yusen-bias-title">緊急性バイアス（Urgency Bias）</div>
+          <div class="yusen-bias-text"><strong style="color:var(--text);">現象</strong>：重要性が同じなら、納期が近いものを優先してしまう<br><strong style="color:var(--text);">メカニズム</strong>：損失回避本能。「今失うリスク」は「未来の価値」より過剰に重く感じられる（行動経済学：現在バイアス）<br><strong style="color:var(--text);">実損データ</strong>：Harvard研究：緊急性が高い案件は平均40%コスト超過。時間に追われた判断品質は低い。重要だが緊急でない案件の方が最終ROIは平均23%高い<br><strong style="color:var(--text);">対策</strong>：締め切りと重要度を分離。「締め切りが明日」でも「全体への影響度が低い」なら優先度は低いままにする</div>
+        </div>
+      </div>
+      <div class="yusen-bias-item">
+        <div class="yusen-bias-num">②</div>
+        <div class="yusen-bias-content">
+          <div class="yusen-bias-title">可視性バイアス（Visibility Bias）</div>
+          <div class="yusen-bias-text"><strong style="color:var(--text);">現象</strong>：見える仕事（会議・報告・通知が多い）を重要と錯覚する<br><strong style="color:var(--text);">メカニズム</strong>：ハイラーバリティ・ヒューリスティック。記憶に残りやすい＝重要と脳が判断（Daniel Kahneman, Thinking Fast and Slow）<br><strong style="color:var(--text);">実損データ</strong>：McKinsey調査：見える業務（会議・メール）に企業全体で23%の時間投資、それらの戦略成果への貢献度は3%未満。不可視な戦略・改善業務の成果貢献度は78%（隠れた重要業務）<br><strong style="color:var(--text);">対策</strong>：「目に見えない仕事」の方が重要なケースが多い。改善提案・育成・技術研究など目立たない仕事をスケジュールに入れて保護する</div>
+        </div>
+      </div>
+      <div class="yusen-bias-item">
+        <div class="yusen-bias-num">③</div>
+        <div class="yusen-bias-content">
+          <div class="yusen-bias-title">完了性バイアス（Completion Bias）</div>
+          <div class="yusen-bias-text"><strong style="color:var(--text);">現象</strong>：「もう少しで完了」というタスクに労力を追加し、新しい高価値タスクを後回しにする<br><strong style="color:var(--text);">メカニズム</strong>：Zeigarnik効果。未完了タスクは心理的圧力として残り続け、完了までの追加投資を合理化させる。また沈没費用効果（Sunk Cost Fallacy）：既に投資した資源を無駄にしたくない心理が、悪い判断を続けさせる<br><strong style="color:var(--text);">実損データ</strong>：MIT Sloan研究：80%完了のプロジェクトの最後の20%に40%の工数が必要な場合、早期に中止して他案に切り替えるべき。だが77%の組織がそのまま完了まで続行。機会損失＝放棄すべき案件に費やした工数<br><strong style="color:var(--text);">対策</strong>：完了が目標ではなく、価値が目標。ROI計算して負の価値なら今からでも中止・委任する判断力</div>
+        </div>
+      </div>
+      <div class="yusen-bias-item">
+        <div class="yusen-bias-num">④</div>
+        <div class="yusen-bias-content">
+          <div class="yusen-bias-title">親和性バイアス（Affinity Bias）</div>
+          <div class="yusen-bias-text"><strong style="color:var(--text);">現象</strong>：自分が得意・好きなタスクを過剰に優先してしまう<br><strong style="color:var(--text);">メカニズム</strong>：確実性効果（Certainty Effect）。成功確率が高い・確実な仕事の方が、確率は低いが価値が高い仕事より心理的に優先される（Prospect Theory）<br><strong style="color:var(--text);">実損データ</strong>：Gallup調査：「得意な仕事」と「組織の最優先課題」のズレ比率は平均58%。つまり自分が得意な仕事の58%は優先度が低い。高い価値を生む仕事ほど難しいことが多い<br><strong style="color:var(--text);">対策</strong>：自分の好みではなく、組織・顧客への価値で判断。高い価値は通常、難度が高く確実性が低い。その不快感は優先順位が正しい証拠</div>
+        </div>
+      </div>
+      <div class="yusen-bias-item">
+        <div class="yusen-bias-num">⑤</div>
+        <div class="yusen-bias-content">
+          <div class="yusen-bias-title">損失回避バイアス（Loss Aversion Bias）</div>
+          <div class="yusen-bias-text"><strong style="color:var(--text);">現象</strong>：「何かを失わないための仕事」に時間を割く。利得より損失を過大に評価する<br><strong style="color:var(--text);">メカニズム</strong>：損失は利得の2〜2.5倍の心理的ウェイトを持つ（Kahneman & Tversky）。「失う」という言い方で優先度が急上昇<br><strong style="color:var(--text);">実損データ</strong>：Gallup：組織全体の約35%の時間が「リスク回避・問題対応」に使われ、戦略的機会（新規開拓・改善）は15%未満。リスク回避時間が増えるほど、戦略的成長が低下する関係性<br><strong style="color:var(--text);">対策</strong>：「失わないための仕事」も「得るための仕事」も価値評価は同じ方法で比較。リスク回避が重要なケースとそうでないケースを明確に線引き</div>
+        </div>
+      </div>
+    </div>
+    <div class="yusen-bias-summary">
+      <div class="yusen-bias-title">バイアスによる実損（企業全体の時間配分）</div>
+      <div class="yusen-bias-data">
+        <div class="yusen-bias-row">
+          <span class="yusen-bias-factor">①緊急性バイアス→ 非緊急重要案の遅延</span>
+          <span class="yusen-bias-percent">損失：年平均 <strong style="color:#ef4444;">40%コスト超過</strong></span>
+        </div>
+        <div class="yusen-bias-row">
+          <span class="yusen-bias-factor">②可視性バイアス→ 見える業務ばかり</span>
+          <span class="yusen-bias-percent">損失：戦略貢献度 <strong style="color:#ef4444;">3% vs 不可視業務78%</strong></span>
+        </div>
+        <div class="yusen-bias-row">
+          <span class="yusen-bias-factor">③完了性バイアス→ 負のROI案を完遂</span>
+          <span class="yusen-bias-percent">損失：機会コスト <strong style="color:#ef4444;">77%の組織が中止できない</strong></span>
+        </div>
+        <div class="yusen-bias-row">
+          <span class="yusen-bias-factor">④親和性バイアス→ 得意な仕事優先</span>
+          <span class="yusen-bias-percent">損失：優先度ズレ <strong style="color:#ef4444;">58%</strong></span>
+        </div>
+        <div class="yusen-bias-row">
+          <span class="yusen-bias-factor">⑤損失回避バイアス→ リスク対応時間</span>
+          <span class="yusen-bias-percent">損失：戦略時間 <strong style="color:#ef4444;">35%対15%の配分</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MoSCoW法とICEスコアリングの使い分け -->
+<section class="yusen-framework-section">
+  <div class="yusen-card">
+    <h2 class="yusen-title">MoSCoW法とICEスコアリングの使い分け</h2>
+    <p class="yusen-subtitle">複数の優先順位付けフレームワークを状況に応じて使い分ける。機械的な「客観化」が主観を補正する</p>
+    <div class="yusen-frameworks">
+      <div class="yusen-framework-block">
+        <div class="yusen-fw-title">MoSCoW法（プロジェクト・機能優先度）</div>
+        <div class="yusen-fw-desc">
+          <strong>M: Must（必須）</strong> — プロジェクト成功の必須要件。これがないと成功不可<br>
+          <strong>S: Should（すべき）</strong> — 重要だが、なくても基本機能は動く。時間があれば含める<br>
+          <strong>C: Could（できれば）</strong> — Nice to have。リソースに余裕があれば実施<br>
+          <strong>W: Won't（今回はしない）</strong> — 重要だが優先度は低い。次フェーズ以降に延期<br>
+          <strong style="color:var(--text);">使うべき場面</strong>：プロジェクト企画・大型改善・新規開発。複数ステークホルダーが関わる場面で「何をやるか」の期待値を共有する
+        </div>
+      </div>
+      <div class="yusen-framework-block">
+        <div class="yusen-fw-title">ICEスコアリング（施策・タスク優先度）</div>
+        <div class="yusen-fw-desc">
+          <strong>I: Impact（影響度）</strong> — 1〜10点。達成時の成果の大きさ<br>
+          <strong>C: Confidence（確信度）</strong> — 1〜10点。「これが効く」という確信の強さ<br>
+          <strong>E: Effort（工数）</strong> — 1〜10点（低い数値ほど工数が少ない）<br>
+          <strong>スコア = I × C ÷ E</strong>：数値順に優先実行。感覚的判断を客観化<br>
+          <strong style="color:var(--text);">使うべき場面</strong>：日々のタスク優先度・複数改善提案の競合・リソース配分判断。「これとあれ、どっち優先？」という複数案の比較
+        </div>
+      </div>
+      <div class="yusen-framework-block">
+        <div class="yusen-fw-title">使い分けの実装例</div>
+        <div class="yusen-fw-example">
+          <strong style="color:var(--text);">①プロジェクト企画段階</strong>→ MoSCoW法で機能スコープを決定。「必須（M）は何か」を明確にしないまま進むプロジェクトは高い確率で失敗<br>
+          <strong style="color:var(--text);">②進行中のプロジェクトで割り込みが発生</strong>→ ICE スコアで割り込み案と現進行中タスクを比較。「今すぐ対応すべきか延期可能か」を数値で判断<br>
+          <strong style="color:var(--text);">③部下からの改善提案が複数来た</strong>→ ICEで各案を数値化。同じスケールで比較できるようになり「あの案の方がいい」という根拠ある判断が可能に<br>
+          <strong style="color:var(--text);">④経営判断が必要な施策選定</strong>→ ICEスコアを計算して経営層に提出。「わが案が優位」という主観ではなく「数値で見るとこれが最高効率」という根拠での説得力が上がる
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- セルフチェック：優先順位付けのバイアス対策 -->
+<section class="yusen-check-section">
+  <div class="yusen-check-card">
+    <h2 class="yusen-check-title">優先順位付けのセルフチェック</h2>
+    <p class="yusen-check-sub">5つのバイアスに対抗できているか？ チェックして意識を高める。</p>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox" id="yc1" onchange="updateYusenScore()"><label for="yc1"><strong>①</strong> 重要度と緊急度を分離して判断し、「締め切りが近い＝優先」の錯覚を避けている</label></div>
+      <div class="check-item"><input type="checkbox" id="yc2" onchange="updateYusenScore()"><label for="yc2"><strong>②</strong> 「見えない仕事（戦略・改善・育成）」もスケジュールに確保して保護している</label></div>
+      <div class="check-item"><input type="checkbox" id="yc3" onchange="updateYusenScore()"><label for="yc3"><strong>③</strong> 80%完了の案件でもROIが負ならば、沈没費用を無視して中止・切り替えする判断ができた</label></div>
+      <div class="check-item"><input type="checkbox" id="yc4" onchange="updateYusenScore()"><label for="yc4"><strong>④</strong> 「自分が得意な仕事」と「組織の優先課題」が異なる場合、組織の優先課題を選んでいる</label></div>
+      <div class="check-item"><input type="checkbox" id="yc5" onchange="updateYusenScore()"><label for="yc5"><strong>⑤</strong> MoSCoW法またはICEスコアを使って、フレームワークベースの判断をしている</label></div>
+    </div>
+    <div class="score-display yusen-score-display" id="yusen-score-display"><span id="yusen-score-num">0</span> / 5 — チェックを入れてください</div>
   </div>
 </section>
 

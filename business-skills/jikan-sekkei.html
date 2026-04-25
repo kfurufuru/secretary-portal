@@ -17,220 +17,602 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
-
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
+/* ── 深掘りセクション共通 ── */
+.jikan-deep-section {
+  max-width: 900px;
+  margin: 0 auto var(--sp-12);
+  padding: 0 var(--sp-4);
+}
+.jikan-deep-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8) var(--sp-8);
+  transition: border-color var(--transition);
+}
+.jikan-deep-card:hover {
+  border-color: var(--border-hover);
+}
+.jikan-deep-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--sp-4);
+}
+.jikan-deep-title {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-heading, 0.04em);
+  color: var(--text);
+  margin-bottom: var(--sp-3);
+}
+.jikan-deep-sub {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: var(--lh-long);
+  margin-bottom: var(--sp-8);
+  max-width: 680px;
+}
+.jikan-deep-section-sub {
+  font-size: 1rem;
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+  margin-bottom: var(--sp-4);
+  padding-left: var(--sp-3);
+  border-left: 3px solid var(--accent);
+  letter-spacing: 0.02em;
 }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
-
-.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
-.nav a { color: var(--accent); text-decoration: none; }
-.nav a:hover { text-decoration: underline; }
-
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
-
-/* ── Sticky Tab Nav ── */
-.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-/* ── Progress bar ── */
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-/* ── Main panel ── */
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-/* ── Prev / Next ── */
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-/* ── 棒グラフ（エネルギー・時間コスト比較） ── */
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-/* ── 時間割診断（④専用） ── */
-.audit-q { margin-bottom: var(--sp-4); }
-.audit-q-label { font-size: var(--fs-sm); font-weight: 600; color: var(--text); margin-bottom: var(--sp-2); }
-.audit-options { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
-.audit-opt { padding: 6px 14px; border-radius: 20px; font-size: var(--fs-sm); border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: var(--transition); font-family: inherit; }
-.audit-opt.selected { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
-.audit-result { display: none; margin-top: var(--sp-4); background: rgba(56,189,248,0.08); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.audit-result.show { display: block; animation: fadeIn 0.3s ease; }
-.audit-result-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: var(--sp-2); }
-.audit-result-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-/* ── Insight ── */
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-/* ── Self-check ── */
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
-
-/* ── Top Nav ── */
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
+/* ── セクション1: 時給計算フロー ── */
+.jikan-calc-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-8);
 }
-.nav-back {
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none; color: #94a3b8;
-  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
+.jikan-calc-step {
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  text-align: center;
 }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text {
-  font-size: 0.78rem; color: #8892a0; font-weight: 600;
-  letter-spacing: 0.06em; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
+.jikan-calc-step.highlight {
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.35);
 }
-.nav-spacer { width: 80px; }
+.jikan-calc-step-label {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-2);
+}
+.jikan-calc-step-value {
+  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+.jikan-calc-step.highlight .jikan-calc-step-value {
+  color: var(--accent-core);
+  font-size: 1.3rem;
+}
+.jikan-calc-step-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: var(--sp-1);
+}
+.jikan-calc-arrow {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.jikan-calc-examples {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-8);
+}
+.jikan-calc-ex {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+}
+.jikan-calc-ex-role {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: var(--sp-2);
+  font-weight: var(--fw-bold);
+}
+.jikan-calc-ex-wage {
+  font-size: 1.4rem;
+  font-weight: var(--fw-bold);
+  color: var(--accent-core);
+  margin-bottom: var(--sp-2);
+}
+.jikan-calc-ex-wage span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.jikan-calc-ex-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
 
+/* ── マトリクス ── */
+.jikan-matrix-wrap {
+  margin-bottom: var(--sp-8);
+}
+.jikan-matrix {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 2px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.jikan-matrix-head {
+  background: rgba(255,255,255,0.05);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: 0.78rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-dim);
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+.jikan-matrix-head.axis-label {
+  background: transparent;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 0.72rem;
+  padding: var(--sp-4) var(--sp-2);
+}
+.jikan-matrix-cell {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: var(--sp-4);
+  position: relative;
+}
+.jikan-matrix-cell.q1 { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.2); }
+.jikan-matrix-cell.q2 { background: rgba(56,189,248,0.07); border-color: rgba(56,189,248,0.2); }
+.jikan-matrix-cell.q3 { background: rgba(139,92,246,0.07); border-color: rgba(139,92,246,0.15); }
+.jikan-matrix-cell.q4 { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.2); }
+.jikan-matrix-cell-q {
+  font-size: 0.7rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sp-2);
+}
+.jikan-matrix-cell.q1 .jikan-matrix-cell-q { color: var(--accent-core); }
+.jikan-matrix-cell.q2 .jikan-matrix-cell-q { color: var(--accent); }
+.jikan-matrix-cell.q3 .jikan-matrix-cell-q { color: #a78bfa; }
+.jikan-matrix-cell.q4 .jikan-matrix-cell-q { color: #ef4444; }
+.jikan-matrix-cell-title {
+  font-weight: var(--fw-bold);
+  font-size: 0.88rem;
+  color: var(--text);
+  margin-bottom: var(--sp-2);
+}
+.jikan-matrix-cell-action {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.jikan-matrix-cell-cost {
+  margin-top: var(--sp-2);
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.jikan-matrix-cell.q4 .jikan-matrix-cell-cost {
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+}
+.jikan-matrix-cell.q3 .jikan-matrix-cell-cost {
+  background: rgba(139,92,246,0.12);
+  color: #a78bfa;
+}
+.jikan-matrix-cell.q2 .jikan-matrix-cell-cost {
+  background: rgba(56,189,248,0.1);
+  color: var(--accent);
+}
+.jikan-matrix-cell.q1 .jikan-matrix-cell-cost {
+  background: rgba(245,158,11,0.12);
+  color: var(--accent-core);
+}
+
+/* カレンダーvsToDo比較 */
+.jikan-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+.jikan-compare-col {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.jikan-compare-head {
+  padding: var(--sp-3) var(--sp-4);
+  font-weight: var(--fw-bold);
+  font-size: 0.85rem;
+  background: rgba(255,255,255,0.04);
+}
+.jikan-compare-col.winner .jikan-compare-head {
+  background: rgba(56,189,248,0.1);
+  color: var(--accent);
+  border-bottom: 1px solid rgba(56,189,248,0.2);
+}
+.jikan-compare-col.loser .jikan-compare-head {
+  background: rgba(239,68,68,0.06);
+  color: #ef4444;
+  border-bottom: 1px solid rgba(239,68,68,0.15);
+}
+.jikan-compare-body {
+  padding: var(--sp-4);
+}
+.jikan-compare-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-2);
+  line-height: 1.5;
+}
+.jikan-compare-item::before {
+  content: '✓';
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+  flex-shrink: 0;
+}
+.jikan-compare-col.loser .jikan-compare-item::before {
+  content: '✗';
+  color: #ef4444;
+}
+.jikan-compare-stat {
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: var(--fw-bold);
+  text-align: center;
+}
+.jikan-compare-col.winner .jikan-compare-stat {
+  background: rgba(56,189,248,0.08);
+  color: var(--accent);
+}
+.jikan-compare-col.loser .jikan-compare-stat {
+  background: rgba(239,68,68,0.07);
+  color: #ef4444;
+}
+
+/* ── セクション2: エネルギーマネジメント ── */
+.jikan-energy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-8);
+}
+.jikan-energy-col {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  position: relative;
+  overflow: hidden;
+}
+.jikan-energy-col::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.jikan-energy-col.dawn::before  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.jikan-energy-col.morning::before { background: linear-gradient(90deg, #38bdf8, #818cf8); }
+.jikan-energy-col.afternoon::before { background: linear-gradient(90deg, #94a3b8, #64748b); }
+.jikan-energy-col.night::before { background: linear-gradient(90deg, #6366f1, #4f46e5); }
+.jikan-energy-time {
+  font-size: 0.72rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: var(--sp-2);
+  text-transform: uppercase;
+}
+.jikan-energy-col.dawn .jikan-energy-time { color: #f59e0b; }
+.jikan-energy-col.morning .jikan-energy-time { color: var(--accent); }
+.jikan-energy-col.afternoon .jikan-energy-time { color: #94a3b8; }
+.jikan-energy-col.night .jikan-energy-time { color: #818cf8; }
+.jikan-energy-period {
+  font-size: 1rem;
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--sp-3);
+}
+.jikan-energy-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: var(--sp-3);
+  position: relative;
+  overflow: hidden;
+}
+.jikan-energy-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.8s ease;
+}
+.jikan-energy-col.dawn  .jikan-energy-bar-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.jikan-energy-col.morning .jikan-energy-bar-fill { background: linear-gradient(90deg, #38bdf8, #818cf8); }
+.jikan-energy-col.afternoon .jikan-energy-bar-fill { background: linear-gradient(90deg, #94a3b8, #64748b); }
+.jikan-energy-col.night .jikan-energy-bar-fill { background: linear-gradient(90deg, #6366f1, #4f46e5); }
+.jikan-energy-level {
+  font-size: 0.8rem;
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--sp-3);
+}
+.jikan-energy-col.dawn  .jikan-energy-level { color: #fbbf24; }
+.jikan-energy-col.morning .jikan-energy-level { color: var(--accent); }
+.jikan-energy-col.afternoon .jikan-energy-level { color: #94a3b8; }
+.jikan-energy-col.night .jikan-energy-level { color: #818cf8; }
+.jikan-energy-best {
+  font-size: 0.78rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-muted);
+  margin-bottom: var(--sp-2);
+}
+.jikan-energy-tasks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.jikan-energy-tasks li {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding: 3px 0;
+  padding-left: var(--sp-3);
+  position: relative;
+  line-height: 1.4;
+}
+.jikan-energy-tasks li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+}
+.jikan-energy-avoid {
+  margin-top: var(--sp-2);
+  font-size: 0.75rem;
+  padding: 4px var(--sp-2);
+  border-radius: var(--radius-sm);
+  background: rgba(239,68,68,0.06);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.15);
+}
+
+/* ウルトラディアンリズム図 */
+.jikan-rhythm-wrap {
+  margin-bottom: var(--sp-8);
+}
+.jikan-rhythm-chart {
+  position: relative;
+  height: 80px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--sp-2);
+}
+.jikan-rhythm-wave {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120px 36px at 8% 35%, rgba(56,189,248,0.25) 0%, transparent 100%),
+    radial-gradient(ellipse 120px 36px at 31% 35%, rgba(56,189,248,0.25) 0%, transparent 100%),
+    radial-gradient(ellipse 120px 36px at 54% 35%, rgba(56,189,248,0.25) 0%, transparent 100%),
+    radial-gradient(ellipse 120px 36px at 77% 35%, rgba(56,189,248,0.25) 0%, transparent 100%),
+    radial-gradient(ellipse 80px 20px at 19% 75%, rgba(100,116,139,0.18) 0%, transparent 100%),
+    radial-gradient(ellipse 80px 20px at 42% 75%, rgba(100,116,139,0.18) 0%, transparent 100%),
+    radial-gradient(ellipse 80px 20px at 65% 75%, rgba(100,116,139,0.18) 0%, transparent 100%),
+    radial-gradient(ellipse 80px 20px at 88% 75%, rgba(100,116,139,0.18) 0%, transparent 100%);
+}
+.jikan-rhythm-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--sp-2);
+}
+.jikan-rhythm-label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+.jikan-rhythm-peak { color: var(--accent); font-weight: var(--fw-bold); }
+.jikan-rhythm-trough { color: #64748b; }
+.jikan-rhythm-note {
+  display: flex;
+  gap: var(--sp-6);
+  margin-top: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(56,189,248,0.05);
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.jikan-rhythm-note strong { color: var(--accent); }
+
+/* エネルギー枯渇3大要因 */
+.jikan-drain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+}
+.jikan-drain-item {
+  background: rgba(239,68,68,0.04);
+  border: 1px solid rgba(239,68,68,0.15);
+  border-radius: var(--radius-md);
+  padding: var(--sp-5);
+  position: relative;
+}
+.jikan-drain-num {
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(239,68,68,0.12);
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-4);
+  line-height: 1;
+}
+.jikan-drain-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(239,68,68,0.1);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f87171;
+  margin-bottom: var(--sp-3);
+}
+.jikan-drain-name {
+  font-size: 0.95rem;
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--sp-2);
+}
+.jikan-drain-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--sp-3);
+}
+.jikan-drain-stat {
+  font-size: 0.82rem;
+  font-weight: var(--fw-bold);
+  color: #f87171;
+  background: rgba(239,68,68,0.07);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+}
+.jikan-drain-connect {
+  font-size: 0.78rem;
+  color: var(--accent);
+  margin-top: var(--sp-2);
+  font-style: italic;
+}
+
+/* 5要素接続 */
+.jikan-connect-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+}
+.jikan-connect-item {
+  background: rgba(56,189,248,0.04);
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.jikan-connect-item:hover,
+.jikan-connect-item.active {
+  background: rgba(56,189,248,0.1);
+  border-color: var(--accent);
+}
+.jikan-connect-item.core-el {
+  background: rgba(245,158,11,0.06);
+  border-color: rgba(245,158,11,0.25);
+}
+.jikan-connect-item.core-el:hover,
+.jikan-connect-item.core-el.active {
+  background: rgba(245,158,11,0.12);
+  border-color: var(--accent-core);
+}
+.jikan-connect-num {
+  font-size: 0.72rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.jikan-connect-name {
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  line-height: 1.3;
+}
+.jikan-connect-detail {
+  margin-top: var(--sp-4);
+  padding: var(--sp-4);
+  background: rgba(56,189,248,0.05);
+  border: 1px solid rgba(56,189,248,0.15);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: var(--lh-long);
+  min-height: 60px;
+  transition: all var(--transition);
+}
+
+/* モバイル対応 */
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
-}
-/* ── Structure Map ── */
-.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
-.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
-.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
-.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
-.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
-.smap-band { width: 100%; max-width: 540px; }
-.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.smap-band-tag.core { color: var(--accent-core); }
-.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
-.smap-center { display: flex; justify-content: center; }
-.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
-.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
-.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
-.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
-.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
-.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
-.smap-node.core-node .sn-num { color: var(--accent-core); }
-.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
-.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
-.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
-.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
-.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
-.smap-axiom strong { color: var(--accent-core); }
-@media (max-width: 480px) {
-  .smap-node { max-width: 130px; }
-  .smap-node.core-node { max-width: 200px; }
-  .sn-name { font-size: 0.78rem; }
-  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+  .jikan-deep-card {
+    padding: var(--sp-6) var(--sp-4);
+  }
+  .jikan-calc-flow {
+    grid-template-columns: 1fr;
+    gap: var(--sp-2);
+  }
+  .jikan-calc-arrow {
+    transform: rotate(90deg);
+    text-align: center;
+  }
+  .jikan-calc-examples {
+    grid-template-columns: 1fr;
+  }
+  .jikan-matrix {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+  }
+  .jikan-matrix-head.axis-label { display: none; }
+  .jikan-compare {
+    grid-template-columns: 1fr;
+  }
+  .jikan-energy-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .jikan-drain-grid {
+    grid-template-columns: 1fr;
+  }
+  .jikan-connect-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .jikan-rhythm-note {
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
 }
 </style>
 </head>
@@ -378,6 +760,270 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
       ④が全体の効率乗数。判断疲労は①〜③の効果を削る。ルーティン化によって意思決定コストを構造的に下げる。<br><br>
       最初に鍛えるべきは①エネルギー波乗り。自分の認知ピークを把握し、最重要タスクをその時間帯に移すだけで、同じ作業時間の出力が変わる。
     </p>
+  </div>
+</section>
+
+<!-- 深掘り1: 時間の価値計算と機会コスト -->
+<section class="jikan-deep-section" id="deep-value">
+  <div class="jikan-deep-card">
+    <div class="jikan-deep-label">
+      <i data-lucide="trending-up" width="14" height="14"></i>
+      Deep Dive 01
+    </div>
+    <h2 class="jikan-deep-title">時間の価値計算と機会コスト</h2>
+    <p class="jikan-deep-sub">時間は「消えるリソース」ではなく、投下先を選べる「変換可能な資本」だ。自分の1時間が持つ経済価値を数値化し、タスクの配分を意思決定として設計する。</p>
+
+    <h3 class="jikan-deep-section-sub">自分の時給計算フロー</h3>
+    <div class="jikan-calc-flow">
+      <div class="jikan-calc-step">
+        <div class="jikan-calc-step-label">年収</div>
+        <div class="jikan-calc-step-value">年収（円）</div>
+        <div class="jikan-calc-step-note">源泉徴収票の「給与収入」</div>
+      </div>
+      <div class="jikan-calc-arrow">÷</div>
+      <div class="jikan-calc-step">
+        <div class="jikan-calc-step-label">年間労働時間</div>
+        <div class="jikan-calc-step-value">2,000時間</div>
+        <div class="jikan-calc-step-note">週40h × 50週（有休・休日除く）</div>
+      </div>
+      <div class="jikan-calc-arrow">=</div>
+      <div class="jikan-calc-step highlight">
+        <div class="jikan-calc-step-label">実時給</div>
+        <div class="jikan-calc-step-value">基本時給</div>
+        <div class="jikan-calc-step-note">1時間あたりの会社コスト</div>
+      </div>
+      <div class="jikan-calc-arrow">×</div>
+      <div class="jikan-calc-step highlight">
+        <div class="jikan-calc-step-label">機会コスト乗数</div>
+        <div class="jikan-calc-step-value">2〜3×</div>
+        <div class="jikan-calc-step-note">生産性・判断の価値を加味</div>
+      </div>
+    </div>
+    <div class="jikan-calc-examples">
+      <div class="jikan-calc-ex">
+        <div class="jikan-calc-ex-role">一般社員（年収400万）</div>
+        <div class="jikan-calc-ex-wage">2,000円<span>/時</span></div>
+        <div class="jikan-calc-ex-note">1時間の委任可能タスクに費やすコスト。外注コスト1,500〜2,500円と比較すると自分でやることが必ずしも安くはない。</div>
+      </div>
+      <div class="jikan-calc-ex">
+        <div class="jikan-calc-ex-role">管理職（年収700万）</div>
+        <div class="jikan-calc-ex-wage">3,500円<span>/時</span></div>
+        <div class="jikan-calc-ex-note">部下でもできる作業に費やす1時間のコストは3,500円超。週5時間の「自分でやらなくていい仕事」で年間91万円相当のロス。</div>
+      </div>
+      <div class="jikan-calc-ex">
+        <div class="jikan-calc-ex-role">機会コスト込み（管理職）</div>
+        <div class="jikan-calc-ex-wage">7,000〜10,500円<span>/時</span></div>
+        <div class="jikan-calc-ex-note">本来投下すべき戦略・育成・改善設計への価値を含めると、1時間の実質コストは2〜3倍に跳ね上がる。（Peter Drucker『プロフェッショナルの条件』2000より概念引用）</div>
+      </div>
+    </div>
+
+    <h3 class="jikan-deep-section-sub">「時間を奪うタスク」の分類と実損コスト — 緊急×重要マトリクス</h3>
+    <div class="jikan-matrix-wrap">
+      <div class="jikan-matrix">
+        <div class="jikan-matrix-head axis-label">重要度</div>
+        <div class="jikan-matrix-head">緊急 — 今日・今週中</div>
+        <div class="jikan-matrix-head">非緊急 — 計画的に</div>
+        <div class="jikan-matrix-head axis-label">↑ 高 / 低 ↓</div>
+        <div class="jikan-matrix-cell q1">
+          <div class="jikan-matrix-cell-q">第1領域 — CRISIS</div>
+          <div class="jikan-matrix-cell-title">重要 × 緊急</div>
+          <div class="jikan-matrix-cell-action">設備トラブル・期限のある報告書・重要判断要求。自分が対応すべき唯一の領域。ただし常にここに追われる状態は設計失敗。</div>
+          <div class="jikan-matrix-cell-cost">⚡ 自分が対応必須</div>
+        </div>
+        <div class="jikan-matrix-cell q2">
+          <div class="jikan-matrix-cell-q">第2領域 — GROWTH</div>
+          <div class="jikan-matrix-cell-title">重要 × 非緊急</div>
+          <div class="jikan-matrix-cell-action">人材育成・改善設計・学習・戦略立案。最も投資対効果が高いが、緊急タスクに侵食される。Time Blockingで保護する対象。</div>
+          <div class="jikan-matrix-cell-cost">📈 Time Block必須</div>
+        </div>
+        <div class="jikan-matrix-cell q3">
+          <div class="jikan-matrix-cell-q">第3領域 — ILLUSION</div>
+          <div class="jikan-matrix-cell-title">非重要 × 緊急</div>
+          <div class="jikan-matrix-cell-action">他人の急ぎの依頼・大半の会議・細かい確認作業。「緊急感」に騙されやすい。委任か断りが正解。管理職の時間の推定32%がここに消える。（Franklin Covey調査）</div>
+          <div class="jikan-matrix-cell-cost">⚠ 委任 / 断る</div>
+        </div>
+        <div class="jikan-matrix-cell q4">
+          <div class="jikan-matrix-cell-q">第4領域 — WASTE</div>
+          <div class="jikan-matrix-cell-title">非重要 × 非緊急</div>
+          <div class="jikan-matrix-cell-action">無目的なSNS・惰性のWeb閲覧・必要ない書類作成。削除一択。ただし「意図的な回復時間」はここに含まれない。</div>
+          <div class="jikan-matrix-cell-cost">🗑 削除</div>
+        </div>
+      </div>
+      <p style="font-size:0.75rem;color:var(--text-dim);margin-top:var(--sp-2);">出典：Stephen Covey『7つの習慣』（1989）時間管理マトリクスを実損データで拡張</p>
+    </div>
+
+    <h3 class="jikan-deep-section-sub">カレンダーブロッキング vs To-Doリスト — 実効性の差</h3>
+    <div class="jikan-compare">
+      <div class="jikan-compare-col winner">
+        <div class="jikan-compare-head">✅ カレンダーブロッキング（推奨）</div>
+        <div class="jikan-compare-body">
+          <div class="jikan-compare-item">時間を「いつやるか」まで決定するため先延ばしが発生しない</div>
+          <div class="jikan-compare-item">深集中ブロックが会議で侵食されにくい（ビジュアルで保護される）</div>
+          <div class="jikan-compare-item">タスクに「終了時間」が設定され、完了の判断基準が明確になる</div>
+          <div class="jikan-compare-item">週計画との整合性が取れ、過負荷を事前に検知できる</div>
+          <div class="jikan-compare-stat">完了率：推定76%（GTD Research 2019）</div>
+        </div>
+      </div>
+      <div class="jikan-compare-col loser">
+        <div class="jikan-compare-head">✗ To-Doリストのみ（非推奨）</div>
+        <div class="jikan-compare-body">
+          <div class="jikan-compare-item">「いつやるか」が決まらないため、緊急タスクに常に割り込まれる</div>
+          <div class="jikan-compare-item">リストが長くなるほど「何から始めるか」の意思決定コストが増加する</div>
+          <div class="jikan-compare-item">完了していないタスクがワーキングメモリを占有し続ける（ツァイガルニク効果）</div>
+          <div class="jikan-compare-item">優先順位の更新がなければ重要タスクが永遠に後回しになる</div>
+          <div class="jikan-compare-stat">平均41%のタスクが「永遠に完了しない」（iDoneThis 2016調査）</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:var(--sp-4);background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-md);font-size:0.85rem;color:var(--text-muted);line-height:var(--lh-long);">
+      <strong style="color:var(--accent-core);">接続ポイント（②Time Blocking）：</strong>
+      機会コスト計算の結果、「自分の1時間が3,500円以上の価値を持つ」と認識したとき、カレンダー上の深集中ブロックを守ることへの動機が変わる。時間は「節約する」ものではなく「高価値な用途に投下する」設計対象だと捉え直すことで、②Time Blockingの実行率が上がる。
+    </div>
+  </div>
+</section>
+
+<!-- 深掘り2: エネルギーマネジメント -->
+<section class="jikan-deep-section" id="deep-energy">
+  <div class="jikan-deep-card">
+    <div class="jikan-deep-label">
+      <i data-lucide="battery-charging" width="14" height="14"></i>
+      Deep Dive 02
+    </div>
+    <h2 class="jikan-deep-title">エネルギーマネジメント：時間×集中力の最適化</h2>
+    <p class="jikan-deep-sub">同じ90分でも「ピーク時の90分」と「トラフ時の90分」では成果に58%の差が出る。時間の量を増やすより、使う時間帯のエネルギー状態を設計することが先決だ。</p>
+
+    <h3 class="jikan-deep-section-sub">ウルトラディアンリズム：90分サイクルの構造</h3>
+    <div class="jikan-rhythm-wrap">
+      <div class="jikan-rhythm-chart">
+        <div class="jikan-rhythm-wave"></div>
+      </div>
+      <div class="jikan-rhythm-labels">
+        <span class="jikan-rhythm-label jikan-rhythm-peak">PEAK<br>90分</span>
+        <span class="jikan-rhythm-label jikan-rhythm-trough">TROUGH<br>20分</span>
+        <span class="jikan-rhythm-label jikan-rhythm-peak">PEAK<br>90分</span>
+        <span class="jikan-rhythm-label jikan-rhythm-trough">TROUGH<br>20分</span>
+        <span class="jikan-rhythm-label jikan-rhythm-peak">PEAK<br>90分</span>
+        <span class="jikan-rhythm-label jikan-rhythm-trough">TROUGH<br>20分</span>
+        <span class="jikan-rhythm-label jikan-rhythm-peak">PEAK<br>90分</span>
+      </div>
+      <div class="jikan-rhythm-note">
+        <div><strong>発見：</strong>Nathaniel Kleitman（1963）がBASIC（Basic Rest-Activity Cycle）として定義。睡眠中の90分サイクルが覚醒時にも継続することを実証。</div>
+        <div><strong>実務則：</strong>90分作業→20分の強制休憩（散歩・瞑想・仮眠）を1サイクルとして設計する。休憩を「サボり」ではなく「次のピークの準備」として位置付ける。</div>
+      </div>
+    </div>
+
+    <h3 class="jikan-deep-section-sub">時間帯別コグニティブエネルギープロファイル</h3>
+    <div class="jikan-energy-grid" id="energy-grid">
+      <div class="jikan-energy-col dawn">
+        <div class="jikan-energy-time">Dawn</div>
+        <div class="jikan-energy-period">朝（6〜9時）</div>
+        <div class="jikan-energy-bar"><div class="jikan-energy-bar-fill" data-w="70"></div></div>
+        <div class="jikan-energy-level">エネルギー：中〜高（立ち上がり期）</div>
+        <div class="jikan-energy-best">最適タスク</div>
+        <ul class="jikan-energy-tasks">
+          <li>翌日計画の確認・優先順位整理</li>
+          <li>軽度の読書・学習インプット</li>
+          <li>朝のルーティン実行（判断コスト最小化）</li>
+        </ul>
+        <div class="jikan-energy-avoid">避けるべき：重大意思決定（脳が完全覚醒前）</div>
+      </div>
+      <div class="jikan-energy-col morning">
+        <div class="jikan-energy-time">Morning Peak</div>
+        <div class="jikan-energy-period">午前（9〜12時）</div>
+        <div class="jikan-energy-bar"><div class="jikan-energy-bar-fill" data-w="100"></div></div>
+        <div class="jikan-energy-level">エネルギー：最高（認知ピーク）</div>
+        <div class="jikan-energy-best">最適タスク</div>
+        <ul class="jikan-energy-tasks">
+          <li>最重要意思決定・戦略立案</li>
+          <li>複雑な設計・仕様検討</li>
+          <li>創造的作業・問題解決</li>
+          <li>難易度の高い報告書作成</li>
+        </ul>
+        <div class="jikan-energy-avoid">注意：会議・メール処理でピークを潰さない</div>
+      </div>
+      <div class="jikan-energy-col afternoon">
+        <div class="jikan-energy-time">Afternoon Trough</div>
+        <div class="jikan-energy-period">午後（13〜16時）</div>
+        <div class="jikan-energy-bar"><div class="jikan-energy-bar-fill" data-w="40"></div></div>
+        <div class="jikan-energy-level">エネルギー：低（最大トラフ）</div>
+        <div class="jikan-energy-best">最適タスク</div>
+        <ul class="jikan-energy-tasks">
+          <li>メール返信・定型連絡</li>
+          <li>会議・打ち合わせ（議題が明確なもの）</li>
+          <li>ルーティン作業・データ入力</li>
+          <li>13〜14時：20分仮眠が最も効果的</li>
+        </ul>
+        <div class="jikan-energy-avoid">最大注意：重要判断・複雑思考は避ける。午後に下した判断は午前比30〜40%質が低い（Danziger 2011）</div>
+      </div>
+      <div class="jikan-energy-col night">
+        <div class="jikan-energy-time">Late Recovery</div>
+        <div class="jikan-energy-period">夕方〜夜（16〜20時）</div>
+        <div class="jikan-energy-bar"><div class="jikan-energy-bar-fill" data-w="60"></div></div>
+        <div class="jikan-energy-level">エネルギー：中（第2ピーク・個人差大）</div>
+        <div class="jikan-energy-best">最適タスク</div>
+        <ul class="jikan-energy-tasks">
+          <li>翌日のシャットダウン設計・計画確定</li>
+          <li>読書・思考整理・ナレッジ蓄積</li>
+          <li>軽度の創造作業（夜型の人は深集中も可）</li>
+        </ul>
+        <div class="jikan-energy-avoid">避けるべき：就寝2時間前からの業務通知確認（睡眠質22%低下・Lanaj 2014）</div>
+      </div>
+    </div>
+
+    <h3 class="jikan-deep-section-sub">エネルギーを枯渇させる3大要因と実損データ</h3>
+    <div class="jikan-drain-grid">
+      <div class="jikan-drain-item">
+        <div class="jikan-drain-num">01</div>
+        <div class="jikan-drain-icon"><i data-lucide="git-branch" width="18" height="18"></i></div>
+        <div class="jikan-drain-name">決断疲れ（Decision Fatigue）</div>
+        <div class="jikan-drain-desc">1日に人間が行う意思決定は約35,000回（Cornell大学研究）。食事・服装・メール返信など「小さな判断」の累積が認知資源を消耗し、重要な判断の質を劣化させる。Jobs・Zuckerbergのユニフォーム戦略はこの枯渇対策。</div>
+        <div class="jikan-drain-stat">⚠ 午後の判断質：午前比 -30〜40%（Danziger et al. 2011）</div>
+        <div class="jikan-drain-connect">→ 対策は④判断疲労の回避（ルーティン化）に直結</div>
+      </div>
+      <div class="jikan-drain-item">
+        <div class="jikan-drain-num">02</div>
+        <div class="jikan-drain-icon"><i data-lucide="layers" width="18" height="18"></i></div>
+        <div class="jikan-drain-name">マルチタスク（タスク切り替えコスト）</div>
+        <div class="jikan-drain-desc">人間の脳は真のマルチタスク不可能。「タスクスイッチング」が発生するたびに平均23分の集中回復コストが発生する（Gloria Mark, UCI 2008）。「ながら作業」は生産性を最大40%低下させる（American Psychological Association 2006）。</div>
+        <div class="jikan-drain-stat">⚠ マルチタスク者の生産性：シングルタスク比 -40%（APA 2006）</div>
+        <div class="jikan-drain-connect">→ 対策は②Time Blockingによる「単一タスク保護区」設計</div>
+      </div>
+      <div class="jikan-drain-item">
+        <div class="jikan-drain-num">03</div>
+        <div class="jikan-drain-icon"><i data-lucide="circle" width="18" height="18"></i></div>
+        <div class="jikan-drain-name">未完了ループ（Zeigarnik Effect）</div>
+        <div class="jikan-drain-desc">未完了タスクは脳が「開ループ」として保持し続け、ワーキングメモリを常時消費する（Zeigarnik 1927）。「あれをやらなければ」という念頭占有が、別のタスクへの集中を妨げ、認知処理速度を最大52%低下させる。</div>
+        <div class="jikan-drain-stat">⚠ 未処理10件超でのWM占有：処理速度 -52%（Baumeister & Masicampo 2011参考）</div>
+        <div class="jikan-drain-connect">→ 対策は③外部化キャプチャによる「脳内RAM解放」</div>
+      </div>
+    </div>
+
+    <h3 class="jikan-deep-section-sub">エネルギーマネジメントと5要素の接続 — どの要素が直結するか</h3>
+    <div class="jikan-connect-grid" id="connect-grid">
+      <div class="jikan-connect-item core-el" onclick="showConnect(0)" data-i="0">
+        <div class="jikan-connect-num">01</div>
+        <div class="jikan-connect-name">エネルギー<br>波乗り</div>
+      </div>
+      <div class="jikan-connect-item" onclick="showConnect(1)" data-i="1">
+        <div class="jikan-connect-num">02</div>
+        <div class="jikan-connect-name">Time<br>Blocking</div>
+      </div>
+      <div class="jikan-connect-item" onclick="showConnect(2)" data-i="2">
+        <div class="jikan-connect-num">03</div>
+        <div class="jikan-connect-name">外部化<br>キャプチャ</div>
+      </div>
+      <div class="jikan-connect-item" onclick="showConnect(3)" data-i="3">
+        <div class="jikan-connect-num">04</div>
+        <div class="jikan-connect-name">判断疲労<br>の回避</div>
+      </div>
+      <div class="jikan-connect-item" onclick="showConnect(4)" data-i="4">
+        <div class="jikan-connect-num">05</div>
+        <div class="jikan-connect-name">シャット<br>ダウン設計</div>
+      </div>
+    </div>
+    <div class="jikan-connect-detail" id="connect-detail">
+      要素をクリックすると、エネルギーマネジメントとの接続ポイントが表示されます。
+    </div>
   </div>
 </section>
 
@@ -743,7 +1389,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
   go(0);
 
-    // 読書進捗バー
+  // 深掘りセクション2: 5要素接続インタラクション
+  const connectData = [
+    {
+      title: '① エネルギー波乗り — エネルギーマネジメントの根幹',
+      text: '「どの時間帯に何を置くか」の判断はすべてこの要素が担う。ウルトラディアンリズムの90分ピーク帯を特定し、その時間に最高認知コストのタスクを置くことが時間設計の出発点。エネルギープロファイルを把握していなければ、②〜⑤の効果はすべて半減する。CORETとして最初に鍛えるべき要素。'
+    },
+    {
+      title: '② Time Blocking — マルチタスクを構造的に排除する',
+      text: 'カレンダーへの深集中ブロック先入れは、「マルチタスクの発生を防ぐ物理的設計」だ。ブロック内で通知をオフにすることで、エネルギー枯渇の第2要因「タスク切り替えコスト（平均23分）」を削除できる。ピーク帯にブロックを置けば、エネルギーの最大活用になる。'
+    },
+    {
+      title: '③ 外部化キャプチャ — 未完了ループを閉じてエネルギー漏洩を止める',
+      text: '「あれをやらなければ」という念頭占有（ツァイガルニク効果）は、タスクを実行していなくてもエネルギーを消耗させる。外部リストへの書き出しで開ループを閉じることで、ワーキングメモリが解放されエネルギー漏洩が止まる。深集中が可能になる前提条件を整える要素。'
+    },
+    {
+      title: '④ 判断疲労の回避 — 決断疲れをルーティン化で事前に防ぐ',
+      text: 'エネルギー枯渇の第1要因「決断疲れ」に直接対処する要素。朝のルーティン固定・服装・昼食の選択肢固定によって「小さな判断」を排除し、重要判断のための認知資源を温存する。Jobs・Zuckerbergの「制服戦略」はこの実践例。午前の認知ピーク帯を判断消費から守ることで相乗効果が生まれる。'
+    },
+    {
+      title: '⑤ シャットダウン設計 — 翌日のエネルギーを今日の終わりに決める',
+      text: '心理的デタッチメント（仕事からの完全切り離し）は、翌日のエネルギー回復の質を決定づける。仕事の「持ち越し」は脳がバックグラウンドで処理し続けるため睡眠中もエネルギーを消耗する。シャットダウン宣言で翌日のピーク帯を満充電の状態で迎えることができる。⑤は翌日の①の初期値を決める要素として、5要素サイクルの上位設計に位置する。'
+    }
+  ];
+
+  window.showConnect = function(i) {
+    const detail = document.getElementById('connect-detail');
+    const items = document.querySelectorAll('#connect-grid .jikan-connect-item');
+    items.forEach((el, idx) => el.classList.toggle('active', idx === i));
+    if (detail) {
+      detail.innerHTML = `<strong style="color:var(--accent);display:block;margin-bottom:8px;">${connectData[i].title}</strong>${connectData[i].text}`;
+    }
+  };
+
+  // エネルギーバーアニメーション（IntersectionObserver）
+  function animateEnergyBars() {
+    const bars = document.querySelectorAll('.jikan-energy-bar-fill');
+    bars.forEach(bar => {
+      const w = bar.dataset.w;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = w + '%'; }, 200);
+    });
+  }
+  const energyGrid = document.getElementById('energy-grid');
+  if (energyGrid && 'IntersectionObserver' in window) {
+    let fired = false;
+    const obs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !fired) {
+        fired = true;
+        animateEnergyBars();
+      }
+    }, { threshold: 0.2 });
+    obs.observe(energyGrid);
+  }
+
+  // 読書進捗バー
     const rp = document.getElementById('reading-progress');
     if (rp) {
       window.addEventListener('scroll', () => {

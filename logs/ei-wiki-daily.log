@@ -1,1 +1,2 @@
 2026-04-21 (scheduled): 日次スキャン実行。ei/11件・keiso/4件・trouble/4件 全published確認。新規ソース（inbox/factory）なし。更新なし。
+2026-04-25 (scheduled): 日次スキャン実行。ei-wiki最終commit=2026-04-20（guidelines 8ページ追加、変更なし）。knowledge/新規10件はAI活用カテゴリのみ、電気計装ゼロ。inbox scan: denken-wiki-expansion handoffに「P4: ei-wiki 業務マニュアル追加（スコープ未定義）」記録あり→ユーザー確認待ちで保留。factory/空。更新なし。

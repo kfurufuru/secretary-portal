@@ -17,226 +17,73 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ── 意思決定バイアス 深掘りセクション（handan） ── */
+.bias-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.bias-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.bias-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); color: var(--text); margin-bottom: var(--sp-2); }
+.bias-sub { color: var(--text-muted); font-size: var(--fs-sm); line-height: var(--lh-long); margin-bottom: var(--sp-6); }
+.bias-sub strong { color: var(--accent); }
+.bias-section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: var(--sp-8) 0 var(--sp-4); }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
-}
+/* バイアス5カード */
+.bias-5grid { display: flex; flex-direction: column; gap: var(--sp-4); margin-bottom: var(--sp-8); }
+.bias-5item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: var(--sp-5); display: grid; grid-template-columns: 240px 1fr 1fr; gap: var(--sp-4); align-items: start; }
+.bias-5item:hover { background: rgba(255,255,255,0.04); border-color: rgba(56,189,248,0.2); }
+.bias-5item-head { }
+.bias-5item-num { font-size: 0.62rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: var(--sp-1); }
+.bias-5item-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-2); }
+.bias-5item-def { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-body); }
+.bias-5item-col-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.bias-5item-col-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.bias-5item-col-text strong { color: var(--text); }
+.bias-avoidance { background: rgba(56,189,248,0.06); border-radius: var(--radius-sm); padding: var(--sp-3); }
+.bias-avoidance .bias-5item-col-text { color: var(--text); }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* 実損統計 */
+.bias-deficit { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-md); padding: var(--sp-6); margin-bottom: var(--sp-8); }
+.bias-deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-4); text-transform: uppercase; }
+.bias-deficit-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-5); }
+.bias-deficit-stat { text-align: center; background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); }
+.bias-deficit-num { font-size: 1.8rem; font-weight: 700; color: #f87171; line-height: 1; margin-bottom: var(--sp-1); }
+.bias-deficit-unit { font-size: 0.65rem; color: #fca5a5; margin-bottom: var(--sp-2); }
+.bias-deficit-desc { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; }
+.bias-deficit-note { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); border-top: 1px solid rgba(239,68,68,0.15); padding-top: var(--sp-4); }
 
-.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
-.nav a { color: var(--accent); text-decoration: none; }
-.nav a:hover { text-decoration: underline; }
+/* コスト影響バー */
+.bias-cost-bars { margin-bottom: var(--sp-4); }
+.bias-cost-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); }
+.bias-cost-name { font-size: 0.76rem; color: var(--text-muted); width: 180px; flex-shrink: 0; }
+.bias-cost-bar-wrap { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.bias-cost-bar { height: 100%; border-radius: 4px; background: #f87171; transition: width 0.6s ease; width: 0%; }
+.bias-cost-pct { font-size: 0.72rem; color: #fca5a5; font-weight: 700; width: 60px; text-align: right; flex-shrink: 0; }
 
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+/* 5要素との接続 */
+.bias-connect { background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.18); border-radius: var(--radius-md); padding: var(--sp-6); }
+.bias-connect-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-4); text-transform: uppercase; }
+.bias-connect-rows { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+.bias-connect-row { display: flex; align-items: flex-start; gap: var(--sp-3); }
+.bias-connect-tag { flex-shrink: 0; font-size: 0.62rem; font-weight: 700; background: var(--accent-dim); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; color: var(--accent); white-space: nowrap; }
+.bias-connect-tag.core { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: var(--accent-core); }
+.bias-connect-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-body); }
+.bias-connect-text strong { color: var(--text); }
+.bias-connect-summary { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); border-top: 1px solid rgba(56,189,248,0.12); padding-top: var(--sp-4); }
 
-/* ── Sticky Tab Nav ── */
-.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-/* ── Progress bar ── */
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-/* ── Main panel ── */
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-/* ── Prev / Next ── */
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-/* ── 棒グラフ ── */
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 140px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 60px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-/* ── バイアス診断（②専用） ── */
-.bias-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); margin-bottom: var(--sp-4); }
-.bias-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-sm); padding: var(--sp-3); cursor: pointer; transition: var(--transition); user-select: none; }
-.bias-card:hover, .bias-card.active { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.25); }
-.bias-card-name { font-size: 0.75rem; font-weight: 700; color: #f87171; margin-bottom: var(--sp-2); }
-.bias-card-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.6; }
-.bias-card-example { font-size: 0.7rem; color: var(--text-dim); margin-top: var(--sp-2); font-style: italic; }
-
-/* ── プレモーテム診断（③専用） ── */
-.premortem-steps { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-4); }
-.premortem-step { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-3); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); border-left: 3px solid var(--text-dim); transition: var(--transition); cursor: pointer; }
-.premortem-step:hover { background: rgba(56,189,248,0.05); border-left-color: var(--accent); }
-.step-num { font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-dim); padding: 2px 7px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
-.step-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-body); }
-.step-text strong { color: var(--text); }
-
-/* ── Insight ── */
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-/* ── Self-check ── */
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
-
-/* ── Top Nav ── */
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-back {
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none; color: #94a3b8;
-  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
-}
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text {
-  font-size: 0.78rem; color: #8892a0; font-weight: 600;
-  letter-spacing: 0.06em; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
-}
-.nav-spacer { width: 80px; }
+/* セルフチェック行 */
+.bias-selfcheck { margin-top: var(--sp-6); padding: var(--sp-4); background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.bias-selfcheck-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-3); text-transform: uppercase; }
+.bias-check-rows { display: flex; flex-direction: column; gap: var(--sp-2); }
+.bias-check-row { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.5; }
+.bias-check-row::before { content: '✓'; color: var(--accent); flex-shrink: 0; font-weight: 700; }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .bias-cards { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
+  .bias-5item { grid-template-columns: 1fr; }
+  .bias-deficit-stats { grid-template-columns: 1fr 1fr; }
+  .bias-cost-name { width: 130px; }
 }
 @media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
-}
-/* ── Structure Map ── */
-.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
-.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
-.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
-.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
-.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
-.smap-band { width: 100%; max-width: 540px; }
-.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.smap-band-tag.core { color: var(--accent-core); }
-.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
-.smap-center { display: flex; justify-content: center; }
-.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
-.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
-.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
-.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
-.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
-.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
-.smap-node.core-node .sn-num { color: var(--accent-core); }
-.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
-.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
-.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
-.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
-.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
-.smap-axiom strong { color: var(--accent-core); }
-@media (max-width: 480px) {
-  .smap-node { max-width: 130px; }
-  .smap-node.core-node { max-width: 200px; }
-  .sn-name { font-size: 0.78rem; }
-  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+  .bias-deficit-stats { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -381,6 +228,219 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
       ⑤が判断能力の向上。記録なき判断者は同じバイアスを繰り返す。自分の判断パターンを客観視することで初めて改善できる。<br><br>
       最初に鍛えるべきは①判断モード選択。「この判断に今どちらのモードを使っているか」を意識するだけで、直感の誤用と分析の過剰を防げる。
     </p>
+  </div>
+</section>
+
+<!-- 意思決定バイアス 深掘りセクション -->
+<section class="bias-section">
+  <div class="bias-card">
+    <h2 class="bias-title">意思決定バイアス：判断を歪める5つの認知エラー</h2>
+    <p class="bias-sub">バイアスは弱さではなく、人間の<strong>認知の構造的欠陥</strong>だ。知識があっても完全には消えない。しかし「いま発動している」と気づく能力は、訓練で鍛えられる。</p>
+
+    <div class="bias-section-label">01 5つの認知バイアス — 定義・現場事例・回避策</div>
+    <div class="bias-5grid">
+
+      <!-- 確証バイアス -->
+      <div class="bias-5item">
+        <div class="bias-5item-head">
+          <div class="bias-5item-num">BIAS 01</div>
+          <div class="bias-5item-name">確証バイアス</div>
+          <div class="bias-5item-def">自分の既存の結論・仮説を支持する情報だけを集め、矛盾する証拠を無視・軽視する傾向。「信念の確認」作業になってしまう。</div>
+        </div>
+        <div>
+          <div class="bias-5item-col-label">現場での発現例</div>
+          <div class="bias-5item-col-text">
+            <strong>設備投資：</strong>「この機種を導入したい」と思った時点で、その機種の成功事例だけを収集し、失敗事例・代替機種の優位性を見落とす。<br>
+            <strong>人材育成：</strong>「Aさんは伸びない」という先入観が形成されると、Aさんの成功実績を「たまたま」と解釈し、失敗を「やはり」と強調する。
+          </div>
+        </div>
+        <div class="bias-avoidance">
+          <div class="bias-5item-col-label">回避策</div>
+          <div class="bias-5item-col-text">「この判断が間違いの場合、どんな証拠が存在するか？」を明示的に問う。<strong>反証の探索</strong>を意思決定プロセスに組み込む。悪魔の代弁者（デビルズアドボケイト）役を指名する。</div>
+        </div>
+      </div>
+
+      <!-- 現状維持バイアス -->
+      <div class="bias-5item">
+        <div class="bias-5item-head">
+          <div class="bias-5item-num">BIAS 02</div>
+          <div class="bias-5item-name">現状維持バイアス</div>
+          <div class="bias-5item-def">変化によるリスク・損失を、現状維持によるリスク・機会損失より大きく感じてしまう傾向。「とりあえず今のままで」が非合理な選択を正当化する。</div>
+        </div>
+        <div>
+          <div class="bias-5item-col-label">現場での発現例</div>
+          <div class="bias-5item-col-text">
+            <strong>設備投資：</strong>老朽設備の更新を「まだ動いている」という理由で先送りし続ける。故障してから緊急対応するコストが更新コストを大幅に上回る。<br>
+            <strong>人材育成：</strong>新しい教育手法・OJT方法への移行を「今のやり方で育ってきた」という実績のない慣例で拒否する。
+          </div>
+        </div>
+        <div class="bias-avoidance">
+          <div class="bias-5item-col-label">回避策</div>
+          <div class="bias-5item-col-text">「5年後も現状維持を続けた場合のコスト・リスク」を定量化する。変化のコストではなく<strong>変化しないことのコスト</strong>を先に計算する。LCC（ライフサイクルコスト）比較を標準手順にする。</div>
+        </div>
+      </div>
+
+      <!-- サンクコストバイアス -->
+      <div class="bias-5item">
+        <div class="bias-5item-head">
+          <div class="bias-5item-num">BIAS 03</div>
+          <div class="bias-5item-name">サンクコストバイアス</div>
+          <div class="bias-5item-def">過去に費やした投資（時間・金・労力）が回収できないことへの心理的抵抗から、客観的に判断すると「やめるべき」案件を継続する傾向。「もったいない」が合理的判断を上書きする。</div>
+        </div>
+        <div>
+          <div class="bias-5item-col-label">現場での発現例</div>
+          <div class="bias-5item-col-text">
+            <strong>設備投資：</strong>大金をかけて始めた改善プロジェクトが効果なしと判明しても、「ここまでかけたのだから」で継続判断する。追加コストが累積する。<br>
+            <strong>人材育成：</strong>育成に時間を投資してきたメンバーの配置転換が最適解でも、「育てたのに」という感情で最適配置を阻む。
+          </div>
+        </div>
+        <div class="bias-avoidance">
+          <div class="bias-5item-col-label">回避策</div>
+          <div class="bias-5item-col-text">「今日初めてこの案件を見た場合、続けるか？」という<strong>ゼロベース再評価</strong>を定期的に実施する。過去コストは意思決定の変数から除外する。プロジェクト中断の判断基準を開始時に決めておく。</div>
+        </div>
+      </div>
+
+      <!-- 権威バイアス -->
+      <div class="bias-5item">
+        <div class="bias-5item-head">
+          <div class="bias-5item-num">BIAS 04</div>
+          <div class="bias-5item-name">権威バイアス</div>
+          <div class="bias-5item-def">専門家・上位職・組織権威者の意見を、内容の論理性ではなく肩書・地位に基づいて過大評価する傾向。「○○部長がそう言っているから正しい」が批判的思考を停止させる。</div>
+        </div>
+        <div>
+          <div class="bias-5item-col-label">現場での発現例</div>
+          <div class="bias-5item-col-text">
+            <strong>設備投資：</strong>メーカー営業担当の「この製品がベストです」という提言を、独立した技術検証なしに採用する。メーカーの利益が優先されたスペック選定になる。<br>
+            <strong>人材育成：</strong>上司の「こうやって育てるべきだ」という指導方針を、効果検証なしに踏襲し続ける。
+          </div>
+        </div>
+        <div class="bias-avoidance">
+          <div class="bias-5item-col-label">回避策</div>
+          <div class="bias-5item-col-text">「この主張の根拠は何か？」という<strong>根拠ベースの評価</strong>を習慣化する。権威者の意見も必ずファクトチェックを挟む。複数の独立したソースを参照する（第二意見：⑤要素と連動）。</div>
+        </div>
+      </div>
+
+      <!-- 利用可能性ヒューリスティック -->
+      <div class="bias-5item">
+        <div class="bias-5item-head">
+          <div class="bias-5item-num">BIAS 05</div>
+          <div class="bias-5item-name">利用可能性ヒューリスティック</div>
+          <div class="bias-5item-def">思い出しやすい事例・最近の出来事を、統計的な頻度よりも「よく起きること」と過大評価する傾向。記憶の鮮明さが確率判断を歪める。</div>
+        </div>
+        <div>
+          <div class="bias-5item-col-label">現場での発現例</div>
+          <div class="bias-5item-col-text">
+            <strong>設備投資：</strong>最近起きた設備トラブルを「よく起きるリスク」として過大評価し、統計的には低頻度のリスク対策に過剰投資する。本当に頻度の高いリスクが見落とされる。<br>
+            <strong>人材育成：</strong>最近の失敗事例（印象的な事件）でそのメンバーを評価し、長期的なパフォーマンスを正確に評価できない。
+          </div>
+        </div>
+        <div class="bias-avoidance">
+          <div class="bias-5item-col-label">回避策</div>
+          <div class="bias-5item-col-text">「この認識は最近の印象から来ているか、それとも統計データから来ているか？」と問う。<strong>ベースレートの参照</strong>（類似事例の発生頻度データ）を判断の起点にする。直近1件ではなく過去N件の平均を使う。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- バイアスコスト影響 -->
+    <div class="bias-section-label">02 バイアスが意思決定に与えるコスト（数値データ）</div>
+    <div class="bias-deficit">
+      <div class="bias-deficit-label">⚠ バイアス別の定量的実損</div>
+      <div class="bias-deficit-stats">
+        <div class="bias-deficit-stat">
+          <div class="bias-deficit-num">25%</div>
+          <div class="bias-deficit-unit">投資ROI低下</div>
+          <div class="bias-deficit-desc">バイアス放置の組織 vs バイアス除去プロセスあり（McKinsey 2017）</div>
+        </div>
+        <div class="bias-deficit-stat">
+          <div class="bias-deficit-num">3.2回</div>
+          <div class="bias-deficit-unit">同じミスの繰り返し</div>
+          <div class="bias-deficit-desc">判断記録なき管理職による同カテゴリ判断ミスの平均回数（Tetlock参考）</div>
+        </div>
+        <div class="bias-deficit-stat">
+          <div class="bias-deficit-num">40%</div>
+          <div class="bias-deficit-unit">失敗率増加</div>
+          <div class="bias-deficit-desc">第二意見なし・バイアスチェックなしの重要判断（Larrick 2004）</div>
+        </div>
+        <div class="bias-deficit-stat">
+          <div class="bias-deficit-num">23%</div>
+          <div class="bias-deficit-unit">コスト超過</div>
+          <div class="bias-deficit-desc">楽観バイアスが強い計画者によるプロジェクトのコスト超過率（McKinsey 2021）</div>
+        </div>
+      </div>
+      <div class="bias-cost-bars">
+        <div class="bias-cost-row">
+          <div class="bias-cost-name">確証バイアス（情報収集歪み）</div>
+          <div class="bias-cost-bar-wrap"><div class="bias-cost-bar" data-w="85" style="width:85%;"></div></div>
+          <div class="bias-cost-pct">影響大</div>
+        </div>
+        <div class="bias-cost-row">
+          <div class="bias-cost-name">サンクコスト（継続コスト）</div>
+          <div class="bias-cost-bar-wrap"><div class="bias-cost-bar" data-w="78" style="width:78%;"></div></div>
+          <div class="bias-cost-pct">高コスト</div>
+        </div>
+        <div class="bias-cost-row">
+          <div class="bias-cost-name">現状維持（機会損失）</div>
+          <div class="bias-cost-bar-wrap"><div class="bias-cost-bar" data-w="70" style="width:70%;"></div></div>
+          <div class="bias-cost-pct">長期影響</div>
+        </div>
+        <div class="bias-cost-row">
+          <div class="bias-cost-name">権威バイアス（検証省略）</div>
+          <div class="bias-cost-bar-wrap"><div class="bias-cost-bar" data-w="55" style="width:55%;"></div></div>
+          <div class="bias-cost-pct">頻繁発現</div>
+        </div>
+        <div class="bias-cost-row">
+          <div class="bias-cost-name">利用可能性（リスク誤評価）</div>
+          <div class="bias-cost-bar-wrap"><div class="bias-cost-bar" data-w="48" style="width:48%;"></div></div>
+          <div class="bias-cost-pct">優先度誤り</div>
+        </div>
+      </div>
+      <div class="bias-deficit-note">
+        バイアスの最大の危険性は「自分が合理的に判断していると信じている瞬間に最も強く発動する」点にある。「経験豊富なリーダーほど確証バイアスが強固になる」（Kahneman）。訓練で完全消去はできないが、チェックリストと習慣化されたプロセスによって発動率を30〜50%削減できる（Kahneman, Sibony & Sunstein『Noise』2021）。
+      </div>
+    </div>
+
+    <!-- 既存5要素との接続 -->
+    <div class="bias-connect">
+      <div class="bias-connect-label">既存5要素とバイアス解除の接続</div>
+      <div class="bias-connect-rows">
+        <div class="bias-connect-row">
+          <div class="bias-connect-tag core">①判断モード選択</div>
+          <div class="bias-connect-text">System 1（直感）が最もバイアスを受けやすい。<strong>モード選択</strong>は「今バイアスが発動しやすい状況か」を識別する第一関門。疲労・感情的高ぶり時はバイアス5種が同時に発動しやすい。</div>
+        </div>
+        <div class="bias-connect-row">
+          <div class="bias-connect-tag">②バイアス解除</div>
+          <div class="bias-connect-text">本セクションの5バイアスは、既存要素②の<strong>具体的な実装内容</strong>。構造マップの「認知バイアスの体系的除去」がこのセクションで詳細化される。</div>
+        </div>
+        <div class="bias-connect-row">
+          <div class="bias-connect-tag">③プレモーテム</div>
+          <div class="bias-connect-text">「失敗した前提で考える」構造は確証バイアスの解除装置として機能する。<strong>楽観バイアスと確証バイアスの両方</strong>に対する組織的対抗策がプレモーテム。</div>
+        </div>
+        <div class="bias-connect-row">
+          <div class="bias-connect-tag">④第二意見設計</div>
+          <div class="bias-connect-text">権威バイアス・確証バイアスに対して最も有効な構造的対策。独立した視点からの意見取得は、バイアスフィルターを外から除去する<strong>外部バイアスキラー</strong>として機能する。</div>
+        </div>
+        <div class="bias-connect-row">
+          <div class="bias-connect-tag">⑤意思決定記録</div>
+          <div class="bias-connect-text">「自分がどのバイアスに弱いか」のパターンは記録なしでは把握できない。現状維持・サンクコスト・利用可能性の3バイアスは<strong>記録との照合</strong>で初めて自覚できる。</div>
+        </div>
+      </div>
+      <div class="bias-connect-summary">
+        5つのバイアスは独立して発現するのではなく、<strong style="color:var(--accent);">連鎖・相乗する</strong>。設備投資の意思決定では「利用可能性（最近のトラブルを過大評価）→確証バイアス（特定機種への肯定情報収集）→現状維持（更新判断の先送り）→サンクコスト（古い設備への追加投資継続）」という4段連鎖が起きやすい。②〜⑤の全要素を組み合わせてはじめてこの連鎖を断ち切れる。
+      </div>
+    </div>
+
+    <!-- セルフチェック行 -->
+    <div class="bias-selfcheck">
+      <div class="bias-selfcheck-label">バイアス解除 セルフチェック</div>
+      <div class="bias-check-rows">
+        <div class="bias-check-row">直近の重要判断で「自分の結論を覆す証拠を意図的に探したか」（確証バイアス解除）</div>
+        <div class="bias-check-row">変更・更新の判断を「現状維持のコスト」から考えられているか（現状維持バイアス解除）</div>
+        <div class="bias-check-row">「ここまでかけたから」という理由で継続判断をしていないか（サンクコスト解除）</div>
+        <div class="bias-check-row">メーカー・上司・専門家の提言に対して、根拠ベースの独立検証を行っているか（権威バイアス解除）</div>
+        <div class="bias-check-row">リスク評価の根拠が「最近の印象」ではなく「統計・ベースレート」になっているか（利用可能性解除）</div>
+      </div>
+    </div>
   </div>
 </section>
 

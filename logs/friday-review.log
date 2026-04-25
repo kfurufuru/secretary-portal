@@ -69,3 +69,68 @@ top3_accuracy: 0
 [2026-04-21 22:30:29] INFO: ============================================================
 [2026-04-21 22:30:29] INFO: Friday Review: SUCCESS (22.0s)
 [2026-04-21 22:30:29] INFO: ============================================================
+[2026-04-25 07:41:30] INFO: ============================================================
+[2026-04-25 07:41:30] INFO: Friday Review: STARTED
+[2026-04-25 07:41:30] INFO: ============================================================
+[2026-04-25 07:41:30] INFO: 対象週: 2026-04-20 ～ 2026-04-26
+[2026-04-25 07:41:30] INFO: 実行日: 2026-04-25
+[2026-04-25 07:41:30] INFO: 
+[Phase 1] Collecting week todos...
+[2026-04-25 07:41:30] INFO: ✓ 0/18 tasks (0.0%)
+[2026-04-25 07:41:30] INFO: 
+[Phase 2] Loading Monday TOP3...
+[2026-04-25 07:41:30] INFO: ✓ Monday TOP3: not found
+[2026-04-25 07:41:30] INFO: 
+[Phase 3] Running Haiku summary...
+[2026-04-25 07:41:30] INFO: Phase 1 (Haiku): Summarizing week...
+[2026-04-25 07:41:30] ERROR: ERROR: ANTHROPIC_API_KEY が未設定です
+[2026-04-25 07:42:51] INFO: ============================================================
+[2026-04-25 07:42:51] INFO: Friday Review: STARTED
+[2026-04-25 07:42:51] INFO: ============================================================
+[2026-04-25 07:42:51] INFO: 対象週: 2026-04-20 ～ 2026-04-26
+[2026-04-25 07:42:51] INFO: 実行日: 2026-04-25
+[2026-04-25 07:42:51] INFO: 
+[Phase 1] Collecting week todos...
+[2026-04-25 07:42:51] INFO: ✓ 0/18 tasks (0.0%)
+[2026-04-25 07:42:51] INFO: 
+[Phase 2] Loading Monday TOP3...
+[2026-04-25 07:42:51] INFO: ✓ Monday TOP3: not found
+[2026-04-25 07:42:51] INFO: 
+[Phase 3] Running Haiku summary...
+[2026-04-25 07:42:51] INFO: Phase 1 (Haiku): Summarizing week...
+[2026-04-25 07:42:52] ERROR: API error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CaPQPG1Hpd3kmnZwk9mRq'}
+[2026-04-25 07:42:52] ERROR: 
+[2026-04-25 07:42:52] ERROR: ============================================================
+[2026-04-25 07:42:52] ERROR: Friday Review: FAILED
+[2026-04-25 07:42:52] ERROR: ============================================================
+[2026-04-25 07:42:52] ERROR: Error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CaPQPG1Hpd3kmnZwk9mRq'}
+[2026-04-25 07:42:52] DEBUG: Traceback (most recent call last):
+  File "C:\Users\kfuru\.secretary\friday-review-generator.py", line 435, in main
+    summary = run_haiku_summary(week_data, monday_top3)
+  File "C:\Users\kfuru\.secretary\friday-review-generator.py", line 233, in run_haiku_summary
+    resp = call_with_retry(client, MODEL_HAIKU, system_prompt, user_prompt)
+  File "C:\Users\kfuru\.secretary\friday-review-generator.py", line 88, in call_with_retry
+    response = client.messages.create(
+        model=model,
+    ...<3 lines>...
+        messages=[{"role": "user", "content": user_prompt}]
+    )
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_utils\_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\resources\messages\messages.py", line 996, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1364, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1137, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CaPQPG1Hpd3kmnZwk9mRq'}
+

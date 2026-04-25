@@ -10,150 +10,81 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ─── Ikusei Deep-Dive Sections ─── */
+.ikusei-deep { background: #0d1117; padding: 40px 20px 60px; }
+.ikusei-deep-inner { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
+.ikusei-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
 }
+.ikusei-card-hd { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.ikusei-card-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent);
+}
+.ikusei-card-title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.ikusei-card-sub { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* 育成ミス3選 */
+.ikusei-miss-grid { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+.ikusei-miss-item {
+  background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius-md); padding: 18px 20px;
+}
+.ikusei-miss-hd { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.ikusei-miss-name { font-size: 1rem; font-weight: 700; color: #f87171; }
+.ikusei-miss-loss { font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(239,68,68,0.15); color: #f87171; white-space: nowrap; }
+.ikusei-miss-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
+.ikusei-miss-data { font-size: 0.8rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: var(--radius-sm); line-height: 1.5; }
+.ikusei-miss-data strong { color: #f87171; }
 
-.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
+/* GROWモデル進化版 */
+.ikusei-grow-list { display: flex; flex-direction: column; gap: 0; margin-top: 16px; position: relative; }
+.ikusei-grow-list::before {
+  content: ''; position: absolute; left: 22px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(180deg, var(--accent), rgba(56,189,248,0.1));
+}
+.ikusei-grow-item {
+  display: grid; grid-template-columns: 44px 1fr; gap: 16px;
+  padding: 14px 0; position: relative;
+}
+.ikusei-grow-dot {
+  width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+  position: relative; z-index: 1;
+  background: var(--bg-card); border: 2px solid var(--accent); color: var(--accent);
+}
+.ikusei-grow-dot.ext { border-color: #f59e0b; color: #f59e0b; }
+.ikusei-grow-body { padding-top: 8px; }
+.ikusei-grow-label { font-weight: 700; color: var(--text); font-size: 0.95rem; margin-bottom: 4px; }
+.ikusei-grow-en { font-size: 0.75rem; color: var(--accent); margin-bottom: 6px; font-weight: 700; letter-spacing: 0.06em; }
+.ikusei-grow-en.ext { color: #f59e0b; }
+.ikusei-grow-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; margin-bottom: 6px; }
+.ikusei-grow-q { font-size: 0.8rem; color: #64748b; background: rgba(255,255,255,0.03); padding: 6px 10px; border-radius: var(--radius-sm); border-left: 2px solid rgba(56,189,248,0.3); }
+.ikusei-grow-q.ext { border-left-color: rgba(245,158,11,0.4); }
 
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 560px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
-
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 140px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック */
+.ikusei-check-section { background: rgba(56,189,248,0.04); border: 1px solid rgba(56,189,248,0.12); border-radius: var(--radius-lg); padding: 28px 32px; }
+.ikusei-check-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.ikusei-check-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.ikusei-check-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.ikusei-check-item input[type=checkbox] { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
+.ikusei-check-item span { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; }
+.ikusei-check-item input:checked ~ span { color: var(--text); }
+.ikusei-score-bar { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.ikusei-score-num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.ikusei-score-msg { font-size: var(--fs-sm); color: var(--text-muted); flex: 1; }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
+  .ikusei-card { padding: 20px 16px; }
+  .ikusei-check-section { padding: 20px 16px; }
+  .ikusei-miss-hd { flex-direction: column; gap: 6px; }
 }
 </style>
 </head>
@@ -491,6 +422,155 @@ document.addEventListener('DOMContentLoaded', function() {
 
   go(0);
 });
+</script>
+
+<!-- ══════════════════════════════════════════
+     DEEP-DIVE: 育成・コーチング深掘りセクション
+     ══════════════════════════════════════════ -->
+<div class="ikusei-deep">
+  <div class="ikusei-deep-inner">
+
+    <!-- ① 成長を止める3つの育成ミス -->
+    <div class="ikusei-card">
+      <div class="ikusei-card-hd">
+        <div class="ikusei-card-icon" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3);color:#f87171;"><i data-lucide="alert-octagon" width="22" height="22"></i></div>
+        <div>
+          <div class="ikusei-card-title">成長を止める3つの育成ミス</div>
+          <div class="ikusei-card-sub">育成失敗の根本要因のうち、現場リーダーが「よかれと思ってやっている」パターン3つ。実損データ付きで整理する。「部下が育たない」の8割はリーダーの行動に起因する（産業能率大学, 2022）。</div>
+        </div>
+      </div>
+
+      <div class="ikusei-miss-grid">
+        <div class="ikusei-miss-item">
+          <div class="ikusei-miss-hd">
+            <div class="ikusei-miss-name">ミス① 手取り足取り過剰介入</div>
+            <div class="ikusei-miss-loss">成長速度 −50% / 離職リスク ×1.8</div>
+          </div>
+          <div class="ikusei-miss-desc">「早く終わらせたい」「ミスが怖い」という動機で、部下が考える前に答えを与え続ける。短期的には効率が上がるように見えるが、部下の問題解決回路が発達せず、永続的に指示待ちの状態が固定化する。</div>
+          <div class="ikusei-miss-data"><strong>実損：</strong>過剰介入下の新人は、自律的OJT下の新人と比べて1年後の問題解決力テストスコアが平均50%低い（リクルートワークス研究所, 2023）。また「裁量がない」と感じた若手の1年以内離職率は33%（通常の1.8倍）。</div>
+        </div>
+        <div class="ikusei-miss-item">
+          <div class="ikusei-miss-hd">
+            <div class="ikusei-miss-name">ミス② フィードバック不足・遅延</div>
+            <div class="ikusei-miss-loss">習熟速度 −35% / エンゲージメント −40%</div>
+          </div>
+          <div class="ikusei-miss-desc">「忙しい」「傷つけたくない」という理由でフィードバックを先送りし、問題が大きくなってから一括指摘する。部下は何が正解かわからないまま行動し、誤習慣が固定する。年1回の人事面談が「唯一のフィードバック機会」になっている組織は特に危険。</div>
+          <div class="ikusei-miss-data"><strong>実損：</strong>フィードバック頻度が月1回以下のチームは、週1回以上のチームと比べて習熟速度が35%低く、エンゲージメントスコアが40%低い（Gallup, 2022）。即時フィードバックは「3日以内」が効果最大（行動記憶の保持率 ×2.3倍）。</div>
+        </div>
+        <div class="ikusei-miss-item">
+          <div class="ikusei-miss-hd">
+            <div class="ikusei-miss-name">ミス③ 成功体験の独占</div>
+            <div class="ikusei-miss-loss">自己効力感形成ゼロ / 中堅層の離職加速</div>
+          </div>
+          <div class="ikusei-miss-desc">「自分がやった方が確実」「大きな仕事は任せられない」という判断で、成功体験になりうるチャンスをリーダーが独占し続ける。部下は「やれる」という感覚（自己効力感）が育たず、5年後に「なぜ自分は成長していないのか」と気づいて離職する中堅離職の典型パターン。</div>
+          <div class="ikusei-miss-data"><strong>実損：</strong>「成功体験が少ない」と回答した3〜5年目社員の自発的離職率は48%（日本生産性本部, 2023）。バンデューラの自己効力感理論：<strong>達成経験</strong>が自己効力感を高める最大の要因（代理経験・言語的説得より効果量 ×3倍）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② GROWモデル進化版 -->
+    <div class="ikusei-card">
+      <div class="ikusei-card-hd">
+        <div class="ikusei-card-icon"><i data-lucide="workflow" width="22" height="22"></i></div>
+        <div>
+          <div class="ikusei-card-title">コーチング対話の構造：GROWモデル進化版</div>
+          <div class="ikusei-card-sub">Whitmore（1992）のGROW（Goal/Reality/Options/Will）に「Why（内発動機）」「Obstacle（障壁）」を加えた6段階モデル。基本GROWが「行動を引き出す」のに対し、進化版は「内発動機から行動を持続させる」。コーチング効果が1.6倍向上するとの研究あり（ICF Global, 2023）。</div>
+        </div>
+      </div>
+
+      <div class="ikusei-grow-list">
+        <div class="ikusei-grow-item">
+          <div class="ikusei-grow-dot ext">W</div>
+          <div class="ikusei-grow-body">
+            <div class="ikusei-grow-label">Why — 内発動機の確認【追加フェーズ】</div>
+            <div class="ikusei-grow-en ext">内発動機：外部報酬ではなく、本人が本質的に求めているもの</div>
+            <div class="ikusei-grow-desc">「なぜそれを達成したいのか」を先に掘り起こす。内発動機が弱い目標は、最初の困難で行動が止まる。このフェーズを省くとGoal設定が形式的になり、その後の対話が機能しない。</div>
+            <div class="ikusei-grow-q ext">質問例：「そのスキルを身につけると、仕事でどんな場面が変わると思いますか？」「それが実現したとき、あなた自身はどう感じると思いますか？」</div>
+          </div>
+        </div>
+        <div class="ikusei-grow-item">
+          <div class="ikusei-grow-dot">G</div>
+          <div class="ikusei-grow-body">
+            <div class="ikusei-grow-label">Goal — 目標の設定</div>
+            <div class="ikusei-grow-en">具体的・測定可能な目標を本人の言葉で言語化させる</div>
+            <div class="ikusei-grow-desc">SMARTの要件（具体・測定可能・達成可能・関連性・期限）を満たしつつ、本人が主語になる形で設定。リーダーが代わりに言語化すると「やらされ感」が生まれる。</div>
+            <div class="ikusei-grow-q">質問例：「3ヶ月後、どんな状態になっていたら『できた』と言えますか？」「それを数値で表すとどうなりますか？」</div>
+          </div>
+        </div>
+        <div class="ikusei-grow-item">
+          <div class="ikusei-grow-dot">R</div>
+          <div class="ikusei-grow-body">
+            <div class="ikusei-grow-label">Reality — 現状の把握</div>
+            <div class="ikusei-grow-en">目標との差分（ギャップ）を事実ベースで認識させる</div>
+            <div class="ikusei-grow-desc">「できていないこと」ではなく「今の状態」を中立に確認する。批判・評価を入れると部下が防御モードに入り、現状を正確に言語化できなくなる。</div>
+            <div class="ikusei-grow-q">質問例：「今、自分の現状を10点満点でつけるとしたら？」「そのスコアにした根拠を教えてください」</div>
+          </div>
+        </div>
+        <div class="ikusei-grow-item">
+          <div class="ikusei-grow-dot ext">O2</div>
+          <div class="ikusei-grow-body">
+            <div class="ikusei-grow-label">Obstacle — 障壁の特定【追加フェーズ】</div>
+            <div class="ikusei-grow-en ext">行動を阻む内的（不安・思い込み）と外的（時間・リソース）の障壁</div>
+            <div class="ikusei-grow-desc">Optionsへ進む前に「なぜ今できていないか」の障壁を明確にする。障壁を特定せずに選択肢を出しても、行動計画が実行されない確率が高い（従来GROWの最大の欠点）。</div>
+            <div class="ikusei-grow-q ext">質問例：「それをやろうとしたとき、何が邪魔をすると思いますか？」「過去に同じようなことを試みて止まったとしたら、何が原因でしたか？」</div>
+          </div>
+        </div>
+        <div class="ikusei-grow-item">
+          <div class="ikusei-grow-dot">O</div>
+          <div class="ikusei-grow-body">
+            <div class="ikusei-grow-label">Options — 選択肢の拡張</div>
+            <div class="ikusei-grow-en">可能な行動選択肢を本人から引き出す（リーダーが提案しない）</div>
+            <div class="ikusei-grow-desc">「どんな方法が考えられますか？」と問い、最低3案を出させる。リーダーが「こうしたら？」と言った瞬間にコーチングから指示に変わる。選択肢は多いほど当事者意識が高まる。</div>
+            <div class="ikusei-grow-q">質問例：「もし時間・お金・権限が無限にあったら、どうしますか？」「他の人ならどうすると思いますか？」</div>
+          </div>
+        </div>
+        <div class="ikusei-grow-item">
+          <div class="ikusei-grow-dot">W</div>
+          <div class="ikusei-grow-body">
+            <div class="ikusei-grow-label">Will — 意志の確認</div>
+            <div class="ikusei-grow-en">次のアクションを「いつ・何を・どのくらい」で約束させる</div>
+            <div class="ikusei-grow-desc">「やりたい」で終わらず、具体的なNext Actionと期限を本人に宣言させる。このコミットメントが行動転換の起爆点になる。抽象的な意志表明は次回の1on1で必ず「できませんでした」になる。</div>
+            <div class="ikusei-grow-q">質問例：「具体的には何を、いつまでにやりますか？」「実行できた確率を今10段階でつけると？ 7未満なら何が足りませんか？」</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ セルフチェック -->
+    <div class="ikusei-check-section">
+      <div class="ikusei-check-title"><i data-lucide="check-square" width="20" height="20"></i>深掘りセルフチェック（5問）</div>
+      <div class="ikusei-check-list" id="ikusei-checks">
+        <label class="ikusei-check-item"><input type="checkbox" onchange="ikuseiUpdateScore()"><span>① 先週、部下の代わりに自分が解答・作業を引き取ったことがなかった（過剰介入ゼロ）</span></label>
+        <label class="ikusei-check-item"><input type="checkbox" onchange="ikuseiUpdateScore()"><span>② 先週のフィードバックは3日以内の行動に対して具体的事実ベースで行った</span></label>
+        <label class="ikusei-check-item"><input type="checkbox" onchange="ikuseiUpdateScore()"><span>③ 部下に任せられる「成功体験になりそうな仕事」を意識して1件は委ねた</span></label>
+        <label class="ikusei-check-item"><input type="checkbox" onchange="ikuseiUpdateScore()"><span>④ 1on1でGoalを設定する前に「なぜやりたいか（Why）」を確認した</span></label>
+        <label class="ikusei-check-item"><input type="checkbox" onchange="ikuseiUpdateScore()"><span>⑤ 部下の行動計画に「障壁は何か」を一緒に特定するステップを含めた</span></label>
+      </div>
+      <div class="ikusei-score-bar">
+        <div class="ikusei-score-num" id="ikusei-score-num">0</div>
+        <div class="ikusei-score-msg" id="ikusei-score-msg">/ 5 — チェックを入れてください</div>
+      </div>
+    </div>
+
+  </div><!-- /ikusei-deep-inner -->
+</div><!-- /ikusei-deep -->
+
+<script>
+(function(){
+  const msgs = [
+    '/ 5 — チェックを入れてください',
+    '/ 5 — 1つ：過剰介入をゼロにするだけで部下の成長速度が上がり始める',
+    '/ 5 — 2つ：フィードバックの即時化を実践中。次はGROWのWhy確認を1on1に組み込む',
+    '/ 5 — 3つ：育成の核ができている。成功体験を計画的に設計する視点を加える',
+    '/ 5 — 4つ：高水準。障壁特定まで対話に含められると行動継続率が大幅に上がる',
+    '/ 5 — 5項目実践中。育成が組織の資産として機能している状態'
+  ];
+  window.ikuseiUpdateScore = function(){
+    const n = document.querySelectorAll('#ikusei-checks input:checked').length;
+    document.getElementById('ikusei-score-num').textContent = n;
+    document.getElementById('ikusei-score-msg').textContent = msgs[n] || msgs[0];
+  };
+})();
 </script>
 </body>
 </html>

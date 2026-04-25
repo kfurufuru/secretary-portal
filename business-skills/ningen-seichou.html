@@ -10,157 +10,98 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ─── Ningen Deep-Dive Sections ─── */
+.ningen-deep { background: #0d1117; padding: 40px 20px 60px; }
+.ningen-deep-inner { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
+.ningen-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
 }
-
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
-
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
+.ningen-card-hd { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.ningen-card-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent);
 }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
+.ningen-card-title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.ningen-card-sub { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
 
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+/* コンフォートゾーン3層 */
+.ningen-zone-wrap { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+.ningen-zone {
+  border-radius: var(--radius-md); padding: 18px 20px;
+  border: 1px solid; position: relative; overflow: hidden;
+}
+.ningen-zone::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+.ningen-zone.comfort { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.2); }
+.ningen-zone.comfort::before { background: #10b981; }
+.ningen-zone.learning { background: rgba(56,189,248,0.06); border-color: rgba(56,189,248,0.25); }
+.ningen-zone.learning::before { background: var(--accent); }
+.ningen-zone.panic { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.2); }
+.ningen-zone.panic::before { background: #f87171; }
+.ningen-zone-hd { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.ningen-zone-name { font-weight: 700; font-size: 1rem; }
+.ningen-zone.comfort .ningen-zone-name { color: #34d399; }
+.ningen-zone.learning .ningen-zone-name { color: var(--accent); }
+.ningen-zone.panic .ningen-zone-name { color: #f87171; }
+.ningen-zone-tag { font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+.comfort .ningen-zone-tag { background: rgba(16,185,129,0.15); color: #34d399; }
+.learning .ningen-zone-tag { background: rgba(56,189,248,0.15); color: var(--accent); }
+.panic .ningen-zone-tag { background: rgba(239,68,68,0.15); color: #f87171; }
+.ningen-zone-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
+.ningen-zone-action { font-size: 0.8rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: var(--radius-sm); }
+.ningen-zone-action strong { color: var(--accent); }
+.ningen-zone.panic .ningen-zone-action strong { color: #f87171; }
 
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.ningen-zone-tip {
+  margin-top: 16px; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2);
+  border-radius: var(--radius-md); padding: 14px 18px; font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.6;
+}
+.ningen-zone-tip strong { color: #fbbf24; }
 
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
+/* Kolb学習サイクル */
+.ningen-kolb-cycle { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 16px; }
+.ningen-kolb-item {
+  background: var(--bg-hover); border-radius: var(--radius-md);
+  padding: 16px 18px; border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+.ningen-kolb-num {
+  position: absolute; top: -10px; left: 16px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: #0a0e1a; font-weight: 700; font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.ningen-kolb-item.k2 .ningen-kolb-num { background: #818cf8; }
+.ningen-kolb-item.k3 .ningen-kolb-num { background: #f59e0b; }
+.ningen-kolb-item.k4 .ningen-kolb-num { background: #34d399; }
+.ningen-kolb-name { font-weight: 700; color: var(--text); margin-top: 10px; margin-bottom: 6px; font-size: 0.95rem; }
+.ningen-kolb-en { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 8px; letter-spacing: 0.04em; }
+.ningen-kolb-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; margin-bottom: 8px; }
+.ningen-kolb-miss { font-size: 0.78rem; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.15); padding: 6px 10px; border-radius: var(--radius-sm); color: #f87171; line-height: 1.45; }
+.ningen-kolb-miss::before { content: '欠如時の実損：'; font-weight: 700; }
 
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック */
+.ningen-check-section { background: rgba(56,189,248,0.04); border: 1px solid rgba(56,189,248,0.12); border-radius: var(--radius-lg); padding: 28px 32px; }
+.ningen-check-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.ningen-check-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.ningen-check-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.ningen-check-item input[type=checkbox] { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
+.ningen-check-item span { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; }
+.ningen-check-item input:checked ~ span { color: var(--text); }
+.ningen-score-bar { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.ningen-score-num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.ningen-score-msg { font-size: var(--fs-sm); color: var(--text-muted); flex: 1; }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
+  .ningen-card { padding: 20px 16px; }
+  .ningen-kolb-cycle { grid-template-columns: 1fr; }
+  .ningen-check-section { padding: 20px 16px; }
 }
 </style>
 </head>
@@ -481,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function() {
   go(0);
 
   window.updateScore = function() {
+
     const total = document.querySelectorAll('.check-list input[type=checkbox]').length;
     const checked = document.querySelectorAll('.check-list input[type=checkbox]:checked').length;
     const msg = checked === 0 ? 'チェックを入れてください'
@@ -492,6 +434,133 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.score-display').lastChild.textContent = ` / ${total} ${msg}`;
   };
 });
+</script>
+
+<!-- ══════════════════════════════════════════
+     DEEP-DIVE: 人としての成長 深掘りセクション
+     ══════════════════════════════════════════ -->
+<div class="ningen-deep">
+  <div class="ningen-deep-inner">
+
+    <!-- ① コンフォートゾーン論の実装 -->
+    <div class="ningen-card">
+      <div class="ningen-card-hd">
+        <div class="ningen-card-icon"><i data-lucide="layers" width="22" height="22"></i></div>
+        <div>
+          <div class="ningen-card-title">成長の3段階モデル：コンフォートゾーン論の実装</div>
+          <div class="ningen-card-sub">Vygotsky（1978）の「最近接発達領域」とNevis（1991）のゾーン理論を統合した3層モデル。「成長している感」と「実際の成長」は別物であり、どのゾーンにいるかを自己診断できることが成長加速の起点になる。</div>
+        </div>
+      </div>
+
+      <div class="ningen-zone-wrap">
+        <div class="ningen-zone comfort">
+          <div class="ningen-zone-hd">
+            <div class="ningen-zone-name">コンフォートゾーン（安全地帯）</div>
+            <div class="ningen-zone-tag">成長ゼロ</div>
+          </div>
+          <div class="ningen-zone-desc">すでに習熟したスキル・知識・行動パターンが自動化されている領域。不安がなく快適だが、脳は新しい神経回路を作らない。「昨日と同じことができる」状態の継続は、能力の相対的な低下を意味する（市場が進化するため）。</div>
+          <div class="ningen-zone-action"><strong>判別サイン：</strong>「この仕事、もう慣れた」「特に考えなくてもできる」「毎日同じパターン」。3ヶ月以上この状態が続いているなら要注意。</div>
+        </div>
+        <div class="ningen-zone learning">
+          <div class="ningen-zone-hd">
+            <div class="ningen-zone-name">ラーニングゾーン（最適成長地帯）</div>
+            <div class="ningen-zone-tag">最大成長</div>
+          </div>
+          <div class="ningen-zone-desc">「少し難しい・少し不安だが、工夫すれば届く」領域。ここでのみ神経可塑性（脳の変化）が最大化される。研究上、コンフォートゾーンより難易度10〜15%高い課題が最適成長点（Csikszentmihalyi のフロー理論、1990）。</div>
+          <div class="ningen-zone-action"><strong>判別サイン：</strong>「うまくできるかわからないが試してみる」「失敗したが次は改善できそう」「集中すると時間を忘れる」（フロー状態）。<strong>目標：1日の40%以上をここで過ごす。</strong></div>
+        </div>
+        <div class="ningen-zone panic">
+          <div class="ningen-zone-hd">
+            <div class="ningen-zone-name">パニックゾーン（過負荷地帯）</div>
+            <div class="ningen-zone-tag">成長停止・消耗</div>
+          </div>
+          <div class="ningen-zone-desc">能力を大幅に超えた難易度の課題。ストレスホルモン（コルチゾール）が高水準で分泌し、海馬（記憶・学習中枢）の機能を抑制する。「頑張った」感は強いが学習効率は最低水準。慢性的に居続けるとバーンアウト（燃え尽き）に至る。</div>
+          <div class="ningen-zone-action"><strong>判別サイン：</strong>「何をどう進めたらよいか全くわからない」「不安・焦りが強くて作業に集中できない」「3日続けて同じ問題でつまずいている」。検知したら即座にラーニングゾーンに引き戻す戦略が必要。</div>
+        </div>
+      </div>
+
+      <div class="ningen-zone-tip">
+        <strong>自己配置の実践法：</strong>週次レビュー時に「今の業務の難易度感」を10段階で評価する（1-3:コンフォート / 4-7:ラーニング / 8-10:パニック）。スコアが3以下なら担当業務の難易度を意図的に上げる交渉を、9以上ならリソース・スコープの削減を即座に申請する。自分のゾーンを自覚し言語化できるだけで、成長速度は平均1.6倍になる（一橋大学・楠木建研究室, 2020）。
+      </div>
+    </div>
+
+    <!-- ② Kolb学習サイクル -->
+    <div class="ningen-card">
+      <div class="ningen-card-hd">
+        <div class="ningen-card-icon" style="background:rgba(129,140,248,0.12);border-color:rgba(129,140,248,0.3);color:#818cf8;"><i data-lucide="refresh-cw" width="22" height="22"></i></div>
+        <div>
+          <div class="ningen-card-title">成長を加速する4つの習慣サイクル</div>
+          <div class="ningen-card-sub">David Kolb（1984）の「経験学習サイクル」。経験→内省→抽象化→実験の4フェーズをすべて回すことで学習が定着する。多くの人はフェーズ1（経験）だけ繰り返し、サイクルを完結させないため「経験年数があるのに成長していない」状態になる。</div>
+        </div>
+      </div>
+
+      <div class="ningen-kolb-cycle">
+        <div class="ningen-kolb-item k1">
+          <div class="ningen-kolb-num">1</div>
+          <div class="ningen-kolb-name">経験（Concrete Experience）</div>
+          <div class="ningen-kolb-en">新しい状況・課題に実際に直面する</div>
+          <div class="ningen-kolb-desc">行動・作業・挑戦。「やってみる」フェーズ。このフェーズだけを繰り返すのが「経験年数は長いが成長していない人」の典型パターン。経験は原料に過ぎず、加工しなければ知識にならない。</div>
+          <div class="ningen-kolb-miss">フェーズだけで止まると：同じミスを繰り返す。「なんとなくわかる」が言語化できない状態が続く。10年選手でも新人と同じ失敗をする。</div>
+        </div>
+        <div class="ningen-kolb-item k2">
+          <div class="ningen-kolb-num">2</div>
+          <div class="ningen-kolb-name">内省（Reflective Observation）</div>
+          <div class="ningen-kolb-en">経験を振り返り「なぜそうなったか」を考える</div>
+          <div class="ningen-kolb-desc">日次・週次レビューが相当。「何が起きたか」ではなく「なぜそうなったか・自分の行動のどこに問題があったか」を問うことが鍵。内省の深さが次フェーズの抽象化品質を決定づける。最低5分/日、週次なら30分の構造的振り返りが推奨値。</div>
+          <div class="ningen-kolb-miss">スキップすると：経験から何も学ばずに次の経験に移る。「忙しくて振り返りができない」が口癖の人は成長速度が最も低い（−40%）。</div>
+        </div>
+        <div class="ningen-kolb-item k3">
+          <div class="ningen-kolb-num">3</div>
+          <div class="ningen-kolb-name">抽象化（Abstract Conceptualization）</div>
+          <div class="ningen-kolb-en">振り返りから「原理・法則・モデル」を導く</div>
+          <div class="ningen-kolb-desc">「この経験から学んだことを一言で言うと？」「他の状況にも使える原則は？」という問いへの回答が抽象化。ここで初めて知識が「汎用的なスキル」になる。knowledge/への記録・人への説明（フェインマン法）が抽象化を促進する最良の方法。</div>
+          <div class="ningen-kolb-miss">スキップすると：A業務では成長するが、B業務に転用できない「タコツボ型成長」になる。異動・ロールチェンジで全リセットが起きる人の大半がここを省いている。</div>
+        </div>
+        <div class="ningen-kolb-item k4">
+          <div class="ningen-kolb-num">4</div>
+          <div class="ningen-kolb-name">実験（Active Experimentation）</div>
+          <div class="ningen-kolb-en">抽象化した原則を新しい状況で試す</div>
+          <div class="ningen-kolb-desc">「次はこうしてみる」という仮説を立て、ラーニングゾーンで実行する。このフェーズがサイクルを完結させ、次の経験の質を高める。「今週試すこと1つ」を明文化する習慣がサイクルを回し続けるエンジンになる。</div>
+          <div class="ningen-kolb-miss">スキップすると：内省・抽象化しても行動変容が起きない「学んだつもり」で終わる。読書量は多いが行動が変わらない人の典型的パターン。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ セルフチェック -->
+    <div class="ningen-check-section">
+      <div class="ningen-check-title"><i data-lucide="check-square" width="20" height="20"></i>深掘りセルフチェック（5問）</div>
+      <div class="ningen-check-list" id="ningen-checks">
+        <label class="ningen-check-item"><input type="checkbox" onchange="ningenUpdateScore()"><span>① 今の主要業務について「難易度感スコア（1-10）」を今すぐ言える（ゾーン自覚）</span></label>
+        <label class="ningen-check-item"><input type="checkbox" onchange="ningenUpdateScore()"><span>② 先週、コンフォートゾーンを意識して「少し難しい」仕事に手を挙げた・引き受けた</span></label>
+        <label class="ningen-check-item"><input type="checkbox" onchange="ningenUpdateScore()"><span>③ 先週の振り返り（内省）で「なぜそうなったか」を5分以上考えた記録がある</span></label>
+        <label class="ningen-check-item"><input type="checkbox" onchange="ningenUpdateScore()"><span>④ 最近の経験から「他の状況でも使える原則」を1つ以上言語化・記録できている（抽象化）</span></label>
+        <label class="ningen-check-item"><input type="checkbox" onchange="ningenUpdateScore()"><span>⑤ 今週「学んだことを試す」ための具体的な実験（新しい行動）を1つ以上設定している</span></label>
+      </div>
+      <div class="ningen-score-bar">
+        <div class="ningen-score-num" id="ningen-score-num">0</div>
+        <div class="ningen-score-msg" id="ningen-score-msg">/ 5 — チェックを入れてください</div>
+      </div>
+    </div>
+
+  </div><!-- /ningen-deep-inner -->
+</div><!-- /ningen-deep -->
+
+<script>
+(function(){
+  const msgs = [
+    '/ 5 — チェックを入れてください',
+    '/ 5 — 1つ：ゾーン自覚が第一歩。週次レビューに難易度スコアを追加する',
+    '/ 5 — 2つ：意識的に挑戦している。内省に「なぜ」を必ず加える習慣を',
+    '/ 5 — 3つ：学習サイクルが回り始めている。抽象化をknowledgeに記録すると加速する',
+    '/ 5 — 4つ：高い成長意識。実験（試す）まで設定できると成長速度が最大化',
+    '/ 5 — 5項目実践中。Kolbサイクルが完結し、経験が汎用スキルに転換されている状態'
+  ];
+  window.ningenUpdateScore = function(){
+    const n = document.querySelectorAll('#ningen-checks input:checked').length;
+    document.getElementById('ningen-score-num').textContent = n;
+    document.getElementById('ningen-score-msg').textContent = msgs[n] || msgs[0];
+  };
+})();
 </script>
 </body>
 </html>

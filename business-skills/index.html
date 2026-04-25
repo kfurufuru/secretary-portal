@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business Skills | 思考・行動の設計図</title>
-<meta name="description" content="「できる人」の行動を分解し、再現可能な5要素に落とし込むビジネススキルシリーズ。認知能力・コミュニケーション・学習効率など全5シリーズ。">
-<meta property="og:title" content="Business Skills | 思考・行動の設計図">
-<meta property="og:description" content="感覚・才能を分解し、再現可能な構造に変換するビジネス能力の体系。">
+<title>思考・行動の設計図 | Business Skills</title>
+<meta name="description" content="思考・行動・習慣を再現可能な構造に分解するパフォーマンス設計シリーズ。ビジネススキルからセルフマネジメント・脳科学まで36テーマ。">
+<meta property="og:title" content="思考・行動の設計図 | Business Skills">
+<meta property="og:description" content="感覚・才能・習慣を分解し、再現可能な構造に変換するパフォーマンス設計の体系。">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og-image.svg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Business Skills | 思考・行動の設計図">
-<meta name="twitter:description" content="感覚・才能を分解し、再現可能な5要素に落とし込むビジネススキルシリーズ。">
+<meta name="twitter:title" content="思考・行動の設計図 | Business Skills">
+<meta name="twitter:description" content="思考・行動・習慣を再現可能な構造に変換するパフォーマンス設計シリーズ。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://unpkg.com">
@@ -238,6 +238,16 @@ body {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #fff; padding: 2px 7px; border-radius: 4px;
   text-transform: uppercase; white-space: nowrap;
+}
+
+/* ── DeepDive badge ── */
+.deep-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--accent); background: var(--accent-dim);
+  border: 1px solid rgba(56,189,248,0.3);
+  padding: 2px 7px; border-radius: 4px;
+  white-space: nowrap;
 }
 
 /* ── 更新日 ── */
@@ -471,15 +481,15 @@ footer a:hover { color: var(--accent) !important; }
 <section class="hero">
   <div class="hero-eyebrow">
     <div class="eyebrow-line"></div>
-    <span class="eyebrow-text">Business Skills Series</span>
+    <span class="eyebrow-text">Performance Design Series</span>
     <div class="eyebrow-line"></div>
   </div>
   <h1>
-    思考・行動の<br>
+    思考・行動・習慣の<br>
     <span class="accent">設計図</span><span class="dim">。</span>
   </h1>
   <p class="hero-desc">
-    「できる人」の行動を分解し、再現可能な5要素に落とし込む。感覚・センス・才能ではなく、設計できるビジネス能力の体系。
+    「できる人」の行動・習慣を分解し、再現可能な構造に変換する。思考・認知からセルフマネジメント・脳科学まで、設計できるパフォーマンスの体系。
   </p>
   <div class="hero-stats">
     <div class="stat">
@@ -487,8 +497,8 @@ footer a:hover { color: var(--accent) !important; }
       <span class="stat-label">シリーズ公開中</span>
     </div>
     <div class="stat">
-      <span class="stat-num" id="stat-elements">175+</span>
-      <span class="stat-label">要素（5×35）</span>
+      <span class="stat-num">8</span>
+      <span class="stat-label">カテゴリ</span>
     </div>
     <div class="stat">
       <span class="stat-num">80+</span>
@@ -554,11 +564,9 @@ footer a:hover { color: var(--accent) !important; }
     <button class="filter-btn" data-filter="コミュニケーション">コミュニケーション</button>
     <button class="filter-btn" data-filter="学習">学習</button>
     <button class="filter-btn" data-filter="生産性">生産性</button>
-    <button class="filter-btn" data-filter="意思決定">意思決定</button>
     <button class="filter-btn" data-filter="マネジメント">マネジメント</button>
-    <button class="filter-btn" data-filter="人間力">人間力</button>
     <button class="filter-btn" data-filter="セルフマネジメント">セルフマネジメント</button>
-    <button class="filter-btn" data-filter="全体像">全体像</button>
+    <button class="filter-btn" data-filter="生活設計">生活設計</button>
     <button class="filter-btn" data-filter="AI活用">AI活用</button>
   </div>
   <div class="series-grid">
@@ -607,13 +615,14 @@ footer a:hover { color: var(--accent) !important; }
 
   function renderCard(s) {
     const newBadge = s.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const deepBadge = s.deepDive ? '<span class="deep-badge">＋深掘り</span>' : '';
     const tags = s.tags.map(t => '<span class="c-tag">' + escapeHtml(t) + '</span>').join('');
     const comingClass = s.coming ? ' coming' : '';
     return [
       '<a class="series-card' + comingClass + '" href="' + s.href + '" data-category="' + s.category + '">',
       '  <div class="card-top">',
       '    <span class="card-num-badge">' + s.num + '</span>',
-      '    ' + newBadge,
+      '    <div style="display:flex;gap:4px;align-items:center;">' + newBadge + deepBadge + '</div>',
       '    <div class="card-icon-wrap"><i data-lucide="' + s.icon + '" width="20" height="20"></i></div>',
       '  </div>',
       '  <div class="card-title">' + escapeHtml(s.title) + '</div>',
@@ -625,7 +634,7 @@ footer a:hover { color: var(--accent) !important; }
       '    <span class="core-text">' + escapeHtml(s.core) + '</span>',
       '  </div>',
       '  <div class="card-cta">',
-      '    <span>5要素を確認する</span>',
+      '    <span>内容を確認する</span>',
       '    <i data-lucide="arrow-right" width="16" height="16"></i>',
       '  </div>',
       '  <span class="level-badge" id="lb-' + s.id + '"></span>',
@@ -645,7 +654,6 @@ footer a:hover { color: var(--accent) !important; }
     // stat 更新
     const total = data.meta.totalSkills;
     document.getElementById('stat-total').textContent = total;
-    document.getElementById('stat-elements').textContent = (total * 5) + '+';
     document.getElementById('stat-fraction').textContent = total + ' / ' + total + ' 公開済み';
 
     lucide.createIcons();
@@ -670,24 +678,23 @@ footer a:hover { color: var(--accent) !important; }
       if (fill) fill.style.width = '100%';
     }, 400);
 
-    // タグフィルター
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const allCards = document.querySelectorAll('.series-grid .series-card');
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const f = btn.dataset.filter;
-        allCards.forEach(card => {
-          const match = f === 'all' || card.dataset.category === f;
-          if (match) {
-            card.classList.remove('hidden');
-            requestAnimationFrame(() => card.classList.add('filter-visible'));
-          } else {
-            card.classList.remove('filter-visible');
-            card.classList.add('hidden');
-          }
-        });
+    // タグフィルター（イベント委任・毎回クエリで確実に動作）
+    const filterBar = document.querySelector('.filter-bar');
+    filterBar.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.getAttribute('data-filter');
+      document.querySelectorAll('.series-grid .series-card').forEach(card => {
+        const match = f === 'all' || card.getAttribute('data-category') === f;
+        if (match) {
+          card.classList.remove('hidden');
+          requestAnimationFrame(() => card.classList.add('filter-visible'));
+        } else {
+          card.classList.remove('filter-visible');
+          card.classList.add('hidden');
+        }
       });
     });
 
@@ -750,12 +757,12 @@ footer a:hover { color: var(--accent) !important; }
     // URLクエリ ?filter=カテゴリ で自動フィルタ
     const urlFilter = new URLSearchParams(location.search).get('filter');
     if (urlFilter) {
-      const targetBtn = [...filterBtns].find(b => b.dataset.filter === urlFilter);
+      const targetBtn = document.querySelector('.filter-btn[data-filter="' + urlFilter + '"]');
       if (targetBtn) targetBtn.click();
     }
   }
 
-  fetch('data/skills.json')
+  fetch('data/skills.json', { cache: 'no-cache' })
     .then(r => r.json())
     .then(data => init(data))
     .catch(err => {

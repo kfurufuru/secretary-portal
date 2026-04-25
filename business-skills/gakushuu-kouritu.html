@@ -17,229 +17,81 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ── 記憶の科学セクション ── */
+.memory-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.memory-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.memory-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.memory-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.memory-sub strong { color: var(--accent); }
+.memory-section-sub { font-size: 0.92rem; font-weight: 700; color: var(--accent); margin: var(--sp-8) 0 var(--sp-4); letter-spacing: 0.04em; }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
-}
+/* 忘却曲線ビジュアル */
+.memory-curve-wrap { position: relative; margin-bottom: var(--sp-6); }
+.memory-curve-chart { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: var(--sp-6); }
+.memory-curve-title { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--sp-4); }
+.memory-timeline { display: flex; align-items: flex-end; gap: 0; height: 100px; position: relative; margin-bottom: var(--sp-3); }
+.memory-timeline::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.08); }
+.memory-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.memory-bar-col .m-bar { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.6s ease; }
+.memory-bar-col .m-label { font-size: 0.62rem; color: var(--text-dim); text-align: center; margin-top: var(--sp-1); white-space: nowrap; }
+.memory-bar-col .m-pct { font-size: 0.68rem; font-weight: 700; text-align: center; }
+.memory-review-markers { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-4); }
+.memory-review-marker { display: flex; align-items: center; gap: var(--sp-2); background: rgba(56,189,248,0.08); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px; font-size: var(--fs-sm); color: var(--text); }
+.memory-review-marker .mrm-icon { width: 22px; height: 22px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.62rem; font-weight: 700; color: var(--bg); flex-shrink: 0; }
+.memory-review-marker .mrm-timing { font-weight: 700; color: var(--accent); }
+.memory-review-marker .mrm-retention { font-size: 0.72rem; color: var(--text-muted); }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* 実損ブロック */
+.memory-loss { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-6); }
+.memory-loss-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-3); }
+.memory-loss-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
+.memory-loss-item { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.12); border-radius: var(--radius-sm); padding: var(--sp-3); }
+.memory-loss-num { font-size: 1.4rem; font-weight: 700; color: #f87171; line-height: 1; margin-bottom: 4px; }
+.memory-loss-desc { font-size: 0.72rem; color: #fca5a5; line-height: 1.5; }
 
-.nav { padding: var(--sp-4) var(--sp-6); display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.04); }
-.nav a { color: var(--accent); text-decoration: none; }
-.nav a:hover { text-decoration: underline; }
+/* AR vs 受動比較グリッド */
+.memory-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-6); }
+.memory-compare-col { border-radius: var(--radius-md); padding: var(--sp-5); }
+.memory-compare-col.passive { background: rgba(100,116,139,0.08); border: 1px solid rgba(100,116,139,0.2); }
+.memory-compare-col.active { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.25); }
+.memory-compare-header { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-4); }
+.memory-compare-badge { font-size: 0.62rem; font-weight: 700; padding: 3px 8px; border-radius: 3px; }
+.passive .memory-compare-badge { background: rgba(100,116,139,0.2); color: #94a3b8; }
+.active .memory-compare-badge { background: rgba(56,189,248,0.2); color: var(--accent); }
+.memory-compare-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.memory-compare-items { display: flex; flex-direction: column; gap: var(--sp-2); }
+.memory-compare-item { font-size: var(--fs-sm); color: var(--text-muted); padding-left: var(--sp-3); position: relative; line-height: 1.6; }
+.memory-compare-item::before { content: '·'; position: absolute; left: 0; }
+.passive .memory-compare-item::before { color: #64748b; }
+.active .memory-compare-item::before { color: var(--accent); }
+.memory-compare-stat { margin-top: var(--sp-4); padding: var(--sp-3); border-radius: var(--radius-sm); text-align: center; }
+.passive .memory-compare-stat { background: rgba(100,116,139,0.06); }
+.active .memory-compare-stat { background: rgba(56,189,248,0.08); }
+.memory-compare-stat-num { font-size: 1.6rem; font-weight: 700; }
+.passive .memory-compare-stat-num { color: #94a3b8; }
+.active .memory-compare-stat-num { color: var(--accent); }
+.memory-compare-stat-label { font-size: 0.68rem; color: var(--text-dim); }
 
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+/* 適用方法グリッド */
+.memory-apply-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-6); }
+.memory-apply-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: var(--sp-5); }
+.memory-apply-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.memory-apply-name { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-3); }
+.memory-apply-steps { display: flex; flex-direction: column; gap: var(--sp-2); }
+.memory-apply-step { display: flex; align-items: flex-start; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.5; }
+.memory-apply-step-n { flex-shrink: 0; width: 20px; height: 20px; background: var(--accent-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.62rem; font-weight: 700; color: var(--accent); }
 
-/* ── Sticky Tab Nav ── */
-.tab-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-/* ── Progress bar ── */
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-/* ── Main panel ── */
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-/* ── Prev / Next ── */
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-/* ── 保持率比較バー ── */
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 110px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 36px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; }
-
-/* ── 学習タイプ診断（⑤専用） ── */
-.type-quiz { margin-bottom: var(--sp-4); }
-.type-q { margin-bottom: var(--sp-4); }
-.type-q-label { font-size: var(--fs-sm); font-weight: 600; color: var(--text); margin-bottom: var(--sp-2); }
-.type-options { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
-.type-opt {
-  padding: 6px 14px; border-radius: 20px; font-size: var(--fs-sm);
-  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
-  cursor: pointer; transition: var(--transition); font-family: inherit;
-}
-.type-opt.selected { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
-.type-result {
-  display: none; margin-top: var(--sp-4);
-  background: rgba(56,189,248,0.08); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: var(--sp-4);
-}
-.type-result.show { display: block; animation: fadeIn 0.3s ease; }
-.type-result-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: var(--sp-2); }
-.type-result-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-/* ── Insight ── */
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-/* ── Self-check ── */
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
-
-/* ── Top Nav ── */
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-back {
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none; color: #94a3b8;
-  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
-}
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text {
-  font-size: 0.78rem; color: #8892a0; font-weight: 600;
-  letter-spacing: 0.06em; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
-}
-.nav-spacer { width: 80px; }
+/* 接続テキスト */
+.memory-connect { background: rgba(56,189,248,0.04); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: var(--sp-4); font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.memory-connect strong { color: var(--accent); }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
-}
-/* ── Structure Map ── */
-.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
-.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
-.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
-.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
-.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
-.smap-band { width: 100%; max-width: 540px; }
-.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.smap-band-tag.core { color: var(--accent-core); }
-.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
-.smap-center { display: flex; justify-content: center; }
-.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
-.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
-.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
-.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
-.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
-.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
-.smap-node.core-node .sn-num { color: var(--accent-core); }
-.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
-.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
-.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
-.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
-.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
-.smap-axiom strong { color: var(--accent-core); }
-@media (max-width: 480px) {
-  .smap-node { max-width: 130px; }
-  .smap-node.core-node { max-width: 200px; }
-  .sn-name { font-size: 0.78rem; }
-  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+  .memory-loss-grid { grid-template-columns: 1fr; }
+  .memory-compare-grid { grid-template-columns: 1fr; }
+  .memory-apply-grid { grid-template-columns: 1fr; }
+  .memory-review-markers { flex-direction: column; }
 }
 </style>
 </head>
@@ -386,6 +238,212 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
       ④がエラー収束。②で発生した誤りを当日中に消化するループが、最速で正答率を上げる。<br><br>
       最初に鍛えるべきは②アクティブリコール。読む時間の半分を「閉じて思い出す」に使うだけで、同じ学習時間の定着率が2倍近くになる。
     </p>
+  </div>
+</section>
+
+<!-- Memory Science Section -->
+<section class="memory-section">
+  <div class="memory-card">
+    <h2 class="memory-title">記憶の科学：エビングハウス忘却曲線と間隔反復</h2>
+    <p class="memory-sub">
+      Hermann Ebbinghaus（1885）が発見した忘却の法則—<strong>学習直後から記憶は指数関数的に失われる。</strong>
+      復習なしでは20分後に42%、1日後に74%を忘れる。
+      しかし「いつ」復習するかを設計するだけで保持率を劇的に改善できる。これが間隔反復（Spaced Repetition）の原理。
+    </p>
+
+    <!-- 忘却曲線ビジュアル -->
+    <div class="memory-section-sub">忘却曲線と復習タイミングの設計</div>
+    <div class="memory-curve-chart">
+      <div class="memory-curve-title">学習後の保持率（復習なし）— Ebbinghaus 1885</div>
+      <div class="memory-timeline" id="memory-timeline">
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#38bdf8;">100%</div>
+          <div class="m-bar" style="background:#38bdf8;height:0;" data-h="100"></div>
+          <div class="m-label">直後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#6ee7b7;">58%</div>
+          <div class="m-bar" style="background:#6ee7b7;height:0;" data-h="58"></div>
+          <div class="m-label">20分後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#f59e0b;">44%</div>
+          <div class="m-bar" style="background:#f59e0b;height:0;" data-h="44"></div>
+          <div class="m-label">1時間後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#fb923c;">33%</div>
+          <div class="m-bar" style="background:#fb923c;height:0;" data-h="33"></div>
+          <div class="m-label">9時間後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#f87171;">26%</div>
+          <div class="m-bar" style="background:#f87171;height:0;" data-h="26"></div>
+          <div class="m-label">1日後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#ef4444;">23%</div>
+          <div class="m-bar" style="background:#ef4444;height:0;" data-h="23"></div>
+          <div class="m-label">2日後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#dc2626;">21%</div>
+          <div class="m-bar" style="background:#dc2626;height:0;" data-h="21"></div>
+          <div class="m-label">6日後</div>
+        </div>
+        <div class="memory-bar-col">
+          <div class="m-pct" style="color:#b91c1c;">18%</div>
+          <div class="m-bar" style="background:#b91c1c;height:0;" data-h="18"></div>
+          <div class="m-label">1ヶ月後</div>
+        </div>
+      </div>
+      <div class="memory-review-markers">
+        <div class="memory-review-marker">
+          <div class="mrm-icon">R1</div>
+          <div>
+            <span class="mrm-timing">翌日（24時間以内）</span>
+            <span class="mrm-retention"> → 保持率 90%以上に回復</span>
+          </div>
+        </div>
+        <div class="memory-review-marker">
+          <div class="mrm-icon">R2</div>
+          <div>
+            <span class="mrm-timing">1週間後</span>
+            <span class="mrm-retention"> → 保持率 80%以上を維持</span>
+          </div>
+        </div>
+        <div class="memory-review-marker">
+          <div class="mrm-icon">R3</div>
+          <div>
+            <span class="mrm-timing">1ヶ月後</span>
+            <span class="mrm-retention"> → 長期記憶として定着（保持率 85%+）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 実損ブロック -->
+    <div class="memory-loss" style="margin-top: var(--sp-6);">
+      <div class="memory-loss-label">⚠ 間隔反復なし学習の実損データ</div>
+      <div class="memory-loss-grid">
+        <div class="memory-loss-item">
+          <div class="memory-loss-num">▼58%</div>
+          <div class="memory-loss-desc">集中学習 vs 分散学習の1週間後保持率差<br><span style="color:#fca5a5;font-size:0.68rem;">Cepeda et al., 2006（心理学研究）</span></div>
+        </div>
+        <div class="memory-loss-item">
+          <div class="memory-loss-num">×3.4</div>
+          <div class="memory-loss-desc">間隔反復ありの方が同一記憶を維持する平均勉強時間が短縮<br><span style="color:#fca5a5;font-size:0.68rem;">Kornell & Bjork, 2008</span></div>
+        </div>
+        <div class="memory-loss-item">
+          <div class="memory-loss-num">74%</div>
+          <div class="memory-loss-desc">復習なしで1日後に忘れる割合（Ebbinghaus実験値）<br><span style="color:#fca5a5;font-size:0.68rem;">Ebbinghaus 1885 — "Über das Gedächtnis"</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 能動的想起 vs 受動的反復 -->
+    <div class="memory-section-sub">能動的想起（Active Recall）vs 受動的反復</div>
+    <div class="memory-compare-grid">
+      <div class="memory-compare-col passive">
+        <div class="memory-compare-header">
+          <span class="memory-compare-badge">受動的反復</span>
+          <span class="memory-compare-name">再読・ハイライト・ノート写し</span>
+        </div>
+        <div class="memory-compare-items">
+          <div class="memory-compare-item">情報を「受け取る」だけで記憶回路は強化されない</div>
+          <div class="memory-compare-item">「わかった気がする」流暢性の錯覚を生みやすい</div>
+          <div class="memory-compare-item">復習時間は多いが定着率は低い</div>
+          <div class="memory-compare-item">蛍光ペン・アンダーラインの後は「記憶済み」と誤認しやすい</div>
+        </div>
+        <div class="memory-compare-stat">
+          <div class="memory-compare-stat-num">42%</div>
+          <div class="memory-compare-stat-label">想起テスト正答率（再読のみ）<br>Karpicke & Roediger, 2008</div>
+        </div>
+      </div>
+      <div class="memory-compare-col active">
+        <div class="memory-compare-header">
+          <span class="memory-compare-badge">能動的想起</span>
+          <span class="memory-compare-name">テスト・想起・説明アウトプット</span>
+        </div>
+        <div class="memory-compare-items">
+          <div class="memory-compare-item">「思い出す」行為そのものが記憶の回路を物理的に強化する</div>
+          <div class="memory-compare-item">Testing Effect：テスト受験が最も効果的な学習行為</div>
+          <div class="memory-compare-item">失敗した想起がフィードバックループを加速する</div>
+          <div class="memory-compare-item">1回の想起は1回の再読の約3倍の定着効果</div>
+        </div>
+        <div class="memory-compare-stat">
+          <div class="memory-compare-stat-num">80%</div>
+          <div class="memory-compare-stat-label">想起テスト正答率（テスト→確認法）<br>Karpicke 2008 — Testing Effect</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 電験3種・業務スキルへの適用 -->
+    <div class="memory-section-sub">電験3種・業務スキルへの具体的な適用</div>
+    <div class="memory-apply-grid">
+      <div class="memory-apply-item">
+        <div class="memory-apply-tag">電験3種 適用</div>
+        <div class="memory-apply-name">過去問×間隔反復プロトコル</div>
+        <div class="memory-apply-steps">
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">1</div>
+            <span>当日：問題を解く → 誤答はノート記録（原因分類まで）</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">2</div>
+            <span>翌日：教材を閉じてR1復習 — ノートを見ずに誤答問題を再解</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">3</div>
+            <span>1週間後：R2復習 — 同範囲の別問題で想起テスト実施</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">4</div>
+            <span>1ヶ月後：R3復習 — インターリービング（混合問題）で転移確認</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">5</div>
+            <span>AnkiやObsidianのFlashcard機能でSRS（間隔反復システム）管理を自動化</span>
+          </div>
+        </div>
+      </div>
+      <div class="memory-apply-item">
+        <div class="memory-apply-tag">業務スキル 適用</div>
+        <div class="memory-apply-name">研修・OJT知識の定着プロトコル</div>
+        <div class="memory-apply-steps">
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">1</div>
+            <span>研修当日：内容を5分でノートにまとめる（重要度上位3つに絞る）</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">2</div>
+            <span>翌朝：ノートを閉じて「昨日学んだことを3点」口頭or書き出しで再現</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">3</div>
+            <span>1週間後：実務で使う機会を意図的に作る（Teaching効果も期待できる）</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">4</div>
+            <span>1ヶ月後：別のメンバーへの説明（Feynman Technique）で長期定着を確認</span>
+          </div>
+          <div class="memory-apply-step">
+            <div class="memory-apply-step-n">5</div>
+            <span>トラブルログとKnowledge記事に昇格→事後参照で想起機会を作る</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 接続テキスト -->
+    <div class="memory-connect">
+      <strong>既存5要素との接続：</strong>
+      本セクションの内容は①スペーシング効果（分散学習の根拠）と②アクティブリコール（想起優位の根拠）の<strong>理論的バックボーン</strong>を提供する。
+      忘却曲線がなぜ①の間隔設計が必要かを説明し、Active vs Passive比較が②を選ぶべき定量的根拠を示す。
+      ④フィードバックループの「当日中の誤答処理」は、忘却曲線の急降下（20分〜1時間）が始まる前にエラー修正を完了させる設計。
+      ⑤メタ学習では、自分の保持率パターンを把握することが最適な復習スケジュール設計の基礎になる。
+      <strong>忘却は能力の問題ではなく、タイミング設計の問題だ。</strong>
+    </div>
   </div>
 </section>
 
@@ -730,6 +788,25 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
         const total = document.documentElement.scrollHeight - window.innerHeight;
         rp.style.width = (Math.min(window.scrollY / total * 100, 100)) + '%';
       });
+    }
+
+    // 忘却曲線バーアニメーション（IntersectionObserver）
+    const curveSection = document.getElementById('memory-timeline');
+    if (curveSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            curveSection.querySelectorAll('.m-bar').forEach((bar, idx) => {
+              const h = bar.dataset.h;
+              setTimeout(() => {
+                bar.style.height = h + 'px';
+              }, idx * 80);
+            });
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      observer.observe(curveSection);
     }
   });
 </script>

@@ -13,205 +13,88 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ── バックキャスト思考とクリティカルパス（dandori深掘り） ── */
+.bkcast-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.bkcast-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.bkcast-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); color: var(--text); margin-bottom: var(--sp-2); }
+.bkcast-sub { color: var(--text-muted); font-size: var(--fs-sm); line-height: var(--lh-long); margin-bottom: var(--sp-6); }
+.bkcast-sub strong { color: var(--accent); }
+.bkcast-section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: var(--sp-8) 0 var(--sp-4); }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
-}
+/* 対比ブロック */
+.bkcast-compare { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--sp-3); margin-bottom: var(--sp-8); align-items: stretch; }
+.bkcast-compare-col { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: var(--sp-5); border: 1px solid rgba(255,255,255,0.08); }
+.bkcast-compare-col.highlight { background: rgba(56,189,248,0.07); border-color: rgba(56,189,248,0.25); }
+.bkcast-compare-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
+.bkcast-compare-col.highlight .bkcast-compare-label { color: var(--accent); }
+.bkcast-compare-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-3); }
+.bkcast-compare-col.highlight .bkcast-compare-name { color: var(--accent); }
+.bkcast-compare-items { display: flex; flex-direction: column; gap: var(--sp-2); }
+.bkcast-compare-item { font-size: var(--fs-sm); color: var(--text-muted); padding-left: var(--sp-3); position: relative; line-height: var(--lh-body); }
+.bkcast-compare-item::before { content: '·'; position: absolute; left: 0; color: var(--text-dim); }
+.bkcast-compare-col.highlight .bkcast-compare-item::before { color: var(--accent); }
+.bkcast-compare-col.highlight .bkcast-compare-item { color: var(--text); }
+.bkcast-compare-vs { display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: var(--text-dim); flex-shrink: 0; }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* 3ステップ */
+.bkcast-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-8); }
+.bkcast-step { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: var(--sp-5); position: relative; overflow: hidden; }
+.bkcast-step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); opacity: 0.4; }
+.bkcast-step-num { font-size: 0.62rem; font-weight: 700; color: var(--accent); letter-spacing: 0.12em; margin-bottom: var(--sp-2); }
+.bkcast-step-name { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: var(--sp-2); }
+.bkcast-step-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); margin-bottom: var(--sp-3); }
+.bkcast-step-eg { font-size: 0.76rem; color: var(--text-dim); line-height: 1.6; border-left: 2px solid var(--border); padding-left: var(--sp-3); }
 
-/* ── Top Nav ── */
-.top-nav {
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  background: rgba(10,14,26,0.88);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 0 24px; height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-back {
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none; color: #94a3b8;
-  font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease;
-}
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text {
-  font-size: 0.78rem; color: #8892a0; font-weight: 600;
-  letter-spacing: 0.06em; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 300px;
-}
-.nav-spacer { width: 80px; }
+/* 段取り失敗3大パターン */
+.bkcast-fail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-8); }
+.bkcast-fail-item { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.18); border-radius: var(--radius-md); padding: var(--sp-5); }
+.bkcast-fail-icon { width: 36px; height: 36px; background: rgba(239,68,68,0.12); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: #f87171; margin-bottom: var(--sp-3); }
+.bkcast-fail-name { font-size: 0.88rem; font-weight: 700; color: #f87171; margin-bottom: var(--sp-2); }
+.bkcast-fail-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); margin-bottom: var(--sp-3); }
+.bkcast-fail-cost { font-size: 0.76rem; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-3); color: #fca5a5; line-height: 1.5; }
+.bkcast-fail-cost strong { color: #f87171; }
 
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
+/* 実損ブロック */
+.bkcast-deficit { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-md); padding: var(--sp-6); margin-bottom: var(--sp-8); }
+.bkcast-deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-4); text-transform: uppercase; }
+.bkcast-deficit-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.bkcast-deficit-stat { text-align: center; }
+.bkcast-deficit-num { font-size: 2rem; font-weight: 700; color: #f87171; line-height: 1; margin-bottom: var(--sp-1); }
+.bkcast-deficit-unit { font-size: 0.7rem; color: #fca5a5; margin-bottom: var(--sp-2); }
+.bkcast-deficit-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; }
+.bkcast-deficit-note { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); border-top: 1px solid rgba(239,68,68,0.15); padding-top: var(--sp-4); }
 
-/* ── Sticky Tab Nav ── */
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+/* 既存5要素との接続 */
+.bkcast-connect { background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.18); border-radius: var(--radius-md); padding: var(--sp-6); }
+.bkcast-connect-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-4); text-transform: uppercase; }
+.bkcast-connect-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-2); margin-bottom: var(--sp-4); }
+.bkcast-connect-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-3); text-align: center; }
+.bkcast-connect-num { font-size: 0.62rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.bkcast-connect-name { font-size: 0.72rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.bkcast-connect-role { font-size: 0.65rem; color: var(--text-dim); line-height: 1.4; }
+.bkcast-connect-item.core { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); }
+.bkcast-connect-item.core .bkcast-connect-num { color: var(--accent-core); }
+.bkcast-connect-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
 
-/* ── Progress bar ── */
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-/* ── Main panel ── */
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-/* ── Prev / Next ── */
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-/* ── 棒グラフ ── */
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-/* ── Insight ── */
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-/* ── Self-check ── */
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック行 */
+.bkcast-selfcheck { margin-top: var(--sp-6); padding: var(--sp-4); background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.bkcast-selfcheck-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-3); text-transform: uppercase; }
+.bkcast-check-rows { display: flex; flex-direction: column; gap: var(--sp-2); }
+.bkcast-check-row { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.5; }
+.bkcast-check-row::before { content: '✓'; color: var(--accent); flex-shrink: 0; font-weight: 700; }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
+  .bkcast-compare { grid-template-columns: 1fr; }
+  .bkcast-compare-vs { transform: rotate(90deg); justify-self: center; }
+  .bkcast-steps, .bkcast-fail-grid { grid-template-columns: 1fr; }
+  .bkcast-deficit-stats { grid-template-columns: 1fr 1fr; }
+  .bkcast-connect-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
-}
-/* ── Structure Map ── */
-.structmap-section { max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) var(--sp-8); }
-.structmap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6) var(--sp-8); }
-.structmap-hd { text-align: center; margin-bottom: var(--sp-5); }
-.structmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-.structmap-hint { font-size: 0.72rem; color: var(--text-dim); }
-.structmap-body { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
-.smap-band { width: 100%; max-width: 540px; }
-.smap-band-tag { text-align: center; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.smap-band-tag.core { color: var(--accent-core); }
-.smap-pair { display: flex; align-items: stretch; gap: var(--sp-3); justify-content: center; }
-.smap-center { display: flex; justify-content: center; }
-.smap-node { flex: 1; max-width: 200px; background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-4); cursor: pointer; transition: var(--transition); text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; font-family: inherit; color: inherit; }
-.smap-node:hover { background: rgba(56,189,248,0.2); border-color: rgba(56,189,248,0.5); transform: var(--hover-lift); }
-.smap-node.core-node { background: var(--accent-core-dim); border-color: var(--border-core); max-width: 260px; padding: var(--sp-5); }
-.smap-node.core-node:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); transform: var(--hover-lift); }
-.sn-core-badge { font-size: 0.6rem; font-weight: 700; background: var(--accent-core); color: #0a0e1a; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; }
-.sn-num { font-size: 0.62rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; }
-.smap-node.core-node .sn-num { color: var(--accent-core); }
-.sn-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.sn-sub { font-size: 0.65rem; color: var(--text-dim); }
-.sn-dmg { font-size: 0.62rem; color: #f87171; font-weight: 700; margin-top: 2px; }
-.smap-h-arr { color: var(--text-dim); font-size: 1rem; align-self: center; flex-shrink: 0; }
-.smap-v-arr { font-size: 1.1rem; color: var(--border-hover); line-height: 1; }
-.smap-axiom { margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: var(--radius-sm); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; max-width: 540px; line-height: var(--lh-body); }
-.smap-axiom strong { color: var(--accent-core); }
-@media (max-width: 480px) {
-  .smap-node { max-width: 130px; }
-  .smap-node.core-node { max-width: 200px; }
-  .sn-name { font-size: 0.78rem; }
-  .structmap-card { padding: var(--sp-4) var(--sp-3); }
+  .bkcast-deficit-stats { grid-template-columns: 1fr; }
+  .bkcast-connect-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -357,6 +240,160 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
       ④リスク先読みは悲観論ではなく保険設計。天候・資材遅延・技術トラブルを事前にシナリオ化し、バッファを意図的に組み込む。バッファを「余裕」と呼ぶ人は段取りを理解していない。<br>
       ⑤進捗管理は「遅れを見つけること」ではなく「早く見つけること」。定点チェックを仕組み化し、逸脱を検知したら即介入する。最終日に「間に合いません」と言うのは段取り力ゼロの証拠。
     </p>
+  </div>
+</section>
+
+<!-- バックキャスト思考とクリティカルパス（深掘りセクション） -->
+<section class="bkcast-section">
+  <div class="bkcast-card">
+    <h2 class="bkcast-title">バックキャスト思考とクリティカルパス</h2>
+    <p class="bkcast-sub">段取り力の本質は「未来から逆算して今を設計する」こと。<strong>バックキャスト思考</strong>と<strong>クリティカルパス特定</strong>の2技術が組み合わさって初めて、遅延ゼロの工程が設計できる。</p>
+
+    <!-- 対比 -->
+    <div class="bkcast-section-label">01 バックキャスト vs フォーキャスト：思考方向の違い</div>
+    <div class="bkcast-compare">
+      <div class="bkcast-compare-col">
+        <div class="bkcast-compare-label">フォーキャスト（順方向）</div>
+        <div class="bkcast-compare-name">今からできることを積み上げる</div>
+        <div class="bkcast-compare-items">
+          <div class="bkcast-compare-item">「とりあえず着手してから考える」</div>
+          <div class="bkcast-compare-item">リソースが揃ったら次の工程へ進む</div>
+          <div class="bkcast-compare-item">問題は発生してから対処する</div>
+          <div class="bkcast-compare-item">期限が近づくと慌てる</div>
+          <div class="bkcast-compare-item">最終成果物のイメージが曖昧なまま進む</div>
+        </div>
+      </div>
+      <div class="bkcast-compare-vs">↔</div>
+      <div class="bkcast-compare-col highlight">
+        <div class="bkcast-compare-label">バックキャスト（逆算設計）</div>
+        <div class="bkcast-compare-name">完了状態から今を逆算する</div>
+        <div class="bkcast-compare-items">
+          <div class="bkcast-compare-item">「完了した状態」を最初に定義する</div>
+          <div class="bkcast-compare-item">完了から逆算して必要な工程を配置する</div>
+          <div class="bkcast-compare-item">障害を事前にシナリオ化する</div>
+          <div class="bkcast-compare-item">期限から逆算した締切が先に決まる</div>
+          <div class="bkcast-compare-item">クリティカルパスを先に特定できる</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3ステップ -->
+    <div class="bkcast-section-label">02 クリティカルパス特定の3ステップ</div>
+    <div class="bkcast-steps">
+      <div class="bkcast-step">
+        <div class="bkcast-step-num">STEP 01</div>
+        <div class="bkcast-step-name">タスク分解（WBS）</div>
+        <div class="bkcast-step-desc">完了状態から逆算して、達成に必要な全タスクをリストアップする。粒度は「1人・1日」が原則。「検討」「準備」などの動詞ではなく「仕様書完成」「発注完了」などの<strong style="color:var(--text);">成果物名詞</strong>で記述する。</div>
+        <div class="bkcast-step-eg"><strong style="color:var(--text-muted);">設備工事例：</strong>①停電申請書提出 ②外注業者手配 ③機材発注 ④現場下見 ⑤停電工事 ⑥試運転 ⑦引き渡し書類 — 全7タスクを洗い出す</div>
+      </div>
+      <div class="bkcast-step">
+        <div class="bkcast-step-num">STEP 02</div>
+        <div class="bkcast-step-name">依存関係の明示化</div>
+        <div class="bkcast-step-desc">各タスク間の「Aが終わってからBを開始できる」という依存関係を矢印でつなぐ。並行実施できるタスクと直列でしか進められないタスクを分離する。依存関係の見落としが工期遅延の最大要因。</div>
+        <div class="bkcast-step-eg"><strong style="color:var(--text-muted);">依存関係例：</strong>機材発注（③）は仕様確定後でなければ開始できない。外注業者手配（②）は仕様確定後なら③と並行可能。→ 仕様確定がボトルネックと判明</div>
+      </div>
+      <div class="bkcast-step">
+        <div class="bkcast-step-num">STEP 03</div>
+        <div class="bkcast-step-name">ボトルネック特定</div>
+        <div class="bkcast-step-desc">依存チェーンで最長の経路（クリティカルパス）を計算する。クリティカルパス上の1タスクが1日遅れれば全体が1日遅れる。ここにリソースと注意力を集中させる。非クリティカルパスのタスクは多少遅れても問題ない。</div>
+        <div class="bkcast-step-eg"><strong style="color:var(--text-muted);">判断基準：</strong>機材製作リードタイム8週間 vs 業者手配2週間 → クリティカルパスは機材製作ルート。まず発注を最優先で確定させる</div>
+      </div>
+    </div>
+
+    <!-- 段取り失敗3大パターン -->
+    <div class="bkcast-section-label">03 段取り失敗の3大パターンと実損データ</div>
+    <div class="bkcast-fail-grid">
+      <div class="bkcast-fail-item">
+        <div class="bkcast-fail-icon"><i data-lucide="smile" width="18" height="18"></i></div>
+        <div class="bkcast-fail-name">楽観バイアス</div>
+        <div class="bkcast-fail-desc">「たぶん大丈夫だろう」で計画を立てる。過去の類似案件より短い工期・少ないリソースで見積もる傾向。特に経験が浅い段階で強く発現する。</div>
+        <div class="bkcast-fail-cost"><strong>実損：</strong>楽観バイアスが強いPMのプロジェクトは工期が平均<strong>27%超過</strong>、コストが<strong>23%超過</strong>（McKinsey, 2021）。「想定外だった」の7割は想定不足。</div>
+      </div>
+      <div class="bkcast-fail-item">
+        <div class="bkcast-fail-icon"><i data-lucide="users" width="18" height="18"></i></div>
+        <div class="bkcast-fail-name">リソース過信</div>
+        <div class="bkcast-fail-desc">「あの人がいればなんとかなる」「機材は当日揃えればいい」というキーパーソン・機材への過剰依存。その人が欠けた・機材が届かなかった瞬間に工程が崩壊する。</div>
+        <div class="bkcast-fail-cost"><strong>実損：</strong>当日リソース欠如による工事中断コストは事前調達コストの<strong>2〜5倍</strong>（建設業労働災害防止協会, 2022）。代替手配の緊急コストが加算される。</div>
+      </div>
+      <div class="bkcast-fail-item">
+        <div class="bkcast-fail-icon"><i data-lucide="clock-x" width="18" height="18"></i></div>
+        <div class="bkcast-fail-name">バッファゼロ設計</div>
+        <div class="bkcast-fail-desc">クリティカルパスにバッファを一切組み込まない設計。1件のトラブルが全体工程を連鎖崩壊させる。「余裕を持つと怠ける」という誤解がバッファ削除を正当化する。</div>
+        <div class="bkcast-fail-cost"><strong>実損：</strong>バッファゼロのプロジェクトはバッファあり比で<strong>納期遵守率が43%低下</strong>（PMI Pulse 2023）。1タスクの遅れがドミノ式に波及する。</div>
+      </div>
+    </div>
+
+    <!-- 実損 -->
+    <div class="bkcast-deficit">
+      <div class="bkcast-deficit-label">⚠ バックキャスト思考の欠如が生む累積実損</div>
+      <div class="bkcast-deficit-stats">
+        <div class="bkcast-deficit-stat">
+          <div class="bkcast-deficit-num">27%</div>
+          <div class="bkcast-deficit-unit">平均工期超過率</div>
+          <div class="bkcast-deficit-desc">フォーキャスト型計画 vs バックキャスト型計画（McKinsey 2021）</div>
+        </div>
+        <div class="bkcast-deficit-stat">
+          <div class="bkcast-deficit-num">70%</div>
+          <div class="bkcast-deficit-unit">手戻りの起因割合</div>
+          <div class="bkcast-deficit-desc">ゴール定義の不明確さに起因する手戻り（Standish Group Chaos Report）</div>
+        </div>
+        <div class="bkcast-deficit-stat">
+          <div class="bkcast-deficit-num">43%</div>
+          <div class="bkcast-deficit-unit">納期遵守率の低下</div>
+          <div class="bkcast-deficit-desc">バッファゼロのプロジェクトにおける納期遵守率差（PMI Pulse 2023）</div>
+        </div>
+      </div>
+      <div class="bkcast-deficit-note">
+        「バックキャスト思考がなかった」は工期遅延の根本原因ではなく、段取りの設計思想そのものの欠如を意味する。フォーキャスト型の段取りは計画を「願望」にする。バックキャスト型の段取りだけが計画を「設計」に変える。
+      </div>
+    </div>
+
+    <!-- 既存5要素との接続 -->
+    <div class="bkcast-connect">
+      <div class="bkcast-connect-label">既存5要素とバックキャスト思考の接続</div>
+      <div class="bkcast-connect-grid">
+        <div class="bkcast-connect-item core">
+          <div class="bkcast-connect-num">01</div>
+          <div class="bkcast-connect-name">ゴール設定</div>
+          <div class="bkcast-connect-role">バックキャスト起点。完了定義がなければ逆算できない。<strong style="color:var(--accent-core);">最も直接的な関係</strong></div>
+        </div>
+        <div class="bkcast-connect-item">
+          <div class="bkcast-connect-num">02</div>
+          <div class="bkcast-connect-name">分解と順序設計</div>
+          <div class="bkcast-connect-role">クリティカルパス特定の実装場所。STEP01〜03がそのまま適用される</div>
+        </div>
+        <div class="bkcast-connect-item">
+          <div class="bkcast-connect-num">03</div>
+          <div class="bkcast-connect-name">リソース配分</div>
+          <div class="bkcast-connect-role">バックキャストでボトルネックが判明してはじめてリソース優先順が決まる</div>
+        </div>
+        <div class="bkcast-connect-item">
+          <div class="bkcast-connect-num">04</div>
+          <div class="bkcast-connect-name">リスク先読み</div>
+          <div class="bkcast-connect-role">クリティカルパス上のリスクを優先的にFMEAで評価する。非クリティカルは後回し可</div>
+        </div>
+        <div class="bkcast-connect-item">
+          <div class="bkcast-connect-num">05</div>
+          <div class="bkcast-connect-name">進捗管理</div>
+          <div class="bkcast-connect-role">バックキャスト計画があってはじめてチェックゲートが「逸脱検知」として機能する</div>
+        </div>
+      </div>
+      <div class="bkcast-connect-text">
+        バックキャスト思考は①〜⑤を貫く<strong style="color:var(--accent);">設計思想</strong>であり、特定の1要素ではない。①ゴール設定が「完了の定義」であれば、バックキャストはその定義から今日のタスクまでを結ぶ<strong style="color:var(--accent);">因果の糸</strong>。このセクションの技術を習得することで、5要素が有機的に機能する段取りの全体設計が可能になる。
+      </div>
+    </div>
+
+    <!-- セルフチェック行 -->
+    <div class="bkcast-selfcheck">
+      <div class="bkcast-selfcheck-label">バックキャスト思考 セルフチェック</div>
+      <div class="bkcast-check-rows">
+        <div class="bkcast-check-row">直近の計画で「完了した状態の具体的な姿」を最初に言語化してから工程を設計したか？</div>
+        <div class="bkcast-check-row">クリティカルパスを特定し、そこに注意・リソースを集中させたか？</div>
+        <div class="bkcast-check-row">楽観バイアスに対抗する手段として「過去の類似案件の実績工期」を参照したか？</div>
+        <div class="bkcast-check-row">クリティカルパス上に意図的なバッファを設計したか（全体の15〜25%が目安）？</div>
+        <div class="bkcast-check-row">「段取りが失敗した場合、最初に崩れるのはどこか」を事前に想定したか？</div>
+      </div>
+    </div>
   </div>
 </section>
 

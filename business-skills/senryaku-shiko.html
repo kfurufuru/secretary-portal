@@ -10,150 +10,57 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ── senryaku deep-dive ── */
+.senr-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.senr-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.senr-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.senr-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.senr-sub strong { color: var(--accent); }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
-}
+/* 3層フレーム */
+.senr-layers { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-6); }
+.senr-layer { border-radius: var(--radius-md); padding: var(--sp-5); display: grid; grid-template-columns: 160px 1fr; gap: var(--sp-4); align-items: start; }
+.senr-layer-top { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); }
+.senr-layer-mid { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.2); }
+.senr-layer-bot { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+.senr-layer-left { display: flex; flex-direction: column; gap: 4px; }
+.senr-layer-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; display: inline-block; width: fit-content; }
+.senr-layer-top .senr-layer-badge { background: rgba(245,158,11,0.2); color: var(--accent-core); }
+.senr-layer-mid .senr-layer-badge { background: var(--accent-dim); color: var(--accent); }
+.senr-layer-bot .senr-layer-badge { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+.senr-layer-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-top: 4px; }
+.senr-layer-en { font-size: 0.72rem; color: var(--text-dim); }
+.senr-layer-right { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.senr-layer-right strong { color: var(--text); }
+.senr-deficit { margin-top: var(--sp-3); font-size: 0.78rem; color: #fca5a5; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.18); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-3); }
+.senr-deficit::before { content: '⚠ 欠如時の実損: '; color: #f87171; font-weight: 700; }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* 時間軸マトリクス */
+.senr-matrix { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.senr-matrix th { padding: var(--sp-3) var(--sp-4); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(255,255,255,0.04); color: var(--text-dim); text-align: center; border: 1px solid rgba(255,255,255,0.07); }
+.senr-matrix th.axis { color: var(--accent); background: var(--accent-dim); }
+.senr-matrix td { padding: var(--sp-3) var(--sp-4); border: 1px solid rgba(255,255,255,0.07); color: var(--text-muted); vertical-align: top; line-height: var(--lh-body); }
+.senr-matrix td.row-head { font-weight: 700; color: var(--text); background: rgba(255,255,255,0.03); text-align: center; white-space: nowrap; }
+.senr-matrix td.attack { background: rgba(56,189,248,0.04); }
+.senr-matrix td.defend { background: rgba(251,146,60,0.04); }
+.senr-matrix td strong { color: var(--text); display: block; margin-bottom: 2px; }
+.senr-matrix-note { font-size: 0.72rem; color: var(--text-dim); margin-top: var(--sp-3); line-height: var(--lh-long); }
 
-.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
-
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
-
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 130px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック追加 */
+.senr-selfcheck { margin-top: var(--sp-8); }
+.senr-selfcheck-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: var(--sp-4); letter-spacing: 0.04em; }
+.senr-check-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.senr-check-item { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.senr-check-item:hover { background: rgba(255,255,255,0.04); }
+.senr-check-item input[type=checkbox] { width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--accent); margin-top: 2px; }
+.senr-check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.senr-check-item label strong { color: var(--text); }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
+  .senr-layer { grid-template-columns: 1fr; }
+  .senr-matrix { display: block; overflow-x: auto; }
 }
 </style>
 </head>
@@ -261,6 +168,90 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
     </div>
     <div class="score-display" id="score-display">
       <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<!-- ── 深掘り①: Where to Play / How to Win / What to Build ── -->
+<section class="senr-section">
+  <div class="senr-card">
+    <h2 class="senr-title">戦略思考の3層：Where to Play / How to Win / What to Build</h2>
+    <p class="senr-sub">A.G.ラフリー（P&G元CEO）の戦略フレームワーク。3層のうち1つでも欠けると「やっているようで何も決めていない戦略」になる。<br>
+    <strong>出典：Roger Martin &amp; A.G. Lafley "Playing to Win" (2013)</strong> — HBS戦略論の標準テキスト</p>
+    <div class="senr-layers">
+      <div class="senr-layer senr-layer-top">
+        <div class="senr-layer-left">
+          <span class="senr-layer-badge">WHERE TO PLAY</span>
+          <div class="senr-layer-name">戦場の選択</div>
+          <div class="senr-layer-en">Playing Field Definition</div>
+        </div>
+        <div class="senr-layer-right">
+          <strong>「どこで戦うか」を決める層。</strong>市場・顧客セグメント・地域・製品カテゴリを絞り込む決断。すべての市場で戦おうとすると、リソースが分散し誰にも刺さらない。設備投資では「どの設備に優先投資するか」がこの層に相当する。<br>
+          <div class="senr-deficit">対象を絞らない場合：予算分散で全施策の効果が▼30〜50%。意思決定の遅延が平均2.4倍（McKinsey 2019 Strategic Clarity Survey）</div>
+        </div>
+      </div>
+      <div class="senr-layer senr-layer-mid">
+        <div class="senr-layer-left">
+          <span class="senr-layer-badge">HOW TO WIN</span>
+          <div class="senr-layer-name">勝ち方の設計</div>
+          <div class="senr-layer-en">Winning Proposition</div>
+        </div>
+        <div class="senr-layer-right">
+          <strong>「選んだ戦場でどう勝つか」の方法論。</strong>コスト優位・差別化・ニッチ集中の3ルートのいずれかを明確にする。「品質も良くてコストも安い」は戦略ではなく願望。電計業務では「他部署に真似できない技術知識×迅速対応」が勝ち方の例。<br>
+          <div class="senr-deficit">勝ち方が曖昧な場合：機会費用の誤判断で年間リソースの15〜20%が低優先業務に流出（Bain Strategy Practice 2022）</div>
+        </div>
+      </div>
+      <div class="senr-layer senr-layer-bot">
+        <div class="senr-layer-left">
+          <span class="senr-layer-badge">WHAT TO BUILD</span>
+          <div class="senr-layer-name">強みの構築</div>
+          <div class="senr-layer-en">Capability System</div>
+        </div>
+        <div class="senr-layer-right">
+          <strong>「勝ち方を実現する能力をどう作るか」の構築計画。</strong>スキル・プロセス・ツール・組織構造の整備。Where/Howが決まっても、それを実行する能力がなければ絵に描いた餅。3〜5年の時間軸で能力を積み上げる計画が必要。<br>
+          <div class="senr-deficit">能力構築計画なし：戦略実行率が目標の42%止まり（Harvard Business Review 2015 Strategy Execution Gap）</div>
+        </div>
+      </div>
+    </div>
+    <!-- 時間軸マトリクス -->
+    <h3 style="font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:var(--sp-4);">時間軸別意思決定マトリクス</h3>
+    <p class="senr-sub" style="margin-bottom:var(--sp-4);">短期（〜3ヶ月）/ 中期（3〜12ヶ月）/ 長期（1〜3年）× 攻め / 守りの6象限で戦略判断を分類。各象限に代表的な業務判断を配置。</p>
+    <table class="senr-matrix">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="axis">攻め（機会獲得）</th>
+          <th class="axis">守り（リスク排除）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">短期<br><small style="font-weight:400;font-size:0.68rem;color:var(--text-dim);">〜3ヶ月</small></td>
+          <td class="attack"><strong>クイックウィン</strong>改善コストが低く効果が即現れる施策。工数見積もりミスの削減・会議時間の圧縮など。ROIが3ヶ月以内に判定可能なもの優先。</td>
+          <td class="defend"><strong>火消し・予防</strong>重大トラブルの再発防止・法令期限対応。緊急度×影響度マトリクスで最上位のものだけに集中する。</td>
+        </tr>
+        <tr>
+          <td class="row-head">中期<br><small style="font-weight:400;font-size:0.68rem;color:var(--text-dim);">3〜12ヶ月</small></td>
+          <td class="attack"><strong>能力構築</strong>スキルアップ・ツール導入・チームの仕組み化。3ヶ月後の自分/チームが今より10%速く正確に動けるか。電験学習はここに位置づける。</td>
+          <td class="defend"><strong>老朽化対応計画</strong>設備診断・更新計画・バックアップ体制。予防保全は事後保全の1/5〜1/10のコストで済む（SMRP Benchmark 2023）。</td>
+        </tr>
+        <tr>
+          <td class="row-head">長期<br><small style="font-weight:400;font-size:0.68rem;color:var(--text-dim);">1〜3年</small></td>
+          <td class="attack"><strong>市場ポジション確立</strong>専門性・ネットワーク・実績による差別化。3年後に「この分野はあの人に聞け」と言われる状態の設計。</td>
+          <td class="defend"><strong>リスクシナリオ設計</strong>技術陳腐化・規制変化・人材流出への備え。最悪ケースで損失を最小化するシナリオを複数持つ。</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="senr-matrix-note">※ 短期の攻め/守りに時間が集中すると長期のポジションが空洞化する。週次作業の60%以上が短期守りなら構造的見直しが必要。</p>
+    <!-- セルフチェック -->
+    <div class="senr-selfcheck">
+      <div class="senr-selfcheck-title">深掘りセルフチェック（3層 + 時間軸）</div>
+      <div class="senr-check-list">
+        <div class="senr-check-item"><input type="checkbox" id="sd1"><label for="sd1"><strong>Where to Play：</strong>今担当している主要業務で「あえてやらない領域」を明示できるか</label></div>
+        <div class="senr-check-item"><input type="checkbox" id="sd2"><label for="sd2"><strong>How to Win：</strong>自分/チームの勝ち方を1文で言えるか（例：「○○の技術知識×迅速対応で信頼を作る」）</label></div>
+        <div class="senr-check-item"><input type="checkbox" id="sd3"><label for="sd3"><strong>What to Build：</strong>今年の能力構築計画が具体的なマイルストーン付きで存在するか</label></div>
+        <div class="senr-check-item"><input type="checkbox" id="sd4"><label for="sd4"><strong>時間軸バランス：</strong>今週の業務を6象限に分類したとき、中長期攻め象限に20%以上の時間を使えているか</label></div>
+      </div>
     </div>
   </div>
 </section>

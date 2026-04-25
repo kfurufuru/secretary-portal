@@ -10,150 +10,73 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
-  --fs-h1: 2.2rem; --fs-h2: 1.4rem; --fs-h3: 1.25rem;
-  --fs-body: clamp(0.875rem, 2.5vw, 0.95rem); --fs-sm: 0.82rem;
-  --lh-body: 1.6; --lh-heading: 1.4; --lh-long: 1.8;
-  --fw-normal: 400; --fw-bold: 700;
-  --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --transition: 0.2s ease;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+/* ── stress deep-dive ── */
+.stress-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
+.stress-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
+.stress-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
+.stress-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); line-height: var(--lh-long); }
+.stress-sub strong { color: var(--accent); }
+.stress-section-h { font-size: 1rem; font-weight: 700; color: var(--accent); margin: var(--sp-8) 0 var(--sp-4); letter-spacing: 0.04em; }
 
-  --bg: #0a0e1a; --bg-card: #111827; --bg-hover: #1a2235;
-  --accent: #38bdf8; --accent-dim: rgba(56,189,248,0.12);
-  --accent-core: #f59e0b; --accent-core-dim: rgba(245,158,11,0.12);
-  --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
-  --border: rgba(56,189,248,0.15);
-  --border-hover: rgba(56,189,248,0.5);
-  --border-core: rgba(245,158,11,0.5);
-}
+/* 神経科学フロー */
+.stress-neuro-flow { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-6); }
+.stress-neuro-step { display: grid; grid-template-columns: 140px 1fr; gap: var(--sp-4); align-items: start; padding: var(--sp-4); border-radius: var(--radius-md); }
+.neuro-trigger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+.neuro-hpa { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2); }
+.neuro-pfc { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.2); }
+.neuro-chronic { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.15); }
+.stress-neuro-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; display: flex; flex-direction: column; gap: 4px; }
+.neuro-trigger .stress-neuro-label { color: #f87171; }
+.neuro-hpa .stress-neuro-label { color: var(--accent-core); }
+.neuro-pfc .stress-neuro-label { color: var(--accent); }
+.neuro-chronic .stress-neuro-label { color: #f87171; }
+.stress-neuro-label span { font-size: 0.62rem; color: var(--text-dim); font-weight: 400; letter-spacing: normal; text-transform: none; }
+.stress-neuro-content { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+.stress-neuro-content strong { color: var(--text); }
+.stress-data { font-size: 0.78rem; margin-top: var(--sp-2); padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm); }
+.neuro-trigger .stress-data { background: rgba(239,68,68,0.06); color: #fca5a5; }
+.neuro-hpa .stress-data { background: rgba(245,158,11,0.06); color: #fcd34d; }
+.neuro-pfc .stress-data { background: var(--accent-dim); color: var(--accent); }
+.neuro-chronic .stress-data { background: rgba(239,68,68,0.06); color: #fca5a5; }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-base); background: var(--bg); color: var(--text); line-height: var(--lh-body); font-size: var(--fs-body); line-break: strict; overflow-wrap: break-word; word-break: normal; }
+/* 4象限モデル */
+.stress-quadrant { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-1); border-radius: var(--radius-md); overflow: hidden; }
+.stress-quad-header { background: rgba(255,255,255,0.04); padding: var(--sp-3) var(--sp-4); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); text-align: center; grid-column: 1 / -1; border-radius: var(--radius-md) var(--radius-md) 0 0; }
+.stress-quad-axis-top { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-1); }
+.stress-quad-axis-label { font-size: 0.65rem; font-weight: 700; color: var(--text-dim); text-align: center; padding: var(--sp-2); background: rgba(255,255,255,0.02); }
+.stress-quad { padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-3); }
+.quad-hi-pos { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: var(--radius-sm); }
+.quad-hi-neg { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); }
+.quad-lo-pos { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.18); border-radius: var(--radius-sm); }
+.quad-lo-neg { background: rgba(100,116,139,0.1); border: 1px solid rgba(100,116,139,0.2); border-radius: var(--radius-sm); }
+.stress-quad-name { font-size: 0.82rem; font-weight: 700; }
+.quad-hi-pos .stress-quad-name { color: #34d399; }
+.quad-hi-neg .stress-quad-name { color: #f87171; }
+.quad-lo-pos .stress-quad-name { color: var(--accent); }
+.quad-lo-neg .stress-quad-name { color: var(--text-dim); }
+.stress-quad-emotion { font-size: 0.7rem; color: var(--text-dim); font-weight: 600; letter-spacing: 0.05em; }
+.stress-quad-use { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-body); }
+.stress-quad-trigger { font-size: 0.72rem; border-radius: 4px; padding: 2px var(--sp-2); display: inline-block; margin-top: 4px; }
+.quad-hi-pos .stress-quad-trigger { background: rgba(52,211,153,0.1); color: #34d399; }
+.quad-hi-neg .stress-quad-trigger { background: rgba(239,68,68,0.08); color: #f87171; }
+.quad-lo-pos .stress-quad-trigger { background: var(--accent-dim); color: var(--accent); }
+.quad-lo-neg .stress-quad-trigger { background: rgba(100,116,139,0.1); color: var(--text-dim); }
 
-.top-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,14,26,0.88); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-.nav-back { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #94a3b8; font-size: 0.82rem; font-weight: 600; transition: color 0.2s ease; }
-.nav-back:hover { color: #38bdf8; }
-.nav-title-text { font-size: 0.78rem; color: #8892a0; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.nav-spacer { width: 80px; }
-
-.hero { text-align: center; padding: var(--sp-12) var(--sp-4) var(--sp-8); max-width: 720px; margin: 0 auto; }
-.hero-label { display: inline-block; font-size: var(--fs-sm); color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--fw-bold); margin-bottom: var(--sp-3); }
-.hero h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: 0.04em; line-height: var(--lh-heading); margin-bottom: var(--sp-4); }
-.hero h1 span { color: var(--accent); }
-.hero-sub { color: var(--text-muted); font-size: 0.9rem; max-width: 540px; margin: 0 auto var(--sp-4); line-height: var(--lh-long); }
-
-.tab-nav { position: sticky; top: 48px; z-index: 99; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: var(--sp-3) var(--sp-4); }
-.tab-nav-inner { max-width: 900px; margin: 0 auto; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; }
-.tab-nav-inner::-webkit-scrollbar { display: none; }
-.tab { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: var(--fs-sm); font-family: inherit; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
-.tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.tab .num { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em; transition: var(--transition); }
-.tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--border); }
-.tab.active .num { background: var(--accent); color: var(--bg); }
-.tab.active.core { background: var(--accent-core-dim); color: var(--accent-core); border-color: var(--border-core); }
-.tab.active.core .num { background: var(--accent-core); color: var(--bg); }
-.tab .core-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-core); display: inline-block; }
-.tab .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-.progress-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4); margin-top: var(--sp-3); }
-.progress-bar { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.progress-fill.core { background: var(--accent-core); }
-
-.panel-wrap { max-width: 900px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
-.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); position: relative; animation: fadeIn 0.25s ease; }
-.panel.core { border-color: var(--border-core); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { display: flex; align-items: flex-start; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.panel-icon { width: 52px; height: 52px; background: var(--accent-dim); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
-.panel.core .panel-icon { background: var(--accent-core-dim); color: var(--accent-core); }
-.panel-title-wrap { flex: 1; }
-.panel-num { font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px; }
-.panel-title { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.panel-theory { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
-.panel.core .panel-theory { color: var(--accent-core); }
-
-.badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; flex-shrink: 0; }
-.badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
-.badge-core { background: rgba(245,158,11,0.2); color: var(--accent-core); border: 1px solid rgba(245,158,11,0.4); }
-.badge-feat { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
-
-.panel-summary { font-size: 1rem; color: var(--text); line-height: var(--lh-long); margin-bottom: var(--sp-6); padding: var(--sp-4); background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-.panel.core .panel-summary { border-left-color: var(--accent-core); }
-
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-.detail-block { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.detail-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: var(--sp-2); }
-.detail-text { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
-
-.deficit-block { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: var(--sp-4); margin-bottom: var(--sp-4); }
-.deficit-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #f87171; margin-bottom: var(--sp-2); }
-.deficit-text { font-size: var(--fs-sm); color: #fca5a5; line-height: var(--lh-long); }
-.deficit-text strong { color: #f87171; }
-
-.check-block { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-4); }
-.check-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: var(--sp-2); }
-.check-text { font-size: var(--fs-sm); color: var(--text); line-height: var(--lh-long); }
-
-.panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid rgba(255,255,255,0.06); gap: var(--sp-3); }
-.nav-btn { display: flex; align-items: center; gap: var(--sp-2); padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); flex: 1; max-width: 45%; }
-.nav-btn:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--border); color: var(--accent); }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.nav-btn.prev { justify-content: flex-start; }
-.nav-btn.next { justify-content: flex-end; margin-left: auto; }
-.nav-btn-label { display: flex; flex-direction: column; align-items: flex-start; }
-.nav-btn.next .nav-btn-label { align-items: flex-end; }
-.nav-btn-hint { font-size: 0.68rem; color: var(--text-dim); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
-
-.retention-chart { margin-bottom: var(--sp-3); }
-.retention-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); font-size: var(--fs-sm); }
-.retention-label { width: 140px; flex-shrink: 0; color: var(--text-muted); }
-.retention-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 10px; overflow: hidden; }
-.retention-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-.retention-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); flex-shrink: 0; font-size: var(--fs-sm); }
-
-.insight-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.insight-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-6); }
-.insight-flow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-6); }
-.flow-item { background: var(--accent-dim); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 600; cursor: pointer; transition: var(--transition); }
-.flow-item:hover { background: var(--accent); color: var(--bg); }
-.flow-arrow { color: var(--text-dim); font-size: 1.1rem; }
-.insight-text { color: var(--text-muted); line-height: var(--lh-long); font-size: var(--fs-body); }
-
-.selfcheck-section { max-width: 900px; margin: 0 auto; padding: 0 var(--sp-4) var(--sp-12); }
-.selfcheck-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-8); }
-.selfcheck-title { font-size: var(--fs-h2); font-weight: var(--fw-bold); margin-bottom: var(--sp-2); }
-.selfcheck-sub { color: var(--text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-6); }
-.check-list { display: flex; flex-direction: column; gap: var(--sp-3); }
-.check-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
-.check-item:hover { background: rgba(255,255,255,0.04); }
-.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
-.check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
-.check-item label strong { color: var(--text); }
-.score-display { margin-top: var(--sp-6); padding: var(--sp-4); border-radius: var(--radius-sm); background: var(--accent-dim); border: 1px solid var(--border); text-align: center; font-size: var(--fs-sm); color: var(--text); }
-.score-display span { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text-dim); font-size: var(--fs-sm); border-top: 1px solid rgba(255,255,255,0.04); }
+/* セルフチェック */
+.stress-selfcheck { margin-top: var(--sp-8); }
+.stress-selfcheck-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: var(--sp-4); }
+.stress-check-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.stress-check-item { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: var(--transition); user-select: none; }
+.stress-check-item:hover { background: rgba(255,255,255,0.04); }
+.stress-check-item input[type=checkbox] { width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--accent); margin-top: 2px; }
+.stress-check-item label { font-size: var(--fs-sm); color: var(--text-muted); cursor: pointer; line-height: var(--lh-body); }
+.stress-check-item label strong { color: var(--text); }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .detail-grid { grid-template-columns: 1fr; }
-  .insight-flow { flex-direction: column; align-items: flex-start; }
-  .panel-header { flex-wrap: wrap; }
-  .panel { padding: var(--sp-6) var(--sp-4); }
-  .tab { padding: 8px 12px; }
-  .tab-title { display: none; }
-}
-@media (max-width: 480px) {
-  .hero { padding: var(--sp-8) var(--sp-4) var(--sp-6); }
-  .panel-title { font-size: 1.2rem; }
+  .stress-neuro-step { grid-template-columns: 1fr; }
+  .stress-quadrant { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -261,6 +184,86 @@ footer { text-align: center; padding: var(--sp-8) var(--sp-4); color: var(--text
     </div>
     <div class="score-display" id="score-display">
       <span id="score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<!-- ── 深掘り: ストレス神経科学 + 感情4象限モデル ── -->
+<section class="stress-section">
+  <div class="stress-card">
+    <h2 class="stress-title">ストレス反応の神経科学</h2>
+    <p class="stress-sub">ストレスは「気の持ちよう」ではなく、生理学的プロセス。HPA軸（視床下部−下垂体−副腎皮質）が活性化し、コルチゾールが分泌される。慢性化すると前頭前野（PFC）が萎縮し、意思決定・感情制御・論理的思考が劣化する。<br>
+    <strong>出典：McEwen BS "Stress, adaptation, and disease" (1998) / Arnsten AFT "Stress signalling pathways that impair prefrontal cortex structure and function" Nature Reviews Neuroscience 2009</strong></p>
+    <div class="stress-neuro-flow">
+      <div class="stress-neuro-step neuro-trigger">
+        <div class="stress-neuro-label">STRESSOR<br>ストレス刺激<span>（知覚された脅威）</span></div>
+        <div class="stress-neuro-content">
+          <strong>認知的評価フィルター</strong>を通過した脅威・不確実性・コントロール喪失感が視床下部を活性化する。同じ出来事でもコルチゾール分泌量は個人の認知評価によって最大3〜4倍異なる（Lazarus &amp; Folkman 1984）。設備トラブル・締め切り・対人葛藤が主要なビジネスストレッサー。
+          <div class="stress-data">コルチゾール分泌のピーク：ストレス刺激から15〜30分後。心拍数・血圧・血糖値が同時上昇。</div>
+        </div>
+      </div>
+      <div class="stress-neuro-step neuro-hpa">
+        <div class="stress-neuro-label">HPA AXIS<br>HPA軸活性化<span>（コルチゾール分泌）</span></div>
+        <div class="stress-neuro-content">
+          <strong>視床下部→下垂体→副腎皮質のカスケード</strong>が起動し、コルチゾール（糖質コルチコイド）が血流に放出される。短期的には集中力・記憶固定・免疫を一時的に向上させる適応反応だが、慢性的な高コルチゾール状態は有害。
+          <div class="stress-data">アロスタティック負荷（Allostatic Load）：ストレス応答の繰り返し・蓄積による身体的コスト。心血管疾患リスク2.3倍、免疫機能▼40%（McEwen 2007）。</div>
+        </div>
+      </div>
+      <div class="stress-neuro-step neuro-pfc">
+        <div class="stress-neuro-label">PFC IMPAIRMENT<br>前頭前野機能低下<span>（判断力の劣化）</span></div>
+        <div class="stress-neuro-content">
+          <strong>コルチゾール過剰は前頭前野（dlPFC）のシナプス接続を急速に弱化させる。</strong>ワーキングメモリ容量が▼30〜40%、意思決定の質が▼25%、衝動制御が劣化する。同時に扁桃体（恐怖・怒りの中枢）が優位になり、感情的反応が増大する。
+          <div class="stress-data">Arnsten 2009：急性ストレス状態では高次認知機能が15分以内に有意に低下。「ストレス下で重要判断をしない」が科学的に正しい戦略。</div>
+        </div>
+      </div>
+      <div class="stress-neuro-step neuro-chronic">
+        <div class="stress-neuro-label">CHRONIC STRESS<br>慢性ストレスの実損<span>（6ヶ月以上継続時）</span></div>
+        <div class="stress-neuro-content">
+          <strong>海馬の神経新生が阻害され、記憶・学習能力が低下する。</strong>前頭前野の灰白質が物理的に萎縮（MRI計測）。うつ病リスクが3〜5倍。パフォーマンスは単純作業で▼20%、複雑業務で▼40%以上（WHO 2019 Workplace Stress Report）。
+          <div class="stress-data">日本の職場ストレスコスト：年間約3兆円（医療費・生産性損失・離職コスト合計、経済産業省 2020推計）。</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="stress-section-h">感情の機能的活用：4象限モデル</h3>
+    <p class="stress-sub" style="margin-bottom:var(--sp-5);">ジェームズ・ラッセルの「円環モデル（Circumplex Model of Affect）」を業務活用に再構成。感情を高/低覚醒×快/不快の2軸で分類し、各感情状態の機能と誘導技術を示す。<br>
+    <strong>出典：Russell JA "A circumplex model of affect" Journal of Personality and Social Psychology 1980</strong></p>
+    <div class="stress-quadrant">
+      <div class="stress-quad quad-hi-pos">
+        <div class="stress-quad-name">高覚醒 × 快</div>
+        <div class="stress-quad-emotion">興奮・熱意・ワクワク</div>
+        <div class="stress-quad-use">創造性・アイデア出し・プレゼン・新規提案に最適。リスク許容度が高く、発散思考モードに入りやすい。ブレインストーミングや企画立案はこの状態で行う。</div>
+        <div class="stress-quad-trigger">誘導：軽い運動・挑戦課題・小成功の積み重ね</div>
+      </div>
+      <div class="stress-quad quad-hi-neg">
+        <div class="stress-quad-name">高覚醒 × 不快</div>
+        <div class="stress-quad-emotion">怒り・不安・焦り・恐怖</div>
+        <div class="stress-quad-use">危機対応・即時行動には短期的に有効だが持続不可。PFCが抑制されるため重要判断には不適。この状態での意思決定は後悔率が2倍高い（Lerner &amp; Tiedens 2006）。</div>
+        <div class="stress-quad-trigger">脱出：4-7-8呼吸・環境変更・20分の休憩</div>
+      </div>
+      <div class="stress-quad quad-lo-pos">
+        <div class="stress-quad-name">低覚醒 × 快</div>
+        <div class="stress-quad-emotion">落ち着き・満足・平静</div>
+        <div class="stress-quad-use">複雑な意思決定・長期計画・精密作業・学習に最適。前頭前野が最大機能。重要な判断・設計レビュー・報告書作成はこの状態で行う。判断の質がピーク状態。</div>
+        <div class="stress-quad-trigger">誘導：瞑想・深呼吸・好きな音楽・自然環境</div>
+      </div>
+      <div class="stress-quad quad-lo-neg">
+        <div class="stress-quad-name">低覚醒 × 不快</div>
+        <div class="stress-quad-emotion">疲労・無気力・落ち込み</div>
+        <div class="stress-quad-use">認知リソースが枯渇した状態。回復インプット（睡眠・食事・休息）が最優先。この状態で業務を続けてもコスト対効果が著しく低い。強制的に回復を優先する自己許可が必要。</div>
+        <div class="stress-quad-trigger">対処：睡眠優先・軽い運動・社会的接触・達成感のある小タスク</div>
+      </div>
+    </div>
+
+    <!-- セルフチェック -->
+    <div class="stress-selfcheck">
+      <div class="stress-selfcheck-title">深掘りセルフチェック（神経科学 + 感情活用）</div>
+      <div class="stress-check-list">
+        <div class="stress-check-item"><input type="checkbox" id="strd1"><label for="strd1"><strong>PFC保護：</strong>高ストレス状態（怒り・焦り）のときに重要な意思決定を意識的に先送りしているか</label></div>
+        <div class="stress-check-item"><input type="checkbox" id="strd2"><label for="strd2"><strong>アロスタティック負荷の認識：</strong>慢性疲労・集中力低下・短気の増加を「ストレス負荷の蓄積」として認識し、回復計画を立てているか</label></div>
+        <div class="stress-check-item"><input type="checkbox" id="strd3"><label for="strd3"><strong>感情の状態把握：</strong>今の自分の感情を4象限のどこにいるか、業務開始前に意識的に確認しているか</label></div>
+        <div class="stress-check-item"><input type="checkbox" id="strd4"><label for="strd4"><strong>最適状態での判断：</strong>重要な判断・設計レビュー・交渉を「低覚醒×快」の状態に意図的に配置しているか</label></div>
+      </div>
     </div>
   </div>
 </section>
