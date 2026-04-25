@@ -1,0 +1,223 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# ⚡ 電験3種 学習プロジェクト\n**目標：2026年度合格**",
+      "x": -200,
+      "y": -1100,
+      "width": 400,
+      "height": 80,
+      "color": "1"
+    },
+    {
+      "id": "g-subject",
+      "type": "group",
+      "label": "📚 科目依存マップ",
+      "x": -960,
+      "y": -1060,
+      "width": 620,
+      "height": 620
+    },
+    {
+      "id": "theory",
+      "type": "text",
+      "text": "## ⭐ 理論\n全科目の基礎\nW01〜継続",
+      "x": -810,
+      "y": -1010,
+      "width": 220,
+      "height": 110,
+      "color": "3"
+    },
+    {
+      "id": "power",
+      "type": "text",
+      "text": "## 電力\n送配電・発電\nW21〜",
+      "x": -940,
+      "y": -830,
+      "width": 200,
+      "height": 100,
+      "color": "4"
+    },
+    {
+      "id": "machine",
+      "type": "text",
+      "text": "## 機械\n変圧器・電動機\nW21〜",
+      "x": -660,
+      "y": -830,
+      "width": 200,
+      "height": 100,
+      "color": "4"
+    },
+    {
+      "id": "regulation",
+      "type": "text",
+      "text": "## 法規\n電技・施設管理\nW36〜",
+      "x": -810,
+      "y": -660,
+      "width": 220,
+      "height": 100,
+      "color": "5"
+    },
+    {
+      "id": "g-phase",
+      "type": "group",
+      "label": "📅 学習フェーズ（2026年）",
+      "x": -220,
+      "y": -1060,
+      "width": 820,
+      "height": 230
+    },
+    {
+      "id": "phase1",
+      "type": "text",
+      "text": "**Phase 1**\n理論基礎固め\nW01〜W20\n✅ 進行中（W17）",
+      "x": -170,
+      "y": -1010,
+      "width": 210,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "phase2",
+      "type": "text",
+      "text": "**Phase 2**\n電力・機械\nW21〜W35\n⏳ 次フェーズ",
+      "x": 90,
+      "y": -1010,
+      "width": 210,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "phase3",
+      "type": "text",
+      "text": "**Phase 3**\n法規・過去問\nW36〜試験前\n🎯 仕上げ",
+      "x": 350,
+      "y": -1010,
+      "width": 210,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "g-topics",
+      "type": "group",
+      "label": "🔍 重点テーマ（高頻度・弱点優先）",
+      "x": -960,
+      "y": -470,
+      "width": 1820,
+      "height": 280
+    },
+    {
+      "id": "topic-theory",
+      "type": "text",
+      "text": "**理論 重点**\n・電界・磁界\n・交流回路（RLC）\n・三相交流\n・電子回路基礎",
+      "x": -910,
+      "y": -420,
+      "width": 190,
+      "height": 180
+    },
+    {
+      "id": "topic-power",
+      "type": "text",
+      "text": "**電力 重点**\n・発電方式比較\n・送配電損失\n・変電設備構成\n・電力品質",
+      "x": -680,
+      "y": -420,
+      "width": 190,
+      "height": 180
+    },
+    {
+      "id": "topic-machine",
+      "type": "text",
+      "text": "**機械 重点**\n・変圧器等価回路\n・誘導電動機特性\n・同期発電機\n・パワエレ基礎",
+      "x": -450,
+      "y": -420,
+      "width": 190,
+      "height": 180
+    },
+    {
+      "id": "topic-reg",
+      "type": "text",
+      "text": "**法規 重点**\n・電気事業法体系\n・電技解釈条文\n・保安規程\n・接地工事種別",
+      "x": -220,
+      "y": -420,
+      "width": 190,
+      "height": 180
+    },
+    {
+      "id": "exam-info",
+      "type": "text",
+      "text": "📋 **試験情報**\n上期：2026年8月\n下期：2027年3月\n合格基準：60点/科目\n科目合格：3年有効",
+      "x": 10,
+      "y": -420,
+      "width": 200,
+      "height": 180,
+      "color": "1"
+    },
+    {
+      "id": "current-status",
+      "type": "text",
+      "text": "📍 **現在地（W17）**\n理論：進行中 🔵\n電力：未着手 ⚪\n機械：未着手 ⚪\n法規：未着手 ⚪",
+      "x": 260,
+      "y": -420,
+      "width": 200,
+      "height": 180,
+      "color": "6"
+    },
+    {
+      "id": "weak-point",
+      "type": "text",
+      "text": "⚠️ **弱点メモ**\n（都度追記）\n・\n・\n・",
+      "x": 510,
+      "y": -420,
+      "width": 200,
+      "height": 180,
+      "color": "2"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-th-pow",
+      "fromNode": "theory",
+      "fromSide": "bottom",
+      "toNode": "power",
+      "toSide": "top",
+      "label": "前提"
+    },
+    {
+      "id": "e-th-mac",
+      "fromNode": "theory",
+      "fromSide": "bottom",
+      "toNode": "machine",
+      "toSide": "top",
+      "label": "前提"
+    },
+    {
+      "id": "e-pow-reg",
+      "fromNode": "power",
+      "fromSide": "bottom",
+      "toNode": "regulation",
+      "toSide": "top"
+    },
+    {
+      "id": "e-mac-reg",
+      "fromNode": "machine",
+      "fromSide": "bottom",
+      "toNode": "regulation",
+      "toSide": "top"
+    },
+    {
+      "id": "e-p1-p2",
+      "fromNode": "phase1",
+      "fromSide": "right",
+      "toNode": "phase2",
+      "toSide": "left"
+    },
+    {
+      "id": "e-p2-p3",
+      "fromNode": "phase2",
+      "fromSide": "right",
+      "toNode": "phase3",
+      "toSide": "left"
+    }
+  ]
+}
