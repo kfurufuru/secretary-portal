@@ -1,11 +1,12 @@
 ---
 type: meta
 title: "Concepts Index"
-updated: 2026-04-22
+updated: 2026-04-25
 ---
 # 概念ページ一覧
 
-_ingest後に概念ページが追加されます。_
+## FET（電界効果トランジスタ）— 2026-04-25 追加
 
-## 追加済み
-_（なし）_
+- [[FET-characteristics]] — ID-VDS特性曲線とピンチオフ（線形/飽和領域・ピンチオフ≠電流ゼロ）
+- [[FET-gm-source-grounded]] — 相互コンダクタンスgmとソース接地増幅（Av = −gm×RD）
+- [[FET-enhance-depletion]] — エンハンス/ディプレッション型識別・バイポーラとの比較
