@@ -554,11 +554,14 @@ const options = {
     stabilization: { iterations: 400 },
   },
   interaction: { hover: true, tooltipDelay: 200, navigationButtons: true, zoomView: true, multiselect: false },
-  nodes: { borderWidth: 1.5, scaling: { min: 10, max: 36 } },
+  nodes: { borderWidth: 1.5, scaling: { min: 10, max: 36 }, font: { face: '"Noto Sans JP", Inter, sans-serif', size: 12, color: '#e2e8f0' } },
   edges: { smooth: { type: 'dynamic' }, arrows: { to: { enabled: true, scaleFactor: 0.4 } } },
 };
 
 const network = new vis.Network(container, { nodes: visNodes, edges: visEdges }, options);
+
+// フォント読み込み完了後に再描画（日本語ラベル欠け対策）
+document.fonts.ready.then(() => network.redraw());
 
 network.on('stabilizationIterationsDone', () => { network.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } }); });
 window.addEventListener('resize', () => { network.fit(); });
