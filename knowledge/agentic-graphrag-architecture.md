@@ -7,7 +7,7 @@ last_reviewed: "2026-04-22"
 understanding_score: 3
 source: "アーキテクチャ図レビュー（2026-04-22）"
 tags: ["GraphRAG", "知識グラフ", "MCP", "ベクトル検索", "Claude Code", "MongoDB"]
-related: ["knowledge/promote-py-auto-promote-access-log.md"]
+related: ["knowledge/promote-py-auto-promote-access-log.md", "knowledge/claude-code-knowledge-pipeline.md", "knowledge/mcp-claude-integration.md"]
 ---
 
 # Agentic GraphRAG アーキテクチャ
