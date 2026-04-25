@@ -7,7 +7,7 @@ last_reviewed: "2026-04-18"
 understanding_score: 4
 source: "自己整理・Business Skills Series HTML化"
 tags: ["構造把握力", "思考法", "問題解決", "システム思考", "内向型"]
-related: ["knowledge/解像度思考フレームワーク.md"]
+related: ["knowledge/解像度思考フレームワーク.md", "knowledge/business-skill-gap-analysis.md", "knowledge/ai-gyomu-sentaku.md", "knowledge/ideas-from-news/2026-04-21.md"]
 ---
 
 # 頭の良さの本質は「構造把握力」

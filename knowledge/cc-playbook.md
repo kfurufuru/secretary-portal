@@ -7,7 +7,7 @@ last_reviewed: "2026-04-25"
 understanding_score: 4
 source: "Claude Code Playbook 全17スライド（2026-04-25）"
 tags: ["Claude Code", "Context Engineering", "Hooks", "Skills", "Task Diary", "TDD", "CI/CD", "トークン最適化"]
-related: ["knowledge/mcp-claude-integration.md", "knowledge/claude-code-knowledge-pipeline.md", "knowledge/f-company-session-framework.md"]
+related: ["knowledge/mcp-claude-integration.md", "knowledge/claude-code-knowledge-pipeline.md", "knowledge/f-company-session-framework.md", "knowledge/top3-monday-api-key-401-error.md"]
 ---
 
 # Claude Code プレイブック — 全17スライドのエッセンス

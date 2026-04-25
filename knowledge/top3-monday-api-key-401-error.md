@@ -8,7 +8,7 @@ understanding_score: 5
 source: "inbox/handoff-2026-04-21-secretary.md + denken-study/feynman-sessions/top3-monday-401-error-2026-04-22.md"
 verification_method: "コード走査（top3-generator.py）"
 tags: ["APIキー", "認証エラー", "自動化", "トラブルシュート", "Python", "Anthropic SDK"]
-related: ["denken-study/feynman-sessions/top3-monday-401-error-2026-04-22.md"]
+related: ["denken-study/feynman-sessions/top3-monday-401-error-2026-04-22.md", "knowledge/mcp-claude-integration.md", "knowledge/claude-code-knowledge-pipeline.md"]
 ---
 # top3-monday APIキー認証エラー（401）の対処手順
 

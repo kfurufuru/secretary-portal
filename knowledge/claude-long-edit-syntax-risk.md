@@ -7,7 +7,7 @@ last_reviewed: "2026-04-23"
 understanding_score: 4
 source: "python-dekirukoto.html Phase 1a検証（2026-04-23）"
 tags: ["Claude", "HTML", "検証", "Haiku", "構文"]
-related: ["knowledge/mcp-claude-integration.md"]
+related: ["knowledge/mcp-claude-integration.md", "knowledge/portal-health-observability.md"]
 ---
 
 # Claude長編集での構文破壊リスクと検証プロトコル

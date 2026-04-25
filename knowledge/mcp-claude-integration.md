@@ -7,7 +7,7 @@ last_reviewed: "2026-04-22"
 understanding_score: 4
 source: "実運用整理（2026-04-22）"
 tags: ["MCP", "Claude", "自動化", "GitHub", "Notion", "Slack"]
-related: ["knowledge/agentic-graphrag-architecture.md"]
+related: ["knowledge/agentic-graphrag-architecture.md", "knowledge/terminal-shell-cli.md", "knowledge/portal-health-observability.md", "knowledge/top3-monday-api-key-401-error.md"]
 ---
 
 # MCP — Claudeを実行AIに変える接続基盤

@@ -7,7 +7,7 @@ last_reviewed: "2026-04-22"
 understanding_score: 4
 source: "学習スライド（画像キャプチャ）2026-04-22"
 tags: ["CLI", "ターミナル", "シェル", "Linux", "コマンドライン", "IT基礎"]
-related: []
+related: ["knowledge/mcp-claude-integration.md", "knowledge/cc-playbook.md", "knowledge/ideas-from-news/2026-04-20.md"]
 ---
 
 # ターミナル・シェル・CLIの違い

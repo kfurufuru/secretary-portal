@@ -10,7 +10,7 @@ understanding_score: 4
 source: "2026-04-23 セッション（Fカンパニー導線診断→link_checker拡張→cron化）"
 verification_method: "link-check-results.json / heal_log.json の実データ検証"
 tags: ["ポータル", "ヘルスチェック", "link_checker", "セルフヒール", "可観測性", "cron"]
-related: ["portal-v2.html", "health-monitor/link_checker.py"]
+related: ["portal-v2.html", "health-monitor/link_checker.py", "knowledge/mcp-claude-integration.md", "knowledge/promote-py-auto-promote-access-log.md", "knowledge/claude-long-edit-syntax-risk.md"]
 ---
 # Fカンパニーポータルの健全性可視化パターン
 

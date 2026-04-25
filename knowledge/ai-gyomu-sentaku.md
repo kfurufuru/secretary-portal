@@ -7,7 +7,7 @@ last_reviewed: "2026-04-22"
 understanding_score: 4
 source: "SUPER STUDIO「学習性×失敗許容度」2×2マトリクス → 製造業・設備管理向け読み替え"
 tags: ["ai", "業務改善", "意思決定", "フレームワーク", "設備管理"]
-related: []
+related: ["knowledge/ideas-from-news/2026-04-21.md", "knowledge/ideas-from-news/2026-04-20.md"]
 ---
 
 # AI化対象業務の策定フレームワーク（学習性×失敗許容度マトリクス）
