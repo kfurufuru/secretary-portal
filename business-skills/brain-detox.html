@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>脳を再起動する「10のデトックス」| Business Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+  :root {
+    --accent: #a3e635;
+    --accent-dim: rgba(163,230,53,0.12);
+    --accent-2: #38bdf8;
+    --accent-3: #f97316;
+    --border: rgba(163,230,53,0.15);
+    --border-hover: rgba(163,230,53,0.5);
+  }
+
+  .hero h1 span { color: var(--accent); }
+  .hero-label { color: var(--accent); }
+
+  /* ── Category sections ── */
+  .categories {
+    max-width: 1000px; margin: 0 auto;
+    padding: 0 var(--sp-4) var(--sp-12);
+    display: flex; flex-direction: column; gap: var(--sp-8);
+  }
+
+  .category-block { }
+
+  .category-header {
+    display: flex; align-items: center; gap: var(--sp-3);
+    margin-bottom: var(--sp-4);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-md);
+    font-weight: var(--fw-bold);
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+  }
+  .cat-env  { background: rgba(163,230,53,0.1);  color: #a3e635; border: 1px solid rgba(163,230,53,0.25); }
+  .cat-body { background: rgba(249,115,22,0.1);  color: #f97316; border: 1px solid rgba(249,115,22,0.25); }
+  .cat-mind { background: rgba(56,189,248,0.1);  color: #38bdf8; border: 1px solid rgba(56,189,248,0.25); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--sp-4);
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius-md);
+    padding: var(--sp-4) var(--sp-4) var(--sp-4);
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    opacity: 0.7;
+    transition: opacity var(--transition);
+  }
+  .cat-env-card::before  { background: #a3e635; }
+  .cat-body-card::before { background: #f97316; }
+  .cat-mind-card::before { background: #38bdf8; }
+
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .cat-env-card:hover  { border-color: rgba(163,230,53,0.4); }
+  .cat-body-card:hover { border-color: rgba(249,115,22,0.4); }
+  .cat-mind-card:hover { border-color: rgba(56,189,248,0.4); }
+
+  .card-num {
+    font-size: 2rem; font-weight: 800; line-height: 1;
+    margin-bottom: var(--sp-2); opacity: 0.2;
+    letter-spacing: -0.02em;
+  }
+  .cat-env-card  .card-num { color: #a3e635; opacity: 0.35; }
+  .cat-body-card .card-num { color: #f97316; opacity: 0.35; }
+  .cat-mind-card .card-num { color: #38bdf8; opacity: 0.35; }
+
+  .card-title {
+    font-size: 1.05rem; font-weight: var(--fw-bold);
+    margin-bottom: var(--sp-2); letter-spacing: 0.02em;
+  }
+  .card-body { font-size: var(--fs-sm); color: var(--text-muted); line-height: var(--lh-long); }
+
+  /* ── Bottom callout ── */
+  .callout {
+    max-width: 1000px; margin: 0 auto var(--sp-12);
+    padding: 0 var(--sp-4);
+  }
+  .callout-inner {
+    background: rgba(163,230,53,0.06);
+    border: 1.5px solid rgba(163,230,53,0.3);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-6) var(--sp-8);
+    text-align: center;
+  }
+  .callout-inner p {
+    font-size: 1rem; font-weight: var(--fw-bold);
+    color: #a3e635; letter-spacing: 0.04em; line-height: 1.7;
+  }
+  .callout-inner span { color: var(--text); font-weight: 400; }
+
+  /* ── Source note ── */
+  .source-note {
+    max-width: 1000px; margin: 0 auto var(--sp-8);
+    padding: 0 var(--sp-4);
+    text-align: center;
+    font-size: var(--fs-sm); color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="index.html">
+    <i data-lucide="chevron-left" width="16" height="16"></i>
+    Business Skills
+  </a>
+  <span class="nav-title-text">脳を再起動する「10のデトックス」</span>
+  <div class="nav-spacer"></div>
+</nav>
+
+<header class="hero">
+  <span class="hero-label">Brain Detox</span>
+  <h1>脳を再起動する<br><span>「10のデトックス」</span></h1>
+  <p class="hero-sub">脳の逃げ道を一つずつ塞ぐ。物理・情報環境・衝動・身体・集中思考の3軸から、脳を鈍らせる習慣を特定して排除する実践マップ。</p>
+</header>
+
+<section class="categories">
+
+  <!-- 物理・情報環境 -->
+  <div class="category-block">
+    <div class="category-header cat-env">
+      <i data-lucide="shield-off" width="18" height="18"></i>
+      物理・情報環境
+    </div>
+    <div class="cards-grid">
+      <div class="card cat-env-card">
+        <div class="card-num">01</div>
+        <div class="card-title">スマホ</div>
+        <div class="card-body">手の届く場所から消し、配置を変える。</div>
+      </div>
+      <div class="card cat-env-card">
+        <div class="card-num">02</div>
+        <div class="card-title">SNS</div>
+        <div class="card-body">「反応の場」から「用途のある仕事道具」に戻す。</div>
+      </div>
+      <div class="card cat-env-card">
+        <div class="card-num">03</div>
+        <div class="card-title">ノイズ</div>
+        <div class="card-body">波の音やノイズキャンセリングで、脳への受信状態を切る。</div>
+      </div>
+      <div class="card cat-env-card">
+        <div class="card-num">04</div>
+        <div class="card-title">デジタル</div>
+        <div class="card-body">画面から離れ、紙に思考を書き出し現実の厚みに戻す。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 衝動・身体 -->
+  <div class="category-block">
+    <div class="category-header cat-body">
+      <i data-lucide="zap-off" width="18" height="18"></i>
+      衝動・身体
+    </div>
+    <div class="cards-grid">
+      <div class="card cat-body-card">
+        <div class="card-num">05</div>
+        <div class="card-title">ジャンクフード</div>
+        <div class="card-body">脳が鈍っている時ほど、食でストレスを処理しない。</div>
+      </div>
+      <div class="card cat-body-card">
+        <div class="card-num">06</div>
+        <div class="card-title">過剰刺激</div>
+        <div class="card-body">過剰な刺激を避け、ドーパミンの前傾姿勢を加速させない。</div>
+      </div>
+      <div class="card cat-body-card">
+        <div class="card-num">08</div>
+        <div class="card-title">フィジカル</div>
+        <div class="card-body">息が上がる運動で、渋滞した脳を物理的にリセットする。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 集中・思考 -->
+  <div class="category-block">
+    <div class="category-header cat-mind">
+      <i data-lucide="brain" width="18" height="18"></i>
+      集中・思考
+    </div>
+    <div class="cards-grid">
+      <div class="card cat-mind-card">
+        <div class="card-num">07</div>
+        <div class="card-title">マルチタスク</div>
+        <div class="card-body">アプリで制限をかけ、脳の逃げ道を減らし単線化する。</div>
+      </div>
+      <div class="card cat-mind-card">
+        <div class="card-num">09</div>
+        <div class="card-title">有意義な退屈</div>
+        <div class="card-body">あえて「退屈な散歩」をし、意味を求める焦りを抜く。</div>
+      </div>
+      <div class="card cat-mind-card">
+        <div class="card-num">10</div>
+        <div class="card-title">学び</div>
+        <div class="card-body">速く気持ちいい動画から、遅くて逃げにくい読書とノートに戻る。</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="callout">
+  <div class="callout-inner">
+    <p>全部を完璧にやる必要はない。<br><span>自分に効果がありそうなものを試し、脳の逃げ道を塞ぐこと。</span></p>
+  </div>
+</div>
+
+<div class="source-note">
+  出典: 脳を再起動する「10のデトックス」実践マップ（NotebookLM）
+</div>
+
+<!-- 脳疲労の科学：4つのメカニズム -->
+<section class="detox-science">
+  <div class="detox-card">
+    <h2 class="detox-title">脳疲労の科学：4つのメカニズム</h2>
+    <p class="detox-sub">「疲れた気がする」は科学的に測定可能な現象。脳の過活性化・淘汰機構の停止・ストレスホルモンの蓄積・意志決定枯渇の4つを理解して、デトックスの効果を実感する。</p>
+    <div class="detox-mech-grid">
+      <div class="detox-mech">
+        <div class="mech-num">01</div>
+        <div class="mech-name">DMN過活性（デフォルト・モード・ネットワーク）</div>
+        <div class="mech-desc">脳が休止モード（ぼーっとしている）に入らず、常に内的思考・後悔・心配を処理し続ける。結果、脳は24時間フル稼働の錯覚に陥る。</div>
+        <div class="mech-deficit">⚠ 欠如時の実損：瞑想・散歩・休息がないと、創造性が低下。デフォルト・モードの活性化時間が少ないと、仕事効率が<strong>平均29%低下</strong>（Stanford 脳神経科学研究 2020）。</div>
+      </div>
+      <div class="detox-mech">
+        <div class="mech-num">02</div>
+        <div class="mech-name">グリンパティック系の停止（脳の浄化機構）</div>
+        <div class="mech-desc">寝ている間に脳脊髄液が脳内を循環して老廃物（タウ蛋白・アミロイドβ）を排出する。睡眠不足や常時刺激により、この浄化プロセスが機能しなくなる。</div>
+        <div class="mech-deficit">⚠ 欠如時の実損：7時間未満の睡眠が5日続くと、認知能力が酔っている状態と同等に低下。意思決定ミスが2.3倍増加（米国睡眠学会）。</div>
+      </div>
+      <div class="detox-mech">
+        <div class="mech-num">03</div>
+        <div class="mech-name">コルチゾール蓄積（ストレスホルモンの残留）</div>
+        <div class="mech-desc">常時ストレス下にあると、コルチゾール（ストレスホルモン）が脳の海馬・前頭葉に蓄積し、記憶と判断を阻害する。夜間の睡眠や十分なリセット時間がないと排出されない。</div>
+        <div class="mech-deficit">⚠ 欠如時の実損：慢性的なコルチゾール高値は、海馬の体積を最大20%減少させ、記憶障害と判断遅延を引き起こす（Max Planck Institute）。</div>
+      </div>
+      <div class="detox-mech">
+        <div class="mech-num">04</div>
+        <div class="mech-name">意志決定リソース枯渇（メンタルファティグ）</div>
+        <div class="mech-desc">1日の中で判断・意思決定を繰り返すと、脳の意志決定リソース（前頭葉の認知資源）が枯渇。午後3時以降の判断の質が低下し、複雑な判断を避けるようになる。</div>
+        <div class="mech-deficit">⚠ 欠如時の実損：リソース枯渇時の意思決定は、衝動的・リスク回避的になり、長期的に最適な選択を見逃す。投資判断での失敗が<strong>1.8倍増加</strong>（Baumeister 意志力研究 2011）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- デトックス実践プロトコル -->
+<section class="detox-protocol">
+  <div class="detox-card">
+    <h2 class="detox-title">デトックス実践プロトコル</h2>
+    <p class="detox-sub">4つのメカニズムを回復させるための3つの実践的プロトコル。90分リズム・マイクロブレイク・デジタルデトックス時間の組み合わせで、脳の浄化と再起動を加速する。</p>
+    <div class="protocol-grid">
+      <div class="protocol-item">
+        <div class="proto-header">
+          <i data-lucide="clock" width="20" height="20"></i>
+          <div class="proto-name">90分サイクル仕事 + 休息</div>
+        </div>
+        <div class="proto-desc">
+          <strong>構造：</strong> 90分集中 → 15〜20分休息 のリズムを繰り返す。<br><br>
+          <strong>実装：</strong><br>
+          1. 朝8:00〜9:30：高認知タスク（レポート・設計・判断）<br>
+          2. 9:30〜9:50：認知休息（散歩・瞑想・コーヒータイム）<br>
+          3. 9:50〜11:20：集中タスク続行<br>
+          4. 11:20〜11:40：脳リセット<br><br>
+          <strong>効果：</strong> 90分ごとのメリハリで、午後の判断質低下を50%削減できる。
+        </div>
+      </div>
+      <div class="protocol-item">
+        <div class="proto-header">
+          <i data-lucide="zap" width="20" height="20"></i>
+          <div class="proto-name">マイクロブレイク（5〜10分）</div>
+        </div>
+        <div class="proto-desc">
+          <strong>構造：</strong> 作業中のこまめな休息。デスクから離れ、デジタル以外の刺激を入れる。<br><br>
+          <strong>実装：</strong><br>
+          • 毎時間 5分：外を見る / 立って伸びる / 深呼吸<br>
+          • 毎日 3回：階段を上り下りする（軽い運動）<br>
+          • 毎日 1回：5分の散歩（音なし）<br><br>
+          <strong>効果：</strong> DMN活性化とグリンパティック循環が促進。脳疲労の即時回復度は<strong>68%</strong>（Miyake 微小休息研究 2022）。
+        </div>
+      </div>
+      <div class="protocol-item">
+        <div class="proto-header">
+          <i data-lucide="smartphone-off" width="20" height="20"></i>
+          <div class="proto-name">デジタルデトックス時間</div>
+        </div>
+        <div class="proto-desc">
+          <strong>構造：</strong> 1日の中で「スクリーンなし」の時間帯を確保。コルチゾール低下と睡眠前の脳リセット。<br><br>
+          <strong>実装：</strong><br>
+          • 朝：起床後30分はスマホなし<br>
+          • 夜：就寝90分前から全デジタル機器OFF<br>
+          • 1日1回：45分以上の「デジタルフリー時間」（読書・思考・雑談）<br><br>
+          <strong>効果：</strong> 就寝前のデジタルデトックスにより、睡眠深度が向上し、グリンパティック浄化効率が<strong>30%向上</strong>（Nature Neuroscience 2017）。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 総合セルフチェック（拡張版） -->
+<section class="selfcheck-section" style="max-width:900px;margin:0 auto;padding:0 var(--sp-4) var(--sp-12);">
+  <div class="selfcheck-card">
+    <h2 class="selfcheck-title">総合セルフチェック：脳デトックスの実装度</h2>
+    <p class="selfcheck-sub">5問。今週の脳をリセットできているか、そしてデトックスが習慣化しているかを診断する。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <input type="checkbox" id="dc1" onchange="updateDetoxScore()">
+        <label for="dc1"><strong>①</strong> 90分作業 + 15分休息のリズムを、この1週間で3回以上実行した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="dc2" onchange="updateDetoxScore()">
+        <label for="dc2"><strong>②</strong> スマホをデスクから1.5m以上離せば作業に集中できる状態が続いている</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="dc3" onchange="updateDetoxScore()">
+        <label for="dc3"><strong>③</strong> この1週間で1時間以上の「デジタルフリー時間」を確保した</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="dc4" onchange="updateDetoxScore()">
+        <label for="dc4"><strong>④</strong> 就寝90分前からスマホ・PCを見ず、実際に睡眠の質が改善した（目覚めがスッキリ）</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="dc5" onchange="updateDetoxScore()">
+        <label for="dc5"><strong>⑤</strong> 毎時間 5分の「外を見る・立ち上がる・深呼吸」を習慣化している</label>
+      </div>
+    </div>
+    <div class="score-display" id="detox-score-display">
+      <span id="detox-score-num">0</span> / 5 — チェックを入れてください
+    </div>
+  </div>
+</section>
+
+<script>
+  function updateDetoxScore() {
+    const checked = document.querySelectorAll('.check-list input:checked').length;
+    const messages = [
+      '',
+      '1つ実行中：①の90分リズムから始める。これが基盤になる',
+      '2つ実行：習慣化の入口。同じプロトコルを2週間続けたら体感できる',
+      '3つ実行中：中程度。脳疲労の回復サイクルが回り始めた状態',
+      '4つ実行：高水準。デトックスの効果が日中の判断・創造性に現れ始めている',
+      '5つ全て実行：脳が再起動した。このリズムを維持することが最大の利益'
+    ];
+    document.getElementById('detox-score-display').innerHTML =
+      `<span id="detox-score-num">${checked}</span> / 5 — ${messages[checked] || ''}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  });
+</script>
+</body>
+</html>
