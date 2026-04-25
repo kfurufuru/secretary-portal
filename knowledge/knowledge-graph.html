@@ -232,7 +232,7 @@ function nodeColor(cat, isHub) {
 // Hub nodes
 const HUB_NODES = [
   { id: '__center__', label: '古舘\nナレッジベース', isCenter: true,
-    shape: 'ellipse', size: 42, font: { size: 13, bold: true, color: '#0f172a' },
+    shape: 'ellipse', size: 42, font: { size: 13, color: '#0f172a', face: 'Arial, sans-serif' },
     color: { background: '#f59e0b', border: '#fbbf24', highlight: { background: '#fcd34d', border: '#f59e0b' } },
     category: 'center', level: null, fixed: false },
   { id: '__hub_ai__', label: 'AI活用', category: 'AI活用' },
@@ -463,7 +463,7 @@ allNodes.push({
   id: '__center__',
   label: '古舘\nナレッジベース',
   shape: 'ellipse', size: 42,
-  font: { size: 14, bold: true, color: '#0f172a' },
+  font: { size: 14, color: '#0f172a', face: 'Arial, sans-serif' },
   color: { background: '#f59e0b', border: '#fcd34d', highlight: { background: '#fcd34d', border: '#f59e0b' } },
   _category: 'center', _isHub: true,
   title: '<b>古舘ナレッジベース</b><br>中心ノード — 全知識の起点'
@@ -476,7 +476,7 @@ HUB_NODES.filter(h => !h.isCenter).forEach(h => {
     id: h.id,
     label: h.label,
     shape: 'hexagon', size: 22,
-    font: { size: 12, color: '#e2e8f0', bold: true },
+    font: { size: 12, color: '#e2e8f0', face: 'Arial, sans-serif' },
     color: { background: c, border: c, highlight: { background: '#334155', border: '#38bdf8' } },
     _category: h.category, _isHub: true,
     title: `<b>${h.label.replace('\n','')}</b><br>カテゴリハブ`
@@ -500,7 +500,7 @@ RAW_NODES.forEach(n => {
     label: short,
     shape: makeShape(n.level),
     size: makeSize(n.score),
-    font: { size: 12, color: '#e2e8f0' },
+    font: { size: 12, color: '#e2e8f0', face: 'Arial, sans-serif' },
     color: { background: c, border: c, highlight: { background: '#334155', border: '#38bdf8' } },
     _category: n.category,
     _level: n.level,
@@ -532,7 +532,7 @@ RAW_EDGES.forEach((e, i) => {
     id: `ke_${i}`,
     from: e.from, to: e.to,
     label: e.rel,
-    font: { size: 9, color: '#94a3b8', align: 'middle' },
+    font: { size: 9, color: '#94a3b8', align: 'middle', face: 'Arial, sans-serif' },
     color: { color: '#94a3b8', opacity: 0.55 },
     width: 1.8,
     smooth: { type: 'curvedCW', roundness: 0.15 },
@@ -554,7 +554,7 @@ const options = {
     stabilization: { iterations: 400 },
   },
   interaction: { hover: true, tooltipDelay: 200, navigationButtons: true, zoomView: true, multiselect: false },
-  nodes: { borderWidth: 1.5, scaling: { min: 10, max: 36 }, font: { face: '"Noto Sans JP", Inter, sans-serif', size: 12, color: '#e2e8f0' } },
+  nodes: { borderWidth: 1.5, scaling: { min: 10, max: 36 }, font: { face: 'Arial, sans-serif', size: 12, color: '#e2e8f0' } },
   edges: { smooth: { type: 'dynamic' }, arrows: { to: { enabled: true, scaleFactor: 0.4 } } },
 };
 
