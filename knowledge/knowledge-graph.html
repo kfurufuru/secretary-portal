@@ -25,6 +25,9 @@ header h1 { font-size: 0.95rem; font-weight: 700; color: var(--accent); white-sp
 .stats { display: flex; gap: 8px; font-size: 0.75rem; color: var(--sub); flex-wrap: wrap; }
 .stats span { background: var(--bg); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; }
 .gen-time { font-size: 0.68rem; color: var(--sub); margin-left: auto; white-space: nowrap; }
+.nav-link { font-size: 0.75rem; color: var(--sub); text-decoration: none;
+            border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; white-space: nowrap; }
+.nav-link:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ── Controls ── */
 .controls { padding: 8px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
@@ -150,6 +153,8 @@ header h1 { font-size: 0.95rem; font-weight: 700; color: var(--accent); white-sp
     <span style="background:#1e3a5f;color:#93c5fd;border:none">◆ review 2</span>
     <span style="background:#2d1f3d;color:#c4b5fd;border:none">● draft 0</span>
   </div>
+  <a class="nav-link" href="../portal-v2.html">← ポータル</a>
+  <a class="nav-link" href="dashboard.html">📊 ダッシュボード</a>
   <span class="gen-time">2026-04-25 更新</span>
   <button class="btn-help" id="btn-help" title="操作ガイドを表示">?</button>
 </header>
