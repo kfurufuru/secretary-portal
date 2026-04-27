@@ -100,6 +100,19 @@ SORT file.ctime DESC
 
 ---
 
+## ⭐ 8. 核心知識棚卸し（understanding_score ≥ 4）
+
+```dataview
+TABLE understanding_score as "理解度", category as "カテゴリ", last_reviewed as "最終レビュー"
+FROM "knowledge"
+WHERE understanding_score >= 4
+SORT last_reviewed ASC
+```
+
+**用途**: Weekly review で「高重要度ナレッジの陳腐化チェック」に使う。`last_reviewed` が古い順に表示＝要見直し候補。
+
+---
+
 ## 使い方
 
 1. Obsidian で このファイルを開く
@@ -109,3 +122,4 @@ SORT file.ctime DESC
 ### 既存統合箇所
 - `ai-conversations/weekly-digest.md`: Query 5 を「This Week's RSS」に統合
 - `knowledge/notebooklm-py-integration.md`: Query 7 をデジタルツイン分析に活用
+- Weekly review: Query 8 を「核心知識棚卸し」セクションに統合
