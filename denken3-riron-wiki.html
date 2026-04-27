@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja" data-theme="light" data-accent="forest" data-difficulty="standard">
 <head>
   <meta charset="UTF-8">
@@ -2021,7 +2021,7 @@ const HomePage = ({ data, onNav }) => {
           </div>
         </div>
 
-        <h2><span className="h-num">1.</span>はじめに</h2>
+        <h2><span className="h-num">§1</span>はじめに</h2>
         <p>本Wikiは「電気系出身者の復習」を主眼に置く。中学物理〜電気回路の基礎は前提とし、各単元では <strong>要点を最短経路で押さえる</strong> ことを優先する。説明は教科書調（である調）に統一し、図解・回路図・ベクトル図を充実させた。</p>
 
         <p>各単元ページには次の要素を備える:</p>
@@ -2034,7 +2034,7 @@ const HomePage = ({ data, onNav }) => {
         </ul>
         <p style={{marginTop: 14}}>本文中の <span className="marker">黄色マーカー</span> 部分は、論述・記述で問われやすい重要キーワード・原則を示す。試験直前期はマーカー箇所を中心に総ざらいするのが効率的である。</p>
 
-        <h2><span className="h-num">2.</span>単元一覧</h2>
+        <h2><span className="h-num">§2</span>単元一覧</h2>
         <p>章をクリックして該当ページへ移動する。<span className="diff-badge diff-advanced">応用</span> マークが付いた章は計算問題で頻出。</p>
 
         {data.chapters.filter(c => c.id !== "ref").map(ch => (
@@ -2058,7 +2058,7 @@ const HomePage = ({ data, onNav }) => {
           </div>
         ))}
 
-        <h2><span className="h-num">3.</span>出題傾向（直近10年）</h2>
+        <h2><span className="h-num">§3</span>出題傾向（直近10年）</h2>
         <p>過去10年間の機械科目における大きな単元別の出題比率。試験対策の優先順位の参考とする。</p>
         <div className="box">
           {data.freqData.map((f, i) => (
@@ -2070,7 +2070,7 @@ const HomePage = ({ data, onNav }) => {
           ))}
         </div>
 
-        <h2><span className="h-num">4.</span>学習戦略</h2>
+        <h2><span className="h-num">§4</span>学習戦略</h2>
         <Box kind="tip" label="推奨アプローチ">
           <ol>
             <li><strong>誘導機 → 変圧器 → 直流機</strong> の順で骨格を固める。三大単元で 6 割を確保する。</li>
@@ -2818,7 +2818,7 @@ const HomePage = ({ onNav }) => {
           </div>
         </div>
 
-        <h2><span className="h-num">1.</span>はじめに</h2>
+        <h2><span className="h-num">§1</span>はじめに</h2>
         <p>本Wikiは <strong>「理論は他3科目の土台」</strong> という前提に立つ。電力・機械・法規のいずれも、理論で扱う電気回路・電磁気・電子の基礎なくしては解けない。理論を「なんとなく」で済ませると、他3科目の学習効率が大幅に低下する。</p>
 
         <p>本Wikiの方針は明確である：</p>
@@ -2830,7 +2830,7 @@ const HomePage = ({ onNav }) => {
         </ul>
         <p style={{marginTop: 14}}>本文中の <span className="marker">黄色マーカー</span> 部分は、原理理解で必ず押さえるべき要点・物理的意味を示す。直前期はマーカー箇所を中心に総ざらいするのが効率的である。</p>
 
-        <h2><span className="h-num">2.</span>単元一覧</h2>
+        <h2><span className="h-num">§2</span>単元一覧</h2>
         <p>章をクリックして該当ページへ移動する。<span className="diff-badge diff-advanced">応用</span> マークが付いた章は計算問題で頻出。理論は「電気回路 → 電磁気 → 電子 → 計測」の順で学ぶと前提知識のギャップが少ない。</p>
 
         {d.chapters.filter(c => c.id !== "ref" && c.id !== "ch7").map(ch => (
@@ -2854,7 +2854,7 @@ const HomePage = ({ onNav }) => {
           </div>
         ))}
 
-        <h2><span className="h-num">3.</span>出題傾向（直近10年）</h2>
+        <h2><span className="h-num">§3</span>出題傾向（直近10年）</h2>
         <p>過去10年間の理論科目における大きな単元別の出題比率。<strong>計算問題7〜9問・選択問題10問・記述問題ゼロ</strong>が定型構成。試験対策の優先順位の参考とする。</p>
         <div className="box">
           {d.freqData.map((f, i) => (
@@ -2866,7 +2866,7 @@ const HomePage = ({ onNav }) => {
           ))}
         </div>
 
-        <h2><span className="h-num">4.</span>学習戦略</h2>
+        <h2><span className="h-num">§4</span>学習戦略</h2>
         <Callout variant="tip" title="推奨アプローチ：電気回路 → 電磁気 → 電子 → 計測">
           電気回路（直流→交流→三相→RLC）で土台固め。ここで50点以上確保。電磁気で積み増し、電子理論は頻出4回路に絞る。計測は短期決戦で最後にまとめて。
         </Callout>
@@ -2875,7 +2875,7 @@ const HomePage = ({ onNav }) => {
           ①電界Eと磁束密度Bの単位混同、②RC・RLの過渡で急変しない量の判断ミス、③FETの飽和領域をBJTの飽和と混同。引っかけパターン集（7.1）で事前に潰すこと。
         </Callout>
 
-        <h2><span className="h-num">5.</span>攻略リンク</h2>
+        <h2><span className="h-num">§5</span>攻略リンク</h2>
         <p>得点に直結する3つの攻略ページ。学習の各フェーズで参照する。</p>
         <div className="card-grid">
           <div className="card" onClick={() => onNav("trap-patterns")}>
@@ -2938,7 +2938,7 @@ const Last3DaysPage = ({ onNav }) => (
     />
     <div className="content">
 
-      <h2 id="day3"><span className="h-num">1.</span>Day 3（試験3日前）— 電磁気・直流回路の公式確認</h2>
+      <h2 id="day3"><span className="h-num">§1</span>Day 3（試験3日前）— 電磁気・直流回路の公式確認</h2>
 
       <h3>静電気・コンデンサ</h3>
       <Callout variant="info" title="クーロンの法則 F = kQ₁Q₂/r² の係数kの根拠">
@@ -3004,7 +3004,7 @@ const Last3DaysPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="day2"><span className="h-num">2.</span>Day 2（試験2日前）— B問題の計算パターン確認</h2>
+      <h2 id="day2"><span className="h-num">§2</span>Day 2（試験2日前）— B問題の計算パターン確認</h2>
 
       <h3>三相交流</h3>
       <Callout variant="info" title="Y結線とΔ結線の√3の出る場所">
@@ -3053,7 +3053,7 @@ const Last3DaysPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="day1"><span className="h-num">3.</span>Day 1（試験前日）— R08予測テーマの重点確認</h2>
+      <h2 id="day1"><span className="h-num">§3</span>Day 1（試験前日）— R08予測テーマの重点確認</h2>
 
       <h3>磁気回路（最優先：R06上〜R07上 3回連続空白）</h3>
       <Callout variant="warn" title="R08（2026年8月）最高確率テーマ">
@@ -3097,7 +3097,7 @@ const Last3DaysPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="morning"><span className="h-num">4.</span>当日朝 — 最重要確認表（5分で黙読）</h2>
+      <h2 id="morning"><span className="h-num">§4</span>当日朝 — 最重要確認表（5分で黙読）</h2>
 
       <table>
         <thead>
@@ -3163,7 +3163,7 @@ const RetakeStrategyPage = ({ onNav }) => (
         学習計画策定時（試験3〜6ヶ月前）に読むドキュメント。直前対策は「7.2 直前3日チェックリスト」を使う。
       </Callout>
 
-      <h2 id="policy"><span className="h-num">1.</span>公式の出題方針</h2>
+      <h2 id="policy"><span className="h-num">§1</span>公式の出題方針</h2>
       <p>ECEE（電気技術者試験センター）の公式方針は、年度ごとに「問題作成方針」として公表されている。R7（2025年度）の問題作成方針より、以下の3点が明示されている：</p>
       <ol>
         <li>新作問題を中心としつつ、<strong>過去問題から必要に応じて構成する</strong></li>
@@ -3183,7 +3183,7 @@ const RetakeStrategyPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="reuse"><span className="h-num">2.</span>再出題傾向：完全一致率の推移</h2>
+      <h2 id="reuse"><span className="h-num">§2</span>再出題傾向：完全一致率の推移</h2>
       <p>近年の試験で「過去問と完全に同じ問題（数値・選択肢含めて一致）」がどれだけ出たかの実測値。</p>
 
       <table>
@@ -3207,7 +3207,7 @@ const RetakeStrategyPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="characteristics"><span className="h-num">3.</span>理論の特性：解法パターン科目</h2>
+      <h2 id="characteristics"><span className="h-num">§3</span>理論の特性：解法パターン科目</h2>
       <p>理論は <strong>答えを覚える科目ではなく、解法を覚える科目</strong>。法規（条文・数値）や電力（設備諸元）と異なり、物理法則の組み合わせで解く構造。</p>
       <p>→ 同じ論点・同じ解法パターンが、数値や回路構成を変えて繰り返し出題される。</p>
 
@@ -3232,7 +3232,7 @@ const RetakeStrategyPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="range"><span className="h-num">4.</span>効率的な学習範囲</h2>
+      <h2 id="range"><span className="h-num">§4</span>効率的な学習範囲</h2>
 
       <h3>まずやる：最新10回（2026-04-25時点）</h3>
       <p>R3上期〜R7下期の <strong>直近10回分</strong> を最優先で解く。</p>
@@ -3273,7 +3273,7 @@ const RetakeStrategyPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="rounds"><span className="h-num">5.</span>周回数の目安</h2>
+      <h2 id="rounds"><span className="h-num">§5</span>周回数の目安</h2>
 
       <table>
         <thead>
@@ -3300,7 +3300,7 @@ const RetakeStrategyPage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="references"><span className="h-num">6.</span>参考情報</h2>
+      <h2 id="references"><span className="h-num">§6</span>参考情報</h2>
 
       <h3>公式</h3>
       <ul>
@@ -3357,7 +3357,7 @@ const GuidePage = ({ onNav }) => (
     />
     <div className="content">
 
-      <h2 id="roadmap"><span className="h-num">1.</span>学習ロードマップ（12週モデル）</h2>
+      <h2 id="roadmap"><span className="h-num">§1</span>学習ロードマップ（12週モデル）</h2>
       <p>理論をゼロから始める方向けの学習順序。16テーマをフェーズ順に積み上げることで、「前提知識が足りなくて詰まる」を防ぐ。全体の目安は週10〜15時間で3〜4ヶ月。</p>
 
       <h3>前提知識チェックリスト</h3>
@@ -3448,12 +3448,12 @@ const GuidePage = ({ onNav }) => (
       </table>
 
       <Callout variant="tip" title="一周した後は">
-        全STEP完了後は「弱点別・過去問逆引き」に切り替えて弱点を特定する。「知識チェック」で理解度スコアが低いテーマから復習する。
+        全STEP完了後は§2「弱点別・過去問逆引き」に切り替えて弱点を特定する。「知識チェック」で理解度スコアが低いテーマから復習する。
       </Callout>
 
       <hr/>
 
-      <h2 id="weakness"><span className="h-num">2.</span>弱点別・過去問逆引き</h2>
+      <h2 id="weakness"><span className="h-num">§2</span>弱点別・過去問逆引き</h2>
       <p>過去問を解いて間違えた問題を、対応テーマに紐付けて集中学習するためのパス。「どこを直せばいいか」を素早く特定し、無駄なく弱点を潰す。</p>
 
       <h3>「位相差の±符号でいつも迷う」人向け</h3>
@@ -3589,7 +3589,7 @@ const GuidePage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="last-minute"><span className="h-num">3.</span>直前対策（圧縮版）</h2>
+      <h2 id="last-minute"><span className="h-num">§3</span>直前対策（圧縮版）</h2>
       <p>試験前日〜当日朝に「5秒で思い出す」だけ確認するためのページ。新しいことを学ぶ場所ではない。知っていることを「頭から取り出しやすい状態」にするために使う。</p>
 
       <Callout variant="warn" title="このページの使い方">
@@ -3666,7 +3666,7 @@ const GuidePage = ({ onNav }) => (
           <tr><td>試験前日の夜</td><td>「5秒で思い出す」を不安なテーマだけ確認。新しいことは一切やらない</td></tr>
           <tr><td>当日の朝（家）</td><td>「7.2 直前3日戦略」の「当日朝 — 最重要確認表」を5分で黙読</td></tr>
           <tr><td>試験会場（開始前）</td><td>三相交流の √3 の使い分けだけ頭の中で確認</td></tr>
-          <tr><td>試験中（問題を読んだ直後）</td><td>キーワードを見て「どのテーマか」を第2節の対応表と照合</td></tr>
+          <tr><td>試験中（問題を読んだ直後）</td><td>キーワードを見て「どのテーマか」を§2の対応表と照合</td></tr>
           <tr><td>試験中（計算後）</td><td>答えを出したら「答えの妥当性を確認」で異常値チェック</td></tr>
         </tbody>
       </table>
@@ -3677,7 +3677,7 @@ const GuidePage = ({ onNav }) => (
 
       <hr/>
 
-      <h2 id="score-strategy"><span className="h-num">4.</span>得点戦略</h2>
+      <h2 id="score-strategy"><span className="h-num">§4</span>得点戦略</h2>
       <p>分野別の出題数と目標得点を逆算する。理論は100点満点・合格60点。安定して合格圏に乗せるには「電気回路で50点・電磁気で18点・電子で13点・計測で5点」を目安にする。</p>
 
       <h3>分野別 配点・目標得点マトリクス</h3>
@@ -3750,7 +3750,7 @@ const GuidePage = ({ onNav }) => (
       </ul>
 
       <h4>そもそも解き方が分からない</h4>
-      <p>→ 「弱点別・過去問逆引き」の対応表で参照テーマを特定する。原理から再学習する。</p>
+      <p>→ §2「弱点別・過去問逆引き」の対応表で参照テーマを特定する。原理から再学習する。</p>
 
     </div>
     <PageNav
@@ -3793,14 +3793,14 @@ const CapacitorPage = ({ onNav }) => (
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"1. 静電気・電子"}]} onNav={onNav} />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="water-tank" icon="💧">
       コンデンサは電荷を溜める水槽。容量 C [F] が水槽のサイズ、電圧 V [V] が水位、電荷 Q [C] が溜まった水の量。
       エネルギーは電界に蓄えられる（電池は化学エネルギー、コンデンサは電界エネルギー）。直流は定常状態で電流ゼロ。
     </Analogy>
     <p>コンデンサは電荷を蓄える受動素子。直流状態では電流が流れず、交流では周波数が高いほど容易に電流を通す。静電容量・蓄積エネルギー・直並列合成が頻出論点。</p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable layer="A" rows={[
       { formula: "C = \\frac{Q}{V}", meaning: "静電容量の定義。1Vかけたとき溜まるクーロン数", when: "常に成立", notWhen: "—" },
       { formula: "C = \\varepsilon_0 \\varepsilon_r \\frac{S}{d}", meaning: "平行平板コンデンサの容量", when: "平行平板均一電界", notWhen: "不均一電界・球形など" },
@@ -3814,7 +3814,7 @@ const CapacitorPage = ({ onNav }) => (
       { formula: "C = C_1 + C_2", meaning: "並列合成（抵抗の直列計算と同じ式形）", when: "並列接続", notWhen: "—" },
     ]} />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ表</h2>
     <table className="data-table">
       <thead>
         <tr>
@@ -3848,7 +3848,7 @@ const CapacitorPage = ({ onNav }) => (
       <p><strong>定電荷（電源切り離し後）</strong>：<Eq tex="C' = \\varepsilon_r C_0" />、<Eq tex="V' = V_0 / \\varepsilon_r" />、<Eq tex="W' = W_0 / \\varepsilon_r" />（エネルギー減少）</p>
     </Callout>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 4μFと12μFのコンデンサを直列接続したときの合成静電容量を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -3857,7 +3857,7 @@ const CapacitorPage = ({ onNav }) => (
       <p><strong>ポイント：</strong>コンデンサの直列は抵抗の並列と同じ計算。合成容量は単独の容量より小さくなる。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="勘違い①：直列・並列計算が抵抗と同じだと思いがち">
       直列のとき合成容量は「逆数の和」（小さくなる）、並列のとき「足し算」（大きくなる）。抵抗と逆転する。
     </Callout>
@@ -3868,7 +3868,7 @@ const CapacitorPage = ({ onNav }) => (
       <Eq tex="W = \\frac{1}{2}CV^2 = \\frac{Q^2}{2C} = \\frac{QV}{2}" /> はすべて同じ値。与えられているのが V か Q かで使い分けるだけ。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>静電気 — クーロン力・電界・電位の基礎</li>
       <li>直流回路 — コンデンサの充放電（過渡現象）</li>
@@ -3901,14 +3901,14 @@ const AcPowerPage = ({ onNav }) => (
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"2. 交流回路"}]} onNav={onNav} />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="work-energy" icon="⚙️">
       交流電力は「実際に仕事をする部分（有効電力）」と「エネルギーを往復させるだけの部分（無効電力）」に分かれる。
       力率 cosφ は皮相電力のうち有効電力が占める割合。工場の電気代は力率が低いと割増料金が発生する。
     </Analogy>
     <p>交流電力は3つの成分に分解される：有効電力（仕事に変わる）、無効電力（往復するだけ）、皮相電力（設備容量）。力率改善はコンデンサ並列接続で無効電力を打ち消す実務技術。</p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable layer="A" rows={[
       { formula: "P = VI\\cos\\varphi", meaning: "有効電力。実際に消費されるエネルギー", when: "正弦波単相交流", notWhen: "非正弦波（高調波含む）" },
       { formula: "Q = VI\\sin\\varphi", meaning: "無効電力。L・Cとの間でエネルギー往復", when: "正弦波単相交流", notWhen: "—" },
@@ -3921,7 +3921,7 @@ const AcPowerPage = ({ onNav }) => (
       { formula: "P = I^2 R", meaning: "抵抗成分のみの有効電力", when: "純抵抗", notWhen: "L・C混在回路" },
     ]} />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ表</h2>
     <table className="data-table">
       <thead>
         <tr>
@@ -3953,7 +3953,7 @@ const AcPowerPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="power-improvement"><span className="h-num">4.</span>力率改善（コンデンサ補償）</h2>
+    <h2 id="power-improvement"><span className="h-num">§4</span>力率改善（コンデンサ補償）</h2>
     <Callout variant="tip" title="力率改善の計算手順">
       <p>1. 現状の無効電力：<Eq tex="Q_1 = P\\tan\\varphi_1" /></p>
       <p>2. 目標の無効電力：<Eq tex="Q_2 = P\\tan\\varphi_2" /></p>
@@ -3961,7 +3961,22 @@ const AcPowerPage = ({ onNav }) => (
       <p>4. コンデンサ容量：<Eq tex="C = \\frac{Q_C}{\\omega V^2}" /></p>
     </Callout>
 
-    <h2 id="examples"><span className="h-num">5.</span>例題</h2>
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      有効電力・無効電力・皮相電力の3成分は、受変電容量設計・力率管理・電気料金計算の根幹。プラントの基本料金は力率で上下する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>受変電設備の容量設計</td><td>皮相電力 S=P/cosφ</td><td>設備容量はkVAで決まる。kWだけ見ると過小設計</td></tr>
+        <tr><td>高圧受電の電気料金（基本料金）</td><td>力率 cosφ</td><td>力率85%基準で割引／割増。進相コンデンサで改善</td></tr>
+        <tr><td>進相コンデンサ容量の計算</td><td>Q=P(tanφ₁−tanφ₂)</td><td>改善前後の力率角から必要kvar容量を逆算して選定</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">§5</span>例題</h2>
     <p><strong>問:</strong> 100V・5Aの交流回路で力率が0.8（遅れ）のとき、有効電力・無効電力・皮相電力を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -3971,7 +3986,7 @@ const AcPowerPage = ({ onNav }) => (
       <p><strong>ポイント：</strong>sinφを求めるには <Eq tex="\\sin^2\\varphi + \\cos^2\\varphi = 1" /> を使う。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">6.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§6</span>引っかけポイント</h2>
     <Callout variant="warn" title="勘違い①：無効電力の単位を [W] と書く">
       無効電力の単位は <strong>[var]</strong>（バール）。有効電力 [W] と無効電力 [var] と皮相電力 [VA] は異なる単位。
     </Callout>
@@ -3982,7 +3997,7 @@ const AcPowerPage = ({ onNav }) => (
       <Eq tex="S^2 = P^2 + Q^2" /> の関係（直角三角形）。足し算ではなく直角三角形の斜辺。
     </Callout>
 
-    <h2 id="related"><span className="h-num">7.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§7</span>関連項目</h2>
     <ul>
       <li>交流回路基礎 — インピーダンス・力率の定義</li>
       <li>RLC共振 — 共振周波数での力率最大</li>
@@ -4015,14 +4030,14 @@ const ThreePhasePage = ({ onNav }) => (
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"4. 電力系統"}]} onNav={onNav} />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="three-phase" icon="⚡⚡⚡">
       3つの水車が120°ずつ位相をずらして川に落ちるイメージ。1つが低いときは別の2つが補う→常に安定した合成力が得られる。
       Y結線は「星形」で中性点あり。Δ結線は「三角形」でループを形成。
     </Analogy>
     <p>線間電圧と相電圧の√3倍の関係がY/Δで逆になる点が試験の最頻出ポイント。Y結線は電圧に√3、Δ結線は電流に√3。</p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable layer="A" rows={[
       { formula: "V_L = \\sqrt{3} V_P", meaning: "Y結線：線間電圧は相電圧の√3倍", when: "対称三相・Y結線", notWhen: "Δ結線（VL=VP）" },
       { formula: "I_L = I_P", meaning: "Y結線：線電流と相電流は等しい", when: "Y結線", notWhen: "Δ結線" },
@@ -4036,7 +4051,7 @@ const ThreePhasePage = ({ onNav }) => (
       { formula: "\\tan\\varphi = \\frac{\\sqrt{3}(W_1 - W_2)}{W_1 + W_2}", meaning: "2電力計法で力率角を算出", when: "対称三相3線式", notWhen: "4線式" },
     ]} />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ表</h2>
     <table className="data-table">
       <thead>
         <tr>
@@ -4064,7 +4079,22 @@ const ThreePhasePage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      三相交流は工場の受変電・電動機・変圧器すべての基盤。√3の扱いと星形/三角形の電圧・電流関係を誤ると機器選定ミスに直結する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>三相受電盤の主回路設計</td><td>線間電圧＝√3×相電圧</td><td>6.6kV配電・400V/200V低圧の関係を即算</td></tr>
+        <tr><td>三相電動機の消費電力測定</td><td>P=√3・V_l・I_l・cosφ</td><td>線間電圧・線電流から消費電力（kW）算出</td></tr>
+        <tr><td>地絡保護方式の選定</td><td>Y結線中性点の接地</td><td>中性点接地方式で地絡電流の大きさと検出回路が決まる</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> Y結線の三相電源で相電圧が200Vのとき、線間電圧を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -4072,7 +4102,7 @@ const ThreePhasePage = ({ onNav }) => (
       <p><strong>考え方：</strong>Y結線では線間電圧は「2つの相電圧ベクトルの差」。120°ずれた等しいベクトルの差は元の√3倍になる（余弦定理）。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="勘違い①：Y結線で IL = √3 IP としてしまう（ΔとYの混同）">
       Y結線は <Eq tex="I_L = I_P" />。√3が出るのはΔ結線の電流と Y結線の電圧のみ。
     </Callout>
@@ -4083,7 +4113,7 @@ const ThreePhasePage = ({ onNav }) => (
       1相分×3が使えるのは平衡三相のみ。不平衡負荷は各相を個別計算してベクトル合成。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>交流電力 — 単相と三相での力率の違い</li>
       <li>交流回路基礎 — インピーダンス・ベクトル図</li>
@@ -4116,14 +4146,14 @@ const TransistorPage = ({ onNav }) => (
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"5. 電子理論"}]} onNav={onNav} />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="faucet" icon="🚰">
       バイポーラトランジスタは「電流で電流を制御」する。ベース電流 IB が小さくても、hFE 倍に増幅されたコレクタ電流 IC が流れる。蛇口のバルブのように、少ない力で大流量を制御する。
       FETは「電圧で電流を制御」する。ゲートに電圧を加えるだけで電流路を制御でき、入力電流がほぼゼロ。
     </Analogy>
     <p>トランジスタは増幅デバイス。直流動作点（Q点）の設定、電流増幅率 hFE、エミッタ接地・ベース接地・コレクタ接地の3接地方式が基本。FETは電圧制御でBJTと原理が異なる。</p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable layer="A" rows={[
       { formula: "h_{FE} = \\frac{I_C}{I_B}", meaning: "電流増幅率：ベース電流の何倍のコレクタ電流が流れるか", when: "アクティブ領域（増幅動作）", notWhen: "飽和・遮断領域" },
       { formula: "I_E = I_B + I_C", meaning: "キルヒホッフの電流則：3端子の電流収支", when: "常に成立（全動作領域）", notWhen: "—" },
@@ -4137,7 +4167,7 @@ const TransistorPage = ({ onNav }) => (
       { formula: "I_C \\approx I_E = \\frac{V_E}{R_E}", meaning: "コレクタ電流（エミッタ電流）", when: "常に成立", notWhen: "—" },
     ]} />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ表</h2>
     <table className="data-table">
       <thead>
         <tr>
@@ -4208,7 +4238,7 @@ const TransistorPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> hFE=100のNPNトランジスタにベース電流 IB=0.02mA が流れているとき、コレクタ電流 IC とエミッタ電流 IE を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -4217,7 +4247,7 @@ const TransistorPage = ({ onNav }) => (
       <p><strong>ポイント：</strong>IE = IB + IC（3端子の電流収支）。IC は IB の hFE 倍。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="勘違い①：hFE が大きいほど電圧利得も自動的に大きくなると思いがち">
       電圧利得は hFE だけでなく負荷抵抗 RC と内部インピーダンス hie の比にも依存する。hFE と電圧利得は別物。
     </Callout>
@@ -4228,7 +4258,7 @@ const TransistorPage = ({ onNav }) => (
       MOSFETのゲート入力インピーダンスは理想的には無限大（実際は静電容量のみ）。入力電流はほぼゼロ。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>半導体 — PN接合・キャリア・電子</li>
       <li>オペアンプ — トランジスタを使った集積回路</li>
@@ -4281,7 +4311,7 @@ const CoulombFieldPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="gravity" icon="🌍">
       重力と同じ「距離の逆二乗則」に従う。電界は「その場に置いた +1C の電荷が受ける力の向きと大きさの地図」。電位は「高さ」のアナロジー：高いところから低いところへ電荷は動く。電池の+極が「山の頂上」、−極が「谷底」のイメージ。
     </Analogy>
@@ -4289,7 +4319,7 @@ const CoulombFieldPage = ({ onNav }) => (
       電界と電位の関係：急峻な「坂（電位差）」ほど電界が強い。<strong>平坦な場所（等電位面）では電界がゼロ</strong>。電位 V はスカラー量なので、複数の点電荷がある場合は符号だけ考慮して代数和で求められる。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -4332,7 +4362,7 @@ const CoulombFieldPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>項目</th><th>クーロン力</th><th>重力</th></tr>
@@ -4355,7 +4385,7 @@ const CoulombFieldPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 真空中で 2μC と 3μC の点電荷が 1m 離れている。クーロン力の大きさを求めよ。（k=9×10⁹ N·m²/C²）</p>
     <details>
       <summary>解答</summary>
@@ -4368,7 +4398,7 @@ const CoulombFieldPage = ({ onNav }) => (
       <p>異符号の場合、V=0 となる点は<strong>2箇所</strong>（2電荷の内側に 1 点、外側に 1 点）。同符号では V=0 の点は存在しない。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="電界の向きは電子の動く向きではない">
       電界の向きは「正電荷が受ける力の向き」＝ +極（高電位）から −極（低電位）へ。電子の移動方向は逆（−から+へ移動）。
     </Callout>
@@ -4382,7 +4412,7 @@ const CoulombFieldPage = ({ onNav }) => (
       同符号の 2 点電荷 Q₁、Q₂（Q₁＜Q₂）間の釣り合い位置は x = √Q₁/(√Q₁+√Q₂)×d。Q₁ の方が小さいので Q₁ に近い側（Q₂ から遠い側）に存在する。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>コンデンサ（1.2）：平行平板コンデンサの電界 E=V/d はここの延長</li>
       <li>磁気回路（1.4）：電気回路との双対アナロジー</li>
@@ -4427,7 +4457,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="right-hand" icon="✋">
       <strong>左手 = モーター（電動機）</strong>：電流（中指）が磁界（人差し指）の中に入ると力（親指）が生まれる。電気エネルギー → 運動エネルギー。<br />
       <strong>右手 = 発電機</strong>：導体（中指）を磁界（人差し指）の中で動かすと起電力（親指方向）が生まれる。運動エネルギー → 電気エネルギー。
@@ -4436,7 +4466,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
       レンツの法則は「変化を嫌う自然の反抗」。<strong>磁束が増えれば打ち消そうとする誘導電流が流れる</strong>。逆に磁束が減れば維持しようとする電流が流れる。「変化の方向」を見ることが重要。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -4479,7 +4509,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>項目</th><th>左手（電動機）</th><th>右手（発電機）</th></tr>
@@ -4502,7 +4532,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 磁束密度 B=0.5T 中で、有効長 L=0.2m の導体に電流 I=10A が流れている。B と I が直角のとき、電磁力 F を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -4515,7 +4545,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
       <p><strong>引き合う（吸引力）</strong>。逆方向電流は反発力。日常感覚と逆なので注意。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="フレミング左手と右手の混同">
       力（F）が欲しい → 左手（モーター）、起電力（e）が欲しい → 右手（発電機）。試験中に迷ったら「電動機か発電機か」を先に確認する。
     </Callout>
@@ -4529,7 +4559,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
       円形コイル中心：H = NI/(2r)。直線電流：H = I/(2πr)。円形は π が分母にない分、同じ半径なら直線より磁界が π 倍強い。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>磁気回路（1.4）：アンペアの周回路則 H·l = NI の発展</li>
       <li>インダクタンス（3.1）：自己誘導・相互誘導の定量化</li>
@@ -4574,7 +4604,7 @@ const MagneticCircuitPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="electric-circuit" icon="🔌">
       磁気回路は電気回路の完全なアナロジー。起磁力 F=NI が電圧源、磁束 φ が電流、磁気抵抗 Rm が抵抗に対応する。「磁気のオームの法則」：NI = φ × Rm。
     </Analogy>
@@ -4582,7 +4612,7 @@ const MagneticCircuitPage = ({ onNav }) => (
       鉄心は透磁率が空気の数百〜数千倍。<strong>空隙（エアギャップ）は細くても磁気抵抗が支配的</strong>になる。1mm の空隙でも 0.5m の鉄心（μr=2000）の 4 倍の磁気抵抗になる場合がある。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -4613,7 +4643,7 @@ const MagneticCircuitPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>電気回路</th><th>磁気回路</th><th>単位</th></tr>
@@ -4637,7 +4667,7 @@ const MagneticCircuitPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 磁路長 l=0.5m、断面積 A=10cm²、比透磁率 μr=1000 の鉄心コアの磁気抵抗 Rm を求めよ。（μ₀=4π×10⁻⁷）</p>
     <details>
       <summary>解答</summary>
@@ -4645,7 +4675,7 @@ const MagneticCircuitPage = ({ onNav }) => (
       <p>磁気抵抗 = 磁路長 ÷（透磁率×断面積）。電気抵抗 R=l/(σA) と対応。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="エアギャップの磁気抵抗は非常に大きい">
       ギャップは長さが数mm以下でも μr=1 のため磁気抵抗が非常に大きい。鉄心（μr〜2000）と比べると同じ長さで 2000 倍の磁気抵抗になる。
     </Callout>
@@ -4659,7 +4689,7 @@ const MagneticCircuitPage = ({ onNav }) => (
       電気力線は正電荷で発生して負電荷で終わる（閉じていない）。磁力線は N 極から出て S 極に入り、磁石内部でも S→N 方向につながり全体として閉じている。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>電磁力（1.3）：アンペアの周回路則 H·l = NI が基礎</li>
       <li>インダクタンス（3.1）：L = μN²A/l は磁気回路から直接導出</li>
@@ -4704,7 +4734,7 @@ const DcCircuitPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="water-flow" icon="💧">
       電流は水流、電圧は水圧、抵抗は管の細さ。管が細いほど流れにくく、太い管が並列にあれば水（電流）は太い方に多く流れる。V = IR ── 電圧＝抵抗×電流。蛇口を絞ると（R↑）、圧力差（V）が生まれる。
     </Analogy>
@@ -4712,7 +4742,7 @@ const DcCircuitPage = ({ onNav }) => (
       テブナンの定理：どんな複雑な線形回路も、ある 2 端子から外を見ると、必ず 1 つの電圧源（Vth）と 1 つの抵抗（Rth）の直列接続に見える。「Vth = 何V押しているか / Rth = どれだけ抵抗しているか」。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -4755,7 +4785,7 @@ const DcCircuitPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>項目</th><th>直列接続</th><th>並列接続</th></tr>
@@ -4777,7 +4807,22 @@ const DcCircuitPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      受変電・制御盤の配線設計では、直流回路の基礎が電圧降下計算・保護協調・信号整合のすべてに使われる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DC24V制御電源で長距離PLC配線</td><td>V=IR の電圧降下</td><td>配線距離・線径から末端電圧を試算、定格90%確保</td></tr>
+        <tr><td>短絡電流計算で遮断器の容量選定</td><td>テブナン等価回路</td><td>系統を1電源+1抵抗に縮約、遮断容量がIs超えるか判定</td></tr>
+        <tr><td>信号源と入力回路の整合（最大電力）</td><td>最大電力定理</td><td>電力最大はRload=Rth時。ただし効率は50%で損失大</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 10Ω と 40Ω が並列接続された回路に 100V が印加されている。合成抵抗と全電流を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -4790,7 +4835,7 @@ const DcCircuitPage = ({ onNav }) => (
       <p>V端子 = E - Ir = 12 - 4×1 = <strong>8V</strong></p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="並列合成抵抗：逆数に戻すのを忘れる">
       1/Rp = 1/4 + 1/4 = 1/2 → Rp = 2Ω。「1/2Ω」と答えるミスが多い。最後に必ずひっくり返す。
     </Callout>
@@ -4804,7 +4849,7 @@ const DcCircuitPage = ({ onNav }) => (
       直列（電流一定）→ P=I²R → R 大ほど P 大。並列（電圧一定）→ P=V²/R → R 大ほど P 小。「どちらが大きいか」の問題で逆答する頻出ミス。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>交流の基礎（2.2）：オームの法則を複素数に拡張したものがインピーダンス</li>
       <li>ブリッジ回路（2.5）：キルヒホッフの直接応用</li>
@@ -4849,7 +4894,7 @@ const AcBasicsPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="wave" icon="🌊">
       交流は「時間とともに向きが変わる電圧・電流」。川の流れが行ったり来たりするイメージ。実効値（RMS）は「この交流と同じ発熱量をもたらす直流電圧は何V？」という換算値。コンセントの 100V はこの「実効値」。最大値は約 141V。
     </Analogy>
@@ -4857,7 +4902,7 @@ const AcBasicsPage = ({ onNav }) => (
       位相：同じ周波数の波でも、山が来るタイミングにズレがある。時計でいえば針の角度のズレ。フェーザー表現は実効値と位相角を複素数で一本化したもの。定常解析に威力を発揮する。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -4900,7 +4945,7 @@ const AcBasicsPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>素子</th><th>電流 vs 電圧</th><th>覚え方</th></tr>
@@ -4922,7 +4967,22 @@ const AcBasicsPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      交流回路の複素インピーダンスは、電動機・変圧器・ケーブルの電流計算から保護リレー整定まで、交流系統設計の共通言語となる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>インバータ駆動電動機の電流評価</td><td>インピーダンス Z=R+jX</td><td>周波数で X が変わる→低速時に誘導性リアクタンス低下</td></tr>
+        <tr><td>ケーブル長による位相ズレ検討</td><td>進み・遅れ電流の発生</td><td>進み・遅れを予測し保護リレーの誤動作判定に活用</td></tr>
+        <tr><td>機器銘板の力率からkVA換算</td><td>S=VI（皮相電力）</td><td>銘板cosφとP[kW]からS=P/cosφで電源容量チェック</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 最大値が 141V の正弦波交流電圧の実効値を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -4934,7 +4994,7 @@ const AcBasicsPage = ({ onNav }) => (
       <p>Z = √(3²+4²) = <strong>5Ω</strong>、tanφ = 4/3 → φ ≈ 53.1°（電流が電圧より遅れ）</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="コンセント 100V は最大値ではなく実効値">
       最大値は 100√2 ≈ 141V。絶縁設計では最大値を使う。
     </Callout>
@@ -4948,7 +5008,7 @@ const AcBasicsPage = ({ onNav }) => (
       arcsin だけでは解が1つしか出ない。第1象限（t₁）と第2象限（t₂）の2解がある。「最初に到達する時刻」か「次に到達する時刻」かを確認。（R07上・H21 頻出）
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>RLC 共振（2.4）：インピーダンスの周波数依存性の発展</li>
       <li>交流電力（2.3）：実効値・力率・有効電力・無効電力</li>
@@ -4993,7 +5053,7 @@ const RlcResonancePage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="mechanical" icon="⚙️">
       RLC 回路はバネ（C）・質量（L）・ダンパー（R）の機械振動系と数学的に同型。共振はブランコが最大に揺れる状態。XL = XC のとき、インピーダンスが最小（直列）または最大（並列）になり、電流・電圧が極端な挙動を示す。
     </Analogy>
@@ -5001,7 +5061,7 @@ const RlcResonancePage = ({ onNav }) => (
       Q値：共振の「鋭さ」。Q大きい = 共振ピークが細く高い = 選択性が高い（ラジオのチューニングに利用）。直列共振時はコイル・コンデンサの電圧が入力の Q 倍に拡大されるため、高Q回路では過電圧に注意。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -5038,7 +5098,7 @@ const RlcResonancePage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th></th><th>直列RLC</th><th>並列RLC</th></tr>
@@ -5061,7 +5121,7 @@ const RlcResonancePage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> R=10Ω、XL=20Ω、XC=12Ω の直列RLC回路のインピーダンスの大きさと位相角を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -5075,7 +5135,7 @@ const RlcResonancePage = ({ onNav }) => (
       <p>Q = ω₀L/R = 10⁴ × 10×10⁻³ / 10 = <strong>10</strong>。コイル電圧は入力の 10 倍に拡大。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="直列インピーダンスはベクトル合成">
       Z = R + XL + XC とスカラーで足してはいけない。Z = √(R²+(XL-XC)²)。直角三角形を思い出す。
     </Callout>
@@ -5089,7 +5149,7 @@ const RlcResonancePage = ({ onNav }) => (
       共振は L と C が両方ないと起きない。RC 回路はコンデンサのインピーダンスが周波数で変わるだけ。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>交流の基礎（2.2）：リアクタンス XL・XC の定義</li>
       <li>インダクタンス（3.1）：L の物理的実体</li>
@@ -5134,7 +5194,7 @@ const InductancePage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="flywheel" icon="🌀">
       フライホイール（はずみ車）は回転の変化に抵抗する。インダクタも同じで、電流が急に増えようとすると逆起電力で抵抗し、電流が急に減ろうとすると維持しようとする。「電流の慣性」がインダクタンスの本質。
     </Analogy>
@@ -5142,7 +5202,7 @@ const InductancePage = ({ onNav }) => (
       エネルギーの蓄え方が違う：コンデンサは電界に蓄える（電荷 → 電圧）、インダクタは磁界に蓄える（電流 → 磁束）。双対の概念として一緒に整理する。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -5185,7 +5245,7 @@ const InductancePage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>項目</th><th>コンデンサ（C）</th><th>インダクタ（L）</th></tr>
@@ -5208,7 +5268,7 @@ const InductancePage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> L=50mH のコイルに 5A の電流が流れているとき、蓄えられているエネルギーを求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -5222,7 +5282,7 @@ const InductancePage = ({ onNav }) => (
       <p>L₁+L₂=80mH → L₁=L₂=40mH。k = M/√(L₁L₂) = 20/√(40×40) = 20/40 = <strong>0.5</strong></p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="自己誘導のマイナス符号はレンツの法則">
       e = -L(dI/dt) のマイナスは「変化を妨げる向き」を示す物理的意味がある。符号を落とすとエネルギーの授受が逆転する。
     </Callout>
@@ -5236,7 +5296,7 @@ const InductancePage = ({ onNav }) => (
       L = μN²A/l なので L は N² に比例。巻数を2倍にするとLは4倍。「巻数とLの関係を求めよ」は頻出。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>電磁力（1.3）：ファラデーの法則 e = -Ndφ/dt が基礎</li>
       <li>磁気回路（1.4）：L = μN²A/l の導出元</li>
@@ -5281,7 +5341,7 @@ const OpAmpPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="ideal-amplifier" icon="🔌">
       オペアンプは「2つの入力の差を無限大に増幅する素子」。そのままでは出力が飽和するため、出力の一部を入力に戻す<strong>負帰還（フィードバック）</strong>をかけて安定した増幅回路を作る。
     </Analogy>
@@ -5289,7 +5349,7 @@ const OpAmpPage = ({ onNav }) => (
       負帰還が働くと、＋入力と－入力の電圧差はほぼゼロになる（<strong>仮想接地 / イマジナリーショート</strong>）。この近似がオペアンプ回路の計算を一気に簡単にする。計算の手順：「仮想接地で電圧を決める → キルヒホッフで電流を追う → 出力電圧を求める」の3ステップ。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -5326,7 +5386,7 @@ const OpAmpPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>項目</th><th>反転増幅</th><th>非反転増幅</th></tr>
@@ -5349,7 +5409,7 @@ const OpAmpPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 反転増幅回路で Ri=10kΩ、Rf=100kΩ のとき、電圧利得 Av と入力電圧 Vi=0.5V に対する出力電圧 Vo を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -5363,7 +5423,7 @@ const OpAmpPage = ({ onNav }) => (
       <p>RC = 0.01s（時定数）。出力にマイナスがつく（位相反転）。</p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="反転増幅のゲインにマイナスをつけ忘れる">
       Av = -Rf/Ri。マイナスは「出力が入力と逆位相になる」ことを意味する。出力電圧を求めるときはマイナスを忘れると符号が逆になる。
     </Callout>
@@ -5377,7 +5437,7 @@ const OpAmpPage = ({ onNav }) => (
       区別のコツ：「＋入力に信号が入る → 非反転 → ゲインに 1 が付く（Av = 1+Rf/Ri）」と接続で覚える。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>直流回路（2.1）：仮想接地後の電流計算は KVL/KCL と同じ</li>
       <li>電気・電子計測（6.1）：計装アンプとして計測器に内蔵</li>
@@ -5422,7 +5482,7 @@ const MeasurementPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="pointer" icon="📏">
       電気計器は「電流を機械的な力に変換して指針を動かす」仕組み。どの力を使うか（電磁力・熱・整流）によって種類が分かれ、それが「交流に使えるか」を決める。可動コイル型は直流専用。交流を測りたければ整流回路を追加するか、別の種類を使う。
     </Analogy>
@@ -5430,7 +5490,7 @@ const MeasurementPage = ({ onNav }) => (
       レンジ拡大の基本：<strong>倍率器（直列接続）</strong>で電圧計のレンジを、<strong>分流器（並列接続）</strong>で電流計のレンジを拡大する。電流計は内部抵抗が低いほど良い、電圧計は内部抵抗が高いほど良い。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
       layer="A"
       rows={[
@@ -5467,7 +5527,7 @@ const MeasurementPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ</h2>
+    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
     <table>
       <thead>
         <tr><th>計器の種類</th><th>動作原理</th><th>使用回路</th><th>特徴</th></tr>
@@ -5491,7 +5551,7 @@ const MeasurementPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 内部抵抗 Rv=1kΩ の電圧計を使って 10 倍のレンジに拡大したい。倍率器の抵抗 Rm を求めよ。</p>
     <details>
       <summary>解答</summary>
@@ -5505,7 +5565,7 @@ const MeasurementPage = ({ onNav }) => (
       <p>tanφ = √3(W₁-W₂)/(W₁+W₂) = √3×200/600 = √3/3 → φ=30° → <strong>cos30° ≈ 0.866</strong></p>
     </details>
 
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="可動コイル型は直流専用">
       交流（50/60Hz）では電流の向きが正負に交互に反転するため力も反転し、指針が振れない。交流を測るには整流形（整流器+可動コイル）または可動鉄片型・電流力計型を使う。
     </Callout>
@@ -5519,7 +5579,7 @@ const MeasurementPage = ({ onNav }) => (
       電圧計・電流計の接続誤差：高抵抗負荷 → 電流計前置き（V が A+負荷に並列）。低抵抗負荷 → 電圧計前置き（A が直列）。
     </Callout>
 
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>直流回路（2.1）：倍率器・分流器の計算は分圧・分流の法則と同じ</li>
       <li>交流電力（2.3）：2電力計法は三相電力測定で使用</li>
@@ -5558,175 +5618,53 @@ const { useState } = React;
 
 const BridgeCircuitPage = ({ onNav }) => (
   <>
-    <MetaStrip difficulty="★★★" importance="B" frequency="低" />
-    <LearningMap
-      prereqs={[{id:"dc-circuit", title:"直流回路（キルヒホッフ・テブナン）"}]}
-      current="ブリッジ回路"
-      nexts={[{id:"measurement", title:"計器の原理と測定法"}]}
-      onNav={onNav}
-    />
-    <PageHeader
-      eyebrow="6.3 — BRIDGE CIRCUIT"
-      title="ブリッジ回路"
-      deck="4本の素子が十字に組まれた回路。対角辺の積が等しいとき「平衡」となり、検流計に電流が流れない。この性質を使って未知の抵抗・インダクタンス・静電容量を精密に測定する。"
-      meta={[
-        { label: "重要度", value: "B（2〜3年に1回程度）" },
-        { label: "出題頻度", value: "低（出たら取れる）" },
-        { label: "難易度", value: "★★★" },
-      ]}
-    />
-    <Crumbs items={[{id:"home",label:"ホーム"},{label:"6. 計測"}]} onNav={onNav} />
-
-    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
-    <Analogy type="balance" icon="⚖️">
-      ブリッジ回路は「天秤」のイメージ。左皿と右皿のバランスが取れると指針がゼロになる（検流計に電流が流れない）。平衡条件は「向かい合う辺の積が等しい」。これを使えば未知素子の値を他の既知素子から計算できる。不平衡のときは天秤が傾く → 検流計に電流が流れる → テブナンの定理で解く。
-    </Analogy>
-    <p>ブリッジ回路を菱形（◇）で描いたとき、対角線でつながっていない「向かい合う辺」の積が等しいとき平衡状態。平衡時は検流計に電流が流れないが、各辺には電流が流れており、電源から電流が供給されている。</p>
-
-    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
-    <FormulaTable layer="A" rows={[
-      { formula: "R_1 R_4 = R_2 R_3", meaning: "ホイートストンブリッジの平衡条件。向かい合う辺の積が等しい", when: "直流・抵抗ブリッジ", notWhen: "素子がインピーダンスの場合は別途扱う" },
-      { formula: "R_x = \\dfrac{R_2}{R_1} \\times R_3", meaning: "平衡状態から未知抵抗を求める（比例辺 R₂/R₁ と標準辺 R₃ を使う）", when: "平衡状態のとき", notWhen: "不平衡状態では使えない" },
-    ]} />
-
-    <h3>比例辺・標準辺の役割（H18・H19・R03・R06で繰り返し出題）</h3>
-    <p>ブリッジ回路を菱形で描いたとき、辺には役割がある。平衡条件 <Eq tex="R_1 R_x = R_2 R_3" /> を変形すると：</p>
-    <Eq tex="R_x = \\dfrac{R_2}{R_1} \\times R_3" display />
-    <ul>
-      <li><strong>比例辺の比 R₂/R₁</strong> を変えることでレンジを切り替える（例：×1、×10、×100）</li>
-      <li><strong>標準辺 R₃</strong> を可変抵抗にして平衡点を探す</li>
-      <li>過去問では「R₁=100Ω、R₂=1000Ω、R₃=234Ωのとき Rx を求めよ」の形が典型</li>
-    </ul>
-
-    <h3>不平衡ブリッジのテブナン計算手順（R02問7対策）</h3>
-    <p><strong>ステップ1：検流計 Rg を回路から取り外す（開放）</strong></p>
-    <p>検流計を外した状態で、電源 E から見て2つの分圧回路になる。開放電圧（テブナン電圧）：</p>
-    <Eq tex="V_{th} = E\\left(\\dfrac{R_3}{R_1+R_3} - \\dfrac{R_4}{R_2+R_4}\\right)" display />
-    <p><strong>ステップ2：電源を短絡して端子間の合成抵抗 Rth を求める</strong></p>
-    <Eq tex="R_{th} = \\dfrac{R_1 R_3}{R_1+R_3} + \\dfrac{R_2 R_4}{R_2+R_4}" display />
-    <p><strong>ステップ3：検流計電流を求める</strong></p>
-    <Eq tex="I_g = \\dfrac{V_{th}}{R_{th} + R_g}" display />
-    <p><strong>平衡条件との関係：</strong> <Eq tex="R_1 R_4 = R_2 R_3" /> のとき Vth = 0 になる → Ig = 0（平衡状態）は、この式の特殊ケース。</p>
-
-    <h3>マクスウェルブリッジ（交流ブリッジ・H29問15対策）</h3>
-    <FormulaTable layer="B" rows={[
-      { formula: "L_x = R_1 R_2 C", meaning: "インダクタンスを抵抗とコンデンサで測定。平衡条件から L を求める", when: "交流ブリッジ・平衡状態", notWhen: "直流ブリッジには使えない" },
-      { formula: "R_x = \\dfrac{R_1 R_2}{R_3}", meaning: "マクスウェルブリッジの未知抵抗成分", when: "交流ブリッジ", notWhen: "—" },
-    ]} />
-
-    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
-    <table className="data-table">
-      <thead>
-        <tr>
-          <th>ブリッジの種類</th>
-          <th>測定対象</th>
-          <th>電源</th>
-          <th>平衡条件（概略）</th>
-        </tr>
-      </thead>
+    <div className="meta-strip">
+      <span className="difficulty">★★</span>
+      <span className="importance">B</span>
+      <span className="frequency">中</span>
+    </div>
+    <div className="page-header">
+      <div className="eyebrow">第2章 電気回路</div>
+      <h1>2.5 ブリッジ回路</h1>
+      <p className="deck">4本の素子が十字に組まれた回路。対角辺の積が等しいとき「平衡」となり、検流計に電流が流れない。</p>
+      <div className="meta-list">
+        <span>4/26更新</span>
+        <span>重要度 A</span>
+      </div>
+    </div>
+    <div className="crumbs">
+      <a href="#" onClick={() => onNav('rlc-resonance')}>RLC回路・共振</a> →
+      <span>ブリッジ回路</span> →
+      <a href="#" onClick={() => onNav('inductance')}>インダクタンス</a>
+    </div>
+    <h2 id="principle">§1 原理</h2>
+    <p>ブリッジ回路は天秤のイメージ。左皿と右皿のバランスが取れると指針がゼロになる（検流計に電流が流れない）。平衡条件は「向かい合う辺の積が等しい」。これを使えば未知素子の値を他の既知素子から計算できる。</p>
+    <div className="callout callout-tip">
+      <strong>5秒で思い出す</strong><br/>
+      平衡条件 = 向かい合う辺の積が等しい（$R_1 R_4 = R_2 R_3$）。平衡のとき検流計 $I_g = 0$。
+    </div>
+    <h2 id="formulas">§2 公式</h2>
+    <table>
+      <thead><tr><th>公式</th><th>意味</th><th>条件</th></tr></thead>
       <tbody>
-        <tr>
-          <td>ホイートストンブリッジ</td>
-          <td>抵抗 R</td>
-          <td>直流</td>
-          <td>R₁R₄ = R₂R₃</td>
-        </tr>
-        <tr>
-          <td>マクスウェルブリッジ</td>
-          <td>インダクタンス L</td>
-          <td>交流</td>
-          <td>L = R₁R₂C</td>
-        </tr>
-        <tr>
-          <td>ウィーンブリッジ</td>
-          <td>周波数 f</td>
-          <td>交流</td>
-          <td>f = 1/(2πRC)</td>
-        </tr>
-        <tr>
-          <td>シェーリングブリッジ</td>
-          <td>静電容量 C・誘電損</td>
-          <td>交流</td>
-          <td>損失角 δ から tanδ を求める</td>
-        </tr>
+        <tr><td>$R_1 R_4 = R_2 R_3$</td><td>ホイートストンブリッジの平衡条件</td><td>直流・抵抗</td></tr>
+        <tr><td>{String.raw`$R_x = \dfrac{R_1 \cdot R_3}{R_2}$`}</td><td>平衡状態から未知抵抗を求める</td><td>平衡時</td></tr>
+        <tr><td>{String.raw`$I_g = \dfrac{V_{th}}{R_{th} + R_g}$`}</td><td>不平衡時の検流計電流（テブナン）</td><td>不平衡時</td></tr>
       </tbody>
     </table>
-
-    <table className="data-table">
-      <thead>
-        <tr>
-          <th>項目</th>
-          <th>直流ブリッジ（ホイートストン）</th>
-          <th>交流ブリッジ（マクスウェルなど）</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>電源</td>
-          <td>直流電池</td>
-          <td>交流電源</td>
-        </tr>
-        <tr>
-          <td>構成素子</td>
-          <td>抵抗のみ</td>
-          <td>抵抗・コンデンサ・インダクタンス</td>
-        </tr>
-        <tr>
-          <td>検出器</td>
-          <td>検流計（直流用）</td>
-          <td>検流器（交流用・ヘッドフォンで音消し法も）</td>
-        </tr>
-        <tr>
-          <td>測定対象</td>
-          <td>抵抗（R）</td>
-          <td>R、L、C、f など</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
-    <p><strong>問1（平衡条件）：</strong> ホイートストンブリッジで R₁=100Ω、R₂=200Ω、R₃=150Ωのとき、平衡条件から未知抵抗 R₄ を求めよ。</p>
-    <details>
-      <summary>解答</summary>
-      <p><Eq tex="R_1 \\times R_4 = R_2 \\times R_3 \\Rightarrow R_4 = \\dfrac{R_2 \\times R_3}{R_1} = \\dfrac{200 \\times 150}{100} = 300\\text{ Ω}" /></p>
-      <p><strong>ポイント：</strong>平衡条件は「対角の積が等しい」：<Eq tex="R_1 R_4 = R_2 R_3" /></p>
-    </details>
-
-    <p><strong>問2（テブナン計算）：</strong> ブリッジ回路で R₁=100Ω、R₂=100Ω、R₃=100Ω、R₄=120Ω、Rg=50Ω、E=10Vのとき、検流計に流れる電流 Ig を求めよ。</p>
-    <details>
-      <summary>解答</summary>
-      <p><strong>ステップ1：開放電圧</strong></p>
-      <p><Eq tex="V_{th} = 10\\left(\\dfrac{100}{100+100} - \\dfrac{120}{100+120}\\right) = 10\\left(0.5 - 0.545\\right) = -0.45\\text{ V}" /></p>
-      <p><strong>ステップ2：等価抵抗</strong></p>
-      <p><Eq tex="R_{th} = \\dfrac{100 \\times 100}{200} + \\dfrac{100 \\times 120}{220} = 50 + 54.5 = 104.5\\text{ Ω}" /></p>
-      <p><strong>ステップ3：検流計電流</strong></p>
-      <p><Eq tex="I_g = \\dfrac{0.45}{104.5 + 50} = \\dfrac{0.45}{154.5} \\approx 2.9\\text{ mA}" /></p>
-    </details>
-
-    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
-    <Callout variant="warn" title="勘違い①：平衡条件の「向かい合う辺」がどの辺を指すか混乱">
-      ブリッジ回路を菱形（◇）で描いたとき、対角線でつながっていない「向かい合う辺」の積が等しい。電源の両端 A-B を対角に置いたとき：上左辺 R₁ と下右辺 R₄ の積 = 上右辺 R₂ と下左辺 R₃ の積。迷ったら菱形を描いて、検流計が渡っている対角線と電源が渡っている対角線を確認する。
-    </Callout>
-    <Callout variant="warn" title="勘違い②：「平衡＝全回路の電流がゼロ」と誤解">
-      平衡状態で電流がゼロになるのは「検流計（中間の橋）だけ」。各辺には電流が流れており、電源から電流が供給されている。「天秤の針がゼロでも、天秤全体は動いている」イメージ。
-    </Callout>
-    <Callout variant="warn" title="勘違い③：不平衡時に平衡条件を使って計算しようとする">
-      不平衡のとき <Eq tex="R_1 R_4 \\neq R_2 R_3" /> なので、平衡条件を使うことはできない。検流計に流れる電流はテブナンの定理で求める：① 検流計を外した状態での開放電圧 Vth を計算 → ② 電源を短絡した状態での等価抵抗 Rth を計算 → ③ <Eq tex="I_g = V_{th} / (R_{th} + R_g)" />
-    </Callout>
-    <Callout variant="warn" title="パターン26：ブリッジ回路の平衡条件で、対辺の積の組み合わせを逆に使う">
-      ❌ 罠の文章：「ホイートストンブリッジで上辺左R₁・上辺右R₂、下辺左R₃・下辺右R₄の場合、平衡条件は R₁·R₂＝R₃·R₄ である。」
-      <br/>✅ 正解の考え方：ブリッジ平衡条件は「向かい合う対辺の積が等しい」で、正しくは R₁·R₄＝R₂·R₃（上左×下右＝上右×下左）。隣接する辺の積ではなく対角の辺の積であることを回路図上で必ず確認する。（H25問4・R05上問4 類出）
-    </Callout>
-
-    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
+    <h2 id="examples">§3 例題</h2>
+    <p><strong>問題</strong>: ホイートストンブリッジで {String.raw`$R_1=100\Omega$`}、{String.raw`$R_2=200\Omega$`}、{String.raw`$R_3=150\Omega$`} のとき、平衡条件から未知抵抗 $R_4$ を求めよ。</p>
+    <p><strong>解答</strong>: {String.raw`$R_1 \times R_4 = R_2 \times R_3 \Rightarrow R_4 = \dfrac{200 \times 150}{100} = 300\Omega$`}</p>
+    <h2 id="related">§4 関連</h2>
     <ul>
-      <li>直流回路 — キルヒホッフの法則・テブナンの定理の応用</li>
-      <li>テブナンの定理 — 不平衡ブリッジ解法の基礎</li>
-      <li>計器の原理と測定法 — ブリッジを使った精密測定</li>
-      <li>交流ブリッジ（マクスウェル・ウィーン・シェーリング）</li>
+      <li>テブナンの定理（不平衡時の解法）</li>
+      <li>マクスウェルブリッジ（交流）、ウィーンブリッジ</li>
+      <li>計器の原理と測定法</li>
     </ul>
-
-    <PageNav prev={{id:"dc-circuit", title:"直流回路"}} next={{id:"measurement", title:"計器の原理と測定法"}} onNav={onNav} />
+    <div className="page-nav">
+      <a className="nav-prev" href="#" onClick={() => onNav('rlc-resonance')}>← RLC回路・共振</a>
+      <a className="nav-next" href="#" onClick={() => onNav('inductance')}>インダクタンス →</a>
+    </div>
   </>
 );
 
@@ -5866,6 +5804,21 @@ const TransientPage = ({ onNav }) => (
       </tbody>
     </table>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      過渡現象は「定常状態に落ち着くまでの暴れ」。電動機始動・コンデンサ投入・リレー遮断など、現場で突入電流や誘導サージが発生するのはすべてこの物理が動いている。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>電動機始動時の突入電流</td><td>RL回路の過渡応答</td><td>始動電流は定格の5〜7倍、保護協調と起動方式（スターデルタ等）選定</td></tr>
+        <tr><td>進相コンデンサ投入時の突入電流</td><td>RC回路の過渡</td><td>突入電流抑制リアクトル（直列リアクトル）を設置して緩和</td></tr>
+        <tr><td>リレーコイル切断時のサージ電圧</td><td>L di/dt によるサージ</td><td>コイル両端にサージキラー（ダイオード・バリスタ）必須</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">4.</span>例題</h2>
     <p><strong>問1:</strong> R=1kΩ、C=100μF のRC直列回路にDC10Vを印加した。時定数 τ と、τ 後のコンデンサ電圧を求めよ。</p>
     <details>
@@ -5914,7 +5867,7 @@ const TransientPage = ({ onNav }) => (
 
 const SemiconductorPage = ({ onNav }) => (
   <>
-    <MetaStrip difficulty="★★★" importance="B" frequency="中" />
+    <MetaStrip difficulty="★★★" importance="A" frequency="中" />
     <LearningMap
       prereqs={[]}
       current="半導体"
@@ -5938,6 +5891,9 @@ const SemiconductorPage = ({ onNav }) => (
       ダイオードは「電流の弁」。弁は一方向には水を通し、逆方向には通さない。PN接合のダイオードはアノード（P側）が高電位のときだけ電流を流し、逆方向は遮断する。
       純粋なシリコンはほぼ絶縁体だが、微量の不純物（ドーパント）を加えると電気的性質が激変する。これがドーピング。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。
     </Analogy>
+    <Callout variant="tip" title="5秒で思い出す">
+      半導体 ＝ 不純物で性質が変わる「変化できる素材」。PN接合 ＝ 電流の一方通行弁。
+    </Callout>
     <p>半導体は不純物で性質が変わる「変化できる素材」。PN接合は電流の一方通行弁として機能し、整流回路・定電圧回路・発光素子など幅広く応用される。</p>
 
     <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
@@ -6208,7 +6164,7 @@ const SemiconductorPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="hall"><span className="h-num">8.</span>ホール効果・熱起電力（★★★★★）</h2>
+    <h2 id="hall"><span className="h-num">8.</span>🌡️ ホール効果・熱起電力（★★★★★）</h2>
     <h3>ゼーベック効果とペルチェ効果</h3>
     <table className="data-table">
       <thead>
@@ -6327,7 +6283,7 @@ const SemiconductorPage = ({ onNav }) => (
       { formula: "\\lambda_0 = \\dfrac{c}{\\nu_0}", meaning: "限界波長：光の速さ c = νλ より変換", when: "限界振動数ν₀が既知のとき", notWhen: "—" },
     ]} />
     <Callout variant="warn" title="光を「強く」しても限界振動数以下では光電子は出ない">
-      光の強さ＝光子（フォトン）の数。1個の光子のエネルギーは <Eq tex="h\\nu" /> で振動数のみで決まり、光の強さには関係しない。振動数 <Eq tex="\\nu < \\nu_0" /> なら光をいくら強くしても光電子は飛び出さない。振動数一定で光を強くすると光電子の数は増えるが、最大運動エネルギー <Eq tex="K_0" /> は変わらない。振動数を上げると <Eq tex="K_0" /> が増加する。
+      光の強さ＝光子（フォトン）の数。1個の光子のエネルギーは <Eq tex="h\\nu" /> で振動数のみで決まり、光の強さには関係しない。振動数 <Eq tex="\\nu {'<'} \\nu_0" /> なら光をいくら強くしても光電子は飛び出さない。振動数一定で光を強くすると光電子の数は増えるが、最大運動エネルギー <Eq tex="K_0" /> は変わらない。振動数を上げると <Eq tex="K_0" /> が増加する。
     </Callout>
 
     <PageNav prev={{id:"three-phase", title:"三相交流"}} next={{id:"transistor", title:"トランジスタ"}} onNav={onNav} />
@@ -6358,7 +6314,7 @@ const TrendsPage = ({ onNav }) => {
         <span>出題傾向データ</span> →
         <a href="#" onClick={() => onNav('glossary')}>用語集</a>
       </div>
-      <h2 id="ratio">1. 単元別出題比率</h2>
+      <h2 id="ratio">§1 単元別出題比率</h2>
       <div className="freq-chart">
         {freqData.map(d => (
           <div key={d.topic} className="freq-row">
@@ -6368,13 +6324,13 @@ const TrendsPage = ({ onNav }) => {
           </div>
         ))}
       </div>
-      <h2 id="b-questions">2. B問題（計算複合）の出題傾向</h2>
+      <h2 id="b-questions">§2 B問題（計算複合）の出題傾向</h2>
       <p>理論科目のB問題（問15〜18）は4問で構成。電気回路2問・電磁気1問・電子理論or計測1問のパターンが定番。</p>
       <div className="callout callout-tip">
         <strong>B問題の攻略法</strong><br/>
         B問題は難しく見えるが、A問題と同じ公式を複数組み合わせるだけ。1問完答より部分点を確実に取る戦略が有効。
       </div>
-      <h2 id="trend-table">3. 分野別・年度別傾向</h2>
+      <h2 id="trend-table">§3 分野別・年度別傾向</h2>
       <table>
         <thead><tr><th>年度</th><th>電磁気</th><th>電気回路</th><th>電子理論</th><th>計測</th></tr></thead>
         <tbody>
@@ -6472,7 +6428,7 @@ const FormulaListPage = ({ onNav }) => (
       <span>公式集</span> →
       <a href="#" onClick={() => onNav('circuit-patterns')}>回路パターン集</a>
     </div>
-    <h2 id="em">1. 電磁気</h2>
+    <h2 id="em">§1 電磁気</h2>
     <table>
       <thead><tr><th>公式</th><th>意味</th><th>単位</th></tr></thead>
       <tbody>
@@ -6482,7 +6438,7 @@ const FormulaListPage = ({ onNav }) => (
         <tr><td>{String.raw`$L = \dfrac{\mu_0\mu_r N^2 A}{l}$`}</td><td>自己インダクタンス</td><td>H</td></tr>
       </tbody>
     </table>
-    <h2 id="circuit">2. 電気回路</h2>
+    <h2 id="circuit">§2 電気回路</h2>
     <table>
       <thead><tr><th>公式</th><th>意味</th><th>単位</th></tr></thead>
       <tbody>
@@ -6493,7 +6449,7 @@ const FormulaListPage = ({ onNav }) => (
         <tr><td>{String.raw`$P_{max} = \dfrac{V_{th}^2}{4R_{th}}$`}</td><td>最大電力（Rth = RL のとき）</td><td>W</td></tr>
       </tbody>
     </table>
-    <h2 id="electron">3. 電子理論</h2>
+    <h2 id="electron">§3 電子理論</h2>
     <table>
       <thead><tr><th>公式</th><th>意味</th><th>単位</th></tr></thead>
       <tbody>
@@ -6502,7 +6458,7 @@ const FormulaListPage = ({ onNav }) => (
         <tr><td>{String.raw`$V_o = -\dfrac{1}{RC}\int V_i dt$`}</td><td>オペアンプ積分回路</td><td>V</td></tr>
       </tbody>
     </table>
-    <h2 id="measurement">4. 計測</h2>
+    <h2 id="measurement">§4 計測</h2>
     <table>
       <thead><tr><th>公式</th><th>意味</th><th>単位</th></tr></thead>
       <tbody>
@@ -6532,7 +6488,7 @@ const CircuitPatternsPage = ({ onNav }) => (
       <a href="#" onClick={() => onNav('formulas')}>公式集</a> →
       <span>回路パターン集</span>
     </div>
-    <h2 id="pattern1">1. 直列・並列の合成</h2>
+    <h2 id="pattern1">§1 直列・並列の合成</h2>
     <p><strong>これを見たら</strong>: 抵抗・コイル・コンデンサが一列につながっている → 直列 / 両端が共通の節点に接続されている → 並列</p>
     <p><strong>計算手順</strong>:</p>
     <ol>
@@ -6541,7 +6497,7 @@ const CircuitPatternsPage = ({ onNav }) => (
       <li><strong>並列</strong>: {String.raw`$1/Z_{合} = 1/Z_1 + 1/Z_2 + \cdots$`}（逆数の和）</li>
       <li>外側に向かって順に合成し、全体の合成インピーダンスを得る</li>
     </ol>
-    <h2 id="pattern2">2. テブナン等価変換</h2>
+    <h2 id="pattern2">§2 テブナン等価変換</h2>
     <p><strong>これを見たら</strong>: 「特定の2端子間（A-B間）の電圧・電流を求めよ」という問題</p>
     <p><strong>計算手順</strong>:</p>
     <ol>
@@ -6549,7 +6505,7 @@ const CircuitPatternsPage = ({ onNav }) => (
       <li><strong>テブナン抵抗</strong> $R_{th}$ を求める（電源をゼロにして合成抵抗を計算）</li>
       <li><strong>等価回路に置き換える</strong>: $V_{th}$ を起電力とし $R_{th}$ を直列に接続</li>
     </ol>
-    <h2 id="pattern3">3. ブリッジ回路の平衡判定</h2>
+    <h2 id="pattern3">§3 ブリッジ回路の平衡判定</h2>
     <p><strong>これを見たら</strong>: 4つの素子がひし形（ブリッジ形）に配置されている</p>
     <p><strong>計算手順</strong>:</p>
     <ol>
@@ -6557,7 +6513,7 @@ const CircuitPatternsPage = ({ onNav }) => (
       <li><strong>平衡の場合</strong>: 検流計に電流は流れない。単純な直並列回路として計算する</li>
       <li><strong>非平衡の場合</strong>: テブナン等価変換（パターン2）を適用する</li>
     </ol>
-    <h2 id="pattern4">4. RLC直列回路のインピーダンス計算</h2>
+    <h2 id="pattern4">§4 RLC直列回路のインピーダンス計算</h2>
     <p><strong>これを見たら</strong>: R, L, C が一列に接続された直列回路</p>
     <p><strong>計算手順</strong>:</p>
     <ol>
@@ -6696,7 +6652,7 @@ const TOC = ({ page }) => {
       const heads = document.querySelectorAll('.content h2[id], .content h3[id]');
       const next = [...heads].map(h => ({
         id: h.id,
-        text: h.textContent.replace(/^\d+\.\s*/, '').trim(),
+        text: h.textContent.replace(/^§\d+\s*/, '').trim(),
         level: h.tagName === 'H2' ? 2 : 3,
       }));
       setItems(prev => {

@@ -190,6 +190,21 @@ const AcPowerPage = ({ onNav }) => (
       <p>4. コンデンサ容量：<Eq tex="C = \\frac{Q_C}{\\omega V^2}" /></p>
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      有効電力・無効電力・皮相電力の3成分は、受変電容量設計・力率管理・電気料金計算の根幹。プラントの基本料金は力率で上下する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>受変電設備の容量設計</td><td>皮相電力 S=P/cosφ</td><td>設備容量はkVAで決まる。kWだけ見ると過小設計</td></tr>
+        <tr><td>高圧受電の電気料金（基本料金）</td><td>力率 cosφ</td><td>力率85%基準で割引／割増。進相コンデンサで改善</td></tr>
+        <tr><td>進相コンデンサ容量の計算</td><td>Q=P(tanφ₁−tanφ₂)</td><td>改善前後の力率角から必要kvar容量を逆算して選定</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">§5</span>例題</h2>
     <p><strong>問:</strong> 100V・5Aの交流回路で力率が0.8（遅れ）のとき、有効電力・無効電力・皮相電力を求めよ。</p>
     <details>
@@ -290,6 +305,21 @@ const ThreePhasePage = ({ onNav }) => (
           <td>あり</td>
           <td>なし</td>
         </tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      三相交流は工場の受変電・電動機・変圧器すべての基盤。√3の扱いと星形/三角形の電圧・電流関係を誤ると機器選定ミスに直結する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>三相受電盤の主回路設計</td><td>線間電圧＝√3×相電圧</td><td>6.6kV配電・400V/200V低圧の関係を即算</td></tr>
+        <tr><td>三相電動機の消費電力測定</td><td>P=√3・V_l・I_l・cosφ</td><td>線間電圧・線電流から消費電力（kW）算出</td></tr>
+        <tr><td>地絡保護方式の選定</td><td>Y結線中性点の接地</td><td>中性点接地方式で地絡電流の大きさと検出回路が決まる</td></tr>
       </tbody>
     </table>
 

@@ -60,105 +60,623 @@ const BridgeCircuitPage = ({ onNav }) => (
 
 const TransientPage = ({ onNav }) => (
   <>
-    <div className="meta-strip">
-      <span className="difficulty">★★★★</span>
-      <span className="importance">B</span>
-      <span className="frequency">中</span>
-    </div>
-    <div className="page-header">
-      <div className="eyebrow">第3章 電磁誘導・過渡</div>
-      <h1>3.2 過渡現象</h1>
-      <p className="deck">スイッチON/OFFの瞬間から定常状態に落ち着くまでの「変化の過程」。時定数τが変化の速さを決める。</p>
-      <div className="meta-list">
-        <span>4/26更新</span>
-        <span>重要度 B</span>
-      </div>
-    </div>
-    <div className="crumbs">
-      <a href="#" onClick={() => onNav('inductance')}>インダクタンス</a> →
-      <span>過渡現象</span> →
-      <a href="#" onClick={() => onNav('three-phase')}>三相交流</a>
-    </div>
-    <h2 id="principle">§1 原理</h2>
-    <p>コップに水を注ぐイメージ：最初は勢いよく増え、満杯に近づくほどゆっくりになる。電圧・電流の変化も同じカーブを描く。時定数τ（タウ）は「変化の速さ」の物差し。τ秒後に「残り変化量の約37%が残っている」→つまり約63%が変化した状態。</p>
-    <div className="callout callout-tip">
-      <strong>5秒で思い出す</strong><br/>
-      τ後 = 63%変化。5τ後 ≒ 定常値到達。RC回路は {String.raw`$\tau = RC$`}、RL回路は {String.raw`$\tau = L/R$`}。
-    </div>
-    <h2 id="formulas">§2 公式</h2>
-    <table>
-      <thead><tr><th>公式</th><th>意味</th><th>条件</th></tr></thead>
+    <MetaStrip difficulty="★★★★" importance="B" frequency="中" />
+    <LearningMap
+      prereqs={[{id:"dc-circuit", title:"直流回路"},{id:"capacitance", title:"コンデンサ（静電容量）"},{id:"inductance", title:"インダクタンス"}]}
+      current="過渡現象"
+      nexts={[]}
+      onNav={onNav}
+    />
+    <PageHeader
+      eyebrow="3.2 — TRANSIENT PHENOMENA"
+      title="過渡現象"
+      deck="スイッチON/OFFの瞬間から定常状態に落ち着くまでの「変化の過程」。時定数 τ が変化の速さを決める。"
+      meta={[
+        { label: "重要度", value: "B" },
+        { label: "出題頻度", value: "中（毎年1問、問10に固定）" },
+        { label: "難易度", value: "★★★★" },
+      ]}
+    />
+    <Crumbs items={[{id:"home",label:"ホーム"},{label:"3. 電磁誘導・過渡"}]} onNav={onNav} />
+
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <Analogy type="tank" icon="💧">
+      貯水タンクに水を注ぐイメージ：最初は勢いよく増え、満杯に近づくほどゆっくりになる。コンデンサへの充電やコイルへの電流増加も同じ指数カーブを描く。時定数 τ（タウ）は「変化の速さ」の物差しで、τ 秒後に「残り変化量の約37%が残っている」（≒ 63%変化した状態）。
+    </Analogy>
+    <p>解法の鉄則は<strong>初期値と最終値を先に求める</strong>こと。あとは一般式 <Eq tex="f(t) = f(\\infty) + [f(0) - f(\\infty)]\\,e^{-t/\\tau}" /> に当てはめるだけ。τ 後 = 63%変化、5τ 後 ≒ 99%（実用上の定常到達目安）。</p>
+
+    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <FormulaTable layer="A" rows={[
+      { formula: "\\tau = RC", meaning: "RC回路の時定数", when: "直列RC（1次回路）", notWhen: "複数のR・Cが混在する複雑な回路" },
+      { formula: "\\tau = \\frac{L}{R}", meaning: "RL回路の時定数", when: "直列RL（1次回路）", notWhen: "複数のL・Rが混在する複雑な回路" },
+      { formula: "f(t) = f(\\infty) + [f(0) - f(\\infty)]\\,e^{-t/\\tau}", meaning: "過渡現象の一般式：初期値→最終値への指数変化", when: "1次回路全般", notWhen: "2次以上のLC回路（減衰振動）" },
+      { formula: "e^{-1} \\approx 0.368", meaning: "τ 後の残存率（≒ 63%変化）", when: "数値計算の目安", notWhen: "—" },
+    ]} />
+
+    <h3>応用変換（レイヤーB）</h3>
+    <FormulaTable layer="B" rows={[
+      { formula: "t=0^+\\text{：C→短絡、L→開放}（初期値ゼロ）", meaning: "スイッチ直後の等価回路置換", when: "初期値ゼロの場合", notWhen: "初期値あり（C→電圧源、L→電流源として扱う）" },
+      { formula: "t\\to\\infty\\text{：C→開放、L→短絡}", meaning: "直流定常状態の等価回路置換", when: "直流定常状態", notWhen: "交流定常状態" },
+      { formula: "5\\tau\\text{ 後} \\approx 99\\%\\text{ 定常値}", meaning: "実用上「定常に達した」と見なす目安", when: "1次回路", notWhen: "—" },
+    ]} />
+
+    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>RC回路</th>
+          <th>RL回路</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr><td>{String.raw`$\tau = RC$`}</td><td>RC回路の時定数</td><td>直列RC（1次回路）</td></tr>
-        <tr><td>{String.raw`$\tau = L/R$`}</td><td>RL回路の時定数</td><td>直列RL（1次回路）</td></tr>
-        <tr><td>{String.raw`$f(t) = f(\infty) + [f(0) - f(\infty)]e^{-t/\tau}$`}</td><td>過渡現象の一般式</td><td>1次回路全般</td></tr>
+        <tr>
+          <td>時定数</td>
+          <td><Eq tex="\\tau = RC" /></td>
+          <td><Eq tex="\\tau = L/R" /></td>
+        </tr>
+        <tr>
+          <td>t=0⁺ の C/L</td>
+          <td>短絡（充電ゼロ時）または電圧源</td>
+          <td>開放（電流ゼロ時）または電流源</td>
+        </tr>
+        <tr>
+          <td>t→∞ の C/L</td>
+          <td>開放</td>
+          <td>短絡</td>
+        </tr>
+        <tr>
+          <td>急変不可の量</td>
+          <td>コンデンサ電圧 v_C（連続）</td>
+          <td>インダクタ電流 i_L（連続）</td>
+        </tr>
       </tbody>
     </table>
-    <h2 id="examples">§3 例題</h2>
-    <p><strong>問題</strong>: {String.raw`$R=1k\Omega$`}、{String.raw`$C=100\mu F$`} のRC直列回路にDC10Vを印加した。時定数τと、τ後のコンデンサ電圧を求めよ。</p>
-    <p><strong>解答</strong>: {String.raw`$\tau = 1000 \times 100 \times 10^{-6} = 0.1s$`}、{String.raw`$v_C(\tau) = 10(1-e^{-1}) \approx 6.32V$`}</p>
-    <h2 id="related">§4 関連</h2>
+
+    <h3>t=0直後 vs t=∞ での各素子の扱い</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>素子</th>
+          <th>t=0⁺（初期値ゼロ）</th>
+          <th>t→∞（直流定常）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>コンデンサ C</td>
+          <td><strong>短絡</strong>（V=0を維持）</td>
+          <td><strong>開放</strong></td>
+        </tr>
+        <tr>
+          <td>インダクタ L</td>
+          <td><strong>開放</strong>（I=0を維持）</td>
+          <td><strong>短絡</strong></td>
+        </tr>
+        <tr>
+          <td>抵抗 R</td>
+          <td>そのまま</td>
+          <td>そのまま</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>充電過程 vs 放電過程（RC回路）</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>充電過程</th>
+          <th>放電過程</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>v_C(0)</td>
+          <td>0</td>
+          <td>V₀</td>
+        </tr>
+        <tr>
+          <td>v_C(∞)</td>
+          <td>E（電源電圧）</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>v_C(t)</td>
+          <td><Eq tex="E(1 - e^{-t/\\tau})" /></td>
+          <td><Eq tex="V_0\\,e^{-t/\\tau}" /></td>
+        </tr>
+        <tr>
+          <td>i(t)</td>
+          <td><Eq tex="\\dfrac{E}{R}\\,e^{-t/\\tau}" /></td>
+          <td><Eq tex="-\\dfrac{V_0}{R}\\,e^{-t/\\tau}" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      過渡現象は「定常状態に落ち着くまでの暴れ」。電動機始動・コンデンサ投入・リレー遮断など、現場で突入電流や誘導サージが発生するのはすべてこの物理が動いている。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>電動機始動時の突入電流</td><td>RL回路の過渡応答</td><td>始動電流は定格の5〜7倍、保護協調と起動方式（スターデルタ等）選定</td></tr>
+        <tr><td>進相コンデンサ投入時の突入電流</td><td>RC回路の過渡</td><td>突入電流抑制リアクトル（直列リアクトル）を設置して緩和</td></tr>
+        <tr><td>リレーコイル切断時のサージ電圧</td><td>L di/dt によるサージ</td><td>コイル両端にサージキラー（ダイオード・バリスタ）必須</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <p><strong>問1:</strong> R=1kΩ、C=100μF のRC直列回路にDC10Vを印加した。時定数 τ と、τ 後のコンデンサ電圧を求めよ。</p>
+    <details>
+      <summary>解答</summary>
+      <p><Eq tex="\\tau = RC = 1000 \\times 100 \\times 10^{-6} = 0.1\\text{ s}" display /></p>
+      <p><Eq tex="v_C(\\tau) = 10(1 - e^{-1}) \\approx 10 \\times 0.632 = 6.32\\text{ V}" display /></p>
+      <p><strong>ポイント：</strong>τ 後には最終値の約63.2%まで充電される。</p>
+    </details>
+
+    <p><strong>問2:</strong> スイッチ切り替え前の定常状態でコンデンサに8Vが充電されている。切り替え後の回路では最終値が0V、時定数が0.05sである。切り替え後の v_C(t) を求めよ。</p>
+    <details>
+      <summary>解答</summary>
+      <p>初期値 <Eq tex="f(0) = 8\\text{ V}" />、最終値 <Eq tex="f(\\infty) = 0\\text{ V}" />、<Eq tex="\\tau = 0.05\\text{ s}" /></p>
+      <p><Eq tex="v_C(t) = 0 + [8 - 0]\\,e^{-t/0.05} = 8\\,e^{-20t}\\text{ V}" display /></p>
+      <p><strong>ポイント：</strong>切り替え前の電圧が切り替え後の初期値になる（コンデンサ電圧は急変不可）。</p>
+    </details>
+
+    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <Callout variant="warn" title="勘違い①：t=0直後にコンデンサを「開放」として扱う">
+      初期電荷ゼロのコンデンサは t=0⁺ で短絡に等しい（電圧=0を維持）。電流は最大値で流れ始め、徐々に減少する。コンデンサは「電荷を蓄えるから電流が流れない」ではなく、「電圧が急変できない」素子。
+    </Callout>
+    <Callout variant="warn" title="勘違い②：1τ後に定常値に達したと思い込む">
+      1τ 後は約63%変化した状態。100%に近づくのは理論上無限大時間かかる。実用上は 5τ 後（≒99%）を定常到達の目安とする。「τ で定常達成」は誤り。
+    </Callout>
+    <Callout variant="warn" title="勘違い③：RL回路で t=0直後のインダクタを「短絡」として扱う">
+      初期電流ゼロのインダクタは t=0⁺ で開放に等しい（電流は急変できない）。電流はゼロから徐々に増加する。
+    </Callout>
+    <Callout variant="warn" title="勘違い④：RC回路とRL回路の時定数式を取り違える（H25問4・R01問3）">
+      次元チェックが有効。<Eq tex="\\tau = L/R" /> は [H]/[Ω]=[s]、<Eq tex="\\tau = CR" /> は [F]·[Ω]=[s] と確認する。RL回路の微分方程式を解くと指数係数は R/L → 時定数は L/R。
+    </Callout>
+    <Callout variant="note" title="複雑な回路の時定数はテブナン抵抗で求める（R02問10）">
+      C またはL を取り外し、全電圧源を短絡・全電流源を開放して端子間の合成抵抗 R_th を求める。時定数は <Eq tex="\\tau = R_{th}C" />（RC回路）または <Eq tex="\\tau = L/R_{th}" />（RL回路）。
+    </Callout>
+
+    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
     <ul>
-      <li>テブナンの定理（複雑な回路の時定数）</li>
-      <li>RC直並列回路（H22問10）</li>
-      <li>LCの振動現象</li>
+      <li>直流回路 — キルヒホッフの法則・テブナンの定理（時定数計算の基礎）</li>
+      <li>コンデンサ（静電容量） — エネルギー蓄積・電圧急変不可の原理</li>
+      <li>インダクタンス — エネルギー蓄積・電流急変不可の原理</li>
+      <li>RLC回路 — LC振動・共振（2次回路への発展）</li>
     </ul>
-    <div className="page-nav">
-      <a className="nav-prev" href="#" onClick={() => onNav('inductance')}>← インダクタンス</a>
-      <a className="nav-next" href="#" onClick={() => onNav('three-phase')}>三相交流 →</a>
-    </div>
+
+    <PageNav prev={{id:"inductance", title:"3.1 インダクタンス"}} next={{id:"three-phase", title:"3.3 三相交流"}} onNav={onNav} />
   </>
 );
 
 const SemiconductorPage = ({ onNav }) => (
   <>
-    <div className="meta-strip">
-      <span className="difficulty">★★★</span>
-      <span className="importance">B</span>
-      <span className="frequency">中</span>
-    </div>
-    <div className="page-header">
-      <div className="eyebrow">第5章 電子理論</div>
-      <h1>5.1 半導体・ダイオード</h1>
-      <p className="deck">条件によって導体にも絶縁体にもなれる物質。ドーピングとPN接合で「電流の弁」を作る。</p>
-      <div className="meta-list">
-        <span>4/26更新</span>
-        <span>重要度 A</span>
-      </div>
-    </div>
-    <div className="crumbs">
-      <a href="#" onClick={() => onNav('three-phase')}>三相交流</a> →
-      <span>半導体・ダイオード</span> →
-      <a href="#" onClick={() => onNav('transistor')}>トランジスタ</a>
-    </div>
-    <h2 id="principle">§1 原理</h2>
-    <p>純粋なシリコンはほぼ絶縁体。そこに微量の不純物（ドーパント）を加えると電気的性質が激変する。これがドーピング。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。バルブ（弁）のアナロジーが使える。</p>
-    <div className="callout callout-tip">
-      <strong>5秒で思い出す</strong><br/>
-      半導体 = 不純物で性質が変わる「変化できる素材」。PN接合 = 電流の一方通行弁。
-    </div>
-    <h2 id="formulas">§2 公式</h2>
-    <table>
-      <thead><tr><th>公式</th><th>意味</th><th>条件</th></tr></thead>
+    <MetaStrip difficulty="★★★" importance="A" frequency="中" />
+    <LearningMap
+      prereqs={[]}
+      current="半導体"
+      nexts={[{id:"transistor", title:"トランジスタ"}]}
+      onNav={onNav}
+    />
+    <PageHeader
+      eyebrow="5.1 — SEMICONDUCTOR / DIODE"
+      title="半導体・ダイオード"
+      deck="条件によって導体にも絶縁体にもなれる物質。ドーピングとPN接合で「電流の弁」を作る。"
+      meta={[
+        { label: "重要度", value: "B" },
+        { label: "出題頻度", value: "中（毎年1問、問11に固定）" },
+        { label: "難易度", value: "★★★" },
+      ]}
+    />
+    <Crumbs items={[{id:"home",label:"ホーム"},{label:"5. 電子理論"}]} onNav={onNav} />
+
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <Analogy type="valve" icon="🔧">
+      ダイオードは「電流の弁」。弁は一方向には水を通し、逆方向には通さない。PN接合のダイオードはアノード（P側）が高電位のときだけ電流を流し、逆方向は遮断する。
+      純粋なシリコンはほぼ絶縁体だが、微量の不純物（ドーパント）を加えると電気的性質が激変する。これがドーピング。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。
+    </Analogy>
+    <Callout variant="tip" title="5秒で思い出す">
+      半導体 ＝ 不純物で性質が変わる「変化できる素材」。PN接合 ＝ 電流の一方通行弁。
+    </Callout>
+    <p>半導体は不純物で性質が変わる「変化できる素材」。PN接合は電流の一方通行弁として機能し、整流回路・定電圧回路・発光素子など幅広く応用される。</p>
+
+    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <FormulaTable layer="A" rows={[
+      { formula: "V_F \\approx 0.6 \\sim 0.7\\text{ V}", meaning: "シリコンダイオードの順方向電圧降下（導通閾値）", when: "シリコンPN接合ダイオード", notWhen: "ゲルマニウム（≈0.3V）、LEDは色により異なる" },
+      { formula: "V_{avg} = \\dfrac{V_m}{\\pi}\\text{（半波整流）}", meaning: "半波整流回路の出力平均電圧", when: "純抵抗負荷・理想ダイオード", notWhen: "フィルタあり・負荷が誘導性の場合は不適" },
+      { formula: "V_{avg} = \\dfrac{2V_m}{\\pi}\\text{（全波整流）}", meaning: "全波整流回路の出力平均電圧（半波の2倍）", when: "純抵抗負荷・ブリッジ整流または中点タップ", notWhen: "フィルタあり・負荷が誘導性の場合は不適" },
+    ]} />
+
+    <h3>応用素子の特性</h3>
+    <FormulaTable layer="B" rows={[
+      { formula: "V_Z\\text{（ツェナー電圧）}", meaning: "逆方向に一定電圧を超えるとブレークダウンして定電圧を維持", when: "電圧安定化回路", notWhen: "電流が最大定格を超えると破壊" },
+      { formula: "\\lambda \\propto \\frac{1}{E_g}\\text{（LED）}", meaning: "順方向電流でエネルギーギャップに応じた波長の光を放出", when: "GaAs・GaP等の化合物半導体", notWhen: "シリコンは間接遷移型のため発光不可" },
+      { formula: "\\rho \\downarrow\\text{ as }T\\uparrow\\text{（半導体）}", meaning: "温度上昇→キャリア増加→抵抗減少（NTC特性）", when: "真性半導体・不純物半導体", notWhen: "金属とは逆（金属は温度↑で抵抗↑）" },
+      { formula: "C \\propto \\dfrac{1}{\\sqrt{V_R}}\\text{（バラクタ）}", meaning: "逆バイアス電圧を大きくするほど空乏層が広がり静電容量が小さくなる", when: "逆バイアス印加時", notWhen: "順バイアスでは通常ダイオードと同じ動作" },
+      { formula: "\\text{光起電力効果（太陽電池）}", meaning: "PN接合に光を当てると電子・正孔対が生成され、内蔵電界で分離されてP側がプラスの起電力が発生", when: "半導体PN接合", notWhen: "光が当たらなければ起電力は発生しない" },
+    ]} />
+    <Callout variant="note" title="バラクタダイオードの原理（R02 出題）">
+      逆バイアス電圧 <Eq tex="V_R" /> を大きくするほど空乏層が広がり、静電容量 <Eq tex="C" /> が小さくなる（<Eq tex="C \propto \dfrac{1}{\sqrt{V_R}}" />）。バラクタダイオードは逆バイアスで使う。順バイアスをかけると電流が流れてしまい可変容量素子として機能しない。
+    </Callout>
+    <Callout variant="note" title="太陽電池の動作原理（R01・H20 出題）">
+      太陽電池はPN接合ダイオードに光を当てたもの。光が当たると電子・正孔対が生成され、PN接合の内蔵電界によって電子はN側へ、正孔はP側へ引き寄せられる。P側がプラス（高電位）、N側がマイナス（低電位）になる。光起電力効果（フォトボルタイック効果）と光電効果（金属表面から電子が飛び出す）を混同しないこと。
+    </Callout>
+
+    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <h3>N型半導体 vs P型半導体</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>N型</th>
+          <th>P型</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr><td>{String.raw`$V_F \approx 0.6 \sim 0.7V$`}</td><td>シリコンダイオードの順方向電圧</td><td>PN接合ダイオード</td></tr>
-        <tr><td>{String.raw`$V_{avg} = \dfrac{V_m}{\pi}$`}</td><td>半波整流の出力平均電圧</td><td>純抵抗負荷</td></tr>
-        <tr><td>{String.raw`$V_{avg} = \dfrac{2V_m}{\pi}$`}</td><td>全波整流の出力平均電圧</td><td>純抵抗負荷</td></tr>
+        <tr>
+          <td>ドーパント</td>
+          <td>リン（P）・ヒ素（As）など（5価）</td>
+          <td>ボロン（B）など（3価）</td>
+        </tr>
+        <tr>
+          <td>多数キャリア</td>
+          <td>電子（負の電荷）</td>
+          <td>正孔（ホール、正の電荷）</td>
+        </tr>
+        <tr>
+          <td>少数キャリア</td>
+          <td>正孔</td>
+          <td>電子</td>
+        </tr>
+        <tr>
+          <td>不純物の呼称</td>
+          <td>ドナー（電子を供与する）</td>
+          <td>アクセプター（電子を受け取る）</td>
+        </tr>
+        <tr>
+          <td>電気的中性</td>
+          <td>中性（ドーパント核が正電荷を持つ）</td>
+          <td>中性（ドーパント核が負電荷の不足）</td>
+        </tr>
       </tbody>
     </table>
-    <h2 id="examples">§3 例題</h2>
-    <p><strong>問題</strong>: シリコンPN接合ダイオードに順方向電圧を印加する。導通開始電圧はおよそ何Vか。また逆方向に電圧を印加したとき、電流は流れるか。</p>
-    <p><strong>解答</strong>: 導通開始電圧≈0.6〜0.7V。逆方向には微小な逆飽和電流が流れる（完全には遮断されない）。</p>
-    <h2 id="related">§4 関連</h2>
+
+    <h3>順バイアス vs 逆バイアス</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>順バイアス</th>
+          <th>逆バイアス</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P側への印加</td>
+          <td>＋（高電位）</td>
+          <td>−（低電位）</td>
+        </tr>
+        <tr>
+          <td>電流</td>
+          <td>大きく流れる（<Eq tex="V_F" /> 以上で急増）</td>
+          <td>ほぼ流れない（逆飽和電流のみ）</td>
+        </tr>
+        <tr>
+          <td>空乏層</td>
+          <td>薄くなる（縮小）</td>
+          <td>厚くなる（拡大）</td>
+        </tr>
+        <tr>
+          <td>例外動作</td>
+          <td>—</td>
+          <td>ツェナー降伏・アバランシェ降伏</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>真性半導体 vs 不純物半導体</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>真性半導体</th>
+          <th>不純物半導体（N型・P型）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>組成</td>
+          <td>純粋なシリコン・ゲルマニウム</td>
+          <td>ドーパントを微量添加</td>
+        </tr>
+        <tr>
+          <td>キャリア密度</td>
+          <td>低い（室温では非常に少ない）</td>
+          <td>高い（ドーパント濃度に依存）</td>
+        </tr>
+        <tr>
+          <td>電子と正孔の数</td>
+          <td>等しい</td>
+          <td>多数キャリアが圧倒的に多い</td>
+        </tr>
+        <tr>
+          <td>導電率</td>
+          <td>低い</td>
+          <td>高い（温度でも変化）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>半導体 vs 金属の温度特性</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>半導体</th>
+          <th>金属（導体）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>温度↑ → 抵抗</td>
+          <td>減少（キャリア増加）</td>
+          <td>増加（格子振動で散乱増加）</td>
+        </tr>
+        <tr>
+          <td>温度係数</td>
+          <td>負（NTC）</td>
+          <td>正（PTC）</td>
+        </tr>
+        <tr>
+          <td>応用</td>
+          <td>サーミスタ（温度センサ）</td>
+          <td>測温抵抗体（RTD）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <Callout variant="note" title="ドナー・アクセプターの覚え方（H18・H25・R03 出題）">
+      ドナー（Donor）＝与える人：5価の原子（リン・ヒ素）は共有結合に4個使い、余った1個の電子をシリコンに供与する。これが自由電子になる → N型。
+      アクセプター（Acceptor）＝受け取る人：3価の原子（ボロン）は共有結合に3個しか提供できず、1か所が「電子の空き」（正孔）になる → P型。
+      穴埋め問題では「5価の不純物を加えると（　）が生成され、電子が多数キャリアとなる」という形式が頻出。答えは「ドナー」「N型半導体」の順番で入る。
+    </Callout>
+    <Callout variant="note" title="ダイオードの電圧方向を回路図から判断する手順（R04下・H19 出題）">
+      判断の3ステップ：(1) 回路図でダイオードのアノード（A）とカソード（K）を特定する（三角形の底辺側がアノード＝P型、頂点側の棒がカソード＝N型）。(2) アノード・カソードそれぞれの電位を回路から読み取る。(3) アノード電位 {'>'} カソード電位 → 順バイアス（電流が流れる）、アノード電位 {'<'} カソード電位 → 逆バイアス（電流がほぼ流れない）。
+    </Callout>
+
+    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <p><strong>問:</strong> シリコンPN接合ダイオードに順方向電圧を印加する。導通開始電圧はおよそ何Vか。また逆方向に電圧を印加したとき、電流は流れるか。</p>
+    <details>
+      <summary>解答</summary>
+      <p>導通開始電圧 <Eq tex="\\approx 0.6 \\sim 0.7\\text{ V}" />。逆方向には微小な逆飽和電流が流れる（完全には遮断されない）。</p>
+      <p><strong>ポイント：</strong>シリコンの順方向電圧降下は約0.6〜0.7V。ゲルマニウムは約0.2〜0.3V。逆バイアスでも電流が完全ゼロにはならない点に注意。</p>
+    </details>
+
+    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <Callout variant="warn" title="勘違い①：N型は「負電荷の物質」だからN型全体が負に帯電している">
+      N型のNは「多数キャリアが電子（Negative）」という意味で、物質全体の電荷は中性。ドーパントのリン原子は正の核（+5価）を持つので、加えた電子（−1個）と相殺されている。
+    </Callout>
+    <Callout variant="warn" title="勘違い②：逆バイアスをかけると電流は完全にゼロになる">
+      逆バイアスでも微小な「逆飽和電流（Is）」が流れる。温度依存性が高く、温度上昇で急増する。ツェナー降伏電圧まで達すると急激に大電流が流れる。
+    </Callout>
+    <Callout variant="warn" title="勘違い③：ダイオードの向きは「どこでも電流の向き＝アノード→カソード」">
+      アノード（P側）が高電位のときに順バイアス。回路図上の記号（三角の頂点方向が電流方向）と実物の向きを混同しないこと。逆接続は完全なアウト。
+    </Callout>
+    <Callout variant="warn" title="勘違い④：太陽電池に光を当てると逆方向（N側プラス）に電圧が発生する">
+      光が当たると正孔がP側に、電子がN側に集まり、P側がプラス（順方向と同じ極性）の起電力が発生する。太陽電池は「光で動くPN接合」であり、外部から電圧を与えるのではなく自ら起電力を生む。
+    </Callout>
+    <Callout variant="warn" title="勘違い⑤：バラクタダイオードは順バイアスで大きな静電容量が得られる">
+      バラクタダイオードは逆バイアスで使う可変容量素子。逆バイアスを強くするほど空乏層が広がり静電容量は小さくなる。順バイアスをかけると電流が流れてしまい容量素子として機能しない。
+    </Callout>
+    <Callout variant="warn" title="パターン33：pn接合の空乏層は順バイアスで広がると思い込む">
+      順バイアスでは外部電圧がpn接合の内蔵電位（ビルトインポテンシャル）を打ち消す方向に働き、空乏層は縮小する。逆バイアスでは内蔵電位を強める方向に働き、空乏層は拡大する。電流の流れやすさと空乏層の広さは逆の関係。逆バイアスで拡大した空乏層が電圧降下を担うコンデンサとして機能するのがバラクタダイオードの原理。（H25問15・R01問15 類出）
+    </Callout>
+
+    <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>観点</th>
+          <th>誤答者</th>
+          <th>正答者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>N型の電荷</td>
+          <td>「N＝負電荷」なのでN型全体が負に帯電していると思う</td>
+          <td>N型はドナー（陽イオン）と電子が釣り合い、全体は電気的中性</td>
+        </tr>
+        <tr>
+          <td>ダイオードの向き</td>
+          <td>カソード（N側）→アノード（P側）に電流が流れると思う</td>
+          <td>アノード（P側）→カソード（N側）が順方向（電流が流れる向き）</td>
+        </tr>
+        <tr>
+          <td>温度特性</td>
+          <td>「半導体も金属も温度↑なら抵抗↑」と思い込む</td>
+          <td>半導体は温度↑→キャリア増加→抵抗↓（金属とは逆）</td>
+        </tr>
+        <tr>
+          <td>逆バイアスで電流</td>
+          <td>「逆方向なら電流完全ゼロ」と思い込む</td>
+          <td>微小な逆飽和電流が流れる（温度依存あり）</td>
+        </tr>
+        <tr>
+          <td>PN接合の空乏層</td>
+          <td>順バイアスで空乏層が拡大すると思う</td>
+          <td>順バイアスで空乏層は縮小、逆バイアスで拡大</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="exam-history"><span className="h-num">7.</span>出題実績</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>問</th>
+          <th>形式</th>
+          <th>何が問われたか</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>R07上</td><td>問11</td><td>穴埋</td><td>ホール素子の動作原理</td></tr>
+        <tr><td>R06下</td><td>問11</td><td>論説</td><td>電界効果トランジスタの種類や特徴</td></tr>
+        <tr><td>R06上</td><td>問11</td><td>論説</td><td>バイポーラトランジスタと電界効果トランジスタ</td></tr>
+        <tr><td>R05下</td><td>問11</td><td>穴埋</td><td>FETの動作原理</td></tr>
+        <tr><td>R05上</td><td>問11</td><td>穴埋</td><td>ホール素子の動作原理</td></tr>
+        <tr><td>R05上</td><td>問12</td><td>穴埋</td><td>異なる2種類の金属を接合した際の特性</td></tr>
+        <tr><td>R04下</td><td>問11</td><td>穴埋</td><td>各ダイオードに加える電圧の方向</td></tr>
+        <tr><td>R04上</td><td>問11</td><td>穴埋</td><td>電界効果トランジスタの特徴</td></tr>
+        <tr><td>R03</td><td>問11</td><td>論説</td><td>真性半導体及び不純物半導体の特徴</td></tr>
+        <tr><td>R02</td><td>問11</td><td>穴埋</td><td>可変容量ダイオード（バラクタダイオード）</td></tr>
+        <tr><td>R01</td><td>問11</td><td>穴埋</td><td>太陽電池</td></tr>
+        <tr><td>H30</td><td>問11</td><td>論説</td><td>半導体素子</td></tr>
+        <tr><td>H29</td><td>問11</td><td>論説</td><td>半導体のpn接合</td></tr>
+        <tr><td>H28</td><td>問11</td><td>論説</td><td>半導体</td></tr>
+        <tr><td>H27</td><td>問11</td><td>穴埋</td><td>半導体レーザ</td></tr>
+        <tr><td>H26</td><td>問12</td><td>論説</td><td>半導体のpn接合を利用した素子</td></tr>
+        <tr><td>H25</td><td>問11</td><td>穴埋</td><td>不純物半導体</td></tr>
+        <tr><td>H24</td><td>問11</td><td>論説</td><td>半導体集積回路（IC）</td></tr>
+        <tr><td>H23</td><td>問11</td><td>穴埋</td><td>電界効果トランジスタ（MOSFET）</td></tr>
+        <tr><td>H22</td><td>問11</td><td>穴埋</td><td>ホール効果の原理</td></tr>
+        <tr><td>H21</td><td>問11</td><td>論説</td><td>真性半導体と不純物半導体の特徴</td></tr>
+        <tr><td>H20</td><td>問11</td><td>穴埋</td><td>pn接合した半導体の太陽電池の原理</td></tr>
+        <tr><td>H19</td><td>問11</td><td>穴埋</td><td>各ダイオードに加える電圧の方向</td></tr>
+        <tr><td>H18</td><td>問11</td><td>穴埋</td><td>不純物半導体の特徴と不純物の知識</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="hall"><span className="h-num">8.</span>🌡️ ホール効果・熱起電力（★★★★★）</h2>
+    <h3>ゼーベック効果とペルチェ効果</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>効果</th>
+          <th>現象</th>
+          <th>利用例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ゼーベック効果</td>
+          <td>2種類の金属を両端で接合し、接合部に温度差を与えると起電力が発生する</td>
+          <td>熱電対・熱電温度センサ</td>
+        </tr>
+        <tr>
+          <td>ペルチェ効果</td>
+          <td>閉回路に外部から電流を流すと、一方の接合部で吸熱、他方で発熱する（ゼーベック効果の逆）</td>
+          <td>電子冷却器（熱電冷却モジュール）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>ホール電圧の式</h3>
+    <p>p型半導体に電流 <Eq tex="I" /> を流し、電流に対して垂直方向に磁束密度 <Eq tex="B" /> の磁界を加えると、電流と磁界の両方に直交する方向にホール電圧 <Eq tex="V_H" /> が発生する。</p>
+    <p><Eq tex="V_H = R_H \\cdot \\dfrac{BI}{d}" display /></p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>記号</th>
+          <th>意味</th>
+          <th>単位</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><Eq tex="V_H" /></td><td>ホール電圧</td><td>V</td></tr>
+        <tr><td><Eq tex="R_H" /></td><td>ホール係数（材料固有）</td><td>m³/C</td></tr>
+        <tr><td><Eq tex="B" /></td><td>磁束密度</td><td>T</td></tr>
+        <tr><td><Eq tex="I" /></td><td>電流</td><td>A</td></tr>
+        <tr><td><Eq tex="d" /></td><td>磁界方向の半導体の厚さ</td><td>m</td></tr>
+      </tbody>
+    </table>
+
+    <h3>p型とn型でのホール電圧の向き</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>型</th>
+          <th>キャリア</th>
+          <th>偏り</th>
+          <th>ホール電圧の向き</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>p型</td>
+          <td>正孔（ホール）</td>
+          <td>正孔が偏った側が高電位（＋）</td>
+          <td>電流・磁界に直交する特定方向</td>
+        </tr>
+        <tr>
+          <td>n型</td>
+          <td>電子</td>
+          <td>電子（負電荷）が偏った側が低電位（−）</td>
+          <td>p型と逆向き</td>
+        </tr>
+      </tbody>
+    </table>
+    <Callout variant="note" title="ホール電圧の向きを図から判断する手順（R07上・R05上 出題）">
+      p型半導体の場合（キャリア＝正孔）：(1) 電流の方向を確認する。(2) 正孔は電流と同じ方向に動く。(3) 磁界によるローレンツ力を考える（電流方向に人差し指、磁界方向に中指、力の方向に親指）。(4) 正孔が偏った側が高電位（＋）になる。n型半導体の場合：電子は電流と逆方向に動き、偏る方向はp型と同じ側でも、電子（負電荷）が偏るのでその側が低電位（−）になる。つまりホール電圧の向きがp型と逆になる。
+    </Callout>
     <ul>
-      <li>ツェナーダイオード（定電圧特性）</li>
-      <li>バラクタダイオード（可変容量）</li>
-      <li>太陽電池（光起電力効果）</li>
+      <li>磁界センサ（ホール素子）</li>
+      <li>電流センサ（非接触電流計測）</li>
+      <li>位置・回転検出（ブラシレスモータの回転子位置検出）</li>
     </ul>
-    <div className="page-nav">
-      <a className="nav-prev" href="#" onClick={() => onNav('three-phase')}>← 三相交流</a>
-      <a className="nav-next" href="#" onClick={() => onNav('transistor')}>トランジスタ →</a>
-    </div>
+
+    <h2 id="photoelectric"><span className="h-num">9.</span>電子放出と光電効果</h2>
+    <h3>電子放出の4種類</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>種類</th>
+          <th>メカニズム</th>
+          <th>主な材料・用途</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>熱電子放出</td>
+          <td>高温加熱により自由電子が仕事関数を超えるエネルギーを得て飛び出す</td>
+          <td>タングステン、タンタル（真空管・電子銃）</td>
+        </tr>
+        <tr>
+          <td>光電子放出（光電効果）</td>
+          <td>金属表面に光（電磁波）が当たり電子が飛び出す。限界振動数 <Eq tex="\\nu_0" /> 以上で発生</td>
+          <td>光電管、光センサ</td>
+        </tr>
+        <tr>
+          <td>二次電子放出</td>
+          <td>高速電子が衝突し、内部電子がエネルギーをもらい飛び出す</td>
+          <td>光電子増倍管</td>
+        </tr>
+        <tr>
+          <td>電界放出（冷陰極放出）</td>
+          <td>強電界印加でトンネル効果により電子が飛び出す</td>
+          <td>電界放出型ディスプレイ（FED）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>光電効果の公式</h3>
+    <FormulaTable layer="B" rows={[
+      { formula: "K_0 = h\\nu - W", meaning: "飛び出す電子の最大運動エネルギー（h：プランク定数、ν：光の振動数、W：仕事関数）", when: "振動数 ν ≥ 限界振動数 ν₀", notWhen: "ν < ν₀ のときは光をいくら強くしても光電子は出ない" },
+      { formula: "\\nu_0 = \\dfrac{W}{h}", meaning: "限界振動数（カットオフ周波数）：K₀=0となるギリギリの振動数", when: "仕事関数Wが既知のとき", notWhen: "—" },
+      { formula: "\\lambda_0 = \\dfrac{c}{\\nu_0}", meaning: "限界波長：光の速さ c = νλ より変換", when: "限界振動数ν₀が既知のとき", notWhen: "—" },
+    ]} />
+    <Callout variant="warn" title="光を「強く」しても限界振動数以下では光電子は出ない">
+      光の強さ＝光子（フォトン）の数。1個の光子のエネルギーは <Eq tex="h\\nu" /> で振動数のみで決まり、光の強さには関係しない。振動数 <Eq tex="\\nu {'<'} \\nu_0" /> なら光をいくら強くしても光電子は飛び出さない。振動数一定で光を強くすると光電子の数は増えるが、最大運動エネルギー <Eq tex="K_0" /> は変わらない。振動数を上げると <Eq tex="K_0" /> が増加する。
+    </Callout>
+
+    <PageNav prev={{id:"three-phase", title:"三相交流"}} next={{id:"transistor", title:"トランジスタ"}} onNav={onNav} />
   </>
 );
 

@@ -531,6 +531,21 @@ const DcCircuitPage = ({ onNav }) => (
       </tbody>
     </table>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      受変電・制御盤の配線設計では、直流回路の基礎が電圧降下計算・保護協調・信号整合のすべてに使われる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DC24V制御電源で長距離PLC配線</td><td>V=IR の電圧降下</td><td>配線距離・線径から末端電圧を試算、定格90%確保</td></tr>
+        <tr><td>短絡電流計算で遮断器の容量選定</td><td>テブナン等価回路</td><td>系統を1電源+1抵抗に縮約、遮断容量がIs超えるか判定</td></tr>
+        <tr><td>信号源と入力回路の整合（最大電力）</td><td>最大電力定理</td><td>電力最大はRload=Rth時。ただし効率は50%で損失大</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 10Ω と 40Ω が並列接続された回路に 100V が印加されている。合成抵抗と全電流を求めよ。</p>
     <details>
@@ -673,6 +688,21 @@ const AcBasicsPage = ({ onNav }) => (
         <tr><td>換算</td><td>V = Vm/√2</td><td>Vm = √2·V</td></tr>
         <tr><td>使う場面</td><td>電力計算・機器定格</td><td>絶縁設計・波形観察</td></tr>
         <tr><td>日常例</td><td>コンセント 100V</td><td>≒141V</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      交流回路の複素インピーダンスは、電動機・変圧器・ケーブルの電流計算から保護リレー整定まで、交流系統設計の共通言語となる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>インバータ駆動電動機の電流評価</td><td>インピーダンス Z=R+jX</td><td>周波数で X が変わる→低速時に誘導性リアクタンス低下</td></tr>
+        <tr><td>ケーブル長による位相ズレ検討</td><td>進み・遅れ電流の発生</td><td>進み・遅れを予測し保護リレーの誤動作判定に活用</td></tr>
+        <tr><td>機器銘板の力率からkVA換算</td><td>S=VI（皮相電力）</td><td>銘板cosφとP[kW]からS=P/cosφで電源容量チェック</td></tr>
       </tbody>
     </table>
 
