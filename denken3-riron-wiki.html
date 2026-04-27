@@ -2955,6 +2955,28 @@ const HomePage = ({ onNav }) => {
         </ul>
         <p style={{marginTop: 14}}>本文中の <span className="marker">黄色マーカー</span> 部分は、原理理解で必ず押さえるべき要点・物理的意味を示す。直前期はマーカー箇所を中心に総ざらいするのが効率的である。</p>
 
+        <h2>今の状況から始める</h2>
+        <div className="card-grid">
+          <div className="card" onClick={() => onNav("guide")}>
+            <div className="card-num">📖</div>
+            <div className="card-title">ゼロから始める</div>
+            <div className="card-deck">前提知識チェックリストから16STEPを順番に。学習ロードマップで全体像を掴む。</div>
+            <div className="card-foot"><span>C 学習ガイドへ →</span></div>
+          </div>
+          <div className="card" onClick={() => onNav("trends")}>
+            <div className="card-num">🎯</div>
+            <div className="card-title">苦手を潰す</div>
+            <div className="card-deck">出題傾向データで弱点単元を特定。過去問逆引き表でケアレスミスの根を断つ。</div>
+            <div className="card-foot"><span>出題傾向データへ →</span></div>
+          </div>
+          <div className="card" onClick={() => onNav("last-3days")}>
+            <div className="card-num">⏱</div>
+            <div className="card-title">直前3日で仕上げる</div>
+            <div className="card-deck">重要度S・Aの公式と引っかけを5秒要約で総ざらい。Day別チェックリスト付き。</div>
+            <div className="card-foot"><span>直前3日戦略へ →</span></div>
+          </div>
+        </div>
+
         <h2><span className="h-num">§2</span>単元一覧</h2>
         <p>章をクリックして該当ページへ移動する。<span className="diff-badge diff-advanced">応用</span> マークが付いた章は計算問題で頻出。理論は「電気回路 → 電磁気 → 電子 → 計測」の順で学ぶと前提知識のギャップが少ない。</p>
 
@@ -3718,6 +3740,16 @@ const GuidePage = ({ onNav }) => (
           <tr><td>最大値・実効値・平均値、波形率、波高率</td><td>交流回路基礎</td></tr>
           <tr><td>結合係数、和動接続、差動接続、相互インダクタンス</td><td>インダクタンス</td></tr>
           <tr><td>整流回路、順バイアス、逆バイアス、降伏電圧</td><td>半導体</td></tr>
+          <tr><td>合成抵抗、分圧回路、分流回路、スター・デルタ変換</td><td>直流回路</td></tr>
+          <tr><td>電界の強さ、電束密度、ガウスの法則、等電位面</td><td>静電気</td></tr>
+          <tr><td>平均電力、瞬時電力、力率角、cosφ、進み遅れ判定</td><td>交流電力</td></tr>
+          <tr><td>飽和領域、遮断領域、活性領域、バイアス点、動作点</td><td>トランジスタ</td></tr>
+          <tr><td>FET、MOSFET、ゲート、ドレイン、ソース、ピンチオフ</td><td>トランジスタ</td></tr>
+          <tr><td>半波整流、全波整流、リプル電圧、平滑コンデンサ</td><td>半導体</td></tr>
+          <tr><td>初期条件、スイッチ投入、過渡電流、過渡電圧</td><td>過渡現象</td></tr>
+          <tr><td>ひずみ波、高調波・第n次、実効値計算</td><td>交流回路基礎</td></tr>
+          <tr><td>電力計、二電力計法、三電力計法、無効電力測定</td><td>計器の原理</td></tr>
+          <tr><td>自己容量、相互容量、静電誘導、電気遮蔽</td><td>コンデンサ</td></tr>
         </tbody>
       </table>
 
