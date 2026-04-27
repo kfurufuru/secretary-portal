@@ -26,12 +26,12 @@
   --accent: oklch(0.45 0.12 260);
   --accent-soft: oklch(0.92 0.04 260);
   --accent-ink: oklch(0.32 0.13 260);
-  --warn: oklch(0.55 0.14 50);
-  --warn-soft: oklch(0.95 0.04 70);
-  --ok: oklch(0.55 0.10 155);
-  --ok-soft: oklch(0.94 0.04 155);
-  --danger: oklch(0.55 0.16 25);
-  --danger-soft: oklch(0.95 0.03 25);
+  --warn: oklch(0.50 0.10 50);
+  --warn-soft: oklch(0.97 0.012 70);
+  --ok: oklch(0.48 0.08 155);
+  --ok-soft: oklch(0.97 0.010 155);
+  --danger: oklch(0.50 0.12 25);
+  --danger-soft: oklch(0.97 0.010 25);
 
   --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
   --font-sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
@@ -57,12 +57,12 @@
   --accent: oklch(0.72 0.12 260);
   --accent-soft: oklch(0.30 0.06 260);
   --accent-ink: oklch(0.85 0.10 260);
-  --warn: oklch(0.78 0.14 70);
-  --warn-soft: oklch(0.32 0.05 70);
-  --ok: oklch(0.78 0.12 155);
-  --ok-soft: oklch(0.28 0.05 155);
-  --danger: oklch(0.78 0.14 25);
-  --danger-soft: oklch(0.32 0.05 25);
+  --warn: oklch(0.75 0.10 70);
+  --warn-soft: oklch(0.28 0.030 70);
+  --ok: oklch(0.75 0.09 155);
+  --ok-soft: oklch(0.25 0.025 155);
+  --danger: oklch(0.75 0.10 25);
+  --danger-soft: oklch(0.28 0.028 25);
 }
 
 [data-accent="forest"]  { --accent: oklch(0.45 0.12 260); --accent-soft: oklch(0.92 0.04 260); --accent-ink: oklch(0.32 0.13 260); }
@@ -538,6 +538,26 @@ table.data caption {
   margin-bottom: 6px;
   color: var(--ink-soft);
 }
+/* data-table は data の別名（JSX側で className="data-table" を統一使用） */
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.data-table th, table.data-table td {
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+table.data-table th {
+  background: var(--bg-sunken);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+table.data-table td.num, table.data-table th.num { font-family: var(--font-mono); text-align: right; }
+table.data-table tr:nth-child(even) td { background: color-mix(in oklab, var(--bg-sunken) 50%, transparent); }
 
 /* ============================================================ TOC (right rail) */
 
@@ -2425,6 +2445,110 @@ const TrapCard = ({ num, category, trap, correct, cite }) => (
 );
 
 /* ============================================================
+   4b. TrapBlock
+   引っかけポイント3層構造コンポーネント（RULE-05準拠）
+   正解最上段 → 誤解補足 → 判別ステップ → 出典
+   ============================================================ */
+
+const TrapBlock = ({ correct, trap, cite, steps = [] }) => (
+  <div style={{
+    border: "1px solid var(--rule)",
+    borderRadius: "8px",
+    margin: "16px 0",
+    overflow: "hidden",
+  }}>
+    {/* 正解（最上段・最初に目に入る） */}
+    <div style={{
+      background: "var(--ok-soft)",
+      borderBottom: "1px solid color-mix(in oklab, var(--ok) 25%, transparent)",
+      padding: "12px 16px",
+    }}>
+      <div style={{
+        fontWeight: 700,
+        fontSize: "12px",
+        color: "var(--ok)",
+        marginBottom: "4px",
+        display: "flex",
+        alignItems: "center",
+        gap: "5px",
+      }}>
+        <span>✅</span>
+        <span>正解の原則</span>
+      </div>
+      <div style={{ color: "var(--ink)", lineHeight: "1.7", fontSize: "14px" }}>
+        {correct}
+      </div>
+    </div>
+
+    {/* 誤解パターン（amber系・補足扱い・RULE-16: hue 0-30の赤禁止） */}
+    {trap && (
+      <div style={{
+        background: "var(--warn-soft)",
+        borderBottom: steps.length > 0
+          ? "1px solid color-mix(in oklab, var(--warn) 25%, transparent)"
+          : "none",
+        padding: "10px 16px",
+      }}>
+        <div style={{
+          fontWeight: 700,
+          fontSize: "12px",
+          color: "var(--warn)",
+          marginBottom: "4px",
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+        }}>
+          <span>⚠</span>
+          <span>よくある誤解</span>
+        </div>
+        <div style={{ color: "var(--ink)", lineHeight: "1.6", fontSize: "13px", fontStyle: "italic" }}>
+          {trap}
+        </div>
+      </div>
+    )}
+
+    {/* 判別ステップ */}
+    {steps.length > 0 && (
+      <div style={{
+        padding: "10px 16px",
+        background: "var(--bg-elev)",
+        borderBottom: cite ? "1px solid var(--rule)" : "none",
+      }}>
+        <div style={{
+          fontWeight: 700,
+          fontSize: "12px",
+          color: "var(--accent-ink)",
+          marginBottom: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+        }}>
+          <span>🔍</span>
+          <span>判別ステップ</span>
+        </div>
+        <ol style={{ margin: 0, paddingLeft: "1.4em", lineHeight: "1.7", fontSize: "13px" }}>
+          {steps.map((s, i) => (
+            <li key={i} style={{ marginBottom: i < steps.length - 1 ? "4px" : 0 }}>{s}</li>
+          ))}
+        </ol>
+      </div>
+    )}
+
+    {/* 出典 */}
+    {cite && (
+      <div style={{
+        fontSize: "11px",
+        color: "var(--ink-mute)",
+        padding: "6px 16px",
+        background: "var(--bg-sunken)",
+      }}>
+        出典: {cite}
+      </div>
+    )}
+  </div>
+);
+
+/* ============================================================
    5. MetaStrip
    各テーマページのヘッダー直下に表示するメタ情報バー
    ============================================================ */
@@ -2766,6 +2890,7 @@ Object.assign(window, {
   FormulaTable,
   Analogy,
   TrapCard,
+  TrapBlock,
   MetaStrip,
   LearningMap,
   TrapPatternsPage,
@@ -3961,6 +4086,21 @@ const AcPowerPage = ({ onNav }) => (
       <p>4. コンデンサ容量：<Eq tex="C = \\frac{Q_C}{\\omega V^2}" /></p>
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      有効電力・無効電力・皮相電力の3成分は、受変電容量設計・力率管理・電気料金計算の根幹。プラントの基本料金は力率で上下する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>受変電設備の容量設計</td><td>皮相電力 S=P/cosφ</td><td>設備容量はkVAで決まる。kWだけ見ると過小設計</td></tr>
+        <tr><td>高圧受電の電気料金（基本料金）</td><td>力率 cosφ</td><td>力率85%基準で割引／割増。進相コンデンサで改善</td></tr>
+        <tr><td>進相コンデンサ容量の計算</td><td>Q=P(tanφ₁−tanφ₂)</td><td>改善前後の力率角から必要kvar容量を逆算して選定</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">§5</span>例題</h2>
     <p><strong>問:</strong> 100V・5Aの交流回路で力率が0.8（遅れ）のとき、有効電力・無効電力・皮相電力を求めよ。</p>
     <details>
@@ -4064,6 +4204,21 @@ const ThreePhasePage = ({ onNav }) => (
       </tbody>
     </table>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      三相交流は工場の受変電・電動機・変圧器すべての基盤。√3の扱いと星形/三角形の電圧・電流関係を誤ると機器選定ミスに直結する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>三相受電盤の主回路設計</td><td>線間電圧＝√3×相電圧</td><td>6.6kV配電・400V/200V低圧の関係を即算</td></tr>
+        <tr><td>三相電動機の消費電力測定</td><td>P=√3・V_l・I_l・cosφ</td><td>線間電圧・線電流から消費電力（kW）算出</td></tr>
+        <tr><td>地絡保護方式の選定</td><td>Y結線中性点の接地</td><td>中性点接地方式で地絡電流の大きさと検出回路が決まる</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> Y結線の三相電源で相電圧が200Vのとき、線間電圧を求めよ。</p>
     <details>
@@ -4095,6 +4250,7 @@ const ThreePhasePage = ({ onNav }) => (
 );
 
 // TransistorPage (5.2 トランジスタ・FET)
+// last-updated: 2026-04-27 | v0.9 | RULE-02〜22全適用：5秒・実務・TrapBlock・正答vs誤答・出題実績・FET固有セクション追加
 const TransistorPage = ({ onNav }) => (
   <>
     <MetaStrip difficulty="★★★★" importance="A" frequency="高" />
@@ -4107,74 +4263,127 @@ const TransistorPage = ({ onNav }) => (
     <PageHeader
       eyebrow="5.2 — TRANSISTOR / FET"
       title="トランジスタ・FET"
-      deck="小さい信号で大きな電流を制御するスイッチ兼増幅器。直流動作点・バイアス回路計算が毎年出題。"
+      deck="小さい信号で大きな電流を制御するスイッチ兼増幅器。BJT vs FET の比較・直流動作点・3接地方式が毎年出題。"
       meta={[
         { label: "重要度", value: "A" },
-        { label: "出題頻度", value: "高（毎年1〜2問、問13・問18）" },
+        { label: "出題頻度", value: "高（毎年1〜2問、問11・問13）" },
         { label: "難易度", value: "★★★★" },
       ]}
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"5. 電子理論"}]} onNav={onNav} />
 
-    <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
     <Analogy type="faucet" icon="🚰">
-      バイポーラトランジスタは「電流で電流を制御」する。ベース電流 IB が小さくても、hFE 倍に増幅されたコレクタ電流 IC が流れる。蛇口のバルブのように、少ない力で大流量を制御する。
-      FETは「電圧で電流を制御」する。ゲートに電圧を加えるだけで電流路を制御でき、入力電流がほぼゼロ。
+      <strong>BJT（バイポーラ）</strong>は「電流で電流を制御」する水道バルブ。ベース電流 I_B という小さい力でバルブを開閉すると、コレクタ電流 I_C = h_FE × I_B という大流量が流れる。<br/>
+      <strong>FET（電界効果型）</strong>は「電圧で電流を制御」するゲート弁。ゲートに電圧を加えるだけでチャネルが形成され、ドレイン電流が流れる。入力電流はほぼゼロ。
     </Analogy>
-    <p>トランジスタは増幅デバイス。直流動作点（Q点）の設定、電流増幅率 hFE、エミッタ接地・ベース接地・コレクタ接地の3接地方式が基本。FETは電圧制御でBJTと原理が異なる。</p>
+    <Callout variant="tip" title="5秒で思い出す">
+      BJT ＝ 電流制御（I_C = h_FE × I_B）。FET ＝ 電圧制御（ゲート電圧でチャネル開閉）。I_E = I_B + I_C は常に成立。
+    </Callout>
+    <p>トランジスタの増幅動作は「アクティブ領域」で起こる。飽和領域ではスイッチON、遮断領域ではスイッチOFFとして扱う。直流動作点（Q点）は増幅動作が安定して続く動作点であり、バイアス回路で設定する。</p>
 
-    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
     <FormulaTable layer="A" rows={[
-      { formula: "h_{FE} = \\frac{I_C}{I_B}", meaning: "電流増幅率：ベース電流の何倍のコレクタ電流が流れるか", when: "アクティブ領域（増幅動作）", notWhen: "飽和・遮断領域" },
-      { formula: "I_E = I_B + I_C", meaning: "キルヒホッフの電流則：3端子の電流収支", when: "常に成立（全動作領域）", notWhen: "—" },
-      { formula: "P_C = V_{CE} \\times I_C", meaning: "コレクタ損失：トランジスタの発熱量", when: "定常動作時", notWhen: "—" },
+      {
+        formula: "h_{FE} = \\dfrac{I_C}{I_B}",
+        meaning: "直流電流増幅率（ベース電流の何倍のコレクタ電流が流れるか）",
+        when: "アクティブ領域（増幅動作）。V_CE > V_BE のとき",
+        notWhen: "飽和領域（V_CE ≈ 0.2V）・遮断領域では h_FE での計算不可 → スイッチ扱いへ切り替え"
+      },
+      {
+        formula: "I_E = I_B + I_C",
+        meaning: "3端子の電流収支（キルヒホッフの電流則）",
+        when: "常に成立（全動作領域・BJT全接地方式）",
+        notWhen: "—（この式が崩れることはない）"
+      },
+      {
+        formula: "P_C = V_{CE} \\times I_C",
+        meaning: "コレクタ損失（トランジスタの発熱量）",
+        when: "定常動作時。最大定格 P_C(max) 以下で使用すること",
+        notWhen: "スイッチング過渡中は瞬間的に超過することがある → 熱設計で余裕をもたせる"
+      },
     ]} />
 
-    <h3>直流動作点計算（電流帰還バイアス）</h3>
+    <h3>レイヤーB：応用変換</h3>
     <FormulaTable layer="B" rows={[
-      { formula: "V_B = V_{CC} \\cdot \\frac{R_2}{R_1 + R_2}", meaning: "ベース電圧（分圧）", when: "hFE が十分大きい", notWhen: "hFE が小さい場合は精密計算必要" },
-      { formula: "V_E = V_B - V_{BE}", meaning: "エミッタ電圧（VBE ≈ 0.6V）", when: "常に成立", notWhen: "—" },
-      { formula: "I_C \\approx I_E = \\frac{V_E}{R_E}", meaning: "コレクタ電流（エミッタ電流）", when: "常に成立", notWhen: "—" },
+      {
+        formula: "V_B = V_{CC} \\cdot \\dfrac{R_2}{R_1 + R_2}",
+        meaning: "ベース電圧（電流帰還バイアスの分圧）",
+        when: "h_FE が十分大きく、ベース電流が分圧抵抗に比べ無視できる場合",
+        notWhen: "h_FE が小さい（30未満）場合は精密計算が必要（ベース電流の影響を加味）"
+      },
+      {
+        formula: "V_E = V_B - V_{BE}",
+        meaning: "エミッタ電圧（V_BE ≈ 0.6V：シリコントランジスタの接合電圧）",
+        when: "順バイアス状態（アクティブ・飽和領域）。シリコン素子で約0.6V",
+        notWhen: "ゲルマニウム素子では V_BE ≈ 0.2V → 問題文で素材を確認すること"
+      },
+      {
+        formula: "I_C \\approx I_E = \\dfrac{V_E}{R_E}",
+        meaning: "コレクタ電流（h_FE ≫ 1 のとき I_C ≈ I_E）",
+        when: "h_FE ≫ 1 のとき（一般的なシリコントランジスタで成立）",
+        notWhen: "h_FE が小さい場合は I_C = h_FE × I_B を直接使う"
+      },
     ]} />
 
-    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ表</h2>
+    <h2 id="comparison"><span className="h-num">3.</span>比較・整理</h2>
+    <h3>BJT vs FET</h3>
     <table className="data-table">
       <thead>
         <tr>
-          <th>項目</th>
-          <th>BJT（バイポーラ）</th>
-          <th>FET（電界効果型）</th>
+          <th style={{width:"22%"}}>観点</th>
+          <th style={{width:"39%"}}>BJT（バイポーラトランジスタ）</th>
+          <th style={{width:"39%"}}>FET（電界効果型トランジスタ）</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>制御方式</td>
-          <td>電流制御（ベース電流）</td>
-          <td>電圧制御（ゲート電圧）</td>
+          <td><span className="marker">電流制御（ベース電流 I_B）</span></td>
+          <td><span className="marker">電圧制御（ゲート電圧 V_GS）</span></td>
         </tr>
         <tr>
           <td>入力インピーダンス</td>
           <td>低い（数百Ω〜数kΩ）</td>
-          <td>非常に高い（MOSFETは≈∞）</td>
+          <td><span className="marker">非常に高い（MOSFETは絶縁ゲートで≈∞）</span></td>
         </tr>
         <tr>
           <td>入力電流</td>
-          <td>有り（IB）</td>
-          <td>ほぼゼロ</td>
+          <td>有り（I_B が必要）</td>
+          <td><span className="marker">ほぼゼロ（ゲートは絶縁・静電容量のみ）</span></td>
         </tr>
         <tr>
-          <td>用途</td>
-          <td>高速スイッチング・線形増幅</td>
-          <td>低消費電力・VLSI</td>
+          <td>キャリア種類</td>
+          <td>電子・正孔の両方（Bi-polar）</td>
+          <td>多数キャリアのみ（Uni-polar）</td>
+        </tr>
+        <tr>
+          <td>温度特性</td>
+          <td>温度上昇で I_C が増大（熱暴走リスク）</td>
+          <td>温度上昇でドレイン電流が減少（自己安定性あり）</td>
+        </tr>
+        <tr>
+          <td>主な用途</td>
+          <td>線形増幅・高速スイッチング</td>
+          <td>低消費電力・VLSI・パワーMOSFET</td>
+        </tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td colSpan={2}>
+            BJT: <span className="marker">h_FE（電流増幅率）</span>が性能を支配。h_FE が2倍になるとベース電流が半分でよくなる。<br/>
+            FET: <span className="marker">V_GS（ゲート-ソース電圧）</span>が支配。V_GS がしきい値電圧 V_th を超えるとチャネルが形成され電流が流れ始める。<br/>
+            <em>→ BJT は電流駆動・FET は電圧駆動の違いが設計判断の核心</em>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <h3>接地方式の比較</h3>
+    <h3>3接地方式の比較（BJT）</h3>
     <table className="data-table">
       <thead>
         <tr>
-          <th>項目</th>
+          <th style={{width:"18%"}}>観点</th>
           <th>エミッタ接地</th>
           <th>ベース接地</th>
           <th>コレクタ接地（エミッタフォロワ）</th>
@@ -4183,59 +4392,308 @@ const TransistorPage = ({ onNav }) => (
       <tbody>
         <tr>
           <td>電圧利得</td>
-          <td>大（反転）</td>
+          <td><span className="marker">大（反転：出力は入力と逆位相）</span></td>
           <td>大（非反転）</td>
           <td>≈1（非反転）</td>
         </tr>
         <tr>
           <td>電流利得</td>
-          <td>大（hFE倍）</td>
-          <td>≈1</td>
-          <td>大</td>
+          <td><span className="marker">大（h_FE 倍）</span></td>
+          <td>≈1（α倍 ≈ 0.99）</td>
+          <td>大（1 + h_FE 倍）</td>
         </tr>
         <tr>
           <td>入力インピーダンス</td>
-          <td>中程度</td>
-          <td>低い</td>
+          <td>中程度（kΩ級）</td>
+          <td><span className="marker">低い（数十Ω〜数百Ω）</span></td>
+          <td>高い（MΩ級）</td>
+        </tr>
+        <tr>
+          <td>出力インピーダンス</td>
+          <td>高い（kΩ〜MΩ）</td>
           <td>高い</td>
+          <td><span className="marker">低い（数十Ω〜数百Ω）</span></td>
+        </tr>
+        <tr>
+          <td>位相反転</td>
+          <td>あり（180°）</td>
+          <td>なし</td>
+          <td>なし</td>
         </tr>
         <tr>
           <td>主な用途</td>
-          <td>汎用増幅</td>
+          <td>汎用増幅（最多）</td>
           <td>高周波増幅</td>
-          <td>インピーダンス変換</td>
+          <td>インピーダンス変換・バッファ</td>
+        </tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td>負荷抵抗 R_C（電圧利得 ≈ R_C / h_ie を左右）</td>
+          <td>信号源インピーダンス（低入力 Z との整合が性能を決める）</td>
+          <td>エミッタ抵抗 R_E（出力インピーダンスを決める）</td>
         </tr>
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">§4</span>例題</h2>
-    <p><strong>問:</strong> hFE=100のNPNトランジスタにベース電流 IB=0.02mA が流れているとき、コレクタ電流 IC とエミッタ電流 IE を求めよ。</p>
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      トランジスタはセンサ信号の増幅・インターフェース回路・ドライバ回路として計装システム全体に組み込まれている。制御弁・ソレノイドバルブの駆動回路や、4〜20mA伝送の送信器内部でも核心部品として動作する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>熱電対の微小電圧を制御器に伝送する増幅回路</td>
+          <td>BJTのアクティブ領域動作（I_C = h_FE × I_B）で mV 信号を mA 信号に変換</td>
+          <td>動作点（Q点）が温度変動でずれないよう、電流帰還バイアス回路を採用する</td>
+        </tr>
+        <tr>
+          <td>ソレノイドバルブを PLC 出力で駆動するドライバ回路</td>
+          <td>トランジスタを飽和領域で使い、スイッチとして ON/OFF 動作させる</td>
+          <td>コレクタ損失 P_C が最大定格を超えないよう、ベース抵抗と放熱設計を確認する</td>
+        </tr>
+        <tr>
+          <td>フィールド機器の電源ラインに挿入された保護回路</td>
+          <td>MOSFETの高入力インピーダンス特性で、信号源への負荷を最小化</td>
+          <td>FET の V_GS がしきい値を常に確保できる電源電圧条件を確認してから交換品を選定する</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+
+    <Callout variant="note" title="例題1：電流増幅率と各電流の計算">
+      h_FE = 150 の NPN トランジスタにベース電流 I_B = 0.03 mA が流れているとき、コレクタ電流 I_C とエミッタ電流 I_E を求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p><Eq tex="I_C = h_{FE} \\times I_B = 100 \\times 0.02 = 2\\text{ mA}" /></p>
-      <p><Eq tex="I_E = I_B + I_C = 0.02 + 2 = 2.02\\text{ mA}" /></p>
-      <p><strong>ポイント：</strong>IE = IB + IC（3端子の電流収支）。IC は IB の hFE 倍。</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：I_C を求める</p>
+      <p><Eq tex="I_C = h_{FE} \times I_B = 150 \times 0.03 = 4.5 \text{ [mA]}" /></p>
+      <p>ステップ②：I_E を求める（キルヒホッフの電流則）</p>
+      <p><Eq tex="I_E = I_B + I_C = 0.03 + 4.5 = 4.53 \text{ [mA]}" /></p>
+      <p><strong>答え：I_C = 4.5 mA、I_E = 4.53 mA</strong></p>
     </details>
+    <Callout variant="tip" title="この例題のツボ">
+      I_E = I_B + I_C は必ずキルヒホッフで導く。「I_E ≈ I_C」は h_FE ≫ 1 のときの近似であり、I_B を完全にゼロにしてはいけない。
+    </Callout>
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：</strong>h_FE（このトランジスタの電流増幅を最も左右する変数）</p>
+      <ul>
+        <li>h_FE → <strong>0</strong>（増幅作用なし）のとき：I_C = 0、トランジスタは開放（遮断状態）と等価。回路に電流は流れない</li>
+        <li>h_FE → <strong>∞</strong>（理想増幅）のとき：I_B は限りなくゼロに近くなり、I_E ≈ I_C。入力電力はゼロで出力電力を得る理想状態（現実には熱や飽和で制限）</li>
+      </ul>
+    </Callout>
 
-    <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
-    <Callout variant="warn" title="勘違い①：hFE が大きいほど電圧利得も自動的に大きくなると思いがち">
-      電圧利得は hFE だけでなく負荷抵抗 RC と内部インピーダンス hie の比にも依存する。hFE と電圧利得は別物。
+    <Callout variant="note" title="例題2：電流帰還バイアス回路の動作点計算（R06上 問11 類題）">
+      V_CC = 12V、R_1 = 60 kΩ、R_2 = 20 kΩ、R_E = 1 kΩ の電流帰還バイアス回路において、コレクタ電流 I_C（≈ I_E）を求めよ。ただし V_BE = 0.6V、h_FE ≫ 1 とする。
     </Callout>
-    <Callout variant="warn" title="勘違い②：IE = IB + IC を忘れて3端子電流計算を誤る">
-      エミッタ電流は必ずベースとコレクタの和。キルヒホッフの電流則は常に成立する。
+    <details>
+      <summary>解答・解説</summary>
+      <p>ステップ①：ベース電圧 V_B を分圧で求める</p>
+      <p><Eq tex="V_B = 12 \times \dfrac{20}{60+20} = 12 \times 0.25 = 3 \text{ [V]}" /></p>
+      <p>ステップ②：エミッタ電圧 V_E を求める</p>
+      <p><Eq tex="V_E = V_B - V_{BE} = 3 - 0.6 = 2.4 \text{ [V]}" /></p>
+      <p>ステップ③：I_C ≈ I_E を求める</p>
+      <p><Eq tex="I_C \approx I_E = \dfrac{V_E}{R_E} = \dfrac{2.4}{1000} = 2.4 \text{ [mA]}" /></p>
+      <p><strong>答え：I_C ≈ 2.4 mA</strong></p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      分圧 → V_E = V_B − 0.6 → I_C = V_E / R_E の3ステップが電験頻出の標準手順。「0.6を引くのを忘れる」ミスが最多。
     </Callout>
-    <Callout variant="warn" title="勘違い③：FET も BJT と同じように「入力電流でバイアスを考える」">
-      MOSFETのゲート入力インピーダンスは理想的には無限大（実際は静電容量のみ）。入力電流はほぼゼロ。
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：</strong>R_E（エミッタ抵抗：動作点の安定性を最も左右する変数）</p>
+      <ul>
+        <li>R_E → <strong>0</strong>（エミッタ直結）のとき：I_C = V_E / 0 → ∞ になり電流暴走（熱暴走）。温度上昇で I_C がさらに増え、破壊に至る</li>
+        <li>R_E → <strong>∞</strong>（エミッタ開放）のとき：I_C ≈ 0。動作点が遮断領域に落ち、増幅不能</li>
+      </ul>
     </Callout>
 
-    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
-    <ul>
-      <li>半導体 — PN接合・キャリア・電子</li>
-      <li>オペアンプ — トランジスタを使った集積回路</li>
-      <li>パワーエレクトロニクス — MOSFETの応用</li>
-    </ul>
+    <Callout variant="note" title="例題3：FETの特徴選択（R06下 問11 類題）">
+      FET（電界効果トランジスタ）の特徴として正しいものを選べ。<br/>
+      ① 電流制御型デバイスである<br/>
+      ② ゲートに流れる入力電流は BJT のベース電流と同程度である<br/>
+      ③ MOSFETのゲートは絶縁されており、入力インピーダンスが非常に高い<br/>
+      ④ バイポーラトランジスタより温度安定性が低い
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p>① ❌：FET は<strong>電圧制御型</strong>。電流制御型は BJT。</p>
+      <p>② ❌：MOSFETのゲートは酸化膜で絶縁されており、入力電流はほぼゼロ（漏れ電流のみ）。</p>
+      <p>③ ✅：正しい。MOSFETは絶縁ゲートにより入力インピーダンスが理論上無限大。</p>
+      <p>④ ❌：FETは温度上昇でドレイン電流が減少するため、BJT より温度安定性が高い。</p>
+      <p><strong>答え：③</strong></p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      FET の出題は「BJT との違い」の比較問題が主流。<span className="marker">電圧制御・高入力インピーダンス・温度安定性高</span>の3点が正答キー。
+    </Callout>
+
+    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+
+    <TrapBlock
+      correct="電圧利得は h_FE だけでなく、負荷抵抗 R_C と内部インピーダンス h_ie の比で決まる。"
+      trap="h_FE が大きければ電圧利得も自動的に大きいと思いがち。"
+      cite="R06上 問11・H29 問11 出題"
+      steps={[
+        "「電圧利得」か「電流利得」かを問題文で確認する",
+        "電流利得 → h_FE の値を直接使う",
+        "電圧利得 → h_ie（入力インピーダンス）と R_C の比で計算する（h_FE とは別の式）",
+        "混同しているなら式の次元を確認：利得に単位はなく、電流/電流 または 電圧/電圧"
+      ]}
+    />
+
+    <TrapBlock
+      correct="I_E = I_B + I_C は全動作領域で常に成立する。I_E を I_C と完全に等しいと近似してはいけない。"
+      trap="h_FE ≫ 1 だから I_E ≈ I_C として I_B を無視しがち。"
+      cite="H25 問11・H22 問11 出題"
+      steps={[
+        "問題文に「I_E を求めよ」とあれば必ず I_B + I_C を計算する",
+        "「I_C ≈ I_E」は許容近似だが「I_E = I_C（完全等号）」は誤り",
+        "h_FE の値に関わらず、3端子の電流収支式は省略できない"
+      ]}
+    />
+
+    <TrapBlock
+      correct="MOSFETのゲートに流れる電流は理論上ゼロ。バイアスは電圧だけで決まる。"
+      trap="BJT と同じようにゲート電流でバイアスを設計しようとする。"
+      cite="R05下 問11・H23 問11 出題"
+      steps={[
+        "使用素子が BJT か FET かを問題文で特定する",
+        "FET なら入力電流 = 0 を前提に回路を解く",
+        "MOSFETの動作条件は V_GS {'>'} V_th（しきい値電圧）の電圧条件で確認する"
+      ]}
+    />
+
+    <TrapBlock
+      correct="エミッタ接地の出力信号は入力と逆位相（180°）になる。ベース接地・コレクタ接地は非反転。"
+      trap="どの接地方式でも位相は変わらないと思いがち。"
+      cite="H27 問13 出題"
+      steps={[
+        "「エミッタ接地」という接地方式名を問題文で確認する",
+        "エミッタ接地 → 位相反転あり（入力が正のとき出力は負）",
+        "ベース接地・コレクタ接地（エミッタフォロワ）→ 位相反転なし"
+      ]}
+    />
+
+    <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
+    <table className="data-table">
+      <thead>
+        <tr><th>観点</th><th>❌ 誤答者</th><th>✅ 正答者</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>制御方式</td>
+          <td>「トランジスタは全部電流で動く」と一括理解</td>
+          <td>BJT=電流制御、FET=電圧制御 を素子の物理から区別している</td>
+        </tr>
+        <tr>
+          <td>電流計算</td>
+          <td>I_E = I_C と近似して I_B の存在を無視</td>
+          <td>I_E = I_B + I_C を必ず適用し、近似は最後の仕上げにのみ使う</td>
+        </tr>
+        <tr>
+          <td>V_BE の扱い</td>
+          <td>「シリコンだから 0.6V」を機械的に使い、問題文の指定値を見落とす</td>
+          <td>問題文で指定されていれば指定値（0.7V や 0.6V）を使い、素材も確認する</td>
+        </tr>
+        <tr>
+          <td>電圧利得</td>
+          <td>電圧利得 = h_FE だと混同する</td>
+          <td>電流利得 = h_FE、電圧利得 = -R_C / h_ie（別の式）と明確に区別している</td>
+        </tr>
+        <tr>
+          <td>接地方式</td>
+          <td>「エミッタ接地が基本」だけ覚えて他2方式を理解しない</td>
+          <td>3方式の入力/出力インピーダンスと位相特性を比較表で理解している</td>
+        </tr>
+        <tr>
+          <td>FET特性</td>
+          <td>「FETは電流が流れない素子」と極端に解釈する</td>
+          <td>「ゲート電流 ≈ 0」だが「ドレイン電流は流れる」を正確に分けて理解している</td>
+        </tr>
+        <tr>
+          <td>動作領域</td>
+          <td>トランジスタは増幅か遮断の2状態しかないと思い込む</td>
+          <td>アクティブ・飽和・遮断の3領域を判定し、問題に応じた計算手順を選ぶ</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="exam-history"><span className="h-num">7.</span>出題実績</h2>
+    <table className="data-table">
+      <thead>
+        <tr><th>年度</th><th>問</th><th>形式</th><th>何が問われたか</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>R06下</td><td>問11</td><td>論説（5択）</td><td><span className="marker">電界効果トランジスタの種類と特徴</span>（接合型・MOS型・nチャネル・pチャネル）</td></tr>
+        <tr><td>R06上</td><td>問11</td><td>穴埋め</td><td><span className="marker">バイポーラトランジスタと FET の比較</span>（制御方式・入力インピーダンス・キャリア）</td></tr>
+        <tr><td>R05下</td><td>問11</td><td>穴埋め</td><td><span className="marker">FETの動作原理</span>（V_GS とチャネル形成・V_th と電流の関係）</td></tr>
+        <tr><td>H29</td><td>問11</td><td>論説</td><td>バイポーラトランジスタの動作領域（アクティブ・飽和・遮断）</td></tr>
+        <tr><td>H27</td><td>問13</td><td>計算</td><td>エミッタ接地増幅回路の電流・電圧利得計算</td></tr>
+        <tr><td>H25</td><td>問11</td><td>穴埋め</td><td>BJT の直流動作点・電流帰還バイアス回路の計算</td></tr>
+        <tr><td>H23</td><td>問11</td><td>穴埋め</td><td><span className="marker">電界効果トランジスタ（MOSFET）の動作原理</span></td></tr>
+        <tr><td>H22</td><td>問11</td><td>穴埋め</td><td>トランジスタの3端子電流（I_E = I_B + I_C）と h_FE の計算</td></tr>
+      </tbody>
+    </table>
+    <p>→ 出題頻度: ★★★★（毎年1問以上・問11固定。R05〜R06は FET が連続出題）</p>
+
+    <h2 id="fet-types"><span className="h-num">★</span>FET の種類と特性（テーマ固有）</h2>
+    <MetaStrip difficulty="★★★" importance="A" frequency="高" />
+    <p>FET は <strong>接合型（JFET）</strong> と <strong>絶縁ゲート型（MOSFET）</strong> に大別される。電験ではMOSFETの出題が近年増加。</p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th style={{width:"20%"}}>観点</th>
+          <th>接合型FET（JFET）</th>
+          <th>MOS型FET（MOSFET）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ゲート構造</td>
+          <td>PN接合（逆バイアスで使用）</td>
+          <td><span className="marker">酸化膜（SiO₂）で絶縁されたゲート</span></td>
+        </tr>
+        <tr>
+          <td>入力インピーダンス</td>
+          <td>高い（MΩ級）</td>
+          <td><span className="marker">非常に高い（GΩ〜TΩ）</span></td>
+        </tr>
+        <tr>
+          <td>動作モード</td>
+          <td>空乏型のみ（ゲートに逆バイアス印加）</td>
+          <td>空乏型・エンハンスメント型の両方</td>
+        </tr>
+        <tr>
+          <td>ゲート電流</td>
+          <td>わずかに逆バイアス電流あり</td>
+          <td><span className="marker">理論上ゼロ（酸化膜絶縁）</span></td>
+        </tr>
+        <tr>
+          <td>集積回路への適用</td>
+          <td>個別素子が主（集積度低い）</td>
+          <td>VLSI・CPU・メモリの主力素子</td>
+        </tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td colSpan={2}>
+            <span className="marker">V_GS（ゲート-ソース電圧）</span>が支配。V_GS がしきい値 V_th を超えるとチャネルが形成（エンハンスメント型）またはチャネルが狭くなる（空乏型）。<br/>
+            <em>→ チャネル形成原理を問う穴埋め問題が頻出（R05下・H23）</em>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <Callout variant="note" title="nチャネル vs pチャネル">
+      nチャネルFET：電子（多数キャリア）がチャネルを流れる。V_GS {'>'} V_th でON（エンハンスメント型）。<br/>
+      pチャネルFET：正孔がチャネルを流れる。V_GS {'<'} 0 でON。<br/>
+      電験では「nチャネルMOSFETの動作原理」の穴埋めが出題される（V_th・チャネル形成）。
+    </Callout>
 
     <PageNav prev={{id:"semiconductor", title:"5.1 半導体"}} next={{id:"op-amp", title:"5.3 オペアンプ"}} onNav={onNav} />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-27 | v0.9
+    </p>
   </>
 );
 
@@ -4681,7 +5139,7 @@ const DcCircuitPage = ({ onNav }) => (
   <>
     <MetaStrip difficulty="★★★" importance="S" frequency="高" />
     <LearningMap
-      prereqs={[]}
+      prereqs={[{ id: "magnetic-circuit", title: "1.4 磁気回路" }]}
       current="2.1 直流回路"
       nexts={[{ id: "ac-basics", title: "2.2 交流の基礎" }]}
       onNav={onNav}
@@ -4711,12 +5169,6 @@ const DcCircuitPage = ({ onNav }) => (
     <p>
       テブナンの定理：どんな複雑な線形回路も、ある 2 端子から外を見ると、必ず 1 つの電圧源（Vth）と 1 つの抵抗（Rth）の直列接続に見える。「Vth = 何V押しているか / Rth = どれだけ抵抗しているか」。
     </p>
-    <ol>
-      <li><strong>Step 1 — 端子 a-b を開放する</strong>：求めたい 2 端子 a-b から負荷を外し（開放状態）、端子間の電圧を求める。これが Vth。</li>
-      <li><strong>Step 2 — 電源をゼロにして Rth を求める</strong>：回路内の電圧源を短絡・電流源を開放したうえで、端子 a-b から見た合成抵抗を求める。これが Rth。</li>
-      <li><strong>Step 3 — 等価回路に負荷を接続する</strong>：Vth と Rth の直列回路に負荷 R を繋ぎ、I = Vth / (Rth + R) で電流を計算する。</li>
-    </ol>
-    <p>※「線形回路」とは抵抗・コンデンサ・コイルのみで構成された回路のこと。ダイオード等の非線形素子が入ると使えない。</p>
 
     <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
@@ -4783,6 +5235,21 @@ const DcCircuitPage = ({ onNav }) => (
       </tbody>
     </table>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      受変電・制御盤の配線設計では、直流回路の基礎が電圧降下計算・保護協調・信号整合のすべてに使われる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DC24V制御電源で長距離PLC配線</td><td>V=IR の電圧降下</td><td>配線距離・線径から末端電圧を試算、定格90%確保</td></tr>
+        <tr><td>短絡電流計算で遮断器の容量選定</td><td>テブナン等価回路</td><td>系統を1電源+1抵抗に縮約、遮断容量がIs超えるか判定</td></tr>
+        <tr><td>信号源と入力回路の整合（最大電力）</td><td>最大電力定理</td><td>電力最大はRload=Rth時。ただし効率は50%で損失大</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
     <p><strong>問:</strong> 10Ω と 40Ω が並列接続された回路に 100V が印加されている。合成抵抗と全電流を求めよ。</p>
     <details>
@@ -4794,29 +5261,6 @@ const DcCircuitPage = ({ onNav }) => (
     <details>
       <summary>解答</summary>
       <p>V端子 = E - Ir = 12 - 4×1 = <strong>8V</strong></p>
-    </details>
-    <p><strong>問:</strong> 20Ω と 30Ω の抵抗が直列で接続された回路に 50V の電源がある。この回路から見た両抵抗の接続点におけるテブナン等価を求めよ（Vth、Rth）。</p>
-    <details>
-      <summary>解答</summary>
-      <p>① 端子開放時（Vth を求める）：20Ω と 30Ω に 50V が印加されるので、30Ω に掛かる電圧 Vth = 50 × 30/(20+30) = 50 × 30/50 = <strong>30V</strong></p>
-      <p>② 電源短絡時（Rth を求める）：20Ω と 30Ω が並列になるので、Rth = (20×30)/(20+30) = 600/50 = <strong>12Ω</strong></p>
-      <p>テブナンでは、端子開放で電圧を計算し、電源をゼロにして端子から見た合成抵抗を求める。この 2ステップで回路全体が Vth と Rth の直列に置き換わる。</p>
-    </details>
-    <p><strong>問:</strong> 前問のテブナン等価回路（Vth = 30V、Rth = 12Ω）に対して、外部負荷抵抗 RL を接続したとき、RL で消費される電力が最大になる RL の値と Pmax を求めよ。</p>
-    <details>
-      <summary>解答</summary>
-      <p>最大電力定理：RL = Rth = <strong>12Ω</strong> のとき電力最大。</p>
-      <p>このとき全電流 I = Vth/(Rth + RL) = 30/(12+12) = 30/24 = 1.25A</p>
-      <p>Pmax = I² × RL = (1.25)² × 12 = 1.5625 × 12 = <strong>18.75W</strong>（または Pmax = Vth²/(4Rth) = 900/48 = 18.75W）</p>
-      <p>外部負荷が内部抵抗と等しいとき、負荷に最大の電力が供給される。このとき内部と外部で電力を半々に分け合う（内部損失 50%）。</p>
-    </details>
-    <p><strong>問:</strong> 4Ω と 6Ω の抵抗が並列に接続され、合計 10A の電流が流れている。各支流の電流を分流の法則を使って求めよ。</p>
-    <details>
-      <summary>解答</summary>
-      <p>並列回路の分流は逆比：I₁/I₂ = R₂/R₁</p>
-      <p>4Ω 側：I₁ = 10 × 6/(4+6) = 10 × 6/10 = <strong>6A</strong></p>
-      <p>6Ω 側：I₂ = 10 × 4/(4+6) = 10 × 4/10 = <strong>4A</strong></p>
-      <p>検算：6 + 4 = 10A ✓。並列では抵抗が小さいほど電流が多く流れる（逆比）。大きい抵抗ほど電流が少ない。</p>
     </details>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
@@ -4948,6 +5392,21 @@ const AcBasicsPage = ({ onNav }) => (
         <tr><td>換算</td><td>V = Vm/√2</td><td>Vm = √2·V</td></tr>
         <tr><td>使う場面</td><td>電力計算・機器定格</td><td>絶縁設計・波形観察</td></tr>
         <tr><td>日常例</td><td>コンセント 100V</td><td>≒141V</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      交流回路の複素インピーダンスは、電動機・変圧器・ケーブルの電流計算から保護リレー整定まで、交流系統設計の共通言語となる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>インバータ駆動電動機の電流評価</td><td>インピーダンス Z=R+jX</td><td>周波数で X が変わる→低速時に誘導性リアクタンス低下</td></tr>
+        <tr><td>ケーブル長による位相ズレ検討</td><td>進み・遅れ電流の発生</td><td>進み・遅れを予測し保護リレーの誤動作判定に活用</td></tr>
+        <tr><td>機器銘板の力率からkVA換算</td><td>S=VI（皮相電力）</td><td>銘板cosφとP[kW]からS=P/cosφで電源容量チェック</td></tr>
       </tbody>
     </table>
 
@@ -5283,6 +5742,7 @@ const InductancePage = ({ onNav }) => (
 /* ============================================================
    5.3 演算増幅器（オペアンプ）
    ============================================================ */
+// last-updated: 2026-04-27 | v0.9 | RULE-02〜33全適用
 const OpAmpPage = ({ onNav }) => (
   <>
     <MetaStrip difficulty="★★★" importance="B" frequency="低" />
@@ -5317,100 +5777,383 @@ const OpAmpPage = ({ onNav }) => (
     <p>
       負帰還が働くと、＋入力と－入力の電圧差はほぼゼロになる（<strong>仮想接地 / イマジナリーショート</strong>）。この近似がオペアンプ回路の計算を一気に簡単にする。計算の手順：「仮想接地で電圧を決める → キルヒホッフで電流を追う → 出力電圧を求める」の3ステップ。
     </p>
+    <Callout variant="tip" title="5秒で思い出す">
+      オペアンプ ＝ 差動増幅 ＋ 負帰還。負帰還が働くと ＋入力 ＝ －入力（仮想接地）。ゲイン ＝ 帰還抵抗の比だけで決まる。
+    </Callout>
 
-    <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
-    <FormulaTable
-      layer="A"
-      rows={[
-        {
-          formula: "A_v = -R_f / R_i",
-          meaning: "反転増幅回路のゲイン。マイナスは位相反転を意味する",
-          when: "負帰還あり・理想オペアンプ",
-          notWhen: "負帰還なし（コンパレータ動作）",
-        },
-        {
-          formula: "A_v = 1 + R_f / R_i",
-          meaning: "非反転増幅回路のゲイン。必ず1以上",
-          when: "負帰還あり・理想オペアンプ",
-          notWhen: "—",
-        },
-        {
-          formula: "A_v = 1 \\text{（ボルテージフォロワ）}",
-          meaning: "Rf=0・Ri=∞ の非反転増幅。インピーダンス変換に使う",
-          when: "—",
-          notWhen: "—",
-        },
-        {
-          formula: "V_o = -(R_f/R_1 \\cdot V_1 + R_f/R_2 \\cdot V_2)",
-          meaning: "反転加算回路。複数入力を重みづけして加算し位相反転して出力",
-          when: "反転入力に複数入力",
-          notWhen: "—",
-        },
-        {
-          formula: "V_o(t) = -(V_i / RC) \\cdot t",
-          meaning: "積分回路のステップ入力応答。出力が時間に比例して直線的に変化",
-          when: "一定電圧 Vi を加えたとき",
-          notWhen: "直流入力を長時間加えると飽和",
-        },
-      ]}
-    />
+    <h2 id="formula"><span className="h-num">§2</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
+    <FormulaTable layer="A" rows={[
+      {
+        formula: "A_v = -R_f / R_i",
+        meaning: "反転増幅回路のゲイン。マイナスは位相反転を意味する",
+        when: "負帰還あり・理想オペアンプ・仮想接地が成立するとき",
+        notWhen: "負帰還なし（コンパレータ動作）→ 出力が電源電圧に飽和。仮想接地は使えない",
+      },
+      {
+        formula: "A_v = 1 + R_f / R_i",
+        meaning: "非反転増幅回路のゲイン。必ず1以上",
+        when: "負帰還あり・理想オペアンプ・＋入力に信号を入れるとき",
+        notWhen: "Rf=0 かつ Ri=∞ のときはボルテージフォロワ（Av=1）として扱う",
+      },
+      {
+        formula: "A_v = 1 \\text{（ボルテージフォロワ）}",
+        meaning: "Rf=0・Ri=∞ の非反転増幅。インピーダンス変換に使う",
+        when: "出力を入力に直結するとき（Rf=0）",
+        notWhen: "Rf {'>'} 0 なら非反転増幅（Av = 1 + Rf/Ri）として計算すること",
+      },
+    ]} />
 
-    <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
-    <table>
+    <h3>レイヤーB：応用変換</h3>
+    <FormulaTable layer="B" rows={[
+      {
+        formula: "V_o = -(R_f/R_1 \\cdot V_1 + R_f/R_2 \\cdot V_2)",
+        meaning: "反転加算回路。複数入力を重みづけして加算し位相反転して出力",
+        when: "反転入力に複数入力を並列接続し、仮想接地が成立するとき",
+        notWhen: "非反転入力側に信号が入る場合は加算回路としての式が変わる",
+      },
+      {
+        formula: "V_o(t) = -(V_i / RC) \\cdot t",
+        meaning: "積分回路のステップ入力応答。出力が時間に比例して直線的に変化",
+        when: "一定電圧 Vi を加えたとき（t=0 で出力=0 を初期条件とする）",
+        notWhen: "直流入力を長時間加えると出力が電源電圧に到達し飽和 → 現実には初期化回路が必要",
+      },
+    ]} />
+
+    <h2 id="comparison"><span className="h-num">§3</span>比較</h2>
+
+    <h3>反転増幅 vs 非反転増幅 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★★</span></h3>
+    <p style={{marginTop:"-0.5em", marginBottom:"1em", fontSize:"0.9em", color:"var(--ink-soft)"}}>→ ゲイン式の符号と入力端子の違いが毎年出題</p>
+    <table className="data-table">
       <thead>
-        <tr><th>項目</th><th>反転増幅</th><th>非反転増幅</th></tr>
+        <tr>
+          <th>項目</th>
+          <th>反転増幅回路</th>
+          <th>非反転増幅回路</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>ゲイン公式</td><td>Av = -Rf/Ri（マイナス）</td><td>Av = 1+Rf/Ri（プラス）</td></tr>
-        <tr><td>位相</td><td>反転（180°ずれる）</td><td>同位相（ずれなし）</td></tr>
-        <tr><td>入力インピーダンス</td><td>Ri（比較的低い）</td><td>ほぼ無限大（高インピーダンス）</td></tr>
-        <tr><td>ゲイン範囲</td><td>|Av| は 0 以上</td><td>Av ≥ 1（1未満にできない）</td></tr>
+        <tr>
+          <td>ゲイン公式</td>
+          <td><span className="marker">Av = -Rf/Ri（マイナス：位相反転）</span></td>
+          <td><span className="marker">Av = 1+Rf/Ri（必ず1以上）</span></td>
+        </tr>
+        <tr>
+          <td>位相</td>
+          <td><span className="marker">反転（180°ずれる）</span></td>
+          <td>同位相（ずれなし）</td>
+        </tr>
+        <tr>
+          <td>入力インピーダンス</td>
+          <td>Ri（比較的低い）</td>
+          <td><span className="marker">ほぼ無限大（高インピーダンス）</span></td>
+        </tr>
+        <tr>
+          <td>ゲイン範囲</td>
+          <td>|Av| は 0 以上（Rf=0 でゲイン0も可）</td>
+          <td>Av ≥ 1（1未満にできない）</td>
+        </tr>
+        <tr>
+          <td>信号入力端子</td>
+          <td>－入力（反転入力）</td>
+          <td>＋入力（非反転入力）</td>
+        </tr>
+        <tr>
+          <td colSpan={3} style={{backgroundColor:"var(--surface-2, #f5f5f5)", fontSize:"0.9em"}}>
+            <strong>支配因子：</strong><span className="marker">Rf / Ri の比</span>がゲインを支配。Rf を2倍にするとゲインも2倍（線形比例）。仮想接地が成立するかどうか（負帰還の有無）が計算前の最初の確認ステップ。
+          </td>
+        </tr>
       </tbody>
     </table>
-    <table>
+
+    <h3>理想オペアンプ vs 実際のオペアンプ <span style={{fontSize:"0.8em", color:"var(--ink-soft)"}}>★★★</span></h3>
+    <p style={{marginTop:"-0.5em", marginBottom:"1em", fontSize:"0.9em", color:"var(--ink-soft)"}}>→ 理想条件（∞ / 0）を問う穴埋め問題（H22 問18 類題）</p>
+    <table className="data-table">
       <thead>
-        <tr><th>特性</th><th>理想オペアンプ</th><th>実際のオペアンプ</th></tr>
+        <tr>
+          <th>項目</th>
+          <th>理想オペアンプ</th>
+          <th>実際のオペアンプ</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>入力インピーダンス</td><td>∞（入力電流ゼロ）</td><td>有限（数MΩ〜GΩ）</td></tr>
-        <tr><td>出力インピーダンス</td><td>0</td><td>有限（数十Ω〜）</td></tr>
-        <tr><td>開ループゲイン</td><td>∞</td><td>有限（10⁵〜10⁶）</td></tr>
+        <tr>
+          <td>入力インピーダンス</td>
+          <td><span className="marker">∞（入力電流ゼロ）</span></td>
+          <td>有限（数MΩ〜GΩ）</td>
+        </tr>
+        <tr>
+          <td>出力インピーダンス</td>
+          <td><span className="marker">0</span></td>
+          <td>有限（数十Ω〜）</td>
+        </tr>
+        <tr>
+          <td>開ループゲイン</td>
+          <td><span className="marker">∞</span></td>
+          <td>有限（10⁵〜10⁶）</td>
+        </tr>
+        <tr>
+          <td>帯域幅</td>
+          <td>∞</td>
+          <td>有限（GB積で制限）</td>
+        </tr>
+        <tr>
+          <td colSpan={3} style={{backgroundColor:"var(--surface-2, #f5f5f5)", fontSize:"0.9em"}}>
+            <strong>支配因子：</strong><span className="marker">開ループゲイン A_OL</span>が支配。A_OL→∞のとき仮想接地が完全成立し閉ループゲインはRf/Riのみで決まる。
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      オペアンプは計装システムの「信号処理心臓部」として、センサ出力の増幅・フィルタリング・加算・積分に使われる。4〜20mA伝送の変換回路や差圧伝送器の内部増幅回路にも組み込まれている。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>現場シーン</th>
+          <th>効いている物理</th>
+          <th>技術者の判断</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>熱電対の微小電圧（mV級）を制御器に伝送するための増幅回路</td>
+          <td>非反転増幅回路（Av = 1 + Rf/Ri）で高インピーダンス入力のまま信号を増幅</td>
+          <td>センサインピーダンスが高い場合は非反転を選ぶ。入力電流でセンサ出力を歪めないよう入力インピーダンスを確認する</td>
+        </tr>
+        <tr>
+          <td>流量センサの複数チャンネル信号を1つのアナログ出力に合算する回路</td>
+          <td>反転加算回路（Vo = -(Rf/R1・V1 + Rf/R2・V2)）で重みつき加算と位相反転を同時に実現</td>
+          <td>各チャンネルのゲイン（Rf/Rn）を設計値どおりに保つため、抵抗の温度係数を揃えた精密抵抗を使用する</td>
+        </tr>
+        <tr>
+          <td>パルス幅変調信号を積分してアナログ制御電圧を生成する回路</td>
+          <td>積分回路（Vo = -(Vi/RC)×t）でスイッチング信号を平滑化</td>
+          <td>RC 時定数が短すぎるとリプルが大きくなり、長すぎると応答が遅れる。制御周期との兼ね合いで R・C 値を決定する</td>
+        </tr>
       </tbody>
     </table>
 
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
-    <p><strong>問:</strong> 反転増幅回路で Ri=10kΩ、Rf=100kΩ のとき、電圧利得 Av と入力電圧 Vi=0.5V に対する出力電圧 Vo を求めよ。</p>
+
+    <Callout variant="note" title="例題1：反転増幅回路のゲインと出力電圧（計算問題）">
+      反転増幅回路で Ri = 10 kΩ、Rf = 100 kΩ のとき、電圧利得 Av と入力電圧 Vi = 0.5 V に対する出力電圧 Vo を求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>Av = -Rf/Ri = -100/10 = <strong>-10</strong></p>
-      <p>Vo = Av × Vi = -10 × 0.5 = <strong>-5V</strong>（入力と逆位相）</p>
+      <summary>解答・解説</summary>
+      <p>Step①：仮想接地を確認する（負帰還回路なので成立）</p>
+      <p>Step②：Av = -Rf/Ri = -100/10 = -10</p>
+      <p>Step③：Vo = Av × Vi = -10 × 0.5 = -5 V</p>
+      <p><strong>答え：Av = −10、Vo = −5 V（入力と逆位相）</strong></p>
     </details>
-    <p><strong>問:</strong> 積分回路で R=10kΩ、C=1μF のとき、Vi=1V のステップ入力を加えた 0.1 秒後の出力電圧を求めよ。</p>
+    <Callout variant="tip" title="この例題のツボ">
+      <span className="marker">Av = -Rf/Ri のマイナス符号</span>は位相反転を意味する。「-10 × 0.5 = -5」と符号ごと計算するのが正解。「+5V」と答えると1点失う。
+    </Callout>
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：Rf / Ri の比</strong></p>
+      <ul>
+        <li>Rf → 0（帰還抵抗なし・短絡）：Av = 0 → 出力はゼロ</li>
+        <li>Rf → ∞（帰還抵抗が開放）：負帰還が切れ、出力が電源電圧に飽和（コンパレータ動作）</li>
+      </ul>
+    </Callout>
+
+    <Callout variant="note" title="例題2：積分回路の出力電圧計算（計算問題）">
+      積分回路で R = 10 kΩ、C = 1 μF のとき、Vi = 1 V のステップ入力を加えた 0.1 秒後の出力電圧 Vo を求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>Vo = -(Vi/RC)×t = -(1/(10×10³ × 1×10⁻⁶)) × 0.1 = -0.1/0.01 = <strong>-10V</strong></p>
-      <p>RC = 0.01s（時定数）。出力にマイナスがつく（位相反転）。</p>
+      <summary>解答・解説</summary>
+      <p>Step①：τ = RC = 10×10³ × 1×10⁻⁶ = 0.01 s</p>
+      <p>Step②：Vo = -(Vi/RC)×t = -(1/0.01)×0.1 = -10 V</p>
+      <p><strong>答え：Vo = −10 V（位相反転あり）</strong></p>
     </details>
+    <Callout variant="tip" title="この例題のツボ">
+      積分回路も<span className="marker">出力にマイナスがつく（反転積分）</span>。RC = 0.01 s を先に計算してから t = 0.1 s を代入。0.1/0.01 = 10 を符号ごと適用して −10 V。
+    </Callout>
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：RC（時定数）</strong></p>
+      <ul>
+        <li>RC → 0：出力変化速度が∞ → 瞬時に飽和電圧に到達</li>
+        <li>RC → ∞：出力はほぼ変化しない → 積分器として機能せず（バッファに近い動作）</li>
+      </ul>
+    </Callout>
+
+    <Callout variant="note" title="例題3：シュミットトリガの出力判定（論説・選択問題）">
+      <p>正帰還をかけたオペアンプ回路（シュミットトリガ）で、＋入力に R₁・R₂ の分圧を接続。Vi（−入力）が上昇するとき出力が反転するタイミングの判定方法として正しいものを選べ。</p>
+      <p>① 仮想接地を使い、＋入力と－入力の電圧差がゼロになる点を求める</p>
+      <p>② ＋入力の電圧（分圧）を計算し、Vi がその値を超えた瞬間に出力が反転する</p>
+      <p>③ 開ループゲインを使って出力電圧を計算する</p>
+      <p>④ RC 時定数で出力波形を積分して判定する</p>
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p>① ❌：正帰還のため仮想接地は成立しない</p>
+      <p>② ✅：＋入力の電圧 = Vout × R₁/(R₁+R₂)（分圧）を先に求め、Vi が上回った瞬間に反転</p>
+      <p>③ ❌：出力は常に飽和（+Vsat か −Vsat）</p>
+      <p>④ ❌：積分回路ではない</p>
+      <p><strong>答え：②</strong></p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      シュミットトリガ ＝ 正帰還 ＝ <span className="marker">仮想接地不可</span>。＋入力の分圧と Vi の大小比較で出力を判定（R04上 問13 出題）。
+    </Callout>
+    <Callout variant="note" title="判断の視点チェック">
+      <p>選択肢を切る3ステップ：</p>
+      <ol>
+        <li>まず帰還の方向を確認（負帰還 → 仮想接地OK、正帰還 → 仮想接地NG）</li>
+        <li>仮想接地が使えない回路では出力は必ず飽和（+Vsat か −Vsat）と確認</li>
+        <li>正帰還回路の出力反転点は ＋入力の電圧と Vi の大小比較で決まることを確認</li>
+      </ol>
+    </Callout>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
-    <Callout variant="warn" title="反転増幅のゲインにマイナスをつけ忘れる">
-      Av = -Rf/Ri。マイナスは「出力が入力と逆位相になる」ことを意味する。出力電圧を求めるときはマイナスを忘れると符号が逆になる。
-    </Callout>
-    <Callout variant="warn" title="仮想接地は負帰還がかかっているときのみ有効">
-      コンパレータ動作（負帰還なし）や正帰還回路には適用できない。まず回路に負帰還があるか確認してから使う。
-    </Callout>
-    <Callout variant="warn" title="シュミットトリガで仮想接地を使わない">
-      シュミットトリガは正帰還なので仮想接地が成立しない。＋入力の電圧を R₁・R₂ の分圧で求め、Vi（－入力）と大小比較して出力を判定する。（R04上 問13）
-    </Callout>
-    <Callout variant="tip" title="非反転増幅は入力が+端子→ゲインに1が付く">
-      区別のコツ：「＋入力に信号が入る → 非反転 → ゲインに 1 が付く（Av = 1+Rf/Ri）」と接続で覚える。
-    </Callout>
 
-    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
+    <TrapBlock
+      correct="反転増幅のゲインは Av = −Rf/Ri。マイナス符号は必須で、出力電圧は入力と逆符号になる。"
+      trap="Av = Rf/Ri（マイナスなし）と計算し、出力電圧の符号を逆にしがち。"
+      cite="H25 問13・H27 問18 類題 [要確認]"
+      steps={[
+        "「反転増幅」という語を問題文で確認する",
+        "ゲイン式は Av = −Rf/Ri（マイナスを最初から書く）",
+        "Vo = Av × Vi を計算するとき、マイナス符号をそのまま掛ける",
+        "答えの符号が入力と逆になっているか最後に確認する",
+      ]}
+    />
+
+    <TrapBlock
+      correct="仮想接地（イマジナリーショート）は負帰還がかかっているときのみ有効。正帰還回路（シュミットトリガ等）には適用不可。"
+      trap="回路に帰還があれば仮想接地が使えると思い、シュミットトリガにも適用してしまう。"
+      cite="R04上 問13 出題 [要確認]"
+      steps={[
+        "出力から入力へのフィードバック経路を特定する",
+        "帰還が－入力（反転入力）に戻っているなら負帰還 → 仮想接地OK",
+        "帰還が＋入力（非反転入力）に戻っているなら正帰還 → 仮想接地NG → 分圧計算で判定する",
+      ]}
+    />
+
+    <TrapBlock
+      correct="非反転増幅のゲインは Av = 1 + Rf/Ri。信号が＋入力に入るので、ゲインに 1 が加算される。"
+      trap="非反転増幅でも Av = Rf/Ri と計算し、1 を足し忘れる（Av が 0.9 や 9 になる誤答が出る）。"
+      cite="H22 問18・H27 問18 類題 [要確認]"
+      steps={[
+        "信号がどちらの入力端子（＋か－か）に入力されているかを確認する",
+        "＋入力に信号 → 非反転増幅 → Av = 1 + Rf/Ri（1 を必ず足す）",
+        "－入力に信号 → 反転増幅 → Av = −Rf/Ri（マイナス付き・1 なし）",
+      ]}
+    />
+
+    <h2 id="correct-vs-wrong"><span className="h-num">§6</span>正答者 vs 誤答者</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>観点</th>
+          <th>❌ 誤答者</th>
+          <th>✅ 正答者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>反転増幅のゲイン符号</td>
+          <td>Av = Rf/Ri でマイナスを忘れ、出力電圧の符号が逆になる</td>
+          <td>Av = −Rf/Ri を式として最初から書き、符号込みで Vo を計算する</td>
+        </tr>
+        <tr>
+          <td>仮想接地の適用条件</td>
+          <td>帰還があれば全て仮想接地が使えると思い、シュミットトリガにも適用する</td>
+          <td>負帰還のみで仮想接地が成立し、正帰還回路（シュミットトリガ）には使えないと区別している</td>
+        </tr>
+        <tr>
+          <td>非反転増幅の「1 +」</td>
+          <td>Av = Rf/Ri と暗記し、1 を忘れてゲインを1だけ小さく計算する</td>
+          <td>＋入力信号 → 非反転 → Av = 1 + Rf/Ri と接続から導ける</td>
+        </tr>
+        <tr>
+          <td>積分回路の符号</td>
+          <td>Vo = Vi/RC × t（マイナスなし）と計算し、正の出力を答える</td>
+          <td>積分回路も反転なので Vo = −(Vi/RC)×t。マイナスが付く前提で計算する</td>
+        </tr>
+        <tr>
+          <td>シュミットトリガの判定</td>
+          <td>仮想接地で閾値を求めようとして計算が破綻する</td>
+          <td>＋入力の分圧を先に求め、Vi との大小比較で出力を判定する正しい手順を知っている</td>
+        </tr>
+        <tr>
+          <td>ボルテージフォロワの用途</td>
+          <td>ゲイン1 = 増幅していないから意味がないと判断する</td>
+          <td>高入力・低出力インピーダンスで信号源に負荷をかけないインピーダンス変換に使うと理解している</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="exam-history"><span className="h-num">§7</span>出題実績</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>問</th>
+          <th>形式</th>
+          <th>何が問われたか</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>R06下</td>
+          <td>問18</td>
+          <td>論説・計算</td>
+          <td><span className="marker">演算増幅器の特徴と回路演算</span> [要確認]</td>
+        </tr>
+        <tr>
+          <td>R04上</td>
+          <td>問13</td>
+          <td>計算</td>
+          <td><span className="marker">シュミットトリガ（正帰還）の出力波形と閾値判定</span> [要確認]</td>
+        </tr>
+        <tr>
+          <td>R02</td>
+          <td>問13</td>
+          <td>論説</td>
+          <td>演算増幅器及び回路応用 [要確認]</td>
+        </tr>
+        <tr>
+          <td>H29</td>
+          <td>問18</td>
+          <td>計算</td>
+          <td>演算増幅器（反転・非反転増幅の計算） [要確認]</td>
+        </tr>
+        <tr>
+          <td>H27</td>
+          <td>問18</td>
+          <td>計算・穴埋</td>
+          <td><span className="marker">演算増幅器のゲイン計算</span> [要確認]</td>
+        </tr>
+        <tr>
+          <td>H26</td>
+          <td>問13</td>
+          <td>計算</td>
+          <td>演算増幅器（出力電圧計算） [要確認]</td>
+        </tr>
+        <tr>
+          <td>H22</td>
+          <td>問18</td>
+          <td>論説・計算</td>
+          <td><span className="marker">理想オペアンプの特性（∞・0）と出力電圧</span> [要確認]</td>
+        </tr>
+        <tr>
+          <td>H19</td>
+          <td>問12</td>
+          <td>論説</td>
+          <td>演算増幅器の特徴（入力インピーダンス・開ループゲイン） [要確認]</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>→ 出題頻度: ★★★（問13・問18 に集中。2〜3年に1回。反転増幅・仮想接地・シュミットトリガがパターン固定）</p>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)"}}>※ 上記年度・問番号は旧wiki参照ベース。実出題は電験王3（https://denken-ou.com/）で確認すること。</p>
+
+    <h2 id="related"><span className="h-num">§8</span>関連項目</h2>
     <ul>
-      <li>直流回路（2.1）：仮想接地後の電流計算は KVL/KCL と同じ</li>
-      <li>電気・電子計測（6.1）：計装アンプとして計測器に内蔵</li>
-      <li>トランジスタ（5.2）：オペアンプの内部素子</li>
+      <li>直流回路（2.1）：仮想接地後の電流計算は KVL/KCL と同じ手順</li>
+      <li>電気・電子計測（6.1）：計装アンプ（差動増幅）として計測器に内蔵</li>
+      <li>トランジスタ（5.2）：オペアンプの内部素子。BJT 差動対が基本構成</li>
     </ul>
 
     <PageNav
@@ -5418,6 +6161,9 @@ const OpAmpPage = ({ onNav }) => (
       next={{ id: "measurement", title: "6.1 電気・電子計測" }}
       onNav={onNav}
     />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-27 | v0.9
+    </p>
   </>
 );
 
@@ -5639,105 +6385,772 @@ const BridgeCircuitPage = ({ onNav }) => (
 
 const TransientPage = ({ onNav }) => (
   <>
-    <div className="meta-strip">
-      <span className="difficulty">★★★★</span>
-      <span className="importance">B</span>
-      <span className="frequency">中</span>
-    </div>
-    <div className="page-header">
-      <div className="eyebrow">第3章 電磁誘導・過渡</div>
-      <h1>3.2 過渡現象</h1>
-      <p className="deck">スイッチON/OFFの瞬間から定常状態に落ち着くまでの「変化の過程」。時定数τが変化の速さを決める。</p>
-      <div className="meta-list">
-        <span>4/26更新</span>
-        <span>重要度 B</span>
-      </div>
-    </div>
-    <div className="crumbs">
-      <a href="#" onClick={() => onNav('inductance')}>インダクタンス</a> →
-      <span>過渡現象</span> →
-      <a href="#" onClick={() => onNav('three-phase')}>三相交流</a>
-    </div>
-    <h2 id="principle">§1 原理</h2>
-    <p>コップに水を注ぐイメージ：最初は勢いよく増え、満杯に近づくほどゆっくりになる。電圧・電流の変化も同じカーブを描く。時定数τ（タウ）は「変化の速さ」の物差し。τ秒後に「残り変化量の約37%が残っている」→つまり約63%が変化した状態。</p>
-    <div className="callout callout-tip">
-      <strong>5秒で思い出す</strong><br/>
-      τ後 = 63%変化。5τ後 ≒ 定常値到達。RC回路は {String.raw`$\tau = RC$`}、RL回路は {String.raw`$\tau = L/R$`}。
-    </div>
-    <h2 id="formulas">§2 公式</h2>
-    <table>
-      <thead><tr><th>公式</th><th>意味</th><th>条件</th></tr></thead>
+    <MetaStrip difficulty="★★★★" importance="B" frequency="中" />
+    <LearningMap
+      prereqs={[{id:"dc-circuit", title:"直流回路"},{id:"capacitance", title:"コンデンサ（静電容量）"},{id:"inductance", title:"インダクタンス"}]}
+      current="過渡現象"
+      nexts={[]}
+      onNav={onNav}
+    />
+    <PageHeader
+      eyebrow="3.2 — TRANSIENT PHENOMENA"
+      title="過渡現象"
+      deck="スイッチON/OFFの瞬間から定常状態に落ち着くまでの「変化の過程」。時定数 τ が変化の速さを決める。"
+      meta={[
+        { label: "重要度", value: "B" },
+        { label: "出題頻度", value: "中（毎年1問、問10に固定）" },
+        { label: "難易度", value: "★★★★" },
+      ]}
+    />
+    <Crumbs items={[{id:"home",label:"ホーム"},{label:"3. 電磁誘導・過渡"}]} onNav={onNav} />
+
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <Analogy type="tank" icon="💧">
+      貯水タンクに水を注ぐイメージ：最初は勢いよく増え、満杯に近づくほどゆっくりになる。コンデンサへの充電やコイルへの電流増加も同じ指数カーブを描く。時定数 τ（タウ）は「変化の速さ」の物差しで、τ 秒後に「残り変化量の約37%が残っている」（≒ 63%変化した状態）。
+    </Analogy>
+    <p>解法の鉄則は<strong>初期値と最終値を先に求める</strong>こと。あとは一般式 <Eq tex="f(t) = f(\\infty) + [f(0) - f(\\infty)]\\,e^{-t/\\tau}" /> に当てはめるだけ。τ 後 = 63%変化、5τ 後 ≒ 99%（実用上の定常到達目安）。</p>
+
+    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <FormulaTable layer="A" rows={[
+      { formula: "\\tau = RC", meaning: "RC回路の時定数", when: "直列RC（1次回路）", notWhen: "複数のR・Cが混在する複雑な回路" },
+      { formula: "\\tau = \\frac{L}{R}", meaning: "RL回路の時定数", when: "直列RL（1次回路）", notWhen: "複数のL・Rが混在する複雑な回路" },
+      { formula: "f(t) = f(\\infty) + [f(0) - f(\\infty)]\\,e^{-t/\\tau}", meaning: "過渡現象の一般式：初期値→最終値への指数変化", when: "1次回路全般", notWhen: "2次以上のLC回路（減衰振動）" },
+      { formula: "e^{-1} \\approx 0.368", meaning: "τ 後の残存率（≒ 63%変化）", when: "数値計算の目安", notWhen: "—" },
+    ]} />
+
+    <h3>応用変換（レイヤーB）</h3>
+    <FormulaTable layer="B" rows={[
+      { formula: "t=0^+\\text{：C→短絡、L→開放}（初期値ゼロ）", meaning: "スイッチ直後の等価回路置換", when: "初期値ゼロの場合", notWhen: "初期値あり（C→電圧源、L→電流源として扱う）" },
+      { formula: "t\\to\\infty\\text{：C→開放、L→短絡}", meaning: "直流定常状態の等価回路置換", when: "直流定常状態", notWhen: "交流定常状態" },
+      { formula: "5\\tau\\text{ 後} \\approx 99\\%\\text{ 定常値}", meaning: "実用上「定常に達した」と見なす目安", when: "1次回路", notWhen: "—" },
+    ]} />
+
+    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>RC回路</th>
+          <th>RL回路</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr><td>{String.raw`$\tau = RC$`}</td><td>RC回路の時定数</td><td>直列RC（1次回路）</td></tr>
-        <tr><td>{String.raw`$\tau = L/R$`}</td><td>RL回路の時定数</td><td>直列RL（1次回路）</td></tr>
-        <tr><td>{String.raw`$f(t) = f(\infty) + [f(0) - f(\infty)]e^{-t/\tau}$`}</td><td>過渡現象の一般式</td><td>1次回路全般</td></tr>
+        <tr>
+          <td>時定数</td>
+          <td><Eq tex="\\tau = RC" /></td>
+          <td><Eq tex="\\tau = L/R" /></td>
+        </tr>
+        <tr>
+          <td>t=0⁺ の C/L</td>
+          <td>短絡（充電ゼロ時）または電圧源</td>
+          <td>開放（電流ゼロ時）または電流源</td>
+        </tr>
+        <tr>
+          <td>t→∞ の C/L</td>
+          <td>開放</td>
+          <td>短絡</td>
+        </tr>
+        <tr>
+          <td>急変不可の量</td>
+          <td>コンデンサ電圧 v_C（連続）</td>
+          <td>インダクタ電流 i_L（連続）</td>
+        </tr>
       </tbody>
     </table>
-    <h2 id="examples">§3 例題</h2>
-    <p><strong>問題</strong>: {String.raw`$R=1k\Omega$`}、{String.raw`$C=100\mu F$`} のRC直列回路にDC10Vを印加した。時定数τと、τ後のコンデンサ電圧を求めよ。</p>
-    <p><strong>解答</strong>: {String.raw`$\tau = 1000 \times 100 \times 10^{-6} = 0.1s$`}、{String.raw`$v_C(\tau) = 10(1-e^{-1}) \approx 6.32V$`}</p>
-    <h2 id="related">§4 関連</h2>
+
+    <h3>t=0直後 vs t=∞ での各素子の扱い</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>素子</th>
+          <th>t=0⁺（初期値ゼロ）</th>
+          <th>t→∞（直流定常）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>コンデンサ C</td>
+          <td><strong>短絡</strong>（V=0を維持）</td>
+          <td><strong>開放</strong></td>
+        </tr>
+        <tr>
+          <td>インダクタ L</td>
+          <td><strong>開放</strong>（I=0を維持）</td>
+          <td><strong>短絡</strong></td>
+        </tr>
+        <tr>
+          <td>抵抗 R</td>
+          <td>そのまま</td>
+          <td>そのまま</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>充電過程 vs 放電過程（RC回路）</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>充電過程</th>
+          <th>放電過程</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>v_C(0)</td>
+          <td>0</td>
+          <td>V₀</td>
+        </tr>
+        <tr>
+          <td>v_C(∞)</td>
+          <td>E（電源電圧）</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>v_C(t)</td>
+          <td><Eq tex="E(1 - e^{-t/\\tau})" /></td>
+          <td><Eq tex="V_0\\,e^{-t/\\tau}" /></td>
+        </tr>
+        <tr>
+          <td>i(t)</td>
+          <td><Eq tex="\\dfrac{E}{R}\\,e^{-t/\\tau}" /></td>
+          <td><Eq tex="-\\dfrac{V_0}{R}\\,e^{-t/\\tau}" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      過渡現象は「定常状態に落ち着くまでの暴れ」。電動機始動・コンデンサ投入・リレー遮断など、現場で突入電流や誘導サージが発生するのはすべてこの物理が動いている。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>電動機始動時の突入電流</td><td>RL回路の過渡応答</td><td>始動電流は定格の5〜7倍、保護協調と起動方式（スターデルタ等）選定</td></tr>
+        <tr><td>進相コンデンサ投入時の突入電流</td><td>RC回路の過渡</td><td>突入電流抑制リアクトル（直列リアクトル）を設置して緩和</td></tr>
+        <tr><td>リレーコイル切断時のサージ電圧</td><td>L di/dt によるサージ</td><td>コイル両端にサージキラー（ダイオード・バリスタ）必須</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+    <p><strong>問1:</strong> R=1kΩ、C=100μF のRC直列回路にDC10Vを印加した。時定数 τ と、τ 後のコンデンサ電圧を求めよ。</p>
+    <details>
+      <summary>解答</summary>
+      <p><Eq tex="\\tau = RC = 1000 \\times 100 \\times 10^{-6} = 0.1\\text{ s}" display /></p>
+      <p><Eq tex="v_C(\\tau) = 10(1 - e^{-1}) \\approx 10 \\times 0.632 = 6.32\\text{ V}" display /></p>
+      <p><strong>ポイント：</strong>τ 後には最終値の約63.2%まで充電される。</p>
+    </details>
+
+    <p><strong>問2:</strong> スイッチ切り替え前の定常状態でコンデンサに8Vが充電されている。切り替え後の回路では最終値が0V、時定数が0.05sである。切り替え後の v_C(t) を求めよ。</p>
+    <details>
+      <summary>解答</summary>
+      <p>初期値 <Eq tex="f(0) = 8\\text{ V}" />、最終値 <Eq tex="f(\\infty) = 0\\text{ V}" />、<Eq tex="\\tau = 0.05\\text{ s}" /></p>
+      <p><Eq tex="v_C(t) = 0 + [8 - 0]\\,e^{-t/0.05} = 8\\,e^{-20t}\\text{ V}" display /></p>
+      <p><strong>ポイント：</strong>切り替え前の電圧が切り替え後の初期値になる（コンデンサ電圧は急変不可）。</p>
+    </details>
+
+    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+    <Callout variant="warn" title="勘違い①：t=0直後にコンデンサを「開放」として扱う">
+      初期電荷ゼロのコンデンサは t=0⁺ で短絡に等しい（電圧=0を維持）。電流は最大値で流れ始め、徐々に減少する。コンデンサは「電荷を蓄えるから電流が流れない」ではなく、「電圧が急変できない」素子。
+    </Callout>
+    <Callout variant="warn" title="勘違い②：1τ後に定常値に達したと思い込む">
+      1τ 後は約63%変化した状態。100%に近づくのは理論上無限大時間かかる。実用上は 5τ 後（≒99%）を定常到達の目安とする。「τ で定常達成」は誤り。
+    </Callout>
+    <Callout variant="warn" title="勘違い③：RL回路で t=0直後のインダクタを「短絡」として扱う">
+      初期電流ゼロのインダクタは t=0⁺ で開放に等しい（電流は急変できない）。電流はゼロから徐々に増加する。
+    </Callout>
+    <Callout variant="warn" title="勘違い④：RC回路とRL回路の時定数式を取り違える（H25問4・R01問3）">
+      次元チェックが有効。<Eq tex="\\tau = L/R" /> は [H]/[Ω]=[s]、<Eq tex="\\tau = CR" /> は [F]·[Ω]=[s] と確認する。RL回路の微分方程式を解くと指数係数は R/L → 時定数は L/R。
+    </Callout>
+    <Callout variant="note" title="複雑な回路の時定数はテブナン抵抗で求める（R02問10）">
+      C またはL を取り外し、全電圧源を短絡・全電流源を開放して端子間の合成抵抗 R_th を求める。時定数は <Eq tex="\\tau = R_{th}C" />（RC回路）または <Eq tex="\\tau = L/R_{th}" />（RL回路）。
+    </Callout>
+
+    <h2 id="related"><span className="h-num">6.</span>関連項目</h2>
     <ul>
-      <li>テブナンの定理（複雑な回路の時定数）</li>
-      <li>RC直並列回路（H22問10）</li>
-      <li>LCの振動現象</li>
+      <li>直流回路 — キルヒホッフの法則・テブナンの定理（時定数計算の基礎）</li>
+      <li>コンデンサ（静電容量） — エネルギー蓄積・電圧急変不可の原理</li>
+      <li>インダクタンス — エネルギー蓄積・電流急変不可の原理</li>
+      <li>RLC回路 — LC振動・共振（2次回路への発展）</li>
     </ul>
-    <div className="page-nav">
-      <a className="nav-prev" href="#" onClick={() => onNav('inductance')}>← インダクタンス</a>
-      <a className="nav-next" href="#" onClick={() => onNav('three-phase')}>三相交流 →</a>
-    </div>
+
+    <PageNav prev={{id:"inductance", title:"3.1 インダクタンス"}} next={{id:"three-phase", title:"3.3 三相交流"}} onNav={onNav} />
   </>
 );
 
+// last-updated: 2026-04-27 | v0.9 | RULE監査：H3ラベル・実務セクション・TrapBlock・marker適用
 const SemiconductorPage = ({ onNav }) => (
   <>
-    <div className="meta-strip">
-      <span className="difficulty">★★★</span>
-      <span className="importance">B</span>
-      <span className="frequency">中</span>
-    </div>
-    <div className="page-header">
-      <div className="eyebrow">第5章 電子理論</div>
-      <h1>5.1 半導体・ダイオード</h1>
-      <p className="deck">条件によって導体にも絶縁体にもなれる物質。ドーピングとPN接合で「電流の弁」を作る。</p>
-      <div className="meta-list">
-        <span>4/26更新</span>
-        <span>重要度 A</span>
-      </div>
-    </div>
-    <div className="crumbs">
-      <a href="#" onClick={() => onNav('three-phase')}>三相交流</a> →
-      <span>半導体・ダイオード</span> →
-      <a href="#" onClick={() => onNav('transistor')}>トランジスタ</a>
-    </div>
-    <h2 id="principle">§1 原理</h2>
-    <p>純粋なシリコンはほぼ絶縁体。そこに微量の不純物（ドーパント）を加えると電気的性質が激変する。これがドーピング。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。バルブ（弁）のアナロジーが使える。</p>
-    <div className="callout callout-tip">
-      <strong>5秒で思い出す</strong><br/>
-      半導体 = 不純物で性質が変わる「変化できる素材」。PN接合 = 電流の一方通行弁。
-    </div>
-    <h2 id="formulas">§2 公式</h2>
-    <table>
-      <thead><tr><th>公式</th><th>意味</th><th>条件</th></tr></thead>
+    <MetaStrip difficulty="★★★" importance="A" frequency="中" />
+    <LearningMap
+      prereqs={[{id:"dc-circuit", title:"直流回路"},{id:"electromagnetic-force", title:"電磁力"}]}
+      current="半導体・ダイオード"
+      nexts={[{id:"transistor", title:"トランジスタ"}]}
+      onNav={onNav}
+    />
+    <PageHeader
+      eyebrow="5.1 — SEMICONDUCTOR / DIODE"
+      title="半導体・ダイオード"
+      deck="条件によって導体にも絶縁体にもなれる物質。ドーピングとPN接合で「電流の弁」を作る。"
+      meta={[
+        { label: "重要度", value: "A" },
+        { label: "出題頻度", value: "中（毎年1問、問11に固定）" },
+        { label: "難易度", value: "★★★" },
+      ]}
+    />
+    <Crumbs items={[{id:"home",label:"ホーム"},{label:"5. 電子理論"}]} onNav={onNav} />
+
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
+    <Analogy type="valve" icon="🔧">
+      ダイオードは「電流の弁」。弁は一方向には水を通し、逆方向には通さない。PN接合のダイオードはアノード（P側）が高電位のときだけ電流を流し、逆方向は遮断する。
+      純粋なシリコンはほぼ絶縁体だが、微量の不純物（ドーパント）を加えると電気的性質が激変する。これがドーピング。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。
+    </Analogy>
+    <Callout variant="tip" title="5秒で思い出す">
+      半導体 ＝ 不純物で性質が変わる「変化できる素材」。PN接合 ＝ 電流の一方通行弁。
+    </Callout>
+    <p>半導体は不純物で性質が変わる「変化できる素材」。PN接合は電流の一方通行弁として機能し、整流回路・定電圧回路・発光素子など幅広く応用される。</p>
+
+    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
+    <FormulaTable layer="A" rows={[
+      { formula: "V_F \\approx 0.6 \\sim 0.7\\text{ V}", meaning: "シリコンダイオードの順方向電圧降下（導通閾値）", when: "シリコンPN接合ダイオード", notWhen: "ゲルマニウム（≈0.3V）、LEDは色により異なる" },
+      { formula: "V_{avg} = \\dfrac{V_m}{\\pi}\\text{（半波整流）}", meaning: "半波整流回路の出力平均電圧", when: "純抵抗負荷・理想ダイオード", notWhen: "フィルタあり・負荷が誘導性の場合は不適" },
+      { formula: "V_{avg} = \\dfrac{2V_m}{\\pi}\\text{（全波整流）}", meaning: "全波整流回路の出力平均電圧（半波の2倍）", when: "純抵抗負荷・ブリッジ整流または中点タップ", notWhen: "フィルタあり・負荷が誘導性の場合は不適" },
+    ]} />
+
+    <h3>レイヤーB：応用変換</h3>
+    <FormulaTable layer="B" rows={[
+      { formula: "V_Z\\text{（ツェナー電圧）}", meaning: "逆方向に一定電圧を超えるとブレークダウンして定電圧を維持", when: "電圧安定化回路", notWhen: "電流が最大定格を超えると破壊" },
+      { formula: "\\lambda \\propto \\frac{1}{E_g}\\text{（LED）}", meaning: "順方向電流でエネルギーギャップに応じた波長の光を放出", when: "GaAs・GaP等の化合物半導体", notWhen: "シリコンは間接遷移型のため発光不可" },
+      { formula: "\\rho \\downarrow\\text{ as }T\\uparrow\\text{（半導体）}", meaning: "温度上昇→キャリア増加→抵抗減少（NTC特性）", when: "真性半導体・不純物半導体", notWhen: "金属とは逆（金属は温度↑で抵抗↑）" },
+      { formula: "C \\propto \\dfrac{1}{\\sqrt{V_R}}\\text{（バラクタ）}", meaning: "逆バイアス電圧を大きくするほど空乏層が広がり静電容量が小さくなる", when: "逆バイアス印加時", notWhen: "順バイアスでは通常ダイオードと同じ動作" },
+      { formula: "\\text{光起電力効果（太陽電池）}", meaning: "PN接合に光を当てると電子・正孔対が生成され、内蔵電界で分離されてP側がプラスの起電力が発生", when: "半導体PN接合", notWhen: "光が当たらなければ起電力は発生しない" },
+    ]} />
+    <Callout variant="note" title="バラクタダイオードの原理（R02 出題）">
+      逆バイアス電圧 <Eq tex="V_R" /> を大きくするほど空乏層が広がり、静電容量 <Eq tex="C" /> が小さくなる（<Eq tex="C \propto \dfrac{1}{\sqrt{V_R}}" />）。バラクタダイオードは逆バイアスで使う。順バイアスをかけると電流が流れてしまい可変容量素子として機能しない。
+    </Callout>
+    <Callout variant="note" title="太陽電池の動作原理（R01・H20 出題）">
+      太陽電池はPN接合ダイオードに光を当てたもの。光が当たると電子・正孔対が生成され、PN接合の内蔵電界によって電子はN側へ、正孔はP側へ引き寄せられる。P側がプラス（高電位）、N側がマイナス（低電位）になる。光起電力効果（フォトボルタイック効果）と光電効果（金属表面から電子が飛び出す）を混同しないこと。
+    </Callout>
+
+    <h2 id="comparison"><span className="h-num">3.</span>比較・まとめ表</h2>
+    <h3>N型半導体 vs P型半導体 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 穴埋め定番。ドナー/アクセプター・多数キャリアの種類が毎年出題（H18・H25・R03）</p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>N型</th>
+          <th>P型</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr><td>{String.raw`$V_F \approx 0.6 \sim 0.7V$`}</td><td>シリコンダイオードの順方向電圧</td><td>PN接合ダイオード</td></tr>
-        <tr><td>{String.raw`$V_{avg} = \dfrac{V_m}{\pi}$`}</td><td>半波整流の出力平均電圧</td><td>純抵抗負荷</td></tr>
-        <tr><td>{String.raw`$V_{avg} = \dfrac{2V_m}{\pi}$`}</td><td>全波整流の出力平均電圧</td><td>純抵抗負荷</td></tr>
+        <tr>
+          <td>ドーパント</td>
+          <td>リン（P）・ヒ素（As）など（5価）</td>
+          <td>ボロン（B）など（3価）</td>
+        </tr>
+        <tr>
+          <td>多数キャリア</td>
+          <td><span className="marker">電子（負の電荷）</span></td>
+          <td><span className="marker">正孔（ホール、正の電荷）</span></td>
+        </tr>
+        <tr>
+          <td>少数キャリア</td>
+          <td>正孔</td>
+          <td>電子</td>
+        </tr>
+        <tr>
+          <td>不純物の呼称</td>
+          <td><span className="marker">ドナー（電子を供与する）</span></td>
+          <td><span className="marker">アクセプター（電子を受け取る）</span></td>
+        </tr>
+        <tr>
+          <td>電気的中性</td>
+          <td>中性（ドーパント核が正電荷を持つ）</td>
+          <td>中性（ドーパント核が負電荷の不足）</td>
+        </tr>
       </tbody>
     </table>
-    <h2 id="examples">§3 例題</h2>
-    <p><strong>問題</strong>: シリコンPN接合ダイオードに順方向電圧を印加する。導通開始電圧はおよそ何Vか。また逆方向に電圧を印加したとき、電流は流れるか。</p>
-    <p><strong>解答</strong>: 導通開始電圧≈0.6〜0.7V。逆方向には微小な逆飽和電流が流れる（完全には遮断されない）。</p>
-    <h2 id="related">§4 関連</h2>
+
+    <h3>順バイアス vs 逆バイアス <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 空乏層の縮小/拡大・電流の有無がほぼ毎年出題。方向を逆に覚えている誤答者が多い（R04下・H19）</p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>順バイアス</th>
+          <th>逆バイアス</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P側への印加</td>
+          <td>＋（高電位）</td>
+          <td>−（低電位）</td>
+        </tr>
+        <tr>
+          <td>電流</td>
+          <td>大きく流れる（<Eq tex="V_F" /> 以上で急増）</td>
+          <td>ほぼ流れない（逆飽和電流のみ）</td>
+        </tr>
+        <tr>
+          <td>空乏層</td>
+          <td><span className="marker">薄くなる（縮小）</span></td>
+          <td><span className="marker">厚くなる（拡大）</span></td>
+        </tr>
+        <tr>
+          <td>例外動作</td>
+          <td>—</td>
+          <td>ツェナー降伏・アバランシェ降伏</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>真性半導体 vs 不純物半導体 <span style={{fontSize:"0.8em", color:"var(--ink-soft)"}}>★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 知識確認レベル。「不純物を加えるとどう変わるか」の因果を問う（R03・H21）</p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>真性半導体</th>
+          <th>不純物半導体（N型・P型）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>組成</td>
+          <td>純粋なシリコン・ゲルマニウム</td>
+          <td>ドーパントを微量添加</td>
+        </tr>
+        <tr>
+          <td>キャリア密度</td>
+          <td>低い（室温では非常に少ない）</td>
+          <td>高い（ドーパント濃度に依存）</td>
+        </tr>
+        <tr>
+          <td>電子と正孔の数</td>
+          <td>等しい</td>
+          <td>多数キャリアが圧倒的に多い</td>
+        </tr>
+        <tr>
+          <td>導電率</td>
+          <td>低い</td>
+          <td>高い（温度でも変化）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>半導体 vs 金属の温度特性 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ NTC（負温度係数）が頻出キーワード。金属との逆転関係がトラップになる（H28・H30）</p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>半導体</th>
+          <th>金属（導体）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>温度↑ → 抵抗</td>
+          <td><span className="marker">減少（キャリア増加）</span></td>
+          <td>増加（格子振動で散乱増加）</td>
+        </tr>
+        <tr>
+          <td>温度係数</td>
+          <td><span className="marker">負（NTC）</span></td>
+          <td><span className="marker">正（PTC）</span></td>
+        </tr>
+        <tr>
+          <td>応用</td>
+          <td>サーミスタ（温度センサ）</td>
+          <td>測温抵抗体（RTD）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <Callout variant="note" title="ドナー・アクセプターの覚え方（H18・H25・R03 出題）">
+      ドナー（Donor）＝与える人：5価の原子（リン・ヒ素）は共有結合に4個使い、余った1個の電子をシリコンに供与する。これが自由電子になる → N型。
+      アクセプター（Acceptor）＝受け取る人：3価の原子（ボロン）は共有結合に3個しか提供できず、1か所が「電子の空き」（正孔）になる → P型。
+      穴埋め問題では「5価の不純物を加えると（　）が生成され、電子が多数キャリアとなる」という形式が頻出。答えは「ドナー」「N型半導体」の順番で入る。
+    </Callout>
+    <Callout variant="note" title="ダイオードの電圧方向を回路図から判断する手順（R04下・H19 出題）">
+      判断の3ステップ：(1) 回路図でダイオードのアノード（A）とカソード（K）を特定する（三角形の底辺側がアノード＝P型、頂点側の棒がカソード＝N型）。(2) アノード・カソードそれぞれの電位を回路から読み取る。(3) アノード電位 {'>'} カソード電位 → 順バイアス（電流が流れる）、アノード電位 {'<'} カソード電位 → 逆バイアス（電流がほぼ流れない）。
+    </Callout>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      半導体素子はセンサ・整流・定電圧回路の核心部品。現場で「なぜこの素子が選ばれているか」を理解することでトラブル解析と設備更新の判断力が上がる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>制御盤の24VDC電源ユニット（ブリッジ整流回路）</td>
+          <td>PN接合の一方通行性・全波整流の出力電圧式</td>
+          <td>ダイオードの <Eq tex="V_F \approx 0.6\text{ V}" /> 分の電圧降下を考慮して二次電圧を設計し、出力24V以上を確保する</td>
+        </tr>
+        <tr>
+          <td>制御回路の定電圧保護（サージ吸収・クランプ）</td>
+          <td>ツェナーダイオードの逆降伏特性</td>
+          <td>ツェナー電圧と電力定格を確認し、直列抵抗で電流制限。最大定格を超えると素子破壊するため保護協調が必要</td>
+        </tr>
+        <tr>
+          <td>温度センサ選定（サーミスタ vs 熱電対）</td>
+          <td>半導体の負温度係数（NTC）・ゼーベック効果</td>
+          <td>サーミスタは温度↑→抵抗↓のNTC特性（半導体）。熱電対はゼーベック効果を利用した起電力型であり、原理・配線方式・計装回路が全く異なる</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">4.</span>例題</h2>
+
+    <Callout variant="note" title="例題1：シリコンダイオードの導通電圧と逆方向電流">
+      シリコンPN接合ダイオードに順方向電圧を印加する。導通開始電圧はおよそ何Vか。また逆方向に電圧を印加したとき電流は流れるか。ゲルマニウムダイオードと比較して答えよ。
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p>ステップ①：シリコンの順方向電圧降下</p>
+      <p>シリコン PN 接合の導通閾値 <Eq tex="V_F \approx 0.6 \sim 0.7 \text{ [V]}" />（ゲルマニウムは <Eq tex="\approx 0.2 \sim 0.3 \text{ [V]}" />）</p>
+      <p>ステップ②：逆方向電流の有無</p>
+      <p>逆バイアス時も少数キャリアによる逆飽和電流 <Eq tex="I_s" /> が流れる。温度が上昇すると <Eq tex="I_s" /> は増加する。完全ゼロにはならない。</p>
+      <p><strong>答え：導通開始電圧 ≈ 0.6〜0.7V。逆方向にも微小な逆飽和電流が流れる（完全遮断にはならない）。</strong></p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      「逆バイアス＝電流ゼロ」は誤り。逆飽和電流は存在する。シリコン 0.6V・ゲルマニウム 0.2V の数値は素材確認の習慣で解決。
+    </Callout>
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：</strong>順方向電圧 V_F（このダイオードの導通状態を最も左右する変数）</p>
+      <ul>
+        <li>V_F → <strong>0</strong>（電圧なし）のとき：空乏層がビルトインポテンシャルを維持し電流はほぼゼロ。ダイオードは遮断状態</li>
+        <li>V_F → <strong>∞</strong>（過大電圧）のとき：順電流が急増し、最大定格を超えると接合部の発熱で素子破壊。実際は配線抵抗・保護抵抗で制限される</li>
+      </ul>
+    </Callout>
+
+    <Callout variant="note" title="例題2：全波整流回路の出力電圧計算">
+      最大値 <Eq tex="V_m = 100\sqrt{2} \text{ [V]}" /> の交流をブリッジ全波整流したとき、純抵抗負荷での出力平均電圧 <Eq tex="V_{avg}" /> を求めよ。ただしダイオードは理想とする。
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p>ステップ①：全波整流の公式を確認</p>
+      <p><Eq tex="V_{avg} = \dfrac{2V_m}{\pi}" /></p>
+      <p>ステップ②：数値を代入</p>
+      <p><Eq tex="V_{avg} = \dfrac{2 \times 100\sqrt{2}}{\pi} = \dfrac{200\sqrt{2}}{\pi} \approx \dfrac{200 \times 1.414}{3.14} \approx 90.0 \text{ [V]}" /></p>
+      <p><strong>答え：V_avg ≈ 90.0 V</strong></p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      全波整流は半波の2倍（<Eq tex="2V_m/\pi" />）。半波整流（<Eq tex="V_m/\pi" />）と混同しないこと。「全波＝2倍」をセットで記憶する。
+    </Callout>
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：</strong>最大値 V_m（整流出力を最も左右する変数）</p>
+      <ul>
+        <li>V_m → <strong>0</strong>（入力ゼロ）のとき：V_avg = 0。整流回路は機能しない（入力がなければ出力もない）</li>
+        <li>V_m → <strong>∞</strong>（過大入力）のとき：V_avg も無限大 → 実際はダイオードの耐圧（逆方向電圧定格）を超えると素子破壊</li>
+      </ul>
+    </Callout>
+
+    <Callout variant="note" title="例題3：バラクタダイオードの動作（R02 問11 類題）">
+      バラクタダイオードに関する記述として正しいものを選べ。<br/>
+      ① 順バイアス電圧を大きくするほど静電容量が大きくなる<br/>
+      ② 逆バイアス電圧を大きくするほど空乏層が広がり静電容量が小さくなる<br/>
+      ③ 順バイアスで使用する可変容量素子である<br/>
+      ④ 静電容量は逆バイアス電圧に比例して増加する
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p>① ❌：バラクタは<strong>逆バイアス</strong>で使う。順バイアスでは電流が流れてしまい容量素子として機能しない。</p>
+      <p>② ✅：正しい。逆バイアス電圧↑ → 空乏層拡大 → 静電容量 C が小さくなる（<Eq tex="C \propto 1/\sqrt{V_R}" />）。</p>
+      <p>③ ❌：逆バイアスで使用する（順バイアスは誤り）。</p>
+      <p>④ ❌：比例ではなく <Eq tex="C \propto 1/\sqrt{V_R}" />（平方根の逆数に比例）。しかも電圧増加で容量は<strong>減少</strong>。</p>
+      <p><strong>答え：②</strong></p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      バラクタは「逆バイアス・電圧↑で容量↓」の2点セット。選択肢に「順バイアス」「比例して増加」が出たら即排除。
+    </Callout>
+    <Callout variant="note" title="判断の視点チェック">
+      <p><strong>選択肢を切る3ステップ：</strong></p>
+      <ul>
+        <li>① バイアス方向を確認：順か逆か → バラクタは<strong>逆バイアス</strong>が前提</li>
+        <li>② 容量と電圧の増減関係：逆バイアス↑ → 空乏層↑ → 容量↓（逆の関係）</li>
+        <li>③ 依存関係の形：比例（線形）ではなく <Eq tex="1/\sqrt{V_R}" />（平方根の逆数）</li>
+      </ul>
+    </Callout>
+
+    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
+
+    <TrapBlock
+      correct="N型半導体は全体として電気的中性。N型の『N』は多数キャリアが電子（Negative charge carrier）の意味であり、物質全体の帯電状態を示すものではない。"
+      trap="N型＝負電荷の物質なのでN型全体が負に帯電していると思い込む。"
+      cite="H25問11・R03問11 出題"
+      steps={[
+        "N型半導体ではドナー原子（5価）が正の核を持ち、放出した自由電子（−）と釣り合っている",
+        "全体の電荷 ＝ 正核 + 自由電子 ＝ 中性（電荷の総和はゼロ）",
+        "『N型』は『多数キャリアが電子』という意味。『負に帯電している』という意味ではない",
+      ]}
+    />
+
+    <TrapBlock
+      correct="逆バイアス時も微小な逆飽和電流 I_s が流れる。完全ゼロにはならない。"
+      trap="逆バイアスなら電流は完全にゼロになると思い込む。"
+      cite="H29問11・H25問11 出題"
+      steps={[
+        "逆方向では空乏層が拡大し電流がほぼ遮断される状態になる",
+        "少数キャリアによる逆飽和電流 I_s はゼロではなく、温度依存性が高い（温度上昇で急増）",
+        "ツェナー降伏電圧に達すると急激に大電流が流れる（ツェナーダイオードはこれを意図的に利用する）",
+      ]}
+    />
+
+    <TrapBlock
+      correct="アノード（P側）が高電位のとき順バイアス。電流方向はアノード → カソード。"
+      trap="回路図上の記号の向きと実物の接続方向を混同し、バイアス方向を誤る。"
+      cite="R04下問11・H19問11 出題"
+      steps={[
+        "回路図でダイオード記号を確認（三角の底辺側＝アノード＝P型、頂点側の棒＝カソード＝N型）",
+        "アノードとカソードそれぞれの電位を回路から読み取る",
+        "アノード電位 {'>'} カソード電位 → 順バイアス（電流が流れる）、逆なら逆バイアス（ほぼ遮断）",
+      ]}
+    />
+
+    <TrapBlock
+      correct="太陽電池は光照射でP側がプラス（順方向と同じ極性）の起電力が発生する。"
+      trap="光電効果と混同してN側がプラスになると思い込む、または光を当てると逆方向に起電力が発生すると誤解する。"
+      cite="R01問11・H20問11 出題"
+      steps={[
+        "光照射でPN接合内に電子・正孔対が生成される",
+        "内蔵電界によって電子はN側へ、正孔はP側へ引き寄せられる",
+        "P側に正電荷が偏る → P側がプラス（高電位）＝ 順方向と同じ極性",
+      ]}
+    />
+
+    <TrapBlock
+      correct="バラクタダイオードは逆バイアスで使う可変容量素子。逆バイアスを強くするほど空乏層が広がり静電容量は小さくなる。"
+      trap="順バイアスで大きな静電容量が得られると思い込む、または逆バイアスと容量の増減関係を逆に覚える。"
+      cite="R02問11 出題"
+      steps={[
+        "バラクタダイオードは逆バイアスで使うことを確認（順バイアスでは電流が流れ容量素子として機能しない）",
+        "逆バイアス電圧↑ → 空乏層が広がる → 静電容量 C が小さくなる（C ∝ 1/√V_R）",
+        "容量の大小と電圧の大小が逆の関係になることを押さえる",
+      ]}
+    />
+
+    <TrapBlock
+      correct="順バイアスで空乏層は縮小、逆バイアスで空乏層は拡大する。"
+      trap="順バイアスで空乏層が広がると思い込む（電流が流れる＝空乏層が広がるという誤った類推）。"
+      cite="H25問15・R01問15 出題"
+      steps={[
+        "順バイアス：外部電圧が内蔵電位（ビルトインポテンシャル）を打ち消す方向に働く → 空乏層縮小 → 電流が流れやすくなる",
+        "逆バイアス：外部電圧が内蔵電位を強める方向に働く → 空乏層拡大 → 電流が流れにくくなる",
+        "逆バイアスで拡大した空乏層がコンデンサとして機能する → バラクタダイオードの動作原理",
+      ]}
+    />
+
+    <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>観点</th>
+          <th>誤答者</th>
+          <th>正答者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>N型の電荷</td>
+          <td>「N＝負電荷」なのでN型全体が負に帯電していると思う</td>
+          <td>N型はドナー（陽イオン）と電子が釣り合い、全体は電気的中性</td>
+        </tr>
+        <tr>
+          <td>ダイオードの向き</td>
+          <td>カソード（N側）→アノード（P側）に電流が流れると思う</td>
+          <td>アノード（P側）→カソード（N側）が順方向（電流が流れる向き）</td>
+        </tr>
+        <tr>
+          <td>温度特性</td>
+          <td>「半導体も金属も温度↑なら抵抗↑」と思い込む</td>
+          <td>半導体は温度↑→キャリア増加→抵抗↓（金属とは逆）</td>
+        </tr>
+        <tr>
+          <td>逆バイアスで電流</td>
+          <td>「逆方向なら電流完全ゼロ」と思い込む</td>
+          <td>微小な逆飽和電流が流れる（温度依存あり）</td>
+        </tr>
+        <tr>
+          <td>PN接合の空乏層</td>
+          <td>順バイアスで空乏層が拡大すると思う</td>
+          <td>順バイアスで空乏層は縮小、逆バイアスで拡大</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="exam-history"><span className="h-num">7.</span>出題実績</h2>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>問</th>
+          <th>形式</th>
+          <th>何が問われたか</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>R07上</td><td>問11</td><td>穴埋</td><td>ホール素子の動作原理</td></tr>
+        <tr><td>R06下</td><td>問11</td><td>論説</td><td>電界効果トランジスタの種類や特徴</td></tr>
+        <tr><td>R06上</td><td>問11</td><td>論説</td><td>バイポーラトランジスタと電界効果トランジスタ</td></tr>
+        <tr><td>R05下</td><td>問11</td><td>穴埋</td><td>FETの動作原理</td></tr>
+        <tr><td>R05上</td><td>問11</td><td>穴埋</td><td>ホール素子の動作原理</td></tr>
+        <tr><td>R05上</td><td>問12</td><td>穴埋</td><td>異なる2種類の金属を接合した際の特性</td></tr>
+        <tr><td>R04下</td><td>問11</td><td>穴埋</td><td>各ダイオードに加える電圧の方向</td></tr>
+        <tr><td>R04上</td><td>問11</td><td>穴埋</td><td>電界効果トランジスタの特徴</td></tr>
+        <tr><td>R03</td><td>問11</td><td>論説</td><td>真性半導体及び不純物半導体の特徴</td></tr>
+        <tr><td>R02</td><td>問11</td><td>穴埋</td><td>可変容量ダイオード（バラクタダイオード）</td></tr>
+        <tr><td>R01</td><td>問11</td><td>穴埋</td><td>太陽電池</td></tr>
+        <tr><td>H30</td><td>問11</td><td>論説</td><td>半導体素子</td></tr>
+        <tr><td>H29</td><td>問11</td><td>論説</td><td>半導体のpn接合</td></tr>
+        <tr><td>H28</td><td>問11</td><td>論説</td><td>半導体</td></tr>
+        <tr><td>H27</td><td>問11</td><td>穴埋</td><td>半導体レーザ</td></tr>
+        <tr><td>H26</td><td>問12</td><td>論説</td><td>半導体のpn接合を利用した素子</td></tr>
+        <tr><td>H25</td><td>問11</td><td>穴埋</td><td>不純物半導体</td></tr>
+        <tr><td>H24</td><td>問11</td><td>論説</td><td>半導体集積回路（IC）</td></tr>
+        <tr><td>H23</td><td>問11</td><td>穴埋</td><td>電界効果トランジスタ（MOSFET）</td></tr>
+        <tr><td>H22</td><td>問11</td><td>穴埋</td><td>ホール効果の原理</td></tr>
+        <tr><td>H21</td><td>問11</td><td>論説</td><td>真性半導体と不純物半導体の特徴</td></tr>
+        <tr><td>H20</td><td>問11</td><td>穴埋</td><td>pn接合した半導体の太陽電池の原理</td></tr>
+        <tr><td>H19</td><td>問11</td><td>穴埋</td><td>各ダイオードに加える電圧の方向</td></tr>
+        <tr><td>H18</td><td>問11</td><td>穴埋</td><td>不純物半導体の特徴と不純物の知識</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="hall"><span className="h-num">8.</span>🌡️ ホール効果・熱起電力（★★★★★）</h2>
+    <h3>ゼーベック効果とペルチェ効果</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>効果</th>
+          <th>現象</th>
+          <th>利用例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ゼーベック効果</td>
+          <td>2種類の金属を両端で接合し、接合部に温度差を与えると起電力が発生する</td>
+          <td>熱電対・熱電温度センサ</td>
+        </tr>
+        <tr>
+          <td>ペルチェ効果</td>
+          <td>閉回路に外部から電流を流すと、一方の接合部で吸熱、他方で発熱する（ゼーベック効果の逆）</td>
+          <td>電子冷却器（熱電冷却モジュール）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>ホール電圧の式</h3>
+    <p>p型半導体に電流 <Eq tex="I" /> を流し、電流に対して垂直方向に磁束密度 <Eq tex="B" /> の磁界を加えると、電流と磁界の両方に直交する方向にホール電圧 <Eq tex="V_H" /> が発生する。</p>
+    <p><Eq tex="V_H = R_H \\cdot \\dfrac{BI}{d}" display /></p>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>記号</th>
+          <th>意味</th>
+          <th>単位</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><Eq tex="V_H" /></td><td>ホール電圧</td><td>V</td></tr>
+        <tr><td><Eq tex="R_H" /></td><td>ホール係数（材料固有）</td><td>m³/C</td></tr>
+        <tr><td><Eq tex="B" /></td><td>磁束密度</td><td>T</td></tr>
+        <tr><td><Eq tex="I" /></td><td>電流</td><td>A</td></tr>
+        <tr><td><Eq tex="d" /></td><td>磁界方向の半導体の厚さ</td><td>m</td></tr>
+      </tbody>
+    </table>
+
+    <h3>p型とn型でのホール電圧の向き</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>型</th>
+          <th>キャリア</th>
+          <th>偏り</th>
+          <th>ホール電圧の向き</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>p型</td>
+          <td>正孔（ホール）</td>
+          <td>正孔が偏った側が高電位（＋）</td>
+          <td>電流・磁界に直交する特定方向</td>
+        </tr>
+        <tr>
+          <td>n型</td>
+          <td>電子</td>
+          <td>電子（負電荷）が偏った側が低電位（−）</td>
+          <td>p型と逆向き</td>
+        </tr>
+      </tbody>
+    </table>
+    <Callout variant="note" title="ホール電圧の向きを図から判断する手順（R07上・R05上 出題）">
+      p型半導体の場合（キャリア＝正孔）：(1) 電流の方向を確認する。(2) 正孔は電流と同じ方向に動く。(3) 磁界によるローレンツ力を考える（電流方向に人差し指、磁界方向に中指、力の方向に親指）。(4) 正孔が偏った側が高電位（＋）になる。n型半導体の場合：電子は電流と逆方向に動き、偏る方向はp型と同じ側でも、電子（負電荷）が偏るのでその側が低電位（−）になる。つまりホール電圧の向きがp型と逆になる。
+    </Callout>
     <ul>
-      <li>ツェナーダイオード（定電圧特性）</li>
-      <li>バラクタダイオード（可変容量）</li>
-      <li>太陽電池（光起電力効果）</li>
+      <li>磁界センサ（ホール素子）</li>
+      <li>電流センサ（非接触電流計測）</li>
+      <li>位置・回転検出（ブラシレスモータの回転子位置検出）</li>
     </ul>
-    <div className="page-nav">
-      <a className="nav-prev" href="#" onClick={() => onNav('three-phase')}>← 三相交流</a>
-      <a className="nav-next" href="#" onClick={() => onNav('transistor')}>トランジスタ →</a>
-    </div>
+
+    <h2 id="photoelectric"><span className="h-num">9.</span>電子放出と光電効果</h2>
+    <h3>電子放出の4種類</h3>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>種類</th>
+          <th>メカニズム</th>
+          <th>主な材料・用途</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>熱電子放出</td>
+          <td>高温加熱により自由電子が仕事関数を超えるエネルギーを得て飛び出す</td>
+          <td>タングステン、タンタル（真空管・電子銃）</td>
+        </tr>
+        <tr>
+          <td>光電子放出（光電効果）</td>
+          <td>金属表面に光（電磁波）が当たり電子が飛び出す。限界振動数 <Eq tex="\\nu_0" /> 以上で発生</td>
+          <td>光電管、光センサ</td>
+        </tr>
+        <tr>
+          <td>二次電子放出</td>
+          <td>高速電子が衝突し、内部電子がエネルギーをもらい飛び出す</td>
+          <td>光電子増倍管</td>
+        </tr>
+        <tr>
+          <td>電界放出（冷陰極放出）</td>
+          <td>強電界印加でトンネル効果により電子が飛び出す</td>
+          <td>電界放出型ディスプレイ（FED）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>光電効果の公式</h3>
+    <FormulaTable layer="B" rows={[
+      { formula: "K_0 = h\\nu - W", meaning: "飛び出す電子の最大運動エネルギー（h：プランク定数、ν：光の振動数、W：仕事関数）", when: "振動数 ν ≥ 限界振動数 ν₀", notWhen: "ν < ν₀ のときは光をいくら強くしても光電子は出ない" },
+      { formula: "\\nu_0 = \\dfrac{W}{h}", meaning: "限界振動数（カットオフ周波数）：K₀=0となるギリギリの振動数", when: "仕事関数Wが既知のとき", notWhen: "—" },
+      { formula: "\\lambda_0 = \\dfrac{c}{\\nu_0}", meaning: "限界波長：光の速さ c = νλ より変換", when: "限界振動数ν₀が既知のとき", notWhen: "—" },
+    ]} />
+    <Callout variant="warn" title="光を「強く」しても限界振動数以下では光電子は出ない">
+      光の強さ＝光子（フォトン）の数。1個の光子のエネルギーは <Eq tex="h\\nu" /> で振動数のみで決まり、光の強さには関係しない。振動数 <Eq tex="\\nu {'<'} \\nu_0" /> なら光をいくら強くしても光電子は飛び出さない。振動数一定で光を強くすると光電子の数は増えるが、最大運動エネルギー <Eq tex="K_0" /> は変わらない。振動数を上げると <Eq tex="K_0" /> が増加する。
+    </Callout>
+
+    <PageNav prev={{id:"three-phase", title:"三相交流"}} next={{id:"transistor", title:"トランジスタ"}} onNav={onNav} />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-27 | v0.9
+    </p>
   </>
 );
 
