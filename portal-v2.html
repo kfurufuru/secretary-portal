@@ -259,6 +259,23 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   font-style:italic;font-weight:300;quotes:"\201C" "\201D";display:block;max-width:64ch}
 .quote .cite{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
 
+/* Trending Links */
+.trend-list{display:grid}
+.trend-row{display:grid;grid-template-columns:22px 1fr auto;gap:12px;align-items:center;
+  padding:11px 0;border-bottom:1px dashed var(--line2);
+  text-decoration:none;color:inherit;transition:opacity .15s}
+.trend-row:last-child{border-bottom:0;padding-bottom:0}
+.trend-row:hover{opacity:.7}
+.trend-rank{font-family:var(--mono);font-size:11px;color:var(--ink4);font-weight:600;text-align:center}
+.trend-rank.top{color:var(--accent)}
+.trend-body .name{font-size:13px;font-weight:500;color:var(--ink)}
+.trend-body .meta{font-size:11px;color:var(--ink3);font-family:var(--mono);margin-top:1px}
+.ttag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:999px;
+  border:1px solid var(--line2);color:var(--ink2);white-space:nowrap;flex-shrink:0}
+.ttag.hot{color:var(--accent);border-color:oklch(from var(--accent) l c h/.35)}
+.ttag.paid{color:var(--amber);border-color:oklch(from var(--amber) l c h/.35)}
+.ttag.oss{color:var(--green);border-color:oklch(from var(--green) l c h/.35)}
+
 /* Sites */
 .sites-head{display:flex;align-items:end;justify-content:space-between;padding:24px 28px 8px}
 .sites-head h2{font-family:var(--serif);font-weight:400;font-size:32px;letter-spacing:-.01em;margin:0}
@@ -329,7 +346,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         </a>
         <a href="#sites" data-tab="sites">
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 18l9 5 9-5"/></svg>
-          <span>All sites</span><span class="count">22</span>
+          <span>All sites</span><span class="count">23</span>
         </a>
       </nav>
     </div>
@@ -531,6 +548,46 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           </div>
         </div>
 
+        <!-- Trending Links -->
+        <div class="card c4">
+          <div class="head">
+            <h3>Trending Links <span class="badge">external</span></h3>
+            <a href="links.html" class="more" style="text-decoration:none">すべて →</a>
+          </div>
+          <div class="trend-list">
+            <a class="trend-row" href="https://skills.sh/trending" target="_blank">
+              <span class="trend-rank top">01</span>
+              <div class="trend-body"><div class="name">skills.sh</div><div class="meta">Claude Codeスキル · Trending</div></div>
+              <span class="ttag hot">HOT</span>
+            </a>
+            <a class="trend-row" href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">
+              <span class="trend-rank top">02</span>
+              <div class="trend-body"><div class="name">Awesome Claude Code</div><div class="meta">厳選リソース集</div></div>
+              <span class="ttag oss">OSS</span>
+            </a>
+            <a class="trend-row" href="https://github.com/marketplace/models" target="_blank">
+              <span class="trend-rank top">03</span>
+              <div class="trend-body"><div class="name">GitHub Models</div><div class="meta">GPT-4o / Llama 無料試用</div></div>
+              <span class="ttag">NEW</span>
+            </a>
+            <a class="trend-row" href="https://github.com/marketplace?type=actions" target="_blank">
+              <span class="trend-rank">04</span>
+              <div class="trend-body"><div class="name">Actions Marketplace</div><div class="meta">CI自動化 9,000+アクション</div></div>
+              <span class="ttag">FREE</span>
+            </a>
+            <a class="trend-row" href="https://github.com/features/copilot" target="_blank">
+              <span class="trend-rank">05</span>
+              <div class="trend-body"><div class="name">GitHub Copilot</div><div class="meta">AIペアプログラマー</div></div>
+              <span class="ttag paid">PAID</span>
+            </a>
+            <a class="trend-row" href="https://openrouter.ai/" target="_blank">
+              <span class="trend-rank">06</span>
+              <div class="trend-body"><div class="name">OpenRouter</div><div class="meta">Claude/GPT/Gemini 一元API</div></div>
+              <span class="ttag paid">PAY-GO</span>
+            </a>
+          </div>
+        </div>
+
         <!-- Quote -->
         <div class="c12">
           <div class="quote">
@@ -586,13 +643,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         <div class="sec">
           <h4><span class="bar"></span> 電験3種 学習 <span class="ct">08</span></h4>
           <div class="stack">
-            <a class="site" href="https://kfurufuru.github.io/denken3-study/denken-study.html" target="_blank"><div class="ico">01</div><div class="body"><b>今日の学習（朝/昼/夜）</b><small>3 sessions</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="denken-study.html"><div class="ico">01</div><div class="body"><b>今日の学習（朝/昼/夜）</b><small>3 sessions</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="denken3-study-dashboard/index.html"><div class="ico">02</div><div class="body"><b>学習ダッシュボード</b><small>v2.4</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
-            <a class="site" href="https://kfurufuru.github.io/denken3-study/quiz.html" target="_blank"><div class="ico">03</div><div class="body"><b>テスト記録</b><small>18 entries</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
-            <a class="site" href="https://kfurufuru.github.io/denken-wiki-riron/" target="_blank"><div class="ico">04</div><div class="body"><b>理論Wiki</b><small>94%</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="https://kfurufuru.github.io/denken3-study/stats.html" target="_blank"><div class="ico">03</div><div class="body"><b>テスト記録</b><small>18 entries</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="denken3-riron-wiki.html#home"><div class="ico">04</div><div class="body"><b>理論Wiki</b><small>v1.0</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="https://kfurufuru.github.io/denken-wiki/" target="_blank"><div class="ico">05</div><div class="body"><b>法規Wiki</b><small>62%</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="https://kfurufuru.github.io/denken-wiki-denryoku/" target="_blank"><div class="ico">06</div><div class="body"><b>電力Wiki</b><small>78%</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
-            <a class="site" href="https://kfurufuru.github.io/denken-wiki-kikai/" target="_blank"><div class="ico">07</div><div class="body"><b>機械Wiki</b><small>55%</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d amber"></span>WIP</div></a>
+            <a class="site" href="denken3-kikai-wiki.html#home"><div class="ico">07</div><div class="body"><b>機械Wiki</b><small>55%</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="https://github.com/kfurufuru/denken3-study" target="_blank"><div class="ico">08</div><div class="body"><b>GitHub リポジトリ</b><small>3 active</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
           </div>
         </div>
@@ -617,15 +674,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         </div>
 
         <div class="sec t-ink">
-          <h4><span class="bar"></span> ツール <span class="ct">07</span></h4>
+          <h4><span class="bar"></span> ツール <span class="ct">10</span></h4>
           <div class="stack">
             <a class="site" href="portal-v2.html"><div class="ico">01</div><div class="body"><b>Secretary Dashboard</b><small>you are here</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="denken-news/index.html"><div class="ico">02</div><div class="body"><b>電験ニュース×論点</b><small>weekly</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="business-skills/index.html"><div class="ico">03</div><div class="body"><b>ビジネススキル</b><small>—</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="business-skills/python-dekirukoto.html"><div class="ico">04</div><div class="body"><b>Pythonでできること</b><small>—</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
-            <a class="site" href="business-skills/brain-detox.html"><div class="ico">05</div><div class="body"><b>脳デトックス10</b><small>—</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="business-skills/brain-detox.html"><div class="ico">05</div><div class="body"><b>脳の回復術</b><small>デトックス × 休息</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="denken3-study-dashboard/index.html"><div class="ico">06</div><div class="body"><b>電験3種 学習システム（ローカル）</b><small>127.0.0.1</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d amber"></span>WIP</div></a>
             <a class="site" href="memory-dashboard.html"><div class="ico">07</div><div class="body"><b>Claude Memory Dashboard</b><small>beta</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="links.html"><div class="ico">08</div><div class="body"><b>Trending Links</b><small>skills.sh · GitHub · AI tools</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="business-skills/karada.html"><div class="ico">09</div><div class="body"><b>体の最適化</b><small>デトックス × 筋トレ</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="business-skills/fast-slow-manager.html"><div class="ico">10</div><div class="body"><b>仕事が早い/遅い管理職</b><small>行動パターン比較</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
           </div>
         </div>
 
