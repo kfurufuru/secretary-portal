@@ -7,7 +7,7 @@ last_reviewed: "2026-04-28"
 understanding_score: 4
 source: "チートシート補足・実運用整理（2026-04-28）"
 tags: ["エージェント", "アーキテクチャ", "LLM", "Memory", "MCP", "Make.com", "Claude Code", "自動化"]
-related: ["knowledge/mcp-claude-integration.md", "knowledge/agentic-graphrag-architecture.md", "knowledge/claude-code-knowledge-pipeline.md", "knowledge/claude-memory-management.md"]
+related: ["knowledge/mcp-claude-integration.md", "knowledge/agentic-graphrag-architecture.md", "knowledge/claude-code-knowledge-pipeline.md", "knowledge/claude-memory-management.md", "knowledge/cc-playbook.md"]
 ---
 
 # AIエージェント アーキテクチャ完全ガイド

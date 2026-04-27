@@ -5,7 +5,7 @@ updated: 2026-04-26
 category: AI活用
 level: published
 tags: [Claude Code, Memory, 知識管理, ダッシュボード, 自動化]
-related: ["[[claude-code-knowledge-pipeline]]", "[[cc-playbook]]"]
+related: ["[[claude-code-knowledge-pipeline]]", "[[cc-playbook]]", "knowledge/ai-agent-architecture.md"]
 source: inbox/handoff-2026-04-25-memory-dashboard.md
 understanding_score: 4
 ---
