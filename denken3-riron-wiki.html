@@ -4084,6 +4084,21 @@ const CapacitorPage = ({ onNav }) => (
       ]}
     />
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      進相コンデンサは力率改善の主役。容量不足は基本料金割増、容量過剰は進み力率で母線電圧上昇を招く。両方向のリスクを「Q = P(tanφ₁−tanφ₂)」で定量評価してから選定する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>進相コンデンサの容量選定</td><td>Q = P(tanφ₁−tanφ₂) で必要 kvar を算出</td><td>改善後の目標力率（例：0.95）から逆算。過剰は進み力率で電圧上昇リスク</td></tr>
+        <tr><td>電解コンデンサの劣化判断</td><td>容量低下・誘電正接 tanδ の増加</td><td>定期絶縁診断で tanδ ≥ 0.01 を目安に交換検討</td></tr>
+        <tr><td>インバータ出力のノイズフィルタ</td><td>高周波での低インピーダンス特性（Xc = 1/ωC）</td><td>スイッチング周波数の高調波を吸収するため電源ライン直近に配置</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>静電気 — クーロン力・電界・電位の基礎</li>
@@ -4540,6 +4555,21 @@ const TransistorPage = ({ onNav }) => (
       ]}
     />
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      プラントのインバータ・サーボドライバ出力段にはIGBT（バイポーラとMOSFETの複合デバイス）が搭載されている。故障モード（短絡固着/開放固着）の違いを理解することが現地での緊急停止判断に直結する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>インバータ出力段の故障診断</td><td>IGBTのON固着/OFF固着 → 電流・電圧波形の非対称</td><td>短絡固着は即停止。開放固着は欠相運転→モータ過熱。波形で見分ける</td></tr>
+        <tr><td>計装センサアンプの出力オフセット</td><td>バイアス電流のドリフト（温度依存）</td><td>出力が基準値からズレたら定期校正。高温環境では低ドリフト品に変更</td></tr>
+        <tr><td>サーマルリレー設定値の確認</td><td>FETの RDS(on) によるジュール熱 P = I²×RDS(on)</td><td>周囲温度上昇時はRDS(on)増大→発熱増→設定値を厳しくする</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>半導体 — PN接合・キャリア・電子</li>
@@ -4698,6 +4728,21 @@ const CoulombFieldPage = ({ onNav }) => (
       同符号の 2 点電荷 Q₁、Q₂（Q₁＜Q₂）間の釣り合い位置は x = √Q₁/(√Q₁+√Q₂)×d。Q₁ の方が小さいので Q₁ に近い側（Q₂ から遠い側）に存在する。
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      接地設計と静電気防止の根拠は電界・電位理論。「等電位面には電界がない＝アースで電位差ゼロにする」は実務の鉄則で、感電防止・静電気災害防止・ノイズ対策に直結する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>接地工事（A/B/C/D種）の設計</td><td>大地を等電位基準として電位差ゼロを確保</td><td>接地抵抗測定（落下電位法）で規定値以下を確認。A種は10Ω以下</td></tr>
+        <tr><td>粉体・溶剤の静電気災害防止</td><td>帯電体の電位 V = Q/C で電圧上昇→放電</td><td>導電性床材+アースで電荷を逃がす。配管フランジはボンディング線で等電位化</td></tr>
+        <tr><td>高圧ケーブルの絶縁設計</td><td>電界集中（不均一電界）で部分放電が発生</td><td>半導電層とシールドで電界を均一化。電界最大点はケーブル端部→終端処理が重要</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>コンデンサ（1.2）：平行平板コンデンサの電界 E=V/d はここの延長</li>
@@ -4849,6 +4894,21 @@ const ElectromagneticForcePage = ({ onNav }) => (
       円形コイル中心：H = NI/(2r)。直線電流：H = I/(2πr)。円形は π が分母にない分、同じ半径なら直線より磁界が π 倍強い。
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      モーターの回転方向変更（相順逆転）・継電器動作・変圧器振動——全部フレミング則とレンツの法則が根拠。「なぜ逆転するか」を理解しておくと誤配線復旧が素早くできる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>モーター逆転（相順入替）</td><td>フレミング左手則：F = BIl、電流方向反転で力の方向が逆</td><td>3相のうち任意の2相を入れ替えると逆回転。接続前に相順を確認</td></tr>
+        <tr><td>誘導型過電流継電器（OC）の動作</td><td>渦電流によるアルミ円板への電磁トルク（レンツの法則）</td><td>電流大きいほど円板が速く回転→動作時間が短い（反限時特性）</td></tr>
+        <tr><td>変圧器の騒音・振動（ハム音）</td><td>磁歪とコイル間電磁力（100/120Hz 成分）</td><td>鉄心ケイ素鋼板の積層締付け確認。過励磁（高電圧）でハム音増大→タップ調整</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>磁気回路（1.4）：アンペアの周回路則 H·l = NI の発展</li>
@@ -4982,6 +5042,21 @@ const MagneticCircuitPage = ({ onNav }) => (
     <Callout variant="warn" title="磁力線は必ず閉じた曲線">
       電気力線は正電荷で発生して負電荷で終わる（閉じていない）。磁力線は N 極から出て S 極に入り、磁石内部でも S→N 方向につながり全体として閉じている。
     </Callout>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      変圧器・リレー・電磁接触器の内部は全て磁気回路。「空隙が小さいほど動作確実・効率良い」は NI = φ×Rm から直接導ける設計原則で、現場での機器劣化判断の根拠になる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>変圧器鉄心の励磁電流増大</td><td>空隙（バリ・異物）で磁気抵抗 Rm 増大 → 同じ磁束に大きな NI が必要</td><td>励磁電流の増加は鉄心劣化のサイン。定期点検でコア締付けトルクを確認</td></tr>
+        <tr><td>電磁リレー・接触器の動作不良</td><td>接触面の錆・摩耗で空隙増大 → 吸引力低下</td><td>動作電圧が定格の85%以下で確実動作できるかを確認。摺動面清掃で改善</td></tr>
+        <tr><td>CT（変流器）の残留磁化補正</td><td>鉄心の磁気ヒステリシス→残留磁気でゼロ点ズレ</td><td>大電流遮断後は消磁器で残留磁気をゼロにしてから電流測定・校正を実施</td></tr>
+      </tbody>
+    </table>
 
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
@@ -5455,6 +5530,21 @@ const RlcResonancePage = ({ onNav }) => (
       共振は L と C が両方ないと起きない。RC 回路はコンデンサのインピーダンスが周波数で変わるだけ。
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      力率改善コンデンサと系統インピーダンスの並列共振（高調波増幅）はプラント電気の最頻出トラブル。直列リアクトルで共振点を系統周波数より下にずらすことが対策の基本。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>高圧コンデンサバンクの直列リアクトル選定</td><td>並列共振周波数 fr = 1/(2π√LC) を系統周波数以下に設定</td><td>6%リアクトル（第4高調波以上を抑制）または13%（第3高調波以上）を系統高調波状況で選択</td></tr>
+        <tr><td>インバータ出力フィルタ設計</td><td>LCローパスフィルタで高調波を除去</td><td>共振周波数をスイッチング周波数の1/10以下に設定して高調波ノイズを吸収</td></tr>
+        <tr><td>配電線への高調波電流流入</td><td>線路インダクタンスと力率改善コンデンサの並列共振</td><td>共振次数 = √(短絡容量/コンデンサ容量) を確認。高調波源機器の近傍にコンデンサを設置しない</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>交流の基礎（2.2）：リアクタンス XL・XC の定義</li>
@@ -5606,6 +5696,21 @@ const InductancePage = ({ onNav }) => (
       L = μN²A/l なので L は N² に比例。巻数を2倍にするとLは4倍。「巻数とLの関係を求めよ」は頻出。
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      リアクトルは「電流の緩衝材」。インバータのノイズフィルタ・突入電流抑制・共振防止——プラントのほぼ全電気設備に関係する。「電流は急に変えられない」が全ての根拠。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>インバータ入出力の交流リアクトル（ACL）</td><td>e = L·di/dt で電流変化率を抑制しリップルを低減</td><td>電流リップル率 = ΔI/I を規格内に収めるため必要インダクタンスを逆算して選定</td></tr>
+        <tr><td>モーター スターデルタ始動</td><td>スター時はインピーダンス3倍 → 突入電流を1/3に抑制</td><td>始動電流×始動回数が熱設計の支配因子。切替タイミングは速度センサや電流監視で判断</td></tr>
+        <tr><td>ZCT（零相変流器）による地絡検出</td><td>3相の磁束が打ち消し合う → 地絡電流の零相成分のみ検出</td><td>平衡時は出力ゼロ。地絡で不平衡 → 出力発生 → 地絡継電器動作。感度設定は漏れ電流レベルで決定</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
       <li>電磁力（1.3）：ファラデーの法則 e = -Ndφ/dt が基礎</li>
@@ -5750,6 +5855,21 @@ const OpAmpPage = ({ onNav }) => (
     <Callout variant="tip" title="非反転増幅は入力が+端子→ゲインに1が付く">
       区別のコツ：「＋入力に信号が入る → 非反転 → ゲインに 1 が付く（Av = 1+Rf/Ri）」と接続で覚える。
     </Callout>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      プラント計装の信号処理（4-20mA受信・センサアンプ・PID演算）はオペアンプが基本素子。仮想接地の概念を使えばどんな回路も3ステップで計算できる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>4-20mA信号の差動受信回路</td><td>差動増幅でコモンモードノイズを除去（CMRR）</td><td>長距離配線のノイズ対策。差動入力でループ電流をゼロに保ちグランドループを断つ</td></tr>
+        <tr><td>熱電対アンプ（mV→0-5V変換）</td><td>非反転増幅 Av = 1 + Rf/R1 でレンジ変換</td><td>Av 設定で A/D 変換レンジに合わせる。オフセット補正にはオペアンプの加算回路を使用</td></tr>
+        <tr><td>アナログPIDコントローラの積分動作</td><td>オペアンプ積分回路：出力 = -(1/RC)∫入力dt</td><td>積分時定数 Ti = Rf×Cf で調整。リセットワインドアップ防止のためクランプ回路を追加</td></tr>
+      </tbody>
+    </table>
 
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
@@ -5896,6 +6016,21 @@ const MeasurementPage = ({ onNav }) => (
     <Callout variant="tip" title="高抵抗負荷には電流計前置き、低抵抗負荷には電圧計前置き">
       電圧計・電流計の接続誤差：高抵抗負荷 → 電流計前置き（V が A+負荷に並列）。低抵抗負荷 → 電圧計前置き（A が直列）。
     </Callout>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      「非正弦波（インバータ出力）には真の実効値（true-RMS）計器を使う」が現場の鉄則。可動コイル型や平均値検波型クランプでは大きな誤差が出る。計器種別の選択ミスは保全判断を誤らせる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>インバータ駆動モーターの電流測定</td><td>非正弦波 → 平均値検波型クランプでは誤差 +10〜30%</td><td>true-RMS対応クランプを使用。高調波含有率（THD）が高いほど誤差が拡大する</td></tr>
+        <tr><td>絶縁抵抗測定（メガー試験）</td><td>直流高電圧印加時の漏れ電流 I = V/R で絶縁抵抗算出</td><td>使用電圧に応じてメガー電圧を選定（低圧回路:500V、高圧回路:1000V）。吸収比（1分/15秒）で絶縁劣化を判定</td></tr>
+        <tr><td>三相電力の2電力計法</td><td>2台の単相電力計の代数和 = 三相有効電力</td><td>力率1未満では一方がマイナス表示になることがある。両計器の読みを符号付きで足す</td></tr>
+      </tbody>
+    </table>
 
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
     <ul>
