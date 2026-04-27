@@ -4681,7 +4681,7 @@ const DcCircuitPage = ({ onNav }) => (
   <>
     <MetaStrip difficulty="★★★" importance="S" frequency="高" />
     <LearningMap
-      prereqs={[{ id: "magnetic-circuit", title: "1.4 磁気回路" }]}
+      prereqs={[]}
       current="2.1 直流回路"
       nexts={[{ id: "ac-basics", title: "2.2 交流の基礎" }]}
       onNav={onNav}
@@ -4711,6 +4711,12 @@ const DcCircuitPage = ({ onNav }) => (
     <p>
       テブナンの定理：どんな複雑な線形回路も、ある 2 端子から外を見ると、必ず 1 つの電圧源（Vth）と 1 つの抵抗（Rth）の直列接続に見える。「Vth = 何V押しているか / Rth = どれだけ抵抗しているか」。
     </p>
+    <ol>
+      <li><strong>Step 1 — 端子 a-b を開放する</strong>：求めたい 2 端子 a-b から負荷を外し（開放状態）、端子間の電圧を求める。これが Vth。</li>
+      <li><strong>Step 2 — 電源をゼロにして Rth を求める</strong>：回路内の電圧源を短絡・電流源を開放したうえで、端子 a-b から見た合成抵抗を求める。これが Rth。</li>
+      <li><strong>Step 3 — 等価回路に負荷を接続する</strong>：Vth と Rth の直列回路に負荷 R を繋ぎ、I = Vth / (Rth + R) で電流を計算する。</li>
+    </ol>
+    <p>※「線形回路」とは抵抗・コンデンサ・コイルのみで構成された回路のこと。ダイオード等の非線形素子が入ると使えない。</p>
 
     <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
     <FormulaTable
@@ -4788,6 +4794,29 @@ const DcCircuitPage = ({ onNav }) => (
     <details>
       <summary>解答</summary>
       <p>V端子 = E - Ir = 12 - 4×1 = <strong>8V</strong></p>
+    </details>
+    <p><strong>問:</strong> 20Ω と 30Ω の抵抗が直列で接続された回路に 50V の電源がある。この回路から見た両抵抗の接続点におけるテブナン等価を求めよ（Vth、Rth）。</p>
+    <details>
+      <summary>解答</summary>
+      <p>① 端子開放時（Vth を求める）：20Ω と 30Ω に 50V が印加されるので、30Ω に掛かる電圧 Vth = 50 × 30/(20+30) = 50 × 30/50 = <strong>30V</strong></p>
+      <p>② 電源短絡時（Rth を求める）：20Ω と 30Ω が並列になるので、Rth = (20×30)/(20+30) = 600/50 = <strong>12Ω</strong></p>
+      <p>テブナンでは、端子開放で電圧を計算し、電源をゼロにして端子から見た合成抵抗を求める。この 2ステップで回路全体が Vth と Rth の直列に置き換わる。</p>
+    </details>
+    <p><strong>問:</strong> 前問のテブナン等価回路（Vth = 30V、Rth = 12Ω）に対して、外部負荷抵抗 RL を接続したとき、RL で消費される電力が最大になる RL の値と Pmax を求めよ。</p>
+    <details>
+      <summary>解答</summary>
+      <p>最大電力定理：RL = Rth = <strong>12Ω</strong> のとき電力最大。</p>
+      <p>このとき全電流 I = Vth/(Rth + RL) = 30/(12+12) = 30/24 = 1.25A</p>
+      <p>Pmax = I² × RL = (1.25)² × 12 = 1.5625 × 12 = <strong>18.75W</strong>（または Pmax = Vth²/(4Rth) = 900/48 = 18.75W）</p>
+      <p>外部負荷が内部抵抗と等しいとき、負荷に最大の電力が供給される。このとき内部と外部で電力を半々に分け合う（内部損失 50%）。</p>
+    </details>
+    <p><strong>問:</strong> 4Ω と 6Ω の抵抗が並列に接続され、合計 10A の電流が流れている。各支流の電流を分流の法則を使って求めよ。</p>
+    <details>
+      <summary>解答</summary>
+      <p>並列回路の分流は逆比：I₁/I₂ = R₂/R₁</p>
+      <p>4Ω 側：I₁ = 10 × 6/(4+6) = 10 × 6/10 = <strong>6A</strong></p>
+      <p>6Ω 側：I₂ = 10 × 4/(4+6) = 10 × 4/10 = <strong>4A</strong></p>
+      <p>検算：6 + 4 = 10A ✓。並列では抵抗が小さいほど電流が多く流れる（逆比）。大きい抵抗ほど電流が少ない。</p>
     </details>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
