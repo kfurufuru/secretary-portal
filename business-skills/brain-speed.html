@@ -269,6 +269,26 @@ h1 em{font-style:italic;color:var(--accent);font-weight:400}
 .quote q{font-family:var(--serif);font-size:21px;line-height:1.5;color:var(--ink);
   font-style:italic;font-weight:300;quotes:"\201C" "\201D";display:block;max-width:56ch}
 .quote .cite{margin-top:12px;font-family:var(--mono);font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
+
+/* ─── Chain Row（作用機序アコーディオン）─── */
+.main-row{cursor:pointer}
+.main-row:hover td{background:oklch(from var(--accent) l c h/.04);transition:background .14s}
+.expand-icon{display:inline-block;font-size:10px;color:var(--ink4);transition:transform .22s;margin-right:6px;user-select:none}
+.main-row.open .expand-icon{transform:rotate(90deg)}
+.chain-row td{padding:0!important;border:none!important}
+.chain-body{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.2,.8,.2,1),padding .38s;
+  background:oklch(from var(--accent) l c h/.04);border-left:2.5px solid oklch(from var(--accent) l c h/.28);margin:0 4px}
+.chain-row.open .chain-body{max-height:800px;padding:16px 18px 18px}
+.chain-steps{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
+.chain-step{background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;min-width:80px}
+.cs-term{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:.02em}
+.cs-note{font-size:12px;color:var(--ink);line-height:1.4;margin-top:3px}
+.chain-step.chain-result{background:oklch(from var(--accent) l c h/.1);border-color:oklch(from var(--accent) l c h/.35)}
+.chain-step.chain-result .cs-note{color:var(--accent);font-weight:600}
+.chain-step.chain-warn{background:oklch(from var(--amber) l c h/.08);border-color:oklch(from var(--amber) l c h/.35)}
+.chain-step.chain-warn .cs-term,.chain-step.chain-warn .cs-note{color:var(--amber)}
+.chain-arr{color:oklch(from var(--accent) l c h/.55);font-weight:700;font-size:16px;align-self:center;flex-shrink:0}
+.chain-tip{margin-top:12px;font-size:11.5px;color:var(--ink3);padding:8px 12px;background:var(--surface2);border-radius:6px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -520,16 +540,167 @@ h1 em{font-style:italic;color:var(--accent);font-weight:400}
         <tr><th>介入</th><th>ランク</th><th>効果量 d</th><th>研究数</th><th>即効性</th><th>持続性</th><th>主要Citation</th></tr>
       </thead>
       <tbody>
-        <tr><td>有酸素運動（20〜30分 / 週3以上）</td><td><span class="rank-badge rank-s">S</span></td><td style="font-family:var(--mono)">0.97</td><td>29 RCT</td><td>当日〜翌日</td><td>継続依存</td><td style="font-size:11px;font-family:var(--mono)">Chang et al. 2012, Neurosci Biobehav Rev</td></tr>
-        <tr><td>睡眠最適化（7〜9時間・固定サイクル）</td><td><span class="rank-badge rank-s">S</span></td><td style="font-family:var(--mono)">0.87–1.20</td><td>47 研究</td><td>1夜で翌日</td><td>維持で定着</td><td style="font-size:11px;font-family:var(--mono)">Killgore 2010, Prog Brain Res</td></tr>
-        <tr><td>作業記憶訓練（デュアルn-back, 20日以上）</td><td><span class="rank-badge rank-s">S</span></td><td style="font-family:var(--mono)">0.44–0.54</td><td>23 RCT</td><td>2〜4週〜</td><td>高い（白質変化）</td><td style="font-size:11px;font-family:var(--mono)">Jaeggi et al. 2008, PNAS; Melby-Lervåg 2013, Psychol Bull</td></tr>
-        <tr><td>マインドフルネス瞑想（MBSR 8週）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.60</td><td>18 RCT</td><td>4〜8週〜</td><td>非常に高い（皮質肥厚）</td><td style="font-size:11px;font-family:var(--mono)">Chiesa & Serretti 2010, Psychosom Med</td></tr>
-        <tr><td>カフェイン（最適タイミング 3〜6 mg/kg）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.58</td><td>41 RCT</td><td>30〜60分後</td><td>4〜6時間（急性）</td><td style="font-size:11px;font-family:var(--mono)">McLellan et al. 2016, Neurosci Biobehav Rev</td></tr>
-        <tr><td>スペーシング学習（分散練習）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.46–0.71</td><td>254 研究</td><td>数週〜</td><td>非常に高い（L-LTP誘導）</td><td style="font-size:11px;font-family:var(--mono)">Cepeda et al. 2006, Psychol Bull</td></tr>
-        <tr><td>冷水シャワー（16〜20℃ / 2〜3分）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.40〜</td><td>小規模複数</td><td>直後30〜90分</td><td>急性（NE +200〜300%）</td><td style="font-size:11px;font-family:var(--mono)">Leppäluoto et al. 2008, Eur J Appl Physiol</td></tr>
-        <tr><td>オメガ3（DHA/EPA 2g/日）</td><td><span class="rank-badge rank-b">B</span></td><td style="font-family:var(--mono)">0.25–0.40</td><td>12 RCT</td><td>4〜12週〜</td><td>摂取継続で維持</td><td style="font-size:11px;font-family:var(--mono)">Stonehouse et al. 2013, Am J Clin Nutr</td></tr>
-        <tr><td>新スキル学習（楽器・第二言語）</td><td><span class="rank-badge rank-b">B</span></td><td style="font-family:var(--mono)">0.35–0.56</td><td>22 研究（DTI含）</td><td>数ヶ月〜</td><td>非常に高い（ミエリン増厚）</td><td style="font-size:11px;font-family:var(--mono)">Bengtsson et al. 2005, Nat Neurosci</td></tr>
-        <tr><td>断続的絶食（16:8 プロトコル）</td><td><span class="rank-badge rank-b">B</span></td><td style="font-family:var(--mono)">0.28</td><td>7 RCT</td><td>2〜6週〜</td><td>中程度</td><td style="font-size:11px;font-family:var(--mono)">Mattson et al. 2018, Nat Rev Neurosci</td></tr>
+        <!-- 1: 有酸素運動 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>有酸素運動（20〜30分 / 週3以上）</td><td><span class="rank-badge rank-s">S</span></td><td style="font-family:var(--mono)">0.97</td><td>29 RCT</td><td>当日〜翌日</td><td>継続依存</td><td style="font-size:11px;font-family:var(--mono)">Chang et al. 2012, Neurosci Biobehav Rev</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">有酸素運動</div><div class="cs-note">週3×20-30分</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">AMPK活性化</div><div class="cs-note">体の"燃料不足センサー"が起動</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">PGC-1α → FNDC5 → irisin分泌</div><div class="cs-note">筋肉→血液→脳へ届く"指令ホルモン"</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">BDNF転写↑</div><div class="cs-note">"脳の肥料"が増産される</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">海馬：神経新生 + VEGF→血管新生</div><div class="cs-note">脳に"栄養の道"が増える</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">海馬体積↑</div><div class="cs-note">記憶・処理速度↑</div></div>
+        </div><div class="chain-tip">💡 やめると2-4週でBDNF低下。週3回が維持の最低ライン。</div></div></td></tr>
+
+        <!-- 2: 睡眠最適化 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>睡眠最適化（7〜9時間・固定サイクル）</td><td><span class="rank-badge rank-s">S</span></td><td style="font-family:var(--mono)">0.87–1.20</td><td>47 研究</td><td>1夜で翌日</td><td>維持で定着</td><td style="font-size:11px;font-family:var(--mono)">Killgore 2010, Prog Brain Res</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">日中の活動</div><div class="cs-note">ニューロンが働くたびに副産物が出る</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">アデノシン蓄積</div><div class="cs-note">眠気の正体。脳に"疲労ゲージ"が溜まる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">入眠（N3深睡眠）→ AQP4チャネル開口</div><div class="cs-note">"脳の排水路"が開く</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">グリンパティック洗浄</div><div class="cs-note">老廃物・アデノシンを脳外へ排出</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">Sharp Wave Ripple（SWR）</div><div class="cs-note">海馬が1日の記憶を高速再生→新皮質へ転送</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">REM睡眠</div><div class="cs-note">不要シナプスを刈り込み・必要な記憶を強化</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">翌朝：覚醒圧ゼロ・可塑性リセット</div><div class="cs-note">最高の脳状態で1日をスタート</div></div>
+        </div><div class="chain-tip">⚠️ 6h睡眠×2週間 = 完全徹夜2日分の認知低下（Walker 2017）。睡眠不足は自覚しにくい。</div></div></td></tr>
+
+        <!-- 3: 作業記憶訓練 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>作業記憶訓練（デュアルn-back, 20日以上）</td><td><span class="rank-badge rank-s">S</span></td><td style="font-family:var(--mono)">0.44–0.54</td><td>23 RCT</td><td>2〜4週〜</td><td>高い（白質変化）</td><td style="font-size:11px;font-family:var(--mono)">Jaeggi et al. 2008, PNAS; Melby-Lervåg 2013, Psychol Bull</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">デュアルn-back訓練</div><div class="cs-note">複数の情報を同時に保持・更新する練習</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">dlPFC の γ波（40Hz）同期強化</div><div class="cs-note">集中時に脳が"チームプレー"する速度↑</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">D1受容体ドーパミン調節最適化</div><div class="cs-note">思考の"ノイズフィルター"が精巧になる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">作業記憶容量↑</div><div class="cs-note">一度に処理できる情報量が増える</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">流動性知能・問題解決速度↑</div><div class="cs-note">初めて見る問題にも対応できる脳へ</div></div>
+        </div><div class="chain-tip">💡 20日以上継続で効果出現。やめると徐々に元に戻る。1日15〜25分が目安。</div></div></td></tr>
+
+        <!-- 4: マインドフルネス瞑想 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>マインドフルネス瞑想（MBSR 8週）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.60</td><td>18 RCT</td><td>4〜8週〜</td><td>非常に高い（皮質肥厚）</td><td style="font-size:11px;font-family:var(--mono)">Chiesa & Serretti 2010, Psychosom Med</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">呼吸への注意訓練（MBSR 8週）</div><div class="cs-note">「今ここ」に意識を向け続ける練習</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">DMN活動↓</div><div class="cs-note">"ぼんやり状態"の脳のむだ遣いが減る</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">ACC（前帯状皮質）強化</div><div class="cs-note">注意の"制御タワー"が強くなる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">コルチゾール慢性分泌↓</div><div class="cs-note">"ストレスホルモン"の過剰放出が収まる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">海馬萎縮防止 + 扁桃体反応性↓</div><div class="cs-note">感情に振り回されにくくなる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">集中持続力↑・衝動的判断↓</div><div class="cs-note">静かに考えられる脳になる</div></div>
+        </div><div class="chain-tip">💡 1日10分でも効果あり。8週継続で前頭前野の皮質が物理的に厚くなる（MRIで確認済み）。</div></div></td></tr>
+
+        <!-- 5: カフェイン -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>カフェイン（最適タイミング 3〜6 mg/kg）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.58</td><td>41 RCT</td><td>30〜60分後</td><td>4〜6時間（急性）</td><td style="font-size:11px;font-family:var(--mono)">McLellan et al. 2016, Neurosci Biobehav Rev</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">カフェイン摂取（200-400mg）</div><div class="cs-note">コーヒー約2杯分</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">アデノシン受容体（A1/A2A）を占有</div><div class="cs-note">"眠気の受信機"を物理的にブロック</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">ドーパミン・NE の抑制解除</div><div class="cs-note">"覚醒スイッチ"が解放される</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">集中力・処理速度↑（半減期5-7h）</div><div class="cs-note">ゆっくりカフェインが消えていく</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">ブロック解除 → 蓄積アデノシンが一気に結合</div><div class="cs-note">眠気の"借金"が返ってくる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">クラッシュ</div><div class="cs-note">急激な眠気・集中力低下</div></div>
+        </div><div class="chain-tip">⚠️ 夕方以降の摂取→就寝時もブロック継続→N3（深睡眠）減少→翌日の効率↓。悪循環になりやすい。14時以降は控える。</div></div></td></tr>
+
+        <!-- 6: スペーシング学習 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>スペーシング学習（分散練習）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.46–0.71</td><td>254 研究</td><td>数週〜</td><td>非常に高い（L-LTP誘導）</td><td style="font-size:11px;font-family:var(--mono)">Cepeda et al. 2006, Psychol Bull</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">初回学習</div><div class="cs-note">情報が海馬に一時保存される</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">エビングハウス忘却曲線に沿って薄れる</div><div class="cs-note">「忘れかけ」がシナプス強化のチャンス</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">適間隔での想起努力</div><div class="cs-note">思い出そうとする努力がシナプスを強化する</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">E-LTP（早期長期増強）</div><div class="cs-note">シナプスがその場で強くなる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">L-LTP（後期長期増強）</div><div class="cs-note">CREB→タンパク合成→構造変化で永続化</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">長期記憶として定着</div><div class="cs-note">忘れにくい記憶になる</div></div>
+        </div><div class="chain-tip">💡 詰め込み vs 分散：分散の効果量は1.5〜2倍。「ちょうど忘れかけた時」が最適タイミング。</div></div></td></tr>
+
+        <!-- 7: 冷水シャワー -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>冷水シャワー（16〜20℃ / 2〜3分）</td><td><span class="rank-badge rank-a">A</span></td><td style="font-family:var(--mono)">0.40〜</td><td>小規模複数</td><td>直後30〜90分</td><td>急性（NE +200〜300%）</td><td style="font-size:11px;font-family:var(--mono)">Leppäluoto et al. 2008, Eur J Appl Physiol</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">16〜20℃の冷水を2〜3分浴びる</div><div class="cs-note">「冷たさ」が強烈な外部刺激になる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">皮膚の寒冷受容体が刺激される</div><div class="cs-note">体表から脳幹へ緊急信号が届く</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">交感神経が一気に活性化</div><div class="cs-note">"戦うか逃げるか"モードが起動</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">青班核（locus coeruleus）からNE大量放出</div><div class="cs-note">"脳の目覚まし時計"が強制的に鳴る</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">dlPFC・注意回路が覚醒</div><div class="cs-note">集中の司令塔が強制起動する</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">覚醒・集中・気分↑</div><div class="cs-note">数時間持続（NE +200〜300%）</div></div>
+        </div><div class="chain-tip">💡 ぬるくなると効果半減。最初の30秒が最重要。慣れたら水温を下げていく。</div></div></td></tr>
+
+        <!-- 8: オメガ3 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>オメガ3（DHA/EPA 2g/日）</td><td><span class="rank-badge rank-b">B</span></td><td style="font-family:var(--mono)">0.25–0.40</td><td>12 RCT</td><td>4〜12週〜</td><td>摂取継続で維持</td><td style="font-size:11px;font-family:var(--mono)">Stonehouse et al. 2013, Am J Clin Nutr</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">DHA/EPA摂取（2g/日）</div><div class="cs-note">サーモン・イワシなど脂の多い魚に豊富</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">MFSD2A輸送体が血液脳関門を越える</div><div class="cs-note">"脳専用の関税ゲート"を通過</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">神経細胞膜のリン脂質層にDHAが組み込まれる</div><div class="cs-note">"細胞の膜"が柔らかくなる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">膜流動性↑ → シナプス小胞融合効率↑</div><div class="cs-note">神経信号の受け渡しがスムーズになる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">BDNF発現↑</div><div class="cs-note">"脳の肥料"も同時に増える</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">神経伝達速度↑・シナプス可塑性↑</div><div class="cs-note">脳の配線が質的に改善される</div></div>
+        </div><div class="chain-tip">💡 EPA＞DHAの比率が抗炎症に有効。サプリより魚を優先。4週以上継続で効果が出る。</div></div></td></tr>
+
+        <!-- 9: 新スキル学習 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>新スキル学習（楽器・第二言語）</td><td><span class="rank-badge rank-b">B</span></td><td style="font-family:var(--mono)">0.35–0.56</td><td>22 研究（DTI含）</td><td>数ヶ月〜</td><td>非常に高い（ミエリン増厚）</td><td style="font-size:11px;font-family:var(--mono)">Bengtsson et al. 2005, Nat Neurosci</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">未習得スキルの練習</div><div class="cs-note">脳が「使ったことのない道」を開拓し始める</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">広域神経回路が新規動員</div><div class="cs-note">小脳・基底核・皮質が協調して動き出す</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">オリゴデンドロサイト活性化</div><div class="cs-note">神経線維に"絶縁被覆"を巻く細胞が働く</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">ミエリン鞘形成↑</div><div class="cs-note">"電線の被覆"が厚くなり信号速度↑</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">転移学習能力↑</div><div class="cs-note">他の分野にも学習効率が波及する</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">伝達速度↑・認知的柔軟性↑</div><div class="cs-note">脳全体のアップグレード</div></div>
+        </div><div class="chain-tip">💡 「得意なこと」では効果が出にくい。「ちょっと難しい」と感じる新しいことが重要。</div></div></td></tr>
+
+        <!-- 10: 断続的絶食 -->
+        <tr class="main-row"><td><span class="expand-icon">▸</span>断続的絶食（16:8 プロトコル）</td><td><span class="rank-badge rank-b">B</span></td><td style="font-family:var(--mono)">0.28</td><td>7 RCT</td><td>2〜6週〜</td><td>中程度</td><td style="font-size:11px;font-family:var(--mono)">Mattson et al. 2018, Nat Rev Neurosci</td></tr>
+        <tr class="chain-row"><td colspan="7"><div class="chain-body"><div class="chain-steps">
+          <div class="chain-step"><div class="cs-term">食事間隔16時間（16:8プロトコル）</div><div class="cs-note">例：夜8時〜翌12時は何も食べない</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">インスリン低下・血糖が枯渇</div><div class="cs-note">体が「食料がない」状態を感知する</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">AMPK活性化</div><div class="cs-note">"燃料不足センサー"が起動（運動と同じスイッチ）</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">オートファジー誘導</div><div class="cs-note">"細胞の自浄機能"が壊れたタンパクを除去</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">ケトン体産生（β-ヒドロキシ酪酸）</div><div class="cs-note">糖より効率的な"脳の代替燃料"が作られる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step"><div class="cs-term">BDNF↑ + 神経炎症↓</div><div class="cs-note">脳の肥料が増え、炎症も抑えられる</div></div>
+          <div class="chain-arr">→</div>
+          <div class="chain-step chain-result"><div class="cs-term">認知機能・処理速度↑</div><div class="cs-note">特に空腹時の集中力が向上</div></div>
+        </div><div class="chain-tip">💡 個人差が大きい。まず12hから始めて慣らすと続けやすい。</div></div></td></tr>
       </tbody>
     </table>
   </div>
@@ -979,6 +1150,19 @@ h1 em{font-style:italic;color:var(--accent);font-weight:400}
     saveState();updateGauge();
   });
 })();
+
+// Chain row expand（作用機序アコーディオン）
+document.querySelectorAll('.main-row').forEach(function(row){
+  row.addEventListener('click',function(){
+    var chain=this.nextElementSibling;
+    var isOpen=chain.classList.contains('open');
+    document.querySelectorAll('.chain-row.open').forEach(function(c){
+      c.classList.remove('open');
+      c.previousElementSibling.classList.remove('open');
+    });
+    if(!isOpen){chain.classList.add('open');this.classList.add('open');}
+  });
+});
 </script>
 </body>
 </html>
