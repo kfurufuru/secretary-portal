@@ -278,27 +278,27 @@ h1 em{font-style:italic;color:var(--accent);font-weight:400}
 .chain-row td{padding:0!important;border:none!important}
 .chain-body{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.2,.8,.2,1),padding .38s;
   background:oklch(from var(--accent) l c h/.04);border-left:2.5px solid oklch(from var(--accent) l c h/.28);margin:0 4px}
-.chain-row.open .chain-body{max-height:800px;padding:16px 18px 18px;overflow:visible}
+.chain-row.open .chain-body{max-height:800px;padding:16px 18px 18px}
 .chain-steps{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
 .chain-step{position:relative;background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;min-width:80px}
-.cs-term{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:.02em;cursor:help;text-decoration:underline dotted oklch(from var(--ink3) l c h/.4);text-underline-offset:3px}
+.cs-term{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:.02em;cursor:help;text-decoration:underline dotted oklch(from var(--ink3) l c h/.5);text-underline-offset:3px}
+.cs-note{display:none}
 
-/* ─── Tooltip（cs-note） ─── */
-.cs-note{
-  position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);
+/* ─── Floating tooltip（JS制御）─── */
+#cs-tooltip{
+  position:fixed;z-index:9999;
   background:var(--ink);color:var(--surface);
-  font-size:11.5px;line-height:1.45;padding:7px 11px;border-radius:7px;
-  white-space:normal;width:max-content;max-width:200px;text-align:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .18s,transform .18s;
-  transform:translateX(-50%) translateY(4px);
-  z-index:200;
+  font-size:12px;line-height:1.5;padding:8px 13px;border-radius:8px;
+  max-width:220px;text-align:center;pointer-events:none;
+  opacity:0;transition:opacity .17s,transform .17s;
+  transform:translateY(4px);
+  box-shadow:0 4px 16px oklch(0 0 0/.2);
 }
-.cs-note::after{
+#cs-tooltip.show{opacity:1;transform:translateY(0)}
+#cs-tooltip::after{
   content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
   border:5px solid transparent;border-top-color:var(--ink);
 }
-.chain-step:hover .cs-note{opacity:1;transform:translateX(-50%) translateY(0)}
 
 .chain-step.chain-result{background:oklch(from var(--accent) l c h/.1);border-color:oklch(from var(--accent) l c h/.35)}
 .chain-step.chain-result .cs-term{color:var(--accent);font-weight:600}
@@ -1180,6 +1180,43 @@ document.querySelectorAll('.main-row').forEach(function(row){
     if(!isOpen){chain.classList.add('open');this.classList.add('open');}
   });
 });
+
+// cs-term floating tooltip（position:fixed でoverflow clippingを回避）
+(function(){
+  var tip=document.createElement('div');
+  tip.id='cs-tooltip';
+  document.body.appendChild(tip);
+
+  function reposition(el){
+    var r=el.getBoundingClientRect();
+    var tw=tip.offsetWidth||160;
+    var th=tip.offsetHeight||36;
+    var left=r.left+r.width/2-tw/2;
+    var top=r.top-th-10;
+    // 画面端に収める
+    left=Math.max(8,Math.min(left,window.innerWidth-tw-8));
+    if(top<8){top=r.bottom+10;}  // 上が切れる場合は下に出す
+    tip.style.left=left+'px';
+    tip.style.top=top+'px';
+  }
+
+  document.querySelectorAll('.cs-term').forEach(function(el){
+    var note=el.nextElementSibling;
+    if(!note||!note.classList.contains('cs-note'))return;
+    el.addEventListener('mouseenter',function(){
+      tip.textContent=note.textContent;
+      tip.classList.remove('show');
+      // 次フレームで位置計算（表示後のサイズが確定してから）
+      requestAnimationFrame(function(){
+        reposition(el);
+        tip.classList.add('show');
+      });
+    });
+    el.addEventListener('mouseleave',function(){
+      tip.classList.remove('show');
+    });
+  });
+})();
 </script>
 </body>
 </html>
