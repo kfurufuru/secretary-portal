@@ -7,7 +7,7 @@ last_reviewed: "2026-04-26"
 understanding_score: 4
 source: "denken-wiki構築セッション（2026-04-22）"
 tags: ["電験3種", "Wiki", "PDF読取", "プロセス自動化", "知識管理"]
-related: ["[[claude-code-knowledge-pipeline]]"]
+related: ["[[claude-code-knowledge-pipeline]]", "knowledge/cc-playbook.md"]
 ---
 
 # 電験Wiki構築スキャフォルド — ページ追加フロー・PDF読取・落とし穴

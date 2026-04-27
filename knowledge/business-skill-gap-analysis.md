@@ -5,7 +5,7 @@ category: AI活用 / マネジメント
 tags: [スキルマップ, ひろゆき, 落合陽一, アンラーニング, メタ認知]
 level: published
 source: Claude Code セッション 00b5f856（2026-04-22, 42ターン）
-related: [[f-company-session-framework]] [[business-skills]]
+related: [[f-company-session-framework]] [[kozo-haaku-ryoku]]
 ---
 
 # ビジネススキルマップ ギャップ分析
