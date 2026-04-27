@@ -2,6 +2,7 @@
 
 ## AI活用
 
+- [[ai-agent-architecture.md]] — AIエージェント アーキテクチャ完全ガイド（5層・Memory4層・エラー処理3パターン・あなたの環境対応表）(review, 2026-04-28)
 - [[agentic-graphrag-architecture.md]] — Agentic GraphRAG アーキテクチャ (review, 2026-04-22)
 - [[ai-gyomu-sentaku.md]] — AI化対象業務の策定フレームワーク（学習性×失敗許容度マトリクス） (published, 2026-04-22)
 - [[cc-playbook.md]] — Claude Code プレイブック — 全17スライドのエッセンス (published, 2026-04-25)
