@@ -5,7 +5,7 @@ category: AI活用 / Fカンパニー運用
 tags: [Fカンパニー, AI社員, セッション, ペルソナ, 高付加価値]
 level: published
 source: Claude Code セッション（2026-04-24）
-related: [[claude-code-knowledge-pipeline]] [[business-skill-gap-analysis]]
+related: [[claude-code-knowledge-pipeline]] [[business-skill-gap-analysis]] [[ai-agent-architecture]]
 ---
 
 # Fカンパニー 高付加価値セッション設計フレームワーク

@@ -2,6 +2,7 @@
 title: Claude Lessons — ミス→ルール蓄積ログ
 level: published
 tags: [claude-code, workflow, self-improvement]
+related: ["knowledge/cc-playbook.md", "knowledge/claude-memory-management.md"]
 ---
 
 # Claude Lessons

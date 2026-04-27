@@ -7,7 +7,7 @@ last_reviewed: "2026-04-27"
 understanding_score: 4
 source: "スクリーンショット（保存版インフォグラフィック）"
 tags: ["Obsidian", "Dataview", "Properties", "フロントマター", "自動化"]
-related: ["knowledge/dataview-query-template.md", "knowledge/obsidian-notion-workflow.md"]
+related: ["knowledge/dataview-query-template.md"]
 ---
 
 # Obsidian Properties を使いこなす5つのテクニック

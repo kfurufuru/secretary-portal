@@ -4,6 +4,7 @@ tags: [ai-tools, chatgpt, claude, gemini, comparison]
 level: published
 created: 2026-04-27
 source: image-capture
+related: ["knowledge/ai-agent-architecture.md", "knowledge/mcp-claude-integration.md"]
 ---
 
 # どれを使うのが正解？ChatGPT・Claude・Gemini の特徴と使い分け
