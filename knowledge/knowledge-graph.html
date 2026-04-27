@@ -3,777 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>知識グラフ — 古舘ナレッジベース</title>
+<title>知識グラフ — secretary</title>
 <script src="https://unpkg.com/vis-network@9.1.9/dist/vis-network.min.js"></script>
 <style>
-:root {
-  --bg: #0f172a; --surface: #1e293b; --surface2: #263348;
-  --border: #334155; --text: #e2e8f0; --sub: #94a3b8; --accent: #38bdf8;
-  --panel-w: 320px;
-  --c-ai: #7c3aed; --c-cc: #0284c7; --c-equip: #ea580c;
-  --c-maint: #dc2626; --c-improve: #059669; --c-biz: #b45309; --c-site: #0891b2;
-  --c-center: #f59e0b; --c-hub: #475569;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Inter','Noto Sans JP',sans-serif;
-       display: flex; flex-direction: column; height: 100vh; overflow: hidden; line-break: strict; overflow-wrap: break-word; }
-
-/* ── Header ── */
-header { padding: 8px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
-         display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-header h1 { font-size: 0.95rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
-.stats { display: flex; gap: 8px; font-size: 0.75rem; color: var(--sub); flex-wrap: wrap; }
-.stats span { background: var(--bg); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; }
-.gen-time { font-size: 0.68rem; color: var(--sub); margin-left: auto; white-space: nowrap; }
-.nav-link { font-size: 0.75rem; color: var(--sub); text-decoration: none;
-            border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; white-space: nowrap; }
-.nav-link:hover { color: var(--accent); border-color: var(--accent); }
-
-/* ── Controls ── */
-.controls { padding: 8px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
-.search-wrap { position: relative; }
-.search-wrap input { background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-  color: var(--text); font-size: 0.8rem; padding: 4px 10px 4px 28px; width: 180px; outline: none; }
-.search-wrap input:focus { border-color: var(--accent); }
-.search-wrap::before { content: '🔍'; position: absolute; left: 7px; top: 50%; transform: translateY(-50%);
-  font-size: 0.7rem; pointer-events: none; }
-.filter-group { display: flex; gap: 4px; flex-wrap: wrap; }
-.filter-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
-  color: var(--sub); font-size: 0.72rem; padding: 3px 8px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
-.filter-btn.active { color: var(--text); }
-.filter-btn[data-cat="all"].active { border-color: var(--accent); color: var(--accent); }
-.filter-btn[data-cat="AI活用"].active { border-color: var(--c-ai); color: var(--c-ai); }
-.filter-btn[data-cat="Claude Code"].active { border-color: var(--c-cc); color: var(--c-cc); }
-.filter-btn[data-cat="設備技術"].active { border-color: var(--c-equip); color: var(--c-equip); }
-.filter-btn[data-cat="業務改善"].active { border-color: var(--c-improve); color: var(--c-improve); }
-.filter-btn[data-cat="ビジネススキル"].active { border-color: var(--c-biz); color: var(--c-biz); }
-.filter-btn[data-status="published"].active { border-color: #10b981; color: #10b981; }
-.filter-btn[data-status="review"].active { border-color: #60a5fa; color: #60a5fa; }
-.filter-btn[data-status="draft"].active { border-color: #c084fc; color: #c084fc; }
-.filter-btn[data-toggle="isolated"].active { border-color: #fb923c; color: #fb923c; }
-.sep { color: var(--border); font-size: 0.8rem; }
-
-/* ── Main layout ── */
-.main { display: flex; flex: 1; overflow: hidden; }
-#graph { flex: 1; min-width: 0; }
-
-/* ── Detail Panel ── */
-#detail-panel { width: var(--panel-w); background: var(--surface); border-left: 1px solid var(--border);
-  overflow-y: auto; padding: 16px; font-size: 0.82rem; display: block; flex-shrink: 0; }
-.dp-close { float: right; background: none; border: none; color: var(--sub); font-size: 1rem;
-  cursor: pointer; line-height: 1; padding: 2px 4px; }
-.dp-close:hover { color: var(--text); }
-.dp-title { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 12px;
-  line-height: 1.4; padding-right: 24px; }
-.dp-row { display: flex; justify-content: space-between; align-items: flex-start;
-  margin-bottom: 8px; gap: 8px; }
-.dp-label { color: var(--sub); font-size: 0.75rem; white-space: nowrap; flex-shrink: 0; }
-.dp-val { color: var(--text); font-size: 0.78rem; text-align: right; }
-.badge { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; }
-.badge-pub { background: #064e3b; color: #6ee7b7; }
-.badge-rev { background: #1e3a5f; color: #93c5fd; }
-.badge-draft { background: #2d1f3d; color: #c4b5fd; }
-.stars { color: #f59e0b; font-size: 0.85rem; letter-spacing: 1px; }
-.dp-section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
-.dp-section-title { color: var(--sub); font-size: 0.72rem; text-transform: uppercase;
-  letter-spacing: 0.06em; margin-bottom: 8px; }
-.dp-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.dp-tag { background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
-  color: var(--sub); font-size: 0.68rem; padding: 1px 6px; }
-.dp-related { display: flex; flex-direction: column; gap: 4px; }
-.dp-related-link { color: var(--accent); font-size: 0.76rem; cursor: pointer; text-decoration: none;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dp-related-link:hover { text-decoration: underline; }
-.dp-open-btn { display: inline-block; margin-top: 12px; background: var(--accent); color: #0f172a;
-  font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 5px; text-decoration: none;
-  width: 100%; text-align: center; }
-.dp-open-btn:hover { opacity: 0.85; }
-.dp-hub-info { color: var(--sub); font-size: 0.78rem; line-height: 1.6; }
-.no-select { color: var(--sub); font-size: 0.8rem; text-align: center; margin-top: 24px; line-height: 1.8; }
-.hint-box { margin-top: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-  padding: 14px 16px; text-align: left; line-height: 2; font-size: 0.77rem; color: var(--sub); }
-.hint-box strong { color: var(--text); }
-
-/* ── Overlay ── */
-#overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.88); backdrop-filter: blur(3px);
-  display: flex; align-items: center; justify-content: center; z-index: 1000; }
-#overlay.hidden { display: none; }
-.overlay-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-  padding: 36px 40px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
-.overlay-box h2 { font-size: 1.15rem; font-weight: 700; color: var(--accent); margin-bottom: 24px; }
-.overlay-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; text-align: left; }
-.overlay-step { background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-  padding: 12px 16px; font-size: 0.85rem; color: var(--text); line-height: 1.6; }
-.overlay-step span { font-size: 1.1rem; margin-right: 8px; }
-#overlay-close { background: var(--accent); color: #0f172a; font-size: 0.85rem; font-weight: 700;
-  padding: 10px 28px; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
-#overlay-close:hover { opacity: 0.85; }
-
-/* ── Help button ── */
-.btn-help { background: none; border: 1px solid var(--border); border-radius: 50%; width: 24px; height: 24px;
-  color: var(--sub); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center;
-  justify-content: center; transition: all 0.15s; flex-shrink: 0; }
-.btn-help:hover { border-color: var(--accent); color: var(--accent); }
-
-/* ── Filter tooltips ── */
-.filter-btn { position: relative; }
-.filter-btn[data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px);
-  left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--border);
-  color: var(--text); font-size: 0.68rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap;
-  pointer-events: none; z-index: 10; }
-
-/* ── Legend ── */
-.legend { padding: 6px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
-  display: flex; gap: 12px; font-size: 0.72rem; color: var(--sub); flex-wrap: wrap; flex-shrink: 0; align-items: center; }
-.leg { display: flex; align-items: center; gap: 4px; }
-.leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.leg-sep { color: var(--border); }
+  :root {
+    --bg: #0f172a; --surface: #1e293b; --border: #334155;
+    --text: #e2e8f0; --sub: #94a3b8; --accent: #38bdf8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter','Noto Sans JP',sans-serif;
+         display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 10px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  header h1 { font-size: 1rem; font-weight: 700; color: var(--accent); }
+  .stats { display: flex; gap: 12px; font-size: 0.78rem; color: var(--sub); }
+  .stats span { background: var(--bg); border: 1px solid var(--border);
+                 padding: 2px 8px; border-radius: 4px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.75rem;
+             padding: 8px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+             flex-shrink: 0; }
+  .legend-item { display: flex; align-items: center; gap: 4px; color: var(--sub); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-sep { color: var(--border); margin: 0 4px; }
+  #graph { flex: 1; width: 100%; min-height: 400px; }
+  #tooltip-info { position: fixed; bottom: 20px; right: 20px;
+                   background: var(--surface); border: 1px solid var(--border);
+                   border-radius: 8px; padding: 12px 16px; font-size: 0.8rem;
+                   max-width: 260px; display: none; line-height: 1.6; }
+  .gen-time { font-size: 0.7rem; color: var(--sub); margin-left: auto; }
+  .level-badge { display: inline-block; padding: 1px 6px; border-radius: 3px;
+                  font-size: 0.72rem; font-weight: 600; }
+  .lv-published { background: #064e3b; color: #6ee7b7; }
+  .lv-review    { background: #1e3a5f; color: #93c5fd; }
+  .lv-draft     { background: #2d1f3d; color: #c4b5fd; }
 </style>
 </head>
 <body>
-
-<div id="overlay">
-  <div class="overlay-box">
-    <h2>🗺 知識グラフの使い方</h2>
-    <div class="overlay-steps">
-      <div class="overlay-step"><span>🖱</span><strong>クリック</strong> → 右パネルで詳細・関連ノードを確認</div>
-      <div class="overlay-step"><span>🔍</span><strong>検索・フィルター</strong> → カテゴリや状態で絞り込み</div>
-      <div class="overlay-step"><span>✋</span><strong>ドラッグ／スクロール</strong> → 自由に探索</div>
-    </div>
-    <button id="overlay-close">わかった、始める</button>
-  </div>
-</div>
-
 <header>
-  <h1>🗺 古舘ナレッジベース — 知識探索マップ</h1>
+  <h1>🗺 知識グラフ</h1>
   <div class="stats">
-    <span>ノード: 16</span><span>エッジ: 33</span>
-    <span style="background:#064e3b;color:#6ee7b7;border:none">★ published 14</span>
-    <span style="background:#1e3a5f;color:#93c5fd;border:none">◆ review 2</span>
-    <span style="background:#2d1f3d;color:#c4b5fd;border:none">● draft 0</span>
+    <span>ノード: 25</span>
+    <span>エッジ: 45</span>
+    <span class="lv-published level-badge">published 20</span>
+    <span class="lv-review level-badge">review 3</span>
+    <span class="lv-draft level-badge">draft 2</span>
   </div>
-  <a class="nav-link" href="../portal-v2.html">← ポータル</a>
-  <a class="nav-link" href="dashboard.html">📊 ダッシュボード</a>
-  <span class="gen-time">2026-04-25 更新</span>
-  <button class="btn-help" id="btn-help" title="操作ガイドを表示">?</button>
+  <span class="gen-time">2026-04-28 07:48</span>
 </header>
-
 <div class="legend">
-  <span class="leg"><span class="leg-dot" style="background:var(--c-center)"></span>中心</span>
-  <span class="leg"><span class="leg-dot" style="background:var(--c-ai)"></span>AI活用</span>
-  <span class="leg"><span class="leg-dot" style="background:var(--c-cc)"></span>Claude Code</span>
-  <span class="leg"><span class="leg-dot" style="background:var(--c-equip)"></span>設備技術</span>
-  <span class="leg"><span class="leg-dot" style="background:var(--c-improve)"></span>業務改善</span>
-  <span class="leg"><span class="leg-dot" style="background:var(--c-biz)"></span>ビジネススキル</span>
-  <span class="leg-sep">|</span>
-  <span class="leg">★ published</span>
-  <span class="leg">◆ review</span>
-  <span class="leg">● draft</span>
-  <span class="leg-sep">|</span>
-  <span class="leg">サイズ = 理解度スコア</span>
+  <span style="color:var(--sub);font-size:0.75rem;margin-right:4px;">カテゴリ:</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#7c3aed"></span>AI活用 (14)</span><span class="legend-item"><span class="legend-dot" style="background:#94a3b8"></span>AI活用 / Fカンパニー運用 (1)</span><span class="legend-item"><span class="legend-dot" style="background:#94a3b8"></span>AI活用 / secretary運用 (1)</span><span class="legend-item"><span class="legend-dot" style="background:#94a3b8"></span>AI活用 / マネジメント (1)</span><span class="legend-item"><span class="legend-dot" style="background:#94a3b8"></span>システム設計 (1)</span><span class="legend-item"><span class="legend-dot" style="background:#94a3b8"></span>未分類 (3)</span><span class="legend-item"><span class="legend-dot" style="background:#dc2626"></span>組織・マネジメント (2)</span><span class="legend-item"><span class="legend-dot" style="background:#059669"></span>電験3種 (2)</span>
+  <span class="legend-sep">|</span>
+  <span class="legend-item">形状: ★公開 ◆レビュー ●下書き</span>
+  <span class="legend-item">サイズ: 理解度スコアに比例</span>
 </div>
-
-<div class="controls">
-  <div class="search-wrap">
-    <input type="text" id="search" placeholder="ノード検索..." autocomplete="off">
-  </div>
-  <span class="sep">カテゴリ:</span>
-  <div class="filter-group" id="cat-filters">
-    <button class="filter-btn active" data-cat="all">すべて</button>
-    <button class="filter-btn" data-cat="AI活用" data-tip="プロンプト設計・ツール選定・自動化">AI活用</button>
-    <button class="filter-btn" data-cat="Claude Code" data-tip="MCP・Skills・Hooks・パイプライン">Claude Code</button>
-    <button class="filter-btn" data-cat="設備技術" data-tip="製造現場AIファースト・IoT・計装">設備技術</button>
-    <button class="filter-btn" data-cat="業務改善" data-tip="フレームワーク・可観測性">業務改善</button>
-    <button class="filter-btn" data-cat="ビジネススキル" data-tip="思考法・マネジメント">ビジネススキル</button>
-  </div>
-  <span class="sep">状態:</span>
-  <div class="filter-group" id="status-filters">
-    <button class="filter-btn active" data-status="published">★ published</button>
-    <button class="filter-btn active" data-status="review">◆ review</button>
-    <button class="filter-btn active" data-status="draft">● draft</button>
-  </div>
-  <button class="filter-btn" data-toggle="isolated" id="btn-isolated">孤立ノードのみ</button>
-</div>
-
-<div class="main">
-  <div id="graph"></div>
-  <div id="detail-panel">
-    <button class="dp-close" id="dp-close" style="display:none">✕</button>
-    <div id="dp-content">
-      <div class="no-select">ノードをクリックして詳細を見る
-        <div class="hint-box">
-          💡 <strong>ヒント</strong><br>
-          • ★ = published（読み返し推奨）<br>
-          • ◆ = review（理解浅め・要フェインマン）<br>
-          • サイズ大 = 理解度スコア高<br>
-          • エッジのラベル = 知識の関係性
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div id="graph"></div>
+<div id="tooltip-info"></div>
 
 <script>
-// ─── DATA ────────────────────────────────────────────────────────────────────
-
-const CAT_COLOR = {
-  center:       '#f59e0b',
-  hub:          '#475569',
-  'AI活用':     '#7c3aed',
-  'Claude Code':'#0284c7',
-  '設備技術':   '#ea580c',
-  '保全業務':   '#dc2626',
-  '業務改善':   '#059669',
-  'ビジネススキル': '#b45309',
-  '学習サイト運営': '#0891b2',
-};
-
-function nodeColor(cat, isHub) {
-  if (isHub) return CAT_COLOR[cat] || CAT_COLOR.hub;
-  return CAT_COLOR[cat] || '#475569';
-}
-
-// Hub nodes
-const HUB_NODES = [
-  { id: '__center__', label: '古舘\nナレッジベース', isCenter: true,
-    shape: 'ellipse', size: 42, font: { size: 13, color: '#0f172a', face: 'Arial, sans-serif' },
-    color: { background: '#f59e0b', border: '#fbbf24', highlight: { background: '#fcd34d', border: '#f59e0b' } },
-    category: 'center', level: null, fixed: false },
-  { id: '__hub_ai__', label: 'AI活用', category: 'AI活用' },
-  { id: '__hub_cc__', label: 'Claude Code', category: 'Claude Code' },
-  { id: '__hub_equip__', label: '設備技術', category: '設備技術' },
-  { id: '__hub_maint__', label: '保全業務', category: '保全業務' },
-  { id: '__hub_improve__', label: '業務改善', category: '業務改善' },
-  { id: '__hub_biz__', label: 'ビジネス\nスキル', category: 'ビジネススキル' },
-  { id: '__hub_site__', label: '学習サイト\n運営', category: '学習サイト運営' },
-];
-
-// Knowledge nodes
-const RAW_NODES = [
-  { id: 'agentic-graphrag-architecture.md',
-    title: 'Agentic GraphRAG アーキテクチャ',
-    category: 'AI活用', level: 'review', score: 3,
-    tags: ['GraphRAG','知識グラフ','MCP','ベクトル検索','Claude Code','MongoDB'],
-    summary: 'GraphRAGとMCPを組み合わせた知識検索アーキテクチャの設計パターン。',
-    related: ['mcp-claude-integration.md','promote-py-auto-promote-access-log.md'] },
-  { id: 'ai-gyomu-sentaku.md',
-    title: 'AI化対象業務の策定フレームワーク（学習性×失敗許容度マトリクス）',
-    category: '業務改善', level: 'published', score: 4,
-    tags: ['ai','業務改善','意思決定','フレームワーク','設備管理'],
-    summary: '学習性と失敗許容度の2軸でAI化対象業務を選定するフレームワーク。',
-    related: ['ideas-from-news/2026-04-21.md','ideas-from-news/2026-04-20.md'] },
-  { id: 'business-skill-gap-analysis.md',
-    title: 'ビジネススキルマップ ギャップ分析（AI社員3名の議論）',
-    category: 'ビジネススキル', level: 'published', score: null,
-    tags: ['スキルマップ','ひろゆき','落合陽一','アンラーニング','メタ認知'],
-    summary: 'ひろゆき・落合陽一・アンラーニング観点でスキルギャップを3者議論した記録。',
-    related: ['f-company-session-framework.md'] },
-  { id: 'cc-playbook.md',
-    title: 'Claude Code プレイブック — 全17スライドのエッセンス',
-    category: 'Claude Code', level: 'published', score: 4,
-    tags: ['Claude Code','Context Engineering','Hooks','Skills','TDD','トークン最適化'],
-    summary: 'Claude Codeの公式プレイブック17スライドを凝縮。Context Engineering・Hooks・Skills運用の核心。',
-    related: ['mcp-claude-integration.md','claude-code-knowledge-pipeline.md','f-company-session-framework.md','top3-monday-api-key-401-error.md'] },
-  { id: 'claude-code-knowledge-pipeline.md',
-    title: 'Claude Code 会話 → 知識昇格パイプライン',
-    category: 'Claude Code', level: 'published', score: null,
-    tags: ['Claude Code','知識昇格','パイプライン','JSONL','extract_claude_code'],
-    summary: 'AI会話ログをJSONL変換→promote.pyで自動分類・昇格させるパイプラインの構造。',
-    related: ['f-company-session-framework.md'] },
-  { id: 'claude-long-edit-syntax-risk.md',
-    title: 'Claude長編集での構文破壊リスクと検証プロトコル',
-    category: 'Claude Code', level: 'published', score: 4,
-    tags: ['Claude','HTML','検証','Haiku','構文'],
-    summary: '長いHTMLファイルを一括編集する際の構文破壊リスクと、node -c/preview_evalによる検証手順。',
-    related: ['mcp-claude-integration.md'] },
-  { id: 'dataview-query-template.md',
-    title: 'Dataview Query Templates for .secretary Vault',
-    category: 'AI活用', level: 'published', score: 3,
-    tags: ['Obsidian','Dataview','ダッシュボード','検索'],
-    summary: 'Obsidian DataviewのAI News・Denken Study統合検索・可視化クエリ集。',
-    related: [] },
-  { id: 'f-company-session-framework.md',
-    title: 'Fカンパニー 高付加価値セッション設計フレームワーク',
-    category: 'AI活用', level: 'published', score: null,
-    tags: ['Fカンパニー','AI社員','セッション','ペルソナ','高付加価値'],
-    summary: 'AI社員（ペルソナ）を使った高付加価値セッションの設計原則と進行フレームワーク。',
-    related: ['business-skill-gap-analysis.md'] },
-  { id: 'kozo-haaku-ryoku.md',
-    title: '頭の良さの本質は「構造把握力」',
-    category: 'ビジネススキル', level: 'published', score: 4,
-    tags: ['構造把握力','思考法','問題解決','システム思考','内向型'],
-    summary: '頭の良さを「構造把握力」として定義し、問題解決・意思決定への応用を論じた知見。（実際のcategory: 組織・マネジメント）',
-    related: ['business-skill-gap-analysis.md','ai-gyomu-sentaku.md','ideas-from-news/2026-04-21.md'] },
-  { id: 'mcp-claude-integration.md',
-    title: 'MCP — Claudeを実行AIに変える接続基盤',
-    category: 'Claude Code', level: 'review', score: 4,
-    tags: ['MCP','Claude','自動化','GitHub','Notion','Slack'],
-    summary: 'MCPの概念・設計・実装パターン。Claude→GitHub/Notion/Slack連携を可能にする接続基盤。',
-    related: ['agentic-graphrag-architecture.md','terminal-shell-cli.md','portal-health-observability.md','top3-monday-api-key-401-error.md'] },
-  { id: 'portal-health-observability.md',
-    title: 'Fカンパニーポータルの健全性可視化パターン（点→線化＋セルフ診断）',
-    category: '業務改善', level: 'published', score: 4,
-    tags: ['ポータル','ヘルスチェック','link_checker','セルフヒール','可観測性','cron'],
-    summary: 'ポータルのリンク切れ検知→自動修復まで「点→線」化した可観測性パターン。cronで自動運用。',
-    related: ['mcp-claude-integration.md','promote-py-auto-promote-access-log.md','claude-long-edit-syntax-risk.md'] },
-  { id: 'promote-py-auto-promote-access-log.md',
-    title: 'promote.py アクセスログベース自動昇格機能',
-    category: 'Claude Code', level: 'published', score: 5,
-    tags: ['promote.py','自動昇格','アクセスログ','ナレッジ管理','ダッシュボード'],
-    summary: 'アクセスログを解析してよく参照するL1ファイルを自動でL2候補に昇格させる仕組み。',
-    related: ['claude-code-knowledge-pipeline.md','portal-health-observability.md','agentic-graphrag-architecture.md'] },
-  { id: 'terminal-shell-cli.md',
-    title: 'ターミナル・シェル・CLIの違い',
-    category: 'AI活用', level: 'published', score: 4,
-    tags: ['CLI','ターミナル','シェル','Linux','コマンドライン','IT基礎'],
-    summary: 'ターミナル・シェル・CLIを正確に区別し、コマンドライン操作の土台を固める基礎知識。',
-    related: ['mcp-claude-integration.md','cc-playbook.md','ideas-from-news/2026-04-20.md'] },
-  { id: 'top3-monday-api-key-401-error.md',
-    title: 'top3-monday APIキー認証エラー（401）の対処手順',
-    category: 'Claude Code', level: 'published', score: 5,
-    tags: ['APIキー','認証エラー','自動化','トラブルシュート','Python','Anthropic SDK'],
-    summary: 'Anthropic SDK使用時の401エラー原因（APIキー設定ミス）と確実な解決手順。',
-    related: ['mcp-claude-integration.md','claude-code-knowledge-pipeline.md'] },
-  { id: 'ideas-from-news/2026-04-20.md',
-    title: '製造現場AIファースト設計：UI廃棄戦略と工場音声IoT転用（2026-04-20蒸留）',
-    category: '設備技術', level: 'published', score: 3,
-    tags: ['計装','APIファースト','音声IoT','HMI','設備更新'],
-    summary: '製造現場においてHMI/UIを廃棄しAPIファースト設計へ移行する戦略と音声IoT転用案。',
-    related: ['ideas-from-news/2026-04-21.md'] },
-  { id: 'ideas-from-news/2026-04-21.md',
-    title: '設備AI活用の判断精度向上：xhigh使い分けルールとAI導入治験フェーズモデル（2026-04-21蒸留）',
-    category: '設備技術', level: 'published', score: 3,
-    tags: ['Claude','thinking_effort','AI導入ガバナンス','設備異常診断','フェーズゲート'],
-    summary: 'Claude thinking_effortのxhigh使い分けと、設備AI導入を治験フェーズに見立てた段階管理モデル。',
-    related: ['ideas-from-news/2026-04-20.md'] },
-];
-
-// Category → hub ID mapping
-const CAT_TO_HUB = {
-  'AI活用': '__hub_ai__',
-  'Claude Code': '__hub_cc__',
-  '設備技術': '__hub_equip__',
-  '保全業務': '__hub_maint__',
-  '業務改善': '__hub_improve__',
-  'ビジネススキル': '__hub_biz__',
-  '学習サイト運営': '__hub_site__',
-};
-
-// Existing knowledge edges with relationship types
-const RAW_EDGES = [
-  // ── 既存エッジ（9本）──────────────────────────────────────────────
-  { from: 'agentic-graphrag-architecture.md', to: 'promote-py-auto-promote-access-log.md', rel: '応用' },
-  { from: 'business-skill-gap-analysis.md', to: 'f-company-session-framework.md', rel: '関連' },
-  { from: 'cc-playbook.md', to: 'mcp-claude-integration.md', rel: '手段' },
-  { from: 'cc-playbook.md', to: 'claude-code-knowledge-pipeline.md', rel: '手段' },
-  { from: 'cc-playbook.md', to: 'f-company-session-framework.md', rel: '応用' },
-  { from: 'claude-code-knowledge-pipeline.md', to: 'f-company-session-framework.md', rel: '応用' },
-  { from: 'claude-long-edit-syntax-risk.md', to: 'mcp-claude-integration.md', rel: '関連' },
-  { from: 'mcp-claude-integration.md', to: 'agentic-graphrag-architecture.md', rel: '前提' },
-  { from: 'ideas-from-news/2026-04-20.md', to: 'ideas-from-news/2026-04-21.md', rel: '関連' },
-
-  // ── 新規エッジ（20本）────────────────────────────────────────────
-  // promote.py は knowledge-pipeline の実行エンジン（前提）
-  { from: 'claude-code-knowledge-pipeline.md', to: 'promote-py-auto-promote-access-log.md', rel: '前提' },
-
-  // GraphRAG はナレッジパイプラインの検索層を担う（応用）
-  { from: 'agentic-graphrag-architecture.md', to: 'claude-code-knowledge-pipeline.md', rel: '応用' },
-
-  // MCP で自動化する際に Anthropic SDK 認証エラー（401）は必ず踏む落とし穴（関連）
-  { from: 'top3-monday-api-key-401-error.md', to: 'mcp-claude-integration.md', rel: '関連' },
-
-  // CLI/シェルの基礎知識が MCP 操作・Claude Code 実行の前提（前提）
-  { from: 'terminal-shell-cli.md', to: 'mcp-claude-integration.md', rel: '前提' },
-
-  // CLI の基礎が cc-playbook（Context Engineering）実践の土台（前提）
-  { from: 'terminal-shell-cli.md', to: 'cc-playbook.md', rel: '前提' },
-
-  // AI化対象業務の選定フレームワークは設備AI導入判断記事（2026-04-21）の理論的前提（前提）
-  { from: 'ai-gyomu-sentaku.md', to: 'ideas-from-news/2026-04-21.md', rel: '前提' },
-
-  // 設備APIファースト設計（2026-04-20）はAI化業務選定の実装ケース（応用）
-  { from: 'ai-gyomu-sentaku.md', to: 'ideas-from-news/2026-04-20.md', rel: '応用' },
-
-  // Fカンパニーセッションでビジネススキルギャップを議論した（手段）
-  { from: 'f-company-session-framework.md', to: 'business-skill-gap-analysis.md', rel: '手段' },
-
-  // 構造把握力はビジネススキルギャップ分析の核心スキル（関連）
-  { from: 'kozo-haaku-ryoku.md', to: 'business-skill-gap-analysis.md', rel: '関連' },
-
-  // 構造把握力は問題解決・AI業務選定の判断軸に応用できる（応用）
-  { from: 'kozo-haaku-ryoku.md', to: 'ai-gyomu-sentaku.md', rel: '応用' },
-
-  // ポータル可観測性パターンは MCP の自動化・監視実装の応用例（応用）
-  { from: 'portal-health-observability.md', to: 'mcp-claude-integration.md', rel: '応用' },
-
-  // cron/自動化パターンはナレッジパイプラインの自動昇格にも適用可能（関連）
-  { from: 'portal-health-observability.md', to: 'promote-py-auto-promote-access-log.md', rel: '関連' },
-
-  // Claude 長編集リスクはポータル HTML 保守で実際に踏んだ問題（関連）
-  { from: 'claude-long-edit-syntax-risk.md', to: 'portal-health-observability.md', rel: '関連' },
-
-  // cc-playbook の Hooks/TDD はAPIキー401エラーの再発防止設計に直結（改善）
-  { from: 'cc-playbook.md', to: 'top3-monday-api-key-401-error.md', rel: '改善' },
-
-  // GraphRAG + MCP は設備異常診断 AI の検索バックエンドとして応用可能（応用）
-  { from: 'agentic-graphrag-architecture.md', to: 'ideas-from-news/2026-04-21.md', rel: '応用' },
-
-  // terminal/CLI の知識が設備 APIファースト設計（HMI廃棄→API）の前提スキル（前提）
-  { from: 'terminal-shell-cli.md', to: 'ideas-from-news/2026-04-20.md', rel: '前提' },
-
-  // promote.py のアクセスログ解析は GraphRAG 知識グラフのノード優先度付けに応用できる（関連）
-  { from: 'promote-py-auto-promote-access-log.md', to: 'agentic-graphrag-architecture.md', rel: '関連' },
-
-  // Fカンパニーセッションで AI化業務選定を議題にした（応用）
-  { from: 'f-company-session-framework.md', to: 'ai-gyomu-sentaku.md', rel: '応用' },
-
-  // APIキー401エラーの解決手順は自動化パイプライン全般の信頼性設計に関連（関連）
-  { from: 'top3-monday-api-key-401-error.md', to: 'claude-code-knowledge-pipeline.md', rel: '関連' },
-
-  // 構造把握力はシステム思考として設備 AI 導入ガバナンス（フェーズゲート）に応用（応用）
-  { from: 'kozo-haaku-ryoku.md', to: 'ideas-from-news/2026-04-21.md', rel: '応用' },
-
-  // ── related: 同期エッジ（4本）─────────────────────────────────────────────
-  // mcp-claude-integration の related に portal-health-observability が追加された（相互参照）
-  { from: 'mcp-claude-integration.md', to: 'portal-health-observability.md', rel: '応用' },
-
-  // mcp-claude-integration の related に top3-monday が追加された（相互参照）
-  { from: 'mcp-claude-integration.md', to: 'top3-monday-api-key-401-error.md', rel: '関連' },
-
-  // promote-py の related に portal-health-observability が追加された（相互参照）
-  { from: 'promote-py-auto-promote-access-log.md', to: 'portal-health-observability.md', rel: '関連' },
-
-  // portal-health-observability の related に claude-long-edit-syntax-risk が追加された（相互参照）
-  { from: 'portal-health-observability.md', to: 'claude-long-edit-syntax-risk.md', rel: '関連' },
-];
-
-// ─── BUILD VIS DATASETS ───────────────────────────────────────────────────────
-
-function makeShape(level) {
-  if (level === 'published') return 'star';
-  if (level === 'review') return 'diamond';
-  return 'dot';
-}
-function makeSize(score) {
-  if (!score) return 14;
-  return 12 + score * 3;
-}
-
-const allNodes = [];
-const allEdges = [];
-
-// Center node
-allNodes.push({
-  id: '__center__',
-  label: '古舘\nナレッジベース',
-  shape: 'ellipse', size: 42,
-  font: { size: 14, color: '#0f172a', face: 'Arial, sans-serif' },
-  color: { background: '#f59e0b', border: '#fcd34d', highlight: { background: '#fcd34d', border: '#f59e0b' } },
-  _category: 'center', _isHub: true,
-  title: '<b>古舘ナレッジベース</b><br>中心ノード — 全知識の起点'
-});
-
-// Hub nodes
-HUB_NODES.filter(h => !h.isCenter).forEach(h => {
-  const c = CAT_COLOR[h.category] || '#475569';
-  allNodes.push({
-    id: h.id,
-    label: h.label,
-    shape: 'hexagon', size: 22,
-    font: { size: 12, color: '#e2e8f0', face: 'Arial, sans-serif' },
-    color: { background: c, border: c, highlight: { background: '#334155', border: '#38bdf8' } },
-    _category: h.category, _isHub: true,
-    title: `<b>${h.label.replace('\n','')}</b><br>カテゴリハブ`
-  });
-  allEdges.push({
-    id: `__center__→${h.id}`,
-    from: '__center__', to: h.id,
-    color: { color: '#475569', opacity: 0.4 },
-    width: 1.5, dashes: true,
-    smooth: { type: 'dynamic' },
-    _isHub: true
-  });
-});
-
-// Knowledge nodes
-RAW_NODES.forEach(n => {
-  const c = CAT_COLOR[n.category] || '#475569';
-  const short = n.title.length > 18 ? n.title.slice(0, 16) + '…' : n.title;
-  allNodes.push({
-    id: n.id,
-    label: short,
-    shape: makeShape(n.level),
-    size: makeSize(n.score),
-    font: { size: 12, color: '#e2e8f0', face: 'Arial, sans-serif' },
-    color: { background: c, border: c, highlight: { background: '#334155', border: '#38bdf8' } },
-    _category: n.category,
-    _level: n.level,
-    _score: n.score,
-    _tags: n.tags,
-    _summary: n.summary,
-    _related: n.related,
-    _fullTitle: n.title,
-    _isHub: false,
-    title: n.title
-  });
-  // Edge: hub → knowledge node
-  const hubId = CAT_TO_HUB[n.category];
-  if (hubId) {
-    allEdges.push({
-      id: `${hubId}→${n.id}`,
-      from: hubId, to: n.id,
-      color: { color: CAT_COLOR[n.category], opacity: 0.25 },
-      width: 1, dashes: false,
-      smooth: { type: 'dynamic' },
-      _isHub: true
-    });
-  }
-});
-
-// Knowledge edges
-RAW_EDGES.forEach((e, i) => {
-  allEdges.push({
-    id: `ke_${i}`,
-    from: e.from, to: e.to,
-    label: e.rel,
-    font: { size: 9, color: '#94a3b8', align: 'middle', face: 'Arial, sans-serif' },
-    color: { color: '#94a3b8', opacity: 0.55 },
-    width: 1.8,
-    smooth: { type: 'curvedCW', roundness: 0.15 },
-    _rel: e.rel,
-    _isHub: false
-  });
-});
-
-// ─── VIS NETWORK ─────────────────────────────────────────────────────────────
-
-const visNodes = new vis.DataSet(allNodes);
-const visEdges = new vis.DataSet(allEdges);
+const nodes = new vis.DataSet([{"id": "agentic-graphrag-architecture.md", "label": "Agentic GraphRAG アーキ…", "title": "<b>Agentic GraphRAG アーキテクチャ</b><br>カテゴリ: AI活用<br>レベル: review<br>理解度: 3<br>タグ: GraphRAG, 知識グラフ, MCP, ベクトル検索, Claude Code, MongoDB", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "diamond", "size": 14, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "ai-agent-architecture.md", "label": "AIエージェント アーキテクチャ完全ガイ…", "title": "<b>AIエージェント アーキテクチャ完全ガイド</b><br>カテゴリ: AI活用<br>レベル: review<br>理解度: 4<br>タグ: エージェント, アーキテクチャ, LLM, Memory, MCP, Make.com, Claude Code, 自動化", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "diamond", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "ai-gyomu-sentaku.md", "label": "AI化対象業務の策定フレームワーク（学習…", "title": "<b>AI化対象業務の策定フレームワーク（学習性×失敗許容度マトリクス）</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: ai, 業務改善, 意思決定, フレームワーク, 設備管理", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "ai-tool-comparison-chatgpt-claude-gemini.md", "label": "ChatGPT・Claude・Gemin…", "title": "<b>ChatGPT・Claude・Gemini 使い分け比較【最新版】</b><br>カテゴリ: —<br>レベル: published<br>理解度: —<br>タグ: ai-tools, chatgpt, claude, gemini, comparison", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 10, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "business-skill-gap-analysis.md", "label": "ビジネススキルマップ ギャップ分析（AI…", "title": "<b>ビジネススキルマップ ギャップ分析（AI社員3名の議論）</b><br>カテゴリ: AI活用 / マネジメント<br>レベル: published<br>理解度: —<br>タグ: スキルマップ, ひろゆき, 落合陽一, アンラーニング, メタ認知", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 10, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "cc-playbook.md", "label": "Claude Code プレイブック —…", "title": "<b>Claude Code プレイブック — 全17スライドのエッセンス</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: Claude Code, Context Engineering, Hooks, Skills, Task Diary, TDD, CI/CD, トークン最適化", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "claude-code-knowledge-pipeline.md", "label": "Claude Code 会話 → 知識昇…", "title": "<b>Claude Code 会話 → 知識昇格パイプライン</b><br>カテゴリ: AI活用 / secretary運用<br>レベル: published<br>理解度: —<br>タグ: Claude Code, 知識昇格, パイプライン, JSONL, extract_claude_code", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 10, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "claude-lessons.md", "label": "Claude Lessons — ミス→…", "title": "<b>Claude Lessons — ミス→ルール蓄積ログ</b><br>カテゴリ: —<br>レベル: published<br>理解度: —<br>タグ: claude-code, workflow, self-improvement", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 10, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "claude-long-edit-syntax-risk.md", "label": "Claude長編集での構文破壊リスクと検…", "title": "<b>Claude長編集での構文破壊リスクと検証プロトコル</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: Claude, HTML, 検証, Haiku, 構文", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "claude-memory-management.md", "label": "Claude Memory 管理設計", "title": "<b>Claude Memory 管理設計</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: Claude Code, Memory, 知識管理, ダッシュボード, 自動化", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "dataview-query-template.md", "label": "dataview-query-templ…", "title": "<b>dataview-query-template</b><br>カテゴリ: —<br>レベル: draft<br>理解度: —<br>タグ: —", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "dot", "size": 10, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "denken-wiki-workflow.md", "label": "電験Wiki構築スキャフォルド — ペー…", "title": "<b>電験Wiki構築スキャフォルド — ページ追加フロー・PDF読取・落とし穴</b><br>カテゴリ: 電験3種<br>レベル: published<br>理解度: 4<br>タグ: 電験3種, Wiki, PDF読取, プロセス自動化, 知識管理", "color": {"background": "#059669", "border": "#059669", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "f-company-session-framework.md", "label": "Fカンパニー 高付加価値セッション設計フ…", "title": "<b>Fカンパニー 高付加価値セッション設計フレームワーク</b><br>カテゴリ: AI活用 / Fカンパニー運用<br>レベル: published<br>理解度: —<br>タグ: Fカンパニー, AI社員, セッション, ペルソナ, 高付加価値", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 10, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "kozo-haaku-ryoku.md", "label": "頭の良さの本質は「構造把握力」", "title": "<b>頭の良さの本質は「構造把握力」</b><br>カテゴリ: 組織・マネジメント<br>レベル: published<br>理解度: 4<br>タグ: 構造把握力, 思考法, 問題解決, システム思考, 内向型", "color": {"background": "#dc2626", "border": "#dc2626", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "mcp-claude-integration.md", "label": "MCP — Claudeを実行AIに変え…", "title": "<b>MCP — Claudeを実行AIに変える接続基盤</b><br>カテゴリ: AI活用<br>レベル: review<br>理解度: 4<br>タグ: MCP, Claude, 自動化, GitHub, Notion, Slack", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "diamond", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "obsidian-properties-dataview.md", "label": "Obsidian Properties …", "title": "<b>Obsidian Properties を使いこなす5つのテクニック</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: Obsidian, Dataview, Properties, フロントマター, 自動化", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "portal-health-observability.md", "label": "Fカンパニーポータルの健全性可視化パター…", "title": "<b>Fカンパニーポータルの健全性可視化パターン（点→線化＋セルフ診断）</b><br>カテゴリ: システム設計<br>レベル: published<br>理解度: 4<br>タグ: ポータル, ヘルスチェック, link_checker, セルフヒール, 可観測性, cron", "color": {"background": "#94a3b8", "border": "#94a3b8", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "promote-py-auto-promote-access-log.md", "label": "promote.py アクセスログベース…", "title": "<b>promote.py アクセスログベース自動昇格機能</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 5<br>タグ: promote.py, 自動昇格, アクセスログ, ナレッジ管理, ダッシュボード", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 18, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "rss-vault-sync-design.md", "label": "RSS Vault Sync 設計ノート", "title": "<b>RSS Vault Sync 設計ノート</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: RSS, sync_to_vault, Stop hook, Obsidian, archive, wiki-link, 自動化", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "terminal-shell-cli.md", "label": "ターミナル・シェル・CLIの違い", "title": "<b>ターミナル・シェル・CLIの違い</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 4<br>タグ: CLI, ターミナル, シェル, Linux, コマンドライン, IT基礎", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "top3-monday-api-key-401-error.md", "label": "top3-monday APIキー認証エ…", "title": "<b>top3-monday APIキー認証エラー（401）の対処手順</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 5<br>タグ: APIキー, 認証エラー, 自動化, トラブルシュート, Python, Anthropic SDK", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 18, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "wiki-validation-checklist.md", "label": "Wiki監査チェックリスト — P1-P…", "title": "<b>Wiki監査チェックリスト — P1-P4タスク・推測タイトル検証・バリデーション手順</b><br>カテゴリ: 電験3種<br>レベル: published<br>理解度: 4<br>タグ: 電験3種, Wiki, 品質管理, 検証, バリデーション", "color": {"background": "#059669", "border": "#059669", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 16, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "zatsudan-skill.md", "label": "雑談がうまい人の9習慣", "title": "<b>雑談がうまい人の9習慣</b><br>カテゴリ: 組織・マネジメント<br>レベル: draft<br>理解度: 3<br>タグ: 雑談, コミュニケーション, 人間関係, チームビルディング", "color": {"background": "#dc2626", "border": "#dc2626", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "dot", "size": 14, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "ideas-from-news/2026-04-20.md", "label": "製造現場AIファースト設計：UI廃棄戦略…", "title": "<b>製造現場AIファースト設計：UI廃棄戦略と工場音声IoT転用（2026-04-20蒸留）</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 3<br>タグ: 計装, APIファースト, 音声IoT, HMI, 設備更新", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 14, "font": {"color": "#e2e8f0", "size": 11}}, {"id": "ideas-from-news/2026-04-21.md", "label": "設備AI活用の判断精度向上：xhigh使…", "title": "<b>設備AI活用の判断精度向上：xhigh使い分けルールとAI導入治験フェーズモデル（2026-04-21蒸留）</b><br>カテゴリ: AI活用<br>レベル: published<br>理解度: 3<br>タグ: Claude, thinking_effort, AI導入ガバナンス, 設備異常診断, フェーズゲート", "color": {"background": "#7c3aed", "border": "#7c3aed", "highlight": {"background": "#334155", "border": "#38bdf8"}}, "shape": "star", "size": 14, "font": {"color": "#e2e8f0", "size": 11}}]);
+const edges = new vis.DataSet([{"from": "agentic-graphrag-architecture.md", "to": "promote-py-auto-promote-access-log.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "agentic-graphrag-architecture.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "agentic-graphrag-architecture.md", "to": "mcp-claude-integration.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "agentic-graphrag-architecture.md", "to": "ai-agent-architecture.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-agent-architecture.md", "to": "mcp-claude-integration.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-agent-architecture.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-agent-architecture.md", "to": "claude-memory-management.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-agent-architecture.md", "to": "cc-playbook.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-gyomu-sentaku.md", "to": "ideas-from-news/2026-04-21.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-gyomu-sentaku.md", "to": "ideas-from-news/2026-04-20.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-gyomu-sentaku.md", "to": "f-company-session-framework.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ai-gyomu-sentaku.md", "to": "business-skill-gap-analysis.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "business-skill-gap-analysis.md", "to": "f-company-session-framework.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "cc-playbook.md", "to": "mcp-claude-integration.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "cc-playbook.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "cc-playbook.md", "to": "f-company-session-framework.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "cc-playbook.md", "to": "top3-monday-api-key-401-error.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "claude-code-knowledge-pipeline.md", "to": "f-company-session-framework.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "claude-long-edit-syntax-risk.md", "to": "mcp-claude-integration.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "claude-long-edit-syntax-risk.md", "to": "portal-health-observability.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "claude-long-edit-syntax-risk.md", "to": "cc-playbook.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "claude-memory-management.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "claude-memory-management.md", "to": "cc-playbook.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "denken-wiki-workflow.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "kozo-haaku-ryoku.md", "to": "business-skill-gap-analysis.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "kozo-haaku-ryoku.md", "to": "ai-gyomu-sentaku.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "kozo-haaku-ryoku.md", "to": "ideas-from-news/2026-04-21.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "mcp-claude-integration.md", "to": "terminal-shell-cli.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "mcp-claude-integration.md", "to": "portal-health-observability.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "mcp-claude-integration.md", "to": "top3-monday-api-key-401-error.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "mcp-claude-integration.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "obsidian-properties-dataview.md", "to": "dataview-query-template.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "portal-health-observability.md", "to": "promote-py-auto-promote-access-log.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "portal-health-observability.md", "to": "cc-playbook.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "promote-py-auto-promote-access-log.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "promote-py-auto-promote-access-log.md", "to": "mcp-claude-integration.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "rss-vault-sync-design.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "rss-vault-sync-design.md", "to": "portal-health-observability.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "terminal-shell-cli.md", "to": "cc-playbook.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "terminal-shell-cli.md", "to": "ideas-from-news/2026-04-20.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "top3-monday-api-key-401-error.md", "to": "claude-code-knowledge-pipeline.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "top3-monday-api-key-401-error.md", "to": "portal-health-observability.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "wiki-validation-checklist.md", "to": "denken-wiki-workflow.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "zatsudan-skill.md", "to": "business-skill-gap-analysis.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}, {"from": "ideas-from-news/2026-04-20.md", "to": "ideas-from-news/2026-04-21.md", "color": {"color": "#94a3b8", "opacity": 0.6}, "width": 1.5}]);
 
 const container = document.getElementById('graph');
 const options = {
   physics: {
     solver: 'forceAtlas2Based',
-    forceAtlas2Based: { gravitationalConstant: -160, springLength: 200, springConstant: 0.03, damping: 0.45, centralGravity: 0.01 },
-    stabilization: { iterations: 400 },
+    forceAtlas2Based: { gravitationalConstant: -120, springLength: 220, springConstant: 0.04, damping: 0.4 },
+    stabilization: { iterations: 300 },
   },
-  interaction: { hover: true, tooltipDelay: 200, navigationButtons: true, zoomView: true, multiselect: false },
-  nodes: { borderWidth: 1.5, scaling: { min: 10, max: 36 }, font: { face: 'Arial, sans-serif', size: 12, color: '#e2e8f0' } },
-  edges: { smooth: { type: 'dynamic' }, arrows: { to: { enabled: true, scaleFactor: 0.4 } } },
+  interaction: { hover: true, tooltipDelay: 100, navigationButtons: true, zoomView: true },
+  nodes: { borderWidth: 1.5, scaling: { min: 10, max: 30 } },
+  edges: { smooth: { type: 'dynamic' }, color: { opacity: 0.5 } },
 };
+const network = new vis.Network(container, { nodes, edges }, options);
+network.on('stabilizationIterationsDone', function() { network.fit(); });
+window.addEventListener('resize', function() { network.fit(); });
 
-const network = new vis.Network(container, { nodes: visNodes, edges: visEdges }, options);
-
-// フォント読み込み完了後に再描画（日本語ラベル欠け対策）
-document.fonts.ready.then(() => network.redraw());
-
-network.on('stabilizationIterationsDone', () => { network.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } }); });
-window.addEventListener('resize', () => { network.fit(); });
-
-// ─── DETAIL PANEL ────────────────────────────────────────────────────────────
-
-const panel = document.getElementById('detail-panel');
-const dpContent = document.getElementById('dp-content');
-
-function scoreStars(s) {
-  if (!s) return '<span style="color:var(--sub)">—</span>';
-  return '<span class="stars">' + '★'.repeat(s) + '</span><span style="color:var(--border)">' + '★'.repeat(5-s) + '</span>';
-}
-function levelBadge(lv) {
-  if (lv === 'published') return '<span class="badge badge-pub">★ published</span>';
-  if (lv === 'review') return '<span class="badge badge-rev">◆ review</span>';
-  if (lv === 'draft') return '<span class="badge badge-draft">● draft</span>';
-  return '';
-}
-
-function openPanel(nodeId) {
-  const n = visNodes.get(nodeId);
-  if (!n) return;
-  panel.classList.add('open');
-
-  if (n._isHub) {
-    dpContent.innerHTML = `
-      <button class="dp-close" id="dp-close">✕</button>
-      <div class="dp-title">${n.label.replace('\n', ' ')}</div>
-      <p class="dp-hub-info">カテゴリハブノードです。<br>このカテゴリに属するノードを選択すると詳細が表示されます。</p>`;
-    document.getElementById('dp-close').addEventListener('click', closePanel);
-    return;
-  }
-
-  const relatedLinks = (n._related || []).map(rid => {
-    const rn = visNodes.get(rid);
-    const label = rn ? rn._fullTitle || rid : rid;
-    return `<a class="dp-related-link" data-id="${rid}" href="#">${label}</a>`;
-  }).join('');
-
-  const tagHtml = (n._tags || []).map(t => `<span class="dp-tag">${t}</span>`).join('');
-
-  dpContent.innerHTML = `
-    <button class="dp-close" id="dp-close">✕</button>
-    <div class="dp-title">${n._fullTitle || n.label}</div>
-    <div class="dp-row"><span class="dp-label">カテゴリ</span><span class="dp-val">${n._category || '—'}</span></div>
-    <div class="dp-row"><span class="dp-label">ステータス</span><span class="dp-val">${levelBadge(n._level)}</span></div>
-    <div class="dp-row"><span class="dp-label">理解度</span><span class="dp-val">${scoreStars(n._score)}</span></div>
-    ${n._summary ? `<div class="dp-section"><div class="dp-section-title">概要</div><p style="color:var(--sub);font-size:0.78rem;line-height:1.7">${n._summary}</p></div>` : ''}
-    ${tagHtml ? `<div class="dp-section"><div class="dp-section-title">タグ</div><div class="dp-tags">${tagHtml}</div></div>` : ''}
-    ${relatedLinks ? `<div class="dp-section"><div class="dp-section-title">関連ノード</div><div class="dp-related">${relatedLinks}</div></div>` : ''}
-    <a class="dp-open-btn" href="${n.id}" target="_blank">📄 ナレッジを開く</a>`;
-
-  document.getElementById('dp-close').style.display = '';
-  document.getElementById('dp-close').addEventListener('click', closePanel);
-  document.querySelectorAll('.dp-related-link').forEach(el => {
-    el.addEventListener('click', (e) => { e.preventDefault(); network.selectNodes([el.dataset.id]); openPanel(el.dataset.id); });
-  });
-}
-
-const HINT_HTML = `
-  <div class="no-select">ノードをクリックして詳細を見る
-    <div class="hint-box">
-      💡 <strong>ヒント</strong><br>
-      • ★ = published（読み返し推奨）<br>
-      • ◆ = review（理解浅め・要フェインマン）<br>
-      • サイズ大 = 理解度スコア高<br>
-      • エッジのラベル = 知識の関係性
-    </div>
-  </div>`;
-
-function closePanel() {
-  dpContent.innerHTML = HINT_HTML;
-  document.getElementById('dp-close').style.display = 'none';
-  network.unselectAll();
-}
-
-document.getElementById('dp-close').addEventListener('click', closePanel);
-
-network.on('click', (params) => {
+const tip = document.getElementById('tooltip-info');
+network.on('click', function(params) {
   if (params.nodes.length > 0) {
-    const nodeId = params.nodes[0];
-    openPanel(nodeId);
-    // Highlight connected edges
-    const connEdges = network.getConnectedEdges(nodeId);
-    visEdges.get().forEach(e => {
-      visEdges.update({ id: e.id, color: connEdges.includes(e.id)
-        ? { color: '#38bdf8', opacity: 0.9 }
-        : { color: e._isHub ? (CAT_COLOR[visNodes.get(e.from)?._category] || '#475569') : '#94a3b8', opacity: 0.2 } });
-    });
+    const n = nodes.get(params.nodes[0]);
+    tip.style.display = 'block';
+    tip.innerHTML = n.title;
   } else {
-    closePanel();
-    resetEdgeColors();
+    tip.style.display = 'none';
   }
 });
-
-function resetEdgeColors() {
-  visEdges.get().forEach(e => {
-    const fromNode = visNodes.get(e.from);
-    visEdges.update({ id: e.id, color: e._isHub
-      ? { color: fromNode ? (CAT_COLOR[fromNode._category] || '#475569') : '#475569', opacity: e.from === '__center__' ? 0.4 : 0.25 }
-      : { color: '#94a3b8', opacity: 0.55 } });
-  });
-}
-
-// ─── SEARCH & FILTERS ────────────────────────────────────────────────────────
-
-let activeCats = new Set(['all']);
-let activeStatus = new Set(['published', 'review', 'draft']);
-let showIsolatedOnly = false;
-
-document.getElementById('search').addEventListener('input', applyFilters);
-
-document.querySelectorAll('#cat-filters .filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const cat = btn.dataset.cat;
-    if (cat === 'all') {
-      activeCats = new Set(['all']);
-      document.querySelectorAll('#cat-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all'));
-    } else {
-      activeCats.delete('all');
-      document.querySelector('[data-cat="all"]').classList.remove('active');
-      btn.classList.toggle('active');
-      if (btn.classList.contains('active')) activeCats.add(cat);
-      else activeCats.delete(cat);
-      if (activeCats.size === 0) {
-        activeCats.add('all');
-        document.querySelector('[data-cat="all"]').classList.add('active');
-      }
-    }
-    applyFilters();
-  });
-});
-
-document.querySelectorAll('#status-filters .filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const st = btn.dataset.status;
-    btn.classList.toggle('active');
-    if (btn.classList.contains('active')) activeStatus.add(st);
-    else activeStatus.delete(st);
-    applyFilters();
-  });
-});
-
-document.getElementById('btn-isolated').addEventListener('click', function() {
-  showIsolatedOnly = !showIsolatedOnly;
-  this.classList.toggle('active', showIsolatedOnly);
-  applyFilters();
-});
-
-// ─── OVERLAY ─────────────────────────────────────────────────────────────────
-
-const overlay = document.getElementById('overlay');
-const SEEN_KEY = 'kg_overlay_seen';
-
-function showOverlay() { overlay.classList.remove('hidden'); }
-function hideOverlay() { overlay.classList.add('hidden'); localStorage.setItem(SEEN_KEY, '1'); }
-
-if (!localStorage.getItem(SEEN_KEY)) {
-  showOverlay();
-} else {
-  overlay.classList.add('hidden');
-}
-
-document.getElementById('overlay-close').addEventListener('click', hideOverlay);
-document.getElementById('btn-help').addEventListener('click', showOverlay);
-overlay.addEventListener('click', (e) => { if (e.target === overlay) hideOverlay(); });
-
-// ─── SEARCH & FILTERS ────────────────────────────────────────────────────────
-
-function applyFilters() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const showAll = activeCats.has('all');
-
-  // Find isolated knowledge nodes (no knowledge-level edges)
-  const knowledgeEdgePairs = new Set(
-    RAW_EDGES.flatMap(e => [e.from, e.to])
-  );
-
-  allNodes.forEach(n => {
-    if (n._isHub) {
-      visNodes.update({ id: n.id, hidden: false });
-      return;
-    }
-    let visible = true;
-    if (!showAll && !activeCats.has(n._category)) visible = false;
-    if (n._level && !activeStatus.has(n._level)) visible = false;
-    if (q && !n._fullTitle?.toLowerCase().includes(q) && !n._category?.toLowerCase().includes(q)) visible = false;
-    if (showIsolatedOnly && knowledgeEdgePairs.has(n.id)) visible = false;
-    visNodes.update({ id: n.id, hidden: !visible });
-  });
-
-  // Hide hub→node edges for hidden nodes; hide hub nodes with no visible children
-  const visibleNodeIds = new Set(allNodes.filter(n => !visNodes.get(n.id).hidden).map(n => n.id));
-  allEdges.forEach(e => {
-    if (e._isHub) {
-      const hidden = !visibleNodeIds.has(e.from) || !visibleNodeIds.has(e.to);
-      visEdges.update({ id: e.id, hidden });
-    }
-  });
-
-  // Hide hub nodes that have no visible children
-  HUB_NODES.filter(h => !h.isCenter).forEach(h => {
-    const hasChild = allNodes.some(n => !n._isHub && visibleNodeIds.has(n.id) && n._category === h.category);
-    visNodes.update({ id: h.id, hidden: !hasChild });
-  });
-}
 </script>
 </body>
 </html>
