@@ -278,15 +278,32 @@ h1 em{font-style:italic;color:var(--accent);font-weight:400}
 .chain-row td{padding:0!important;border:none!important}
 .chain-body{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.2,.8,.2,1),padding .38s;
   background:oklch(from var(--accent) l c h/.04);border-left:2.5px solid oklch(from var(--accent) l c h/.28);margin:0 4px}
-.chain-row.open .chain-body{max-height:800px;padding:16px 18px 18px}
+.chain-row.open .chain-body{max-height:800px;padding:16px 18px 18px;overflow:visible}
 .chain-steps{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
-.chain-step{background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;min-width:80px}
-.cs-term{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:.02em}
-.cs-note{font-size:12px;color:var(--ink);line-height:1.4;margin-top:3px}
+.chain-step{position:relative;background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;min-width:80px}
+.cs-term{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:.02em;cursor:help;text-decoration:underline dotted oklch(from var(--ink3) l c h/.4);text-underline-offset:3px}
+
+/* ─── Tooltip（cs-note） ─── */
+.cs-note{
+  position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--surface);
+  font-size:11.5px;line-height:1.45;padding:7px 11px;border-radius:7px;
+  white-space:normal;width:max-content;max-width:200px;text-align:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;
+  transform:translateX(-50%) translateY(4px);
+  z-index:200;
+}
+.cs-note::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--ink);
+}
+.chain-step:hover .cs-note{opacity:1;transform:translateX(-50%) translateY(0)}
+
 .chain-step.chain-result{background:oklch(from var(--accent) l c h/.1);border-color:oklch(from var(--accent) l c h/.35)}
-.chain-step.chain-result .cs-note{color:var(--accent);font-weight:600}
+.chain-step.chain-result .cs-term{color:var(--accent);font-weight:600}
 .chain-step.chain-warn{background:oklch(from var(--amber) l c h/.08);border-color:oklch(from var(--amber) l c h/.35)}
-.chain-step.chain-warn .cs-term,.chain-step.chain-warn .cs-note{color:var(--amber)}
+.chain-step.chain-warn .cs-term{color:var(--amber)}
 .chain-arr{color:oklch(from var(--accent) l c h/.55);font-weight:700;font-size:16px;align-self:center;flex-shrink:0}
 .chain-tip{margin-top:12px;font-size:11.5px;color:var(--ink3);padding:8px 12px;background:var(--surface2);border-radius:6px;line-height:1.5}
 </style>
