@@ -15,19 +15,21 @@
 
 ## 残タスク
 
-### 優先度高
-1. **KaTeX数式描画の確認** — `file:///C:/Users/kfuru/.secretary/denken3-riron-wiki.html` をブラウザで開き、コンデンサページの公式（$C = \varepsilon S/d$ 等）が描画されているか確認。描画されていなければ KaTeX auto-render の設定確認。
+### ✅ 全て完了（2026-04-27）
+1. **KaTeX数式描画** ✅ — `C = Q/V`、`C = ε₀εᵣS/d` 正常描画確認済み
+2. **PageNav prev/next 配線** ✅ — 全ページ正しく遷移。表示ラベルバグ3箇所を修正してコミット済み
+3. **Ctrl+K検索** ✅ — デスクトップ幅で「テブナン」「引っかけ」正しくヒット確認
+4. **TrapCardフィルタ** ✅ — 電磁気/直流/交流/三相/電子/計測 全6分野動作確認
+5. **portal-v2.html リンク** ✅ — `denken3-riron-wiki.html#home` に正しく遷移
 
-2. **全25ページのPageNav prev/next 配線確認** — 各ページ末尾の「前へ/次へ」リンクが正しいページに飛ぶか総当たり確認。
+### 修正内容（riron-pages-batch1.jsx / コミット済み）
+- CapacitorPage eyebrow: `1.1 → 1.2`
+- CapacitorPage PageNav prev title: `"1.0 静電気" → "1.1 静電気・クーロンの法則"`
+- CapacitorPage PageNav next title: `"1.2 電磁力" → "1.3 電磁力"`
+- ThreePhasePage PageNav next title: `"4.2 半導体" → "5.1 半導体・ダイオード"`
 
-3. **Ctrl+K 検索テスト** — 検索ボックスでCtrl+K→「テブナン」「引っかけ」で正しく表示されるか。
-
-4. **TrapCard分野フィルタ確認** — 引っかけパターン集ページで電磁気/直流/交流/三相フィルタをクリックして絞り込みが機能するか。
-
-### 優先度中
-5. **portal-v2.html の確認** — `file:///C:/Users/kfuru/.secretary/portal-v2.html` を開いて「理論Wiki」リンクが正しく飛ぶか確認。
-
-6. **法規Wiki検討** — 電験3種 法規Wikiも同形式で作成予定（次の大型タスク）。
+### 次の大型タスク
+6. **法規Wiki検討** — 電験3種 法規Wikiも同形式で作成予定
 
 ## ファイル構成
 ```
