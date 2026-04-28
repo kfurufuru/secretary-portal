@@ -379,6 +379,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .page-meta-item { display: flex; align-items: center; gap: 6px; }
 .page-meta-item strong { color: var(--ink-soft); font-weight: 600; }
+.page-updated { font-size: 11px; color: var(--ink-muted); margin-top: 10px; letter-spacing: 0.04em; }
 
 .content { max-width: var(--content-max); }
 
@@ -1937,7 +1938,7 @@ const Eq = ({ tex, display }) => {
 
 /* ============================================================ Page chrome */
 
-const PageHeader = ({ eyebrow, title, deck, meta }) => (
+const PageHeader = ({ eyebrow, title, deck, meta, updatedAt }) => (
   <header className="page-header">
     {eyebrow && <div className="page-eyebrow">{eyebrow}</div>}
     <h1 className="page-title">{title}</h1>
@@ -1945,6 +1946,7 @@ const PageHeader = ({ eyebrow, title, deck, meta }) => (
     {meta && <div className="page-meta">{meta.map((m, i) =>
       <div key={i} className="page-meta-item"><strong>{m.label}:</strong> {m.value}</div>
     )}</div>}
+    {updatedAt && <div className="page-updated"><time dateTime={updatedAt}>最終更新: {updatedAt}</time></div>}
   </header>
 );
 
@@ -4465,6 +4467,7 @@ const CapacitorPage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"1. 静電気・電子"}]} onNav={onNav} />
 
@@ -4684,6 +4687,7 @@ const AcPowerPage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"2. 交流回路"}]} onNav={onNav} />
 
@@ -4912,6 +4916,7 @@ const ThreePhasePage = ({ onNav }) => (
         { label: "出題頻度", value: "高（B問題で10点）" },
         { label: "難易度", value: "★★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"4. 電力系統"}]} onNav={onNav} />
 
@@ -5140,6 +5145,7 @@ const TransistorPage = ({ onNav }) => (
         { label: "出題頻度", value: "高（毎年1〜2問、問13・問18）" },
         { label: "難易度", value: "★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <MetaStrip difficulty="★★★★" importance="A" frequency="高" />
     <Callout variant="tip" title="ひとことで言うと">
@@ -5792,6 +5798,7 @@ const CoulombFieldPage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -6075,6 +6082,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -6363,6 +6371,7 @@ const MagneticCircuitPage = ({ onNav }) => (
         { label: "出題頻度", value: "中" },
         { label: "難易度", value: "★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -6658,6 +6667,7 @@ const DcCircuitPage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -6949,6 +6959,7 @@ const AcBasicsPage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -7234,6 +7245,7 @@ const RlcResonancePage = ({ onNav }) => (
         { label: "出題頻度", value: "高" },
         { label: "難易度", value: "★★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -7512,6 +7524,7 @@ const InductancePage = ({ onNav }) => (
         { label: "出題頻度", value: "中" },
         { label: "難易度", value: "★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -7796,6 +7809,7 @@ const OpAmpPage = ({ onNav }) => (
         { label: "出題頻度", value: "低（パターン固定で得点源）" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -7963,54 +7977,62 @@ const OpAmpPage = ({ onNav }) => (
       積分回路は Vo = -(1/RC)∫Vi dt。ステップ入力にはランプ出力（時間に比例して増加）。時定数 RC が小さいほど急速に変化する。
     </Callout>
 
-    <h2 id="traps"><span className="h-num">5</span>引っかけポイント</h2>
+    <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
     <TrapBlock
-      correct="反転増幅のゲインはAv=-Rf/Ri。マイナスは入力と逆位相の出力を意味する。"
+      correct="反転増幅のゲインはAv=−Rf/Ri。マイナスは入力と逆位相の出力を意味する。"
       trap="Av=Rf/Ri（プラス）で計算し出力符号を誤る。"
-      cite="[要確認]"
+      cite="R07上 問13・R05上 問13 出題"
       steps={[
-        "ステップ1：反転増幅の確認→入力が-端子に接続されているか見る",
-        "ステップ2：Av=-Rf/Riを適用する",
-        "ステップ3：Vo=Av×Vi（マイナスを必ずつけて）∴出力を結論する",
+        "入力が−端子に接続されているか回路図で確認する（反転増幅の識別）",
+        "Av=−Rf/Riを適用する",
+        "Vo=Av×Vi（マイナスを必ずつけて）∴出力を結論する",
       ]}
+      wisdom="反転増幅を見た瞬間に『マイナスをつける』と宣言する。符号を先に確定してから計算することで位相の符号ミスをゼロにできる。"
     />
     <TrapBlock
       correct="仮想接地(V+=V-)は負帰還回路でのみ成立。コンパレータ・正帰還回路には使えない。"
       trap="オペアンプが使われていれば無条件にV+=V-を適用する。"
-      cite="[要確認]"
+      cite="R05下 問13・R01 問13 出題"
       steps={[
-        "ステップ1：回路に負帰還（出力→-端子フィードバック）があるか確認する",
-        "ステップ2：負帰還あり→仮想接地OKとして計算に使う",
-        "ステップ3：負帰還なし（コンパレータ等）→仮想接地使用禁止と∴結論する",
+        "回路に負帰還（出力→−端子フィードバック）があるか確認する",
+        "負帰還あり → 仮想接地OKとして計算に使う",
+        "負帰還なし（コンパレータ等）→ 仮想接地使用禁止と∴結論する",
       ]}
+      wisdom="回路図を見た瞬間に『負帰還か正帰還か』を宣言する。出力が−端子へ戻ればOK、+端子へ戻れば正帰還で仮想接地NG。これを最初に決めると以降ブレない。"
     />
     <TrapBlock
       correct="シュミットトリガは正帰還回路。+端子電位をR分圧で求め入力と比較して出力決定。"
       trap="シュミットトリガでも仮想接地を使って計算する。"
-      cite="R04上 問13"
+      cite="R04上 問13 出題"
       steps={[
-        "ステップ1：正帰還（出力→+端子）を回路図で確認する",
-        "ステップ2：V+=Vo×R₁/(R₁+R₂)を計算する",
-        "ステップ3：Vi（-端子）とV+を比較してHigh/Low判定を∴結論する",
+        "正帰還（出力→+端子）を回路図で確認する",
+        "V+=Vo×R₁/(R₁+R₂)を計算する",
+        "Vi（−端子）とV+を比較してHigh/Low判定を∴結論する",
       ]}
+      wisdom="シュミットトリガ＝正帰還と即時宣言。閾値電圧 V+=Vo×R₁/(R₁+R₂) を計算し、Viとの大小で出力を2択判定する流れに徹する。"
     />
-    <Callout variant="tip" title="非反転増幅は入力が+端子→ゲインに1が付く">
-      区別のコツ：「＋入力に信号が入る → 非反転 → ゲインに 1 が付く（Av = 1+Rf/Ri）」と接続で覚える。
-    </Callout>
-
-    <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
-    <table className="data-table">
-      <thead>
-        <tr><th>観点</th><th>❌ 誤答者</th><th>✅ 正答者</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>反転増幅のゲイン</td><td>Av=Rf/Ri（プラス）で計算し符号を間違える</td><td>Av=−Rf/Ri（マイナス必須）。入力と出力は逆位相</td></tr>
-        <tr><td>仮想接地の適用条件</td><td>オペアンプが使われていれば常にV+=V− が成立すると思う</td><td>負帰還回路のみ有効。コンパレータ・正帰還回路（シュミットトリガ）には使えない</td></tr>
-        <tr><td>非反転増幅の最小ゲイン</td><td>Rf=0 にすれば Av=0 にできると思う</td><td>Av=1+Rf/Ri ≥ 1。最小は Rf=0 のとき Av=1（ボルテージフォロワ）</td></tr>
-        <tr><td>シュミットトリガの計算</td><td>仮想接地(V+=V−)を使って計算しようとする</td><td>正帰還なので仮想接地NG。閾値電圧=Vo×R₁/(R₁+R₂) で+端子電位を計算する</td></tr>
-        <tr><td>積分回路の出力</td><td>Vi を RC で単純に割ると思う（比例演算と混同）</td><td>Vo=−(1/RC)∫Vi dt（積分演算）。入力がステップならランプ出力</td></tr>
-      </tbody>
-    </table>
+    <TrapBlock
+      correct="非反転増幅のゲインは必ずAv=1+Rf/Ri≥1。Rf=0でも最小値はAv=1（ボルテージフォロワ）で、0にはならない。"
+      trap="Rf=0にすればAv=0にできると思い込む（反転増幅の式と混同）。"
+      cite="R06下 問14 出題"
+      steps={[
+        "回路図で信号が+端子に入っているか確認する（非反転増幅の識別）",
+        "Av=1+Rf/Riの式を適用する",
+        "Av≥1の下限を意識し、Rf=0のときAv=1（ボルテージフォロワ）と結論する",
+      ]}
+      wisdom="非反転増幅は『1が必ず足される』と覚える。Avが1未満になる選択肢を見たら即排除。入力が+端子→式に1が加算される、という接続で判断する習慣。"
+    />
+    <TrapBlock
+      correct="積分回路の出力はVo=−(1/RC)∫Vi dt（積分演算）。ステップ入力に対してランプ出力（時間に比例して変化）。"
+      trap="Viを RC で単純に割ると思う（比例演算・反転増幅の式と混同）。"
+      cite="R03 問13 出題"
+      steps={[
+        "回路で帰還要素がコンデンサCかどうか確認する（積分回路の識別）",
+        "Vo=−(1/RC)∫Vi dtを適用する",
+        "ステップ入力→ランプ出力（時間×1/RC で直線的に変化）と∴結論する",
+      ]}
+      wisdom="帰還要素がCなら積分回路。出力は『時間積分』なのでステップ→ランプ、サイン波→コサイン波という変換を即想起できるかが分かれ目。RC時定数が小さいほど変化が速い。"
+    />
 
     <MinimumSet
       formulas={[
@@ -8122,6 +8144,7 @@ const MeasurementPage = ({ onNav }) => (
         { label: "出題頻度", value: "低（年度差が大きい）" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs
       items={[
@@ -8498,6 +8521,7 @@ const TransientPage = ({ onNav }) => (
         { label: "出題頻度", value: "中（毎年1問、問10に固定）" },
         { label: "難易度", value: "★★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"3. 電磁誘導・過渡"}]} onNav={onNav} />
 
@@ -8805,6 +8829,7 @@ const SemiconductorPage = ({ onNav }) => (
         { label: "出題頻度", value: "中（毎年1問、問11に固定）" },
         { label: "難易度", value: "★★★" },
       ]}
+      updatedAt="2026.04.28"
     />
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"5. 電子理論"}]} onNav={onNav} />
 
@@ -9072,6 +9097,7 @@ const SemiconductorPage = ({ onNav }) => (
         "全体の電荷 ＝ 正核 + 自由電子 ＝ 中性（電荷の総和はゼロ）",
         "『N型』は『多数キャリアが電子』という意味。『負に帯電している』という意味ではない",
       ]}
+      wisdom="問題文で『N型の電荷状態』を聞かれたら即座に『電気的中性』と宣言する。N・Pは多数キャリアの種類であり、物質の帯電符号ではない——この切り分けが最初に来るかどうかが正答者の条件。"
     />
 
     <TrapBlock
@@ -9083,6 +9109,7 @@ const SemiconductorPage = ({ onNav }) => (
         "少数キャリアによる逆飽和電流 I_s はゼロではなく、温度依存性が高い（温度上昇で急増）",
         "ツェナー降伏電圧に達すると急激に大電流が流れる（ツェナーダイオードはこれを意図的に利用する）",
       ]}
+      wisdom="『逆バイアス＝完全遮断』という思い込みを破壊するのが頻出の出題意図。少数キャリアによる I_s は常に存在し温度依存——これを即想起できるかが分かれ目。"
     />
 
     <TrapBlock
@@ -9094,6 +9121,7 @@ const SemiconductorPage = ({ onNav }) => (
         "アノードとカソードそれぞれの電位を回路から読み取る",
         "アノード電位 {'>'} カソード電位 → 順バイアス（電流が流れる）、逆なら逆バイアス（ほぼ遮断）",
       ]}
+      wisdom="回路図を見たら最初に『A（アノード）とK（カソード）はどちら？』と記号を宣言する。電位を確定してから順/逆を判定する2ステップを守ると記号の混同で間違えない。"
     />
 
     <TrapBlock
@@ -9105,6 +9133,7 @@ const SemiconductorPage = ({ onNav }) => (
         "内蔵電界によって電子はN側へ、正孔はP側へ引き寄せられる",
         "P側に正電荷が偏る → P側がプラス（高電位）＝ 順方向と同じ極性",
       ]}
+      wisdom="太陽電池＝光電効果（金属から電子が飛び出す現象）と混同しないこと。PN接合の内蔵電界が正孔をP側へ引き寄せる——P側プラスという結論を『内蔵電界の向き』から導く習慣を持つ。"
     />
 
     <TrapBlock
@@ -9116,6 +9145,7 @@ const SemiconductorPage = ({ onNav }) => (
         "逆バイアス電圧↑ → 空乏層が広がる → 静電容量 C が小さくなる（C ∝ 1/√V_R）",
         "容量の大小と電圧の大小が逆の関係になることを押さえる",
       ]}
+      wisdom="バラクタ＝逆バイアス専用と即宣言。『電圧↑→空乏層↑→容量↓』の逆比例関係を一方向の因果として覚え、逆に問われても崩れない軸を持つ。"
     />
 
     <TrapBlock
@@ -9127,45 +9157,20 @@ const SemiconductorPage = ({ onNav }) => (
         "逆バイアス：外部電圧が内蔵電位を強める方向に働く → 空乏層拡大 → 電流が流れにくくなる",
         "逆バイアスで拡大した空乏層がコンデンサとして機能する → バラクタダイオードの動作原理",
       ]}
+      wisdom="『電流が流れる方向で空乏層が広がる』という誤類推は内蔵電位の向きを考えれば即破壊できる。順方向は内蔵電位を打ち消すから空乏層縮小——この因果を覚えると逆も自動的に確定する。"
     />
 
-    <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
-    <table className="data-table">
-      <thead>
-        <tr>
-          <th>観点</th>
-          <th>誤答者</th>
-          <th>正答者</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>N型の電荷</td>
-          <td>「N＝負電荷」なのでN型全体が負に帯電していると思う</td>
-          <td>N型はドナー（陽イオン）と電子が釣り合い、全体は電気的中性</td>
-        </tr>
-        <tr>
-          <td>ダイオードの向き</td>
-          <td>カソード（N側）→アノード（P側）に電流が流れると思う</td>
-          <td>アノード（P側）→カソード（N側）が順方向（電流が流れる向き）</td>
-        </tr>
-        <tr>
-          <td>温度特性</td>
-          <td>「半導体も金属も温度↑なら抵抗↑」と思い込む</td>
-          <td>半導体は温度↑→キャリア増加→抵抗↓（金属とは逆）</td>
-        </tr>
-        <tr>
-          <td>逆バイアスで電流</td>
-          <td>「逆方向なら電流完全ゼロ」と思い込む</td>
-          <td>微小な逆飽和電流が流れる（温度依存あり）</td>
-        </tr>
-        <tr>
-          <td>PN接合の空乏層</td>
-          <td>順バイアスで空乏層が拡大すると思う</td>
-          <td>順バイアスで空乏層は縮小、逆バイアスで拡大</td>
-        </tr>
-      </tbody>
-    </table>
+    <TrapBlock
+      correct="半導体は温度↑→キャリア増加→抵抗↓（NTC）。金属は温度↑→格子振動増加→抵抗↑（PTC）。逆の温度係数を持つ。"
+      trap="半導体も金属も温度↑なら抵抗↑と思い込む（金属の常識を半導体に誤適用する）。"
+      cite="R03問11・H21問11 出題"
+      steps={[
+        "材料の種類を確認する（半導体 or 金属）",
+        "半導体 → 温度↑でキャリア（電子・正孔）が指数的に増加 → 導電率↑ → 抵抗↓（NTC）",
+        "金属 → 温度↑で格子振動が激しくなり電子散乱増加 → 抵抗↑（PTC）。半導体とは逆と∴結論する",
+      ]}
+      wisdom="『半導体は金属と逆』と即宣言する習慣を持つ。サーミスタ（NTC・半導体）と測温抵抗体RTD（PTC・金属）の選定根拠がこの1点に集約される。"
+    />
 
     <MinimumSet
       formulas={[

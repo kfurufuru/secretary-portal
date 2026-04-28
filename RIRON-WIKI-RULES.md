@@ -1109,6 +1109,7 @@ RULE-01の `<MetaStrip>` に渡す3パラメータのうち、`difficulty` と `
 | 2026-04-28 | **RULE-16 全面改訂**（背景色禁止・黄色マーカーのみ許可）。Callout全variant・TrapBlock（正解/誤解/判別）・Analogy・FormulaTable層バッジの`-soft`系背景を`var(--bg-elev)`に統一。`.marker`スパン（黄色グラデ）が唯一許可された色付き背景。`.box-*` CSS クラスも同様に更新。 |
 | 2026-04-28 | **RULE-05 4層化・RULE-06 廃止**（Option 4: TrapBlockに `wisdom`＝正答者の頭の中フィールド追加。「正答者vs誤答者」テーブル廃止し TrapBlock に統合）。重複が構造的に発生不可能となる。TransistorPage v1.3適用：5個のTrapBlockに wisdom 追加（hFE混同・KCL・MOSFET制御方式・飽和領域・IC計算式）、`<h2 id="correct-vs-wrong">` 削除、§6/§7/用語集 のセクション番号を整合。 |
 | 2026-04-28 | **RULE-43（§Nプレフィックス保持・バグパターン・検証手順）・RULE-44（並列エージェント安全ルール）**追加。TransistorPage P1/P2実装で発生した§ストリップバグと並列Edit競合を教訓として体系化。検証コマンドと修正手順を標準化。TransistorPage メタ認知20項目評価P3実装完了（TL;DR・Av符号統一・3定数対比表・用語集拡充・接地方式覚え方・実務橋渡し文）。 |
+| 2026-04-28 | **RULE-45（PageHeader updatedAt 必須化）**追加。全15テーマページに `updatedAt="YYYY.MM.DD"` プロップ・`.page-updated` CSS・`<time>` タグによる最終更新日表示を実装。 |
 
 ---
 
@@ -1496,61 +1497,6 @@ const Tooltip = ({ label, children }) => {
 
 ## RULE-43 §N プレフィックス保持：Edit ツール使用時のバグパターンと検証手順
 
-**why**: サブエージェントが `<span className="h-num">§N</span>` を含む old_string を Edit ツールで処理する際、`§` が無言でストリップされる現象が複数回確認された（TransistorPage P1/P2実装 2026-04-28）。HTML は表示エラーなく動作するため視覚検査では発見できない。
-
-**再現条件**:
-- `<span className="h-num">§N</span>` を old_string に含む Edit を実行したとき
-- 並列エージェント（Haiku + Sonnet 同時実行）でファイルを同時編集したとき（stale read でさらに悪化）
-
-**検証手順**（エージェント編集後に必ず実行）:
-```bash
-grep -n "h-num\">§[1-9]" denken3-riron-wiki.html
-```
-→ ページ内の §N 付き見出しが全件表示されることを確認。欠けているものがあれば下記手順で修正。
-
-**修正手順**（§ が消えていた場合）:
-1. `grep -n 'h-num">[0-9]'` で § なし見出しを特定
-2. 対象行の**直後にある固有コンポーネント**（Analogy・Callout・table header 等）を old_string のアンカーとして使う
-3. `§` を含む正しい見出しへ Edit で修正
-
-```jsx
-{/* BAD: §がストリップされた状態 */}
-<h2 id="principle"><span className="h-num">1</span>原理（なぜ起きるか）</h2>
-
-{/* GOOD: §あり */}
-<h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
-```
-
-**禁止**:
-- `<h2>` 見出し行を old_string に単独で含む Edit（必ず周辺のユニークなコンテキストを含める）
-- 並列 Edit 完了後の § チェックを省略すること
-
----
-
-## RULE-44 並列エージェント：単一ファイル同時編集の安全ルール
-
-**why**: 2エージェントが同じHTMLファイルに対して同時に Edit を実行すると、後発エージェントが「File has been modified since last read」エラーを起こす、または先発エージェントの変更を上書きする。TransistorPage P1/P2実装で2回この問題が発生した。
-
-**ルール**:
-1. **ファイルが同一のとき**: エージェントを並列起動せず直列実行する（1エージェントが完了してから次を起動）
-2. **並列起動が必要なとき**: 各エージェントが触るセクションを明示的に分割し、old_string が物理的に重複しないことを確認する
-3. **複数 Edit バッチを実行するとき**: 先に1行 Read → その後に複数 Edit を直列実行（stale read エラー防止）
-
-**安全パターン**:
-```
-エージェントA: §1〜§3 の範囲のみ
-エージェントB: §4〜§7 の範囲のみ
-→ old_string のアンカー文字列が物理的に重複しない
-```
-
-**禁止**:
-- 同一ファイルに対して2エージェントを完全並列で起動すること
-- ファイル内で複数マッチする可能性がある短い old_string で Edit を実行すること
-
----
-
-## RULE-43 §N プレフィックス保持：Edit ツール使用時のバグパターンと検証手順
-
 **why**: サブエージェント（Haiku / Sonnet）が `<h2 id="xxx"><span className="h-num">§N</span>セクション名</h2>` を含む old_string / new_string を Edit ツールで処理する際、`§` 文字が無言でストリップされる現象が複数回確認された（TransistorPage P1/P2実装 2026-04-28）。生成後に `§` が消えてセクション番号が失われた状態でも HTML は表示エラーなく動作するため、視覚検査では発見できない。
 
 **再現条件**:
@@ -1604,3 +1550,36 @@ grep -n "h-num\">§[1-9]" C:/Users/kfuru/.secretary/denken3-riron-wiki.html
 **禁止**:
 - 同一ファイルに対して2エージェントを「完全並列」で起動すること（必ず直列か範囲分割）
 - old_string が短すぎてファイル内で複数マッチする可能性がある状態で Edit を実行すること
+
+---
+
+## RULE-45 PageHeader — `updatedAt` 必須化
+
+**目的**: 読者がページの鮮度を即座に判断できるようにする。電験対策は法改正・出題傾向の変化を受けるため、更新日の明示は信頼性の担保に直結する。
+
+**必須プロップ**:
+```jsx
+<PageHeader
+  eyebrow="..."
+  title="..."
+  deck="..."
+  meta={[...]}
+  updatedAt="YYYY.MM.DD"   ← 必須（例: "2026.04.28"）
+/>
+```
+
+**表示仕様**:
+- コンポーネント: `PageHeader` の `meta` 直下に `<div className="page-updated">` で表示
+- タグ: `<time dateTime={updatedAt}>最終更新: {updatedAt}</time>`
+- スタイル: `.page-updated { font-size: 11px; color: var(--ink-muted); margin-top: 10px; letter-spacing: 0.04em; }`
+
+**更新タイミング**:
+- ページ内容を実質的に変更したとき（誤字修正・軽微な言い回し変更は任意）
+- `// last-updated:` コメント行と **同じ日付** を保つこと
+
+**適用範囲**: 全15テーマページ（理論Wiki）必須。ポータル・ホームページは `meta` 配列内の `最終更新` 項目で管理するため対象外。
+
+**検証**:
+```bash
+grep -c 'updatedAt=' denken3-riron-wiki.html  # 15件であること
+```
