@@ -314,6 +314,26 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .filter{font-size:12px;padding:6px 12px;border-radius:999px;
   border:1px solid var(--line2);color:var(--ink2);font-family:var(--mono);cursor:pointer}
 .filter.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Sites Guide — 棲み分けルール */
+.sites-guide{margin:0 28px 12px;padding:16px 20px;
+  border:1px solid var(--line2);border-radius:14px;background:var(--surface);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sg-zone{display:flex;flex-direction:column;gap:6px}
+.sg-label{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.sg-label .sg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sg-dot.pub{background:var(--amber)}
+.sg-dot.loc{background:var(--accent)}
+.sg-dot.rule{background:var(--violet)}
+.sg-label span{color:var(--ink2)}
+.sg-items{display:flex;flex-direction:column;gap:3px}
+.sg-item{font-size:11.5px;color:var(--ink3);font-family:var(--mono);
+  padding:3px 0;display:flex;align-items:baseline;gap:6px;line-height:1.4}
+.sg-item::before{content:'→';color:var(--ink4);flex-shrink:0;font-size:10px}
+.sg-rule-item{font-size:11.5px;color:var(--ink3);line-height:1.6;
+  border-left:2px solid oklch(from var(--violet) l c h/.30);padding-left:8px}
+@media(max-width:900px){.sites-guide{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -631,13 +651,43 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <section class="panel" id="sites" style="padding:0">
       <div class="sites-head">
         <h2>Fカンパニー — 全サイト</h2>
+        <!-- フィルタ規約: 未完成サイトは <div class="status"><span class="d amber"></span>WIP</div> で表記すること -->
         <div class="filters">
-          <button class="filter on">All</button>
-          <button class="filter">Live</button>
-          <button class="filter">未完成</button>
-          <button class="filter">ローカル</button>
+          <button class="filter on" data-filter="all">All</button>
+          <button class="filter" data-filter="live">Live</button>
+          <button class="filter" data-filter="wip">未完成</button>
+          <button class="filter" data-filter="local">ローカル</button>
         </div>
       </div>
+      <!-- 棲み分けガイド -->
+      <div class="sites-guide">
+        <div class="sg-zone">
+          <div class="sg-label"><span class="sg-dot pub"></span><span>外部公開 — GitHub Pages</span></div>
+          <div class="sg-items">
+            <div class="sg-item">genai-db &nbsp;生成AIツール・動向DB（他者共有用）</div>
+            <div class="sg-item">ei-wiki &nbsp;電気計装ドメイン知識（WIP）</div>
+            <div class="sg-item">denken-wiki系 &nbsp;電験3種 科目別Wiki</div>
+          </div>
+        </div>
+        <div class="sg-zone">
+          <div class="sg-label"><span class="sg-dot loc"></span><span>内部参照 — ローカル専用</span></div>
+          <div class="sg-items">
+            <div class="sg-item">it-wiki &nbsp;IT用語辞典・深いリファレンス</div>
+            <div class="sg-item">business-skills &nbsp;業務スキル・フレームワーク</div>
+            <div class="sg-item">claude-code-guide &nbsp;ツール操作ガイド</div>
+          </div>
+        </div>
+        <div class="sg-zone">
+          <div class="sg-label"><span class="sg-dot rule"></span><span>棲み分けルール</span></div>
+          <div class="sg-rule-item">
+            <b>外部公開</b> → GitHub Pages。他者に見せる・polish済み。<br>
+            <b>内部参照</b> → ローカルHTML。自分専用・深い解説・アナロジー重視。<br>
+            <b>AI用語重複</b> → genai-db が正。it-wiki は概念理解用。<br>
+            <b>追記先判断</b> → 「共有したい」→ GH Pages / 「自分で使う」→ ローカル
+          </div>
+        </div>
+      </div>
+
       <div class="sites-cols">
 
         <div class="sec">
@@ -660,6 +710,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           <div class="stack">
             <a class="site" href="dashboard.html"><div class="ico">01</div><div class="body"><b>学習</b><small>primary</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="knowledge/knowledge-graph.html"><div class="ico">02</div><div class="body"><b>知識マップ</b><small>graph view</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="knowledge/knowledge-graph-report.html"><div class="ico" style="font-size:10px">REP</div><div class="body"><b>グラフ解析レポート</b><small>25 nodes / 51 edges</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>2026-04-28</div></a>
             <a class="site" href="ai-news/ai-news/dashboard.html" target="_blank"><div class="ico">03</div><div class="body"><b>AI News</b><small>07:00 JST</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="trending-news/index.html"><div class="ico">04</div><div class="body"><b>🔥 バズニュース</b><small>07:00 daily</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>NEW</div></a>
           </div>
@@ -689,6 +740,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
             <a class="site" href="links.html"><div class="ico">08</div><div class="body"><b>Trending Links</b><small>skills.sh · GitHub · AI tools</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="business-skills/karada.html"><div class="ico">09</div><div class="body"><b>体の最適化</b><small>デトックス × 筋トレ</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
             <a class="site" href="business-skills/fast-slow-manager.html"><div class="ico">10</div><div class="body"><b>仕事が早い/遅い管理職</b><small>行動パターン比較</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>LIVE</div></a>
+            <a class="site" href="capability-dashboard.html"><div class="ico">11</div><div class="body"><b>個人能力ダッシュボード</b><small>4ピラー × スキル進捗</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>NEW</div></a>
+            <a class="site" href="business-skills/gengo-ka-no-chikara.html"><div class="ico">12</div><div class="body"><b>言語化の力</b><small>再ラベリング × 感情粒度</small></div><div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="status"><span class="d"></span>NEW</div></a>
           </div>
         </div>
 
@@ -752,10 +805,31 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     });
   });
 
-  // Filters (visual only)
+  // Site filters: All / Live / WIP / Local
+  // 判定: WIP = .status .d.amber または status text に "WIP" / Local = 相対パス または http://localhost
+  function siteCategory(site){
+    var statusEl = site.querySelector(".status");
+    var statusText = statusEl ? statusEl.textContent : "";
+    var isWip = !!site.querySelector(".status .d.amber") || /WIP/i.test(statusText);
+    var href = site.getAttribute("href") || "";
+    var isExternal = /^https?:\/\//i.test(href) && !/^http:\/\/localhost/i.test(href);
+    return { wip:isWip, live:!isWip, local:!isExternal };
+  }
+  function applyFilter(kind){
+    document.querySelectorAll(".sites-cols .site").forEach(function(s){
+      var c = siteCategory(s);
+      var show = kind==="all" || (kind==="live" && c.live) || (kind==="wip" && c.wip) || (kind==="local" && c.local);
+      s.style.display = show ? "" : "none";
+    });
+    document.querySelectorAll(".sites-cols .sec").forEach(function(sec){
+      var anyVisible = Array.prototype.some.call(sec.querySelectorAll(".site"),function(a){return a.style.display!=="none";});
+      sec.style.display = anyVisible ? "" : "none";
+    });
+  }
   document.querySelectorAll(".filter").forEach(function(f){
     f.addEventListener("click",function(){
       f.parentElement.querySelectorAll(".filter").forEach(function(x){x.classList.toggle("on",x===f)});
+      applyFilter(f.dataset.filter || "all");
     });
   });
 })();
