@@ -381,7 +381,12 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .page-meta-item strong { color: var(--ink-soft); font-weight: 600; }
 .page-updated { font-size: 11px; color: var(--ink-muted); margin-top: 10px; letter-spacing: 0.04em; }
 
-.content { max-width: var(--content-max); }
+.content {
+  max-width: var(--content-max);
+  overflow-wrap: anywhere;
+  word-break: auto-phrase;
+  line-break: strict;
+}
 
 .content h2 {
   font-family: var(--font-serif);
@@ -416,10 +421,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   margin: 22px 0 8px;
   color: var(--ink);
 }
-.content p {
-  margin: 0 0 14px;
-  text-wrap: pretty;
-}
+.content p,
+.content li,
+.content td { text-wrap: pretty; }
+.content p { margin: 0 0 14px; }
 .content p strong { color: var(--ink); font-weight: 700; }
 
 /* 論述で問われるポイント — 黄色マーカー */
@@ -559,6 +564,12 @@ table.data-table th {
 }
 table.data-table td.num, table.data-table th.num { font-family: var(--font-mono); text-align: right; }
 table.data-table tr:nth-child(even) td { background: color-mix(in oklab, var(--bg-sunken) 50%, transparent); }
+table.data td,
+table.data-table td {
+  overflow-wrap: anywhere;
+  word-break: auto-phrase;
+  line-break: strict;
+}
 
 /* ============================================================ TOC (right rail) */
 
@@ -996,6 +1007,24 @@ window.WIKI_DATA = {
         { id: "trap-patterns",   num: "7.1", title: "引っかけパターン集（37個）", freq: null, featured: true },
         { id: "last-3days",      num: "7.2", title: "直前3日戦略",                freq: null },
         { id: "retake-strategy", num: "7.3", title: "再受験分析と戦略",           freq: null },
+      ],
+    },
+    {
+      id: "ch8",
+      num: "08",
+      title: "効率的な勉強の仕方",
+      pages: [
+        { id: "study-purpose",         num: "8.1",  title: "勉強の目的",           freq: null },
+        { id: "study-cycle",           num: "8.2",  title: "基本の勉強サイクル",   freq: null },
+        { id: "concentration",         num: "8.3",  title: "集中力管理",           freq: null },
+        { id: "90min-session",         num: "8.4",  title: "90分勉強セット",      freq: null },
+        { id: "error-classification",  num: "8.5",  title: "間違い分類",           freq: null },
+        { id: "review-timing",         num: "8.6",  title: "復習タイミング",       freq: null },
+        { id: "anti-patterns",         num: "8.7",  title: "効率の悪い勉強法",     freq: null },
+        { id: "denken3-methods",       num: "8.8",  title: "電験3種向けの勉強法", freq: null },
+        { id: "break-strategy",        num: "8.9",  title: "休憩の取り方",         freq: null },
+        { id: "no-motivation",         num: "8.10", title: "やる気がない日の勉強法", freq: null },
+        { id: "study-summary",         num: "8.11", title: "まとめ",               freq: null },
       ],
     },
     {
@@ -2219,7 +2248,7 @@ const Callout = ({ variant = "info", title, children }) => {
           {c.icon}
         </span>
       )}
-      <div style={{ color: "var(--ink)", lineHeight: "1.75" }}>{children}</div>
+      <div style={{ color: "var(--ink)", lineHeight: "1.75", overflowWrap: "anywhere" }}>{children}</div>
     </aside>
   );
 };
@@ -2257,8 +2286,8 @@ const FormulaTable = ({ layer = "A", rows = [] }) => {
         <table className="data">
           <thead>
             <tr>
-              <th style={{ width: "28%" }}>公式</th>
-              <th style={{ width: "28%" }}>意味</th>
+              <th style={{ width: "24%" }}>公式</th>
+              <th style={{ width: "32%" }}>意味</th>
               <th style={{ width: "22%" }}>使える条件</th>
               <th style={{ width: "22%" }}>使えない条件</th>
             </tr>
@@ -7839,13 +7868,17 @@ const OpAmpPage = ({ onNav }) => (
 
     <h2 id="principle"><span className="h-num">1</span>原理（なぜ起きるか）</h2>
     <Analogy type="ideal-amplifier" icon="🔌">
-      オペアンプは「2つの入力の差を無限大に増幅する素子」。そのままでは出力が飽和するため、出力の一部を入力に戻す<strong>負帰還（フィードバック）</strong>をかけて安定した増幅回路を作る。
+      オペアンプは「2つの入力の差を無限大に増幅する素子」。そのままでは出力が飽和するため、出力の一部を入力に戻す<span className="marker">負帰還（フィードバック）</span>をかけて安定した増幅回路を作る。
     </Analogy>
+    <figure style={{margin:"0.8rem 0",textAlign:"center"}}>
+      <img src="img/op-amp/op-amp-symbol.svg" alt="演算増幅器（Op-amp）の基本シンボル：差動入力・開ループ利得A・仮想短絡の概念" style={{width:"100%",maxWidth:"420px",display:"block",margin:"0 auto",borderRadius:"6px",background:"white"}}/>
+      <figcaption style={{fontSize:"0.8rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}>図: 演算増幅器の基本シンボル（Vo = A×(V+−V−)・閉ループ時は仮想短絡 V+≈V−）</figcaption>
+    </figure>
     <Callout variant="tip" title="5秒で思い出す">
-      負帰還オペアンプの鉄則：仮想接地（V+ ≈ V-）。反転増幅 Av = -Rf/R1。非反転増幅 Av = 1 + Rf/R1。入力インピーダンスは理想的に無限大、出力インピーダンスはゼロ。
+      負帰還オペアンプの鉄則：<span className="marker">仮想接地（V+ ≈ V-）</span>。<span className="marker">反転増幅 Av = -Rf/R1</span>。<span className="marker">非反転増幅 Av = 1 + Rf/R1</span>。入力インピーダンスは理想的に無限大、出力インピーダンスはゼロ。
     </Callout>
     <p>
-      負帰還が働くと、＋入力と－入力の電圧差はほぼゼロになる（<strong>仮想接地 / イマジナリーショート</strong>）。この近似がオペアンプ回路の計算を一気に簡単にする。計算の手順：「仮想接地で電圧を決める → キルヒホッフで電流を追う → 出力電圧を求める」の3ステップ。
+      負帰還が働くと、＋入力と－入力の電圧差はほぼゼロになる（<span className="marker">仮想接地</span> / <span className="marker">イマジナリーショート</span>）。この近似がオペアンプ回路の計算を一気に簡単にする。計算の手順：「<span className="marker">仮想接地で電圧を決める</span> → キルヒホッフで電流を追う → 出力電圧を求める」の3ステップ。
     </p>
 
     <h2 id="formulas"><span className="h-num">2</span>公式</h2>
@@ -7922,9 +7955,9 @@ const OpAmpPage = ({ onNav }) => (
         <tr><th>項目</th><th>反転増幅</th><th>非反転増幅</th></tr>
       </thead>
       <tbody>
-        <tr><td>ゲイン公式</td><td>Av = -Rf/Ri（マイナス）</td><td>Av = 1+Rf/Ri（プラス）</td></tr>
-        <tr><td>位相</td><td>反転（180°ずれる）</td><td>同位相（ずれなし）</td></tr>
-        <tr><td>入力インピーダンス</td><td>Ri（比較的低い）</td><td>ほぼ無限大（高インピーダンス）</td></tr>
+        <tr><td>ゲイン公式</td><td><span className="marker">Av = -Rf/Ri（マイナス）</span></td><td><span className="marker">Av = 1+Rf/Ri（プラス）</span></td></tr>
+        <tr><td>位相</td><td><span className="marker">反転（180°ずれる）</span></td><td>同位相（ずれなし）</td></tr>
+        <tr><td>入力インピーダンス</td><td>Ri（比較的低い）</td><td><span className="marker">ほぼ無限大（高インピーダンス）</span></td></tr>
         <tr><td>ゲイン範囲</td><td>|Av| は 0 以上</td><td>Av ≥ 1（1未満にできない）</td></tr>
         <tr>
           <td><strong>支配因子</strong></td>
@@ -7952,6 +7985,29 @@ const OpAmpPage = ({ onNav }) => (
         </tr>
       </tbody>
     </table>
+
+    <h3>3つの基本増幅回路</h3>
+    <p style={{fontSize:"0.95rem",margin:"0.6rem 0"}}>帰還抵抗の接続方法によって<strong>反転・非反転・バッファ</strong>の3種類に分かれる。帰還比が利得を決定する。</p>
+    <div style={{display:"flex",gap:"0.6rem",margin:"0.8rem 0 0.4rem",alignItems:"flex-start"}}>
+      <figure style={{flex:1,margin:0,textAlign:"center"}}>
+        <div style={{height:"180px",display:"flex",alignItems:"center",justifyContent:"center",background:"white",borderRadius:"6px",overflow:"hidden"}}>
+          <img src="img/op-amp/inverting-amp.svg" alt="反転増幅回路（Ri・Rf・Op-amp）" style={{maxWidth:"100%",maxHeight:"180px",objectFit:"contain"}}/>
+        </div>
+        <figcaption style={{fontSize:"0.75rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}><span className="marker">反転増幅</span><br/>Av = −Rf/Ri</figcaption>
+      </figure>
+      <figure style={{flex:1,margin:0,textAlign:"center"}}>
+        <div style={{height:"180px",display:"flex",alignItems:"center",justifyContent:"center",background:"white",borderRadius:"6px",overflow:"hidden"}}>
+          <img src="img/op-amp/noninverting-amp.svg" alt="非反転増幅回路（R1・Rf・Op-amp）" style={{maxWidth:"100%",maxHeight:"180px",objectFit:"contain"}}/>
+        </div>
+        <figcaption style={{fontSize:"0.75rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}><span className="marker">非反転増幅</span><br/>Av = 1 + Rf/R1</figcaption>
+      </figure>
+      <figure style={{flex:1,margin:0,textAlign:"center"}}>
+        <div style={{height:"180px",display:"flex",alignItems:"center",justifyContent:"center",background:"white",borderRadius:"6px",overflow:"hidden"}}>
+          <img src="img/op-amp/voltage-follower.svg" alt="ボルテージフォロワ（バッファ）回路" style={{maxWidth:"100%",maxHeight:"180px",objectFit:"contain"}}/>
+        </div>
+        <figcaption style={{fontSize:"0.75rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}><span className="marker">ボルテージフォロワ</span><br/>Av = 1（バッファ）</figcaption>
+      </figure>
+    </div>
 
     <h2 id="examples"><span className="h-num">4</span>例題</h2>
     <Callout variant="note" title="例題1：反転増幅回路のゲイン計算">
@@ -7990,7 +8046,7 @@ const OpAmpPage = ({ onNav }) => (
       wisdom="反転増幅を見た瞬間に『マイナスをつける』と宣言する。符号を先に確定してから計算することで位相の符号ミスをゼロにできる。"
     />
     <TrapBlock
-      correct="仮想接地(V+=V-)は負帰還回路でのみ成立。コンパレータ・正帰還回路には使えない。"
+      correct={<><span className="marker">仮想接地（V+=V-）</span>は負帰還回路でのみ成立。コンパレータ・正帰還回路には使えない。</>}
       trap="オペアンプが使われていれば無条件にV+=V-を適用する。"
       cite="R05下 問13・R01 問13 出題"
       steps={[
@@ -8054,7 +8110,7 @@ const OpAmpPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="exam-history"><span className="h-num">7.</span>出題実績</h2>
+    <h2 id="exam-history"><span className="h-num">6.</span>出題実績</h2>
     <table className="data-table">
       <thead>
         <tr><th>年度</th><th>問</th><th>形式</th><th>何が問われたか</th></tr>
@@ -8087,7 +8143,7 @@ const OpAmpPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="output-training"><span className="h-num">8.</span>アウトプットトレーニング</h2>
+    <h2 id="output-training"><span className="h-num">7.</span>アウトプットトレーニング</h2>
     <details>
       <summary>Q1（定義）：仮想接地（イマジナリショート）とは何か。なぜ成立するか。</summary>
       <p>負帰還がかかる理想オペアンプでは開ループ利得 A_OL=∞ のため、出力が有限値で安定するには 2 入力電圧差がほぼゼロでなければならない。これにより V＋ ≈ V− が成立する。<strong>負帰還回路でのみ有効</strong>で、コンパレータや正帰還（シュミットトリガ）には適用できない。</p>
@@ -8107,7 +8163,7 @@ const OpAmpPage = ({ onNav }) => (
       ①出力が電源電圧に張り付き → 負帰還ループ断線または飽和。②V＋ と V− をテスターで測って差が数 mV 以上 → 仮想接地崩壊（帰還抵抗劣化・部品故障）。③ノイズが急増 → CMRR 低下（差動入力抵抗の対称性が崩れた）。
     </Callout>
 
-    <h2 id="related"><span className="h-num">9.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">8.</span>関連項目</h2>
     <ul>
       <li>直流回路（2.1）：仮想接地後の電流計算は KVL/KCL と同じ</li>
       <li>電気・電子計測（6.1）：計装アンプとして計測器に内蔵</li>
@@ -8853,11 +8909,15 @@ const SemiconductorPage = ({ onNav }) => (
 
     <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
     <Analogy type="valve" icon="🔧">
-      ダイオードは「電流の弁」。弁は一方向には水を通し、逆方向には通さない。PN接合のダイオードはアノード（P側）が高電位のときだけ電流を流し、逆方向は遮断する。
-      純粋なシリコンはほぼ絶縁体だが、微量の不純物（ドーパント）を加えると電気的性質が激変する。これがドーピング。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。
+      ダイオードは「<span className="marker">電流の弁</span>」。弁は一方向には水を通し、逆方向には通さない。<span className="marker">PN接合</span>のダイオードはアノード（P側）が高電位のときだけ電流を流し、逆方向は遮断する。
+      純粋なシリコンはほぼ絶縁体だが、微量の不純物（ドーパント）を加えると電気的性質が激変する。これが<span className="marker">ドーピング</span>。N型とP型を接合させると、電流を一方向にしか通さないダイオードができる。
     </Analogy>
+    <figure style={{margin:"0.8rem 0",textAlign:"center"}}>
+      <img src="img/semiconductor/pn-junction.svg" alt="PN接合ダイオードの構造：P型・N型・空乏層・順バイアスで縮小・逆バイアスで拡大" style={{width:"100%",maxWidth:"440px",display:"block",margin:"0 auto",borderRadius:"6px",background:"white"}}/>
+      <figcaption style={{fontSize:"0.8rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}>図: PN接合ダイオードの構造（空乏層・内蔵電位・順/逆バイアス状態）</figcaption>
+    </figure>
     <Callout variant="tip" title="5秒で思い出す">
-      半導体 ＝ 不純物で性質が変わる「変化できる素材」。PN接合 ＝ 電流の一方通行弁。
+      半導体 ＝ 不純物で性質が変わる「変化できる素材」。<span className="marker">PN接合 ＝ 電流の一方通行弁</span>。
     </Callout>
     <p>半導体は不純物で性質が変わる「変化できる素材」。PN接合は電流の一方通行弁として機能し、整流回路・定電圧回路・発光素子など幅広く応用される。</p>
 
@@ -8879,6 +8939,12 @@ const SemiconductorPage = ({ onNav }) => (
     ]} />
     <Callout variant="note" title="バラクタダイオードの原理（R02 出題）">
       逆バイアス電圧 <Eq tex="V_R" /> を大きくするほど空乏層が広がり、静電容量 <Eq tex="C" /> が小さくなる（<Eq tex="C \propto \dfrac{1}{\sqrt{V_R}}" />）。バラクタダイオードは逆バイアスで使う。順バイアスをかけると電流が流れてしまい可変容量素子として機能しない。
+    </Callout>
+    <Callout variant="note" title="ツェナーダイオード（定電圧ダイオード）の原理">
+      ツェナーダイオードは<span className="marker">逆バイアス</span>で使う定電圧素子。逆バイアス電圧を大きくしても、ツェナー電圧 <Eq tex="V_Z" /> という一定値以上では電圧が上昇しない（<span className="marker">逆降伏特性</span>）。この性質を使って電源回路の出力電圧を一定に保つレギュレータとして機能する。バラクタダイオード（逆バイアスで容量）とは異なり、ツェナーは逆バイアスで<span className="marker">電流を流して定電圧を発生</span>させる。
+    </Callout>
+    <Callout variant="note" title="レーザーダイオード（LD）の原理と LED との違い">
+      レーザーダイオード（LD）はPN接合に注入された電流が<span className="marker">光を刺激放出</span>し、コヒーレントな単色レーザー光を発生させる。LED（発光ダイオード）との主な違いは：(1) <span className="marker">LED は非コヒーレント（ランダム）な光</span>、LD はコヒーレント（位相が揃った）光。(2) LED の半値幅は数十 nm、LD は数 nm 以下の極めて狭い波長。(3) 用途：LD は光ファイバー通信・LiDAR・光学ピックアップ等、指向性と高い輝度が求められる場面。電験3種では深掘りされないが、応用範囲の認知が重要。
     </Callout>
     <Callout variant="note" title="太陽電池の動作原理（R01・H20 出題）">
       太陽電池はPN接合ダイオードに光を当てたもの。光が当たると電子・正孔対が生成され、PN接合の内蔵電界によって電子はN側へ、正孔はP側へ引き寄せられる。P側がプラス（高電位）、N側がマイナス（低電位）になる。光起電力効果（フォトボルタイック効果）と光電効果（金属表面から電子が飛び出す）を混同しないこと。
@@ -8902,8 +8968,8 @@ const SemiconductorPage = ({ onNav }) => (
         </tr>
         <tr>
           <td>多数キャリア</td>
-          <td><span className="marker">電子（負の電荷）</span></td>
-          <td><span className="marker">正孔（ホール、正の電荷）</span></td>
+          <td><span className="marker">電子</span>（負の電荷）</td>
+          <td><span className="marker">正孔</span>（ホール、正の電荷）</td>
         </tr>
         <tr>
           <td>少数キャリア</td>
@@ -8912,8 +8978,8 @@ const SemiconductorPage = ({ onNav }) => (
         </tr>
         <tr>
           <td>不純物の呼称</td>
-          <td><span className="marker">ドナー（電子を供与する）</span></td>
-          <td><span className="marker">アクセプター（電子を受け取る）</span></td>
+          <td><span className="marker">ドナー</span>（電子を供与する）</td>
+          <td><span className="marker">アクセプター</span>（電子を受け取る）</td>
         </tr>
         <tr>
           <td>電気的中性</td>
@@ -8965,6 +9031,11 @@ const SemiconductorPage = ({ onNav }) => (
         </tr>
       </tbody>
     </table>
+    <h3>PN接合ダイオードの応用：ブリッジ整流回路</h3>
+    <figure style={{margin:"0.8rem 0",textAlign:"center"}}>
+      <img src="img/semiconductor/bridge-rectifier.svg" alt="4素子ブリッジ整流回路：ダイオード4本をひし形配置、AC入力から脈流DC出力を得る" style={{width:"100%",maxWidth:"400px",display:"block",margin:"0 auto",borderRadius:"6px",background:"white"}}/>
+      <figcaption style={{fontSize:"0.8rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}>図: ブリッジ整流回路（全波整流。Vavg = 2Vm/π）</figcaption>
+    </figure>
 
     <h3>真性半導体 vs 不純物半導体</h3>
     <table className="data-table">
@@ -9016,13 +9087,13 @@ const SemiconductorPage = ({ onNav }) => (
       <tbody>
         <tr>
           <td>温度↑ → 抵抗</td>
-          <td><span className="marker">減少（キャリア増加）</span></td>
+          <td><span className="marker">減少</span>（キャリア増加）</td>
           <td>増加（格子振動で散乱増加）</td>
         </tr>
         <tr>
           <td>温度係数</td>
-          <td><span className="marker">負（NTC）</span></td>
-          <td><span className="marker">正（PTC）</span></td>
+          <td><span className="marker">NTC</span>（負）</td>
+          <td><span className="marker">PTC</span>（正）</td>
         </tr>
         <tr>
           <td>応用</td>
@@ -9191,7 +9262,7 @@ const SemiconductorPage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="exam-history"><span className="h-num">7.</span>出題実績</h2>
+    <h2 id="exam-history"><span className="h-num">6.</span>出題実績</h2>
     <table className="data-table">
       <thead>
         <tr>
@@ -9229,7 +9300,7 @@ const SemiconductorPage = ({ onNav }) => (
       </tbody>
     </table>
 
-    <h2 id="output-training"><span className="h-num">8.</span>アウトプットトレーニング</h2>
+    <h2 id="output-training"><span className="h-num">7.</span>アウトプットトレーニング</h2>
     <details>
       <summary>Q1（定義）：N型半導体の多数キャリアと不純物（ドーパント）の名前は？全体の電荷状態は？</summary>
       <p>多数キャリアは<strong>自由電子（負電荷）</strong>、ドーパントは<strong>ドナー</strong>（5価のリン・ヒ素・アンチモン）。ドナーが供与した電子と陽イオン化したドナー核が釣り合うため、N型全体は<strong>電気的中性</strong>。「N＝Negative carrier」であり「物質が負に帯電」ではない。</p>
@@ -9249,7 +9320,7 @@ const SemiconductorPage = ({ onNav }) => (
       ①整流回路の出力電圧低下（24V→18V等）→ ブリッジダイオードの短絡/開放を1本ずつ V_F 測定。②盤内が異常に熱い・焦げ臭 → ダイオード過電流／逆飽和電流増大。③制御電源リップル増加 → 平滑コンデンサ容量抜けまたは整流子故障。④サーミスタ測温値が常温で抵抗値ズレ → NTC 特性劣化（半導体経年）。
     </Callout>
 
-    <h2 id="hall"><span className="h-num">9.</span>🌡️ ホール効果・熱起電力（★★★★★）</h2>
+    <h2 id="hall"><span className="h-num">8.</span>🌡️ ホール効果・熱起電力（★★★★★）</h2>
     <h3>ゼーベック効果とペルチェ効果</h3>
     <table className="data-table">
       <thead>
@@ -9327,7 +9398,7 @@ const SemiconductorPage = ({ onNav }) => (
       <li>位置・回転検出（ブラシレスモータの回転子位置検出）</li>
     </ul>
 
-    <h2 id="photoelectric"><span className="h-num">10.</span>電子放出と光電効果</h2>
+    <h2 id="photoelectric"><span className="h-num">9.</span>電子放出と光電効果</h2>
     <h3>電子放出の4種類</h3>
     <table className="data-table">
       <thead>
@@ -9371,7 +9442,7 @@ const SemiconductorPage = ({ onNav }) => (
       光の強さ＝光子（フォトン）の数。1個の光子のエネルギーは <Eq tex="h\\nu" /> で振動数のみで決まり、光の強さには関係しない。振動数 <Eq tex="\\nu {'<'} \\nu_0" /> なら光をいくら強くしても光電子は飛び出さない。振動数一定で光を強くすると光電子の数は増えるが、最大運動エネルギー <Eq tex="K_0" /> は変わらない。振動数を上げると <Eq tex="K_0" /> が増加する。
     </Callout>
 
-    <h2 id="related"><span className="h-num">11.</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">10.</span>関連項目</h2>
     <ul>
       <li>直流回路（2.1）：自由電子・正孔の動きを電場で説明する基礎</li>
       <li>電磁力（1.X）：ホール効果のローレンツ力の根拠</li>
@@ -9385,6 +9456,483 @@ const SemiconductorPage = ({ onNav }) => (
     </p>
   </>
 );
+
+
+/* ============================================================================
+   4. StudyEfficiencyPage  (効率的な勉強の仕方 — 11ページ)
+   ============================================================================ */
+
+const StudyPurposePage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.1 勉強の目的"
+      deck="「読んだ量」と「解けるようになった量」は別物。勉強の本質は「インプット→アウトプット→反復」。最初に目的を明確にして、効率的な勉強サイクルを回す。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "study-purpose", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="purpose"><span className="h-num">1</span>勉強の目的</h2>
+      <Callout variant="tip" title="重要な区別">
+        <strong>「読んだ量」≠「解けるようになった量」</strong><br/>
+        参考書を100回読んでも、過去問が解けなければ試験には落ちる。勉強の本質は「理解→問題演習→間違い分析→復習」の反復。
+      </Callout>
+      <p>電験3種の合格には「6割以上正解」が必須。全分野を完璧に理解する必要はなく、<strong>重点分野で確実に点を取ること</strong>が戦略。</p>
+      <h3>効率的な勉強の3ステップ</h3>
+      <ol>
+        <li><strong>インプット</strong>：基本原理を参考書・動画で理解</li>
+        <li><strong>アウトプット</strong>：過去問を解いて、その場での正答率を記録</li>
+        <li><strong>反復</strong>：間違えた問題を分析し、翌週に再度解く</li>
+      </ol>
+      <Callout variant="warn" title="よくある間違い">
+        同じ問題を何度も解くだけ（④の繰り返し）では、新出問題に対応できない。同じ論点・別数値の問題を解く「類題演習」が必須。
+      </Callout>
+      <PageNav
+        next={{ id: "study-cycle", title: "8.2 基本の勉強サイクル" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const StudyCyclePage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.2 基本の勉強サイクル"
+      deck="効率的な勉強は「6ステップのサイクル」を回すこと。1セッション（60〜90分）に1サイクルを完成させる。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "study-cycle", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="cycle"><span className="h-num">1</span>6ステップ勉強サイクル</h2>
+      <table className="data-table">
+        <thead>
+          <tr><th>Step</th><th>内容</th><th>時間</th><th>狙い</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td>テーマ設定</td><td>2分</td><td>「今日は直流回路の3問」と限定</td></tr>
+          <tr><td><strong>2</strong></td><td>過去問読む</td><td>3分</td><td>問題文から「何の論点か」を判定</td></tr>
+          <tr><td><strong>3</strong></td><td>自分で解く</td><td>15分</td><td>制限時間内に手を動かす（答え見るな）</td></tr>
+          <tr><td><strong>4</strong></td><td>答え照合</td><td>2分</td><td>正誤判定・理由を記録</td></tr>
+          <tr><td><strong>5</strong></td><td>間違い分析</td><td>15分</td><td>「なぜ間違えたのか」を5パターン分類</td></tr>
+          <tr><td><strong>6</strong></td><td>復習計画</td><td>3分</td><td>翌週の復習タイミングを決定</td></tr>
+        </tbody>
+      </table>
+      <Callout variant="tip" title="1問の目安時間">
+        <strong>合計40分 / 1問</strong>（Step 1-6を含む）。高速化できたら「Step 3を12分に短縮 → 別の論点に時間を回す」など調整。
+      </Callout>
+      <PageNav
+        prev={{ id: "study-purpose", title: "8.1 勉強の目的" }}
+        next={{ id: "concentration", title: "8.3 集中力管理" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const ConcentrationPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.3 集中力管理"
+      deck="人間の集中力は60〜90分が限界。その後は急低下する。短い学習セッションを何度も回す戦略が効果的。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "8分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "concentration", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="focus"><span className="h-num">1</span>集中力の時間帯</h2>
+      <ul>
+        <li><strong>0〜30分</strong>：準備段階。集中力が上昇中</li>
+        <li><strong>30〜60分</strong>：ピーク。最高の集中力が続く</li>
+        <li><strong>60〜90分</strong>：持続段階。集中力は維持だが低下開始</li>
+        <li><strong>90分以上</strong>：急低下。効率が一気に下がる</li>
+      </ul>
+      <Callout variant="tip" title="推奨セッション">
+        <strong>60〜90分の学習セッションを1日2〜3回</strong>。間に10〜15分の休憩を挟む。ダラダラ3時間より「集中×3回 × 60分」が効果的。
+      </Callout>
+      <PageNav
+        prev={{ id: "study-cycle", title: "8.2 基本の勉強サイクル" }}
+        next={{ id: "90min-session", title: "8.4 90分勉強セット" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const Session90MinPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.4 90分勉強セット"
+      deck="「60〜90分 × 1セッション」の最適な組み立て方。テーマ限定 → インプット → アウトプット → 復習計画の流れで1セッションを完結させる。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "90min-session", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="session"><span className="h-num">1</span>90分セッションの理想構成</h2>
+      <table className="data-table">
+        <thead>
+          <tr><th>時間</th><th>内容</th><th>目的</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0〜5分</td><td>テーマ絞込み（今日やること明確化）</td><td>心理的準備</td></tr>
+          <tr><td>5〜25分</td><td>参考書・動画（インプット）</td><td>基本原理の確認</td></tr>
+          <tr><td>25〜75分</td><td>過去問3問×（解く→分析→記録）</td><td>類題演習・パターン把握</td></tr>
+          <tr><td>75〜85分</td><td>間違い分析・分類</td><td>弱点の見える化</td></tr>
+          <tr><td>85〜90分</td><td>復習計画（翌週のタイミング決定）</td><td>反復学習の準備</td></tr>
+        </tbody>
+      </table>
+      <Callout variant="tip" title="ポイント">
+        1セッション内で「理解→問題→分析」を完結させ、その日のうちに「次いつ復習するか」を決める。この連続性が記憶定着を左右。
+      </Callout>
+      <PageNav
+        prev={{ id: "concentration", title: "8.3 集中力管理" }}
+        next={{ id: "error-classification", title: "8.5 間違い分類" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const ErrorClassificationPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.5 間違い分類"
+      deck="「同じミスを繰り返す」を防ぐため、間違いを5つのパターンに分類して対策を立てる。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "12分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "error-classification", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="errors"><span className="h-num">1</span>5つの間違いパターン</h2>
+      <table className="data-table">
+        <thead>
+          <tr><th>パターン</th><th>特徴</th><th>対策</th><th>再学習期間</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>①理解不足</strong></td><td>原理がわかっていない</td><td>教科書 / 動画で再学習</td><td>1週間後</td></tr>
+          <tr><td><strong>②計算ミス</strong></td><td>手順は合っているが計算間違い</td><td>単位・有効数字・順序を確認</td><td>3日後</td></tr>
+          <tr><td><strong>③問題読み間違い</strong></td><td>問題文を誤解した</td><td>問題文の「求めよ」を明確化</td><td>2日後</td></tr>
+          <tr><td><strong>④選択肢の落とし穴</strong></td><td>正解の周辺選択肢に騙された</td><td>選択肢ごとに「なぜ外れるか」を記録</td><td>2日後</td></tr>
+          <tr><td><strong>⑤単なるケアレスミス</strong></td><td>わかっているのに書き間違い</td><td>丁寧に書く、チェック時間確保</td><td>当日中に再演習</td></tr>
+        </tbody>
+      </table>
+      <Callout variant="warn" title="重要">
+        <strong>①理解不足は最も危険</strong>。これが本当の弱点。②〜⑤は「本番までに確実に修正できる」レベルだが、①は時間がかかる。早期に発見することが鍵。
+      </Callout>
+      <PageNav
+        prev={{ id: "90min-session", title: "8.4 90分勉強セット" }}
+        next={{ id: "review-timing", title: "8.6 復習タイミング" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const ReviewTimingPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.6 復習タイミング"
+      deck="「いつ復習するか」の最適スケジュール。エビングハウスの忘却曲線に基づく反復学習計画。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "review-timing", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="review"><span className="h-num">1</span>推奨復習スケジュール</h2>
+      <ul>
+        <li><strong>当日</strong>：解いた直後に間違い分析（最も記憶が新しい）</li>
+        <li><strong>2日後</strong>：パターン確認（「なぜ間違えたのか」を思い出す）</li>
+        <li><strong>1週間後</strong>：再度全問解く（頭から記憶が薄れるタイミング）</li>
+        <li><strong>2週間後</strong>：別パターン問題に挑戦（類題で同じ論点を解く）</li>
+        <li><strong>試験前</strong>：全体復習（1週間前から毎日の見直し）</li>
+      </ul>
+      <Callout variant="tip" title="効率化のコツ">
+        <strong>暗記に頼らない</strong>。復習は「問題を解き直す」のが最強。選択肢を変えた類題を解くことで「論点の理解度」が試される。
+      </Callout>
+      <PageNav
+        prev={{ id: "error-classification", title: "8.5 間違い分類" }}
+        next={{ id: "anti-patterns", title: "8.7 効率の悪い勉強法" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const AntiPatternsPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.7 効率の悪い勉強法"
+      deck="「やってはいけない勉強」7パターン。これらを避けることで、勉強時間を半減できる。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "anti-patterns", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="avoid"><span className="h-num">1</span>避けるべき勉強法</h2>
+      <ul>
+        <li><strong>①参考書をただ読む</strong> → 手を動かさないと記憶に残らない</li>
+        <li><strong>②同じ問題を何度も解く</strong> → 答えを暗記してしまい、新出問題に対応できない</li>
+        <li><strong>③得意分野ばかり勉強</strong> → 本番では苦手分野で失点。確率や難易度に基づく優先付けが必須</li>
+        <li><strong>④復習なしで次々進む</strong> → 忘却曲線に逆らっている。2週間後には50%を忘れている</li>
+        <li><strong>⑤長時間ダラダラ勉強</strong> → 90分以上は効率が低下。短時間集中の方が効果的</li>
+        <li><strong>⑥答え丸暗記</strong> → 数値が変わると解けない。論点を理解することが本質</li>
+        <li><strong>⑦試験直前に新しい問題に手を出す</strong> → 不安が増すだけ。直前は復習のみ</li>
+      </ul>
+      <Callout variant="warn" title="最大の地雷">
+        <strong>①+②の組み合わせ：参考書を読む → 同じ問題を何度も解く</strong>。これは最も時間を浪費する勉強法。過去問の類題を解く方が200倍効果的。
+      </Callout>
+      <PageNav
+        prev={{ id: "review-timing", title: "8.6 復習タイミング" }}
+        next={{ id: "denken3-methods", title: "8.8 電験3種向けの勉強法" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const Denken3MethodsPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.8 電験3種向けの勉強法"
+      deck="「理論」と「法規」では最適な勉強法が異なる。分野別戦略を立てることが合格の鍵。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "12分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "denken3-methods", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="denken"><span className="h-num">1</span>科目別勉強法</h2>
+      <h3>理論（解法パターン科目）</h3>
+      <ul>
+        <li><strong>狙うべき分野</strong>：直流回路・交流回路・三相交流・電磁気（全問数の70%）</li>
+        <li><strong>勉強法</strong>：「解法パターン × 数値変更」の類題を最低3セット。1パターン = 3問で確実に習得</li>
+        <li><strong>復習頻度</strong>：1週間 → 2週間 → 試験前（3回転必須）</li>
+      </ul>
+      <h3>法規（条文・数値暗記科目）</h3>
+      <ul>
+        <li><strong>狙うべき分野</strong>：低圧・高圧の「許容電圧」「許容電流」。これらで全点数の40%</li>
+        <li><strong>勉強法</strong>：「条文 → 計算問題」の順で理解。丸暗記は最後の手段</li>
+        <li><strong>復習頻度</strong>：3日 → 1週間 → 試験前（4回転が目安）</li>
+      </ul>
+      <Callout variant="tip" title="科目別戦略">
+        <strong>理論：「解けるようになる」まで何度も解く / 法規：「覚える」と「理解」を並行</strong>。理論は「なぜ？」を大事に。法規は「何を？」を大事に。
+      </Callout>
+      <PageNav
+        prev={{ id: "anti-patterns", title: "8.7 効率の悪い勉強法" }}
+        next={{ id: "break-strategy", title: "8.9 休憩の取り方" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const BreakStrategyPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.9 休憩の取り方"
+      deck="休憩の質が勉強の質を左右する。「良い休憩」と「避けるべき休憩」を理解して、脳をリセット。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "break-strategy", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="break"><span className="h-num">1</span>良い休憩 vs 避けるべき休憩</h2>
+      <table className="data-table">
+        <thead>
+          <tr><th>種類</th><th>内容</th><th>時間</th><th>効果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>✓ 散歩</strong></td><td>外で歩く・日光を浴びる</td><td>5〜10分</td><td>脳の気分転換・セロトニン分泌</td></tr>
+          <tr><td><strong>✓ 水分補給</strong></td><td>水・お茶を飲む</td><td>2分</td><td>脱水防止・脳の疲労回復</td></tr>
+          <tr><td><strong>✓ 軽い運動</strong></td><td>ストレッチ・ラジオ体操</td><td>5分</td><td>血流改善・姿勢改善</td></tr>
+          <tr><td><strong>✓ 音楽（器楽）</strong></td><td>クラシック・環境音</td><td>5分</td><td>脳のリラックス</td></tr>
+          <tr><td><strong>✗ スマホ（SNS）</strong></td><td>X・Instagram・TikTok</td><td>10分以上</td><td>集中力の喪失・脳疲労</td></tr>
+          <tr><td><strong>✗ ゲーム</strong></td><td>スマホゲーム・コンシューマー</td><td>10分以上</td><td>勉強への復帰が困難</td></tr>
+          <tr><td><strong>✗ YouTube</strong></td><td>動画視聴（推奨動画地獄）</td><td>15分以上</td><td>「気づいたら1時間」の罠</td></tr>
+        </tbody>
+      </table>
+      <Callout variant="warn" title="スマホの落とし穴">
+        <strong>「15分休憩」のつもりがスマホを触ると、気づいたら1時間経っている</strong>。休憩中はスマホを別の部屋に置く、通知をオフにするなど、物理的に距離を取ること。
+      </Callout>
+      <PageNav
+        prev={{ id: "denken3-methods", title: "8.8 電験3種向けの勉強法" }}
+        next={{ id: "no-motivation", title: "8.10 やる気がない日の勉強法" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const NoMotivationPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.10 やる気がない日の勉強法"
+      deck="誰もが経験する「勉強したくない日」。その日のハードルを一気に下げて、とにかく1問解く。動き出すことが何より大事。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "10分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "no-motivation", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="motivation"><span className="h-num">1</span>ハードル低減策</h2>
+      <ul>
+        <li><strong>「90分」の約束をしない</strong> → 「10分だけ」と言い聞かせる。動き出すと脳が活動化する</li>
+        <li><strong>簡単な問題から</strong> → 得意分野の過去問を1問だけ。成功体験が次のやる気につながる</li>
+        <li><strong>環境を変える</strong> → カフェ・図書館・公園など、いつもと違う場所で勉強する</li>
+        <li><strong>誰かと勉強する</strong> → 一人だと怠け心に勝てない場合、友人・同期と一緒に勉強</li>
+        <li><strong>勉強の記録をつける</strong> → 「今日も1問解いた」という達成感が翌日のやる気に</li>
+      </ul>
+      <Callout variant="tip" title="魔法の一言">
+        <strong>「10分だけやってみよう」</strong>。やる気は「勉強の後に」ついてくる（前についてくるのではない）。動き出すことが全て。
+      </Callout>
+      <PageNav
+        prev={{ id: "break-strategy", title: "8.9 休憩の取り方" }}
+        next={{ id: "study-summary", title: "8.11 まとめ" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
+const StudySummaryPage = ({ onNav }) => (
+  <>
+    <PageHeader
+      eyebrow="第8章 — STUDY METHOD"
+      title="8.11 まとめ"
+      deck="効率的な勉強法の5つの重要ポイント。この5つを実行すれば、合格は確実に近づく。"
+      meta={[
+        { label: "対象", value: "全受験生" },
+        { label: "想定読了時間", value: "5分" },
+        { label: "更新", value: "2026.04" },
+      ]}
+    />
+    <Crumbs
+      items={[
+        { id: "home", label: "ホーム" },
+        { id: "study-summary", label: "8. 効率的な勉強の仕方" },
+      ]}
+      onNav={onNav}
+    />
+    <div className="content">
+      <h2 id="summary"><span className="h-num">1</span>5つの重要ポイント</h2>
+      <ol>
+        <li><strong>「読む」から「解く」へ</strong> → インプットより、アウトプット（過去問演習）を優先。参考書は「解くために」読む</li>
+        <li><strong>「60〜90分 × 複数セッション」が最強</strong> → ダラダラ3時間より、集中 × 3回が効果的</li>
+        <li><strong>「同じ問題を何度」ではなく「同じ論点を別数値で」</strong> → 類題演習が試験本番での対応力を高める</li>
+        <li><strong>「当日 → 2日後 → 1週間後」の復習スケジュール</strong> → 忘却曲線に基づく反復が記憶を定着させる</li>
+        <li><strong>「やる気がない日は10分だけ」</strong> → 完璧を目指さず、継続することが受験合格の秘訣</li>
+      </ol>
+      <Callout variant="warn" title="最後に">
+        勉強法に「魔法」はない。基本に忠実に、毎日の積み重ねが合格を運ぶ。
+      </Callout>
+      <PageNav
+        prev={{ id: "no-motivation", title: "8.10 やる気がない日の勉強法" }}
+        onNav={onNav}
+      />
+    </div>
+  </>
+);
+
 
 /* ============================================================================
    リファレンスページ（5ページ）
@@ -9937,6 +10485,17 @@ const App = () => {
       case 'trap-patterns':      return <TrapPatternsPage {...props} />;
       case 'last-3days':         return <Last3DaysPage {...props} />;
       case 'retake-strategy':    return <RetakeStrategyPage {...props} />;
+      case 'study-purpose':      return <StudyPurposePage {...props} />;
+      case 'study-cycle':        return <StudyCyclePage {...props} />;
+      case 'concentration':      return <ConcentrationPage {...props} />;
+      case '90min-session':      return <Session90MinPage {...props} />;
+      case 'error-classification': return <ErrorClassificationPage {...props} />;
+      case 'review-timing':      return <ReviewTimingPage {...props} />;
+      case 'anti-patterns':      return <AntiPatternsPage {...props} />;
+      case 'denken3-methods':    return <Denken3MethodsPage {...props} />;
+      case 'break-strategy':     return <BreakStrategyPage {...props} />;
+      case 'no-motivation':      return <NoMotivationPage {...props} />;
+      case 'study-summary':      return <StudySummaryPage {...props} />;
       case 'trends':             return <TrendsPage {...props} />;
       case 'glossary':           return <GlossaryPage {...props} />;
       case 'guide':              return <GuidePage {...props} />;
