@@ -247,7 +247,7 @@ function HomePage({ onNav, data }) {
         <div style={{ marginBottom: 16 }}>
           <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>TEXTBOOK MAP</div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>教材CH↔得点優先度 対応表</h2>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>どのCHを先に読むかで合否が変わる。S→A→Bの順で攻める。</p>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}><strong>教材CH単位</strong>の優先度（CH全体としての重要度）。S→A→Bの順で攻める。</p>
         </div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -274,6 +274,9 @@ function HomePage({ onNav, data }) {
               ))}
             </tbody>
           </table>
+          <p style={{ margin: '8px 0 0', fontSize: 12, color: 'var(--ink-3)', lineHeight: 1.6 }}>
+            ※ ランクはCH全体としての優先度。テーマ単独の出題頻度では電線路・主任技術者・保安規程はA、電気工事士法はBだが、CHとしてはバンドル単位で1つ上のランクで扱う（下の「頻出テーマ」とランクが異なるのはこのため）。
+          </p>
         </div>
       </section>
 
@@ -387,7 +390,7 @@ function HomePage({ onNav, data }) {
           <div>
             <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>HOT TOPICS</div>
             <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>頻出テーマ</h2>
-            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年の出題回数が多い順。Sランクから手を付ける。</p>
+            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}><strong>テーマ単独</strong>の出題頻度ランク（過去10年）。上の「学習の優先順」はCH全体ランクなので基準が異なる。</p>
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
