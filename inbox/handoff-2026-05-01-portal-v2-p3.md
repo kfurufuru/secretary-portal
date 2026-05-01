@@ -109,3 +109,97 @@ portal-v2.html は Fカンパニー全体のハブ。P1+P2 で「動かないリ
 
 - `project_denken3_notion_sync.md` — Notion → records.json 同期メカニズム
 - `feedback_completion_rules.md` — 完了宣言は push まで・JS構文検証手順
+
+---
+
+# 追加タスク（P3 と並列で実行可）
+
+## Task A: コミット（5分）
+
+P1+P2 の変更を1コミットにまとめる:
+
+```bash
+cd /c/Users/kfuru/.secretary
+git add portal-v2.html inbox/handoff-2026-05-01-portal-v2-p3.md
+git commit -m "$(cat <<'EOF'
+feat(portal): P1+P2適用 — dead link排除・動的カウント
+
+P1: Studies タブ削除・Modules 5項目を実リンク化・残日数JS計算
+P2: AI News重複削除・「すべて見る」5箇所を<a>化・サイト数動的化
+
+ハードコード排除し portal-v2.html の信頼性を回復。
+P3 引継ぎを inbox/handoff-2026-05-01-portal-v2-p3.md に保存。
+
+Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
+EOF
+)"
+```
+
+**注意**: `git status` を先に確認。`denken3-study-dashboard/` などの未関係変更を巻き込まない。
+
+## Task B: html-coding.md に規約追記（10分）
+
+**目的**: 今回の `<span class="more">` 問題を再発させない
+
+**対象ファイル**: `.claude/rules/html-coding.md`（存在しなければ新規作成）
+
+**追記内容**:
+```markdown
+## クリック可能要素の規約
+
+- **クリック可能テキスト（「すべて見る」「詳細」「もっと見る」等）は必ず `<a>` または `<button>`**
+- `<span class="more">` 等の「リンクっぽい装飾要素」は禁止。クリックして動かないとユーザーが portal 全体を信用しなくなる
+- 例外: 純粋な装飾アイコン（dot pulse 等）や日付表示（"2026.08" 等）は span で可
+
+## 静的数字の規約
+
+- 残日数・進捗％・サイト数・連続学習日数など**時間と共に変化する数字は必ず JS で動的計算**
+- 固定値で書く場合は `id="..."` を付与し JS 上書き前提にする
+- データソースは:
+  - 学習データ: `denken3-study-dashboard/data/records.json`
+  - サイト数: DOM カウント
+  - TODO: `todos/today.md`
+  - アクティビティ: git log
+```
+
+**追加理由**: portal-v2.html 改修中に「`<span class="more">` の存在自体が危険」と判明。CLAUDE.md 行動原則 12（自己学習）に従い、発見した規約を記録する。
+
+## Task C: health-monitor に portal-v2.html を追加（5分）
+
+**目的**: 月次でリンク切れ・古い数字を自動検知
+
+**対象**: `health-monitor/` 配下（既存の link-check 設定）
+
+**手順**:
+1. `health-monitor/` のディレクトリ構造を確認
+   ```bash
+   ls health-monitor/
+   cat health-monitor/link-check-results.json | head -20
+   ```
+2. portal-v2.html を月次チェック対象に追加
+3. 検知すべき項目:
+   - dead link（href="#" / 存在しないファイルパス）
+   - 古い日付（30日以上前のハードコード）
+   - 古いハードコード％（records.json と乖離 > 10pt）
+
+**完了判定**: health-monitor 実行時に portal-v2.html の品質レポートが出力される
+
+---
+
+## 実行順序の推奨
+
+1. **Task A（コミット）を最優先**: 今の変更を保護してから次へ
+2. **P3 Task 1（科目別 fetch）**: 一番運用効果が高い
+3. **Task B（規約追記）**: 短時間で完了・横展開価値大
+4. **P3 Task 2/3（git log / todos fetch）**: dev-server.py 拡張が必要なので時間取れる時に
+5. **Task C（health-monitor）**: 一番後回しでよい
+
+## 全体所要時間目安
+
+- Task A: 5分
+- P3 Task 1: 30分
+- Task B: 10分
+- P3 Task 2: 30分
+- P3 Task 3: 30分
+- Task C: 5分
+- **合計: 110分**（2セッション分割推奨）
