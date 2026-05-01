@@ -1,3 +1,9 @@
 .claude/worktrees/
 __pycache__/
 *.pyc
+
+# 手動バックアップ系（git stash / git branch を使うこと）
+*.bak
+*.old
+*.tmp
+*~

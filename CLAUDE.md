@@ -40,6 +40,7 @@
 - **launch.json変更時**: `runtimeArgs` に指定したファイルパスが実在するか必ず確認する
 - **新規HTMLファイル作成時**: portal-v2.html か関連ダッシュボードへのリンクを同時に追加する（孤立ファイル防止）
 - **Claude Design → Claude Code ワークフロー**: Claude DesignのHTMLは「Design Filesタブ → index.htmlを右クリック → Download」で取得。ブラウザ経由コード抽出（React fiber / IndexedDB / fetch傍受）は試みない。ユーザーに「Downloads/index.htmlを読んで実装して」と言ってもらうのが最短
+- **手動バックアップ禁止**: `.bak` `.old` `.tmp` `~` 付きファイルを作らない。退避は `git stash` または `git branch backup-XXX` を使う（`.gitignore` 登録済みだが、そもそも作成しないのが原則）
 
 ## 知識3層モデル
 
