@@ -1,0 +1,27 @@
+[
+  {
+    "date": "05/02",
+    "msg": "feat(portal): P3 Task 1+B — 学習データ動的fetch + HTMLルー…",
+    "tag": "PORTAL"
+  },
+  {
+    "date": "05/02",
+    "msg": "feat(business-skills): 「知っておくべき差15選」ページ追加（No.43）",
+    "tag": "CLAUDE"
+  },
+  {
+    "date": "05/02",
+    "msg": "feat(portal): P1+P2適用 — dead link排除・動的カウント",
+    "tag": "PORTAL"
+  },
+  {
+    "date": "05/01",
+    "msg": "chore: pre-commit hookをチェックイン化＋core.hooksPath設定",
+    "tag": "OTHER"
+  },
+  {
+    "date": "05/01",
+    "msg": "feat(hoki-wiki): サイドバー左端表示をCHラベル→章番号(num)に統一",
+    "tag": "WIKI"
+  }
+]

@@ -806,6 +806,48 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     })
     .catch(function(e){ console.warn("portal-summary fetch failed:", e); });
 
+  // ===== アクティビティ: logs/recent-commits.json =====
+  fetch("logs/recent-commits.json", { cache: "no-store" })
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(function(items){
+      if (!Array.isArray(items) || items.length === 0) return;
+      var news = document.querySelector(".news");
+      if (!news) return;
+      var TAG_CLASS = { PORTAL:"accent", DASHBOARD:"accent", FEEDS:"accent" };
+      var esc = function(s){ return String(s||"").replace(/[<>&"']/g, function(c){
+        return {"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;","'":"&#39;"}[c];
+      }); };
+      news.innerHTML = items.slice(0,5).map(function(it){
+        var cls = TAG_CLASS[it.tag] || "";
+        return '<div class="nitem"><div class="day">'+esc(it.date)+
+          '</div><div class="ttl">'+esc(it.msg)+
+          '</div><div class="ntag '+cls+'">'+esc(it.tag||"OTHER")+'</div></div>';
+      }).join("");
+    })
+    .catch(function(e){ console.warn("recent-commits fetch failed:", e); });
+
+  // ===== 今日のフォーカス: logs/today-todos.json =====
+  fetch("logs/today-todos.json", { cache: "no-store" })
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(function(d){
+      if (!d || !Array.isArray(d.items) || d.items.length === 0) return; // 空なら既存ハードコード維持
+      var firstRow = document.querySelector(".focus .row");
+      var container = firstRow ? firstRow.parentElement : null;
+      if (!container) return;
+      var esc = function(s){ return String(s||"").replace(/[<>&"']/g, function(c){
+        return {"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;","'":"&#39;"}[c];
+      }); };
+      container.innerHTML = d.items.slice(0,5).map(function(it, i){
+        var doneCls = it.done ? " done" : "";
+        var num = String(i+1).padStart(2,"0");
+        var meta = it.due ? esc(it.due) : (it.priority ? esc(it.priority) : "");
+        return '<div class="row'+doneCls+'"><div class="l"><div class="num">'+num+
+          '</div><div class="check"></div><div>'+esc(it.text)+
+          '</div></div><div class="meta">'+meta+'</div></div>';
+      }).join("");
+    })
+    .catch(function(e){ console.warn("today-todos fetch failed:", e); });
+
   // Tabs
   document.querySelectorAll(".tab").forEach(function(t){
     t.addEventListener("click",function(){
