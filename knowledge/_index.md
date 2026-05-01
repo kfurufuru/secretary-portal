@@ -28,7 +28,9 @@
 
 ## システム設計
 
+- [[mkdocs-material-triple-nav-pattern.md]] — MkDocs Material 3重ナビ問題 — 一覧ページでの hide:toc パターン (published, 2026-05-01)
 - [[portal-health-observability.md]] — Fカンパニーポータルの健全性可視化パターン（点→線化＋セルフ診断） (published, 2026-04-23)
+- [[rtk-curl-output-bypass.md]] — rtk shell が curl 出力を自動フィルタする問題と回避策 (published, 2026-05-01)
 
 ## 未分類
 
