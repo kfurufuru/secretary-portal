@@ -1,8 +1,18 @@
 ---
 title: 電験3種 法規Wiki — 過去問実績の誤記修正（第2条 他）引継ぎ
 date: 2026-05-01
-status: P1+P2完了（2026-05-01実施済み、P3残2件）
+status: 完了（2026-05-01）— P1+P2+P3全て解消、頻度監査+pre-commitフックも追加
 previous_session: 第5条ページ修正・チェッカースクリプト作成
+completed_session: 2026-05-01
+completion_summary: |
+  - 2.md(第2条): 誤記6件→H26問5の1件に訂正、頻度★★★★★→★☆☆☆☆
+  - 11.md/56.md/58.md: 過去問テーブル誤記を修正、by-field.md空欄補完
+  - 全21ページの出題頻度を実データで再校正（11件不整合→0件）
+  - 21/57.md: 出題実態を追加（過小評価を修正）
+  - 32/59/64.md: 過大評価を下方修正
+  - 5.md関連のby-field.md補完（H10問2/R01問3/R05下問3/R06下問3を追加）
+  - 新規ツール: scripts/audit_frequency.py（自動頻度監査）
+  - pre-commitフック追加: scripts/hooks/pre-commit（再発防止）
 ---
 
 # 法規Wiki 過去問実績誤記修正 引継ぎ
