@@ -7,3 +7,10 @@ __pycache__/
 *.old
 *.tmp
 *~
+
+# シークレット
+.env
+.env.*
+!.env.example
+secrets.json
+*-credentials.json

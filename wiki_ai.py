@@ -19,9 +19,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8")
 
 # ── APIキー ───────────────────────────────────────────
-GROQ_API_KEY   = os.environ.get("GROQ_API_KEY",   "REMOVED_GROQ_KEY")
+GROQ_API_KEY   = os.environ.get("GROQ_API_KEY",   "")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "REMOVED_GEMINI_KEY")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 MODELS = {
     "groq":   {"label": "Groq / Llama3-70b",    "free": True,  "ctx_k": 128},
