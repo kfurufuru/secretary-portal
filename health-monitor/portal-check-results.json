@@ -1,29 +1,14 @@
 {
-  "checked_at": "2026-05-01T15:15:23.641572+00:00",
+  "checked_at": "2026-05-01T15:24:22.644926+00:00",
   "target": "portal-v2.html",
   "summary_source": "denken3-study-dashboard\\data\\portal-summary.json",
   "deviation_threshold_pt": 10,
-  "total_issues": 2,
-  "errors": 2,
+  "total_issues": 0,
+  "errors": 0,
   "warnings": 0,
   "checks": {
     "dead_links": [],
     "hardcoded_pct": [],
-    "forbidden_decorations": [
-      {
-        "type": "forbidden_span_more",
-        "severity": "error",
-        "line": 469,
-        "class": "more",
-        "message": "<span class=\"more\"> が混入（クリック装飾要素は禁止）"
-      },
-      {
-        "type": "forbidden_span_more",
-        "severity": "error",
-        "line": 535,
-        "class": "more dot pulse",
-        "message": "<span class=\"more\"> が混入（クリック装飾要素は禁止）"
-      }
-    ]
+    "forbidden_decorations": []
   }
 }

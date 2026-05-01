@@ -46,8 +46,8 @@ class PortalParser(HTMLParser):
         super().__init__()
         self.dead_anchors = []        # href="#" のみの要素 [(line, tag)]
         self.local_links = []         # ローカルパスのリンク [(line, href)]
-        self.span_more = []           # <span class="more"> [(line, classes)]
         self.div_link = []            # <div class="link"> [(line, classes)]
+        # span.more はテキスト判定が必要なため後段の正規表現で別処理する
 
     def handle_starttag(self, tag, attrs):
         line = self.getpos()[0]
@@ -61,13 +61,11 @@ class PortalParser(HTMLParser):
             elif href and not href.startswith(("http://", "https://", "mailto:", "tel:", "javascript:", "#", "data:")):
                 self.local_links.append((line, href))
 
-        # 禁止装飾要素検知
+        # div.link 検知
         cls = attrs_d.get("class", "")
-        if cls:
+        if cls and tag == "div":
             cls_set = cls.split()
-            if tag == "span" and "more" in cls_set:
-                self.span_more.append((line, cls))
-            if tag == "div" and "link" in cls_set:
+            if "link" in cls_set:
                 self.div_link.append((line, cls))
 
 
@@ -179,17 +177,38 @@ def check_hardcoded_pct(html_text: str, summary: dict):
     return issues
 
 
-def check_forbidden_decorations(parser: PortalParser):
-    """<span class='more'> / <div class='link'> 検知"""
+def check_forbidden_decorations(parser: PortalParser, html_text: str):
+    """
+    <span class="more"> がクリック誘導テキストを持つ場合のみ NG。
+    付帯クラス（more dot pulse 等）や日付・空テキストは正当。
+    <div class="link"> は常に NG。
+    """
     issues = []
-    for line, cls in parser.span_more:
-        issues.append({
-            "type": "forbidden_span_more",
-            "severity": "error",
-            "line": line,
-            "class": cls,
-            "message": '<span class="more"> が混入（クリック装飾要素は禁止）',
-        })
+
+    # span class が "more" 単体（他クラスなし）の要素を内部テキスト付きで抽出
+    pattern = re.compile(
+        r'<span\s+class\s*=\s*"more"\s*(?:style\s*=\s*"[^"]*"\s*)?>([^<]*)</span>'
+    )
+    CLICK_KEYWORDS = ["すべて", "詳細", "もっと", "→", "see ", "more ", "all "]
+
+    for m in pattern.finditer(html_text):
+        text = m.group(1).strip()
+        line = html_text[:m.start()].count("\n") + 1
+        # 空 → OK（装飾アイコン）
+        if not text:
+            continue
+        # クリック誘導語句が含まれる → NG
+        is_click_lure = any(kw.lower() in text.lower() for kw in CLICK_KEYWORDS)
+        if is_click_lure:
+            issues.append({
+                "type": "forbidden_span_more",
+                "severity": "error",
+                "line": line,
+                "text": text,
+                "message": f'<span class="more">{text}</span> がクリック誘導風 → <a> に変更すべき',
+            })
+        # 日付テキスト・その他は OK（html-coding.md 例外規定）
+
     for line, cls in parser.div_link:
         issues.append({
             "type": "forbidden_div_link",
@@ -223,7 +242,7 @@ def main():
     checks = {
         "dead_links": check_dead_links(parser),
         "hardcoded_pct": check_hardcoded_pct(html_text, summary),
-        "forbidden_decorations": check_forbidden_decorations(parser),
+        "forbidden_decorations": check_forbidden_decorations(parser, html_text),
     }
 
     total_issues = sum(len(v) for v in checks.values())

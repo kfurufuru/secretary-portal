@@ -1,5 +1,19 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "py \"C:/Users/kfuru/.secretary/cron-jobs/dump-recent-commits.py\""
+          },
+          {
+            "type": "command",
+            "command": "py \"C:/Users/kfuru/.secretary/cron-jobs/dump-today-todos.py\""
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "type": "command",
