@@ -6,7 +6,7 @@
 - **思考**: 合理主義・実務重視・結論先・根拠必須・抽象論嫌い・再現性重視
 - **活動**: 設備投資設計・保全・生成AI業務活用・電験3種受験準備
 - **言語**: 日本語
-- **デジタルツイン**: `digital-twin/profile.md` / `digital-twin/furutan-bot-spec.md`
+- **デジタルツイン**: `digital-twin/decision-framework.md` / `digital-twin/decision-log/`
 
 ## 行動原則
 
@@ -35,7 +35,7 @@
 - セッションが長くなったら `/cost` でキャッシュ比率を確認するよう提案する
 - 無関係な新タスクへ切り替わる際は新セッション開始を推奨する
 - ひと言返答・確認は端的に。余計な前置き・締め言葉は書かない
-- **大型HTML編集ルール**: HTMLファイル1本 = 1セッション（複数ファイルまたがない）。30分以上のセッションでは `/compact` を実行してからプロンプトを送る
+- **大型HTML編集ルール**: HTMLファイル1本 = 1セッション（複数ファイルまたがない）。30分以上のセッションでは `/compact` を実行してからプロンプトを送る。**複数箇所の変更は1ターンにまとめて適用**（Obsidian同期等による巻き戻りリスク軽減）。Edit直後に `wiki_verify.py` で確定確認する
 - **ファイル削除前の必須チェック**: `Grep output_mode:"files_with_matches"` でファイル名を検索し、残存リンクがないことを確認してから削除する
 - **launch.json変更時**: `runtimeArgs` に指定したファイルパスが実在するか必ず確認する
 - **新規HTMLファイル作成時**: portal-v2.html か関連ダッシュボードへのリンクを同時に追加する（孤立ファイル防止）
@@ -110,7 +110,7 @@ python update_dashboard.py
 ## NotebookLM運用
 
 - CLI: `notebooklm-py 0.3.4` インストール済み（Python 3.13）。`nblm` ショートカット推奨
-- **デジタルツイン分析**: `digital-twin/` の3ファイルをソース登録 → 月1回更新 → 判断パターン横断分析
+- **デジタルツイン分析**: `digital-twin/` 配下の全ファイル（decision-framework.md + decision-log/配下）をソース登録 → 月1回更新 → 判断パターン横断分析
 - **ドメイン検索**: `factory/trouble-log.md` + 主要knowledge/をソース登録 → 過去事例検索
 - 詳細: `knowledge/notebooklm-py-integration.md` / コマンド: `commands-reference.md`の「分身訓練」「分身に聞く」
 - **役割分担**: Claude Code = リアルタイム判断支援、NotebookLM = 過去の自分との対話（蓄積データ横断）
