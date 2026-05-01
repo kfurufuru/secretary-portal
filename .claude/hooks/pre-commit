@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# pre-commit: secret leak detection
+# 検知パターン: Groq / Google / OpenAI / Notion / Slack / GitHub PAT / AWS
+
+set -e
+
+PATTERNS='(gsk_[A-Za-z0-9]{40,}|AIza[0-9A-Za-z_-]{35}|sk-[A-Za-z0-9]{40,}|sk-proj-[A-Za-z0-9_-]{40,}|ntn_[A-Za-z0-9]{40,}|xoxb-[A-Za-z0-9-]{40,}|ghp_[A-Za-z0-9]{36}|ghs_[A-Za-z0-9]{36}|AKIA[0-9A-Z]{16})'
+
+# stagedファイルから検知
+HITS=$(git diff --cached --no-color -U0 | grep -E "^\+" | grep -E "$PATTERNS" || true)
+
+if [ -n "$HITS" ]; then
+  echo "" >&2
+  echo "🚨 SECRET LEAK BLOCKED — pre-commit hook" >&2
+  echo "" >&2
+  echo "以下のパターンに該当する文字列が staged な変更に含まれています:" >&2
+  echo "$HITS" | head -10 >&2
+  echo "" >&2
+  echo "対処:" >&2
+  echo "  1. 環境変数経由に変更（os.environ.get(\"KEY\", \"\") でフォールバック空文字）" >&2
+  echo "  2. 既にコミット済みなら即キー失効＋ git filter-repo で履歴スクラブ" >&2
+  echo "  3. 緊急回避: git commit --no-verify （非推奨。漏洩即発生）" >&2
+  echo "" >&2
+  exit 1
+fi
+
+exit 0
