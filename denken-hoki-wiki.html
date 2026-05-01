@@ -1883,6 +1883,19 @@ function StubPage({ pageId, data, onNav }) {
         <div style={{ fontSize: 13 }}>このページはまだ作成されていません。</div>
       </div>
 
+      {/* === 準備中の代替誘導: 過去問演習へ === */}
+      <div style={{ marginTop: 24, padding: 16, background: 'var(--bg-elev)', border: '1px dashed var(--border)', borderRadius: 'var(--radius)' }}>
+        <div style={{ fontSize: 13, color: 'var(--ink-2)', marginBottom: 10 }}>
+          📝 このページは準備中です。当該テーマの過去問は「過去問テーマ別演習」から探せます。
+        </div>
+        <button
+          className="btn primary"
+          onClick={() => onNav && onNav('kakomon-random')}
+        >
+          過去問演習へ →
+        </button>
+      </div>
+
       <div style={{ marginTop: 24 }}>
         <button
           style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, padding: 0 }}
@@ -1928,15 +1941,16 @@ function HomePage({ onNav, data }) {
   };
 
   const HOT_TOPICS = [
-    { name: 'B問題',    rank: 'S', pages: 9,  count: 20, tags: ['#B問題対策', '#頻出S'] },
-    { name: '接地',     rank: 'S', pages: 6,  count: 17, tags: ['#高圧', '#表暗記', '#ひっかけ注意'] },
-    { name: '絶縁',     rank: 'S', pages: 5,  count: 15, tags: ['#低圧', '#高圧', '#表暗記'] },
-    { name: '主任技術者',rank: 'A', pages: 4,  count: 12, tags: ['#頻出A', '#ひっかけ注意'] },
-    { name: '保安規程', rank: 'A', pages: 3,  count: 11, tags: ['#頻出A', '#直前確認'] },
-    { name: '事故報告', rank: 'A', pages: 2,  count: 10, tags: ['#表暗記', '#ひっかけ注意'] },
-    { name: '電線路',   rank: 'A', pages: 5,  count:  9, tags: ['#特別高圧', '#高圧'] },
-    { name: '分散型電源',rank: 'B', pages: 3,  count:  5, tags: ['#法改正注意'] },
-    { name: '電気工事士法',rank:'B',pages: 1,  count: 0, tags: ['#法令', '#ひっかけ注意', '#免状'], note: 'R06下・H20 出題' },
+    // S ランク（4枚）
+    { name: 'B問題',           pageId: 'kakomon-b',          rank: 'S', pages: 9, count: 20, tags: ['#B問題対策', '#頻出S'] },
+    { name: '接地',            pageId: 'setsuchi-ichiran',   rank: 'S', pages: 6, count: 17, tags: ['#高圧', '#表暗記', '#ひっかけ注意'] },
+    { name: '絶縁',            pageId: 'zetsuen-ichiran',    rank: 'S', pages: 5, count: 15, tags: ['#低圧', '#高圧', '#表暗記'] },
+    { name: '電気工作物の区分', pageId: 'kosakubutsu-bunrui', rank: 'S', pages: 1, count: 10, tags: ['#頻出S', '#法令', '#基本'] },
+    // A ランク（4枚）
+    { name: '主任技術者',      pageId: 'shunin-gijutsusya',  rank: 'A', pages: 4, count: 12, tags: ['#頻出A', '#ひっかけ注意'] },
+    { name: '保安規程',        pageId: 'hoan-kitei',         rank: 'A', pages: 3, count: 11, tags: ['#頻出A', '#直前確認'] },
+    { name: '事故報告',        pageId: 'jiko-hokoku',        rank: 'A', pages: 2, count: 10, tags: ['#表暗記', '#ひっかけ注意'] },
+    { name: '電線路',          pageId: 'densenro',           rank: 'A', pages: 5, count:  9, tags: ['#特別高圧', '#高圧'] },
   ];
 
   const ROADMAP = [
@@ -2152,7 +2166,10 @@ function HomePage({ onNav, data }) {
           {HOT_TOPICS.map((t) => (
             <div
               key={t.name}
-              style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', cursor: 'pointer' }}
+              onClick={() => onNav && onNav(t.pageId)}
+              style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', cursor: 'pointer', transition: 'border-color 0.15s, transform 0.15s' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                 <span style={{ fontWeight: 600, fontSize: 14 }}>{t.name}</span>
