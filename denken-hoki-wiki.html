@@ -965,18 +965,18 @@ window.WIKI_DATA = { chapters: [
     { id:"koji-shi-ho",        num:"4.7", title:"電気工事士法",     freq:"mid",  ch:"CH02", priority:"optional" },
     { id:"koji-gyoho",         num:"4.8", title:"電気工事業法",     freq:"mid",  ch:"CH02", priority:"optional" }
   ]},
-  { id:"sec05", num:"05", title:"再エネ技術基準", ch:"CH05", pages:[
-    { id:"furyoku-gijutsukijun",   num:"5.1", title:"風力発電の技術基準",    freq:"mid", ch:"CH05" },
-    { id:"taiyouchi-gijutsukijun", num:"5.2", title:"太陽電池発電の技術基準",freq:"mid", ch:"CH05" },
-    { id:"keito-renkei",           num:"5.3", title:"系統連系・保護装置",     freq:"mid", ch:"CH05" }
+  { id:"sec05", num:"05", title:"電気施設管理", ch:"CH06", pages:[
+    { id:"juyoritsu-gainen",   num:"5.1", title:"需要率・負荷率・不等率（概念）", freq:"high", ch:"CH06", twin:"juyoritsu-keisan" },
+    { id:"furitsu",            num:"5.2", title:"負荷率",           freq:"high", ch:"CH06" },
+    { id:"futorito",           num:"5.3", title:"不等率",           freq:"mid",  ch:"CH06" },
+    { id:"hensyatsuki-yoryo",  num:"5.4", title:"変圧器容量",       freq:"high", ch:"CH06" },
+    { id:"haiden-kanri",       num:"5.5", title:"配電管理",         freq:"mid",  ch:"CH06" },
+    { id:"juden-setsubi-kanri",num:"5.6", title:"受電設備管理",     freq:"mid",  ch:"CH06" }
   ]},
-  { id:"sec06", num:"06", title:"電気施設管理", ch:"CH06", pages:[
-    { id:"juyoritsu-gainen",   num:"6.1", title:"需要率・負荷率・不等率（概念）", freq:"high", ch:"CH06", twin:"juyoritsu-keisan" },
-    { id:"furitsu",            num:"6.2", title:"負荷率",           freq:"high", ch:"CH06" },
-    { id:"futorito",           num:"6.3", title:"不等率",           freq:"mid",  ch:"CH06" },
-    { id:"hensyatsuki-yoryo",  num:"6.4", title:"変圧器容量",       freq:"high", ch:"CH06" },
-    { id:"haiden-kanri",       num:"6.5", title:"配電管理",         freq:"mid",  ch:"CH06" },
-    { id:"juden-setsubi-kanri",num:"6.6", title:"受電設備管理",     freq:"mid",  ch:"CH06" }
+  { id:"sec06", num:"06", title:"再エネ技術基準", ch:"CH05", pages:[
+    { id:"furyoku-gijutsukijun",   num:"6.1", title:"風力発電の技術基準",    freq:"mid", ch:"CH05" },
+    { id:"taiyouchi-gijutsukijun", num:"6.2", title:"太陽電池発電の技術基準",freq:"mid", ch:"CH05" },
+    { id:"keito-renkei",           num:"6.3", title:"系統連系・保護装置",     freq:"mid", ch:"CH05" }
   ]},
   { id:"sec07", num:"07", title:"過去問テーマ別演習", pages:[
     { id:"kakomon-b",        num:"7.1", title:"B問題だけ" },
@@ -1180,7 +1180,6 @@ function SolveFlow({ type, steps }) {
 function TrapTable({ traps }) {
   return (
     <div style={{ marginBottom: '24px' }}>
-      <div style={{ fontWeight: '700', fontSize: '12px', color: 'var(--warn)', marginBottom: '8px' }}>⚠ よくあるひっかけ</div>
       <table className="trap-table">
         <thead>
           <tr>
@@ -1515,7 +1514,7 @@ function Sidebar({ data, page, onNav }) {
             }}
           >
             <span style={{ color: 'var(--ink-3)', fontSize: '10px' }}>{openChapters[idx] ? '▼' : '▶'}</span>
-            {ch.ch && <span style={{ fontSize: '10px', color: 'var(--ink-3)' }}>{ch.ch}</span>}
+            {ch.num && ch.num !== '00' && <span style={{ fontSize: '10px', color: 'var(--ink-3)' }}>{ch.num}</span>}
             <span style={{ flex: 1 }}>{ch.title}</span>
           </div>
           {openChapters[idx] && ch.pages && ch.pages.map((p, pi) => {
@@ -1560,6 +1559,11 @@ function Sidebar({ data, page, onNav }) {
           })}
         </div>
       ))}
+      <div style={{ margin: '18px 12px 12px', padding: '10px 12px', background: 'var(--bg-2)', borderRadius: '8px', fontSize: '11px', color: 'var(--ink-3)' }}>
+        <a href="https://kfurufuru.github.io/denken-wiki/themes/" target="_blank" rel="noopener" style={{ color: 'var(--ink-3)', textDecoration: 'none' }}>
+          旧版（GH Pages）→
+        </a>
+      </div>
     </aside>
   );
 }
@@ -1904,9 +1908,9 @@ const CH_TABLE = [
   { ch: 'CH04 計算',      content: 'B問題対策',           rank: 'S', order: 1, wiki: '01 B問題' },
   { ch: 'CH03 技術基準',  content: '接地・絶縁・電線路',   rank: 'S', order: 2, wiki: '02+03' },
   { ch: 'CH01 電気事業法',content: '主任技術者・保安規程', rank: 'S', order: 3, wiki: '04 法令' },
-  { ch: 'CH06 施設管理',  content: '需要率・負荷率など',   rank: 'A', order: 4, wiki: '06 施設管理' },
+  { ch: 'CH06 施設管理',  content: '需要率・負荷率など',   rank: 'A', order: 4, wiki: '05 施設管理' },
   { ch: 'CH02 その他法令',content: '工事士法・用品安全法', rank: 'A', order: 5, wiki: '04 法令' },
-  { ch: 'CH05 再エネ',    content: '風力・太陽光',         rank: 'B', order: 6, wiki: '05 再エネ' },
+  { ch: 'CH05 再エネ',    content: '風力・太陽光',         rank: 'B', order: 6, wiki: '06 再エネ' },
 ];
 
 function HomePage({ onNav, data }) {
@@ -1997,38 +2001,21 @@ function HomePage({ onNav, data }) {
         </div>
       </section>
 
-      {/* ====== 教材CH対応表 ====== */}
+      {/* ====== 学習優先順 ====== */}
       <section style={{ marginBottom: 40 }}>
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>TEXTBOOK MAP</div>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>教材CH↔得点優先度 対応表</h2>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>どのCHを先に読むかで合否が変わる。S→A→Bの順で攻める。</p>
+          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>PRIORITY ORDER</div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>学習の優先順</h2>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>S→A→Bの順で攻める。上から順にやれば合格ラインに届く。</p>
         </div>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid var(--border)' }}>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>優先</th>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>教材CH</th>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>主な内容</th>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>Wikiカテゴリ</th>
-                <th style={{ textAlign: 'center', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>ランク</th>
-              </tr>
-            </thead>
-            <tbody>
-              {CH_TABLE.map((row) => (
-                <tr key={row.ch} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '8px 10px', fontWeight: 700, color: 'var(--ink-3)' }}>{row.order}</td>
-                  <td style={{ padding: '8px 10px', fontWeight: 600 }}>{row.ch}</td>
-                  <td style={{ padding: '8px 10px', color: 'var(--ink-2)' }}>{row.content}</td>
-                  <td style={{ padding: '8px 10px', color: 'var(--ink-2)' }}>{row.wiki}</td>
-                  <td style={{ padding: '8px 10px', textAlign: 'center' }}>
-                    <span className={`rank rank-${row.rank}`}>{row.rank}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {CH_TABLE.map((row) => (
+            <div key={row.ch} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--bg-elev)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink-3)', minWidth: 20, textAlign: 'center' }}>{row.order}</span>
+              <span style={{ fontWeight: 600, flex: 1 }}>{row.content}</span>
+              <span className={`rank rank-${row.rank}`}>{row.rank}</span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -2350,24 +2337,8 @@ function SetsuchiIchiranPage({ onNav, data }) {
       />
 
       <ConclusionBox>
-        <ul>
-          <li><strong>A種</strong>: 高圧・特高機器 → 10 Ω 以下 / 2.6 mm 以上</li>
-          <li><strong>B種</strong>: 変圧器中性点 → 150/Ig Ω / 4.0 mm 以上</li>
-          <li><strong>C種</strong>: 300V 超低圧 → 10 Ω 以下 / 1.6 mm 以上</li>
-          <li><strong>D種</strong>: 300V 以下低圧 → 100 Ω 以下 / 1.6 mm 以上</li>
-        </ul>
+        A〜D種の4分類を、<strong>対象・接地抵抗値・電線太さ</strong>の3点セットで覚える。下表が暗記対象。
       </ConclusionBox>
-
-      <MetaStrip
-        ch="CH03"
-        category="02 接地"
-        importance="S"
-        freq="毎年"
-        examType="A問題・B問題"
-        targets="R05・R04・R03"
-        tags={["接地","頻出S","表暗記","高圧"]}
-        lastChecked="2026-04-28"
-      />
 
       <h2 id="tables">接地工事一覧表</h2>
       <MemTable
@@ -2397,6 +2368,16 @@ function SetsuchiIchiranPage({ onNav, data }) {
         { q: "B種の電線の太さは？",                  a: "4.0 mm 以上（最も太い）" },
       ]} />
 
+      <MetaStrip
+        ch="CH03"
+        category="02 接地"
+        importance="S"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R05・R04・R03"
+        tags={["接地","頻出S","表暗記","高圧"]}
+        lastChecked="2026-04-28"
+      />
       <UpdateLog entries={[{ date: "2026-04-28", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="top"            prevTitle="トップ"
@@ -2420,25 +2401,8 @@ function ZetsuenIchiranPage({ onNav, data }) {
       />
 
       <ConclusionBox>
-        <ul>
-          <li><strong>低圧（7kV以下）</strong>: 1.5倍 × 10分</li>
-          <li><strong>高圧（7kV超 60kV以下）</strong>: 1.25倍 × 10分</li>
-          <li><strong>特高（中性点直接接地、170kV超）</strong>: 0.64倍 × 10分</li>
-          <li><strong>特高（その他、60kV超）</strong>: 1.25倍 × 10分</li>
-          <li>試験時間はすべて<strong>10分間</strong></li>
-        </ul>
+        電路区分（低圧／高圧／特高）ごとの<strong>倍率と時間</strong>を覚える。試験時間はすべて<strong>10分</strong>で固定。下表が暗記対象。
       </ConclusionBox>
-
-      <MetaStrip
-        ch="CH03"
-        category="03 絶縁"
-        importance="S"
-        freq="毎年"
-        examType="A問題・B問題"
-        targets="R05・R04・H30"
-        tags={["絶縁","頻出S","表暗記","高圧","特別高圧"]}
-        lastChecked="2026-04-27"
-      />
 
       <h2 id="tables">絶縁耐力試験一覧表</h2>
       <MemTable
@@ -2468,6 +2432,16 @@ function ZetsuenIchiranPage({ onNav, data }) {
         { q: "7,000V超 60kV以下の電路は何V以上で試験？", a: "最大使用電圧の1.25倍" },
       ]} />
 
+      <MetaStrip
+        ch="CH03"
+        category="03 絶縁"
+        importance="S"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R05・R04・H30"
+        tags={["絶縁","頻出S","表暗記","高圧","特別高圧"]}
+        lastChecked="2026-04-27"
+      />
       <UpdateLog entries={[{ date: "2026-04-27", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="setsuchi-ichiran"  prevTitle="接地工事一覧"
@@ -2491,24 +2465,8 @@ function RikkakuIchiranPage({ onNav, data }) {
       />
 
       <ConclusionBox>
-        <ul>
-          <li><strong>建造物上部</strong>: 低圧2m / 高圧2m / 特高3m</li>
-          <li><strong>建造物側方</strong>: 低圧1m / 高圧1.2m / 特高3m</li>
-          <li><strong>道路横断</strong>: 低圧5m / 高圧6m / 特高6m</li>
-          <li><strong>鉄道横断</strong>: 低圧5.5m / 高圧5.5m / 特高6m</li>
-        </ul>
+        4つの場面（<strong>建造物上部・側方／道路横断・鉄道横断</strong>）×電圧区分（低圧／高圧／特高）の組合せ表を覚える。下表が暗記対象。
       </ConclusionBox>
-
-      <MetaStrip
-        ch="CH03"
-        category="03 離隔距離"
-        importance="A"
-        freq="2〜3年に1回"
-        examType="A問題"
-        targets="R04・R01・H29"
-        tags={["離隔距離","頻出A","表暗記","高圧","特別高圧"]}
-        lastChecked="2026-04-26"
-      />
 
       <h2 id="tables">離隔距離一覧表</h2>
       <MemTable
@@ -2538,6 +2496,16 @@ function RikkakuIchiranPage({ onNav, data }) {
         { q: "道路横断で低圧と高圧の高さの差は？",           a: "1 m（低圧5m、高圧6m）" },
       ]} />
 
+      <MetaStrip
+        ch="CH03"
+        category="03 離隔距離"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R04・R01・H29"
+        tags={["離隔距離","頻出A","表暗記","高圧","特別高圧"]}
+        lastChecked="2026-04-26"
+      />
       <UpdateLog entries={[{ date: "2026-04-26", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="zetsuen-ichiran"  prevTitle="絶縁耐力試験一覧"
@@ -2561,24 +2529,8 @@ function DenAtsuKubunPage({ onNav, data }) {
       />
 
       <ConclusionBox>
-        <ul>
-          <li><strong>低圧</strong>: 交流600V以下 / 直流750V以下</li>
-          <li><strong>高圧</strong>: 交流600V超〜7,000V以下 / 直流750V超〜7,000V以下</li>
-          <li><strong>特別高圧</strong>: 交流・直流ともに7,000V超</li>
-          <li>直流の低圧上限は<strong>750V</strong>（交流の600Vより高い）</li>
-        </ul>
+        交流／直流それぞれの<strong>低圧上限・高圧上限</strong>を覚える。直流の低圧上限<strong>750V</strong>が交流<strong>600V</strong>より高い点が最頻出ひっかけ。下表が暗記対象。
       </ConclusionBox>
-
-      <MetaStrip
-        ch="CH01"
-        category="01 電気工作物"
-        importance="A"
-        freq="2〜3年に1回"
-        examType="A問題"
-        targets="R03・H28・H25"
-        tags={["電圧区分","頻出A","表暗記","ひっかけ注意"]}
-        lastChecked="2026-04-25"
-      />
 
       <h2 id="tables">電圧区分一覧表</h2>
       <MemTable
@@ -2607,6 +2559,16 @@ function DenAtsuKubunPage({ onNav, data }) {
         { q: "交流7,001Vは何圧？",         a: "特別高圧（7,000V超が特別高圧）" },
       ]} />
 
+      <MetaStrip
+        ch="CH01"
+        category="01 電気工作物"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R03・H28・H25"
+        tags={["電圧区分","頻出A","表暗記","ひっかけ注意"]}
+        lastChecked="2026-04-25"
+      />
       <UpdateLog entries={[{ date: "2026-04-25", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="rikkaku-ichiran"   prevTitle="離隔距離一覧"
