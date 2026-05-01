@@ -1515,7 +1515,7 @@ function Sidebar({ data, page, onNav }) {
             }}
           >
             <span style={{ color: 'var(--ink-3)', fontSize: '10px' }}>{openChapters[idx] ? '▼' : '▶'}</span>
-            {ch.ch && <span style={{ fontSize: '10px', color: 'var(--ink-3)' }}>{ch.ch}</span>}
+            {ch.num && ch.num !== '00' && <span style={{ fontSize: '10px', color: 'var(--ink-3)' }}>{ch.num}</span>}
             <span style={{ flex: 1 }}>{ch.title}</span>
           </div>
           {openChapters[idx] && ch.pages && ch.pages.map((p, pi) => {
@@ -1917,9 +1917,9 @@ const CH_TABLE = [
   { ch: 'CH04 計算',      content: 'B問題対策',           rank: 'S', order: 1, wiki: '01 B問題' },
   { ch: 'CH03 技術基準',  content: '接地・絶縁・電線路',   rank: 'S', order: 2, wiki: '02+03' },
   { ch: 'CH01 電気事業法',content: '主任技術者・保安規程', rank: 'S', order: 3, wiki: '04 法令' },
-  { ch: 'CH06 施設管理',  content: '需要率・負荷率など',   rank: 'A', order: 4, wiki: '06 施設管理' },
+  { ch: 'CH06 施設管理',  content: '需要率・負荷率など',   rank: 'A', order: 4, wiki: '05 施設管理' },
   { ch: 'CH02 その他法令',content: '工事士法・用品安全法', rank: 'A', order: 5, wiki: '04 法令' },
-  { ch: 'CH05 再エネ',    content: '風力・太陽光',         rank: 'B', order: 6, wiki: '05 再エネ' },
+  { ch: 'CH05 再エネ',    content: '風力・太陽光',         rank: 'B', order: 6, wiki: '06 再エネ' },
 ];
 
 function HomePage({ onNav, data }) {
@@ -2011,41 +2011,156 @@ function HomePage({ onNav, data }) {
         </div>
       </section>
 
-      {/* ====== 教材CH対応表 ====== */}
+      {/* ====== 学習優先順 ====== */}
       <section style={{ marginBottom: 40 }}>
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>TEXTBOOK MAP</div>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>教材CH↔得点優先度 対応表</h2>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}><strong>教材CH単位</strong>の優先度（CH全体としての重要度）。S→A→Bの順で攻める。</p>
+          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>PRIORITY ORDER</div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>学習の優先順</h2>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>S→A→Bの順で攻める。上から順にやれば合格ラインに届く。</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {CH_TABLE.map((row) => (
+            <div key={row.ch} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--bg-elev)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink-3)', minWidth: 20, textAlign: 'center' }}>{row.order}</span>
+              <span style={{ fontWeight: 600, flex: 1 }}>{row.content}</span>
+              <span className={`rank rank-${row.rank}`}>{row.rank}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ====== 法規の学習マップ ====== */}
+      <section style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>LEARNING MAP</div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>法規の学習マップ</h2>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>法規6チャプターの構成と他科目との関係。CH04の計算は理論・電力・機械の知識が土台。</p>
         </div>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid var(--border)' }}>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>優先</th>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>教材CH</th>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>主な内容</th>
-                <th style={{ textAlign: 'left', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>Wikiカテゴリ</th>
-                <th style={{ textAlign: 'center', padding: '8px 10px', color: 'var(--ink-3)', fontWeight: 600 }}>ランク</th>
-              </tr>
-            </thead>
-            <tbody>
-              {CH_TABLE.map((row) => (
-                <tr key={row.ch} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '8px 10px', fontWeight: 700, color: 'var(--ink-3)' }}>{row.order}</td>
-                  <td style={{ padding: '8px 10px', fontWeight: 600 }}>{row.ch}</td>
-                  <td style={{ padding: '8px 10px', color: 'var(--ink-2)' }}>{row.content}</td>
-                  <td style={{ padding: '8px 10px', color: 'var(--ink-2)' }}>{row.wiki}</td>
-                  <td style={{ padding: '8px 10px', textAlign: 'center' }}>
-                    <span className={`rank rank-${row.rank}`}>{row.rank}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p style={{ margin: '8px 0 0', fontSize: 12, color: 'var(--ink-3)', lineHeight: 1.6 }}>
-            ※ ランクはCH全体としての優先度。テーマ単独の出題頻度では電線路・主任技術者・保安規程はA、電気工事士法はBだが、CHとしてはバンドル単位で1つ上のランクで扱う（下の「頻出テーマ」とランクが異なるのはこのため）。
-          </p>
+          <svg viewBox="0 0 740 500" style={{ width: '100%', maxWidth: 740, display: 'block' }}>
+            <defs>
+              <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5Z" fill="#78909c" /></marker>
+              <filter id="ds" x="-2%" y="-2%" width="104%" height="108%"><feDropShadow dx="0" dy="1" stdDeviation="2" floodOpacity="0.08" /></filter>
+            </defs>
+            <style>{`
+              .card{filter:url(#ds)} .ch-label{font-size:11px;font-weight:700} .ch-item{font-size:9.5px;fill:#78909c}
+              .area-label{font-size:12px;font-weight:700;fill:#90a4ae;letter-spacing:0.05em}
+            `}</style>
+
+            {/* ===== 法規エリア ===== */}
+            <rect x="8" y="8" width="724" height="300" rx="10" fill="none" stroke="#ccc" strokeWidth="0.8" strokeDasharray="4,3" />
+            <text x="24" y="28" className="area-label">法規科目 ── 出題範囲</text>
+
+            {/* CH01 */}
+            <g className="card">
+              <rect x="20" y="44" width="165" height="118" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
+              <rect x="20" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
+              <rect x="20" y="56" width="165" height="12" fill="#b39ddb" />
+              <text x="102" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH01 電気事業法</text>
+              <circle cx="36" cy="82" r="2" fill="#b39ddb" /><text x="44" y="86" className="ch-item">電気工作物の定義</text>
+              <circle cx="36" cy="98" r="2" fill="#b39ddb" /><text x="44" y="102" className="ch-item">主任技術者</text>
+              <circle cx="36" cy="114" r="2" fill="#b39ddb" /><text x="44" y="118" className="ch-item">保安規程</text>
+              <circle cx="36" cy="130" r="2" fill="#b39ddb" /><text x="44" y="134" className="ch-item">使用前自主検査</text>
+              <circle cx="36" cy="146" r="2" fill="#b39ddb" /><text x="44" y="150" className="ch-item">事故報告</text>
+            </g>
+
+            {/* CH03 */}
+            <g className="card">
+              <rect x="197" y="44" width="165" height="118" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
+              <rect x="197" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
+              <rect x="197" y="56" width="165" height="12" fill="#b39ddb" />
+              <text x="279" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH03 電気設備技術基準</text>
+              <circle cx="213" cy="82" r="2" fill="#b39ddb" /><text x="221" y="86" className="ch-item">用語の定義</text>
+              <circle cx="213" cy="98" r="2" fill="#b39ddb" /><text x="221" y="102" className="ch-item">電路の絶縁</text>
+              <circle cx="213" cy="114" r="2" fill="#b39ddb" /><text x="221" y="118" className="ch-item">接地工事</text>
+              <circle cx="213" cy="130" r="2" fill="#b39ddb" /><text x="221" y="134" className="ch-item">電線路・過電流保護</text>
+              <circle cx="213" cy="146" r="2" fill="#b39ddb" /><text x="221" y="150" className="ch-item">分散型電源連系</text>
+            </g>
+
+            {/* CH02 */}
+            <g className="card">
+              <rect x="374" y="44" width="165" height="102" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
+              <rect x="374" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
+              <rect x="374" y="56" width="165" height="12" fill="#b39ddb" />
+              <text x="456" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH02 その他法令</text>
+              <circle cx="390" cy="82" r="2" fill="#b39ddb" /><text x="398" y="86" className="ch-item">電気用品安全法</text>
+              <circle cx="390" cy="98" r="2" fill="#b39ddb" /><text x="398" y="102" className="ch-item">電気工事士法</text>
+              <circle cx="390" cy="114" r="2" fill="#b39ddb" /><text x="398" y="118" className="ch-item">電気工事業法</text>
+            </g>
+
+            {/* CH05 */}
+            <g className="card">
+              <rect x="551" y="44" width="165" height="102" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
+              <rect x="551" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
+              <rect x="551" y="56" width="165" height="12" fill="#b39ddb" />
+              <text x="633" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH05 再エネ技術基準</text>
+              <circle cx="567" cy="82" r="2" fill="#b39ddb" /><text x="575" y="86" className="ch-item">風力発電の技術基準</text>
+              <circle cx="567" cy="98" r="2" fill="#b39ddb" /><text x="575" y="102" className="ch-item">太陽電池発電の技術基準</text>
+              <circle cx="567" cy="114" r="2" fill="#b39ddb" /><text x="575" y="118" className="ch-item">系統連系・保護装置</text>
+            </g>
+
+            {/* CH04 計算 */}
+            <g className="card">
+              <rect x="20" y="178" width="400" height="118" rx="8" fill="#e8f5e9" stroke="#81c784" strokeWidth="1.2" />
+              <rect x="20" y="178" width="400" height="24" rx="8" fill="#66bb6a" />
+              <rect x="20" y="190" width="400" height="12" fill="#66bb6a" />
+              <text x="220" y="196" textAnchor="middle" fill="#fff" className="ch-label">CH04 計算問題（B問題対策）</text>
+              <circle cx="36" cy="218" r="2" fill="#66bb6a" /><text x="44" y="222" className="ch-item">絶縁耐力試験</text>
+              <circle cx="160" cy="218" r="2" fill="#66bb6a" /><text x="168" y="222" className="ch-item">電圧降下</text>
+              <circle cx="260" cy="218" r="2" fill="#66bb6a" /><text x="268" y="222" className="ch-item">支線の引張強さ</text>
+              <circle cx="36" cy="238" r="2" fill="#66bb6a" /><text x="44" y="242" className="ch-item">変圧器の全日効率</text>
+              <circle cx="160" cy="238" r="2" fill="#66bb6a" /><text x="168" y="242" className="ch-item">力率改善</text>
+              <circle cx="260" cy="238" r="2" fill="#66bb6a" /><text x="268" y="242" className="ch-item">B種接地抵抗値</text>
+              <circle cx="36" cy="258" r="2" fill="#66bb6a" /><text x="44" y="262" className="ch-item">需要率・負荷率・不等率</text>
+              <text x="220" y="286" textAnchor="middle" fontSize="9" fontWeight="600" fill="#43a047">他科目の計算力がそのまま得点になる</text>
+            </g>
+
+            {/* CH06 施設管理 */}
+            <g className="card">
+              <rect x="440" y="178" width="276" height="118" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
+              <rect x="440" y="178" width="276" height="24" rx="8" fill="#b39ddb" />
+              <rect x="440" y="190" width="276" height="12" fill="#b39ddb" />
+              <text x="578" y="196" textAnchor="middle" fill="#fff" className="ch-label">CH06 電気施設管理</text>
+              <circle cx="456" cy="218" r="2" fill="#b39ddb" /><text x="464" y="222" className="ch-item">需要率・負荷率・不等率（概念）</text>
+              <circle cx="456" cy="238" r="2" fill="#b39ddb" /><text x="464" y="242" className="ch-item">変圧器容量</text>
+              <circle cx="456" cy="258" r="2" fill="#b39ddb" /><text x="464" y="262" className="ch-item">配電管理</text>
+              <circle cx="456" cy="278" r="2" fill="#b39ddb" /><text x="464" y="282" className="ch-item">受電設備管理</text>
+            </g>
+
+            {/* ===== 他科目エリア ===== */}
+            <rect x="8" y="330" width="724" height="162" rx="10" fill="none" stroke="#ccc" strokeWidth="0.8" strokeDasharray="4,3" />
+            <text x="24" y="350" className="area-label">他科目 ── CH04計算の土台</text>
+
+            {/* 理論 */}
+            <g className="card">
+              <rect x="30" y="366" width="210" height="56" rx="8" fill="#e3f2fd" stroke="#90caf9" strokeWidth="1.2" />
+              <circle cx="46" cy="386" r="8" fill="#42a5f5" /><text x="46" y="390" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="700">理</text>
+              <text x="62" y="390" className="ch-label" fill="#1565c0">「理論」科目</text>
+              <text x="46" y="410" className="ch-item">交流回路 / 三相 / コンデンサ</text>
+            </g>
+
+            {/* 電力 */}
+            <g className="card">
+              <rect x="265" y="366" width="210" height="56" rx="8" fill="#e3f2fd" stroke="#90caf9" strokeWidth="1.2" />
+              <circle cx="281" cy="386" r="8" fill="#42a5f5" /><text x="281" y="390" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="700">電</text>
+              <text x="297" y="390" className="ch-label" fill="#1565c0">「電力」科目</text>
+              <text x="281" y="410" className="ch-item">送電 / 変電 / 配電</text>
+            </g>
+
+            {/* 機械 */}
+            <g className="card">
+              <rect x="500" y="366" width="210" height="56" rx="8" fill="#e3f2fd" stroke="#90caf9" strokeWidth="1.2" />
+              <circle cx="516" cy="386" r="8" fill="#42a5f5" /><text x="516" y="390" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="700">機</text>
+              <text x="532" y="390" className="ch-label" fill="#1565c0">「機械」科目</text>
+              <text x="516" y="410" className="ch-item">変圧器 / 回転機</text>
+            </g>
+
+            {/* 矢印: 他科目 → CH04 */}
+            <line x1="135" y1="366" x2="135" y2="300" stroke="#78909c" strokeWidth="1.2" markerEnd="url(#arr)" />
+            <line x1="370" y1="366" x2="280" y2="300" stroke="#78909c" strokeWidth="1.2" markerEnd="url(#arr)" />
+            <line x1="605" y1="366" x2="400" y2="300" stroke="#78909c" strokeWidth="1.2" markerEnd="url(#arr)" />
+            <text x="370" y="440" textAnchor="middle" fontSize="10" fill="#78909c" fontStyle="italic">他科目で学んだ計算パターンが、法規CH04のB問題でそのまま出る</text>
+          </svg>
         </div>
       </section>
 
