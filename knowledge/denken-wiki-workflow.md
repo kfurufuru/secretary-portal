@@ -3,7 +3,7 @@ title: "電験Wiki構築スキャフォルド — ページ追加フロー・PDF
 category: "電験3種"
 level: "published"
 created: "2026-04-26"
-last_reviewed: "2026-04-26"
+last_reviewed: "2026-05-01"
 understanding_score: 4
 source: "denken-wiki構築セッション（2026-04-22）"
 tags: ["電験3種", "Wiki", "PDF読取", "プロセス自動化", "知識管理"]
@@ -236,6 +236,44 @@ related: [["関連エンティティ1"], ["関連エンティティ2"]]
 - **対話モード**: Claude Code + 画像化ルーチンで 1ページ 20-40分
 - **自動モード**: questions/ 大量作成時は並列エージェント推奨（複数ページ並走）
 - **検証モード**: 月1回のスポット確認で推測タイトル弱点発見・修正
+
+---
+
+## 7. セクション番号入れ替え手順（4ステップ）
+
+セクションの優先度変更等で番号を入れ替える場合の確実な手順。2026-05-01にsec05(再エネ)↔sec06(施設管理)で実施・検証済み。
+
+### ステップ1: WIKI_DATA定数を修正
+
+- `Grep "id:\"sec"` で対象セクション行を特定
+- id, num, title, ch を入れ替え
+- **pages配列のnum("X.Y")も必ず交換**（見落とし注意）
+
+### ステップ2: CH_TABLE定数を修正
+
+- `Grep "CH_TABLE"` でwikiフィールドを特定
+- wikiフィールドの番号を新セクション番号に合わせる
+- 例: `wiki: '06 施設管理'` → `wiki: '05 施設管理'`
+
+### ステップ3: 残存参照を確認
+
+- `Grep "sec0X|sec0Y"` でファイル全体を検索
+- WIKI_DATA定義箇所以外にハードコードされた番号がないか確認
+- テキスト内の「CH0X」はCH番号（教材番号）でありセクション番号とは独立 → 修正不要
+
+### ステップ4: DOM検証
+
+```bash
+python wiki_verify.py top -f hoki
+for page in sec01 sec02 sec03 sec04 sec05 sec06; do
+  python wiki_verify.py "$page" -f hoki
+done
+```
+
+### 確認不要なもの
+
+- **ROADMAP定数**: step番号は学習順序であり、セクション番号と無関係
+- **CH番号（CH01〜CH06）**: 教材のチャプター番号。セクション番号とは独立した体系
 
 ---
 
