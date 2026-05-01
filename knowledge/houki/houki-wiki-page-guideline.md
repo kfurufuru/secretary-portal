@@ -370,99 +370,95 @@ related: ["knowledge/denken-wiki-workflow.md"]
 
 ### 背景
 
-Claude Design（index.html）とMkDocs Wikiで別物に見える問題が発生（2026-05-01確認）。
-デザインファイルは**クリーム×テラコッタ**の暖色系、WikiはデフォルトのダークTealテーマで、
-カラーコンセプトが一致していない。以下のパレットに統一する。
+Claude Design（index.html）と既存Wikiページで別物に見える問題が発生（2026-05-01確認）。
+以下のCSS変数を全ページで統一して使用する。
 
-### 基準カラーパレット（Claude Design準拠）
+### 基準カラーパレット（公式変数）
 
-| 用途 | カラー名 | HEX | 使用箇所 |
-|------|---------|-----|---------|
-| 背景ベース | クリームホワイト | `#FAF7F2` | ページ背景・本文エリア |
-| 背景サイドバー | ウォームグレー | `#F5F0EA` | サイドバー・ナビ背景 |
-| 背景アクティブ | ライトサーモン | `#F5E8DE` | 選択中のナビ項目 |
-| アクセント（主） | テラコッタ | `#C17B52` | ボタン・リンク・見出し装飾 |
-| アクセント（淡） | ライトオレンジ | `#F5C8A8` | ハイライト・マーカー |
-| テキスト（主） | ダークブラウン | `#3D2B1F` | 本文・見出し |
-| テキスト（副） | ミディアムブラウン | `#857565` | 補足・キャプション |
-| ボーダー | ライトブラウン | `#E8DDD5` | 罫線・カード枠 |
-| 警告（warning） | アンバー | `#D4A055` | !!! warning の装飾 |
-| 成功（success） | セージグリーン | `#7A9E7E` | !!! success の装飾 |
-
-> **禁止**: 既存MkDocsデフォルトのティール（`#009485`）・ネイビー背景はこのサイトでは使わない。
-
-### MkDocs Material への適用方法
-
-**mkdocs.yml の palette 設定**:
-```yaml
-theme:
-  palette:
-    - scheme: default
-      primary: custom
-      accent: deep orange
-```
-
-**docs/stylesheets/custom.css への追加**:
 ```css
-/* 法規Wiki カラーパレット（クリーム×テラコッタ統一） */
 :root {
-  --md-primary-fg-color:        #C17B52;
-  --md-primary-fg-color--light: #E09B72;
-  --md-primary-fg-color--dark:  #9A5B38;
-  --md-accent-fg-color:         #C17B52;
-  --md-default-bg-color:        #FAF7F2;
-  --md-default-fg-color:        #3D2B1F;
-  --md-default-fg-color--light: #857565;
-  --md-code-bg-color:           #F5F0EA;
-  --md-typeset-a-color:         #C17B52;
-}
-
-/* サイドバー背景 */
-.md-sidebar {
-  background-color: #F5F0EA;
-}
-
-/* アクティブナビ項目 */
-.md-nav__item--active > .md-nav__link {
-  background-color: #F5E8DE;
-  color: #C17B52;
-}
-
-/* admonition カラー上書き（warning） */
-.md-typeset .admonition.warning,
-.md-typeset details.warning {
-  border-color: #D4A055;
-}
-.md-typeset .warning > .admonition-title,
-.md-typeset .warning > summary {
-  background-color: rgba(212, 160, 85, 0.1);
-}
-
-/* admonition カラー上書き（success） */
-.md-typeset .admonition.success,
-.md-typeset details.success {
-  border-color: #7A9E7E;
+  --color-bg:        #F7F5EF;  /* ページ背景（ベージュ） */
+  --color-surface:   #FFFFFF;  /* カード・パネル背景 */
+  --color-text:      #1F2933;  /* 本文テキスト */
+  --color-muted:     #5F6B7A;  /* 補足・キャプション */
+  --color-primary:   #2F6F73;  /* 主アクセント（ティールグリーン） */
+  --color-link:      #3B6EA8;  /* リンク・インラインアンカー */
+  --color-highlight: #FFF3B0;  /* マーカーハイライト（黄） */
+  --color-border:    #E5E1D8;  /* 罫線・カード枠 */
 }
 ```
 
-### 統一デザイン原則
+### 変数の用途一覧
 
-| 項目 | 禁止 | 推奨 |
+| 変数 | HEX | 使用箇所 |
+|------|-----|---------|
+| `--color-bg` | `#F7F5EF` | `<body>` 背景・サイドバー背景 |
+| `--color-surface` | `#FFFFFF` | カード・テーブル・コードブロック背景 |
+| `--color-text` | `#1F2933` | `<p>` `<li>` `<td>` など本文全般 |
+| `--color-muted` | `#5F6B7A` | 日付・補足説明・メタ情報 |
+| `--color-primary` | `#2F6F73` | ボタン・見出し装飾・アクティブナビ・バッジ |
+| `--color-link` | `#3B6EA8` | `<a>` テキストリンク |
+| `--color-highlight` | `#FFF3B0` | `<mark>` マーカー・重要数値の強調背景 |
+| `--color-border` | `#E5E1D8` | `<table>` 罫線・カード枠・区切り線 |
+
+### MkDocs Material への適用（custom.css）
+
+```css
+/* 法規Wiki 統一カラーパレット */
+:root {
+  --color-bg:        #F7F5EF;
+  --color-surface:   #FFFFFF;
+  --color-text:      #1F2933;
+  --color-muted:     #5F6B7A;
+  --color-primary:   #2F6F73;
+  --color-link:      #3B6EA8;
+  --color-highlight: #FFF3B0;
+  --color-border:    #E5E1D8;
+
+  /* MkDocs Material 変数への橋渡し */
+  --md-primary-fg-color:        #2F6F73;
+  --md-primary-fg-color--light: #4A9297;
+  --md-primary-fg-color--dark:  #1E4F52;
+  --md-accent-fg-color:         #3B6EA8;
+  --md-default-bg-color:        #F7F5EF;
+  --md-default-fg-color:        #1F2933;
+  --md-default-fg-color--light: #5F6B7A;
+  --md-typeset-a-color:         #3B6EA8;
+  --md-code-bg-color:           #FFFFFF;
+}
+
+body { background-color: var(--color-bg); }
+
+.md-sidebar { background-color: var(--color-bg); }
+
+.md-nav__item--active > .md-nav__link {
+  color: var(--color-primary);
+}
+
+mark {
+  background-color: var(--color-highlight);
+  color: var(--color-text);
+}
+```
+
+### 禁止パターン
+
+| 禁止 | 理由 | 代替 |
 |------|------|------|
-| 背景 | 真っ白 `#FFFFFF` / ダーク `#1a1a2e` | クリーム `#FAF7F2` |
-| アクセント | 青系・ティール系 | テラコッタ `#C17B52` |
-| テキスト | 真っ黒 `#000000` | ダークブラウン `#3D2B1F` |
-| ボーダー | グレー `#cccccc` | ライトブラウン `#E8DDD5` |
-| コードブロック背景 | 白・黒 | ウォームグレー `#F5F0EA` |
+| 真っ白 `#FFFFFF` を背景に使う | `--color-bg` の温かみが失われる | `var(--color-bg)` |
+| 真っ黒 `#000000` テキスト | コントラストが強すぎて疲れる | `var(--color-text)` |
+| 青・赤・オレンジ系のアクセント | パレット外、別サイトに見える | `var(--color-primary)` or `var(--color-link)` |
+| インラインで `color:` を直書き | 変数管理が崩れる | CSS変数経由で統一 |
 
 ### 品質チェックリスト追加項目（カラー）
 
 ```
-[ ] 背景色がクリームホワイト #FAF7F2 系になっているか
-[ ] アクセントカラーがテラコッタ #C17B52 系で統一されているか
-[ ] ティール（#009485）やネイビー系を使っていないか
-[ ] admonition の色が上記CSSで上書きされているか（ビルド後に目視確認）
-[ ] ライトモード（scheme: default）固定になっているか（ダークモードトグルを非表示にする場合はCSSで対応）
+[ ] --color-bg (#F7F5EF) がページ背景に適用されているか
+[ ] --color-primary (#2F6F73) がボタン・アクセントに使われているか
+[ ] --color-link (#3B6EA8) がリンク色に使われているか
+[ ] --color-highlight (#FFF3B0) が <mark> やマーカー強調に使われているか
+[ ] パレット外の色（赤・オレンジ・ネイビー等）を使っていないか
+[ ] ビルド後に themes/ と articles/ ページで色が一致するか目視確認したか
 ```
 
 ---
