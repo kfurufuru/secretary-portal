@@ -2,11 +2,52 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "secretary",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8092"],
-      "port": 8092,
-      "autoPort": true
+      "name": "portal",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["dev-server.py", "8092", "C:/Users/kfuru/.secretary"],
+      "port": 8092
+    },
+    {
+      "name": "health",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8091", "--directory", "C:/Users/kfuru/.secretary/health-monitor"],
+      "port": 8091
+    },
+    {
+      "name": "genai-db",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8095", "--directory", "C:/Users/kfuru/Projects/genai-db"],
+      "port": 8095
+    },
+    {
+      "name": "ai-news",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8096", "--directory", "C:/Users/kfuru/.secretary/ai-news"],
+      "port": 8096
+    },
+    {
+      "name": "denken-study",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["C:/Users/kfuru/.secretary/denken-server.py"],
+      "port": 8765
+    },
+    {
+      "name": "denken-news",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8788", "--directory", "C:/Users/kfuru/.secretary"],
+      "port": 8788
+    },
+    {
+      "name": "trending-news",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8797", "--directory", "C:/Users/kfuru/.secretary/.claude/worktrees/sleepy-galileo-3cafb5"],
+      "port": 8797
+    },
+    {
+      "name": "secretary-preview",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8099", "--directory", "C:/Users/kfuru/.secretary"],
+      "port": 8099
     }
   ]
 }

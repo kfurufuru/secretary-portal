@@ -1,0 +1,419 @@
+{
+  "generated": "2026-04-26 10:40",
+  "nodes": [
+    {
+      "id": "denken-wiki-workflow.md",
+      "title": "電験Wiki構築スキャフォルド — ページ追加フロー・PDF読取・落とし穴",
+      "category": "電験3種",
+      "level": "published",
+      "created": "2026-04-26",
+      "last_reviewed": "2026-04-26",
+      "score": 4,
+      "tags": [
+        "電験3種",
+        "Wiki",
+        "PDF読取",
+        "プロセス自動化",
+        "知識管理"
+      ],
+      "related": [
+        "[[denken-wiki-expansion]]",
+        "[[claude-code-knowledge-pipeline]]"
+      ],
+      "wiki_links": 4,
+      "related_count": 2
+    },
+    {
+      "id": "rss-vault-sync-design.md",
+      "title": "RSS Vault Sync 設計ノート",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-26",
+      "last_reviewed": "",
+      "score": 4,
+      "tags": [
+        "RSS",
+        "sync_to_vault",
+        "Stop hook",
+        "Obsidian",
+        "archive",
+        "wiki-link",
+        "自動化"
+      ],
+      "related": [
+        "[[claude-code-knowledge-pipeline]]",
+        "[[portal-health-observability]]",
+        "digital-twin/decision-log/2026-04-23-phase6-p4-scheduler.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 3
+    },
+    {
+      "id": "wiki-validation-checklist.md",
+      "title": "Wiki監査チェックリスト — P1-P4タスク・推測タイトル検証・バリデーション手順",
+      "category": "電験3種",
+      "level": "published",
+      "created": "2026-04-26",
+      "last_reviewed": "2026-04-26",
+      "score": 4,
+      "tags": [
+        "電験3種",
+        "Wiki",
+        "品質管理",
+        "検証",
+        "バリデーション"
+      ],
+      "related": [
+        "[[denken-wiki-workflow]]",
+        "[[denken-wiki-expansion]]"
+      ],
+      "wiki_links": 3,
+      "related_count": 2
+    },
+    {
+      "id": "cc-playbook.md",
+      "title": "Claude Code プレイブック — 全17スライドのエッセンス",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-25",
+      "last_reviewed": "2026-04-25",
+      "score": 4,
+      "tags": [
+        "Claude Code",
+        "Context Engineering",
+        "Hooks",
+        "Skills",
+        "Task Diary",
+        "TDD",
+        "CI/CD",
+        "トークン最適化"
+      ],
+      "related": [
+        "knowledge/mcp-claude-integration.md",
+        "knowledge/claude-code-knowledge-pipeline.md",
+        "knowledge/f-company-session-framework.md",
+        "knowledge/top3-monday-api-key-401-error.md"
+      ],
+      "wiki_links": 4,
+      "related_count": 4
+    },
+    {
+      "id": "claude-long-edit-syntax-risk.md",
+      "title": "Claude長編集での構文破壊リスクと検証プロトコル",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-23",
+      "last_reviewed": "2026-04-23",
+      "score": 4,
+      "tags": [
+        "Claude",
+        "HTML",
+        "検証",
+        "Haiku",
+        "構文"
+      ],
+      "related": [
+        "knowledge/mcp-claude-integration.md",
+        "knowledge/portal-health-observability.md",
+        "knowledge/cc-playbook.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 3
+    },
+    {
+      "id": "dataview-query-template.md",
+      "title": "dataview-query-template",
+      "category": "未分類",
+      "level": "draft",
+      "created": "2026-04-23",
+      "last_reviewed": "",
+      "score": 0,
+      "tags": [],
+      "related": [],
+      "wiki_links": 1,
+      "related_count": 0
+    },
+    {
+      "id": "portal-health-observability.md",
+      "title": "Fカンパニーポータルの健全性可視化パターン（点→線化＋セルフ診断）",
+      "category": "システム設計",
+      "level": "published",
+      "created": "2026-04-23",
+      "last_reviewed": "2026-04-26",
+      "score": 4,
+      "tags": [
+        "ポータル",
+        "ヘルスチェック",
+        "link_checker",
+        "セルフヒール",
+        "可観測性",
+        "cron"
+      ],
+      "related": [
+        "portal-v2.html",
+        "health-monitor/link_checker.py",
+        "knowledge/mcp-claude-integration.md",
+        "knowledge/promote-py-auto-promote-access-log.md",
+        "knowledge/claude-long-edit-syntax-risk.md",
+        "knowledge/cc-playbook.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 6
+    },
+    {
+      "id": "agentic-graphrag-architecture.md",
+      "title": "Agentic GraphRAG アーキテクチャ",
+      "category": "AI活用",
+      "level": "review",
+      "created": "2026-04-22",
+      "last_reviewed": "2026-04-22",
+      "score": 3,
+      "tags": [
+        "GraphRAG",
+        "知識グラフ",
+        "MCP",
+        "ベクトル検索",
+        "Claude Code",
+        "MongoDB"
+      ],
+      "related": [
+        "knowledge/promote-py-auto-promote-access-log.md",
+        "knowledge/claude-code-knowledge-pipeline.md",
+        "knowledge/mcp-claude-integration.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 3
+    },
+    {
+      "id": "ai-gyomu-sentaku.md",
+      "title": "AI化対象業務の策定フレームワーク（学習性×失敗許容度マトリクス）",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-22",
+      "last_reviewed": "2026-04-22",
+      "score": 4,
+      "tags": [
+        "ai",
+        "業務改善",
+        "意思決定",
+        "フレームワーク",
+        "設備管理"
+      ],
+      "related": [
+        "knowledge/ideas-from-news/2026-04-21.md",
+        "knowledge/ideas-from-news/2026-04-20.md",
+        "knowledge/f-company-session-framework.md",
+        "knowledge/business-skill-gap-analysis.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 4
+    },
+    {
+      "id": "mcp-claude-integration.md",
+      "title": "MCP — Claudeを実行AIに変える接続基盤",
+      "category": "AI活用",
+      "level": "review",
+      "created": "2026-04-22",
+      "last_reviewed": "2026-04-22",
+      "score": 4,
+      "tags": [
+        "MCP",
+        "Claude",
+        "自動化",
+        "GitHub",
+        "Notion",
+        "Slack"
+      ],
+      "related": [
+        "knowledge/agentic-graphrag-architecture.md",
+        "knowledge/terminal-shell-cli.md",
+        "knowledge/portal-health-observability.md",
+        "knowledge/top3-monday-api-key-401-error.md",
+        "knowledge/cc-playbook.md",
+        "knowledge/claude-code-knowledge-pipeline.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 6
+    },
+    {
+      "id": "terminal-shell-cli.md",
+      "title": "ターミナル・シェル・CLIの違い",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-22",
+      "last_reviewed": "2026-04-22",
+      "score": 4,
+      "tags": [
+        "CLI",
+        "ターミナル",
+        "シェル",
+        "Linux",
+        "コマンドライン",
+        "IT基礎"
+      ],
+      "related": [
+        "knowledge/mcp-claude-integration.md",
+        "knowledge/cc-playbook.md",
+        "knowledge/ideas-from-news/2026-04-20.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 3
+    },
+    {
+      "id": "promote-py-auto-promote-access-log.md",
+      "title": "promote.py アクセスログベース自動昇格機能",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-21",
+      "last_reviewed": "2026-04-23",
+      "score": 5,
+      "tags": [
+        "promote.py",
+        "自動昇格",
+        "アクセスログ",
+        "ナレッジ管理",
+        "ダッシュボード"
+      ],
+      "related": [
+        "knowledge/claude-code-knowledge-pipeline.md",
+        "knowledge/portal-health-observability.md",
+        "knowledge/agentic-graphrag-architecture.md",
+        "knowledge/mcp-claude-integration.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 4
+    },
+    {
+      "id": "top3-monday-api-key-401-error.md",
+      "title": "top3-monday APIキー認証エラー（401）の対処手順",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-21",
+      "last_reviewed": "2026-04-22",
+      "score": 5,
+      "tags": [
+        "APIキー",
+        "認証エラー",
+        "自動化",
+        "トラブルシュート",
+        "Python",
+        "Anthropic SDK"
+      ],
+      "related": [
+        "denken-study/feynman-sessions/top3-monday-401-error-2026-04-22.md",
+        "knowledge/mcp-claude-integration.md",
+        "knowledge/claude-code-knowledge-pipeline.md",
+        "knowledge/portal-health-observability.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 4
+    },
+    {
+      "id": "ideas-from-news/2026-04-21.md",
+      "title": "設備AI活用の判断精度向上：xhigh使い分けルールとAI導入治験フェーズモデル（2026-04-21蒸留）",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-21",
+      "last_reviewed": "2026-04-22",
+      "score": 3,
+      "tags": [
+        "Claude",
+        "thinking_effort",
+        "AI導入ガバナンス",
+        "設備異常診断",
+        "フェーズゲート"
+      ],
+      "related": [
+        "knowledge/ai-gyomu-sentaku.md",
+        "knowledge/ideas-from-news/2026-04-20.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 2
+    },
+    {
+      "id": "ideas-from-news/2026-04-20.md",
+      "title": "製造現場AIファースト設計：UI廃棄戦略と工場音声IoT転用（2026-04-20蒸留）",
+      "category": "AI活用",
+      "level": "published",
+      "created": "2026-04-20",
+      "last_reviewed": "2026-04-22",
+      "score": 3,
+      "tags": [
+        "計装",
+        "APIファースト",
+        "音声IoT",
+        "HMI",
+        "設備更新"
+      ],
+      "related": [
+        "knowledge/ai-gyomu-sentaku.md",
+        "knowledge/ideas-from-news/2026-04-21.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 2
+    },
+    {
+      "id": "kozo-haaku-ryoku.md",
+      "title": "頭の良さの本質は「構造把握力」",
+      "category": "組織・マネジメント",
+      "level": "published",
+      "created": "2026-04-18",
+      "last_reviewed": "2026-04-18",
+      "score": 4,
+      "tags": [
+        "構造把握力",
+        "思考法",
+        "問題解決",
+        "システム思考",
+        "内向型"
+      ],
+      "related": [
+        "knowledge/解像度思考フレームワーク.md",
+        "knowledge/business-skill-gap-analysis.md",
+        "knowledge/ai-gyomu-sentaku.md",
+        "knowledge/ideas-from-news/2026-04-21.md"
+      ],
+      "wiki_links": 0,
+      "related_count": 4
+    },
+    {
+      "id": "claude-memory-management.md",
+      "title": "Claude Memory 管理設計",
+      "category": "AI活用",
+      "level": "published",
+      "created": "",
+      "last_reviewed": "",
+      "score": 4,
+      "tags": [
+        "Claude Code",
+        "Memory",
+        "知識管理",
+        "ダッシュボード",
+        "自動化"
+      ],
+      "related": [
+        "[[claude-code-knowledge-pipeline]]",
+        "[[cc-playbook]]"
+      ],
+      "wiki_links": 0,
+      "related_count": 2
+    }
+  ],
+  "stats": {
+    "total": 17,
+    "levels": {
+      "published": 14,
+      "review": 2,
+      "draft": 1
+    },
+    "avg_score": 3.9,
+    "isolated_count": 0,
+    "cat_count": {
+      "電験3種": 2,
+      "AI活用": 12,
+      "未分類": 1,
+      "システム設計": 1,
+      "組織・マネジメント": 1
+    }
+  }
+}

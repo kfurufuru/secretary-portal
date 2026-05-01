@@ -255,12 +255,13 @@ const TransientPage = ({ onNav }) => (
   </>
 );
 
+// last-updated: 2026-04-27 | v0.9 | RULE監査：H3ラベル・実務セクション・TrapBlock・marker適用
 const SemiconductorPage = ({ onNav }) => (
   <>
     <MetaStrip difficulty="★★★" importance="A" frequency="中" />
     <LearningMap
-      prereqs={[]}
-      current="半導体"
+      prereqs={[{id:"dc-circuit", title:"直流回路"},{id:"electromagnetic-force", title:"電磁力"}]}
+      current="半導体・ダイオード"
       nexts={[{id:"transistor", title:"トランジスタ"}]}
       onNav={onNav}
     />
@@ -269,7 +270,7 @@ const SemiconductorPage = ({ onNav }) => (
       title="半導体・ダイオード"
       deck="条件によって導体にも絶縁体にもなれる物質。ドーピングとPN接合で「電流の弁」を作る。"
       meta={[
-        { label: "重要度", value: "B" },
+        { label: "重要度", value: "A" },
         { label: "出題頻度", value: "中（毎年1問、問11に固定）" },
         { label: "難易度", value: "★★★" },
       ]}
@@ -287,13 +288,14 @@ const SemiconductorPage = ({ onNav }) => (
     <p>半導体は不純物で性質が変わる「変化できる素材」。PN接合は電流の一方通行弁として機能し、整流回路・定電圧回路・発光素子など幅広く応用される。</p>
 
     <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
     <FormulaTable layer="A" rows={[
       { formula: "V_F \\approx 0.6 \\sim 0.7\\text{ V}", meaning: "シリコンダイオードの順方向電圧降下（導通閾値）", when: "シリコンPN接合ダイオード", notWhen: "ゲルマニウム（≈0.3V）、LEDは色により異なる" },
       { formula: "V_{avg} = \\dfrac{V_m}{\\pi}\\text{（半波整流）}", meaning: "半波整流回路の出力平均電圧", when: "純抵抗負荷・理想ダイオード", notWhen: "フィルタあり・負荷が誘導性の場合は不適" },
       { formula: "V_{avg} = \\dfrac{2V_m}{\\pi}\\text{（全波整流）}", meaning: "全波整流回路の出力平均電圧（半波の2倍）", when: "純抵抗負荷・ブリッジ整流または中点タップ", notWhen: "フィルタあり・負荷が誘導性の場合は不適" },
     ]} />
 
-    <h3>応用素子の特性</h3>
+    <h3>レイヤーB：応用変換</h3>
     <FormulaTable layer="B" rows={[
       { formula: "V_Z\\text{（ツェナー電圧）}", meaning: "逆方向に一定電圧を超えるとブレークダウンして定電圧を維持", when: "電圧安定化回路", notWhen: "電流が最大定格を超えると破壊" },
       { formula: "\\lambda \\propto \\frac{1}{E_g}\\text{（LED）}", meaning: "順方向電流でエネルギーギャップに応じた波長の光を放出", when: "GaAs・GaP等の化合物半導体", notWhen: "シリコンは間接遷移型のため発光不可" },
@@ -326,8 +328,8 @@ const SemiconductorPage = ({ onNav }) => (
         </tr>
         <tr>
           <td>多数キャリア</td>
-          <td>電子（負の電荷）</td>
-          <td>正孔（ホール、正の電荷）</td>
+          <td><span className="marker">電子（負の電荷）</span></td>
+          <td><span className="marker">正孔（ホール、正の電荷）</span></td>
         </tr>
         <tr>
           <td>少数キャリア</td>
@@ -336,8 +338,8 @@ const SemiconductorPage = ({ onNav }) => (
         </tr>
         <tr>
           <td>不純物の呼称</td>
-          <td>ドナー（電子を供与する）</td>
-          <td>アクセプター（電子を受け取る）</td>
+          <td><span className="marker">ドナー（電子を供与する）</span></td>
+          <td><span className="marker">アクセプター（電子を受け取る）</span></td>
         </tr>
         <tr>
           <td>電気的中性</td>
@@ -369,8 +371,8 @@ const SemiconductorPage = ({ onNav }) => (
         </tr>
         <tr>
           <td>空乏層</td>
-          <td>薄くなる（縮小）</td>
-          <td>厚くなる（拡大）</td>
+          <td><span className="marker">薄くなる（縮小）</span></td>
+          <td><span className="marker">厚くなる（拡大）</span></td>
         </tr>
         <tr>
           <td>例外動作</td>
@@ -425,13 +427,13 @@ const SemiconductorPage = ({ onNav }) => (
       <tbody>
         <tr>
           <td>温度↑ → 抵抗</td>
-          <td>減少（キャリア増加）</td>
+          <td><span className="marker">減少（キャリア増加）</span></td>
           <td>増加（格子振動で散乱増加）</td>
         </tr>
         <tr>
           <td>温度係数</td>
-          <td>負（NTC）</td>
-          <td>正（PTC）</td>
+          <td><span className="marker">負（NTC）</span></td>
+          <td><span className="marker">正（PTC）</span></td>
         </tr>
         <tr>
           <td>応用</td>
@@ -450,6 +452,33 @@ const SemiconductorPage = ({ onNav }) => (
       判断の3ステップ：(1) 回路図でダイオードのアノード（A）とカソード（K）を特定する（三角形の底辺側がアノード＝P型、頂点側の棒がカソード＝N型）。(2) アノード・カソードそれぞれの電位を回路から読み取る。(3) アノード電位 {'>'} カソード電位 → 順バイアス（電流が流れる）、アノード電位 {'<'} カソード電位 → 逆バイアス（電流がほぼ流れない）。
     </Callout>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      半導体素子はセンサ・整流・定電圧回路の核心部品。現場で「なぜこの素子が選ばれているか」を理解することでトラブル解析と設備更新の判断力が上がる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>制御盤の24VDC電源ユニット（ブリッジ整流回路）</td>
+          <td>PN接合の一方通行性・全波整流の出力電圧式</td>
+          <td>ダイオードの <Eq tex="V_F \approx 0.6\text{ V}" /> 分の電圧降下を考慮して二次電圧を設計し、出力24V以上を確保する</td>
+        </tr>
+        <tr>
+          <td>制御回路の定電圧保護（サージ吸収・クランプ）</td>
+          <td>ツェナーダイオードの逆降伏特性</td>
+          <td>ツェナー電圧と電力定格を確認し、直列抵抗で電流制限。最大定格を超えると素子破壊するため保護協調が必要</td>
+        </tr>
+        <tr>
+          <td>温度センサ選定（サーミスタ vs 熱電対）</td>
+          <td>半導体の負温度係数（NTC）・ゼーベック効果</td>
+          <td>サーミスタは温度↑→抵抗↓のNTC特性（半導体）。熱電対はゼーベック効果を利用した起電力型であり、原理・配線方式・計装回路が全く異なる</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">4.</span>例題</h2>
     <p><strong>問:</strong> シリコンPN接合ダイオードに順方向電圧を印加する。導通開始電圧はおよそ何Vか。また逆方向に電圧を印加したとき、電流は流れるか。</p>
     <details>
@@ -459,24 +488,72 @@ const SemiconductorPage = ({ onNav }) => (
     </details>
 
     <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
-    <Callout variant="warn" title="勘違い①：N型は「負電荷の物質」だからN型全体が負に帯電している">
-      N型のNは「多数キャリアが電子（Negative）」という意味で、物質全体の電荷は中性。ドーパントのリン原子は正の核（+5価）を持つので、加えた電子（−1個）と相殺されている。
-    </Callout>
-    <Callout variant="warn" title="勘違い②：逆バイアスをかけると電流は完全にゼロになる">
-      逆バイアスでも微小な「逆飽和電流（Is）」が流れる。温度依存性が高く、温度上昇で急増する。ツェナー降伏電圧まで達すると急激に大電流が流れる。
-    </Callout>
-    <Callout variant="warn" title="勘違い③：ダイオードの向きは「どこでも電流の向き＝アノード→カソード」">
-      アノード（P側）が高電位のときに順バイアス。回路図上の記号（三角の頂点方向が電流方向）と実物の向きを混同しないこと。逆接続は完全なアウト。
-    </Callout>
-    <Callout variant="warn" title="勘違い④：太陽電池に光を当てると逆方向（N側プラス）に電圧が発生する">
-      光が当たると正孔がP側に、電子がN側に集まり、P側がプラス（順方向と同じ極性）の起電力が発生する。太陽電池は「光で動くPN接合」であり、外部から電圧を与えるのではなく自ら起電力を生む。
-    </Callout>
-    <Callout variant="warn" title="勘違い⑤：バラクタダイオードは順バイアスで大きな静電容量が得られる">
-      バラクタダイオードは逆バイアスで使う可変容量素子。逆バイアスを強くするほど空乏層が広がり静電容量は小さくなる。順バイアスをかけると電流が流れてしまい容量素子として機能しない。
-    </Callout>
-    <Callout variant="warn" title="パターン33：pn接合の空乏層は順バイアスで広がると思い込む">
-      順バイアスでは外部電圧がpn接合の内蔵電位（ビルトインポテンシャル）を打ち消す方向に働き、空乏層は縮小する。逆バイアスでは内蔵電位を強める方向に働き、空乏層は拡大する。電流の流れやすさと空乏層の広さは逆の関係。逆バイアスで拡大した空乏層が電圧降下を担うコンデンサとして機能するのがバラクタダイオードの原理。（H25問15・R01問15 類出）
-    </Callout>
+
+    <TrapBlock
+      correct="N型半導体は全体として電気的中性。N型の『N』は多数キャリアが電子（Negative charge carrier）の意味であり、物質全体の帯電状態を示すものではない。"
+      trap="N型＝負電荷の物質なのでN型全体が負に帯電していると思い込む。"
+      cite="H25問11・R03問11 出題"
+      steps={[
+        "N型半導体ではドナー原子（5価）が正の核を持ち、放出した自由電子（−）と釣り合っている",
+        "全体の電荷 ＝ 正核 + 自由電子 ＝ 中性（電荷の総和はゼロ）",
+        "『N型』は『多数キャリアが電子』という意味。『負に帯電している』という意味ではない",
+      ]}
+    />
+
+    <TrapBlock
+      correct="逆バイアス時も微小な逆飽和電流 I_s が流れる。完全ゼロにはならない。"
+      trap="逆バイアスなら電流は完全にゼロになると思い込む。"
+      cite="H29問11・H25問11 出題"
+      steps={[
+        "逆方向では空乏層が拡大し電流がほぼ遮断される状態になる",
+        "少数キャリアによる逆飽和電流 I_s はゼロではなく、温度依存性が高い（温度上昇で急増）",
+        "ツェナー降伏電圧に達すると急激に大電流が流れる（ツェナーダイオードはこれを意図的に利用する）",
+      ]}
+    />
+
+    <TrapBlock
+      correct="アノード（P側）が高電位のとき順バイアス。電流方向はアノード → カソード。"
+      trap="回路図上の記号の向きと実物の接続方向を混同し、バイアス方向を誤る。"
+      cite="R04下問11・H19問11 出題"
+      steps={[
+        "回路図でダイオード記号を確認（三角の底辺側＝アノード＝P型、頂点側の棒＝カソード＝N型）",
+        "アノードとカソードそれぞれの電位を回路から読み取る",
+        "アノード電位 {'>'} カソード電位 → 順バイアス（電流が流れる）、逆なら逆バイアス（ほぼ遮断）",
+      ]}
+    />
+
+    <TrapBlock
+      correct="太陽電池は光照射でP側がプラス（順方向と同じ極性）の起電力が発生する。"
+      trap="光電効果と混同してN側がプラスになると思い込む、または光を当てると逆方向に起電力が発生すると誤解する。"
+      cite="R01問11・H20問11 出題"
+      steps={[
+        "光照射でPN接合内に電子・正孔対が生成される",
+        "内蔵電界によって電子はN側へ、正孔はP側へ引き寄せられる",
+        "P側に正電荷が偏る → P側がプラス（高電位）＝ 順方向と同じ極性",
+      ]}
+    />
+
+    <TrapBlock
+      correct="バラクタダイオードは逆バイアスで使う可変容量素子。逆バイアスを強くするほど空乏層が広がり静電容量は小さくなる。"
+      trap="順バイアスで大きな静電容量が得られると思い込む、または逆バイアスと容量の増減関係を逆に覚える。"
+      cite="R02問11 出題"
+      steps={[
+        "バラクタダイオードは逆バイアスで使うことを確認（順バイアスでは電流が流れ容量素子として機能しない）",
+        "逆バイアス電圧↑ → 空乏層が広がる → 静電容量 C が小さくなる（C ∝ 1/√V_R）",
+        "容量の大小と電圧の大小が逆の関係になることを押さえる",
+      ]}
+    />
+
+    <TrapBlock
+      correct="順バイアスで空乏層は縮小、逆バイアスで空乏層は拡大する。"
+      trap="順バイアスで空乏層が広がると思い込む（電流が流れる＝空乏層が広がるという誤った類推）。"
+      cite="H25問15・R01問15 出題"
+      steps={[
+        "順バイアス：外部電圧が内蔵電位（ビルトインポテンシャル）を打ち消す方向に働く → 空乏層縮小 → 電流が流れやすくなる",
+        "逆バイアス：外部電圧が内蔵電位を強める方向に働く → 空乏層拡大 → 電流が流れにくくなる",
+        "逆バイアスで拡大した空乏層がコンデンサとして機能する → バラクタダイオードの動作原理",
+      ]}
+    />
 
     <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
     <table className="data-table">
@@ -677,6 +754,9 @@ const SemiconductorPage = ({ onNav }) => (
     </Callout>
 
     <PageNav prev={{id:"three-phase", title:"三相交流"}} next={{id:"transistor", title:"トランジスタ"}} onNav={onNav} />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-27 | v0.9
+    </p>
   </>
 );
 

@@ -17,6 +17,12 @@
  * }
  */
 
+function _ratingVal(v) {
+  if (v === true) return 1;
+  if (typeof v === 'number') return Math.max(0, Math.min(3, v));
+  return 0;
+}
+
 window.SkillTracker = {
   KEY: 'bsk_tracker',
 
@@ -120,6 +126,7 @@ window.SkillTracker = {
     const skill = all[skillId] || this.getSkill(skillId);
     const today = new Date().toISOString().split('T')[0];
     const score = this.getScore(skillId);
+    const weighted = Object.values(skill.checks || {}).reduce(function(s, v) { return s + _ratingVal(v); }, 0);
 
     if (!skill.history) skill.history = [];
 
@@ -127,8 +134,9 @@ window.SkillTracker = {
     const existingIndex = skill.history.findIndex(h => h.date === today);
     if (existingIndex >= 0) {
       skill.history[existingIndex].score = score;
+      skill.history[existingIndex].weighted = weighted;
     } else {
-      skill.history.push({ date: today, score });
+      skill.history.push({ date: today, score, weighted });
     }
 
     all[skillId] = skill;
@@ -181,5 +189,28 @@ window.SkillTracker = {
     return summary
       .sort((a, b) => (b.lastVisit || '').localeCompare(a.lastVisit || ''))
       .slice(0, n);
+  },
+
+  /**
+   * スキルのメモを保存
+   * @param {string} skillId - スキルID
+   * @param {string} text - メモ本文
+   */
+  saveMemo(skillId, text) {
+    const all = this.getAll();
+    if (!all[skillId]) all[skillId] = { title: '', elements: 0, checks: {}, lastElement: 0, lastVisit: new Date().toISOString().split('T')[0], history: [] };
+    all[skillId].memo = text;
+    all[skillId].memoUpdated = new Date().toISOString().split('T')[0];
+    localStorage.setItem(this.KEY, JSON.stringify(all));
+  },
+
+  /**
+   * スキルのメモを取得
+   * @param {string} skillId - スキルID
+   * @returns {string} メモ本文（なければ空文字）
+   */
+  getMemo(skillId) {
+    const skill = this.getAll()[skillId];
+    return skill ? (skill.memo || '') : '';
   }
 };

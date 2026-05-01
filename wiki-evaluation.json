@@ -1,0 +1,1176 @@
+{
+  "meta": {
+    "generated_at": "2026-04-30T11:31:28.722584",
+    "source_files": [
+      "riron-data.js",
+      "riron-components.jsx",
+      "riron-pages-batch1.jsx",
+      "riron-pages-batch2.jsx",
+      "riron-pages-batch3.jsx",
+      "riron-pages-strategy.jsx",
+      "denken3-riron-wiki.html"
+    ],
+    "total_pages": 35,
+    "average_completeness": 0.99
+  },
+  "summary": {
+    "fully_complete": 33,
+    "with_issues": 2,
+    "not_defined": 0,
+    "not_routed": 0
+  },
+  "chapters": [
+    {
+      "id": "ch1",
+      "num": "01",
+      "title": "電磁気",
+      "pages": [
+        {
+          "page_id": "coulomb-field",
+          "chapter": "ch1",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 11,
+          "line_count": 146,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "静電気・クーロンの法則"
+        },
+        {
+          "page_id": "capacitor",
+          "chapter": "ch1",
+          "source_file": "riron-pages-batch1.jsx",
+          "start_line": 4,
+          "line_count": 108,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "コンデンサ"
+        },
+        {
+          "page_id": "electromagnetic-force",
+          "chapter": "ch1",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 157,
+          "line_count": 147,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "電磁力"
+        },
+        {
+          "page_id": "magnetic-circuit",
+          "chapter": "ch1",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 304,
+          "line_count": 130,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "磁気回路"
+        }
+      ]
+    },
+    {
+      "id": "ch2",
+      "num": "02",
+      "title": "電気回路",
+      "pages": [
+        {
+          "page_id": "dc-circuit",
+          "chapter": "ch2",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 434,
+          "line_count": 160,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "直流回路"
+        },
+        {
+          "page_id": "ac-basics",
+          "chapter": "ch2",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 594,
+          "line_count": 188,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "交流の基礎"
+        },
+        {
+          "page_id": "ac-power",
+          "chapter": "ch2",
+          "source_file": "riron-pages-batch1.jsx",
+          "start_line": 112,
+          "line_count": 129,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "交流電力"
+        },
+        {
+          "page_id": "rlc-resonance",
+          "chapter": "ch2",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 782,
+          "line_count": 185,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "RLC回路・共振"
+        },
+        {
+          "page_id": "bridge-circuit",
+          "chapter": "ch2",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 9,
+          "line_count": 52,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": false,
+            "examples": true,
+            "traps": false,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": false
+          },
+          "completeness_score": 0.81,
+          "issues": [
+            "MISSING_SECTIONS:comparison,traps"
+          ],
+          "page_title": "ブリッジ回路"
+        }
+      ]
+    },
+    {
+      "id": "ch3",
+      "num": "03",
+      "title": "電磁誘導・過渡",
+      "pages": [
+        {
+          "page_id": "inductance",
+          "chapter": "ch3",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 967,
+          "line_count": 191,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "インダクタンス・電磁誘導"
+        },
+        {
+          "page_id": "transient",
+          "chapter": "ch3",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 61,
+          "line_count": 198,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "過渡現象"
+        }
+      ]
+    },
+    {
+      "id": "ch4",
+      "num": "04",
+      "title": "三相交流",
+      "pages": [
+        {
+          "page_id": "three-phase",
+          "chapter": "ch4",
+          "source_file": "riron-pages-batch1.jsx",
+          "start_line": 241,
+          "line_count": 116,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "三相交流"
+        }
+      ]
+    },
+    {
+      "id": "ch5",
+      "num": "05",
+      "title": "電子理論",
+      "pages": [
+        {
+          "page_id": "semiconductor",
+          "chapter": "ch5",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 259,
+          "line_count": 508,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 0.95,
+          "issues": [
+            "MISSING_SECTIONS:related"
+          ],
+          "page_title": "半導体・ダイオード"
+        },
+        {
+          "page_id": "transistor",
+          "chapter": "ch5",
+          "source_file": "riron-pages-batch1.jsx",
+          "start_line": 357,
+          "line_count": 147,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "トランジスタ"
+        },
+        {
+          "page_id": "op-amp",
+          "chapter": "ch5",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 1158,
+          "line_count": 141,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "演算増幅器"
+        }
+      ]
+    },
+    {
+      "id": "ch6",
+      "num": "06",
+      "title": "計測",
+      "pages": [
+        {
+          "page_id": "measurement",
+          "chapter": "ch6",
+          "source_file": "riron-pages-batch2.jsx",
+          "start_line": 1299,
+          "line_count": 151,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": true,
+            "formulas": true,
+            "comparison": true,
+            "examples": true,
+            "traps": true,
+            "related": true
+          },
+          "ui_components": {
+            "meta_strip": true,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": true,
+            "formula_table": true,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "電気・電子計測"
+        }
+      ]
+    },
+    {
+      "id": "ch7",
+      "num": "07",
+      "title": "攻略",
+      "pages": [
+        {
+          "page_id": "trap-patterns",
+          "chapter": "ch7",
+          "source_file": "riron-components.jsx",
+          "start_line": 607,
+          "line_count": 150,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": true,
+            "page_header": true,
+            "crumbs": false,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": false
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "引っかけパターン集（37個）"
+        },
+        {
+          "page_id": "last-3days",
+          "chapter": "ch7",
+          "source_file": "riron-pages-strategy.jsx",
+          "start_line": 144,
+          "line_count": 221,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "直前3日戦略"
+        },
+        {
+          "page_id": "retake-strategy",
+          "chapter": "ch7",
+          "source_file": "riron-pages-strategy.jsx",
+          "start_line": 365,
+          "line_count": 198,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "再受験分析と戦略"
+        }
+      ]
+    },
+    {
+      "id": "ch8",
+      "num": "08",
+      "title": "効率的な勉強の仕方",
+      "pages": [
+        {
+          "page_id": "study-purpose",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9552,
+          "line_count": 43,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "勉強の目的"
+        },
+        {
+          "page_id": "study-cycle",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9595,
+          "line_count": 46,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "基本の勉強サイクル"
+        },
+        {
+          "page_id": "concentration",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9641,
+          "line_count": 39,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "集中力管理"
+        },
+        {
+          "page_id": "90min-session",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9680,
+          "line_count": 45,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "90分勉強セット"
+        },
+        {
+          "page_id": "error-classification",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9725,
+          "line_count": 45,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "間違い分類"
+        },
+        {
+          "page_id": "review-timing",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9770,
+          "line_count": 40,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "復習タイミング"
+        },
+        {
+          "page_id": "anti-patterns",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9810,
+          "line_count": 42,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "効率の悪い勉強法"
+        },
+        {
+          "page_id": "denken3-methods",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9852,
+          "line_count": 45,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "電験3種向けの勉強法"
+        },
+        {
+          "page_id": "break-strategy",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9897,
+          "line_count": 47,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "休憩の取り方"
+        },
+        {
+          "page_id": "no-motivation",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9944,
+          "line_count": 40,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "やる気がない日の勉強法"
+        },
+        {
+          "page_id": "study-summary",
+          "chapter": "ch8",
+          "source_file": "denken3-riron-wiki.html",
+          "start_line": 9984,
+          "line_count": 667,
+          "defined": true,
+          "routed": true,
+          "exported": false,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "まとめ"
+        }
+      ]
+    },
+    {
+      "id": "ref",
+      "num": "—",
+      "title": "リファレンス",
+      "pages": [
+        {
+          "page_id": "trends",
+          "chapter": "ref",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 767,
+          "line_count": 59,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": false
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "出題傾向データ"
+        },
+        {
+          "page_id": "glossary",
+          "chapter": "ref",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 826,
+          "line_count": 63,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": false
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "用語集・索引"
+        },
+        {
+          "page_id": "guide",
+          "chapter": "ref",
+          "source_file": "riron-pages-strategy.jsx",
+          "start_line": 563,
+          "line_count": 432,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": true
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "学習ガイド"
+        },
+        {
+          "page_id": "formulas",
+          "chapter": "ref",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 889,
+          "line_count": 61,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": false
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "公式集"
+        },
+        {
+          "page_id": "circuit-patterns",
+          "chapter": "ref",
+          "source_file": "riron-pages-batch3.jsx",
+          "start_line": 950,
+          "line_count": 71,
+          "defined": true,
+          "routed": true,
+          "exported": true,
+          "sections": {
+            "principle": false,
+            "formulas": false,
+            "comparison": false,
+            "examples": false,
+            "traps": false,
+            "related": false
+          },
+          "ui_components": {
+            "meta_strip": false,
+            "learning_map": false,
+            "page_header": true,
+            "crumbs": true,
+            "page_nav": true,
+            "analogy": false,
+            "formula_table": false,
+            "callout": false
+          },
+          "completeness_score": 1.0,
+          "issues": [],
+          "page_title": "回路パターン集"
+        }
+      ]
+    }
+  ]
+}

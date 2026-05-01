@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Tips 最新情報</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+      --fs-h1: 2rem;
+      --fs-h2: 1.5rem;
+      --fs-h3: 1.25rem;
+      --fs-body: 0.95rem;
+      --fs-sm: 0.85rem;
+      --lh-body: 1.6;
+      --fw-normal: 400;
+      --fw-bold: 700;
+      --sp-1: 4px;
+      --sp-2: 8px;
+      --sp-3: 12px;
+      --sp-4: 16px;
+      --sp-6: 24px;
+      --sp-8: 32px;
+      --sp-12: 48px;
+      --sp-16: 64px;
+      --transition: 0.2s ease;
+      --hover-lift: translateY(-2px);
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --accent-dim: rgba(56, 189, 248, 0.15);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(56, 189, 248, 0.4);
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-hover: rgba(255, 255, 255, 0.07);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-base);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: var(--lh-body);
+      overflow-x: hidden;
+      line-break: strict;
+      overflow-wrap: break-word;
+      word-break: normal;
+    }
+
+    /* ─── Background grid ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--sp-4);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Header ─── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      padding: var(--sp-4) 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-4);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: linear-gradient(90deg, var(--accent), #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      flex-shrink: 0;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-6);
+      flex-shrink: 0;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+    }
+
+    .meta-item i { width: 14px; height: 14px; color: var(--accent); }
+
+    .next-run-badge {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--border-hover);
+      border-radius: var(--radius-sm);
+      padding: 2px var(--sp-2);
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: var(--sp-12) 0 var(--sp-8);
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--border-hover);
+      border-radius: 999px;
+      padding: var(--sp-1) var(--sp-3);
+      margin-bottom: var(--sp-6);
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      font-size: var(--fs-h1);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: var(--sp-4);
+      background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: var(--fs-body);
+      color: var(--text-secondary);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* ─── Stats bar ─── */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-8);
+      padding: var(--sp-4) 0;
+      margin-bottom: var(--sp-6);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat-value {
+      font-size: var(--fs-h3);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+    }
+
+    /* ─── Filter tabs ─── */
+    .filter-section {
+      padding-bottom: var(--sp-6);
+    }
+
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      padding: var(--sp-2) var(--sp-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+      transition: all var(--transition);
+      user-select: none;
+    }
+
+    .filter-tab:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+      background: var(--surface-hover);
+    }
+
+    .filter-tab.active {
+      background: var(--accent-dim);
+      border-color: var(--border-hover);
+      color: var(--accent);
+    }
+
+    .filter-tab .count {
+      font-size: 11px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      padding: 1px 6px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .filter-tab.active .count {
+      background: rgba(56, 189, 248, 0.2);
+    }
+
+    /* ─── Cards grid ─── */
+    .cards-section {
+      padding-bottom: var(--sp-16);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: var(--sp-4);
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--sp-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-4);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: var(--hover-lift);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(56, 189, 248, 0.1);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* Card header */
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--sp-3);
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-1);
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 99px;
+      letter-spacing: 0.03em;
+    }
+
+    .tag-hooks   { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+    .tag-mcp     { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+    .tag-workflow{ background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+    .tag-tips    { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+
+    .notion-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #34d399;
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: 99px;
+      padding: 2px 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Card body */
+    .card-title {
+      font-size: var(--fs-h3);
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    .card-summary {
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-body);
+      flex: 1;
+    }
+
+    /* Card footer */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+      gap: var(--sp-3);
+      flex-wrap: wrap;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+
+    .card-date {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+    }
+
+    .card-date i { width: 13px; height: 13px; }
+
+    .card-source-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: var(--fs-sm);
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity var(--transition);
+    }
+
+    .card-source-link:hover { opacity: 0.75; text-decoration: underline; }
+    .card-source-link i { width: 13px; height: 13px; }
+
+    .card-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--sp-1) var(--sp-3);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    /* ─── Empty state ─── */
+    .empty-state {
+      text-align: center;
+      padding: var(--sp-16) 0;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .empty-state i {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--sp-4);
+      color: var(--text-secondary);
+      opacity: 0.4;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: var(--sp-6) 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: var(--fs-sm);
+    }
+
+    /* ─── Mobile breakpoints ─── */
+    @media (max-width: 768px) {
+      :root { --fs-h1: 1.6rem; --fs-h2: 1.25rem; }
+
+      header .container { flex-wrap: wrap; gap: var(--sp-2); }
+
+      .header-meta { gap: var(--sp-3); }
+
+      .meta-item { display: none; }
+      .meta-item.always-show { display: flex; }
+
+      .hero { padding: var(--sp-8) 0 var(--sp-6); }
+
+      .stats-bar { gap: var(--sp-6); }
+
+      .cards-grid { grid-template-columns: 1fr; }
+
+      .card-footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      :root { --fs-h1: 1.3rem; }
+
+      .hero h1 { font-size: var(--fs-h1); }
+
+      .stats-bar { gap: var(--sp-4); }
+      .stat-item { min-width: 60px; }
+
+      .filter-tabs { gap: var(--sp-1); }
+      .filter-tab { padding: var(--sp-1) var(--sp-3); }
+
+      .card { padding: var(--sp-4); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Header ─── -->
+<header>
+  <div class="container">
+    <div class="logo">
+      <span>⚡ CC Tips</span>
+    </div>
+
+    <div class="header-meta">
+      <div class="meta-item always-show">
+        <i data-lucide="calendar"></i>
+        <span>最終更新: 2026-04-26</span>
+      </div>
+      <div class="next-run-badge">
+        <i data-lucide="clock" style="width:13px;height:13px;"></i>
+        Next run: 02:00
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── Hero ─── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <i data-lucide="zap" style="width:13px;height:13px;"></i>
+      Claude Code Tips Feed
+    </div>
+    <h1>Claude Code Tips 最新情報</h1>
+    <p>Hooks・MCP・Workflow を中心に、Claude Code を実務で活かすTipsを自動収集</p>
+  </div>
+</section>
+
+<!-- ─── Stats ─── -->
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-value" id="total-count">6</span>
+      <span class="stat-label">記事数</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">4</span>
+      <span class="stat-label">タグ種別</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">5</span>
+      <span class="stat-label">Notion保存済み</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">週1</span>
+      <span class="stat-label">収集頻度</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Main ─── -->
+<main>
+  <div class="container">
+
+    <!-- Filter tabs -->
+    <div class="filter-section">
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" data-filter="all">
+          <i data-lucide="layout-grid" style="width:13px;height:13px;"></i>
+          すべて
+          <span class="count" id="count-all">6</span>
+        </button>
+        <button class="filter-tab" data-filter="Hooks">
+          <i data-lucide="webhook" style="width:13px;height:13px;"></i>
+          Hooks
+          <span class="count" id="count-hooks">2</span>
+        </button>
+        <button class="filter-tab" data-filter="MCP">
+          <i data-lucide="plug" style="width:13px;height:13px;"></i>
+          MCP
+          <span class="count" id="count-mcp">1</span>
+        </button>
+        <button class="filter-tab" data-filter="Workflow">
+          <i data-lucide="git-branch" style="width:13px;height:13px;"></i>
+          Workflow
+          <span class="count" id="count-workflow">1</span>
+        </button>
+        <button class="filter-tab" data-filter="Tips">
+          <i data-lucide="lightbulb" style="width:13px;height:13px;"></i>
+          Tips
+          <span class="count" id="count-tips">2</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="cards-section">
+      <div class="cards-grid" id="cards-grid">
+        <!-- Cards are rendered by JS -->
+      </div>
+      <div class="empty-state" id="empty-state">
+        <i data-lucide="inbox"></i>
+        <p>該当する記事が見つかりませんでした</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ─── Footer ─── -->
+<footer>
+  <div class="container">
+    <p>Claude Code Tips Feed — 自動収集 · Notion連携 · 2026-04-28 更新</p>
+  </div>
+</footer>
+
+<script>
+  const articles = [
+    {
+      id: 1,
+      title: 'Stop Hookでトークン節約: セッション終了時に自動スナップショット',
+      summary: 'Claude Codeのフック機能（Stop Hook）を使い、セッション終了時に変更ファイルを自動的にスナップショットとして保存する方法。git commitと組み合わせることで、作業履歴を自動的に残せる。設定は settings.json の hooks セクションに1行追加するだけ。',
+      source_url: 'https://docs.anthropic.com/claude-code/hooks',
+      date: '2026-04-24',
+      tags: ['Hooks'],
+      notion_saved: true
+    },
+    {
+      id: 2,
+      title: 'PreToolUse Hookでコマンドをインターセプト: 危険なrm -rfを自動ブロック',
+      summary: 'PreToolUse Hookを活用して、特定のBashコマンド実行前にバリデーションを挟む実装例。rm -rf や git push --force など破壊的操作を自動的にブロック・警告するスクリプトを5行で実装できる。本番環境での事故防止に効果的。',
+      source_url: 'https://docs.anthropic.com/claude-code/hooks#preToolUse',
+      date: '2026-04-22',
+      tags: ['Hooks', 'Tips'],
+      notion_saved: true
+    },
+    {
+      id: 3,
+      title: 'Notion MCPでタスク管理をClaudeから直接操作: セットアップ完全ガイド',
+      summary: 'Notion公式MCPサーバーをClaude Codeに接続し、タスク追加・DB更新・ページ作成をターミナルから完結させる手順。mcp__notion__create_pages などのツールが使えるようになり、AIと知識DBの統合が進む。認証はOAuth2トークンで約5分でセットアップ完了。',
+      source_url: 'https://developers.notion.com/docs/mcp',
+      date: '2026-04-20',
+      tags: ['MCP'],
+      notion_saved: true
+    },
+    {
+      id: 4,
+      title: 'CLAUDE.md設計パターン: 3層ルール構造で複雑プロジェクトを管理する',
+      summary: 'CLAUDE.mdを「常時ルール / コマンド時ロード / オンデマンド」の3層に分けることで、コンテキスト消費を60%削減できる。commands-reference.mdをheaderに書かずrulesディレクトリに分割する設計パターン。大規模リポジトリでのCLAUDE.md設計のベストプラクティス。',
+      source_url: 'https://docs.anthropic.com/claude-code/memory',
+      date: '2026-04-18',
+      tags: ['Workflow'],
+      notion_saved: true
+    },
+    {
+      id: 5,
+      title: 'コスト削減 実測: /costコマンドとキャッシュ活用で月額40%カット',
+      summary: '/costコマンドでセッション中のキャッシュヒット率をリアルタイム確認し、高ヒット率のうちに作業を集中させる戦術。CLAUDE.mdのキャッシュ5分TTLを意識して270秒以内にコマンドを返す設計で、長期プロジェクトのAPI費用を実測40%削減した事例レポート。',
+      source_url: 'https://docs.anthropic.com/claude-code/costs',
+      date: '2026-04-15',
+      tags: ['Tips'],
+      notion_saved: true
+    },
+    {
+      id: 6,
+      title: 'Claude Code デスクトップ版刷新: 7大新機能（並列エージェント・routines・サイドチャット等）',
+      summary: 'Anthropicが「Claude Code」デスクトップ版を大幅刷新。①並列エージェント：複数タスクを同時並走 ②新サイドバー：セッション管理強化（フィルター・アーカイブ・チェックマーク）③サイドチャット：Ctrl+[;]で会話を分岐 ④統合ツール：テスト実行・差分ビューア・コードエディタ・PDF/HTMLをアプリ内で完結 ⑤プラグイン＆リモート：CLIプラグイン互換性UP・SSH経由リモート接続 ⑥表示モード＆使用状況：詳細/通常/概要の3段階表示・コンテキスト使用量メーター ⑦routines：自律エージェント不要でタスクを自動化するスケジュール実行機能。',
+      source_url: 'https://www.anthropic.com/claude-code',
+      date: '2026-04-28',
+      tags: ['Tips'],
+      notion_saved: false
+    }
+  ];
+
+  const tagClassMap = {
+    'Hooks':    'tag-hooks',
+    'MCP':      'tag-mcp',
+    'Workflow': 'tag-workflow',
+    'Tips':     'tag-tips'
+  };
+
+  function renderCards(filter) {
+    const grid = document.getElementById('cards-grid');
+    const empty = document.getElementById('empty-state');
+
+    const filtered = filter === 'all'
+      ? articles
+      : articles.filter(a => a.tags.includes(filter));
+
+    if (filtered.length === 0) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+
+    grid.innerHTML = filtered.map(article => {
+      const tagsHtml = article.tags.map(t =>
+        `<span class="tag ${tagClassMap[t] || ''}">${t}</span>`
+      ).join('');
+
+      const notionBadge = article.notion_saved
+        ? `<span class="notion-badge"><i data-lucide="check-circle" style="width:11px;height:11px;"></i> Notionに保存済み</span>`
+        : '';
+
+      return `
+        <article class="card" data-tags="${article.tags.join(',')}">
+          <div class="card-header">
+            <div class="card-tags">${tagsHtml}</div>
+            ${notionBadge}
+          </div>
+          <h2 class="card-title">${article.title}</h2>
+          <p class="card-summary">${article.summary}</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="card-date">
+                <i data-lucide="calendar"></i>
+                ${article.date}
+              </span>
+              <a class="card-source-link" href="${article.source_url}" target="_blank" rel="noopener">
+                <i data-lucide="external-link"></i>
+                ソースを開く
+              </a>
+            </div>
+            <button class="card-action-btn" disabled title="将来対応予定">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+              実装したい → Notionでステータス更新（将来対応）
+            </button>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    lucide.createIcons();
+  }
+
+  // Filter tab interaction
+  document.getElementById('filter-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('.filter-tab');
+    if (!tab) return;
+
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    renderCards(tab.dataset.filter);
+  });
+
+  // Initial render
+  renderCards('all');
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

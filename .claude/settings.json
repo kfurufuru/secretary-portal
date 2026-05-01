@@ -1,7 +1,25 @@
 {
   "hooks": {
-    "Stop": {
-      "command": "py \"C:/Users/kfuru/.secretary/ai-news/ai-news/sync_to_vault.py\""
-    }
+    "Stop": [
+      {
+        "type": "command",
+        "command": "py \"C:/Users/kfuru/.secretary/ai-news/ai-news/sync_to_vault.py\""
+      },
+      {
+        "type": "command",
+        "command": "py \"C:/Users/kfuru/.secretary/audit_efficiency.py\" --auto --sessions 5"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "py \"C:/Users/kfuru/.secretary/logs/log-access.py\""
+          }
+        ]
+      }
+    ]
   }
 }

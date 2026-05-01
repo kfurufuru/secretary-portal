@@ -3701,5 +3701,4293 @@
     "types": [],
     "cost": 0,
     "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T15:23:14.472Z",
+    "session_id": "4ac67831-625e-437d-986a-f8e6e7260a7d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T15:24:04.500Z",
+    "session_id": "4ac67831-625e-437d-986a-f8e6e7260a7d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T15:25:21.994Z",
+    "session_id": "6c25f56e-7fd4-4ba4-8866-e4dc7fa02344",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:15:34.024Z",
+    "session_id": "6c25f56e-7fd4-4ba4-8866-e4dc7fa02344",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:15:41.343Z",
+    "session_id": "e32c7cce-a572-4148-aa6e-609083b3af69",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:17:58.871Z",
+    "session_id": "e32c7cce-a572-4148-aa6e-609083b3af69",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:21:01.347Z",
+    "session_id": "e32c7cce-a572-4148-aa6e-609083b3af69",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:24:26.386Z",
+    "session_id": "e32c7cce-a572-4148-aa6e-609083b3af69",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:32:24.246Z",
+    "session_id": "60ac9326-67cc-49f3-aa2d-7c9195634e59",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T16:58:51.375Z",
+    "session_id": "b154e199-37f6-4bea-bb4b-5c1a9ead5ecf",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-25T16:59:36.001Z",
+    "session_id": "b154e199-37f6-4bea-bb4b-5c1a9ead5ecf",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T17:02:32.520Z",
+    "session_id": "26a5c134-cb7f-4c23-b260-abede317b810",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-25T17:06:40.609Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T17:06:55.311Z",
+    "session_id": "3d83d53d-a7b7-45ea-85f1-71716098cc35",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-25T17:08:34.897Z",
+    "session_id": "3d83d53d-a7b7-45ea-85f1-71716098cc35",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-25T17:10:22.299Z",
+    "session_id": "69ca1cd6-630a-4049-9483-3590209bceb3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-25T17:10:55.507Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T17:11:42.477Z",
+    "session_id": "69ca1cd6-630a-4049-9483-3590209bceb3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-25T17:15:33.642Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:22:26.198Z",
+    "session_id": "69ca1cd6-630a-4049-9483-3590209bceb3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:22:56.387Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:29:53.233Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:30:45.110Z",
+    "session_id": "69ca1cd6-630a-4049-9483-3590209bceb3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:30:52.450Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:34:27.398Z",
+    "session_id": "69ca1cd6-630a-4049-9483-3590209bceb3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-25T23:36:37.788Z",
+    "session_id": "69ca1cd6-630a-4049-9483-3590209bceb3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T00:54:29.261Z",
+    "session_id": "154b0be2-5863-400d-a6e0-177c4b8f492e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T00:56:24.152Z",
+    "session_id": "154b0be2-5863-400d-a6e0-177c4b8f492e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T01:01:24.578Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:03:58.314Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:06:35.644Z",
+    "session_id": "c93af4a1-c117-4723-9d20-2487c00af12a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T01:07:28.871Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:12:24.206Z",
+    "session_id": "62504586-5a34-4fe0-9e53-7ecb4198d6f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T01:15:58.546Z",
+    "session_id": "dc79a7bf-80dd-4321-ac7d-79aab513989c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:15:58.555Z",
+    "session_id": "62504586-5a34-4fe0-9e53-7ecb4198d6f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:20:51.137Z",
+    "session_id": "62504586-5a34-4fe0-9e53-7ecb4198d6f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:22:45.469Z",
+    "session_id": "7f8a0465-d588-4421-8ee7-e3a27c097631",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:24:13.289Z",
+    "session_id": "7f8a0465-d588-4421-8ee7-e3a27c097631",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:27:01.672Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T01:32:15.687Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T01:33:26.578Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:36:36.239Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:37:53.804Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:39:18.973Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:41:45.698Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:45:29.735Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:49:51.467Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:51:39.232Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:54:26.606Z",
+    "session_id": "ea0e3d83-1f60-4d9e-a24d-7b1919d97568",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T01:57:06.338Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:03:01.304Z",
+    "session_id": "c7140439-fd66-46ab-8ee2-64e0a7ee6f83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:03:19.724Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:06:38.625Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:21:02.775Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:21:20.392Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:22:38.031Z",
+    "session_id": "c7140439-fd66-46ab-8ee2-64e0a7ee6f83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:29:40.372Z",
+    "session_id": "c7140439-fd66-46ab-8ee2-64e0a7ee6f83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:30:12.063Z",
+    "session_id": "bdd1f15b-5585-4792-b0d1-a0d31bbc8a03",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:35:18.658Z",
+    "session_id": "0c6526a8-f62e-436b-9a8a-68e094637da2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:46:01.783Z",
+    "session_id": "0c6526a8-f62e-436b-9a8a-68e094637da2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T02:51:53.633Z",
+    "session_id": "2bf164c7-30a7-46ee-b26d-ee0627a6b148",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T03:14:21.596Z",
+    "session_id": "5a308e43-221d-40f1-ace2-b68ec545dff9",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T03:17:00.488Z",
+    "session_id": "5a308e43-221d-40f1-ace2-b68ec545dff9",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T03:24:38.507Z",
+    "session_id": "5a308e43-221d-40f1-ace2-b68ec545dff9",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:29:15.282Z",
+    "session_id": "14e77c23-8d3d-4c79-8ce4-9f06f1df7557",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:29:39.728Z",
+    "session_id": "d9db188b-3d5d-44a8-8398-edc4a19de865",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:32:40.374Z",
+    "session_id": "14e77c23-8d3d-4c79-8ce4-9f06f1df7557",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:33:05.143Z",
+    "session_id": "14e77c23-8d3d-4c79-8ce4-9f06f1df7557",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:33:31.272Z",
+    "session_id": "14e77c23-8d3d-4c79-8ce4-9f06f1df7557",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:34:09.478Z",
+    "session_id": "14e77c23-8d3d-4c79-8ce4-9f06f1df7557",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:36:03.667Z",
+    "session_id": "d9db188b-3d5d-44a8-8398-edc4a19de865",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:36:27.070Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T04:38:00.271Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T04:42:45.104Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T04:47:17.246Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:10:44.793Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:18:08.540Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:28:35.847Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:32:18.391Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:41:26.834Z",
+    "session_id": "53a7ff12-93fd-4f0f-8dde-7a92d5df3664",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:41:59.490Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:42:48.830Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T05:43:48.165Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T06:43:34.418Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T06:45:43.423Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T06:46:43.268Z",
+    "session_id": "3974c384-2fc2-4dd1-9790-5b2fb5dd2fe7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T06:48:41.868Z",
+    "session_id": "01d18186-3096-4472-84f7-de7e6bfee6b0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T06:51:12.162Z",
+    "session_id": "01d18186-3096-4472-84f7-de7e6bfee6b0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T06:53:59.696Z",
+    "session_id": "01d18186-3096-4472-84f7-de7e6bfee6b0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:00:47.582Z",
+    "session_id": "01d18186-3096-4472-84f7-de7e6bfee6b0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:06:16.873Z",
+    "session_id": "4da33307-931f-4ca6-86c1-5b9ed90310be",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:06:41.660Z",
+    "session_id": "d9db188b-3d5d-44a8-8398-edc4a19de865",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:10:41.674Z",
+    "session_id": "96fd9827-acac-4f22-bebd-a959d07b3b09",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:11:12.061Z",
+    "session_id": "b271476c-cf2e-4142-85a6-52185ff7793e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:13:15.480Z",
+    "session_id": "d9db188b-3d5d-44a8-8398-edc4a19de865",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:15:48.541Z",
+    "session_id": "b271476c-cf2e-4142-85a6-52185ff7793e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:16:49.830Z",
+    "session_id": "ef0e4eb2-52c6-4e44-ad3c-b1533841e98e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:17:17.036Z",
+    "session_id": "51231aa0-9457-4571-9188-d36851056158",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:20:02.635Z",
+    "session_id": "31200b85-38ef-424d-b937-f166a5dfaa6e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:20:24.285Z",
+    "session_id": "37ebbca2-4270-4d99-9bb9-18d139fb6f96",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:20:50.091Z",
+    "session_id": "a7290419-f3b0-487a-8000-9a5cfc525130",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:20:53.000Z",
+    "session_id": "20397950-f412-4d8e-a633-8cef04ebb95f",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:21:45.156Z",
+    "session_id": "b2c3d736-67a3-474b-b178-148b2f139467",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:21:49.753Z",
+    "session_id": "20397950-f412-4d8e-a633-8cef04ebb95f",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:21:58.429Z",
+    "session_id": "b246ea65-ebca-4010-a4eb-12590a27e29d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:22:03.632Z",
+    "session_id": "b271476c-cf2e-4142-85a6-52185ff7793e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:22:55.470Z",
+    "session_id": "20397950-f412-4d8e-a633-8cef04ebb95f",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:28:38.963Z",
+    "session_id": "b271476c-cf2e-4142-85a6-52185ff7793e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:32:58.764Z",
+    "session_id": "24fa1a6a-ff66-4876-9a67-c035d58c009c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:36:13.479Z",
+    "session_id": "a5a2648f-bd6a-4b5c-8c32-730581f78fff",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T07:39:12.967Z",
+    "session_id": "d0929097-1357-467d-a599-964603ac769a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:48:22.191Z",
+    "session_id": "d0929097-1357-467d-a599-964603ac769a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:49:23.436Z",
+    "session_id": "493e9d83-5d33-400e-a9fd-8c925092eb08",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:50:04.798Z",
+    "session_id": "b271476c-cf2e-4142-85a6-52185ff7793e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T07:57:32.446Z",
+    "session_id": "493e9d83-5d33-400e-a9fd-8c925092eb08",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T08:01:49.975Z",
+    "session_id": "493e9d83-5d33-400e-a9fd-8c925092eb08",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T08:05:42.128Z",
+    "session_id": "493e9d83-5d33-400e-a9fd-8c925092eb08",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:11:18.422Z",
+    "session_id": "d0929097-1357-467d-a599-964603ac769a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:12:49.357Z",
+    "session_id": "493e9d83-5d33-400e-a9fd-8c925092eb08",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:14:31.876Z",
+    "session_id": "b271476c-cf2e-4142-85a6-52185ff7793e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:16:47.287Z",
+    "session_id": "11b4bf56-06cc-47dd-8e23-c1799e0426bc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:25:01.713Z",
+    "session_id": "7c1a359e-46a6-470d-9cd8-56bb91085146",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:29:21.055Z",
+    "session_id": "7c1a359e-46a6-470d-9cd8-56bb91085146",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:32:27.671Z",
+    "session_id": "7c1a359e-46a6-470d-9cd8-56bb91085146",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:33:34.287Z",
+    "session_id": "7c1a359e-46a6-470d-9cd8-56bb91085146",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T12:59:25.706Z",
+    "session_id": "11b4bf56-06cc-47dd-8e23-c1799e0426bc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T13:05:36.859Z",
+    "session_id": "11b4bf56-06cc-47dd-8e23-c1799e0426bc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T13:18:07.423Z",
+    "session_id": "dfd71779-a020-450a-8111-2c610de68f5a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T13:56:53.539Z",
+    "session_id": "4f7b9521-f7d4-4656-beb3-14be2c5199f5",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T13:59:32.438Z",
+    "session_id": "4f7b9521-f7d4-4656-beb3-14be2c5199f5",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T14:11:10.372Z",
+    "session_id": "4f7b9521-f7d4-4656-beb3-14be2c5199f5",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T14:12:39.589Z",
+    "session_id": "91ee7a6f-19b1-4264-ad98-93683f11c433",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T14:15:45.702Z",
+    "session_id": "91ee7a6f-19b1-4264-ad98-93683f11c433",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T14:17:02.648Z",
+    "session_id": "91ee7a6f-19b1-4264-ad98-93683f11c433",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T14:23:35.070Z",
+    "session_id": "91ee7a6f-19b1-4264-ad98-93683f11c433",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T14:30:04.460Z",
+    "session_id": "2215804e-9fc3-43c3-86e6-714d49dcb0f6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T15:15:19.206Z",
+    "session_id": "2215804e-9fc3-43c3-86e6-714d49dcb0f6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-26T23:08:57.521Z",
+    "session_id": "6acf65f2-a366-4b10-a3ff-8bef651ddbe5",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T23:35:52.935Z",
+    "session_id": "53dd32d4-8834-48ad-9bb0-4e03d00215ee",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-26T23:38:13.994Z",
+    "session_id": "f400c93b-6fb7-4d7d-ab11-eecfd7cc3617",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T00:04:51.911Z",
+    "session_id": "43e08f13-0540-4458-9c7a-938e721f8828",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T00:05:29.394Z",
+    "session_id": "ac24b41c-d41c-41b4-83cf-30af8ab5b2de",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T00:11:39.331Z",
+    "session_id": "a60cab5a-0d87-478b-8e90-1c10ee0592fb",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:18:39.269Z",
+    "session_id": "2215804e-9fc3-43c3-86e6-714d49dcb0f6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:20:49.619Z",
+    "session_id": "a60cab5a-0d87-478b-8e90-1c10ee0592fb",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:41:49.472Z",
+    "session_id": "6ed466d8-115f-4a74-8abf-bca7881ebff7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:47:09.127Z",
+    "session_id": "a60cab5a-0d87-478b-8e90-1c10ee0592fb",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:48:45.906Z",
+    "session_id": "6ed466d8-115f-4a74-8abf-bca7881ebff7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:49:06.333Z",
+    "session_id": "a60cab5a-0d87-478b-8e90-1c10ee0592fb",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:50:46.735Z",
+    "session_id": "689eda53-1689-4631-9a7a-817d3bc08a51",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:56:40.927Z",
+    "session_id": "6ed466d8-115f-4a74-8abf-bca7881ebff7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T00:59:37.208Z",
+    "session_id": "6ed466d8-115f-4a74-8abf-bca7881ebff7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:04:01.416Z",
+    "session_id": "bff461ba-b040-4a32-ad85-2c67b4000130",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:06:04.405Z",
+    "session_id": "bff461ba-b040-4a32-ad85-2c67b4000130",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:09:33.070Z",
+    "session_id": "bff461ba-b040-4a32-ad85-2c67b4000130",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:09:55.334Z",
+    "session_id": "689eda53-1689-4631-9a7a-817d3bc08a51",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:11:06.542Z",
+    "session_id": "b66e5c44-6cfd-4959-befb-36e2f8bb8890",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:15:13.003Z",
+    "session_id": "bff461ba-b040-4a32-ad85-2c67b4000130",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:30:27.105Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:34:52.595Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:35:26.455Z",
+    "session_id": "b66e5c44-6cfd-4959-befb-36e2f8bb8890",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:36:01.014Z",
+    "session_id": "689eda53-1689-4631-9a7a-817d3bc08a51",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:39:47.886Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:40:47.112Z",
+    "session_id": "689eda53-1689-4631-9a7a-817d3bc08a51",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:46:18.734Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:52:07.646Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:54:38.943Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T01:57:33.390Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T02:06:02.459Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T02:22:04.984Z",
+    "session_id": "f31324fe-63fa-4851-bc5b-6736319301b4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T02:34:32.396Z",
+    "session_id": "bfedd0fa-8b18-43f9-86b0-1c05b9d2cab1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T03:40:39.890Z",
+    "session_id": "1da11063-0cac-4aba-a92e-5f977cf54f3e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T03:47:25.754Z",
+    "session_id": "1da11063-0cac-4aba-a92e-5f977cf54f3e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T03:50:35.501Z",
+    "session_id": "bfedd0fa-8b18-43f9-86b0-1c05b9d2cab1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T03:53:47.751Z",
+    "session_id": "bfedd0fa-8b18-43f9-86b0-1c05b9d2cab1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T04:03:58.982Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T04:05:03.296Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:33:23.645Z",
+    "session_id": "ef32d027-4ae0-45a0-87f2-7efd9819db02",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:35:46.927Z",
+    "session_id": "8c7275f4-2a93-49b7-ba85-1eca863edb83",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:43:19.194Z",
+    "session_id": "14af5853-211b-4545-bb89-d705b4bd6de8",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:49:38.523Z",
+    "session_id": "14af5853-211b-4545-bb89-d705b4bd6de8",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:53:33.807Z",
+    "session_id": "14af5853-211b-4545-bb89-d705b4bd6de8",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:53:42.311Z",
+    "session_id": "ef32d027-4ae0-45a0-87f2-7efd9819db02",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:56:33.749Z",
+    "session_id": "14af5853-211b-4545-bb89-d705b4bd6de8",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T05:58:37.021Z",
+    "session_id": "ef32d027-4ae0-45a0-87f2-7efd9819db02",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:01:38.370Z",
+    "session_id": "14af5853-211b-4545-bb89-d705b4bd6de8",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:03:07.896Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:03:54.102Z",
+    "session_id": "14af5853-211b-4545-bb89-d705b4bd6de8",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:06:10.554Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:09:31.856Z",
+    "session_id": "ef32d027-4ae0-45a0-87f2-7efd9819db02",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:10:09.444Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:13:08.252Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:15:55.055Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:18:48.456Z",
+    "session_id": "ef32d027-4ae0-45a0-87f2-7efd9819db02",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:28:26.273Z",
+    "session_id": "7184b4b9-0777-42c0-b34f-3aadccdf4203",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:31:24.869Z",
+    "session_id": "ef32d027-4ae0-45a0-87f2-7efd9819db02",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:51:33.298Z",
+    "session_id": "0e964d01-201f-40c2-85db-b3787a15d80f",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:55:04.331Z",
+    "session_id": "0e964d01-201f-40c2-85db-b3787a15d80f",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T06:57:52.301Z",
+    "session_id": "2cd06575-e8ca-4474-a176-957733c45386",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:06:22.769Z",
+    "session_id": "2cd06575-e8ca-4474-a176-957733c45386",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:13:06.080Z",
+    "session_id": "0e6cb413-bbe0-4b42-b789-9850b81cd770",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:18:44.035Z",
+    "session_id": "0e6cb413-bbe0-4b42-b789-9850b81cd770",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:30:52.813Z",
+    "session_id": "0e6cb413-bbe0-4b42-b789-9850b81cd770",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:36:03.580Z",
+    "session_id": "0e6cb413-bbe0-4b42-b789-9850b81cd770",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:46:51.948Z",
+    "session_id": "0e6cb413-bbe0-4b42-b789-9850b81cd770",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T07:57:33.022Z",
+    "session_id": "237904b8-eefa-4c0f-b922-5a2fa7dcafd7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T07:58:54.801Z",
+    "session_id": "0e6cb413-bbe0-4b42-b789-9850b81cd770",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T08:27:32.230Z",
+    "session_id": "741f9433-06f1-4625-9351-3b65bf4547e4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T08:27:58.183Z",
+    "session_id": "88c831f9-9c57-4ab1-9642-728822055a6d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T08:28:53.604Z",
+    "session_id": "28455d45-5e63-4d67-95e7-78ed0bf040d3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T08:31:06.609Z",
+    "session_id": "4e04981f-2603-4c48-8128-35adfc6b2404",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T08:59:43.802Z",
+    "session_id": "4e04981f-2603-4c48-8128-35adfc6b2404",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:04:54.631Z",
+    "session_id": "741f9433-06f1-4625-9351-3b65bf4547e4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:26:27.629Z",
+    "session_id": "6ed466d8-115f-4a74-8abf-bca7881ebff7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:31:53.317Z",
+    "session_id": "f0e3246b-6804-4a30-baa5-091a9d5d0a56",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:37:15.909Z",
+    "session_id": "f0e3246b-6804-4a30-baa5-091a9d5d0a56",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:38:22.160Z",
+    "session_id": "f0e3246b-6804-4a30-baa5-091a9d5d0a56",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:38:34.190Z",
+    "session_id": "7ec08795-ad4c-4306-911e-43d5fd228821",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:42:07.043Z",
+    "session_id": "7ec08795-ad4c-4306-911e-43d5fd228821",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:45:56.431Z",
+    "session_id": "f0e3246b-6804-4a30-baa5-091a9d5d0a56",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T09:48:54.949Z",
+    "session_id": "7ec08795-ad4c-4306-911e-43d5fd228821",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T10:00:28.253Z",
+    "session_id": "7ec08795-ad4c-4306-911e-43d5fd228821",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T10:04:46.534Z",
+    "session_id": "2dfcbadf-5159-4ca6-a531-9e6fc29d646d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T13:39:35.286Z",
+    "session_id": "f0e3246b-6804-4a30-baa5-091a9d5d0a56",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T13:42:07.865Z",
+    "session_id": "49074eff-5d48-4f36-83e8-df0f1d32e6ce",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T13:43:45.146Z",
+    "session_id": "80affea3-576c-48fc-b8f8-e7f3869e9f8a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T13:47:51.119Z",
+    "session_id": "7f18c1c9-39e4-41ff-b220-13e36ac06c5c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:40:53.082Z",
+    "session_id": "49074eff-5d48-4f36-83e8-df0f1d32e6ce",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:41:18.800Z",
+    "session_id": "7f18c1c9-39e4-41ff-b220-13e36ac06c5c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:45:45.457Z",
+    "session_id": "49074eff-5d48-4f36-83e8-df0f1d32e6ce",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:47:07.505Z",
+    "session_id": "80affea3-576c-48fc-b8f8-e7f3869e9f8a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:47:18.359Z",
+    "session_id": "49074eff-5d48-4f36-83e8-df0f1d32e6ce",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:51:59.067Z",
+    "session_id": "80affea3-576c-48fc-b8f8-e7f3869e9f8a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:53:33.930Z",
+    "session_id": "43fa26e1-7047-4ced-8e89-ea94eac8e7ca",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T14:54:46.507Z",
+    "session_id": "43fa26e1-7047-4ced-8e89-ea94eac8e7ca",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:55:25.582Z",
+    "session_id": "5a0605ff-3ded-4d88-bbc2-be2182d9bdac",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T14:57:29.625Z",
+    "session_id": "43fa26e1-7047-4ced-8e89-ea94eac8e7ca",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T14:58:38.064Z",
+    "session_id": "5a0605ff-3ded-4d88-bbc2-be2182d9bdac",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:00:13.695Z",
+    "session_id": "4d7c6aef-4331-4bfb-8684-ce9fd1cf0c14",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T15:01:46.332Z",
+    "session_id": "4d7c6aef-4331-4bfb-8684-ce9fd1cf0c14",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:11:29.108Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:17:23.756Z",
+    "session_id": "ee66f0c8-20f9-41af-a5c9-43b619d5f483",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T15:20:49.895Z",
+    "session_id": "ee66f0c8-20f9-41af-a5c9-43b619d5f483",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:21:47.065Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:23:24.803Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:25:35.536Z",
+    "session_id": "ee66f0c8-20f9-41af-a5c9-43b619d5f483",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:26:17.378Z",
+    "session_id": "0c52c3c5-5e77-417f-9764-5be0a838236c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:28:03.482Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:38:46.778Z",
+    "session_id": "0c52c3c5-5e77-417f-9764-5be0a838236c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T15:57:14.026Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:09:18.323Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:10:12.835Z",
+    "session_id": "691049f1-6244-4b18-9ebd-585ea63a5cf0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:18:09.935Z",
+    "session_id": "ee66f0c8-20f9-41af-a5c9-43b619d5f483",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:24:45.197Z",
+    "session_id": "ee66f0c8-20f9-41af-a5c9-43b619d5f483",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:25:38.907Z",
+    "session_id": "e11fed35-391f-486b-bd36-7ad334cfcfe4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:32:01.359Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T22:35:15.542Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T22:39:03.476Z",
+    "session_id": "a92b4a44-2375-43b0-9485-0ad164a31861",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T22:40:37.423Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:43:00.267Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:46:17.926Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:46:57.662Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:47:52.305Z",
+    "session_id": "e11fed35-391f-486b-bd36-7ad334cfcfe4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:48:07.606Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:49:18.347Z",
+    "session_id": "e11fed35-391f-486b-bd36-7ad334cfcfe4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:49:19.784Z",
+    "session_id": "7ec5e05c-3a4f-49bd-ab17-9643da54be6a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T22:51:10.984Z",
+    "session_id": "483411fe-16bc-4976-8af9-100ef3ff1288",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-27T22:52:20.385Z",
+    "session_id": "a92b4a44-2375-43b0-9485-0ad164a31861",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:53:57.539Z",
+    "session_id": "31e91a1b-2825-4e86-a602-0eea5b0b19f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:56:34.270Z",
+    "session_id": "31e91a1b-2825-4e86-a602-0eea5b0b19f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T22:58:38.678Z",
+    "session_id": "31e91a1b-2825-4e86-a602-0eea5b0b19f0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:00:47.288Z",
+    "session_id": "a92b4a44-2375-43b0-9485-0ad164a31861",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:04:02.395Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:08:40.785Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:10:41.096Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:20:51.291Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:27:52.376Z",
+    "session_id": "1911cd6c-6236-417a-b61d-0f72fdb3a931",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-27T23:33:35.821Z",
+    "session_id": "e11fed35-391f-486b-bd36-7ad334cfcfe4",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:13:35.433Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:14:10.633Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:18:06.745Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:20:30.108Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:25:36.517Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:28:44.650Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:35:53.688Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:39:27.224Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:43:20.450Z",
+    "session_id": "3b5c313d-3886-4ae9-86cd-259bbcaf5e6a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-28T02:47:04.561Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:49:30.338Z",
+    "session_id": "af8482e2-0ae7-4407-bda7-b044eb68fad7",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T02:51:57.903Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:01:26.797Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:07:27.749Z",
+    "session_id": "05b10343-a635-4013-908f-0c01606069b6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:09:31.987Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:17:57.118Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:20:13.221Z",
+    "session_id": "05b10343-a635-4013-908f-0c01606069b6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:31:23.024Z",
+    "session_id": "05b10343-a635-4013-908f-0c01606069b6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:43:20.309Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:48:18.423Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:48:50.376Z",
+    "session_id": "cae1e5f9-073c-489e-acb4-7396d71f580e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:50:40.404Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:51:37.757Z",
+    "session_id": "cae1e5f9-073c-489e-acb4-7396d71f580e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:53:28.411Z",
+    "session_id": "cae1e5f9-073c-489e-acb4-7396d71f580e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T03:58:36.003Z",
+    "session_id": "d83c295b-e5e1-4396-8b9a-edcfd3025ce3",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:23:52.607Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:25:26.516Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:28:49.563Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:33:31.741Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:39:45.284Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:42:36.294Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:42:42.575Z",
+    "session_id": "4e86fb82-29ae-48ce-9190-23b87f15c1ea",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:54:49.591Z",
+    "session_id": "79af1b2c-4732-47c9-bccb-f9a3781cc83d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T04:59:24.226Z",
+    "session_id": "4e86fb82-29ae-48ce-9190-23b87f15c1ea",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:03:39.913Z",
+    "session_id": "79af1b2c-4732-47c9-bccb-f9a3781cc83d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:04:53.421Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:22:48.832Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:42:15.983Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:46:40.960Z",
+    "session_id": "9938171b-f816-4d45-9939-986e19b86eec",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:50:29.672Z",
+    "session_id": "dbb8a56d-edbd-45eb-92d6-48fb384f9e4e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T07:53:42.505Z",
+    "session_id": "dbb8a56d-edbd-45eb-92d6-48fb384f9e4e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T08:05:58.915Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T08:09:19.343Z",
+    "session_id": "dbb8a56d-edbd-45eb-92d6-48fb384f9e4e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T08:13:29.099Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T08:17:51.697Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T08:32:46.622Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T08:33:02.572Z",
+    "session_id": "dbb8a56d-edbd-45eb-92d6-48fb384f9e4e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:09:47.330Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:11:28.755Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:12:40.177Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:14:10.878Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:14:55.233Z",
+    "session_id": "80d5fd89-6663-40a2-a9b8-646ab13f614a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:17:01.271Z",
+    "session_id": "80d5fd89-6663-40a2-a9b8-646ab13f614a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:18:24.056Z",
+    "session_id": "80d5fd89-6663-40a2-a9b8-646ab13f614a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:18:29.491Z",
+    "session_id": "190192b1-c03f-49b6-bf6c-adfa39b305ba",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:18:44.125Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:27:30.129Z",
+    "session_id": "80d5fd89-6663-40a2-a9b8-646ab13f614a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:33:05.591Z",
+    "session_id": "80d5fd89-6663-40a2-a9b8-646ab13f614a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:33:33.542Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:36:27.637Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:38:21.310Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:46:13.011Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:47:16.084Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:49:44.774Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:53:03.825Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T09:56:55.193Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T10:01:31.304Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T10:06:18.848Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T10:14:04.694Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T10:26:04.327Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T10:44:04.004Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T10:55:00.527Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:07:59.531Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-28T11:14:01.155Z",
+    "session_id": "1a7179da-cc3b-4c07-9f6b-f72733a010dc",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:15:06.657Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:17:09.905Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:34:37.814Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:38:52.642Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:39:09.754Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:40:17.499Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:42:50.001Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-28T11:46:40.915Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:12:48.150Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-29T00:17:04.911Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:19:34.138Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:21:33.716Z",
+    "session_id": "774d22b1-70a9-4dc7-815c-2ac0a9dc5cc6",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-29T00:22:15.937Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:24:19.273Z",
+    "session_id": "328ec183-db12-4ead-aa16-84af39e16cb0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-29T00:36:03.122Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:39:38.540Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:47:23.775Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:48:43.043Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:48:45.563Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:53:52.305Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:54:46.054Z",
+    "session_id": "47f1567f-bb7b-402b-a92b-d83e334f785c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T00:55:03.898Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T01:03:56.683Z",
+    "session_id": "818ac4cf-a7cd-4076-8e4f-0bd602f38300",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T01:14:01.667Z",
+    "session_id": "1d64ac99-d9f5-4188-85cd-bd0f569d4d0c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T02:55:48.118Z",
+    "session_id": "bebd148d-e560-4390-a71b-65ca5dae8a75",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T02:57:21.456Z",
+    "session_id": "bebd148d-e560-4390-a71b-65ca5dae8a75",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T02:58:07.298Z",
+    "session_id": "bebd148d-e560-4390-a71b-65ca5dae8a75",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T03:50:34.522Z",
+    "session_id": "fff7151f-640f-4b59-8bb7-669036d8967a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:14:37.547Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:26:58.014Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:35:12.476Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:39:57.885Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:46:28.308Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:51:14.550Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T04:57:22.413Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:16:19.048Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:34:10.519Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:49:33.153Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:57:39.592Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:57:43.566Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:57:51.376Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T05:57:54.847Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T06:01:35.544Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T06:15:03.795Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T06:17:18.376Z",
+    "session_id": "80027e0e-670f-44e9-8440-ee991bc07893",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T06:24:38.841Z",
+    "session_id": "fff7151f-640f-4b59-8bb7-669036d8967a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T09:44:30.715Z",
+    "session_id": "8880ef43-0f22-4fbd-a093-48f79ebd7c3c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T09:48:24.352Z",
+    "session_id": "2a040a9f-1cad-4184-bd87-e0aa7f541f57",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T09:48:51.524Z",
+    "session_id": "8880ef43-0f22-4fbd-a093-48f79ebd7c3c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T09:59:52.805Z",
+    "session_id": "8880ef43-0f22-4fbd-a093-48f79ebd7c3c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T10:27:10.670Z",
+    "session_id": "37888ad3-fcac-4afd-a8ac-744f69509c30",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 2 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-29T10:38:47.782Z",
+    "session_id": "37888ad3-fcac-4afd-a8ac-744f69509c30",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T10:46:41.715Z",
+    "session_id": "c93307cc-df25-4ac2-b721-54ccd66d3fd0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T10:47:55.559Z",
+    "session_id": "c93307cc-df25-4ac2-b721-54ccd66d3fd0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T10:50:02.446Z",
+    "session_id": "c93307cc-df25-4ac2-b721-54ccd66d3fd0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T10:59:45.466Z",
+    "session_id": "c93307cc-df25-4ac2-b721-54ccd66d3fd0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T10:59:54.884Z",
+    "session_id": "c93307cc-df25-4ac2-b721-54ccd66d3fd0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:00:41.054Z",
+    "session_id": "c93307cc-df25-4ac2-b721-54ccd66d3fd0",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:13:48.722Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-29T11:14:25.229Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:15:42.018Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:17:29.366Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:18:27.426Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:18:58.966Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:19:50.182Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:21:05.141Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:23:37.517Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-29T11:24:01.498Z",
+    "session_id": "829537b8-77f1-48fe-b231-c9c0d0405d5e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T02:03:44.350Z",
+    "session_id": "2dfbadaa-d241-4cc7-beb6-f0bee7e5dd3a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-30T02:12:55.832Z",
+    "session_id": "be89b48d-5c6d-4b8c-ab3e-a128b6761bde",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-30T02:13:30.556Z",
+    "session_id": "33294884-892b-4bea-8397-d72e623d0426",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-04-30T02:14:52.133Z",
+    "session_id": "64d78068-9551-4e49-90fe-2f80cee48b67",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T02:31:43.338Z",
+    "session_id": "2dfbadaa-d241-4cc7-beb6-f0bee7e5dd3a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T02:34:54.277Z",
+    "session_id": "2dfbadaa-d241-4cc7-beb6-f0bee7e5dd3a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T02:43:22.784Z",
+    "session_id": "64d78068-9551-4e49-90fe-2f80cee48b67",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:10:46.875Z",
+    "session_id": "2dfbadaa-d241-4cc7-beb6-f0bee7e5dd3a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:13:35.593Z",
+    "session_id": "2dfbadaa-d241-4cc7-beb6-f0bee7e5dd3a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:18:54.677Z",
+    "session_id": "64d78068-9551-4e49-90fe-2f80cee48b67",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:20:05.835Z",
+    "session_id": "2dfbadaa-d241-4cc7-beb6-f0bee7e5dd3a",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:42:13.881Z",
+    "session_id": "3392db81-4d36-4bb3-a9ee-8ba200875995",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:46:49.255Z",
+    "session_id": "a5ad6883-7e65-40c0-a644-a60b4375778b",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:52:37.664Z",
+    "session_id": "a5ad6883-7e65-40c0-a644-a60b4375778b",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:56:14.964Z",
+    "session_id": "a5ad6883-7e65-40c0-a644-a60b4375778b",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T03:58:44.274Z",
+    "session_id": "a5ad6883-7e65-40c0-a644-a60b4375778b",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T04:02:40.245Z",
+    "session_id": "3392db81-4d36-4bb3-a9ee-8ba200875995",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T04:20:07.307Z",
+    "session_id": "3392db81-4d36-4bb3-a9ee-8ba200875995",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T07:28:16.261Z",
+    "session_id": "8880ef43-0f22-4fbd-a093-48f79ebd7c3c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T07:41:18.798Z",
+    "session_id": "8880ef43-0f22-4fbd-a093-48f79ebd7c3c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T07:44:25.933Z",
+    "session_id": "8880ef43-0f22-4fbd-a093-48f79ebd7c3c",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:20:22.195Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:25:23.228Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:27:29.293Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:30:37.006Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:34:09.404Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:35:09.922Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:37:33.684Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:44:05.513Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:47:30.415Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:50:45.930Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T11:53:15.743Z",
+    "session_id": "d0c562af-5ceb-47e2-8427-53b580d227d1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T13:13:10.595Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T13:23:55.926Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T13:33:58.318Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T13:44:27.695Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T13:49:25.179Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T13:56:48.604Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:03:16.609Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:04:15.694Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:07:58.933Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:09:37.746Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:12:09.392Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:16:07.507Z",
+    "session_id": "9f2f4eb7-404f-4654-bd70-4e009e6e536e",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:24:45.132Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:25:59.698Z",
+    "session_id": "086d6fcb-a853-42c9-9ba4-1bbe71660514",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:32:06.750Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:34:08.662Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:36:10.476Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:38:26.908Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:39:27.881Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:40:32.140Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:43:49.268Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T14:44:36.271Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T15:05:45.849Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T15:12:27.545Z",
+    "session_id": "d70a461d-3db6-4c06-b48d-a3aa5e10ad39",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T15:17:22.059Z",
+    "session_id": "086d6fcb-a853-42c9-9ba4-1bbe71660514",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T15:44:35.024Z",
+    "session_id": "dfead3f9-af2e-4467-a2eb-f2bdec47ce92",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T16:07:42.774Z",
+    "session_id": "086d6fcb-a853-42c9-9ba4-1bbe71660514",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:38:05.453Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:39:15.219Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:41:59.637Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:46:55.476Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:51:40.209Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:53:52.640Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:57:39.229Z",
+    "session_id": "42418b7d-8d21-48b8-b161-c573a99b5142",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-04-30T23:59:06.914Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:01:33.432Z",
+    "session_id": "b1d70fd3-d85b-47a7-80c0-843031bc66f5",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-05-01T00:02:05.818Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:03:28.205Z",
+    "session_id": "cc4ad5ef-b733-45a1-b6a4-6cd8db3b4614",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-05-01T00:05:01.717Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:08:04.096Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:11:31.731Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:16:52.620Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:20:13.659Z",
+    "session_id": "42418b7d-8d21-48b8-b161-c573a99b5142",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:26:37.957Z",
+    "session_id": "0f202e4c-39d7-4758-814d-ad69d6fee26d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T00:32:34.608Z",
+    "session_id": "42418b7d-8d21-48b8-b161-c573a99b5142",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T03:44:24.060Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-05-01T03:51:05.382Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T03:51:25.970Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T03:59:26.827Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:08:45.807Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:10:09.390Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:14:12.051Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:26:02.572Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:30:41.955Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:31:47.082Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:34:20.229Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:34:37.713Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:35:51.985Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:36:33.934Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:37:16.029Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:48:13.659Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T04:48:32.443Z",
+    "session_id": "c99a8a6f-d492-4bcf-a478-13cb15c31c26",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:00:17.934Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:38:26.821Z",
+    "session_id": "99ec015d-5e27-4d75-a6e5-5073e8a1122d",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:39:40.942Z",
+    "session_id": "bb942c89-8ed9-4e2b-a1ba-4580f8ad96a2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:48:04.601Z",
+    "session_id": "bb942c89-8ed9-4e2b-a1ba-4580f8ad96a2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:49:52.856Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:52:53.029Z",
+    "session_id": "bb942c89-8ed9-4e2b-a1ba-4580f8ad96a2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:54:16.199Z",
+    "session_id": "bb942c89-8ed9-4e2b-a1ba-4580f8ad96a2",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T05:58:22.635Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:00:56.318Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:09:01.662Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:11:21.406Z",
+    "session_id": "8ef17b47-6b97-49ac-85f1-652c748c08e1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:14:06.664Z",
+    "session_id": "8ef17b47-6b97-49ac-85f1-652c748c08e1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:14:23.293Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:20:41.214Z",
+    "session_id": "8ef17b47-6b97-49ac-85f1-652c748c08e1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:25:11.521Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:25:19.685Z",
+    "session_id": "8ef17b47-6b97-49ac-85f1-652c748c08e1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:33:58.600Z",
+    "session_id": "61b241e9-7108-4c1c-a320-7c91a581b251",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:40:14.482Z",
+    "session_id": "c7ea9193-f3af-4230-b019-7c4847ced5da",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "Skipped: only 1 messages (min 3)"
+  },
+  {
+    "timestamp": "2026-05-01T06:52:27.555Z",
+    "session_id": "b25bff74-aed9-4681-9405-725da8c009f1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T06:54:30.582Z",
+    "session_id": "b25bff74-aed9-4681-9405-725da8c009f1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T07:00:13.930Z",
+    "session_id": "b25bff74-aed9-4681-9405-725da8c009f1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
+  },
+  {
+    "timestamp": "2026-05-01T07:02:51.832Z",
+    "session_id": "b25bff74-aed9-4681-9405-725da8c009f1",
+    "items_extracted": 0,
+    "types": [],
+    "cost": 0,
+    "error": "invalid x-api-key"
   }
 ]

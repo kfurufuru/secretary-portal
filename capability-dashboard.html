@@ -1,0 +1,1566 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>パーソナル能力バロメーター — 古舘</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+/* =====================================================
+   CSS CUSTOM PROPERTIES — Slate Frost palette
+   ===================================================== */
+:root {
+  --font-base: 'Inter', 'Noto Sans JP', sans-serif;
+  --bg-base: #0f172a;
+  --bg-card: #1e293b;
+  --accent:  #38bdf8;
+  --accent2: #7dd3fc;
+  --text-primary:   #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --glass:   rgba(30,41,59,0.75);
+  --glass2:  rgba(15,23,42,0.6);
+  --border:  rgba(56,189,248,0.15);
+  --border2: rgba(56,189,248,0.08);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition: 0.2s ease;
+
+  /* 4-state colors */
+  --state-perfect: #22c55e;
+  --state-good:    #38bdf8;
+  --state-tried:   #f59e0b;
+  --state-none:    #475569;
+
+  /* spacing */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+}
+
+[data-theme="light"] {
+  --bg-base: #f5f7fa;
+  --bg-card: #ffffff;
+  --accent:  #0284c7;
+  --accent2: #0369a1;
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --glass:   rgba(255,255,255,0.9);
+  --glass2:  rgba(245,247,250,0.85);
+  --border:  rgba(2,132,199,0.15);
+  --border2: rgba(0,0,0,0.07);
+  --state-perfect: #16a34a;
+  --state-good:    #0284c7;
+  --state-tried:   #d97706;
+  --state-none:    #94a3b8;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-base);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  line-break: strict;
+  overflow-wrap: break-word;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(80rem 60rem at 10% -10%, rgba(56,189,248,.07), transparent 55%),
+    radial-gradient(60rem 40rem at 90% 100%, rgba(34,197,94,.05), transparent 55%);
+}
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(80rem 60rem at 10% -10%, rgba(2,132,199,.06), transparent 55%),
+    radial-gradient(60rem 40rem at 90% 100%, rgba(22,163,74,.04), transparent 55%);
+}
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  padding: var(--sp-6) var(--sp-4) var(--sp-12);
+}
+
+/* =====================================================
+   TOP NAV
+   ===================================================== */
+.top-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-8);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--glass2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(12px);
+}
+.nav-left a {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: 0.85rem; color: var(--accent2);
+  transition: color var(--transition);
+}
+.nav-left a:hover { color: var(--accent); }
+.nav-center { font-size: 0.85rem; font-weight: 600; letter-spacing: .02em; }
+.nav-right {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: 0.85rem; color: var(--text-muted);
+}
+.theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--glass2);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+.theme-toggle:hover { border-color: var(--border); color: var(--text-primary); transform: translateY(-2px); }
+
+/* =====================================================
+   HERO
+   ===================================================== */
+.hero {
+  margin-bottom: var(--sp-8);
+  padding: var(--sp-8) var(--sp-6);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+}
+.hero h1 {
+  font-size: 2rem; font-weight: 700;
+  letter-spacing: 0.04em; line-height: 1.4;
+  margin: 0 0 var(--sp-2);
+  background: linear-gradient(135deg, var(--accent), var(--accent2), #c7d2fe);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+[data-theme="light"] .hero h1 {
+  background: linear-gradient(135deg, var(--accent), #0369a1, #4f46e5);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: var(--sp-4); }
+.hero-meta {
+  display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+}
+.hero-badge.done {
+  background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3);
+  color: var(--state-perfect);
+}
+.hero-badge.pending {
+  background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3);
+  color: var(--state-tried);
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+@keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:.65} }
+.hero-update-time { font-size: 0.78rem; color: var(--text-muted); }
+
+/* =====================================================
+   SECTION COMMON
+   ===================================================== */
+.section { margin-bottom: var(--sp-8); }
+.section-header {
+  display: flex; align-items: center; gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border2);
+}
+.section-header h2 { font-size: 1.1rem; font-weight: 600; margin: 0; }
+.section-header .section-sub {
+  font-size: 0.8rem; color: var(--text-muted); margin-left: auto;
+}
+.card {
+  background: var(--glass);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  backdrop-filter: blur(12px);
+}
+
+/* =====================================================
+   BAROMETER SECTION — METER ITEM
+   ===================================================== */
+.baro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--sp-3);
+}
+.baro-item {
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
+  transition: box-shadow var(--transition), border-color var(--transition);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.baro-item:hover {
+  box-shadow: 0 4px 16px rgba(56,189,248,.12);
+  border-color: var(--accent);
+}
+.baro-item.mental { border-left-color: #22c55e; }
+.baro-item.skill  { border-left-color: #38bdf8; }
+.baro-item a.baro-title-link {
+  display: flex; align-items: center; gap: var(--sp-1);
+  color: var(--text-primary);
+  font-size: 0.9rem; font-weight: 700;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.baro-item a.baro-title-link:hover { color: var(--accent); }
+.baro-item a.baro-title-link svg { flex-shrink: 0; opacity: 0.5; }
+.baro-item .baro-nolink {
+  font-size: 0.9rem; font-weight: 700;
+  color: var(--text-primary);
+}
+.baro-stats {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.8rem; color: var(--text-secondary);
+  margin-top: 2px;
+}
+.baro-score {
+  font-weight: 700; font-size: 0.85rem; color: var(--accent);
+}
+.baro-last {
+  color: var(--text-muted); font-size: 0.72rem;
+  background: rgba(56,189,248,.06);
+  padding: 1px 6px; border-radius: 999px;
+}
+.baro-bar-wrap {
+  height: 7px;
+  background: rgba(148,163,184,.15);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+.baro-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  min-width: 2px;
+}
+.baro-bar-fill.full  { background: linear-gradient(90deg, #16a34a, #22c55e); }
+.baro-bar-fill.high  { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+.baro-bar-fill.mid   { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+.baro-bar-fill.low   { background: linear-gradient(90deg, #d97706, #f59e0b); }
+.baro-bar-fill.zero  { width: 100% !important; background: rgba(148,163,184,.18); }
+.baro-eval-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em;
+  padding: 1px 7px; border-radius: 999px;
+}
+.baro-eval-badge.good { background: rgba(34,197,94,.15); color: #22c55e; }
+.baro-eval-badge.not-yet { background: rgba(249,115,22,.12); color: #f97316; }
+.baro-cats {
+  display: flex; flex-direction: column; gap: 3px; margin-top: 2px;
+}
+.baro-cat-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.72rem; color: var(--text-secondary);
+}
+.baro-cat-name { font-weight: 600; }
+.baro-cat-score { font-family: var(--font-mono, monospace); }
+.baro-cat-row.good .baro-cat-score { color: #22c55e; }
+.baro-cat-row.not-yet .baro-cat-score { color: #f97316; }
+.baro-untouched {
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Stagnation Alert */
+.stagnation-alerts { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-4); }
+.stag-alert {
+  display: flex; align-items: flex-start; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(245,158,11,.08);
+  border: 1px solid rgba(245,158,11,.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem; color: var(--text-secondary);
+}
+.stag-alert .stag-icon { color: var(--state-tried); flex-shrink: 0; margin-top: 1px; }
+
+/* =====================================================
+   WEEKLY REVIEW — WEEK HEADER
+   ===================================================== */
+.week-header-card {
+  padding: var(--sp-4) var(--sp-6);
+  background: rgba(56,189,248,.06);
+  border: 1px solid rgba(56,189,248,.15);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-4);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2);
+}
+.week-num-label { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+.week-range-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+/* Previous intents */
+.prev-intents-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.prev-intent-item {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(56,189,248,.05);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem; color: var(--text-secondary);
+}
+.prev-intent-item::before { content: "→"; color: var(--accent); flex-shrink: 0; }
+.prev-empty {
+  color: var(--text-muted); font-size: 0.85rem;
+  padding: var(--sp-4); text-align: center;
+  background: rgba(56,189,248,.03);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border2);
+}
+
+/* =====================================================
+   ITEM ROWS (Review section)
+   ===================================================== */
+.item-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.item-row {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(15,23,42,.4);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition);
+}
+[data-theme="light"] .item-row { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.08); }
+.item-row:hover { border-color: rgba(56,189,248,.2); }
+.item-label {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: 0.88rem; color: var(--text-primary);
+}
+.item-label a {
+  color: var(--text-secondary); flex-shrink: 0;
+  display: flex; align-items: center; gap: 2px;
+  font-size: 0.75rem;
+  transition: color var(--transition);
+}
+.item-label a:hover { color: var(--accent); }
+
+/* "今週触れた" badge — hint only */
+.touched-badge {
+  display: inline-flex; align-items: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 0.7rem; font-weight: 600;
+  background: rgba(56,189,248,.1);
+  border: 1px solid rgba(56,189,248,.2);
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* State buttons */
+.state-btns { display: flex; gap: var(--sp-1); flex-shrink: 0; }
+.state-btn {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem; font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: rgba(71,85,105,.15);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.state-btn:hover { opacity: .8; }
+.state-btn[data-state="4"].active { background: rgba(34,197,94,.15); border-color: rgba(34,197,94,.4); color: var(--state-perfect); }
+.state-btn[data-state="3"].active { background: rgba(56,189,248,.15); border-color: rgba(56,189,248,.4); color: var(--state-good); }
+.state-btn[data-state="1"].active { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.4); color: var(--state-tried); }
+.state-btn[data-state="0"].active { background: rgba(71,85,105,.25); border-color: rgba(71,85,105,.5); color: var(--text-secondary); }
+
+[data-theme="light"] .state-btn { background: rgba(0,0,0,.04); color: var(--text-secondary); }
+[data-theme="light"] .state-btn[data-state="4"].active { background: rgba(22,163,74,.12); border-color: rgba(22,163,74,.4); color: var(--state-perfect); }
+[data-theme="light"] .state-btn[data-state="3"].active { background: rgba(2,132,199,.12); border-color: rgba(2,132,199,.4); color: var(--state-good); }
+[data-theme="light"] .state-btn[data-state="1"].active { background: rgba(217,119,6,.1); border-color: rgba(217,119,6,.4); color: var(--state-tried); }
+[data-theme="light"] .state-btn[data-state="0"].active { background: rgba(0,0,0,.06); border-color: rgba(0,0,0,.2); color: var(--text-muted); }
+
+/* =====================================================
+   MEMO & INTENTS
+   ===================================================== */
+.memo-textarea, .intent-input {
+  width: 100%;
+  background: rgba(15,23,42,.5);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-base);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  padding: var(--sp-3) var(--sp-4);
+  transition: border-color var(--transition), background var(--transition);
+}
+[data-theme="light"] .memo-textarea,
+[data-theme="light"] .intent-input {
+  background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.1); color: var(--text-primary);
+}
+.memo-textarea { resize: vertical; min-height: 90px; }
+.memo-textarea::placeholder,
+.intent-input::placeholder { color: var(--text-muted); }
+.memo-textarea:focus, .intent-input:focus {
+  outline: none;
+  border-color: rgba(56,189,248,.4);
+  background: rgba(15,23,42,.7);
+}
+[data-theme="light"] .memo-textarea:focus,
+[data-theme="light"] .intent-input:focus {
+  background: rgba(0,0,0,.05);
+  border-color: rgba(2,132,199,.4);
+}
+
+.intent-inputs { display: flex; flex-direction: column; gap: var(--sp-3); }
+.intent-row { display: flex; flex-direction: column; gap: 4px; }
+.intent-num { font-size: 0.85rem; font-weight: 600; color: var(--accent2); }
+
+/* =====================================================
+   SUBMIT & EXPORT BUTTONS
+   ===================================================== */
+.submit-btn {
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-4) var(--sp-6);
+  background: linear-gradient(135deg, rgba(56,189,248,.15), rgba(34,197,94,.1));
+  border: 1px solid rgba(56,189,248,.3);
+  border-radius: var(--radius-md);
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.submit-btn:hover {
+  background: linear-gradient(135deg, rgba(56,189,248,.25), rgba(34,197,94,.18));
+  border-color: rgba(56,189,248,.5);
+  transform: translateY(-2px);
+}
+.submit-btn.submitted {
+  background: linear-gradient(135deg, rgba(34,197,94,.25), rgba(34,197,94,.15));
+  border-color: rgba(34,197,94,.5);
+  color: var(--state-perfect);
+}
+[data-theme="light"] .submit-btn {
+  background: linear-gradient(135deg, rgba(2,132,199,.1), rgba(22,163,74,.08));
+  border-color: rgba(2,132,199,.25);
+}
+[data-theme="light"] .submit-btn:hover {
+  background: linear-gradient(135deg, rgba(2,132,199,.18), rgba(22,163,74,.14));
+  border-color: rgba(2,132,199,.45);
+}
+
+.io-btns {
+  display: flex; gap: var(--sp-3); flex-wrap: wrap;
+  margin-top: var(--sp-4);
+}
+.io-btn {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--glass);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.io-btn:hover { border-color: var(--border); color: var(--text-primary); transform: translateY(-1px); }
+.io-btn-import { position: relative; overflow: hidden; }
+.io-btn-import input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+
+/* =====================================================
+   CHART
+   ===================================================== */
+.chart-wrap { position: relative; height: 220px; }
+.chart-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  height: 180px;
+  color: var(--text-muted); font-size: 0.88rem;
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius-sm);
+}
+.chart-legend {
+  display: flex; gap: var(--sp-4); flex-wrap: wrap;
+  margin-top: var(--sp-4); justify-content: center;
+}
+.legend-item { display: flex; align-items: center; gap: var(--sp-1); font-size: 0.75rem; color: var(--text-secondary); }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* =====================================================
+   QUICK LINKS
+   ===================================================== */
+.quick-links { display: flex; gap: var(--sp-3); flex-wrap: wrap; justify-content: center; padding-top: var(--sp-4); }
+.ql-btn {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--glass);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem; color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.ql-btn:hover { border-color: rgba(56,189,248,.35); color: var(--accent); transform: translateY(-2px); }
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (max-width: 768px) {
+  .page { padding: var(--sp-4) var(--sp-3) var(--sp-8); }
+  .hero { padding: var(--sp-6) var(--sp-4); }
+  .hero h1 { font-size: 1.5rem; }
+  .baro-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .item-row { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+  .state-btns { width: 100%; justify-content: space-between; }
+  .state-btn { flex: 1; text-align: center; }
+  .top-nav { flex-direction: column; gap: var(--sp-2); align-items: flex-start; }
+  .week-header-card { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .baro-grid { grid-template-columns: 1fr 1fr; }
+  .state-btn { padding: 4px 6px; font-size: 0.7rem; }
+  .quick-links { gap: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== TOP NAV ===== -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="portal-v2.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        ポータル
+      </a>
+    </div>
+    <div class="nav-center">能力バロメーター ＆ 週次振り返り</div>
+    <div class="nav-right">
+      <span id="nav-week-label">Week --</span>
+      <button class="theme-toggle" id="theme-toggle" title="ライト/ダーク切り替え">
+        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <h1>今の古舘バロメーター</h1>
+    <div class="hero-sub" id="hero-week-label">Week -- — 読み込み中...</div>
+    <div class="hero-meta">
+      <div id="hero-badge" class="hero-badge pending">振り返り待ち</div>
+      <span class="hero-update-time" id="hero-update-time">最終更新: --</span>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       SECTION 1: BAROMETER (always-on, auto-populated)
+       =================================================== -->
+  <div class="section">
+    <div class="section-header">
+      <h2>&#x1F4CA; バロメーター — メンタル＆体</h2>
+      <span class="section-sub">bsk_tracker から自動取得</span>
+    </div>
+    <div class="card">
+      <div class="baro-grid" id="baro-mental"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>&#x1F4BC; バロメーター — ビジネススキル</h2>
+      <span class="section-sub">全10スキル</span>
+    </div>
+    <div class="card">
+      <div class="baro-grid" id="baro-skills"></div>
+      <div id="stagnation-container"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       SECTION 2: WEEKLY REVIEW
+       =================================================== -->
+  <div class="section">
+    <div class="section-header">
+      <h2>&#x270F; 週次振り返り</h2>
+    </div>
+
+    <!-- Week header -->
+    <div class="week-header-card">
+      <div>
+        <div class="week-num-label" id="review-week-num">Week --</div>
+        <div class="week-range-label" id="review-week-range">-- 〜 --</div>
+      </div>
+      <div id="review-badge" class="hero-badge pending" style="align-self:flex-start">未提出</div>
+    </div>
+
+    <!-- Previous intents -->
+    <div class="card" style="margin-bottom:var(--sp-6)">
+      <div class="section-header">
+        <h2>先週の宣言レビュー</h2>
+      </div>
+      <div id="prev-intents-container"></div>
+    </div>
+
+    <!-- Mental items -->
+    <div class="card" style="margin-bottom:var(--sp-6)">
+      <div class="section-header">
+        <h2>&#x1F49A; メンタル＆体</h2>
+        <span class="section-sub">「今週触れた」は参考表示のみ</span>
+      </div>
+      <div class="item-list" id="mental-review-list"></div>
+    </div>
+
+    <!-- Skill items -->
+    <div class="card" style="margin-bottom:var(--sp-6)">
+      <div class="section-header">
+        <h2>&#x1F4BC; ビジネススキル</h2>
+        <span class="section-sub">「今週触れた」は参考表示のみ</span>
+      </div>
+      <div class="item-list" id="skill-review-list"></div>
+    </div>
+
+    <!-- Weekly Memo -->
+    <div class="card" style="margin-bottom:var(--sp-6)">
+      <div class="section-header">
+        <h2>&#x1F4DD; 今週の気づき</h2>
+      </div>
+      <textarea
+        id="weekly-memo"
+        class="memo-textarea"
+        rows="4"
+        placeholder="なぜできた？なぜできなかった？来週に向けた気づきを..."
+      ></textarea>
+    </div>
+
+    <!-- Next week intents -->
+    <div class="card" style="margin-bottom:var(--sp-6)">
+      <div class="section-header">
+        <h2>&#x1F4A1; 来週の宣言（最大3つ）</h2>
+      </div>
+      <div class="intent-inputs">
+        <div class="intent-row">
+          <div class="intent-num">1.</div>
+          <input type="text" class="intent-input" data-idx="0" placeholder="例: 朝の運動を週4回以上">
+        </div>
+        <div class="intent-row">
+          <div class="intent-num">2.</div>
+          <input type="text" class="intent-input" data-idx="1" placeholder="例: 判断の質ページを2回読む">
+        </div>
+        <div class="intent-row">
+          <div class="intent-num">3.</div>
+          <input type="text" class="intent-input" data-idx="2" placeholder="">
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" id="submit-btn">
+      &#10003; 振り返り完了
+    </button>
+  </div>
+
+  <!-- ===================================================
+       SECTION 3: TREND CHART
+       =================================================== -->
+  <div class="section">
+    <div class="card">
+      <div class="section-header">
+        <h2>&#x1F4C8; 過去12週 トレンド</h2>
+      </div>
+      <div id="chart-container">
+        <div class="chart-wrap">
+          <canvas id="trend-chart"></canvas>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>完璧</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#38bdf8"></div>まあまあ</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>やろうとした</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#475569"></div>手付かず</div>
+        </div>
+      </div>
+      <div id="chart-placeholder" class="chart-placeholder" style="display:none">
+        データが2週分以上蓄積されると表示されます
+      </div>
+    </div>
+  </div>
+
+  <!-- Export / Import -->
+  <div class="section">
+    <div class="card">
+      <div class="section-header">
+        <h2>&#x1F4E6; データ管理</h2>
+      </div>
+      <div class="io-btns">
+        <button class="io-btn" id="export-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          データエクスポート
+        </button>
+        <label class="io-btn io-btn-import">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          データインポート
+          <input type="file" id="import-input" accept=".json">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick links -->
+  <div class="quick-links">
+    <a href="business-skills/brain-detox.html" class="ql-btn">脳デトックス</a>
+    <a href="business-skills/karada.html" class="ql-btn">体の最適化</a>
+    <a href="business-skills/brain-speed.html" class="ql-btn">脳の処理速度</a>
+    <a href="portal-v2.html" class="ql-btn">ポータルへ戻る</a>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+'use strict';
+// =====================================================
+// DESIGN CONSTRAINT: bsk_tracker "今週触れた" is hint-only. Never auto-set weekly state values.
+// TODO: MENTAL_ITEMS / SKILL_ITEMS を将来 skill-tracker.js から動的取得に移行
+// =====================================================
+
+// =====================================================
+// DATA DEFINITIONS
+// =====================================================
+const MENTAL_ITEMS = [
+  { id: 'brain-detox',  label: '脳デトックス',   link: 'business-skills/brain-detox.html' },
+  { id: 'karada',       label: '体の最適化',      link: 'business-skills/karada.html',
+    categories: [
+      { name: 'デトックス', from: 1, to: 6 },
+      { name: '筋トレ',     from: 7, to: 12 }
+    ],
+    thresholdRate: 0.7
+  },
+  { id: 'brain-speed',  label: '脳の処理速度',    link: 'business-skills/brain-speed.html' },
+  { id: 'nou-kasseika', label: '脳活性化10実践',  link: 'business-skills/nou-kasseika.html' },
+];
+
+const SKILL_ITEMS = [
+  { id: 'leadership' },
+  { id: 'handan-no-shitsu' },
+  { id: 'jikkouryoku' },
+  { id: 'kozo-haaku' },
+  { id: 'dandori-ryoku' },
+  { id: 'ronriteki-shiko' },
+  { id: 'meta-ninchi' },
+  { id: 'stress-kanjo' },
+  { id: 'asa-shigoto' },
+  { id: 'shukan-review' },
+];
+// Labels resolved from bsk_tracker or fallback
+const SKILL_LABELS = {
+  'leadership':       'リーダーシップ',
+  'handan-no-shitsu': '判断の質',
+  'jikkouryoku':      '実行力',
+  'kozo-haaku':       '構造把握',
+  'dandori-ryoku':    '段取り力',
+  'ronriteki-shiko':  '論理的思考',
+  'meta-ninchi':      'メタ認知',
+  'stress-kanjo':     'ストレス・感情',
+  'asa-shigoto':      '朝の仕事術',
+  'shukan-review':    '週次レビュー',
+};
+
+const ALL_ITEMS = [
+  ...MENTAL_ITEMS.map(m => ({ ...m, isMental: true })),
+  ...SKILL_ITEMS.map(s => ({ id: s.id, label: SKILL_LABELS[s.id], isMental: false })),
+];
+
+const STATE_LABELS = { 4: '完璧', 3: 'まあまあ', 1: 'やろうとした', 0: '手付かず' };
+
+// brain-speed score constants
+const BRAIN_SPEED_MAX = 15.5; // bio=4×2, cog=3×1.5, hack=3×1
+
+// =====================================================
+// WEEK UTILITIES
+// =====================================================
+function getMonday(d) {
+  const date = new Date(d);
+  date.setHours(0, 0, 0, 0);
+  const day = date.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  date.setDate(date.getDate() + diff);
+  return date;
+}
+
+function toISODate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
+}
+
+function getWeekKey(date) {
+  const mon = getMonday(date || new Date());
+  return 'week-' + toISODate(mon);
+}
+
+function getPrevWeekKey() {
+  const prev = new Date();
+  prev.setDate(prev.getDate() - 7);
+  return getWeekKey(prev);
+}
+
+function getISOWeek(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const wn = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(wn).padStart(2, '0')}`;
+}
+
+function getWeekRange(date) {
+  const start = getMonday(date);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  return { start, end };
+}
+
+function formatDate(d) {
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+
+function formatWeekDisplay(date) {
+  const { start, end } = getWeekRange(date);
+  const wStr = getISOWeek(start);
+  const wn = wStr.split('-W')[1];
+  return {
+    weekNum: `Week ${wn}`,
+    range:   `${start.getFullYear()}/${formatDate(start)} (月) 〜 ${formatDate(end)} (日)`,
+    short:   `${formatDate(start)}-${formatDate(end)}`,
+    wn: parseInt(wn),
+  };
+}
+
+// =====================================================
+// STORAGE
+// =====================================================
+function getWeeklyReview() {
+  try { return JSON.parse(localStorage.getItem('weekly_review') || '{}'); }
+  catch { return {}; }
+}
+function saveWeeklyReview(data) {
+  localStorage.setItem('weekly_review', JSON.stringify(data));
+}
+
+function getCurrentWeekData() {
+  const all = getWeeklyReview();
+  const key = getWeekKey();
+  if (!all[key]) {
+    const mon = getMonday(new Date());
+    all[key] = {
+      weekStart: toISODate(mon),
+      items: {},
+      weeklyMemo: '',
+      nextWeekIntents: ['', '', ''],
+      submittedAt: null,
+    };
+    saveWeeklyReview(all);
+  }
+  return all[key];
+}
+
+function saveCurrentWeekData(weekData) {
+  const all = getWeeklyReview();
+  all[getWeekKey()] = weekData;
+  // R2: prune older than 52 weeks
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 52 * 7);
+  const cutoffKey = 'week-' + toISODate(getMonday(cutoff));
+  Object.keys(all).forEach(k => { if (k < cutoffKey) delete all[k]; });
+  saveWeeklyReview(all);
+}
+
+function saveMonthlySnapshot(all) {
+  // R2: monthly average per item
+  const byMonth = {};
+  Object.values(all).forEach(wd => {
+    if (!wd.submittedAt) return;
+    const mo = wd.weekStart.slice(0, 7); // "YYYY-MM"
+    if (!byMonth[mo]) byMonth[mo] = { items: {}, count: 0 };
+    byMonth[mo].count++;
+    Object.entries(wd.items || {}).forEach(([id, item]) => {
+      if (!byMonth[mo].items[id]) byMonth[mo].items[id] = { sum: 0, n: 0 };
+      byMonth[mo].items[id].sum += (item.state || 0);
+      byMonth[mo].items[id].n++;
+    });
+  });
+  const summary = {};
+  Object.entries(byMonth).forEach(([mo, data]) => {
+    summary[mo] = { weekCount: data.count, avgByItem: {} };
+    Object.entries(data.items).forEach(([id, v]) => {
+      summary[mo].avgByItem[id] = v.n > 0 ? Math.round((v.sum / v.n) * 10) / 10 : 0;
+    });
+  });
+  localStorage.setItem('monthly_summary', JSON.stringify(summary));
+}
+
+// =====================================================
+// BSK_TRACKER READ (direct localStorage, not via import)
+// =====================================================
+function getBskTracker() {
+  try { return JSON.parse(localStorage.getItem('bsk_tracker') || '{}'); }
+  catch { return {}; }
+}
+
+function getThisWeekStart() {
+  return toISODate(getMonday(new Date()));
+}
+
+function getActiveSkillsThisWeek() {
+  const tracker = getBskTracker();
+  const ws = getThisWeekStart();
+  return new Set(Object.keys(tracker).filter(id => (tracker[id]?.lastVisit || '') >= ws));
+}
+
+// Read bsk_tracker data for a skill id
+// Returns { score, total, pct, lastVisit } or null
+function getSkillBarometerData(id) {
+  const tracker = getBskTracker();
+  const skill = tracker[id];
+  if (!skill) return null;
+
+  const checks = skill.checks || {};
+  const total = skill.elements || Object.keys(checks).length;
+  // Weighted scoring: 完璧=1.0, まあまあ=0.5, やろうとした=0.2, 手付かず=0
+  const score = Object.values(checks).reduce((sum, v) => {
+    if (v === 4) return sum + 1.0;
+    if (v === 3) return sum + 0.5;
+    if (v === 1) return sum + 0.2;
+    return sum;
+  }, 0);
+  const pct = total > 0 ? Math.round((score / total) * 100) : 0;
+  return { score, total, pct, lastVisit: skill.lastVisit || null };
+}
+
+// brain-speed: independent storage, most recent date
+function getBrainSpeedData() {
+  const today = toISODate(new Date());
+  // Try last 30 days
+  for (let i = 0; i < 30; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = toISODate(d);
+    const key = 'brain-speed-' + dateStr;
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      try {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr) && arr.length > 0) {
+          // Calculate score: bio=2pts, cog=1.5pts, hack=1pt
+          let score = 0;
+          arr.forEach(k => {
+            if (k.startsWith('bio'))  score += 2;
+            else if (k.startsWith('cog'))  score += 1.5;
+            else if (k.startsWith('hack')) score += 1;
+          });
+          return { score: Math.round(score * 10) / 10, max: BRAIN_SPEED_MAX, lastVisit: dateStr };
+        }
+      } catch {}
+    }
+  }
+  return null;
+}
+
+// =====================================================
+// CATEGORY EVALUATION — ceil(設問数 × 基準率) threshold
+// =====================================================
+function getSkillEvaluation(id, itemDef) {
+  const tracker = getBskTracker();
+  const skill = tracker[id];
+  if (!skill) return null;
+
+  const checks = skill.checks || {};
+  const rate = (itemDef && itemDef.thresholdRate) || 0.7;
+
+  if (!itemDef || !itemDef.categories) {
+    const total = skill.elements || Object.keys(checks).length;
+    const achieved = Object.values(checks).filter(v => v > 0).length;
+    const threshold = Math.ceil(total * rate);
+    const pct = total > 0 ? Math.round((achieved / total) * 100) : 0;
+    return {
+      total, achieved, threshold, isGood: achieved >= threshold, pct,
+      categories: null, lastVisit: skill.lastVisit || null
+    };
+  }
+
+  const cats = itemDef.categories.map(cat => {
+    const catTotal = cat.to - cat.from + 1;
+    let achieved = 0;
+    for (let i = cat.from; i <= cat.to; i++) {
+      if ((checks[i.toString()] || 0) > 0) achieved++;
+    }
+    const threshold = Math.ceil(catTotal * rate);
+    const pct = catTotal > 0 ? Math.round((achieved / catTotal) * 100) : 0;
+    return { name: cat.name, total: catTotal, achieved, threshold, isGood: achieved >= threshold, pct };
+  });
+
+  const catAvgPct = cats.reduce((s, c) => s + c.pct, 0) / cats.length;
+  const allAchieved = cats.reduce((s, c) => s + c.achieved, 0);
+  const allTotal = cats.reduce((s, c) => s + c.total, 0);
+  const allPct = allTotal > 0 ? Math.round((allAchieved / allTotal) * 100) : 0;
+  const overallPct = Math.round((catAvgPct + allPct) / 2);
+  const allGood = cats.every(c => c.isGood);
+
+  return {
+    total: allTotal, achieved: allAchieved, pct: overallPct,
+    isGood: allGood, categories: cats, lastVisit: skill.lastVisit || null
+  };
+}
+
+// =====================================================
+// BAROMETER RENDERING
+// =====================================================
+function getBarClass(pct) {
+  if (pct >= 90) return 'full';
+  if (pct >= 60) return 'high';
+  if (pct >= 30) return 'mid';
+  if (pct > 0)   return 'low';
+  return 'zero';
+}
+
+function formatLastVisit(lv) {
+  if (!lv) return null;
+  // lv is "YYYY-MM-DD"
+  const d = new Date(lv + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diff = Math.round((today - d) / 86400000);
+  if (diff === 0) return '今日';
+  if (diff === 1) return '昨日';
+  if (diff < 7) return `${diff}日前`;
+  if (diff < 30) return `${Math.floor(diff / 7)}週間前`;
+  return `${Math.floor(diff / 30)}ヶ月前`;
+}
+
+function renderBaroItem(item, data, isMentalOrBrainSpeed, evalData) {
+  const hasLink = !!item.link;
+  const typeClass = isMentalOrBrainSpeed ? 'mental' : 'skill';
+  const titleHtml = hasLink
+    ? `<a class="baro-title-link" href="${item.link}" target="_blank">
+         ${item.label}
+         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+       </a>`
+    : `<span class="baro-nolink">${item.label}</span>`;
+
+  if (!data) {
+    return `<div class="baro-item ${typeClass}">
+      ${titleHtml}
+      <div class="baro-untouched">未着手</div>
+      <div class="baro-bar-wrap"><div class="baro-bar-fill zero"></div></div>
+    </div>`;
+  }
+
+  let scoreText, pct;
+  if (item.id === 'brain-speed') {
+    scoreText = `${data.score} / ${data.max}pt`;
+    pct = Math.round((data.score / data.max) * 100);
+  } else if (evalData) {
+    scoreText = `${evalData.achieved} / ${evalData.total}`;
+    pct = evalData.pct;
+  } else {
+    scoreText = data.total > 0 ? `${data.score} / ${data.total}` : '0';
+    pct = data.pct || 0;
+  }
+
+  const barClass = getBarClass(pct);
+  const lastStr = formatLastVisit(data.lastVisit || (evalData && evalData.lastVisit));
+
+  let badgeHtml = '';
+  if (evalData) {
+    badgeHtml = evalData.isGood
+      ? '<span class="baro-eval-badge good">Good</span>'
+      : '<span class="baro-eval-badge not-yet">未達</span>';
+  }
+
+  let catsHtml = '';
+  if (evalData && evalData.categories) {
+    catsHtml = '<div class="baro-cats">' + evalData.categories.map(c =>
+      `<div class="baro-cat-row ${c.isGood ? 'good' : 'not-yet'}">
+        <span class="baro-cat-name">${c.name}</span>
+        <span class="baro-cat-score">${c.achieved}/${c.total} (≥${c.threshold})</span>
+      </div>`
+    ).join('') + '</div>';
+  }
+
+  return `<div class="baro-item ${typeClass}">
+    ${titleHtml}
+    <div class="baro-stats">
+      <span class="baro-score">${scoreText}</span>
+      ${badgeHtml}
+      <span>${pct}%</span>
+    </div>
+    ${catsHtml}
+    <div class="baro-bar-wrap">
+      <div class="baro-bar-fill ${barClass}" style="width:${pct}%"></div>
+    </div>
+    ${lastStr ? `<div class="baro-last">最終: ${lastStr}</div>` : ''}
+  </div>`;
+}
+
+function renderBarometer() {
+  const mentalEl = document.getElementById('baro-mental');
+  const skillEl  = document.getElementById('baro-skills');
+
+  // Mental items
+  mentalEl.innerHTML = MENTAL_ITEMS.map(item => {
+    let data, evalData = null;
+    if (item.id === 'brain-speed') {
+      data = getBrainSpeedData();
+    } else {
+      data = getSkillBarometerData(item.id);
+      evalData = getSkillEvaluation(item.id, item);
+    }
+    return renderBaroItem(item, data, true, evalData);
+  }).join('');
+
+  // Skill items
+  skillEl.innerHTML = SKILL_ITEMS.map(s => {
+    const item = { id: s.id, label: SKILL_LABELS[s.id] };
+    const data = getSkillBarometerData(s.id);
+    const evalData = getSkillEvaluation(s.id, item);
+    return renderBaroItem(item, data, false, evalData);
+  }).join('');
+
+  // R4: Stagnation alerts — check last 3 weeks
+  renderStagnationAlerts();
+}
+
+// R4: Stagnation alerts
+function renderStagnationAlerts() {
+  const container = document.getElementById('stagnation-container');
+  const all = getWeeklyReview();
+  const alerts = [];
+
+  ALL_ITEMS.forEach(item => {
+    let consecutive = 0;
+    for (let w = 1; w <= 3; w++) {
+      const d = new Date();
+      d.setDate(d.getDate() - w * 7);
+      const key = getWeekKey(d);
+      const wd = all[key];
+      if (wd && wd.items && wd.items[item.id] && wd.items[item.id].state === 1) {
+        consecutive++;
+      } else {
+        break;
+      }
+    }
+    if (consecutive >= 3) alerts.push(item.label);
+  });
+
+  if (alerts.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const alertsHtml = alerts.map(label =>
+    `<div class="stag-alert">
+      <span class="stag-icon">&#x26A0;</span>
+      <span>「<strong>${label}</strong>」が3週連続で意図止まり → 難易度を下げるか、トリガーを変えるか</span>
+    </div>`
+  ).join('');
+
+  container.innerHTML = `<div class="stagnation-alerts">${alertsHtml}</div>`;
+}
+
+// =====================================================
+// WEEKLY REVIEW RENDERING
+// =====================================================
+function renderWeekHeader() {
+  const today = new Date();
+  const { weekNum, range, short, wn } = formatWeekDisplay(today);
+
+  document.getElementById('nav-week-label').textContent = weekNum;
+  document.getElementById('hero-week-label').textContent = `${weekNum} — ${range}`;
+  document.getElementById('review-week-num').textContent = weekNum;
+  document.getElementById('review-week-range').textContent = range;
+}
+
+function renderHeroBadge(weekData) {
+  const badge = document.getElementById('hero-badge');
+  const reviewBadge = document.getElementById('review-badge');
+  if (weekData.submittedAt) {
+    badge.className = 'hero-badge done';
+    badge.textContent = '✓ 振り返り完了';
+    reviewBadge.className = 'hero-badge done';
+    reviewBadge.textContent = '提出済み';
+  } else {
+    badge.className = 'hero-badge pending';
+    badge.textContent = '振り返り待ち';
+    reviewBadge.className = 'hero-badge pending';
+    reviewBadge.textContent = '未提出';
+  }
+}
+
+function renderUpdateTime() {
+  const el = document.getElementById('hero-update-time');
+  const now = new Date();
+  el.textContent = `最終更新: ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+function renderPrevIntents(prevData) {
+  const container = document.getElementById('prev-intents-container');
+  if (!prevData || !prevData.nextWeekIntents || prevData.nextWeekIntents.every(s => !s.trim())) {
+    container.innerHTML = `<div class="prev-empty">先週の宣言はありません。はじめての振り返りです！</div>`;
+    return;
+  }
+  const filled = prevData.nextWeekIntents.filter(s => s.trim());
+  const items = filled.map(s => `<li class="prev-intent-item">${s}</li>`).join('');
+  container.innerHTML = `<ul class="prev-intents-list">${items}</ul>`;
+}
+
+function renderReviewItemRow(item, itemData, activeSkills) {
+  const state = (itemData && itemData.state !== undefined) ? itemData.state : null;
+  const isTouched = activeSkills.has(item.id);
+
+  // DESIGN CONSTRAINT: bsk_tracker "今週触れた" is hint-only. Never auto-set weekly state values.
+  const touchedBadge = isTouched
+    ? `<span class="touched-badge">今週触れた</span>`
+    : '';
+
+  const link = item.link
+    ? `<a href="${item.link}" target="_blank" title="${item.link}">
+         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+       </a>`
+    : '';
+
+  const btns = [
+    { val: 4, label: '完璧' },
+    { val: 3, label: 'まあまあ' },
+    { val: 1, label: 'やろうとした' },
+    { val: 0, label: '手付かず' },
+  ].map(s => {
+    const active = state === s.val ? ' active' : '';
+    return `<button class="state-btn${active}" data-state="${s.val}">${s.label}</button>`;
+  }).join('');
+
+  return `<div class="item-row" data-id="${item.id}">
+    <div class="item-label">
+      <span>${item.label}</span>
+      ${link}
+      ${touchedBadge}
+    </div>
+    <div class="state-btns">${btns}</div>
+  </div>`;
+}
+
+function renderReviewItems(weekData, activeSkills) {
+  const mentalEl = document.getElementById('mental-review-list');
+  const skillEl  = document.getElementById('skill-review-list');
+
+  mentalEl.innerHTML = MENTAL_ITEMS.map(item =>
+    renderReviewItemRow(item, weekData.items[item.id], activeSkills)
+  ).join('');
+
+  skillEl.innerHTML = SKILL_ITEMS.map(s => {
+    const item = { id: s.id, label: SKILL_LABELS[s.id] };
+    return renderReviewItemRow(item, weekData.items[s.id], activeSkills);
+  }).join('');
+}
+
+function renderMemo(weekData) {
+  document.getElementById('weekly-memo').value = weekData.weeklyMemo || '';
+}
+
+function renderIntents(weekData) {
+  const inputs = document.querySelectorAll('.intent-input');
+  const vals = weekData.nextWeekIntents || ['', '', ''];
+  inputs.forEach((inp, i) => { inp.value = vals[i] || ''; });
+}
+
+// =====================================================
+// CHART (Section 3)
+// =====================================================
+let trendChart = null;
+
+function getLast12WeeksData() {
+  const all = getWeeklyReview();
+  const now = getMonday(new Date());
+  const weeks = [];
+
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i * 7);
+    const key = 'week-' + toISODate(d);
+    const wd = all[key];
+    const { wn } = formatWeekDisplay(d);
+    if (wd && wd.items && Object.keys(wd.items).length > 0) {
+      const counts = { perfect: 0, good: 0, tried: 0, none: 0, has: true };
+      Object.values(wd.items).forEach(item => {
+        if      (item.state === 4) counts.perfect++;
+        else if (item.state === 3) counts.good++;
+        else if (item.state === 1) counts.tried++;
+        else                       counts.none++;
+      });
+      weeks.push({ label: `W${wn}`, ...counts });
+    } else {
+      weeks.push({ label: `W${wn}`, perfect: 0, good: 0, tried: 0, none: 0, has: false });
+    }
+  }
+  return weeks;
+}
+
+function renderChart() {
+  const weeks = getLast12WeeksData();
+  const hasData = weeks.filter(w => w.has).length;
+
+  const chartContainer = document.getElementById('chart-container');
+  const placeholder = document.getElementById('chart-placeholder');
+
+  if (hasData < 2) {
+    chartContainer.style.display = 'none';
+    placeholder.style.display = 'flex';
+    return;
+  }
+
+  chartContainer.style.display = 'block';
+  placeholder.style.display = 'none';
+
+  const labels  = weeks.map(w => w.label);
+  const perfect = weeks.map(w => w.perfect);
+  const good    = weeks.map(w => w.good);
+  const tried   = weeks.map(w => w.tried);
+  const none    = weeks.map(w => w.none);
+
+  const ctx = document.getElementById('trend-chart').getContext('2d');
+  if (trendChart) trendChart.destroy();
+
+  trendChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: '完璧',         data: perfect, backgroundColor: 'rgba(34,197,94,.75)',  stack: 'a' },
+        { label: 'まあまあ',     data: good,    backgroundColor: 'rgba(56,189,248,.75)', stack: 'a' },
+        { label: 'やろうとした', data: tried,   backgroundColor: 'rgba(245,158,11,.75)', stack: 'a' },
+        { label: '手付かず',     data: none,    backgroundColor: 'rgba(71,85,105,.6)',   stack: 'a' },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e293b',
+          titleColor: '#94a3b8',
+          bodyColor: '#f1f5f9',
+          borderColor: 'rgba(56,189,248,.2)',
+          borderWidth: 1,
+        },
+      },
+      scales: {
+        x: {
+          stacked: true,
+          grid: { color: 'rgba(255,255,255,.04)' },
+          ticks: { color: '#64748b', font: { size: 11 } },
+        },
+        y: {
+          stacked: true,
+          max: 14,
+          grid: { color: 'rgba(255,255,255,.04)' },
+          ticks: { color: '#64748b', font: { size: 11 }, stepSize: 2 },
+        },
+      },
+    },
+  });
+}
+
+// =====================================================
+// EVENT HANDLERS
+// =====================================================
+let memoTimer = null;
+
+function onStateClick(e) {
+  const btn = e.target.closest('.state-btn');
+  if (!btn) return;
+  const row = btn.closest('.item-row');
+  if (!row) return;
+  const id = row.dataset.id;
+  const stateVal = parseInt(btn.dataset.state);
+
+  row.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const wd = getCurrentWeekData();
+  if (!wd.items[id]) wd.items[id] = {};
+  wd.items[id].state = stateVal;
+  saveCurrentWeekData(wd);
+}
+
+function bindEvents() {
+  // State buttons — delegation on both lists
+  document.getElementById('mental-review-list').addEventListener('click', onStateClick);
+  document.getElementById('skill-review-list').addEventListener('click', onStateClick);
+
+  // Memo debounce
+  document.getElementById('weekly-memo').addEventListener('input', () => {
+    clearTimeout(memoTimer);
+    memoTimer = setTimeout(() => {
+      const wd = getCurrentWeekData();
+      wd.weeklyMemo = document.getElementById('weekly-memo').value;
+      saveCurrentWeekData(wd);
+    }, 500);
+  });
+
+  // Intent inputs
+  document.querySelectorAll('.intent-input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const wd = getCurrentWeekData();
+      const idx = parseInt(inp.dataset.idx);
+      wd.nextWeekIntents[idx] = inp.value;
+      saveCurrentWeekData(wd);
+    });
+  });
+
+  // Submit — R1: warn if all intents empty
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const wd = getCurrentWeekData();
+    const intents = wd.nextWeekIntents || ['', '', ''];
+    const allEmpty = intents.every(s => !s.trim());
+
+    if (allEmpty) {
+      const ok = confirm('宣言なしで保存しますか？');
+      if (!ok) {
+        document.querySelectorAll('.intent-input')[0].focus();
+        return;
+      }
+    }
+
+    wd.submittedAt = new Date().toISOString();
+    saveCurrentWeekData(wd);
+
+    // R2: save monthly snapshot
+    saveMonthlySnapshot(getWeeklyReview());
+
+    renderHeroBadge(wd);
+    renderUpdateTime();
+
+    const btn = document.getElementById('submit-btn');
+    btn.classList.add('submitted');
+    btn.textContent = 'お疲れさまでした！振り返り完了 ✓';
+    setTimeout(() => {
+      btn.classList.remove('submitted');
+      btn.textContent = '✓ 振り返り完了';
+    }, 2500);
+
+    renderChart();
+  });
+
+  // Export — R3
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      weekly_review: getWeeklyReview(),
+      bsk_tracker: getBskTracker(),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `capability-export-${toISODate(new Date())}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Import — R3
+  document.getElementById('import-input').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (data.weekly_review) {
+          const existing = getWeeklyReview();
+          Object.assign(existing, data.weekly_review);
+          saveWeeklyReview(existing);
+        }
+        if (data.bsk_tracker) {
+          const existing = getBskTracker();
+          Object.assign(existing, data.bsk_tracker);
+          localStorage.setItem('bsk_tracker', JSON.stringify(existing));
+        }
+        alert('インポート完了。ページを再読み込みします。');
+        location.reload();
+      } catch {
+        alert('JSONの解析に失敗しました。ファイルを確認してください。');
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
+// =====================================================
+// THEME
+// =====================================================
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('icon-moon').style.display = theme === 'light' ? 'none' : 'block';
+  document.getElementById('icon-sun').style.display  = theme === 'light' ? 'block' : 'none';
+  localStorage.setItem('cockpit_theme', theme);
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('cockpit_theme') || 'dark';
+  applyTheme(saved);
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+}
+
+// =====================================================
+// INIT
+// =====================================================
+function init() {
+  const weekData   = getCurrentWeekData();
+  const prevKey    = getPrevWeekKey();
+  const prevData   = getWeeklyReview()[prevKey] || null;
+  const activeSkills = getActiveSkillsThisWeek();
+
+  renderWeekHeader();
+  renderHeroBadge(weekData);
+  renderUpdateTime();
+  renderBarometer();
+  renderPrevIntents(prevData);
+  renderReviewItems(weekData, activeSkills);
+  renderMemo(weekData);
+  renderIntents(weekData);
+  bindEvents();
+  renderChart();
+
+  if (window.lucide) lucide.createIcons();
+}
+
+document.addEventListener('DOMContentLoaded', () => { initTheme(); init(); });
+</script>
+</body>
+</html>

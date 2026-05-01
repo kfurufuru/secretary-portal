@@ -556,3 +556,50 @@ completion_rate_prev_week: 0.0
 [2026-04-25 07:42:55] INFO:   P1: 今週のTODOリスト作成・タスク管理システム運用開始 (score=44)
 [2026-04-25 07:42:55] INFO:   P2: 電計チーム今週の課題ヒアリング＆週次優先度合意 (score=40)
 [2026-04-25 07:42:55] INFO:   P3: 電験3種：今週学習テーマ1単元の問題演習（30問） (score=35)
+[2026-04-27 08:08:48] INFO: ============================================================
+[2026-04-27 08:08:48] INFO: TOP3 Fixation: STARTED
+[2026-04-27 08:08:48] INFO: ============================================================
+[2026-04-27 08:08:48] INFO: 分析対象: 2026-04-20 ～ 2026-04-26
+[2026-04-27 08:08:48] INFO: 実行日: 2026-04-27
+[2026-04-27 08:08:48] INFO: 
+[Phase 1] Collecting previous week todos...
+[2026-04-27 08:08:48] INFO: ✓ Analyzed 27 tasks from 3 files
+[2026-04-27 08:08:48] INFO: 
+[Phase 2] Running Haiku analysis...
+[2026-04-27 08:08:48] INFO: Phase 1 (Haiku): Starting analysis...
+[2026-04-27 08:08:49] ERROR: API error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CaTDykCNG56wwS4qwP9qg'}
+[2026-04-27 08:08:49] ERROR: 
+[2026-04-27 08:08:49] ERROR: ============================================================
+[2026-04-27 08:08:49] ERROR: TOP3 Fixation: FAILED
+[2026-04-27 08:08:49] ERROR: ============================================================
+[2026-04-27 08:08:49] ERROR: Error: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CaTDykCNG56wwS4qwP9qg'}
+[2026-04-27 08:08:49] DEBUG: Traceback (most recent call last):
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 468, in main
+    haiku_analysis = run_haiku_analysis(todos_data)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 259, in run_haiku_analysis
+    response_text = call_with_retry(client, MODEL_HAIKU, system_prompt, user_prompt)
+  File "C:\Users\kfuru\.secretary\top3-generator.py", line 103, in call_with_retry
+    response = client.messages.create(
+        model=model,
+    ...<3 lines>...
+        messages=[{"role": "user", "content": user_prompt}]
+    )
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_utils\_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\resources\messages\messages.py", line 996, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1364, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kfuru\AppData\Local\Programs\Python\Python313\Lib\site-packages\anthropic\_base_client.py", line 1137, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CaTDykCNG56wwS4qwP9qg'}
+

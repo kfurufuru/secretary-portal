@@ -224,6 +224,28 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .search-result-meta { font-size: 11px; color: var(--ink-mute); margin-top: 2px; }
 .search-result mark { background: var(--accent-soft); color: var(--accent-ink); padding: 0 2px; border-radius: 2px; }
 
+.search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0 0;
+}
+.search-chip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 99px;
+  border: 1px solid var(--rule);
+  background: var(--bg-elev);
+  color: var(--ink-mute);
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: all 0.1s;
+}
+.search-chip:hover { border-color: var(--accent); color: var(--accent-ink); }
+.search-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
 .nav-group {
   margin-bottom: 4px;
 }
@@ -805,12 +827,13 @@ table.data-table td {
 
 .page-nav {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto 1fr;
   gap: 12px;
   margin-top: 64px;
   padding-top: 24px;
   border-top: 1px solid var(--rule);
 }
+.page-nav-link.portal { text-align: center; }
 .page-nav-link {
   display: block;
   padding: 14px 18px;
@@ -2016,6 +2039,10 @@ const PageNav = ({ prev, next, onNav }) => (
         <div className="page-nav-title">{prev.title}</div>
       </a>
     ) : <div />}
+    <a href="portal-v2.html" className="page-nav-link portal">
+      <div className="page-nav-dir">ホーム</div>
+      <div className="page-nav-title">ポータル</div>
+    </a>
     {next ? (
       <a href="#" className="page-nav-link next" onClick={(e) => { e.preventDefault(); onNav(next.id); }}>
         <div className="page-nav-dir">次 →</div>
@@ -2799,6 +2826,51 @@ const LearningMap = ({ prereqs = [], current, nexts = [], onNav }) => {
         </>
       )}
     </nav>
+  );
+};
+
+/* ============================================================
+   6.4 PrereqTable — 前提知識テーブル
+   rows: [{ knowledge, risk, backId, backTitle }]
+   ============================================================ */
+
+const PrereqTable = ({ rows = [], onNav }) => {
+  if (!rows.length) return null;
+  return (
+    <div style={{ margin: "0 0 24px" }}>
+      <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink-soft)", marginBottom: "8px" }}>
+        前提知識
+      </div>
+      <div className="table-wrap" style={{ margin: 0 }}>
+        <table className="data-table" style={{ fontSize: "13px" }}>
+          <thead>
+            <tr>
+              <th style={{ width: "20%" }}>必要知識</th>
+              <th style={{ width: "50%" }}>ここが曖昧だと起きるミス</th>
+              <th style={{ width: "30%" }}>戻る場所</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={i}>
+                <td style={{ fontWeight: 600 }}>{r.knowledge}</td>
+                <td style={{ color: "var(--ink-soft)" }}>{r.risk}</td>
+                <td>
+                  {r.backId ? (
+                    <a href="#" style={{ color: "var(--accent-ink)", fontWeight: 600, textDecoration: "none" }}
+                      onClick={(e) => { e.preventDefault(); onNav && onNav(r.backId); }}>
+                      {r.backTitle}
+                    </a>
+                  ) : (
+                    <span style={{ color: "var(--ink-mute)" }}>{r.backTitle || "—"}</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
@@ -5186,6 +5258,11 @@ const TransistorPage = ({ onNav }) => (
       nexts={[{id:"op-amp", title:"オペアンプ"}]}
       onNav={onNav}
     />
+    <PrereqTable onNav={onNav} rows={[
+      { knowledge: "pn接合", risk: "NPN/PNP、順方向バイアス、VBEの意味が分からない", backId: "semiconductor", backTitle: "半導体・ダイオード" },
+      { knowledge: "直流回路", risk: "ベース抵抗・コレクタ抵抗の電圧降下を計算できない", backId: "dc-circuit", backTitle: "直流回路" },
+      { knowledge: "交流の小信号", risk: "直流バイアスと交流信号を混同する", backId: "ac-basics", backTitle: "交流基礎" },
+    ]} />
 
     <Crumbs items={[{id:"home",label:"ホーム"},{label:"5. 電子理論"}]} onNav={onNav} />
 
@@ -5243,6 +5320,7 @@ const TransistorPage = ({ onNav }) => (
       onNav={onNav}
     />
 
+    <hr style={{border:'none',borderTop:'2px solid var(--rule)',margin:'40px 0 0'}} />
     <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="faucet" icon="🚰">
       <Tooltip label="バイポーラ接合型トランジスタ（BJT）。NPN/PNP構造。ベース電流IBでコレクタ電流ICを制御する電流制御素子">バイポーラトランジスタ</Tooltip>は「電流で電流を制御」する。ベース電流 IB が小さくても、hFE 倍に増幅されたコレクタ電流 IC が流れる。蛇口のバルブのように、少ない力で大流量を制御する。
@@ -5269,6 +5347,61 @@ const TransistorPage = ({ onNav }) => (
     <Callout variant="note" title="h-パラメータ記号の読み方">
       <strong>hFE</strong>（フォワード電流利得）= IC/IB の比。<strong>hie</strong>（入力インピーダンス）= エミッタ接地時のベース-エミッタ間交流抵抗（数百Ω〜数kΩ）。電圧利得 Av ≈ hFE·RC/hie はこの2つを組み合わせた式。
     </Callout>
+
+    {/* BJT 電流フロー回路図 */}
+    <figure style={{margin:"0 0 16px",display:"flex",gap:"32px",alignItems:"flex-start",flexWrap:"wrap"}}>
+      <div style={{textAlign:"center"}}>
+        <svg viewBox="0 0 200 220" style={{width:"180px",display:"block",margin:"0 auto",fontSize:"11px",fontFamily:"var(--font-mono)"}}>
+          {/* コレクタ端子（上） */}
+          <line x1="100" y1="0" x2="100" y2="70" stroke="var(--ink)" strokeWidth="2"/>
+          <text x="112" y="20" fill="var(--ok)" fontSize="12" fontWeight="700">C (コレクタ)</text>
+          {/* IC矢印（下向き：NPN） */}
+          <polygon points="96,45 104,45 100,60" fill="var(--ok)"/>
+          <text x="106" y="55" fill="var(--ok)" fontSize="11">IC</text>
+          {/* BJT本体 円 */}
+          <circle cx="100" cy="110" r="40" fill="none" stroke="var(--ink-mute)" strokeWidth="2" strokeDasharray="4,2"/>
+          {/* ベース線（左） */}
+          <line x1="20" y1="110" x2="60" y2="110" stroke="var(--ink)" strokeWidth="2"/>
+          <text x="2" y="107" fill="var(--accent-ink)" fontSize="12" fontWeight="700">B</text>
+          {/* IB矢印（右向き） */}
+          <polygon points="50,106 50,114 64,110" fill="var(--accent-ink)"/>
+          <text x="22" y="100" fill="var(--accent-ink)" fontSize="11">IB</text>
+          {/* NPNシンボル: エミッタ斜め線 */}
+          <line x1="60" y1="95" x2="100" y2="110" stroke="var(--ink)" strokeWidth="2.5"/>
+          <line x1="60" y1="125" x2="100" y2="110" stroke="var(--ink)" strokeWidth="2.5"/>
+          {/* エミッタ矢印（右下斜め・NPN） */}
+          <polygon points="94,156 100,150 108,156" fill="var(--danger)" transform="rotate(40,100,152)"/>
+          {/* エミッタ端子（下） */}
+          <line x1="100" y1="150" x2="100" y2="220" stroke="var(--ink)" strokeWidth="2"/>
+          <text x="112" y="200" fill="var(--danger)" fontSize="12" fontWeight="700">E (エミッタ)</text>
+          <text x="106" y="175" fill="var(--danger)" fontSize="11">IE</text>
+          {/* ベース縦線 */}
+          <line x1="60" y1="90" x2="60" y2="130" stroke="var(--ink)" strokeWidth="3"/>
+          {/* KCL式 */}
+          <text x="100" y="108" fill="var(--ink-mute)" fontSize="9" textAnchor="middle">NPN BJT</text>
+        </svg>
+        <figcaption style={{fontSize:"11px",color:"var(--ink-mute)",marginTop:"6px"}}>NPN BJT 電流の向き</figcaption>
+      </div>
+      <div style={{flex:1,minWidth:"200px"}}>
+        <table style={{fontSize:"13px",borderCollapse:"collapse",width:"100%"}}>
+          <tbody>
+            <tr style={{borderBottom:"1px solid var(--rule-soft)"}}>
+              <td style={{padding:"8px 12px 8px 0",fontWeight:700,color:"var(--ok)"}}>IC</td>
+              <td style={{padding:"8px 0"}}>コレクタ電流（制御されて流れる大電流）</td>
+            </tr>
+            <tr style={{borderBottom:"1px solid var(--rule-soft)"}}>
+              <td style={{padding:"8px 12px 8px 0",fontWeight:700,color:"var(--accent-ink)"}}>IB</td>
+              <td style={{padding:"8px 0"}}>ベース電流（制御する小電流）<br/><span style={{fontSize:"11px",color:"var(--ink-mute)"}}>IC = hFE × IB → ベースで電流を「蛇口調整」</span></td>
+            </tr>
+            <tr>
+              <td style={{padding:"8px 12px 8px 0",fontWeight:700,color:"var(--danger)"}}>IE</td>
+              <td style={{padding:"8px 0"}}>エミッタ電流（IC + IB の合流）<br/><span style={{fontSize:"11px",color:"var(--ink-mute)"}}>IE = IB + IC（キルヒホッフ電流則）</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
     <FormulaTable layer="A" rows={[
       { formula: "h_{FE} = \\frac{I_C}{I_B}", meaning: "電流増幅率：ベース電流の何倍のコレクタ電流が流れるか", when: "アクティブ領域（増幅動作）", notWhen: "飽和・遮断領域" },
       { formula: "I_E = I_B + I_C", meaning: "キルヒホッフの電流則：3端子の電流収支", when: "常に成立（全動作領域）", notWhen: "—" },
@@ -5667,34 +5800,76 @@ const TransistorPage = ({ onNav }) => (
       </details>
     </div>
 
+    <Callout variant="info" title="出題マッピング（問13・問18 速見表）">
+      <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',margin:'4px 0 0'}}>
+        <thead>
+          <tr style={{background:'var(--bg-sunken)'}}>
+            <th style={{padding:'6px 10px',textAlign:'left',borderBottom:'1px solid var(--rule)'}}>テーマ</th>
+            <th style={{padding:'6px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>主な問番号</th>
+            <th style={{padding:'6px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>頻出度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>Q点・直流動作点（VCE, IC）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問13</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★★</td></tr>
+          <tr style={{background:'var(--bg-sunken)'}}><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>hFE・電流増幅率（IC = hFE × IB）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問13, 問18</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★★</td></tr>
+          <tr><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>バイアス回路（電圧分割・固定）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問13</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★</td></tr>
+          <tr style={{background:'var(--bg-sunken)'}}><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>接地方式（E/B/C接地の特性比較）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問18</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★</td></tr>
+          <tr><td style={{padding:'5px 10px'}}>FET動作原理・Vth・相互コンダクタンス</td><td style={{padding:'5px 10px',textAlign:'center'}}>問18</td><td style={{padding:'5px 10px',textAlign:'center'}}>★★</td></tr>
+        </tbody>
+      </table>
+    </Callout>
+
     <h2 id="exam-history"><span className="h-num">§6</span>出題実績</h2>
-    <table className="data-table">
+    <table className="data-table" style={{fontSize:"0.85rem"}}>
       <thead>
-        <tr><th>年度</th><th>問</th><th>形式</th><th>何が問われたか</th></tr>
+        <tr>
+          <th>年度</th>
+          <th>問</th>
+          <th>形式</th>
+          <th style={{whiteSpace:"nowrap"}}>分野</th>
+          <th>何が問われたか</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>R07上</td><td>問12</td><td>計算</td><td>BJTのバイアス回路、IB・IC計算</td></tr>
-        <tr><td>R06下</td><td>問11</td><td>穴埋</td><td>FETの動作領域・特性</td></tr>
-        <tr><td>R06上</td><td>問11</td><td>穴埋</td><td>BJT/FETの構造比較</td></tr>
-        <tr><td>R05下</td><td>問12</td><td>計算</td><td>エミッタ接地増幅回路の電圧利得</td></tr>
-        <tr><td>R05上</td><td>問12</td><td>計算</td><td>FETのドレイン電流</td></tr>
-        <tr><td>R04下</td><td>問12</td><td>計算</td><td>BJT電流増幅</td></tr>
-        <tr><td>R04上</td><td>問12</td><td>計算</td><td>バイアス回路設計</td></tr>
-        <tr><td>R03</td><td>問12</td><td>計算</td><td>増幅回路の動作点</td></tr>
-        <tr><td>R02</td><td>問12</td><td>計算</td><td>FETの相互コンダクタンス</td></tr>
-        <tr><td>R01</td><td>問12</td><td>計算</td><td>BJT増幅回路</td></tr>
-        <tr><td>H30</td><td>問12</td><td>計算</td><td>エミッタ接地</td></tr>
-        <tr><td>H29</td><td>問12</td><td>穴埋</td><td>トランジスタ動作原理</td></tr>
-        <tr><td>H28</td><td>問12</td><td>計算</td><td>バイアス回路</td></tr>
-        <tr><td>H27</td><td>問12</td><td>計算</td><td>FETドレイン特性</td></tr>
-        <tr><td>H26</td><td>問12</td><td>計算</td><td>BJTバイアス</td></tr>
-        <tr><td>H25</td><td>問12</td><td>計算</td><td>増幅回路</td></tr>
-        <tr><td>H24</td><td>問12</td><td>計算</td><td>FET相互コンダクタンス</td></tr>
-        <tr><td>H23</td><td>問12</td><td>穴埋</td><td>BJT/FET特性</td></tr>
-        <tr><td>H22</td><td>問12</td><td>計算</td><td>増幅率計算</td></tr>
+        <tr><td>R07上</td><td>問12</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td>固定バイアス回路のIB・IC計算（VCC・RB・hFEから求める）</td></tr>
+        <tr><td>R06下</td><td>問11</td><td>穴埋</td><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>FET</span></td><td>FETの動作領域（線形領域・飽和領域）とVGS-ID特性</td></tr>
+        <tr><td>R06上</td><td>問11</td><td>穴埋</td><td><span style={{background:"#8e44ad",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>構造比較</span></td><td>BJT（電流制御）とFET（電圧制御）の構造・キャリア制御方式の違い</td></tr>
+        <tr><td>R05下</td><td>問12</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>増幅回路</span></td><td>エミッタ接地増幅回路の電圧利得Av = hFE・RC/hie の計算</td></tr>
+        <tr><td>R05上</td><td>問12</td><td>計算</td><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>FET</span></td><td>FETのドレイン電流ID（VGS・Vth・IDSSから二乗特性で計算）</td></tr>
+        <tr><td>R04下</td><td>問12</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td>BJT電流増幅率hFEを使ったIC・IE・IBの相互計算</td></tr>
+        <tr><td>R04上</td><td>問12</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td>自己バイアス回路の設計（RE追加による動作点安定化とQ点計算）</td></tr>
+        <tr><td>R03</td><td>問12</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>増幅回路</span></td><td>増幅回路の直流動作点Q（負荷線とIB曲線の交点からVCE・IC決定）</td></tr>
+        <tr><td>R02</td><td>問12</td><td>計算</td><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>FET</span></td><td>FETの相互コンダクタンスgm = ΔID/ΔVGS の計算と増幅率への適用</td></tr>
+        <tr><td>R01</td><td>問12</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td>BJTエミッタ接地増幅回路のバイアス設計とIC・VCE計算</td></tr>
+        <tr><td>H30</td><td>問12</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>増幅回路</span></td><td>エミッタ接地回路の入出力特性（電圧利得・位相反転の確認）</td></tr>
+        <tr><td>H29</td><td>問12</td><td>穴埋</td><td><span style={{background:"#8e44ad",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>構造比較</span></td><td>トランジスタの動作原理（エミッタ注入・ベース通過・コレクタ収集）</td></tr>
+        <tr><td>H28</td><td>問12</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td>固定バイアス回路のQ点計算（VCC・RB・RCからIC・VCE決定）</td></tr>
+        <tr><td>H27</td><td>問12</td><td>計算</td><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>FET</span></td><td>FETドレイン特性曲線からIDSS・Vthの読み取りとID計算</td></tr>
+        <tr><td>H26</td><td>問12</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td>BJTバイアス回路のIB・IC計算（hFE・VBE=0.6V使用）</td></tr>
+        <tr><td>H25</td><td>問12</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>増幅回路</span></td><td>増幅回路の電圧利得・電流利得・電力利得の関係計算</td></tr>
+        <tr><td>H24</td><td>問12</td><td>計算</td><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>FET</span></td><td>FET相互コンダクタンスgmの定義と特性曲線からの算出</td></tr>
+        <tr><td>H23</td><td>問12</td><td>穴埋</td><td><span style={{background:"#8e44ad",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>構造比較</span></td><td>BJT（3層構造・電流制御）とFET（電界制御・高入力Z）の特性比較</td></tr>
+        <tr><td>H22</td><td>問12</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>増幅回路</span></td><td>小信号等価回路を用いた増幅率Av・入出力インピーダンスの計算</td></tr>
       </tbody>
     </table>
-    <p>→ 出題頻度: ★★★（電子回路分野で毎年必出。問11〜12でBJT/FETバイアス回路と増幅率計算が定番）</p>
+
+    {/* 分野別出題分析 */}
+    <h3 style={{marginTop:"24px"}}>分野別出題傾向（H22〜R07 全19問）</h3>
+    <table className="data-table" style={{fontSize:"0.85rem",maxWidth:"600px"}}>
+      <thead>
+        <tr><th>分野</th><th>出題数</th><th>直近出題</th><th>出題周期</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>BJT</span></td><td><strong>6回</strong></td><td>R07上</td><td>ほぼ毎年（最頻出・全て計算）</td></tr>
+        <tr><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>FET</span></td><td><strong>5回</strong></td><td>R06下</td><td>1〜2年に1回</td></tr>
+        <tr><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>増幅回路</span></td><td><strong>5回</strong></td><td>R05下</td><td>1〜2年に1回</td></tr>
+        <tr><td><span style={{background:"#8e44ad",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>構造比較</span></td><td>3回</td><td>R06上</td><td>3〜4年に1回（穴埋のみ）</td></tr>
+      </tbody>
+    </table>
+    <Callout variant="tip" title="出題傾向の読み方">
+      <strong>計算16回 vs 穴埋3回</strong>: 圧倒的に計算問題。BJTバイアス設計（hFE・VBE=0.6V）とFETドレイン電流（二乗特性）の2パターンを確実に解けることが最優先。<br/>
+      <strong>BJTとFETの交互出題</strong>: R04以降はBJT計算→FET穴埋→構造比較→増幅回路→FET計算→BJT計算のローテーション傾向。次回はFETまたは増幅回路が有力。
+    </Callout>
 
     <div style={{background:"var(--bg-sunken)",border:"1px solid var(--border)",borderRadius:"10px",padding:"1rem 1.2rem",margin:"0 0 1.5rem",fontSize:"0.9rem"}}>
       <p style={{fontWeight:700,marginBottom:"0.6rem",color:"var(--accent)"}}>📐 学習後の全体確認：5.1 → 5.2 → 5.3 の知識の流れ</p>
@@ -5789,6 +5964,9 @@ const TransistorPage = ({ onNav }) => (
       </tbody>
     </table>
 
+    <div style={{textAlign:"right",margin:"8px 0 16px"}}>
+      <a href="#" onClick={e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}} style={{fontSize:"13px",color:"var(--accent)",textDecoration:"none"}}>▲ ページ先頭へ戻る</a>
+    </div>
     <PageNav prev={{id:"semiconductor", title:"5.1 半導体"}} next={{id:"op-amp", title:"5.3 オペアンプ"}} onNav={onNav} />
   </>
 );
@@ -6093,7 +6271,7 @@ const CoulombFieldPage = ({ onNav }) => (
    1.3 電磁力
    ============================================================ */
 const ElectromagneticForcePage = ({ onNav }) => (
-  // last-updated: 2026-04-28 | v0.8 | M3(5秒で思い出す)・M4(レイヤー分割)・M10(実務)・M14(TrapBlock)・M20(支配因子)完備
+  // last-updated: 2026-04-30 | v0.9 | ローレンツ力テーマ固有セクション追加・物理メカニズムCallout・全体像・用語集・correct-vs-wrong削除
   <>
     <MetaStrip difficulty="★★★" importance="A" frequency="高" />
     <LearningMap
@@ -6103,15 +6281,15 @@ const ElectromagneticForcePage = ({ onNav }) => (
       onNav={onNav}
     />
     <PageHeader
-      eyebrow="第1章 — CHAPTER 1 電磁気"
-      title="1.3 電磁力"
-      deck="電流が磁界から受ける力（モーター原理）と、磁界の変化で起電力が生まれる現象（発電機原理）の2本柱。"
+      eyebrow="1.3 — 電磁力（ELECTROMAGNETIC FORCE）"
+      title="電磁力"
+      deck="電流が磁界から受ける力（モーター原理）と、磁界の変化で起電力が生まれる現象（発電機原理）の2本柱。根本はローレンツ力 F = qvB。"
       meta={[
         { label: "重要度", value: "A" },
-        { label: "出題頻度", value: "高" },
+        { label: "出題頻度", value: "高（毎年1問、問3）" },
         { label: "難易度", value: "★★★" },
       ]}
-      updatedAt="2026.04.28"
+      updatedAt="2026.04.30"
     />
     <Crumbs
       items={[
@@ -6121,19 +6299,118 @@ const ElectromagneticForcePage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1</span>原理（なぜ起きるか）</h2>
+    <h2 id="overview"><span className="h-num">0.</span>全体像</h2>
+    <p>
+      このページでは「電流が磁界から力を受ける」現象と「導体が磁界内を動くと起電力が生まれる」現象を扱う。
+      両方の根本にあるのが<span className="marker">ローレンツ力 F = qvB</span>（電荷を持つ粒子が磁界中を動くと力を受ける）。
+    </p>
+    <table className="data-table">
+      <thead>
+        <tr><th>現象</th><th>方向の判定</th><th>公式</th><th>応用</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span className="marker">電磁力</span>（電流→力）</td>
+          <td><span className="marker">フレミング左手則</span></td>
+          <td>F = BIL sinθ</td>
+          <td>電動機・リニアモーター</td>
+        </tr>
+        <tr>
+          <td><span className="marker">電磁誘導</span>（動き→起電力）</td>
+          <td><span className="marker">フレミング右手則</span></td>
+          <td>e = BLv sinθ</td>
+          <td>発電機・センサー</td>
+        </tr>
+        <tr>
+          <td>ローレンツ力（粒子レベル）</td>
+          <td>右ねじ（v × B）</td>
+          <td>F = qvB sinθ</td>
+          <td>ホール効果・質量分析計</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
     <Analogy type="right-hand" icon="✋">
       <strong>左手 = モーター（電動機）</strong>：電流（中指）が磁界（人差し指）の中に入ると力（親指）が生まれる。電気エネルギー → 運動エネルギー。<br />
       <strong>右手 = 発電機</strong>：導体（中指）を磁界（人差し指）の中で動かすと起電力（親指方向）が生まれる。運動エネルギー → 電気エネルギー。
     </Analogy>
-    <Callout variant="tip" title="5秒で思い出す">
-      モーター（力）→ <span className="marker">フレミングの左手の法則</span>。発電機（起電力）→ 右手の法則。電磁力 <span className="marker">F = BIL</span>（直交時）、角度依存は <span className="marker">F = BIL sinθ</span>。誘導起電力 e = Blv。<span className="marker">電磁誘導の向きはレンツの法則</span>（磁束変化を打ち消す向き）。
+    <Callout variant="note" title="なぜ電流が磁界から力を受けるか（ローレンツ力の物理）">
+      <p>
+        電流の正体は「電荷 q を持つ粒子が速度 v で移動している状態」。この粒子が磁束密度 B の磁界の中を動くと
+        <Eq tex="F = qvB\sin\theta" /> の力（ローレンツ力）を受ける。
+      </p>
+      <p>
+        導体に電流 I が流れる場合、単位長さ当たり n 個の電荷が速度 v で動いている（<Eq tex="I = nqvA" />）。
+        長さ L の導体全体でまとめると <Eq tex="F = BIL\sin\theta" /> に変換できる。
+        つまり電磁力は<span className="marker">ローレンツ力の集合的表れ</span>。
+      </p>
+      <p>
+        重要な特性：ローレンツ力は常に速度に直交するため<span className="marker">仕事をゼロ</span>にする。
+        粒子のエネルギーを変えず、<span className="marker">方向だけを変える</span>。
+      </p>
     </Callout>
+    <Callout variant="tip" title="5秒で思い出す">
+      <span className="marker">左手 = 電動機（電気→力）</span>、<span className="marker">右手 = 発電機（力→電気）</span>。
+      中指=電流（or 誘導電流）、人差し指=B（磁界）、親指=力（or 速度）。
+      根本は <span className="marker">F = qvB</span>（ローレンツ力）。電磁力 <span className="marker">F = BIL sinθ</span>、誘導起電力 <span className="marker">e = BLv sinθ</span>。
+    </Callout>
+
+    {/* ===== ビジュアル①：フレミング左手 vs 右手 ===== */}
+    <figure style={{margin:'1.2rem 0',textAlign:'center'}}>
+      <div style={{display:'flex',gap:'16px',justifyContent:'center',flexWrap:'wrap'}}>
+        <svg viewBox="0 0 190 175" style={{width:'100%',maxWidth:'188px',flex:'0 0 auto'}} aria-label="フレミング左手則">
+          <defs>
+            <marker id="emf13-flF" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#e53935" /></marker>
+            <marker id="emf13-flB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#1565c0" /></marker>
+            <marker id="emf13-flI" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#2e7d32" /></marker>
+          </defs>
+          <rect width="190" height="175" rx="8" fill="#fffde7" stroke="#f9a825" strokeWidth="1.5" />
+          <circle cx="95" cy="95" r="4" fill="#424242" />
+          <line x1="95" y1="91" x2="95" y2="22" stroke="#e53935" strokeWidth="2.5" markerEnd="url(#emf13-flF)" />
+          <text x="100" y="50" fontSize="12" fill="#e53935" fontWeight="bold">F（力）</text>
+          <text x="100" y="63" fontSize="11" fill="#e53935">親指↑</text>
+          <line x1="91" y1="99" x2="25" y2="143" stroke="#1565c0" strokeWidth="2.5" markerEnd="url(#emf13-flB)" />
+          <text x="4" y="158" fontSize="11" fill="#1565c0" fontWeight="bold">B（磁界）</text>
+          <text x="10" y="170" fontSize="10" fill="#1565c0">人差し指</text>
+          <line x1="99" y1="99" x2="165" y2="143" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#emf13-flI)" />
+          <text x="130" y="158" fontSize="11" fill="#2e7d32" fontWeight="bold">I（電流）</text>
+          <text x="140" y="170" fontSize="10" fill="#2e7d32">中指</text>
+          <text x="95" y="14" textAnchor="middle" fontSize="13" fill="#5d4037" fontWeight="bold">左手 ＝ 電動機</text>
+          <text x="95" y="90" textAnchor="middle" fontSize="10" fill="#78909c">電気 → 力</text>
+        </svg>
+        <svg viewBox="0 0 190 175" style={{width:'100%',maxWidth:'188px',flex:'0 0 auto'}} aria-label="フレミング右手則">
+          <defs>
+            <marker id="emf13-frV" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#2e7d32" /></marker>
+            <marker id="emf13-frB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#1565c0" /></marker>
+            <marker id="emf13-frE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#6a1b9a" /></marker>
+          </defs>
+          <rect width="190" height="175" rx="8" fill="#e8f5e9" stroke="#43a047" strokeWidth="1.5" />
+          <circle cx="95" cy="95" r="4" fill="#424242" />
+          <line x1="95" y1="91" x2="95" y2="22" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#emf13-frV)" />
+          <text x="100" y="50" fontSize="12" fill="#2e7d32" fontWeight="bold">v（速度）</text>
+          <text x="100" y="63" fontSize="11" fill="#2e7d32">親指↑</text>
+          <line x1="91" y1="99" x2="25" y2="143" stroke="#1565c0" strokeWidth="2.5" markerEnd="url(#emf13-frB)" />
+          <text x="4" y="158" fontSize="11" fill="#1565c0" fontWeight="bold">B（磁界）</text>
+          <text x="10" y="170" fontSize="10" fill="#1565c0">人差し指</text>
+          <line x1="99" y1="99" x2="165" y2="143" stroke="#6a1b9a" strokeWidth="2.5" markerEnd="url(#emf13-frE)" />
+          <text x="120" y="158" fontSize="11" fill="#6a1b9a" fontWeight="bold">e（起電力）</text>
+          <text x="140" y="170" fontSize="10" fill="#6a1b9a">中指</text>
+          <text x="95" y="14" textAnchor="middle" fontSize="13" fill="#1b5e20" fontWeight="bold">右手 ＝ 発電機</text>
+          <text x="95" y="90" textAnchor="middle" fontSize="10" fill="#78909c">力 → 電気</text>
+        </svg>
+      </div>
+      <figcaption style={{fontSize:'0.8em',color:'var(--ink-soft)',marginTop:'6px',textAlign:'center'}}>
+        人差し指＝磁界B（両手共通）。エネルギー変換の向きで手を選ぶ：電動機は左手、発電機は右手。
+      </figcaption>
+    </figure>
+
     <p>
-      レンツの法則は「変化を嫌う自然の反抗」。<strong>磁束が増えれば打ち消そうとする誘導電流が流れる</strong>。逆に磁束が減れば維持しようとする電流が流れる。「変化の方向」を見ることが重要。
+      レンツの法則は「変化を嫌う自然の反抗」。<strong>磁束が増えれば打ち消そうとする誘導電流が流れる</strong>。逆に磁束が減れば維持しようとする電流が流れる。「磁束の変化の向き」を最初に確認するのが解法の起点。
     </p>
 
-    <h2 id="formulas"><span className="h-num">2</span>公式</h2>
+    <h2 id="formulas"><span className="h-num">2.</span>公式</h2>
+    <h3>レイヤーA：基本公式（試験直結）</h3>
     <FormulaTable
       layer="A"
       rows={[
@@ -6159,7 +6436,7 @@ const ElectromagneticForcePage = ({ onNav }) => (
           formula: "H = I / (2\\pi r)",
           meaning: "長直線電流による磁界（距離 r）",
           when: "無限長の直線電流",
-          notWhen: "有限長の電線",
+          notWhen: "有限長の電線。アンペアの法則（∮H·dl = NI）は対称性がある形状のみ有効（直線・円形・トロイダル以外は積分が解けない）",
         },
         {
           formula: "H = NI / (2r)",
@@ -6175,6 +6452,41 @@ const ElectromagneticForcePage = ({ onNav }) => (
         },
       ]}
     />
+
+    {/* ===== ビジュアル②：磁界中の電流と力（F=BIL）===== */}
+    <figure style={{margin:'1.2rem 0',textAlign:'center'}}>
+      <svg viewBox="0 0 290 165" style={{width:'100%',maxWidth:'290px',display:'inline-block'}} aria-label="磁界中の電流と力 F=BIL">
+        <defs>
+          <marker id="emf13-fbF" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#e53935" /></marker>
+          <marker id="emf13-fbI" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#2e7d32" /></marker>
+        </defs>
+        <rect width="290" height="165" rx="8" fill="#e3f2fd" stroke="#90caf9" strokeWidth="1.5" />
+        <text x="48" y="45" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="108" y="45" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="178" y="45" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="238" y="45" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="48" y="95" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="238" y="95" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="48" y="140" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="108" y="140" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="178" y="140" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <text x="238" y="140" fontSize="18" fill="#1565c0" textAnchor="middle" opacity="0.7">×</text>
+        <rect x="136" y="12" width="8" height="140" rx="3" fill="#9e9e9e" stroke="#616161" strokeWidth="1" />
+        <line x1="140" y1="130" x2="140" y2="26" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#emf13-fbI)" />
+        <text x="148" y="76" fontSize="13" fill="#2e7d32" fontWeight="bold">I ↑</text>
+        <text x="148" y="89" fontSize="10" fill="#2e7d32">電流</text>
+        <line x1="136" y1="82" x2="30" y2="82" stroke="#e53935" strokeWidth="3" markerEnd="url(#emf13-fbF)" />
+        <text x="34" y="73" fontSize="12" fill="#e53935" fontWeight="bold">F ←</text>
+        <text x="33" y="98" fontSize="11" fill="#e53935">電磁力</text>
+        <text x="148" y="157" fontSize="11" fill="#1565c0">× ＝ B（紙面奥）</text>
+        <text x="195" y="22" fontSize="12" fill="#333" fontWeight="bold">F ＝ BILsinθ</text>
+        <text x="195" y="35" fontSize="10" fill="#888">（θ＝90°→最大）</text>
+      </svg>
+      <figcaption style={{fontSize:'0.8em',color:'var(--ink-soft)',marginTop:'4px',textAlign:'center'}}>
+        B が紙面奥（×）、I が上向き → F は左向き（θ＝90°なので sinθ＝1）。<br />
+        親指←（力）・人差し指奥（B）・中指↑（I）でフレミング左手則を確認。
+      </figcaption>
+    </figure>
 
     <h3>レイヤーB：応用変換</h3>
     <FormulaTable
@@ -6207,7 +6519,114 @@ const ElectromagneticForcePage = ({ onNav }) => (
       ]}
     />
 
-    <h2 id="comparison"><span className="h-num">3</span>比較・まとめ</h2>
+    <h2 id="traps"><span className="h-num">3.</span>引っかけポイント</h2>
+    <TrapBlock
+      correct="左手=電動機（電気→力）、右手=発電機（力→電気）。最初にエネルギー変換の方向を宣言してから手を選ぶ。"
+      trap="試験中に焦って右手か左手かを取り違える。"
+      steps={[
+        "ステップ1：電気入力か力入力かを確認する（電動機か発電機か）",
+        "ステップ2：電動機（力を得る）なら左手、発電機（起電力を得る）なら右手を選ぶ",
+        "ステップ3：指の対応 ─ 親指＝力F・人差し指＝磁界B・中指＝電流I（左手は電動機のみ有効）",
+      ]}
+      wisdom="指の役割はどちらの手でも同じ（親指F・人差し指B・中指I）。左手か右手かを決める唯一の基準は『電気→力（左手）か 力→電気（右手）か』のエネルギー変換方向。この1点で迷わなくなる。"
+    />
+    <TrapBlock
+      correct="レンツの法則は磁束の『変化を打ち消す向き』に誘導電流が流れる。磁束が増加中か減少中かを最初に確認する。"
+      trap="現在の磁束の向きと逆方向に電流が流れると誤解する。"
+      steps={[
+        "ステップ1：磁束が増加しているか減少しているかを確認する",
+        "ステップ2：増加なら打ち消す（逆向き磁界）、減少なら維持する（同向き磁界）と判断",
+        "ステップ3：右ねじ則から誘導電流の向きを結論する",
+      ]}
+      wisdom="『変化を嫌う』が本質。磁束の向きそのものではなく『変化の向き』に着目しているかどうかが正答者と誤答者の分かれ目。"
+    />
+    <TrapBlock
+      correct="平行導体で同方向電流は吸引力（引き合う）、逆方向電流は反発力。"
+      trap="同方向電流は反発する（磁石の同極反発の感覚）と誤答する。"
+      steps={[
+        "ステップ1：右ねじ法則で各導体まわりの磁界方向を求める",
+        "ステップ2：もう一方の導体でフレミング左手則を適用し力の方向を確認する",
+        "ステップ3：同方向電流=吸引力、逆方向電流=反発力と結論する",
+      ]}
+      wisdom="磁石の同極反発のイメージが干渉する。電流間の力は『磁界を経由した相互作用』なので別物と意識的に切り離すのが正答者の習慣。"
+    />
+    <TrapBlock
+      correct="円形コイル中心の磁界 H = NI/(2r) には π がない。直線電流 H = I/(2πr) の π を持ち込まない。"
+      trap="直線の公式の π をそのまま円形コイルにも付けてしまう。"
+      steps={[
+        "ステップ1：形状（直線 or 円形 or 環状）を先に確認する",
+        "ステップ2：円形コイルは H = NI/(2r)（π なし）を適用する",
+        "ステップ3：直線電流は H = I/(2πr)（分母に π）を適用する",
+      ]}
+      wisdom="直線は『2πr（円周）で割る』、円形は『半径 2r で割る』と構造から把握すると混同しにくい。形状の物理から導ければ暗記不要。"
+    />
+
+    <TrapBlock
+      correct="F = BIL sinθ の L は『磁界Bに垂直な方向の有効長さ』。B⊥I（θ=90°）のとき sinθ=1 で最大、B∥I（θ=0°）のとき F=0。"
+      trap="導体の全長Lをそのまま代入して計算する（斜め配置・角度ありの問題で頻出）。"
+      steps={[
+        "ステップ1：問題文でBとIのなす角θを確認する（「直角」なら θ=90°→sinθ=1）",
+        "ステップ2：θが明示されていない場合は図から読み取る（B∥Iなら力ゼロ）",
+        "ステップ3：F = BIL sinθ にθを代入して計算（直角前提で問題が設定されることが多いが油断しない）",
+      ]}
+      wisdom="『F = BIL』は θ=90° の特殊ケース。式の本来の姿は F = BIL sinθ。問題文に角度が書いてあったら必ずsinθを掛ける。書いていなくて図もなければ θ=90° 前提と判断してよい。"
+    />
+
+    <h2 id="comparison"><span className="h-num">4.</span>比較・まとめ</h2>
+    <h3>フレミング左手 vs 右手 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 毎年出題。「どちらの手か」の判定が最頻出パターン</p>
+    {/* ===== ビジュアル：左手則 vs 右手則 2面比較 ===== */}
+    <figure style={{margin:'1.2rem 0',textAlign:'center'}}>
+      <svg viewBox="0 0 404 172" style={{width:'100%',maxWidth:'400px',display:'inline-block'}} aria-label="左手則vs右手則比較">
+        <defs>
+          <marker id="cmp13-F"  markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#e53935"/></marker>
+          <marker id="cmp13-I"  markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#2e7d32"/></marker>
+          <marker id="cmp13-V"  markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#2e7d32"/></marker>
+          <marker id="cmp13-Ep" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#6a1b9a"/></marker>
+        </defs>
+        {/* ===== 左パネル：電動機（左手則） ===== */}
+        <rect x="4" y="4" width="192" height="164" rx="8" fill="#e3f2fd" stroke="#90caf9" strokeWidth="1.5"/>
+        <text x="100" y="18" textAnchor="middle" fontSize="12" fill="#5d4037" fontWeight="bold">電動機（左手）</text>
+        <text x="40"  y="44" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="100" y="44" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="158" y="44" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="40"  y="92" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="158" y="92" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="40"  y="140" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="100" y="140" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="158" y="140" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <rect x="100" y="22" width="8" height="132" rx="3" fill="#9e9e9e" stroke="#616161" strokeWidth="1"/>
+        <line x1="104" y1="144" x2="104" y2="30" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#cmp13-I)"/>
+        <text x="112" y="76" fontSize="12" fill="#2e7d32" fontWeight="bold">I ↑</text>
+        <text x="112" y="88" fontSize="10" fill="#2e7d32">電流</text>
+        <line x1="100" y1="84" x2="18" y2="84" stroke="#e53935" strokeWidth="2.5" markerEnd="url(#cmp13-F)"/>
+        <text x="22" y="74" fontSize="11" fill="#e53935" fontWeight="bold">F ←</text>
+        <text x="24" y="99" fontSize="10" fill="#e53935">電磁力</text>
+        <text x="100" y="163" textAnchor="middle" fontSize="10" fill="#1565c0">× ＝ B（紙面奥）</text>
+        {/* ===== 右パネル：発電機（右手則） ===== */}
+        <rect x="208" y="4" width="192" height="164" rx="8" fill="#e8f5e9" stroke="#43a047" strokeWidth="1.5"/>
+        <text x="304" y="18" textAnchor="middle" fontSize="12" fill="#1b5e20" fontWeight="bold">発電機（右手）</text>
+        <text x="244" y="44" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="304" y="44" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="362" y="44" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="244" y="92" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="362" y="92" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="244" y="140" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="304" y="140" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <text x="362" y="140" fontSize="17" fill="#1565c0" textAnchor="middle" opacity="0.55">×</text>
+        <rect x="300" y="22" width="8" height="132" rx="3" fill="#9e9e9e" stroke="#616161" strokeWidth="1"/>
+        <line x1="304" y1="144" x2="304" y2="30" stroke="#6a1b9a" strokeWidth="2.5" markerEnd="url(#cmp13-Ep)"/>
+        <text x="312" y="76" fontSize="12" fill="#6a1b9a" fontWeight="bold">e ↑</text>
+        <text x="312" y="88" fontSize="10" fill="#6a1b9a">起電力</text>
+        <line x1="308" y1="84" x2="388" y2="84" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#cmp13-V)"/>
+        <text x="320" y="74" fontSize="11" fill="#2e7d32" fontWeight="bold">v →</text>
+        <text x="322" y="99" fontSize="10" fill="#2e7d32">速度</text>
+        <text x="304" y="163" textAnchor="middle" fontSize="10" fill="#1565c0">× ＝ B（紙面奥）</text>
+      </svg>
+      <figcaption style={{fontSize:'0.8em',color:'var(--ink-soft)',marginTop:'6px',textAlign:'center'}}>
+        左手：電流 I（緑）を与えて力 F（赤）を得る（電動機）。右手：速度 v（緑）で動かして起電力 e（紫）を得る（発電機）。B（磁界・青）は両則で人差し指に共通。
+      </figcaption>
+    </figure>
     <table className="data-table">
       <thead>
         <tr><th>項目</th><th>左手（電動機）</th><th>右手（発電機）</th></tr>
@@ -6226,25 +6645,42 @@ const ElectromagneticForcePage = ({ onNav }) => (
         </tr>
       </tbody>
     </table>
+    <h3>磁界公式 形状別比較 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 「形状名→公式」の対応を即答できるか問われる</p>
     <table className="data-table">
       <thead>
-        <tr><th>形状</th><th>中心の磁界 H</th></tr>
+        <tr><th>形状</th><th>磁界 H の式</th><th>特徴</th></tr>
       </thead>
       <tbody>
-        <tr><td>無限長直線（距離 r）</td><td>H = I/(2πr)</td></tr>
-        <tr><td>半径 r の円形コイル（N ターン・中心）</td><td>H = NI/(2r)</td></tr>
-        <tr><td>環状ソレノイド（磁路長 l、N ターン）</td><td>H = NI/l</td></tr>
+        <tr><td>無限長直線（距離 r）</td><td><Eq tex="H = I/(2\pi r)" /></td><td>r の逆数に比例・π あり</td></tr>
+        <tr><td>半径 r の円形コイル（N ターン・中心）</td><td><Eq tex="H = NI/(2r)" /></td><td><span className="marker">π なし</span>・直線より π 倍強い</td></tr>
+        <tr><td>環状ソレノイド（磁路長 l、N ターン）</td><td><Eq tex="H = NI/l" /></td><td>r に依存しない（経路長で決まる）</td></tr>
         <tr>
           <td><strong>支配因子</strong></td>
-          <td>
-            起磁力 NI（電流 I と巻数 N の積）。形状係数（1/(2r) や 1/l）は回路形状が決まれば固定。
-            <br /><em>→ NI が2倍になると H が2倍（比例）</em>
+          <td colSpan={2}>
+            アンペア回数 NI（↑で H 比例増大）と形状（r, l）の組み合わせ。<br />
+            <em>→ NI が2倍なら H は2倍（全形状で成立）</em>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <h2 id="examples"><span className="h-num">4</span>例題</h2>
+    <h2 id="practical"><span className="h-num">5.</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      モーターの回転方向変更（相順逆転）・継電器動作・変圧器振動——全部フレミング則とレンツの法則が根拠。「なぜ逆転するか」を理解しておくと誤配線復旧が素早くできる。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>モーター逆転（相順入替）</td><td>フレミング左手則：F = BIl、電流方向反転で力の方向が逆</td><td>3相のうち任意の2相を入れ替えると逆回転。接続前に相順を確認</td></tr>
+        <tr><td>誘導型過電流継電器（OC）の動作</td><td>渦電流によるアルミ円板への電磁トルク（レンツの法則）</td><td>電流大きいほど円板が速く回転→動作時間が短い（反限時特性）</td></tr>
+        <tr><td>変圧器の騒音・振動（ハム音）</td><td>磁歪とコイル間電磁力（100/120Hz 成分）</td><td>鉄心ケイ素鋼板の積層締付け確認。過励磁（高電圧）でハム音増大→タップ調整</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="examples"><span className="h-num">6.</span>例題</h2>
     <Callout variant="note" title="例題1：電磁力 F の計算">
       磁束密度 B=0.5T 中で、有効長 L=0.2m の導体に電流 I=10A が流れている。B と I が直角のとき、電磁力 F を求めよ。
     </Callout>
@@ -6267,69 +6703,176 @@ const ElectromagneticForcePage = ({ onNav }) => (
       同方向電流→引力、逆方向電流→斥力。直感と逆になるため要注意。右ネジ則で各導体まわりの磁界方向を求めると確実に判断できる。
     </Callout>
 
-    <h2 id="traps"><span className="h-num">5</span>引っかけポイント</h2>
-    <TrapBlock
-      correct="左手=電動機（電気→力）、右手=発電機（力→電気）。"
-      trap="左手と右手の用途を逆に使う。"
-      cite="[要確認]"
-      steps={[
-        "ステップ1：電気入力か力入力かを確認する",
-        "ステップ2：電動機（力を得る）なら左手、発電機（起電力を得る）なら右手を選ぶ",
-        "ステップ3：各指の役割（親指=力、人差し指=磁界、中指=電流/起電力）を確認して判断",
-      ]}
-    />
-    <TrapBlock
-      correct="レンツの法則は磁束の変化を打ち消す向きに誘導電流が流れる。"
-      trap="現在の磁束の向きと逆方向に電流が流れると誤解する。"
-      cite="[要確認]"
-      steps={[
-        "ステップ1：磁束が増加しているか減少しているかを確認する",
-        "ステップ2：増加なら打ち消す（逆向き磁界）、減少なら維持する（同向き磁界）と判断",
-        "ステップ3：∴変化の方向を見て誘導電流の向きを結論",
-      ]}
-    />
-    <TrapBlock
-      correct="平行導体で同方向電流は引力、逆方向電流は斥力になる。"
-      trap="同方向電流は離れようとする（斥力）と直感的に間違える。"
-      cite="[要確認]"
-      steps={[
-        "ステップ1：右ネジ法則で各導体まわりの磁界方向を求める",
-        "ステップ2：もう一方の電流が受ける力の方向をF=BILで確認する",
-        "ステップ3：∴同方向電流=引力、逆方向電流=斥力と結論",
-      ]}
-    />
-    <Callout variant="tip" title="円形コイルの磁界は π がない">
-      円形コイル中心：H = NI/(2r)。直線電流：H = I/(2πr)。円形は π が分母にない分、同じ半径なら直線より磁界が π 倍強い。
+    {/* ===== テーマ固有：ローレンツ力 ===== */}
+    <h2 id="lorentz-force"><span className="h-num">★</span>ローレンツ力（特出し）</h2>
+    <MetaStrip difficulty="★★★" importance="A" frequency="中" />
+
+    <p>
+      電磁力の根本に立ち返る。<span className="marker">ローレンツ力</span>は「電荷を持つ粒子が電磁界から受ける力」の総称。
+      電界成分と磁界成分の和で表される。
+    </p>
+    <Callout variant="note" title="ローレンツ力の完全形">
+      <p><Eq tex="\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})" /></p>
+      <ul>
+        <li><span className="marker">電界成分 qE</span>：電荷量と電界強度に比例。速度に無関係（静止していても働く）</li>
+        <li><span className="marker">磁界成分 q(v × B)</span>：電荷量・速度・磁束密度の積。速度 v = 0 のときゼロ</li>
+      </ul>
+      <p>電験3種では磁界成分（電動機・発電機・ホール効果）を中心に出題される。</p>
     </Callout>
 
-    <h2 id="correct-vs-wrong"><span className="h-num">6.</span>正答者 vs 誤答者</h2>
+    <h3>磁界成分 F = qvB の4つの性質</h3>
     <table className="data-table">
       <thead>
-        <tr><th>観点</th><th>❌ 誤答者</th><th>✅ 正答者</th></tr>
+        <tr><th>性質</th><th>内容</th><th>試験での意味</th></tr>
       </thead>
       <tbody>
-        <tr><td>フレミング則の手</td><td>左手と右手を逆に使う</td><td>左手=電動機（電気→力）、右手=発電機（力→電気）。入力エネルギー種別で決める</td></tr>
-        <tr><td>レンツの法則</td><td>現在の磁束方向と「逆」に電流が流れると思う</td><td>磁束の「変化を打ち消す」向きに誘導電流が流れる</td></tr>
-        <tr><td>平行導体の同方向電流</td><td>同符号（反発）の類推で斥力と判断する</td><td><span className="marker">同方向電流 → 吸引力</span>、<span className="marker">逆方向電流 → 反発力</span>。右ネジ則で各導体の磁界を求めるとF=BILで引き合う方向になる</td></tr>
-        <tr><td>誘導起電力の向き</td><td>右ネジ則だけで決めようとする</td><td>レンツの法則（磁束変化を妨げる向き）で決める。右ネジは磁界と電流の向きの関係</td></tr>
-        <tr><td>電磁力 F=BIL</td><td>BとIの角度に関係なく常にBILと計算する</td><td>F=BILsinθ。B⊥Iのときのみ最大（sinθ=1）</td></tr>
+        <tr>
+          <td><span className="marker">仕事ゼロ</span></td>
+          <td>力は常に速度に直交 → W = F·v·cos90° = 0</td>
+          <td>磁界だけでは粒子のエネルギーを増減できない</td>
+        </tr>
+        <tr>
+          <td><span className="marker">方向変化のみ</span></td>
+          <td>速さは変えず、向きだけを変える</td>
+          <td>均一磁界中の荷電粒子は等速円運動する</td>
+        </tr>
+        <tr>
+          <td><span className="marker">速度依存</span></td>
+          <td>v = 0 のとき力はゼロ（静止粒子には磁界力が働かない）</td>
+          <td>磁界は電流（動く電荷）にのみ力を及ぼす</td>
+        </tr>
+        <tr>
+          <td><span className="marker">直交方向</span></td>
+          <td>力の方向は v と B の両方に垂直（右ねじ則）</td>
+          <td>フレミング左手則の物理的根拠</td>
+        </tr>
       </tbody>
     </table>
 
-    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
-    <Callout variant="tip" title="プラント電気・計装での使われどころ">
-      モーターの回転方向変更（相順逆転）・継電器動作・変圧器振動——全部フレミング則とレンツの法則が根拠。「なぜ逆転するか」を理解しておくと誤配線復旧が素早くできる。
+    {/* ===== ビジュアル③：荷電粒子の等速円運動（仕事ゼロ）===== */}
+    <figure style={{margin:'1.2rem 0',textAlign:'center'}}>
+      <svg viewBox="0 0 270 220" style={{width:'100%',maxWidth:'270px',display:'inline-block'}} aria-label="荷電粒子の等速円運動">
+        <defs>
+          <marker id="emf13-cmV" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#e65100" /></marker>
+          <marker id="emf13-cmF" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#e53935" /></marker>
+        </defs>
+        <rect width="270" height="220" rx="8" fill="#e8eaf6" stroke="#9fa8da" strokeWidth="1.5" />
+        <text x="28" y="38" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="80" y="38" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="135" y="38" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="190" y="38" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="243" y="38" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="28" y="200" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="80" y="200" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="135" y="200" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="190" y="200" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="243" y="200" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="28" y="120" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="243" y="120" fontSize="14" fill="#3949ab" textAnchor="middle" opacity="0.45">×</text>
+        <text x="5" y="17" fontSize="11" fill="#3949ab">× ＝ B（紙面奥）</text>
+        <circle cx="135" cy="122" r="72" fill="none" stroke="#7986cb" strokeWidth="2" strokeDasharray="8 5" />
+        <circle cx="135" cy="50" r="9" fill="#e53935" stroke="#c62828" strokeWidth="1.5" />
+        <text x="135" y="54" fontSize="10" fill="white" textAnchor="middle" fontWeight="bold">+q</text>
+        <line x1="144" y1="50" x2="210" y2="50" stroke="#e65100" strokeWidth="2.5" markerEnd="url(#emf13-cmV)" />
+        <text x="214" y="47" fontSize="13" fill="#e65100" fontWeight="bold">v</text>
+        <text x="214" y="59" fontSize="10" fill="#e65100">速度</text>
+        <line x1="135" y1="59" x2="135" y2="97" stroke="#e53935" strokeWidth="2.5" markerEnd="url(#emf13-cmF)" />
+        <text x="140" y="80" fontSize="13" fill="#e53935" fontWeight="bold">F</text>
+        <text x="140" y="93" fontSize="10" fill="#e53935">向心力</text>
+        <rect x="135" y="50" width="9" height="9" fill="none" stroke="#555" strokeWidth="1.2" />
+        <text x="148" y="65" fontSize="10" fill="#555">90°</text>
+        <circle cx="135" cy="122" r="4" fill="#7986cb" />
+        <text x="135" y="214" textAnchor="middle" fontSize="11" fill="#333" fontWeight="bold">F ⊥ v → 仕事ゼロ：等速円運動</text>
+      </svg>
+      <figcaption style={{fontSize:'0.8em',color:'var(--ink-soft)',marginTop:'4px',textAlign:'center'}}>
+        F と v は常に90°直交 → ローレンツ力は仕事をしない。粒子の速さは変わらず向きだけが変わる。
+      </figcaption>
+    </figure>
+
+    <h3>導体電流との接続（F = qvB → F = BIL の導出）</h3>
+    <Callout variant="note" title="粒子レベルから回路レベルへ">
+      <p>断面積 A の導体中で、電荷量 q の電子が速度 v で移動しているとする。</p>
+      <ul>
+        <li>単位体積の電荷数を n とすると、電流：<Eq tex="I = nqvA" /></li>
+        <li>長さ L の導体内の全電荷数：<Eq tex="N_{total} = nAL" /> 個</li>
+        <li>各電荷に働くローレンツ力：<Eq tex="f = qvB\sin\theta" /></li>
+        <li>合計の電磁力：<Eq tex="F = N_{total} \cdot f = BIL\sin\theta" /></li>
+      </ul>
+      <p>→ <span className="marker">F = BIL sinθ は F = qvB sinθ の集合的表現</span>。物理的根拠が同じ。</p>
     </Callout>
+
+    <h3>ホール効果との接続</h3>
+    <p>
+      ローレンツ力の重要な応用が<span className="marker">ホール効果</span>。半導体に電流と直交する磁界を加えると、
+      キャリアがローレンツ力で横方向に偏り、ホール電圧 V_H が発生する。
+    </p>
+
+    {/* ===== ビジュアル④：ホール効果のしくみ ===== */}
+    <figure style={{margin:'1.2rem 0',textAlign:'center'}}>
+      <svg viewBox="0 0 310 185" style={{width:'100%',maxWidth:'310px',display:'inline-block'}} aria-label="ホール効果の模式図">
+        <defs>
+          <marker id="emf13-heI" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse"><polygon points="0,0 8,3 0,6" fill="#2e7d32" /></marker>
+        </defs>
+        <rect width="310" height="185" rx="8" fill="#f3e5f5" stroke="#ce93d8" strokeWidth="1.5" />
+        <rect x="60" y="52" width="190" height="80" rx="4" fill="#b0bec5" stroke="#607d8b" strokeWidth="2" />
+        <text x="100" y="82" fontSize="15" fill="#1565c0" textAnchor="middle" opacity="0.5">×</text>
+        <text x="155" y="82" fontSize="15" fill="#1565c0" textAnchor="middle" opacity="0.5">×</text>
+        <text x="210" y="82" fontSize="15" fill="#1565c0" textAnchor="middle" opacity="0.5">×</text>
+        <text x="100" y="118" fontSize="15" fill="#1565c0" textAnchor="middle" opacity="0.5">×</text>
+        <text x="155" y="118" fontSize="15" fill="#1565c0" textAnchor="middle" opacity="0.5">×</text>
+        <text x="210" y="118" fontSize="15" fill="#1565c0" textAnchor="middle" opacity="0.5">×</text>
+        <text x="85" y="67" fontSize="12" fill="#1565c0" fontWeight="bold">－  －  －  －  －</text>
+        <text x="85" y="126" fontSize="12" fill="#e53935" fontWeight="bold">＋  ＋  ＋  ＋  ＋</text>
+        <line x1="18" y1="92" x2="55" y2="92" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#emf13-heI)" />
+        <text x="5" y="84" fontSize="12" fill="#2e7d32" fontWeight="bold">I</text>
+        <line x1="255" y1="92" x2="290" y2="92" stroke="#2e7d32" strokeWidth="2.5" markerEnd="url(#emf13-heI)" />
+        <line x1="48" y1="58" x2="48" y2="126" stroke="#6a1b9a" strokeWidth="1.5" strokeDasharray="5 3" />
+        <text x="50" y="95" fontSize="12" fill="#6a1b9a" fontWeight="bold">V_H</text>
+        <text x="13" y="66" fontSize="10" fill="#1565c0">－低電位</text>
+        <text x="13" y="130" fontSize="10" fill="#e53935">＋高電位</text>
+        <text x="155" y="147" textAnchor="middle" fontSize="10" fill="#1565c0">× ＝ B（紙面奥）</text>
+        <text x="155" y="91" textAnchor="middle" fontSize="11" fill="#37474f" fontWeight="bold">n型半導体</text>
+        <text x="155" y="172" textAnchor="middle" fontSize="11" fill="#6a1b9a" fontWeight="bold">電子（－）がローレンツ力で上方向に偏り V_H 発生</text>
+      </svg>
+      <figcaption style={{fontSize:'0.8em',color:'var(--ink-soft)',marginTop:'4px',textAlign:'center'}}>
+        ホール効果（n型）：V_H の符号でキャリア種類を識別、大きさが B に比例するため磁界センサーに応用される
+      </figcaption>
+    </figure>
+
     <table className="data-table">
       <thead>
-        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+        <tr><th>項目</th><th>n 型半導体</th><th>p 型半導体</th></tr>
       </thead>
       <tbody>
-        <tr><td>モーター逆転（相順入替）</td><td>フレミング左手則：F = BIl、電流方向反転で力の方向が逆</td><td>3相のうち任意の2相を入れ替えると逆回転。接続前に相順を確認</td></tr>
-        <tr><td>誘導型過電流継電器（OC）の動作</td><td>渦電流によるアルミ円板への電磁トルク（レンツの法則）</td><td>電流大きいほど円板が速く回転→動作時間が短い（反限時特性）</td></tr>
-        <tr><td>変圧器の騒音・振動（ハム音）</td><td>磁歪とコイル間電磁力（100/120Hz 成分）</td><td>鉄心ケイ素鋼板の積層締付け確認。過励磁（高電圧）でハム音増大→タップ調整</td></tr>
+        <tr>
+          <td>多数キャリア</td>
+          <td>電子（−）</td>
+          <td>正孔（+）</td>
+        </tr>
+        <tr>
+          <td>ローレンツ力で偏る向き</td>
+          <td>電子は負電荷（q {'<'} 0）なので正孔と逆方向に偏る</td>
+          <td>正孔は正電荷（q {'>'} 0）なので電流と同方向に偏る</td>
+        </tr>
+        <tr>
+          <td>偏った側の電位</td>
+          <td><span className="marker">低電位（−）</span></td>
+          <td><span className="marker">高電位（＋）</span></td>
+        </tr>
+        <tr>
+          <td>ホール電圧の符号</td>
+          <td colSpan={2}>n型とp型で<span className="marker">逆符号</span> → 符号測定でキャリア種類を判別できる</td>
+        </tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td colSpan={2}>磁束密度 B（↑でV_H比例増大）。次いで電流 I・試料の厚み t（V_H = R_H × IB/t）</td>
+        </tr>
       </tbody>
     </table>
+    <Callout variant="tip" title="ホール効果の2つの用途">
+      ① <span className="marker">キャリア種類の判別</span>：V_H の符号（正か負か）でn型/p型を識別。
+      ② <span className="marker">磁界センサー</span>：V_H の大きさが B に比例するためホール素子として磁束密度を測定できる。
+    </Callout>
 
     <h2 id="exam-history"><span className="h-num">7.</span>出題実績</h2>
     <table className="data-table">
@@ -6361,20 +6904,62 @@ const ElectromagneticForcePage = ({ onNav }) => (
         <tr><td>H18</td><td>問3</td><td>計算</td><td>導体力</td></tr>
       </tbody>
     </table>
-    <p>→ 出題頻度: ★★★（毎年必出。問3定番。F=BIL とフレミング左手則、ローレンツ力が中心テーマ）</p>
+    <p>→ 出題頻度: ★★★★★（毎年必出。問3定番。F=BIL とフレミング左手則、ローレンツ力（R04〜R07で4回出題）が中心テーマ）</p>
 
-    <h2 id="related"><span className="h-num">6</span>関連項目</h2>
+    <h2 id="related"><span className="h-num">8.</span>関連項目</h2>
     <ul>
-      <li>磁気回路（1.4）：アンペアの周回路則 H·l = NI の発展</li>
-      <li>インダクタンス（3.1）：自己誘導・相互誘導の定量化</li>
-      <li>交流の基礎（2.2）：RLC 回路のリアクタンス XL = ωL</li>
+      <li>磁気回路（1.4）：アンペアの周回路則 H·l = NI の発展形。磁気抵抗・磁束の計算に接続</li>
+      <li>インダクタンス（3.1）：自己誘導・相互誘導の定量化。e = L di/dt はファラデー則から導出</li>
+      <li>半導体（5.1）：ホール効果でキャリア種類と濃度を測定。ローレンツ力の直接応用</li>
     </ul>
+
+    <h2 id="glossary">用語集</h2>
+    <table className="data-table">
+      <thead>
+        <tr><th>用語・記号</th><th>正式名称・単位</th><th>一言で言うと</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ローレンツ力</strong></td>
+          <td>Lorentz Force [N]</td>
+          <td>電荷が電磁界中で受ける力の総称。F = q(E + v×B)</td>
+        </tr>
+        <tr>
+          <td><strong>B</strong></td>
+          <td>磁束密度 [T（テスラ）]</td>
+          <td>単位面積当たりの磁束量。磁界の強さを物質込みで表す（1T = 1 Wb/m² = 10,000 Gauss）</td>
+        </tr>
+        <tr>
+          <td><strong>H</strong></td>
+          <td>磁界強度 [A/m]</td>
+          <td>媒質の透磁率に依存しない磁界の量。B = μH の関係</td>
+        </tr>
+        <tr>
+          <td><strong>φ（ファイ）</strong></td>
+          <td>磁束 [Wb（ウェーバ）]</td>
+          <td>断面積 A を貫く磁束の総量。φ = B·A</td>
+        </tr>
+        <tr>
+          <td><strong>ホール効果</strong></td>
+          <td>Hall Effect</td>
+          <td>電流×磁界でキャリアが偏り、横方向に電圧が発生する現象</td>
+        </tr>
+        <tr>
+          <td><strong>レンツの法則</strong></td>
+          <td>Lenz's Law</td>
+          <td>誘導電流は磁束の変化を打ち消す向きに流れる（エネルギー保存の電磁版）</td>
+        </tr>
+      </tbody>
+    </table>
 
     <PageNav
       prev={{ id: "capacitor", title: "1.2 コンデンサ" }}
       next={{ id: "magnetic-circuit", title: "1.4 磁気回路" }}
       onNav={onNav}
     />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-30 | v0.9
+    </p>
   </>
 );
 
@@ -7866,7 +8451,8 @@ const OpAmpPage = ({ onNav }) => (
       onNav={onNav}
     />
 
-    <h2 id="principle"><span className="h-num">1</span>原理（なぜ起きるか）</h2>
+    <hr style={{border:'none',borderTop:'2px solid var(--rule)',margin:'40px 0 0'}} />
+    <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
     <Analogy type="ideal-amplifier" icon="🔌">
       オペアンプは「2つの入力の差を無限大に増幅する素子」。そのままでは出力が飽和するため、出力の一部を入力に戻す<span className="marker">負帰還（フィードバック）</span>をかけて安定した増幅回路を作る。
     </Analogy>
@@ -7874,6 +8460,16 @@ const OpAmpPage = ({ onNav }) => (
       <img src="img/op-amp/op-amp-symbol.svg" alt="演算増幅器（Op-amp）の基本シンボル：差動入力・開ループ利得A・仮想短絡の概念" style={{width:"100%",maxWidth:"420px",display:"block",margin:"0 auto",borderRadius:"6px",background:"white"}}/>
       <figcaption style={{fontSize:"0.8rem",color:"var(--ink-muted)",marginTop:"0.3rem"}}>図: 演算増幅器の基本シンボル（Vo = A×(V+−V−)・閉ループ時は仮想短絡 V+≈V−）</figcaption>
     </figure>
+    <Callout variant="tip" title="生活で例えると（エアコンの温度制御）">
+      エアコンのサーモスタット：「設定温度（V+）」と「室温センサ（V−）」の差を検知して、差がゼロになるまで冷却出力を出し続ける。オペアンプの負帰還も同じ仕組み——2入力の差がゼロになるよう出力を自動調整し続ける。これが<strong>仮想接地（V+ ≈ V−）の物理的な意味</strong>。
+    </Callout>
+    <Callout variant="info" title="回路を解く3ステップ（仮想接地フロー）">
+      <ol style={{margin:"4px 0",paddingLeft:"20px",lineHeight:"2"}}>
+        <li><strong>入力端子を確認</strong>：信号が−端子入力→反転増幅（Av = −Rf/Ri）、+端子入力→非反転増幅（Av = 1+Rf/Ri）</li>
+        <li><strong>仮想接地を適用</strong>：負帰還回路なら V+ ≈ V−（イマジナリーショート）を前提にして節点電圧を決める</li>
+        <li><strong>KCL で電流を追う→Vo を求める</strong>：符号を確認（反転=マイナス、非反転=プラス）</li>
+      </ol>
+    </Callout>
     <Callout variant="tip" title="5秒で思い出す">
       負帰還オペアンプの鉄則：<span className="marker">仮想接地（V+ ≈ V-）</span>。<span className="marker">反転増幅 Av = -Rf/R1</span>。<span className="marker">非反転増幅 Av = 1 + Rf/R1</span>。入力インピーダンスは理想的に無限大、出力インピーダンスはゼロ。
     </Callout>
@@ -7948,6 +8544,10 @@ const OpAmpPage = ({ onNav }) => (
         },
       ]}
     />
+    <Callout variant="warn" title="単位ミス予防（電験頻出落とし穴）">
+      ゲイン計算 <Eq tex="A_v = -R_f / R_i" /> は<strong>抵抗の比</strong>なので単位はキャンセル（kΩ/kΩ = 無次元）。Rf = 100kΩ、Ri = 10kΩ なら Av = −10。出力電圧の単位は入力電圧と同じ [V]。<br/>
+      積分回路の時定数 <Eq tex="RC" /> の単位：R[Ω] × C[F] = [秒]。<Eq tex="V_o = -(V_i / RC) \cdot t" /> の t は秒。μF を F に換算し忘れると結果が10⁶倍ずれる。
+    </Callout>
 
     <h2 id="comparison"><span className="h-num">3</span>比較・まとめ</h2>
     <table className="data-table">
@@ -8110,23 +8710,64 @@ const OpAmpPage = ({ onNav }) => (
       ]}
     />
 
+    <Callout variant="info" title="出題マッピング（問14・問15 速見表）">
+      <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',margin:'4px 0 0'}}>
+        <thead>
+          <tr style={{background:'var(--bg-sunken)'}}>
+            <th style={{padding:'6px 10px',textAlign:'left',borderBottom:'1px solid var(--rule)'}}>テーマ</th>
+            <th style={{padding:'6px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>主な問番号</th>
+            <th style={{padding:'6px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>頻出度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>反転増幅器（Av = −Rf/Ri）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問14</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★★</td></tr>
+          <tr style={{background:'var(--bg-sunken)'}}><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>非反転増幅器（Av = 1 + Rf/Ri）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問14</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★★</td></tr>
+          <tr><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>仮想接地の適用（KCL解法）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問14, 問15</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★★</td></tr>
+          <tr style={{background:'var(--bg-sunken)'}}><td style={{padding:'5px 10px',borderBottom:'1px solid var(--rule)'}}>積分回路（出力 = −1/RC∫Vin dt）</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>問15</td><td style={{padding:'5px 10px',textAlign:'center',borderBottom:'1px solid var(--rule)'}}>★★</td></tr>
+          <tr><td style={{padding:'5px 10px'}}>差動増幅・加算器</td><td style={{padding:'5px 10px',textAlign:'center'}}>問14, 問15</td><td style={{padding:'5px 10px',textAlign:'center'}}>★★</td></tr>
+        </tbody>
+      </table>
+    </Callout>
+
     <h2 id="exam-history"><span className="h-num">6.</span>出題実績</h2>
-    <table className="data-table">
+    <table className="data-table" style={{fontSize:"0.85rem"}}>
       <thead>
-        <tr><th>年度</th><th>問</th><th>形式</th><th>何が問われたか</th></tr>
+        <tr>
+          <th>年度</th>
+          <th>問</th>
+          <th>形式</th>
+          <th style={{whiteSpace:"nowrap"}}>分野</th>
+          <th>何が問われたか</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>R07上</td><td>問13</td><td>計算</td><td>反転増幅器のゲイン計算・出力電圧</td></tr>
-        <tr><td>R06下</td><td>問14</td><td>計算</td><td>非反転増幅器のゲイン・ボルテージフォロワ</td></tr>
-        <tr><td>R05下</td><td>問13</td><td>計算</td><td>仮想短絡（バーチャルショート）を使ったゲイン導出</td></tr>
-        <tr><td>R05上</td><td>問13</td><td>計算</td><td>反転増幅器の入出力関係・符号</td></tr>
-        <tr><td>R04上</td><td>問13</td><td>穴埋</td><td>シュミットトリガ回路の閾値電圧（正帰還）</td></tr>
-        <tr><td>R03</td><td>問13</td><td>計算</td><td>積分回路の出力波形・時定数</td></tr>
-        <tr><td>R02</td><td>問13</td><td>計算</td><td>オペアンプ加算回路の出力電圧</td></tr>
-        <tr><td>R01</td><td>問13</td><td>計算</td><td>反転増幅器ゲイン・仮想接地の適用</td></tr>
+        <tr><td>R07上</td><td>問13</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>反転増幅</span></td><td>反転増幅器のゲインAv = -Rf/Ri 計算と出力電圧Voの符号判定</td></tr>
+        <tr><td>R06下</td><td>問14</td><td>計算</td><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>非反転増幅</span></td><td>非反転増幅器のゲインAv = 1+Rf/Ri とボルテージフォロワ（Av=1）の計算</td></tr>
+        <tr><td>R05下</td><td>問13</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>反転増幅</span></td><td>仮想短絡（V+ = V-）を前提としたゲイン導出過程と計算</td></tr>
+        <tr><td>R05上</td><td>問13</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>反転増幅</span></td><td>反転増幅器の入出力関係（位相反転・Voの極性）と数値計算</td></tr>
+        <tr><td>R04上</td><td>問13</td><td>穴埋</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>応用回路</span></td><td>シュミットトリガ回路の閾値電圧計算（正帰還によるヒステリシス動作）</td></tr>
+        <tr><td>R03</td><td>問13</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>応用回路</span></td><td>積分回路の出力波形導出（矩形波入力→三角波出力、時定数RC）</td></tr>
+        <tr><td>R02</td><td>問13</td><td>計算</td><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>応用回路</span></td><td>加算回路（反転加算器）の出力電圧計算（複数入力の重ね合わせ）</td></tr>
+        <tr><td>R01</td><td>問13</td><td>計算</td><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>反転増幅</span></td><td>反転増幅器のゲイン計算と仮想接地（V- ≈ 0V）の適用</td></tr>
       </tbody>
     </table>
-    <p>→ 出題頻度: ★★★（毎年問13〜14で安定出題。反転/非反転増幅の計算は必須）</p>
+
+    {/* 分野別出題分析 */}
+    <h3 style={{marginTop:"24px"}}>分野別出題傾向（R01〜R07 全8問）</h3>
+    <table className="data-table" style={{fontSize:"0.85rem",maxWidth:"600px"}}>
+      <thead>
+        <tr><th>分野</th><th>出題数</th><th>直近出題</th><th>出題周期</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span style={{background:"#e74c3c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>反転増幅</span></td><td><strong>4回</strong></td><td>R07上</td><td>ほぼ毎年（最頻出・得点源）</td></tr>
+        <tr><td><span style={{background:"#27ae60",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>応用回路</span></td><td><strong>3回</strong></td><td>R04上</td><td>1〜2年に1回（積分・加算・シュミット）</td></tr>
+        <tr><td><span style={{background:"#2980b9",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>非反転増幅</span></td><td>1回</td><td>R06下</td><td>低頻度だが出題時は確実に得点したい</td></tr>
+      </tbody>
+    </table>
+    <Callout variant="tip" title="出題傾向の読み方">
+      <strong>計算7回 vs 穴埋1回</strong>: ほぼ全て計算問題。Av = -Rf/Ri（反転）と Av = 1+Rf/Ri（非反転）の2公式を確実に使えれば半分以上の問題に対応可能。<br/>
+      <strong>応用回路の周期</strong>: R02加算→R03積分→R04シュミットと連続出題後、R05以降は基本回路に回帰。次回の応用回路（微分・差動増幅）出題に注意。
+    </Callout>
 
     <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
     <Callout variant="tip" title="プラント電気・計装での使われどころ">
@@ -8170,6 +8811,9 @@ const OpAmpPage = ({ onNav }) => (
       <li>トランジスタ（5.2）：オペアンプの内部素子</li>
     </ul>
 
+    <div style={{textAlign:"right",margin:"8px 0 16px"}}>
+      <a href="#" onClick={e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}} style={{fontSize:"13px",color:"var(--accent)",textDecoration:"none"}}>▲ ページ先頭へ戻る</a>
+    </div>
     <PageNav
       prev={{ id: "transistor", title: "5.2 トランジスタ" }}
       next={{ id: "measurement", title: "6.1 電気・電子計測" }}
@@ -8907,6 +9551,7 @@ const SemiconductorPage = ({ onNav }) => (
       onNav={onNav}
     />
 
+    <hr style={{border:'none',borderTop:'2px solid var(--rule)',margin:'40px 0 0'}} />
     <h2 id="principle"><span className="h-num">1.</span>原理（なぜ起きるか）</h2>
     <Analogy type="valve" icon="🔧">
       ダイオードは「<span className="marker">電流の弁</span>」。弁は一方向には水を通し、逆方向には通さない。<span className="marker">PN接合</span>のダイオードはアノード（P側）が高電位のときだけ電流を流し、逆方向は遮断する。
@@ -8937,13 +9582,17 @@ const SemiconductorPage = ({ onNav }) => (
       { formula: "C \\propto \\dfrac{1}{\\sqrt{V_R}}\\text{（バラクタ）}", meaning: "逆バイアス電圧を大きくするほど空乏層が広がり静電容量が小さくなる", when: "逆バイアス印加時", notWhen: "順バイアスでは通常ダイオードと同じ動作" },
       { formula: "\\text{光起電力効果（太陽電池）}", meaning: "PN接合に光を当てると電子・正孔対が生成され、内蔵電界で分離されてP側がプラスの起電力が発生", when: "半導体PN接合", notWhen: "光が当たらなければ起電力は発生しない" },
     ]} />
+    <Callout variant="warn" title="単位ミス予防（電験頻出落とし穴）">
+      半波整流の平均電圧 <Eq tex="V_{avg} = V_m / \pi" /> の <Eq tex="V_m" /> は<strong>最大値（振幅）</strong>。実効値 <Eq tex="V_{rms} = V_m / \sqrt{2}" /> と混同しない。全波整流は <Eq tex="2V_m / \pi" />（半波の2倍）。<br/>
+      ダイオードの電圧降下 <Eq tex="V_F \approx 0.6\text{ V}" /> の桁を落とさない。100V系で0.6Vは小さく見えるが、低電圧（3.3V/5V）回路では無視できない大きさになる。
+    </Callout>
     <Callout variant="note" title="バラクタダイオードの原理（R02 出題）">
       逆バイアス電圧 <Eq tex="V_R" /> を大きくするほど空乏層が広がり、静電容量 <Eq tex="C" /> が小さくなる（<Eq tex="C \propto \dfrac{1}{\sqrt{V_R}}" />）。バラクタダイオードは逆バイアスで使う。順バイアスをかけると電流が流れてしまい可変容量素子として機能しない。
     </Callout>
-    <Callout variant="note" title="ツェナーダイオード（定電圧ダイオード）の原理">
+    <Callout variant="note" title="ツェナーダイオード（定電圧ダイオード）の原理（H26・R05 出題）">
       ツェナーダイオードは<span className="marker">逆バイアス</span>で使う定電圧素子。逆バイアス電圧を大きくしても、ツェナー電圧 <Eq tex="V_Z" /> という一定値以上では電圧が上昇しない（<span className="marker">逆降伏特性</span>）。この性質を使って電源回路の出力電圧を一定に保つレギュレータとして機能する。バラクタダイオード（逆バイアスで容量）とは異なり、ツェナーは逆バイアスで<span className="marker">電流を流して定電圧を発生</span>させる。
     </Callout>
-    <Callout variant="note" title="レーザーダイオード（LD）の原理と LED との違い">
+    <Callout variant="note" title="レーザーダイオード（LD）の原理と LED との違い（H27 出題）">
       レーザーダイオード（LD）はPN接合に注入された電流が<span className="marker">光を刺激放出</span>し、コヒーレントな単色レーザー光を発生させる。LED（発光ダイオード）との主な違いは：(1) <span className="marker">LED は非コヒーレント（ランダム）な光</span>、LD はコヒーレント（位相が揃った）光。(2) LED の半値幅は数十 nm、LD は数 nm 以下の極めて狭い波長。(3) 用途：LD は光ファイバー通信・LiDAR・光学ピックアップ等、指向性と高い輝度が求められる場面。電験3種では深掘りされないが、応用範囲の認知が重要。
     </Callout>
     <Callout variant="note" title="太陽電池の動作原理（R01・H20 出題）">
@@ -9157,6 +9806,18 @@ const SemiconductorPage = ({ onNav }) => (
       シリコンの順方向電圧降下 ≈ 0.6V（ゲルマニウムは0.2V）。逆バイアスでも完全遮断にはならず、微小な逆飽和電流が残る——「完全ゼロ」は誤りと判断できる。
     </Callout>
 
+    <Callout variant="note" title="例題2：全波整流回路の出力平均電圧（計算）">
+      ブリッジ整流回路（全波整流）で交流の最大値 <Eq tex="V_m = 100\sqrt{2}\text{ V}" /> のとき、負荷の平均電圧 <Eq tex="V_{avg}" /> を求めよ（ダイオードの電圧降下は無視）。
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p><Eq tex="V_{avg} = \dfrac{2V_m}{\pi} = \dfrac{2 \times 100\sqrt{2}}{\pi} \approx \dfrac{282.8}{3.14} \approx 90\text{ V}" /></p>
+      <p><strong>ポイント：</strong>全波整流は半波の2倍。<Eq tex="V_m = \sqrt{2} \times V_{rms}" /> の変換を最初に行う。分母の <Eq tex="\pi \approx 3.14" /> で割る手順を試験本番でも素早く実行できるよう練習する。</p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      <Eq tex="V_{avg} = 2V_m/\pi" /> の <Eq tex="V_m" /> は最大値（実効値ではない）。<Eq tex="V_m = \sqrt{2} V_{rms}" /> の換算が先。半波なら分子の「2」を取るだけで同じ公式が使える。
+    </Callout>
+
     <h2 id="traps"><span className="h-num">5.</span>引っかけポイント</h2>
 
     <TrapBlock
@@ -9263,42 +9924,64 @@ const SemiconductorPage = ({ onNav }) => (
     />
 
     <h2 id="exam-history"><span className="h-num">6.</span>出題実績</h2>
-    <table className="data-table">
+    <table className="data-table" style={{fontSize:"0.85rem"}}>
       <thead>
         <tr>
           <th>年度</th>
           <th>問</th>
           <th>形式</th>
+          <th style={{whiteSpace:"nowrap"}}>分野</th>
           <th>何が問われたか</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>R07上</td><td>問11</td><td>穴埋</td><td>ホール素子の動作原理</td></tr>
-        <tr><td>R06下</td><td>問11</td><td>論説</td><td>電界効果トランジスタの種類や特徴</td></tr>
-        <tr><td>R06上</td><td>問11</td><td>論説</td><td>バイポーラトランジスタと電界効果トランジスタ</td></tr>
-        <tr><td>R05下</td><td>問11</td><td>穴埋</td><td>FETの動作原理</td></tr>
-        <tr><td>R05上</td><td>問11</td><td>穴埋</td><td>ホール素子の動作原理</td></tr>
-        <tr><td>R05上</td><td>問12</td><td>穴埋</td><td>異なる2種類の金属を接合した際の特性</td></tr>
-        <tr><td>R04下</td><td>問11</td><td>穴埋</td><td>各ダイオードに加える電圧の方向</td></tr>
-        <tr><td>R04上</td><td>問11</td><td>穴埋</td><td>電界効果トランジスタの特徴</td></tr>
-        <tr><td>R03</td><td>問11</td><td>論説</td><td>真性半導体及び不純物半導体の特徴</td></tr>
-        <tr><td>R02</td><td>問11</td><td>穴埋</td><td>可変容量ダイオード（バラクタダイオード）</td></tr>
-        <tr><td>R01</td><td>問11</td><td>穴埋</td><td>太陽電池</td></tr>
-        <tr><td>H30</td><td>問11</td><td>論説</td><td>半導体素子</td></tr>
-        <tr><td>H29</td><td>問11</td><td>論説</td><td>半導体のpn接合</td></tr>
-        <tr><td>H28</td><td>問11</td><td>論説</td><td>半導体</td></tr>
-        <tr><td>H27</td><td>問11</td><td>穴埋</td><td>半導体レーザ</td></tr>
-        <tr><td>H26</td><td>問12</td><td>論説</td><td>半導体のpn接合を利用した素子</td></tr>
-        <tr><td>H25</td><td>問11</td><td>穴埋</td><td>不純物半導体</td></tr>
-        <tr><td>H24</td><td>問11</td><td>論説</td><td>半導体集積回路（IC）</td></tr>
-        <tr><td>H23</td><td>問11</td><td>穴埋</td><td>電界効果トランジスタ（MOSFET）</td></tr>
-        <tr><td>H22</td><td>問11</td><td>穴埋</td><td>ホール効果の原理</td></tr>
-        <tr><td>H21</td><td>問11</td><td>論説</td><td>真性半導体と不純物半導体の特徴</td></tr>
-        <tr><td>H20</td><td>問11</td><td>穴埋</td><td>pn接合した半導体の太陽電池の原理</td></tr>
-        <tr><td>H19</td><td>問11</td><td>穴埋</td><td>各ダイオードに加える電圧の方向</td></tr>
-        <tr><td>H18</td><td>問11</td><td>穴埋</td><td>不純物半導体の特徴と不純物の知識</td></tr>
+        <tr><td>R07上</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"var(--accent)",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ホール効果</span></td><td>ホール素子の動作原理（磁束密度・電流・ホール電圧の関係式）</td></tr>
+        <tr><td>R06下</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#e67e22",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>トランジスタ</span></td><td>電界効果トランジスタの種類（JFET・MOSFET）と動作特性の比較</td></tr>
+        <tr><td>R06上</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#e67e22",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>トランジスタ</span></td><td>バイポーラトランジスタとFETの構造・キャリア制御方式の違い</td></tr>
+        <tr><td>R05下</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#e67e22",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>トランジスタ</span></td><td>FETのゲート・ソース・ドレイン構造と電圧制御型動作</td></tr>
+        <tr><td>R05上</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"var(--accent)",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ホール効果</span></td><td>ホール素子の動作原理（キャリアに働くローレンツ力と電圧発生）</td></tr>
+        <tr><td>R05上</td><td>問12</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#9b59b6",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>熱電効果</span></td><td>ゼーベック効果・ペルチェ効果（異種金属接合の熱起電力と電子冷却）</td></tr>
+        <tr><td>R04下</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>バラクタ・ツェナー・LED等の順/逆バイアス方向の判別</td></tr>
+        <tr><td>R04上</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#e67e22",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>トランジスタ</span></td><td>電界効果トランジスタの電圧制御型・高入力インピーダンス特性</td></tr>
+        <tr><td>R03</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#3498db",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>基礎理論</span></td><td>真性半導体のキャリア生成とN型/P型のドーピング・多数キャリア</td></tr>
+        <tr><td>R02</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>バラクタダイオードの逆バイアス容量変化（空乏層幅と静電容量の関係）</td></tr>
+        <tr><td>R01</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>太陽電池の光起電力効果（PN接合での電子正孔対生成と起電力発生）</td></tr>
+        <tr><td>H30</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>各種半導体素子（LED・フォトダイオード・ツェナー等）の動作原理と特徴</td></tr>
+        <tr><td>H29</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#1abc9c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>PN接合</span></td><td>pn接合の空乏層形成・順逆バイアスによる拡散電流と整流作用</td></tr>
+        <tr><td>H28</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#3498db",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>基礎理論</span></td><td>半導体のバンド構造・エネルギーギャップと導電機構の説明</td></tr>
+        <tr><td>H27</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>半導体レーザの誘導放出・コヒーレント光とLEDとの違い</td></tr>
+        <tr><td>H26</td><td>問12</td><td>論説</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>PN接合利用素子（整流・ツェナー・LED・バラクタ）の特性比較</td></tr>
+        <tr><td>H25</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#3498db",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>基礎理論</span></td><td>不純物半導体のドナー・アクセプターと多数/少数キャリアの関係</td></tr>
+        <tr><td>H24</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#95a5a6",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>IC</span></td><td>半導体集積回路のアナログ/デジタル分類・集積度と製造工程</td></tr>
+        <tr><td>H23</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#e67e22",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>トランジスタ</span></td><td>MOSFET（エンハンスメント型・デプレッション型）の構造と動作原理</td></tr>
+        <tr><td>H22</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"var(--accent)",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ホール効果</span></td><td>ホール効果の原理（磁界中キャリアへのローレンツ力と電圧発生メカニズム）</td></tr>
+        <tr><td>H21</td><td>問11</td><td>論説</td><td><span className="badge-topic" style={{background:"#3498db",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>基礎理論</span></td><td>真性半導体と不純物半導体のキャリア種類・温度特性・導電率の違い</td></tr>
+        <tr><td>H20</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>PN接合太陽電池の光起電力効果（開放電圧・短絡電流・エネルギー変換）</td></tr>
+        <tr><td>H19</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td>バラクタ・ツェナー・LED等の順/逆バイアス方向の判別</td></tr>
+        <tr><td>H18</td><td>問11</td><td>穴埋</td><td><span className="badge-topic" style={{background:"#3498db",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>基礎理論</span></td><td>不純物半導体のドーパント（5価/3価）の種類と電気的性質</td></tr>
       </tbody>
     </table>
+
+    {/* 分野別出題分析 */}
+    <h3 style={{marginTop:"24px"}}>分野別出題傾向（H18〜R07 全25問）</h3>
+    <table className="data-table" style={{fontSize:"0.85rem",maxWidth:"600px"}}>
+      <thead>
+        <tr><th>分野</th><th>出題数</th><th>直近出題</th><th>出題周期</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span style={{background:"#2ecc71",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ダイオード</span></td><td><strong>8回</strong></td><td>R04下</td><td>1〜2年に1回（最頻出）</td></tr>
+        <tr><td><span style={{background:"#e67e22",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>トランジスタ</span></td><td><strong>6回</strong></td><td>R06下</td><td>1〜2年に1回</td></tr>
+        <tr><td><span style={{background:"#3498db",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>基礎理論</span></td><td><strong>5回</strong></td><td>R03</td><td>2〜3年に1回</td></tr>
+        <tr><td><span style={{background:"var(--accent)",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>ホール効果</span></td><td><strong>3回</strong></td><td>R07上</td><td>2〜3年に1回</td></tr>
+        <tr><td><span style={{background:"#9b59b6",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>熱電効果</span></td><td>1回</td><td>R05上</td><td>初出題（今後注意）</td></tr>
+        <tr><td><span style={{background:"#1abc9c",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>PN接合</span></td><td>1回</td><td>H29</td><td>単独出題は稀（他分野に包含）</td></tr>
+        <tr><td><span style={{background:"#95a5a6",color:"white",padding:"1px 6px",borderRadius:"4px",fontSize:"0.75rem"}}>IC</span></td><td>1回</td><td>H24</td><td>低頻度（優先度低）</td></tr>
+      </tbody>
+    </table>
+    <Callout variant="tip" title="出題傾向の読み方">
+      <strong>R04以降のトレンド</strong>: トランジスタ（FET）とホール効果が交互に出題される傾向。ダイオードは令和初期に集中（R01〜R04）し、R05以降は出題なし → 次回出題の可能性あり。<br/>
+      <strong>穴埋 vs 論説</strong>: 穴埋15回 / 論説10回。穴埋は用語・原理の正確な理解、論説は複数素子の比較説明力が必要。
+    </Callout>
 
     <h2 id="output-training"><span className="h-num">7.</span>アウトプットトレーニング</h2>
     <details>
@@ -9450,6 +10133,9 @@ const SemiconductorPage = ({ onNav }) => (
       <li>電気・電子計測（6.1）：ホール素子・サーミスタの計測応用</li>
     </ul>
 
+    <div style={{textAlign:"right",margin:"8px 0 16px"}}>
+      <a href="#" onClick={e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}} style={{fontSize:"13px",color:"var(--accent)",textDecoration:"none"}}>▲ ページ先頭へ戻る</a>
+    </div>
     <PageNav prev={{id:"three-phase", title:"三相交流"}} next={{id:"transistor", title:"トランジスタ"}} onNav={onNav} />
     <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
       最終改定: 2026-04-28 | v1.0
@@ -10264,7 +10950,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 /* ---------- Sidebar ---------- */
-const Sidebar = ({ chapters, currentPage, onNav, mobileOpen, onCloseMobile, searchQuery, onSearchChange, searchResults, onSearchSelect }) => {
+const Sidebar = ({ chapters, currentPage, onNav, mobileOpen, onCloseMobile, searchQuery, onSearchChange, searchResults, onSearchSelect, searchFilter, onSearchFilterChange }) => {
   const [openChapters, setOpenChapters] = useState(() => Object.fromEntries(chapters.map(c => [c.id, false])));
   const toggle = (id) => setOpenChapters(s => ({ ...s, [id]: !s[id] }));
   // 現在ページの章を自動展開
@@ -10300,6 +10986,12 @@ const Sidebar = ({ chapters, currentPage, onNav, mobileOpen, onCloseMobile, sear
         </span>
         <input ref={inputRef} type="text" placeholder="検索（ページ・用語）" value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} />
         {!searchQuery && <span className="search-kbd">⌘K</span>}
+        <div className="search-filters">
+          {["全部", "ページ", "用語", "公式", "問題"].map(f => (
+            <button key={f} className={`search-chip${searchFilter === f ? " active" : ""}`}
+              onClick={() => onSearchFilterChange(f)}>{f}</button>
+          ))}
+        </div>
         {searchQuery && searchResults.length > 0 && (
           <div className="search-results">
             {searchResults.map((r, i) => (
@@ -10336,7 +11028,7 @@ const Sidebar = ({ chapters, currentPage, onNav, mobileOpen, onCloseMobile, sear
       ))}
 
       <div className="sidebar-footer">
-        本Wikiは電験3種「機械」科目の独習用にまとめた教材集である。掲載する出題傾向データは編集者の集計によるものであり、本試験を保証するものではない。
+        本Wikiは電験3種「理論」科目の独習用にまとめた教材集である。掲載する出題傾向データは編集者の集計によるものであり、本試験を保証するものではない。
       </div>
     </aside>
   );
@@ -10350,10 +11042,10 @@ const TOC = ({ page }) => {
     let cancelled = false;
     const update = () => {
       if (cancelled) return;
-      const heads = document.querySelectorAll('.content h2[id], .content h3[id]');
+      const heads = document.querySelectorAll('.main h2[id], .main h3[id]');
       const next = [...heads].map(h => ({
         id: h.id,
-        text: h.textContent.replace(/^\d+\s*/, '').trim(),
+        text: (() => { const c = h.cloneNode(true); c.querySelector('.h-num')?.remove(); return c.textContent.trim(); })(),
         level: h.tagName === 'H2' ? 2 : 3,
       }));
       setItems(prev => {
@@ -10367,7 +11059,7 @@ const TOC = ({ page }) => {
   }, [page]);
   useEffect(() => {
     const onScroll = () => {
-      const heads = [...document.querySelectorAll('.content h2[id], .content h3[id]')];
+      const heads = [...document.querySelectorAll('.main h2[id], .main h3[id]')];
       let cur = null;
       for (const h of heads) {
         if (h.getBoundingClientRect().top < 80) cur = h.id;
@@ -10409,6 +11101,15 @@ function buildSearchIndex(data) {
                  id: "trap-patterns", context: t.category,
                  terms: t.trap + " " + (t.correct || "") + " " + t.category });
   });
+  // 公式ページを公式kindとして追加
+  const formulaPages = data.chapters.flatMap(ch => ch.pages).filter(p =>
+    p.id === "formulas" || (p.formulaTerms && p.formulaTerms.length)
+  );
+  formulaPages.forEach(p => {
+    items.push({ kind: "公式", title: p.title + " 公式集", id: p.id, context: "公式一覧", terms: p.title + " 公式 formula" });
+  });
+  // 公式集ページ本体
+  items.push({ kind: "公式", title: "公式集（全単元）", id: "formulas", context: "公式一覧ページ", terms: "公式 formula 一覧 まとめ" });
   return items;
 }
 
@@ -10432,8 +11133,15 @@ const App = () => {
   });
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchFilter, setSearchFilter] = useState('全部');
   const searchIdx = useMemo(() => buildSearchIndex(data), [data]);
-  const searchResults = useMemo(() => searchIndex(searchIdx, searchQuery), [searchIdx, searchQuery]);
+  const searchResults = useMemo(() => {
+    const all = searchIndex(searchIdx, searchQuery);
+    if (searchFilter === '全部') return all;
+    const kindMap = { '問題': '引っかけ' };
+    const target = kindMap[searchFilter] || searchFilter;
+    return all.filter(r => r.kind === target);
+  }, [searchIdx, searchQuery, searchFilter]);
 
   // Apply tweaks to root
   useEffect(() => {
@@ -10512,7 +11220,8 @@ const App = () => {
                  mobileOpen={mobileOpen} onCloseMobile={() => setMobileOpen(false)}
                  searchQuery={searchQuery} onSearchChange={setSearchQuery}
                  searchResults={searchResults}
-                 onSearchSelect={(r) => { navigate(r.id); setSearchQuery(''); }} />
+                 onSearchSelect={(r) => { navigate(r.id); setSearchQuery(''); }}
+                 searchFilter={searchFilter} onSearchFilterChange={setSearchFilter} />
         <main className="main" key={page}>{renderPage()}</main>
         <TOC key={`toc-${page}`} page={page} />
       </div>

@@ -14,6 +14,8 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
 <link rel="stylesheet" href="shared.css">
+<script src="skill-tracker.js" defer></script>
+<script src="selfcheck-bridge.js" defer></script>
 </head>
 <body>
 <nav class="top-nav">
@@ -135,25 +137,25 @@
     <h2 class="selfcheck-title">総合セルフチェック</h2>
     <p class="selfcheck-sub">5問。今朝・直近の朝を振り返る。</p>
     <div class="check-list">
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>前日夜に翌朝のタスクを確定した</strong> — 「明日の最重要タスクは〇〇」と前夜に決まっていて、翌朝から迷わず動けた</label>
+      <div class="check-item">
+        <input type="checkbox" id="c1">
+        <label for="c1"><strong>前日夜に翌朝のタスクを確定した</strong> — 「明日の最重要タスクは〇〇」と前夜に決まっていて、翌朝から迷わず動けた</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>起床時間・朝食が固定されている</strong> — 毎朝ほぼ同じ時間に起き、朝食を摂るルーティンが確立している</label>
+      <div class="check-item">
+        <input type="checkbox" id="c2">
+        <label for="c2"><strong>起床時間・朝食が固定されている</strong> — 毎朝ほぼ同じ時間に起き、朝食を摂るルーティンが確立している</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>仕事前に思考ウォームアップをした</strong> — 最重要タスクを確認し「どこから手をつけるか」を5分以内に決めてから作業に入った</label>
+      <div class="check-item">
+        <input type="checkbox" id="c3">
+        <label for="c3"><strong>仕事前に思考ウォームアップをした</strong> — 最重要タスクを確認し「どこから手をつけるか」を5分以内に決めてから作業に入った</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>午前中に最難関タスクを配置した</strong> — 戦略思考・難しい判断・深い集中が必要な仕事を午前中に配置できている</label>
+      <div class="check-item">
+        <input type="checkbox" id="c4">
+        <label for="c4"><strong>午前中に最難関タスクを配置した</strong> — 戦略思考・難しい判断・深い集中が必要な仕事を午前中に配置できている</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>朝のメール・SNSを後回しにした</strong> — 午前の集中時間帯にメール確認・SNSチェックを入れず、アウトプット優先で動けた</label>
+      <div class="check-item">
+        <input type="checkbox" id="c5">
+        <label for="c5"><strong>朝のメール・SNSを後回しにした</strong> — 午前の集中時間帯にメール確認・SNSチェックを入れず、アウトプット優先で動けた</label>
       </div>
     </div>
     <div class="score-display" id="score-disp">
@@ -215,29 +217,29 @@
       </div>
     </div>
 
-    <div class="asa-neuroscience-selfcheck">
+    <div class="selfcheck-section">
       <h3 class="asa-check-heading">朝の脳化学セルフチェック</h3>
       <p class="asa-check-sub">5問で朝の神経科学的設計度を確認</p>
       <div class="asa-check-list">
-        <div class="asa-check-item" onclick="toggleAsa(this, event)">
-          <input type="checkbox">
-          <label><strong>起床時刻が毎日±30分以内に固定されている</strong> — 平日・休日を問わずほぼ同じ時間に起きており、CAR波が安定している</label>
+        <div class="asa-check-item">
+          <input type="checkbox" id="c6">
+          <label for="c6"><strong>起床時刻が毎日±30分以内に固定されている</strong> — 平日・休日を問わずほぼ同じ時間に起きており、CAR波が安定している</label>
         </div>
-        <div class="asa-check-item" onclick="toggleAsa(this, event)">
-          <input type="checkbox">
-          <label><strong>起床後20分以内に朝食を摂っている</strong> — タンパク質と炭水化物の両方を含む朝食で血糖スパイクを防ぎ、脳の覚醒をサポート</label>
+        <div class="asa-check-item">
+          <input type="checkbox" id="c7">
+          <label for="c7"><strong>起床後20分以内に朝食を摂っている</strong> — タンパク質と炭水化物の両方を含む朝食で血糖スパイクを防ぎ、脳の覚醒をサポート</label>
         </div>
-        <div class="asa-check-item" onclick="toggleAsa(this, event)">
-          <input type="checkbox">
-          <label><strong>仕事前に5〜10分の思考ウォームアップをしている</strong> — 最重要タスクの確認を「書く」ことで前頭前野の段階的起動を促進</label>
+        <div class="asa-check-item">
+          <input type="checkbox" id="c8">
+          <label for="c8"><strong>仕事前に5〜10分の思考ウォームアップをしている</strong> — 最重要タスクの確認を「書く」ことで前頭前野の段階的起動を促進</label>
         </div>
-        <div class="asa-check-item" onclick="toggleAsa(this, event)">
-          <input type="checkbox">
-          <label><strong>起床後90分以内に最難関タスクに入っている</strong> — ウルトラディアンリズムの最高地点（最初の90分）を難易度最高のタスクに充てている</label>
+        <div class="asa-check-item">
+          <input type="checkbox" id="c9">
+          <label for="c9"><strong>起床後90分以内に最難関タスクに入っている</strong> — ウルトラディアンリズムの最高地点（最初の90分）を難易度最高のタスクに充てている</label>
         </div>
-        <div class="asa-check-item" onclick="toggleAsa(this, event)">
-          <input type="checkbox">
-          <label><strong>朝のメール確認は9時以降に後回しにしている</strong> — 起床後90分の黄金時間を受信側（低難度）の行為から守っている</label>
+        <div class="asa-check-item">
+          <input type="checkbox" id="c10">
+          <label for="c10"><strong>朝のメール確認は9時以降に後回しにしている</strong> — 起床後90分の黄金時間を受信側（低難度）の行為から守っている</label>
         </div>
       </div>
       <div class="asa-score-display" id="asa-score-disp">

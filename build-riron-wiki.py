@@ -24,16 +24,17 @@ lines = template.split('\n')
 print(f'Template lines: {len(lines)}')
 
 # ────────────────────────────────────────
-# 機械版の行構造（0-based）
-# lines[0:902]     : HTML head + CSS + CDN scripts
-# lines[1031:1459] : <script type="text/babel"> tweaks + 共通コンポーネント
-# lines[2710:2988] : <script type="text/babel"> app.jsx (Sidebar/App/renderPage)
+# 機械版の行構造（0-based）※ 2026-04-27: table.data-table CSS追加で+20行シフト済み
+# lines[0:922]     : HTML head + CSS + CDN scripts
+# lines[1051:1480] : <script type="text/babel"> tweaks + 共通コンポーネント
+# lines[1766:1994] : Eq/PageHeader/Crumbs/Box/FormulaCard/PageNav
+# lines[2730:3008] : <script type="text/babel"> app.jsx (Sidebar/App/renderPage)
 # ────────────────────────────────────────
 
-head          = '\n'.join(lines[0:902])
-block2_keep   = '\n'.join(lines[1031:1460])   # includes closing </script> of tweaks block
-pages_core    = '\n'.join(lines[1746:1974])   # L1747-1974: Eq/PageHeader/Crumbs/Box/FormulaCard/PageNav
-app_shell     = '\n'.join(lines[2710:2988])
+head          = '\n'.join(lines[0:922])
+block2_keep   = '\n'.join(lines[1051:1480])   # includes closing </script> of tweaks block
+pages_core    = '\n'.join(lines[1766:1994])   # Eq/PageHeader/Crumbs/Box/FormulaCard/PageNav
+app_shell     = '\n'.join(lines[2730:3008])
 
 print(f'app_shell starts: {app_shell[:60]}')
 print(f'app_shell ends: {app_shell[-60:]}')
@@ -44,7 +45,7 @@ head = head.replace('<title>電験3種 機械Wiki', '<title>電験3種 理論Wik
 head = head.replace('電験3種 機械Wiki', '電験3種 理論Wiki')
 
 # ── app_shell の renderPage() switch を理論版に書き換え ──
-old_switch = '\n'.join(lines[2912:2934])
+old_switch = '\n'.join(lines[2932:2954])
 page_switch = """  const renderPage = () => {
     const props = { data, onNav: navigate };
     switch (page) {

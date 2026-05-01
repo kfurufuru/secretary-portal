@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知識グラフ — 2026-04-26 セッション成果</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128;
+    --accent: #2dd4bf; --accent2: #f59e0b; --accent3: #818cf8;
+    --red: #f43f5e; --green: #4ade80;
+    --text: #e6edf3; --muted: #8b949e;
+    --radius: 10px; --transition: 0.2s ease;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.6; }
+
+  header { padding: 20px 32px; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  header .date { color: var(--muted); font-size: 0.82rem; }
+  header .badge { background: #0d2d2a; color: var(--accent); border: 1px solid var(--accent); border-radius: 20px; padding: 2px 12px; font-size: 0.78rem; }
+
+  .layout { display: grid; grid-template-columns: 1fr 340px; gap: 0; height: calc(100vh - 65px); }
+
+  /* Graph Canvas */
+  .graph-area { position: relative; background: var(--bg); overflow: hidden; }
+  canvas#graph { width: 100%; height: 100%; }
+  .graph-legend { position: absolute; bottom: 16px; left: 16px; background: rgba(22,27,34,0.9); border: 1px solid #30363d; border-radius: var(--radius); padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Sidebar */
+  .sidebar { background: var(--bg2); border-left: 1px solid #30363d; overflow-y: auto; }
+
+  .section { padding: 16px 20px; border-bottom: 1px solid #30363d; }
+  .section-title { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  /* Stats row */
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { background: var(--bg3); border-radius: var(--radius); padding: 12px; text-align: center; }
+  .stat .val { font-size: 1.6rem; font-weight: 700; line-height: 1; }
+  .stat .label { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+  .stat.accent .val { color: var(--accent); }
+  .stat.amber .val { color: var(--accent2); }
+  .stat.purple .val { color: var(--accent3); }
+  .stat.green .val { color: var(--green); }
+
+  /* Decision framework preview */
+  .fw-card { background: var(--bg3); border-radius: var(--radius); padding: 14px; border-left: 3px solid var(--accent3); }
+  .fw-card h3 { font-size: 0.85rem; font-weight: 700; color: var(--accent3); margin-bottom: 8px; }
+  .fw-axis { margin-bottom: 10px; }
+  .fw-axis .axis-title { font-size: 0.78rem; font-weight: 700; color: var(--accent2); margin-bottom: 4px; }
+  .fw-axis ul { padding-left: 14px; }
+  .fw-axis li { font-size: 0.76rem; color: var(--muted); line-height: 1.6; }
+
+  /* Node detail */
+  .node-detail { display: none; }
+  .node-detail.active { display: block; }
+  .node-card { background: var(--bg3); border-radius: var(--radius); padding: 14px; }
+  .node-card .node-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+  .node-card .node-meta { font-size: 0.74rem; color: var(--muted); margin-bottom: 8px; }
+  .node-card .node-links { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip { background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 2px 10px; font-size: 0.72rem; color: var(--muted); cursor: pointer; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* New files list */
+  .file-list { display: flex; flex-direction: column; gap: 6px; }
+  .file-item { background: var(--bg3); border-radius: 8px; padding: 10px 12px; border-left: 3px solid; display: flex; align-items: flex-start; gap: 10px; }
+  .file-item.new { border-color: var(--green); }
+  .file-item.updated { border-color: var(--accent2); }
+  .file-item.linked { border-color: var(--accent); }
+  .file-item .fi-name { font-size: 0.8rem; font-weight: 600; }
+  .file-item .fi-desc { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .fi-badge { font-size: 0.68rem; border-radius: 4px; padding: 1px 6px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .fi-badge.new { background: #0d2d1a; color: var(--green); }
+  .fi-badge.updated { background: #2d1e00; color: var(--accent2); }
+  .fi-badge.linked { background: #0d2d2a; color: var(--accent); }
+
+  .tip { font-size: 0.74rem; color: var(--muted); padding: 8px 12px; background: var(--bg3); border-radius: 8px; border-left: 3px solid var(--accent3); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 知識グラフ</h1>
+  <span class="date">2026-04-26 セッション成果</span>
+  <span class="badge">last30days</span>
+</header>
+
+<div class="layout">
+  <div class="graph-area">
+    <canvas id="graph"></canvas>
+    <div class="graph-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#2dd4bf"></div>Claude Code / AI活用</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#818cf8"></div>Fカンパニー / スキル</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>電験 / 学習</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>新規作成（本日）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f43f5e"></div>digital-twin (L3)</div>
+      <div style="height:1px;background:#30363d;margin:4px 0"></div>
+      <div class="legend-item" style="font-size:0.7rem">クリックでノード詳細表示</div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <!-- Stats -->
+    <div class="section">
+      <div class="section-title">セッション成果</div>
+      <div class="stats">
+        <div class="stat accent"><div class="val">7</div><div class="label">新規/更新ファイル</div></div>
+        <div class="stat amber"><div class="val">11</div><div class="label">孤立ノード解消</div></div>
+        <div class="stat purple"><div class="val">70%+</div><div class="label">接続率（35%→）</div></div>
+        <div class="stat green"><div class="val">19</div><div class="label">inbox処理件数</div></div>
+      </div>
+    </div>
+
+    <!-- Node detail (dynamic) -->
+    <div class="section node-detail" id="nodeDetail">
+      <div class="section-title">ノード詳細</div>
+      <div class="node-card">
+        <div class="node-name" id="detailName">—</div>
+        <div class="node-meta" id="detailMeta">—</div>
+        <div class="node-links" id="detailLinks"></div>
+      </div>
+    </div>
+
+    <!-- Decision Framework -->
+    <div class="section">
+      <div class="section-title">decision-framework.md（本日新設・L3）</div>
+      <div class="fw-card">
+        <h3>意思決定フレームワーク</h3>
+        <div class="fw-axis">
+          <div class="axis-title">軸1: ひろゆきROI評価軸</div>
+          <ul>
+            <li>実装コスト・効果・手動運用コストを数値化</li>
+            <li>「面白そう」はROI根拠にならない</li>
+            <li>代替案を必ず検討する</li>
+          </ul>
+        </div>
+        <div class="fw-axis">
+          <div class="axis-title">軸2: 落合陽一 創造設計軸</div>
+          <ul>
+            <li>ドメイン適合を最初に確認</li>
+            <li>横展性・認知効果を評価</li>
+            <li>複雑性コストを許容できるか問う</li>
+          </ul>
+        </div>
+        <div class="fw-axis">
+          <div class="axis-title">盲点3点チェック（全判断共通）</div>
+          <ul>
+            <li>軽量化の罠 / 手動運用累積 / 属人化</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- New files -->
+    <div class="section">
+      <div class="section-title">本日の変更ファイル</div>
+      <div class="file-list">
+        <div class="file-item new">
+          <div><div class="fi-name">decision-framework.md</div><div class="fi-desc">ひろゆき×落合陽一 意思決定軸 (L3)</div></div>
+          <span class="fi-badge new">新規</span>
+        </div>
+        <div class="file-item new">
+          <div><div class="fi-name">claude-memory-management.md</div><div class="fi-desc">Memory 4分類・expires運用</div></div>
+          <span class="fi-badge new">新規</span>
+        </div>
+        <div class="file-item new">
+          <div><div class="fi-name">rss-vault-sync-design.md</div><div class="fi-desc">archive_rotation・link_generator設計根拠</div></div>
+          <span class="fi-badge new">新規</span>
+        </div>
+        <div class="file-item new">
+          <div><div class="fi-name">denken-wiki-workflow.md</div><div class="fi-desc">wiki構築手順・PDF読取フロー</div></div>
+          <span class="fi-badge new">新規</span>
+        </div>
+        <div class="file-item new">
+          <div><div class="fi-name">wiki-validation-checklist.md</div><div class="fi-desc">監査スコープP1-P4・推測タイトル検出</div></div>
+          <span class="fi-badge new">新規</span>
+        </div>
+        <div class="file-item updated">
+          <div><div class="fi-name">portal-health-observability.md</div><div class="fi-desc">設計判断5件追記・published昇格</div></div>
+          <span class="fi-badge updated">更新</span>
+        </div>
+        <div class="file-item updated">
+          <div><div class="fi-name">claude-code-knowledge-pipeline.md</div><div class="fi-desc">Stop hook自動commit セクション追記</div></div>
+          <span class="fi-badge updated">更新</span>
+        </div>
+        <div class="file-item linked">
+          <div><div class="fi-name">孤立ノード 11件</div><div class="fi-desc">mcp-claude-integration 他 wiki-link追加</div></div>
+          <span class="fi-badge linked">接続</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="tip">💡 Obsidianでグラフビューを開くと cc-playbook を中心にClaude Code クラスターが視覚的に確認できます</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('graph');
+const ctx = canvas.getContext('2d');
+
+// Nodes
+const nodes = [
+  // Hub
+  { id: 'cc-playbook', label: 'cc-playbook', group: 'claude', x: 0, y: 0, r: 22, isNew: false },
+  // Claude Code cluster
+  { id: 'claude-code-knowledge-pipeline', label: 'knowledge\npipeline', group: 'claude', x: 0, y: 0, r: 16, isNew: false },
+  { id: 'mcp-claude-integration', label: 'mcp-claude\nintegration', group: 'claude', x: 0, y: 0, r: 14, isNew: false },
+  { id: 'agentic-graphrag', label: 'agentic\ngraphrag', group: 'claude', x: 0, y: 0, r: 13, isNew: false },
+  { id: 'claude-long-edit', label: 'long-edit\nrisk', group: 'claude', x: 0, y: 0, r: 12, isNew: false },
+  { id: 'claude-memory', label: 'memory\nmanagement', group: 'claude', x: 0, y: 0, r: 14, isNew: true },
+  { id: 'terminal-shell', label: 'terminal\nshell', group: 'claude', x: 0, y: 0, r: 11, isNew: false },
+  { id: 'promote-py', label: 'promote.py', group: 'claude', x: 0, y: 0, r: 12, isNew: false },
+  { id: 'rss-vault-sync', label: 'rss-vault\nsync', group: 'claude', x: 0, y: 0, r: 13, isNew: true },
+  { id: 'portal-health', label: 'portal-health\nobservability', group: 'claude', x: 0, y: 0, r: 13, isNew: false },
+  { id: 'top3-error', label: 'top3-monday\nerror', group: 'claude', x: 0, y: 0, r: 10, isNew: false },
+  // F-company cluster
+  { id: 'f-company', label: 'f-company\nsession', group: 'fcompany', x: 0, y: 0, r: 17, isNew: false },
+  { id: 'business-skill', label: 'business-skill\ngap', group: 'fcompany', x: 0, y: 0, r: 14, isNew: false },
+  { id: 'ai-gyomu', label: 'ai-gyomu\nsentaku', group: 'fcompany', x: 0, y: 0, r: 13, isNew: false },
+  { id: 'kozo-haaku', label: 'kozo\nhaaku', group: 'fcompany', x: 0, y: 0, r: 11, isNew: false },
+  // digital-twin L3
+  { id: 'decision-framework', label: 'decision\nframework', group: 'l3', x: 0, y: 0, r: 18, isNew: true },
+  // denken
+  { id: 'denken-wiki', label: 'denken-wiki\nworkflow', group: 'denken', x: 0, y: 0, r: 14, isNew: true },
+  { id: 'wiki-validation', label: 'wiki\nvalidation', group: 'denken', x: 0, y: 0, r: 13, isNew: true },
+  // ideas
+  { id: 'ideas-0420', label: 'ideas\n04-20', group: 'fcompany', x: 0, y: 0, r: 10, isNew: false },
+  { id: 'ideas-0421', label: 'ideas\n04-21', group: 'fcompany', x: 0, y: 0, r: 10, isNew: false },
+  // dataview
+  { id: 'dataview', label: 'dataview\ntemplate', group: 'claude', x: 0, y: 0, r: 10, isNew: false },
+];
+
+const edges = [
+  // cc-playbook hub
+  ['cc-playbook','claude-code-knowledge-pipeline'],
+  ['cc-playbook','mcp-claude-integration'],
+  ['cc-playbook','claude-long-edit'],
+  ['cc-playbook','portal-health'],
+  ['cc-playbook','terminal-shell'],
+  ['cc-playbook','claude-memory'],
+  // claude-code-knowledge-pipeline
+  ['claude-code-knowledge-pipeline','mcp-claude-integration'],
+  ['claude-code-knowledge-pipeline','f-company'],
+  ['claude-code-knowledge-pipeline','promote-py'],
+  ['claude-code-knowledge-pipeline','rss-vault-sync'],
+  ['claude-code-knowledge-pipeline','agentic-graphrag'],
+  // mcp-claude-integration
+  ['mcp-claude-integration','agentic-graphrag'],
+  ['mcp-claude-integration','promote-py'],
+  ['mcp-claude-integration','portal-health'],
+  // portal-health
+  ['portal-health','top3-error'],
+  // f-company
+  ['f-company','business-skill'],
+  ['f-company','ai-gyomu'],
+  // business-skill
+  ['business-skill','ai-gyomu'],
+  ['business-skill','kozo-haaku'],
+  // ai-gyomu
+  ['ai-gyomu','ideas-0420'],
+  ['ai-gyomu','ideas-0421'],
+  // denken
+  ['denken-wiki','wiki-validation'],
+  ['denken-wiki','claude-code-knowledge-pipeline'],
+  // decision-framework (L3)
+  ['decision-framework','f-company'],
+  ['decision-framework','business-skill'],
+  // dataview
+  ['dataview','cc-playbook'],
+  // memory
+  ['claude-memory','claude-code-knowledge-pipeline'],
+  // rss-vault
+  ['rss-vault-sync','portal-health'],
+];
+
+const groupColors = {
+  claude: '#2dd4bf',
+  fcompany: '#818cf8',
+  denken: '#f59e0b',
+  l3: '#f43f5e',
+};
+
+let W, H;
+function resize() {
+  W = canvas.offsetWidth; H = canvas.offsetHeight;
+  canvas.width = W; canvas.height = H;
+}
+
+// Simple force-directed layout (manual positions for stability)
+function initPositions() {
+  const cx = 0.5, cy = 0.5;
+  const layout = {
+    'cc-playbook':       [0.50, 0.45],
+    'claude-code-knowledge-pipeline': [0.35, 0.32],
+    'mcp-claude-integration':  [0.60, 0.28],
+    'agentic-graphrag':  [0.72, 0.38],
+    'claude-long-edit':  [0.38, 0.20],
+    'claude-memory':     [0.62, 0.56],
+    'terminal-shell':    [0.30, 0.48],
+    'promote-py':        [0.48, 0.20],
+    'rss-vault-sync':    [0.72, 0.60],
+    'portal-health':     [0.62, 0.70],
+    'top3-error':        [0.50, 0.80],
+    'f-company':         [0.25, 0.62],
+    'business-skill':    [0.18, 0.75],
+    'ai-gyomu':          [0.30, 0.80],
+    'kozo-haaku':        [0.12, 0.62],
+    'decision-framework':[0.18, 0.42],
+    'denken-wiki':       [0.80, 0.25],
+    'wiki-validation':   [0.85, 0.40],
+    'ideas-0420':        [0.22, 0.88],
+    'ideas-0421':        [0.38, 0.90],
+    'dataview':          [0.52, 0.32],
+  };
+  nodes.forEach(n => {
+    const pos = layout[n.id] || [0.5, 0.5];
+    n.px = pos[0]; n.py = pos[1];
+  });
+}
+
+let hovered = null;
+let selected = null;
+
+function getNodeAt(mx, my) {
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    const dx = mx - n.x, dy = my - n.y;
+    if (Math.sqrt(dx*dx+dy*dy) < n.r + 4) return n;
+  }
+  return null;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Update positions
+  nodes.forEach(n => { n.x = n.px * W; n.y = n.py * H; });
+
+  // Draw edges
+  edges.forEach(([a, b]) => {
+    const na = nodes.find(n => n.id === a);
+    const nb = nodes.find(n => n.id === b);
+    if (!na || !nb) return;
+    const isHighlighted = selected && (selected.id === a || selected.id === b);
+    ctx.beginPath();
+    ctx.moveTo(na.x, na.y);
+    ctx.lineTo(nb.x, nb.y);
+    ctx.strokeStyle = isHighlighted ? 'rgba(45,212,191,0.6)' : 'rgba(48,54,61,0.8)';
+    ctx.lineWidth = isHighlighted ? 2 : 1;
+    ctx.stroke();
+  });
+
+  // Draw nodes
+  nodes.forEach(n => {
+    const isHov = hovered && hovered.id === n.id;
+    const isSel = selected && selected.id === n.id;
+    const color = groupColors[n.group] || '#8b949e';
+    const r = n.r + (isHov ? 3 : 0);
+
+    // Glow for new nodes
+    if (n.isNew) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 6, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(74,222,128,0.12)';
+      ctx.fill();
+    }
+    if (isSel) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(45,212,191,0.2)';
+      ctx.fill();
+    }
+
+    // Circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = n.isNew ? '#0d2d1a' : '#161b22';
+    ctx.fill();
+    ctx.strokeStyle = n.isNew ? '#4ade80' : color;
+    ctx.lineWidth = isSel ? 2.5 : 1.5;
+    ctx.stroke();
+
+    // Inner dot
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r * 0.4, 0, Math.PI * 2);
+    ctx.fillStyle = n.isNew ? '#4ade80' : color;
+    ctx.globalAlpha = 0.7;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Label
+    const lines = n.label.split('\n');
+    ctx.fillStyle = isHov || isSel ? '#e6edf3' : '#8b949e';
+    ctx.font = `${isHov ? 11 : 10}px 'Inter', sans-serif`;
+    ctx.textAlign = 'center';
+    lines.forEach((line, i) => {
+      ctx.fillText(line, n.x, n.y + r + 12 + i * 12);
+    });
+  });
+}
+
+function showDetail(node) {
+  const detail = document.getElementById('nodeDetail');
+  detail.classList.add('active');
+  document.getElementById('detailName').textContent = node.id;
+  const groupLabel = { claude: 'Claude Code / AI活用', fcompany: 'Fカンパニー / スキル', denken: '電験 / 学習', l3: 'digital-twin L3' };
+  document.getElementById('detailMeta').textContent = `グループ: ${groupLabel[node.group] || '—'} ${node.isNew ? '| ✅ 本日新規作成' : ''}`;
+  const links = edges.filter(([a,b]) => a === node.id || b === node.id).map(([a,b]) => a === node.id ? b : a);
+  const container = document.getElementById('detailLinks');
+  container.innerHTML = links.map(l => `<span class="chip">${l}</span>`).join('');
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  hovered = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  canvas.style.cursor = hovered ? 'pointer' : 'default';
+  draw();
+});
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const node = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  selected = node;
+  if (node) showDetail(node);
+  draw();
+});
+
+window.addEventListener('resize', () => { resize(); draw(); });
+resize();
+initPositions();
+draw();
+</script>
+</body>
+</html>

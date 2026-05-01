@@ -1,0 +1,92 @@
+{
+  "last_updated": "2026-04-28",
+  "entries": [
+    {
+      "id": "parallel-5-sessions",
+      "date": "2026-04-28",
+      "title": "並列5セッション運用",
+      "source": "Boris（Claude Code公式コンテンツ）",
+      "quote": "ターミナルでタブに1～5の番号を振って、5つのClaudeを同時に走らせてる。通知が来たら対応するだけ",
+      "techniques": [
+        "ターミナルのタブに番号（1～5）を割り当て、役割別Claude起動（frontend / api-server / database / tests / docs）",
+        "claude.ai/code でさらに5～10セッション追加（refactor / deployment / security / performance / research）",
+        "通知ベース管理：完了通知が来たら対応するだけ（監視不要）",
+        "朝はiOSアプリから開始 → ターミナルセッションとシームレス連携 → プッシュ通知で完了お知らせ"
+      ],
+      "tags": ["parallel", "workflow", "productivity", "sessions", "ios"]
+    },
+    {
+      "id": "model-selection-opus-thinking",
+      "date": "2026-04-28",
+      "title": "モデル選択：Opus + 思考モード一択",
+      "source": "Boris（Claude Code公式コンテンツ）",
+      "quote": "全部Opus + 思考モードで動かしてる。Sonnetより遅いけど、ステアリングが少なくて済むから結果的に速い",
+      "techniques": [
+        "Opus（思考モード）を全セッションで使用。個別の速度より総合スループットを最優先",
+        "Opusは1回のやり取りで正確に動く → 修正の往復が激減 → 結果的に時間節約",
+        "Sonnetは細かく指示が必要・ズレが出やすい・何度も修正 → 総所要時間が長くなりがち",
+        "並列5セッションと組み合わせると待ち時間ゼロ：Opusの思考中に他のタスクが進む"
+      ],
+      "model_comparison": {
+        "opus_thinking": {
+          "speed": "遅い",
+          "steering": "少ない（ほぼお任せでOK）",
+          "accuracy_per_turn": "高い（1回で正確に動く）",
+          "revision_rounds": "少ない（無駄なやり取りが減る）",
+          "effective_speed": "速い（結果的に時間を節約）"
+        },
+        "sonnet_thinking": {
+          "speed": "速い",
+          "steering": "多い（細かく指示が必要）",
+          "accuracy_per_turn": "中くらい（ズレが出やすい）",
+          "revision_rounds": "多い（何度も修正が必要）",
+          "effective_speed": "遅くなりがち（修正に時間がかかる）"
+        }
+      },
+      "conclusion": "1回のやり取りで正確に動くから修正の往復が減る。並列で走らせたら待ち時間ゼロ",
+      "tags": ["model", "opus", "thinking", "productivity", "parallel"]
+    },
+    {
+      "id": "teleport-cross-device",
+      "date": "2026-04-28",
+      "title": "teleport機能でデバイス間転送",
+      "source": "Boris Cherny（Creator of Claude Code）",
+      "quote": "朝はiPhoneで作業を始めて、PCに転送する。移動中もコーディングが止まらない",
+      "command": "claude --teleport",
+      "flow": [
+        "① 朝iPhone（移動中）でClaude Codeを起動 → コーディング開始",
+        "② `claude --teleport` を実行 → ワンタップでPCに転送",
+        "③ PCで中断ゼロのままシームレスに作業継続"
+      ],
+      "transferred_context": [
+        "現在の作業内容",
+        "開いているファイル",
+        "ターミナル状態",
+        "会話の履歴",
+        "すべてそのまま転送"
+      ],
+      "benefits": [
+        "移動中もコーディングが止まらない（思いついた瞬間にすぐ作業開始）",
+        "デバイスをまたいでも完全同期（コンテキストを失わずスムーズ転送）",
+        "生産性を最大化（時間の隙間をすべて開発時間に）"
+      ],
+      "tags": ["teleport", "cross-device", "ios", "mobile", "workflow", "productivity"]
+    },
+    {
+      "id": "desktop-refresh-7features",
+      "date": "2026-04-28",
+      "title": "Claude Code デスクトップ版刷新: 7大新機能",
+      "source": "Anthropic公式（Claude Code デスクトップ版アップデート）",
+      "features": [
+        "並列エージェント：複数タスクを同時並走",
+        "新サイドバー：セッション管理強化（フィルター・アーカイブ・チェックマーク）",
+        "サイドチャット：Ctrl+[;]で会話を分岐",
+        "統合ツール：テスト実行・差分ビューア・コードエディタ・PDF/HTMLをアプリ内で完結",
+        "プラグイン＆リモート：CLIプラグイン互換性UP・SSH経由リモート接続",
+        "表示モード＆使用状況：詳細/通常/概要の3段階表示・コンテキスト使用量メーター",
+        "routines：自律エージェント不要でタスクを自動化するスケジュール実行機能"
+      ],
+      "tags": ["desktop", "release", "parallel", "workflow", "routines", "sidechat", "plugins"]
+    }
+  ]
+}

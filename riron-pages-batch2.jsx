@@ -154,6 +154,7 @@ const CoulombFieldPage = ({ onNav }) => (
 /* ============================================================
    1.3 電磁力
    ============================================================ */
+// last-updated: 2026-04-30 | v0.9 | ローレンツ力テーマ固有セクション追加・ガイドライン全準拠（M3/M4/M10/M12/M13/M14/M15/M17）
 const ElectromagneticForcePage = ({ onNav }) => (
   <>
     <MetaStrip difficulty="★★★" importance="A" frequency="高" />
@@ -164,12 +165,12 @@ const ElectromagneticForcePage = ({ onNav }) => (
       onNav={onNav}
     />
     <PageHeader
-      eyebrow="第1章 — CHAPTER 1 電磁気"
-      title="1.3 電磁力"
-      deck="電流が磁界から受ける力（モーター原理）と、磁界の変化で起電力が生まれる現象（発電機原理）の2本柱。"
+      eyebrow="1.3 — 電磁力（ELECTROMAGNETIC FORCE）"
+      title="電磁力"
+      deck="電流が磁界から受ける力（モーター原理）と、磁界の変化で起電力が生まれる現象（発電機原理）の2本柱。根本はローレンツ力 F = qvB。"
       meta={[
         { label: "重要度", value: "A" },
-        { label: "出題頻度", value: "高" },
+        { label: "出題頻度", value: "高（毎年1問、問3〜4）" },
         { label: "難易度", value: "★★★" },
       ]}
     />
@@ -181,120 +182,490 @@ const ElectromagneticForcePage = ({ onNav }) => (
       onNav={onNav}
     />
 
+    <h2 id="overview"><span className="h-num">0.</span>全体像</h2>
+    <p>
+      このページでは「電流が磁界から力を受ける」現象と「導体が磁界内を動くと起電力が生まれる」現象を扱う。
+      両方の根本にあるのが<span className="marker">ローレンツ力 F = qvB</span>（電荷を持つ粒子が磁界中を動くと力を受ける）。
+    </p>
+    <table className="data-table">
+      <thead>
+        <tr><th>現象</th><th>方向の判定</th><th>公式</th><th>応用</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span className="marker">電磁力</span>（電流→力）</td>
+          <td><span className="marker">フレミング左手則</span></td>
+          <td>F = BIL sinθ</td>
+          <td>電動機・リニアモーター</td>
+        </tr>
+        <tr>
+          <td><span className="marker">電磁誘導</span>（動き→起電力）</td>
+          <td><span className="marker">フレミング右手則</span></td>
+          <td>e = BLv sinθ</td>
+          <td>発電機・センサー</td>
+        </tr>
+        <tr>
+          <td>ローレンツ力（粒子レベル）</td>
+          <td>右ねじ（v × B）</td>
+          <td>F = qvB sinθ</td>
+          <td>ホール効果・質量分析計</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h2 id="principle"><span className="h-num">§1</span>原理（なぜ起きるか）</h2>
     <Analogy type="right-hand" icon="✋">
       <strong>左手 = モーター（電動機）</strong>：電流（中指）が磁界（人差し指）の中に入ると力（親指）が生まれる。電気エネルギー → 運動エネルギー。<br />
       <strong>右手 = 発電機</strong>：導体（中指）を磁界（人差し指）の中で動かすと起電力（親指方向）が生まれる。運動エネルギー → 電気エネルギー。
     </Analogy>
+    <Callout variant="note" title="なぜ電流が磁界から力を受けるか（ローレンツ力の物理）">
+      <p>
+        電流の正体は「電荷 q を持つ粒子が速度 v で移動している状態」。この粒子が磁束密度 B の磁界の中を動くと
+        <Eq tex="F = qvB\sin\theta" /> の力（ローレンツ力）を受ける。
+      </p>
+      <p>
+        導体に電流 I が流れる場合、単位長さ当たり n 個の電荷が速度 v で動いている（<Eq tex="I = nqvA" />）。
+        長さ L の導体全体でまとめると <Eq tex="F = BIL\sin\theta" /> に変換できる。
+        つまり電磁力は<span className="marker">ローレンツ力の集合的表れ</span>。
+      </p>
+      <p>
+        重要な特性：ローレンツ力は常に速度に直交するため<span className="marker">仕事をゼロ</span>にする（W = F·v·cos90° = 0）。
+        粒子のエネルギーを変えず、<span className="marker">方向だけを変える</span>。
+      </p>
+    </Callout>
+    <Callout variant="tip" title="5秒で思い出す">
+      <span className="marker">左手 = 電動機（電気→力）</span>、<span className="marker">右手 = 発電機（力→電気）</span>。
+      中指=電流（or 誘導電流）、人差し指=B（磁界）、親指=力（or 速度）。
+      根本は <span className="marker">F = qvB</span>（ローレンツ力）。
+    </Callout>
     <p>
-      レンツの法則は「変化を嫌う自然の反抗」。<strong>磁束が増えれば打ち消そうとする誘導電流が流れる</strong>。逆に磁束が減れば維持しようとする電流が流れる。「変化の方向」を見ることが重要。
+      レンツの法則は「変化を嫌う自然の反抗」。<strong>磁束が増えれば打ち消そうとする誘導電流が流れる</strong>。
+      逆に磁束が減れば維持しようとする電流が流れる。「磁束の変化の向き」を最初に確認するのが解法の起点。
     </p>
 
     <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
+    <h3>レイヤーA：基本公式（試験直結）</h3>
     <FormulaTable
       layer="A"
       rows={[
         {
           formula: "F = BIL\\sin\\theta",
-          meaning: "電流 I を持つ長さ L の導体が磁束密度 B の磁界から受ける力",
-          when: "直線導体・均一磁界",
-          notWhen: "θ=0（B と I が平行）のとき F=0",
+          meaning: "電流 I を持つ長さ L の導体が磁束密度 B の磁界から受ける力（電磁力）",
+          when: "直線導体・均一磁界・電流と磁界のなす角θ",
+          notWhen: "θ=0（B と I が平行）のとき F=0 → 力が生じない。B と I が直交しているか先に確認する",
         },
         {
           formula: "e = BLv\\sin\\theta",
-          meaning: "速度 v で動く長さ L の導体に生じる誘導起電力",
-          when: "直線導体・均一磁界",
-          notWhen: "θ=0 のとき e=0",
+          meaning: "速度 v で動く長さ L の導体に生じる誘導起電力（モーション起電力）",
+          when: "直線導体が均一磁界内を移動する場合",
+          notWhen: "θ=0（B と v が平行）のとき e=0 → 磁束を切らないと起電力が出ない",
         },
         {
           formula: "e = -N\\frac{d\\phi}{dt}",
-          meaning: "ファラデーの法則。N巻きコイルで磁束が変化するときの誘導起電力",
-          when: "常に成立",
-          notWhen: "—",
+          meaning: "ファラデーの法則。N巻きコイルで磁束 φ が変化するときの誘導起電力",
+          when: "コイルを貫く磁束が時間変化する場合（常に成立）",
+          notWhen: "—（普遍則。成立しない条件はない）",
         },
         {
-          formula: "H = I / (2\\pi r)",
-          meaning: "長直線電流による磁界（距離 r）",
-          when: "無限長の直線電流",
-          notWhen: "有限長の電線",
+          formula: "F/l = \\frac{\\mu_0 I_1 I_2}{2\\pi d}",
+          meaning: "平行2導体間に働く力（単位長さ当たり）",
+          when: "無限長・平行・均一媒質の2本導体",
+          notWhen: "有限長・交差・非平行の場合は積分が必要",
+        },
+      ]}
+    />
+    <h3>レイヤーB：磁界の計算公式（形状依存）</h3>
+    <FormulaTable
+      layer="B"
+      rows={[
+        {
+          formula: "H = \\frac{I}{2\\pi r}",
+          meaning: "長直線電流から距離 r の点の磁界強度",
+          when: "無限長の直線電流（実用上は十分長い場合）",
+          notWhen: "有限長の電線 → 積分が必要（電験3種では無限長近似で対処）",
         },
         {
-          formula: "H = NI / (2r)",
+          formula: "H = \\frac{NI}{2r}",
           meaning: "半径 r の円形コイル（N ターン）中心の磁界強度",
-          when: "円形コイル・中心点のみ",
-          notWhen: "中心以外の点",
+          when: "円形コイルの中心点のみ",
+          notWhen: "中心以外の点 → 複雑な積分。試験では中心のみ問われる",
         },
         {
-          formula: "F/l = \\mu_0 I_1 I_2 / (2\\pi d)",
-          meaning: "平行導体間に働く力（単位長さ当たり）",
-          when: "無限長の平行導体",
-          notWhen: "—",
+          formula: "H = \\frac{NI}{l}",
+          meaning: "磁路長 l の環状ソレノイド（N ターン）内部の磁界強度",
+          when: "閉じた環状コア・漏れ磁束無視",
+          notWhen: "直線ソレノイドの端部・開磁路（漏れ磁束あり）",
         },
       ]}
     />
 
     <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
-    <table>
+    <h3>フレミング左手 vs 右手 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 毎年出題。「どちらの手か」の判定が最頻出パターン</p>
+    <table className="data-table">
       <thead>
         <tr><th>項目</th><th>左手（電動機）</th><th>右手（発電機）</th></tr>
       </thead>
       <tbody>
-        <tr><td>目的</td><td>電気 → 力（運動）</td><td>力（運動） → 電気</td></tr>
+        <tr><td>エネルギー変換</td><td><span className="marker">電気 → 運動</span></td><td><span className="marker">運動 → 電気</span></td></tr>
         <tr><td>親指の向き</td><td>力 F（動く方向）</td><td>速度 v（動く方向）</td></tr>
         <tr><td>人差し指</td><td>磁界 B</td><td>磁界 B</td></tr>
-        <tr><td>中指</td><td>電流 I（与えた電流）</td><td>起電力 e（生じる電流）</td></tr>
+        <tr><td>中指</td><td>電流 I（与えた電流）</td><td>誘導起電力の向き</td></tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td colSpan={2}>
+            磁束密度 B（↑で力・起電力ともに比例増大）。次いで電流 I（電動機）/ 速度 v（発電機）。<br />
+            <em>→ B が2倍になると F・e は2倍（線形比例）</em>
+          </td>
+        </tr>
       </tbody>
     </table>
-    <table>
+
+    <h3>磁界公式 形状別比較 <span style={{fontSize:"0.8em", color:"var(--ok)"}}>★★★★</span></h3>
+    <p style={{fontSize:"0.85em", color:"var(--ink-soft)", marginBottom:"8px"}}>→ 「形状名→公式」の対応を即答できるか問われる</p>
+    <table className="data-table">
       <thead>
-        <tr><th>形状</th><th>中心の磁界 H</th></tr>
+        <tr><th>形状</th><th>磁界 H の式</th><th>特徴</th></tr>
       </thead>
       <tbody>
-        <tr><td>無限長直線（距離 r）</td><td>H = I/(2πr)</td></tr>
-        <tr><td>半径 r の円形コイル（N ターン・中心）</td><td>H = NI/(2r)</td></tr>
-        <tr><td>環状ソレノイド（磁路長 l、N ターン）</td><td>H = NI/l</td></tr>
+        <tr>
+          <td>無限長直線（距離 r）</td>
+          <td><Eq tex="H = I/(2\pi r)" /></td>
+          <td>r の逆数に比例・π あり</td>
+        </tr>
+        <tr>
+          <td>半径 r の円形コイル（N ターン・中心）</td>
+          <td><Eq tex="H = NI/(2r)" /></td>
+          <td><span className="marker">π なし</span>・直線より π 倍強い</td>
+        </tr>
+        <tr>
+          <td>環状ソレノイド（磁路長 l、N ターン）</td>
+          <td><Eq tex="H = NI/l" /></td>
+          <td>r に依存しない（経路長で決まる）</td>
+        </tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td colSpan={2}>
+            アンペア回数 NI（↑で H 比例増大）と形状（r, l）の組み合わせ。<br />
+            <em>→ NI が2倍なら H は2倍（全形状で成立）</em>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">§実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      電磁力は電動機・変圧器・センサー設計の根幹。現場では「なぜ電動機のトルクが出ないのか」「電磁弁が応答しないのか」の原因を F = BIL で定量評価する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>電動機の起動トルク不足</td>
+          <td>F = BIL（磁束密度と電流に比例）</td>
+          <td>励磁電流不足か磁気飽和を疑い、電流値と磁束密度を確認して原因を切り分ける</td>
+        </tr>
+        <tr>
+          <td>電磁流量計の精度確認</td>
+          <td>e = BLv（流速 v に比例した起電力が発生）</td>
+          <td>出力電圧と流速の換算係数（B·L に依存）を設計値と照合して校正ズレを判定する</td>
+        </tr>
+        <tr>
+          <td>ケーブルトレイの平行布設</td>
+          <td>F/l = μ₀I₁I₂/(2πd)（平行電流間の吸引・反発力）</td>
+          <td>大電流ケーブルを並列布設する際に機械的吸引力を計算し、支持間隔と固定方法を決定する</td>
+        </tr>
       </tbody>
     </table>
 
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
-    <p><strong>問:</strong> 磁束密度 B=0.5T 中で、有効長 L=0.2m の導体に電流 I=10A が流れている。B と I が直角のとき、電磁力 F を求めよ。</p>
+
+    <Callout variant="note" title="例題1：電磁力の計算">
+      磁束密度 B = 0.5 T の均一磁界中で、有効長 L = 0.2 m の導体に電流 I = 10 A が流れている。
+      B と I のなす角が 90° のとき、電磁力 F [N] を求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>F = BIL = 0.5 × 10 × 0.2 = <strong>1 N</strong></p>
-      <p>B と I が直交（θ=90°）なら sinθ=1 で最大の力。</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：公式 F = BIL sinθ を確認する</p>
+      <p>ステップ②：θ = 90° なので sinθ = 1（最大値）</p>
+      <p>ステップ③：F = 0.5 × 10 × 0.2 × 1 = <strong>1 N</strong></p>
     </details>
-    <p><strong>問:</strong> 同方向に電流を流した2本の平行導体間に働く力の向きは？</p>
+    <Callout variant="tip" title="この例題のツボ">
+      θ = 90°（直交）のとき sin = 1 で最大の力。θ = 0°（平行）のとき F = 0。
+      「B と I が直交かどうか」を最初に確認するのが電磁力計算の起点。
+    </Callout>
+    <Callout variant="note" title="極端条件チェック">
+      <p><strong>支配変数：</strong>磁束密度 B（この式の結果を最も大きく左右する変数）</p>
+      <ul>
+        <li>B → <strong>0</strong>（磁界なし）のとき：F = 0 → 電動機は回転しない</li>
+        <li>B → <strong>∞</strong>（強磁界）のとき：F → ∞ → 実際には磁気飽和で B が頭打ちになり、F の増加も上限がある</li>
+      </ul>
+    </Callout>
+
+    <Callout variant="note" title="例題2：平行電流の吸引・反発（選択問題）">
+      同方向に電流を流した2本の平行導体間に働く力の向きはどれか。<br />
+      (a) 吸引力（互いに引き合う）　(b) 反発力（互いに遠ざかる）　(c) 力は働かない
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p><strong>引き合う（吸引力）</strong>。逆方向電流は反発力。日常感覚と逆なので注意。</p>
+      <summary>解答・解説</summary>
+      <p><strong>答え：(a) 吸引力</strong></p>
+      <p>ステップ①：片方の電流が作る磁界の方向を右ねじ則で求める</p>
+      <p>ステップ②：もう片方の導体がその磁界中に置かれる → フレミング左手則で力の向きを判定</p>
+      <p>ステップ③：結果として<span className="marker">同方向電流 → 吸引</span>、<span className="marker">逆方向電流 → 反発</span></p>
     </details>
+    <Callout variant="tip" title="この例題のツボ">
+      日常感覚（「反対のものが引き合う」磁石の同極反発）と逆になる。
+      電荷の場合（同符号 → 反発）とも逆なので、電流の場合は別物として記憶する。
+    </Callout>
+    <Callout variant="note" title="判断の視点チェック">
+      <p><strong>選択肢を切る3ステップ：</strong></p>
+      <ul>
+        <li>① 片方の導体が作る磁界の方向を右ねじ則で確認する</li>
+        <li>② もう片方の導体でフレミング左手則を適用し力の向きを判定する</li>
+        <li>③「同方向電流＝吸引」か「逆方向電流＝反発」かで結論を断定する</li>
+      </ul>
+    </Callout>
+
+    <Callout variant="note" title="例題3：レンツの法則の適用">
+      コイルに棒磁石の N 極を近づけると、コイルに流れる誘導電流の向きはどうなるか。
+    </Callout>
+    <details>
+      <summary>解答・解説</summary>
+      <p>ステップ①：N 極を近づける → コイルを貫く磁束（上向き）が<strong>増加</strong>する</p>
+      <p>ステップ②：<span className="marker">増加を打ち消す</span>向きの磁束（下向き）を作ろうとする（レンツの法則）</p>
+      <p>ステップ③：右ねじ則から、コイル上面で見て<strong>時計回り</strong>の電流が流れる</p>
+    </details>
+    <Callout variant="tip" title="この例題のツボ">
+      レンツの法則は「磁束の向きと逆」ではなく「<span className="marker">磁束の変化を打ち消す向き</span>」。
+      増加中か減少中かを先に宣言してから電流方向を決めるのが正しい手順。
+    </Callout>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
-    <Callout variant="warn" title="フレミング左手と右手の混同">
-      力（F）が欲しい → 左手（モーター）、起電力（e）が欲しい → 右手（発電機）。試験中に迷ったら「電動機か発電機か」を先に確認する。
-    </Callout>
-    <Callout variant="warn" title="レンツの法則：「磁束の向きと逆」ではなく「磁束の変化を打ち消す向き」">
-      磁束が増加しているなら打ち消すために元の磁束と逆向きの磁界を作る電流が流れる。磁束が減少しているなら同じ向きの電流が流れる。変化を見ること。
-    </Callout>
-    <Callout variant="warn" title="同方向電流が引き合う（直感と逆）">
-      同方向電流 → 吸引、逆方向電流 → 反発。「反対のものが引き合う」という日常感覚とは逆。
-    </Callout>
-    <Callout variant="tip" title="円形コイルの磁界は π がない">
-      円形コイル中心：H = NI/(2r)。直線電流：H = I/(2πr)。円形は π が分母にない分、同じ半径なら直線より磁界が π 倍強い。
+
+    <TrapBlock
+      correct="フレミング左手則はモーター（力が欲しい）、フレミング右手則は発電機（起電力が欲しい）。最初に電動機か発電機かを宣言してから手を使う。"
+      trap="試験中に焦って右手か左手かを取り違える。"
+      steps={[
+        "まず「電気→力」（電動機）か「力→電気」（発電機）かを確認する",
+        "電動機なら左手：中指=I（与えた電流）、人差し指=B、親指=力の向き",
+        "発電機なら右手：中指=誘導電流の向き、人差し指=B、親指=v（動く方向）",
+      ]}
+      wisdom="エネルギー変換の方向（電気→力 vs 力→電気）を先に決める思考ルーティンを持つと取り違えが起きない。「左手は電動機のためにある」という覚え方より、変換方向から手を選ぶ方が盤石。"
+      cite="類似出題あり（年度未確認）[要確認]"
+    />
+
+    <TrapBlock
+      correct="レンツの法則は『磁束の変化を打ち消す向き』に誘導電流が流れる。磁束が増加中か減少中かを最初に確認する。"
+      trap="『磁束の向きと逆の電流』と覚えてしまい、増減の判断を省略して誤る。"
+      steps={[
+        "コイルを貫く磁束が増加しているか減少しているかを確認する",
+        "増加中 → 打ち消すために元の磁束と逆向きの磁界を作る電流が流れる",
+        "減少中 → 維持しようとして元の磁束と同じ向きの磁界を作る電流が流れる",
+      ]}
+      wisdom="「変化を嫌う」が本質。磁束の向きそのものではなく『変化の向き』に着目しているかどうかが正答者と誤答者の分かれ目。"
+      cite="類似出題あり（年度未確認）[要確認]"
+    />
+
+    <TrapBlock
+      correct="同方向に電流が流れる2本の平行導体は吸引力（引き合う）。逆方向電流は反発力。"
+      trap="『同じ → 反発』という磁石感覚（同極反発）をそのまま当てはめて逆答する。"
+      steps={[
+        "電荷（クーロン力）と電流（電磁力）は別の現象と認識する",
+        "片方の電流が作る磁界の方向を右ねじで確認する",
+        "もう片方の導体でフレミング左手則を適用 → 同方向電流は吸引と確認する",
+      ]}
+      wisdom="磁石の同極反発のイメージが干渉する。電流間の力は『磁界を経由した相互作用』なので別物と意識的に切り離すのが正答者の習慣。"
+      cite="類似出題あり（年度未確認）[要確認]"
+    />
+
+    <TrapBlock
+      correct="円形コイル中心の磁界 H = NI/(2r) には π がない。直線電流 H = I/(2πr) の π を持ち込まない。"
+      trap="直線の公式の π をそのまま円形コイルにも付けてしまう。"
+      steps={[
+        "形状（直線 or 円形 or 環状）を先に確認する",
+        "円形コイルは H = NI/(2r)（π なし）を適用する",
+        "直線電流は H = I/(2πr)（分母に π）を適用する",
+      ]}
+      wisdom="直線は『2πr（円周）で割る』、円形は『半径 2r で割る』と構造から把握すると混同しにくい。形状の物理から導ければ暗記不要。"
+      cite="類似出題あり（年度未確認）[要確認]"
+    />
+
+    {/* ===== テーマ固有：ローレンツ力 ===== */}
+    <h2 id="lorentz-force"><span className="h-num">★</span>ローレンツ力（特出し）</h2>
+    <MetaStrip difficulty="★★★" importance="A" frequency="中" />
+
+    <p>
+      電磁力の根本に立ち返る。<span className="marker">ローレンツ力</span>は「電荷を持つ粒子が電磁界から受ける力」の総称。
+      電界成分と磁界成分の和で表される。
+    </p>
+    <Callout variant="note" title="ローレンツ力の完全形">
+      <p><Eq tex="\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})" /></p>
+      <ul>
+        <li><span className="marker">電界成分 qE</span>：電荷量と電界強度に比例。速度に無関係（静止していても働く）</li>
+        <li><span className="marker">磁界成分 q(v × B)</span>：電荷量・速度・磁束密度の積。速度 v = 0 のときゼロ</li>
+      </ul>
+      <p>電験3種では磁界成分（電動機・発電機・ホール効果）を中心に出題される。</p>
     </Callout>
 
-    <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
+    <h3>磁界成分 F = qvB の4つの性質</h3>
+    <table className="data-table">
+      <thead>
+        <tr><th>性質</th><th>内容</th><th>試験での意味</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span className="marker">仕事ゼロ</span></td>
+          <td>力は常に速度に直交 → W = F·v·cos90° = 0</td>
+          <td>磁界だけでは粒子のエネルギーを増減できない</td>
+        </tr>
+        <tr>
+          <td><span className="marker">方向変化のみ</span></td>
+          <td>速さは変えず、向きだけを変える</td>
+          <td>均一磁界中の荷電粒子は等速円運動する</td>
+        </tr>
+        <tr>
+          <td><span className="marker">速度依存</span></td>
+          <td>v = 0 のとき力はゼロ（静止粒子には磁界力が働かない）</td>
+          <td>磁界は電流（動く電荷）にのみ力を及ぼす</td>
+        </tr>
+        <tr>
+          <td><span className="marker">直交方向</span></td>
+          <td>力の方向は v と B の両方に垂直（右ねじ則）</td>
+          <td>フレミング左手則の物理的根拠</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>導体電流との接続（F = qvB → F = BIL の導出）</h3>
+    <Callout variant="note" title="粒子レベルから回路レベルへ">
+      <p>断面積 A の導体中で、電荷量 q の電子が速度 v で移動しているとする。</p>
+      <ul>
+        <li>単位体積の電荷数を n とすると、電流：<Eq tex="I = nqvA" /></li>
+        <li>長さ L の導体内の全電荷数：<Eq tex="N_{total} = nAL" /> 個</li>
+        <li>各電荷に働くローレンツ力：<Eq tex="f = qvB\sin\theta" /></li>
+        <li>合計の電磁力：<Eq tex="F = N_{total} \cdot f = BIL\sin\theta" /></li>
+      </ul>
+      <p>→ <span className="marker">F = BIL sinθ は F = qvB sinθ の集合的表現</span>。物理的根拠が同じ。</p>
+    </Callout>
+
+    <h3>ホール効果との接続</h3>
+    <p>
+      ローレンツ力の重要な応用が<span className="marker">ホール効果</span>。半導体に電流と直交する磁界を加えると、
+      キャリアがローレンツ力で横方向に偏り、ホール電圧 V_H が発生する。
+    </p>
+    <table className="data-table">
+      <thead>
+        <tr><th>項目</th><th>n 型半導体</th><th>p 型半導体</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>多数キャリア</td>
+          <td>電子（−）</td>
+          <td>正孔（+）</td>
+        </tr>
+        <tr>
+          <td>ローレンツ力の向き</td>
+          <td>電子は負電荷（q {'<'} 0）なので正孔と逆方向に偏る</td>
+          <td>正孔は正電荷（q {'>'} 0）なので電流と同方向に偏る</td>
+        </tr>
+        <tr>
+          <td>偏った側の電位</td>
+          <td><span className="marker">低電位（−）</span></td>
+          <td><span className="marker">高電位（＋）</span></td>
+        </tr>
+        <tr>
+          <td>ホール電圧の符号</td>
+          <td colSpan={2}>n型とp型で<span className="marker">逆符号</span> → 符号測定でキャリア種類を判別できる</td>
+        </tr>
+        <tr>
+          <td><strong>支配因子</strong></td>
+          <td colSpan={2}>磁束密度 B（↑でV_H比例増大）。次いで電流 I・試料の厚み t（V_H = R_H × IB/t）</td>
+        </tr>
+      </tbody>
+    </table>
+    <Callout variant="tip" title="ホール効果の2つの用途">
+      ① <span className="marker">キャリア種類の判別</span>：V_H の符号（正か負か）でn型/p型を識別。
+      ② <span className="marker">磁界センサー</span>：V_H の大きさが B に比例するためホール素子として磁束密度を測定できる。
+    </Callout>
+
+    <h2 id="exam-history"><span className="h-num">§6</span>出題実績</h2>
+    <table className="data-table">
+      <thead>
+        <tr><th>年度</th><th>問</th><th>形式</th><th>何が問われたか</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>R07上 [要確認]</td><td>問4</td><td>計算</td><td>電磁力 F = BIL の数値計算</td></tr>
+        <tr><td>R05 [要確認]</td><td>問4</td><td>穴埋</td><td>フレミング左手則の方向判定</td></tr>
+        <tr><td>R03 [要確認]</td><td>問3</td><td>計算</td><td>平行電流間の力（F/l の計算）</td></tr>
+        <tr><td>H30 [要確認]</td><td>問4</td><td>穴埋</td><td>レンツの法則・誘導電流の向き</td></tr>
+        <tr><td>H27 [要確認]</td><td>問3</td><td>計算</td><td>直線・円形コイルの磁界強度</td></tr>
+        <tr><td>H24 [要確認]</td><td>問4</td><td>論説</td><td>電磁力の方向（フレミング則）</td></tr>
+      </tbody>
+    </table>
+    <p>→ 出題頻度: ★★★★（毎年度1問、問3〜4に集中。計算とフレミング則が交互に出題される傾向）</p>
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)"}}>※ [要確認] は AI 推定。電験王3 等の一次ソースで確認してから学習に使用すること（RULE-27）。</p>
+
+    <h2 id="related"><span className="h-num">§7</span>関連項目</h2>
     <ul>
-      <li>磁気回路（1.4）：アンペアの周回路則 H·l = NI の発展</li>
-      <li>インダクタンス（3.1）：自己誘導・相互誘導の定量化</li>
-      <li>交流の基礎（2.2）：RLC 回路のリアクタンス XL = ωL</li>
+      <li>磁気回路（1.4）：アンペアの周回路則 H·l = NI の発展形。磁気抵抗・磁束の計算に接続</li>
+      <li>インダクタンス（3.1）：自己誘導・相互誘導の定量化。e = L di/dt はファラデー則から導出</li>
+      <li>半導体（5.1）：ホール効果でキャリア種類と濃度を測定。ローレンツ力の直接応用</li>
     </ul>
+
+    <h2 id="glossary">用語集</h2>
+    <table className="data-table">
+      <thead>
+        <tr><th>用語・記号</th><th>正式名称・単位</th><th>一言で言うと</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ローレンツ力</strong></td>
+          <td>Lorentz Force [N]</td>
+          <td>電荷が電磁界中で受ける力の総称。F = q(E + v×B)</td>
+        </tr>
+        <tr>
+          <td><strong>B</strong></td>
+          <td>磁束密度 [T（テスラ）]</td>
+          <td>単位面積当たりの磁束量。磁界の強さを物質込みで表す</td>
+        </tr>
+        <tr>
+          <td><strong>H</strong></td>
+          <td>磁界強度 [A/m]</td>
+          <td>媒質の透磁率に依存しない磁界の量。B = μH の関係</td>
+        </tr>
+        <tr>
+          <td><strong>φ（ファイ）</strong></td>
+          <td>磁束 [Wb（ウェーバ）]</td>
+          <td>断面積 A を貫く磁束の総量。φ = B·A</td>
+        </tr>
+        <tr>
+          <td><strong>e</strong></td>
+          <td>誘導起電力 [V]</td>
+          <td>磁束の変化によって生じる起電力。e = BLv sinθ</td>
+        </tr>
+        <tr>
+          <td><strong>ホール効果</strong></td>
+          <td>Hall Effect</td>
+          <td>電流×磁界でキャリアが偏り、横方向に電圧が発生する現象</td>
+        </tr>
+        <tr>
+          <td><strong>レンツの法則</strong></td>
+          <td>Lenz's Law</td>
+          <td>誘導電流は磁束の変化を打ち消す向きに流れる（エネルギー保存の電磁版）</td>
+        </tr>
+      </tbody>
+    </table>
 
     <PageNav
       prev={{ id: "capacitor", title: "1.2 コンデンサ" }}
       next={{ id: "magnetic-circuit", title: "1.4 磁気回路" }}
       onNav={onNav}
     />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-30 | v0.9
+    </p>
   </>
 );
 
@@ -592,6 +963,7 @@ const DcCircuitPage = ({ onNav }) => (
    2.2 交流の基礎
    ============================================================ */
 const AcBasicsPage = ({ onNav }) => (
+  // last-updated: 2026-04-28 | v1.1 | M4/M12/M13/M23/M7適用
   <>
     <MetaStrip difficulty="★★★★" importance="S" frequency="高" />
     <LearningMap
@@ -622,11 +994,15 @@ const AcBasicsPage = ({ onNav }) => (
     <Analogy type="wave" icon="🌊">
       交流は「時間とともに向きが変わる電圧・電流」。川の流れが行ったり来たりするイメージ。実効値（RMS）は「この交流と同じ発熱量をもたらす直流電圧は何V？」という換算値。コンセントの 100V はこの「実効値」。最大値は約 141V。
     </Analogy>
+    <Callout variant="tip" title="5秒で思い出す">
+      実効値 = 最大値÷√2。コイルは電流遅れ（ELI）、コンデンサは電流進み（ICE）。
+    </Callout>
     <p>
       位相：同じ周波数の波でも、山が来るタイミングにズレがある。時計でいえば針の角度のズレ。フェーザー表現は実効値と位相角を複素数で一本化したもの。定常解析に威力を発揮する。
     </p>
 
     <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
     <FormulaTable
       layer="A"
       rows={[
@@ -648,6 +1024,12 @@ const AcBasicsPage = ({ onNav }) => (
           when: "常時使用可",
           notWhen: "—",
         },
+      ]}
+    />
+    <h3>レイヤーB：応用変換</h3>
+    <FormulaTable
+      layer="B"
+      rows={[
         {
           formula: "X_C = 1 / (\\omega C)",
           meaning: "容量性リアクタンス。周波数が高いほど小さくなり電流が流れやすい",
@@ -670,24 +1052,24 @@ const AcBasicsPage = ({ onNav }) => (
     />
 
     <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
-    <table>
+    <table className="data-table">
       <thead>
         <tr><th>素子</th><th>電流 vs 電圧</th><th>覚え方</th></tr>
       </thead>
       <tbody>
         <tr><td>抵抗 R</td><td>同位相（ズレなし）</td><td>素直に従う</td></tr>
-        <tr><td>インダクタ L</td><td>電流が電圧より <strong>90° 遅れ</strong></td><td>ELI：電圧(E)→電流(I)の順</td></tr>
-        <tr><td>コンデンサ C</td><td>電流が電圧より <strong>90° 進み</strong></td><td>ICE：電流(I)→電圧(E)の順</td></tr>
+        <tr><td>インダクタ L</td><td><span className="marker">電流が電圧より 90° 遅れ</span></td><td>ELI：電圧(E)→電流(I)の順</td></tr>
+        <tr><td>コンデンサ C</td><td><span className="marker">電流が電圧より 90° 進み</span></td><td>ICE：電流(I)→電圧(E)の順</td></tr>
       </tbody>
     </table>
-    <table>
+    <table className="data-table">
       <thead>
         <tr><th></th><th>実効値 V</th><th>最大値 Vm</th></tr>
       </thead>
       <tbody>
-        <tr><td>換算</td><td>V = Vm/√2</td><td>Vm = √2·V</td></tr>
+        <tr><td>換算</td><td><span className="marker">V = Vm/√2</span></td><td>Vm = √2·V</td></tr>
         <tr><td>使う場面</td><td>電力計算・機器定格</td><td>絶縁設計・波形観察</td></tr>
-        <tr><td>日常例</td><td>コンセント 100V</td><td>≒141V</td></tr>
+        <tr><td>日常例</td><td><span className="marker">コンセント 100V（実効値）</span></td><td>≒141V（最大値）</td></tr>
       </tbody>
     </table>
 
@@ -707,29 +1089,44 @@ const AcBasicsPage = ({ onNav }) => (
     </table>
 
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
-    <p><strong>問:</strong> 最大値が 141V の正弦波交流電圧の実効値を求めよ。</p>
+    <Callout variant="note" title="例題1：実効値の計算">
+      最大値が 141V の正弦波交流電圧の実効値を求めよ。[要確認]
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>実効値 = 141/√2 ≈ <strong>100V</strong>。フェーザー表示（位相 0 基準）= 100∠0° [V]</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：正弦波の実効値公式 V = Vm/√2 を適用</p>
+      <p>ステップ②：V = 141/√2 ≈ <strong>100V</strong></p>
+      <p>フェーザー表示（位相 0 基準）= 100∠0° [V]</p>
     </details>
-    <p><strong>問:</strong> RL 直列回路で R=3Ω、XL=4Ω。インピーダンス Z と位相差 φ を求めよ。</p>
+    <Callout variant="tip" title="この例題のツボ">
+      「コンセント 100V」は最大値ではなく実効値。最大値に直すときだけ ×√2 する。
+    </Callout>
+
+    <Callout variant="note" title="例題2：RL直列のインピーダンス（R07上 問2 類題）[要確認]">
+      RL 直列回路で R=3Ω、XL=4Ω。インピーダンス Z と位相差 φ を求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>Z = √(3²+4²) = <strong>5Ω</strong>、tanφ = 4/3 → φ ≈ 53.1°（電流が電圧より遅れ）</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：Z = √(R²+XL²) = √(3²+4²) = √25 = <strong>5Ω</strong></p>
+      <p>ステップ②：tanφ = XL/R = 4/3 → φ ≈ 53.1°（電流が電圧より遅れ）</p>
+      <p><strong>答え：Z=5Ω、φ≈53.1°（電流遅れ）</strong></p>
     </details>
+    <Callout variant="tip" title="この例題のツボ">
+      3-4-5の直角三角形。RとXの値を見たらまず辺の比を探す。tanφはX/Rで計算。
+    </Callout>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
     <Callout variant="warn" title="コンセント 100V は最大値ではなく実効値">
-      最大値は 100√2 ≈ 141V。絶縁設計では最大値を使う。
+      <span className="marker">最大値は 100√2 ≈ 141V</span>。絶縁設計では最大値を使う。（H29・R03 頻出）[要確認]
     </Callout>
     <Callout variant="warn" title="コイルは電流遅れ、コンデンサは電流進み">
       ELI the ICEman が定番。L（コイル）は電圧 E → 電流 I の順（電流遅れ）。C（コンデンサ）は電流 I → 電圧 E の順（電流進み）。「コイルが進み」と逆に覚えると全問題が崩れる。
     </Callout>
     <Callout variant="warn" title="ひずみ波の実効値は二乗和の平方根">
-      V = V₁ + V₃ ではなく V = √(V₁²+V₃²)。実効値の足し算は誤り。（R05下・H29 頻出）
+      <span className="marker">V = √(V₁²+V₃²)</span>（V₁+V₃ の単純加算は誤り）。（R05下・H29 頻出）[要確認]
     </Callout>
     <Callout variant="tip" title="瞬時値が特定値に達する時刻は1周期に2回">
-      arcsin だけでは解が1つしか出ない。第1象限（t₁）と第2象限（t₂）の2解がある。「最初に到達する時刻」か「次に到達する時刻」かを確認。（R07上・H21 頻出）
+      arcsin だけでは解が1つしか出ない。第1象限（t₁）と第2象限（t₂）の2解がある。「最初に到達する時刻」か「次に到達する時刻」かを確認。（R07上・H21 頻出）[要確認]
     </Callout>
 
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
@@ -744,6 +1141,9 @@ const AcBasicsPage = ({ onNav }) => (
       next={{ id: "ac-power", title: "2.3 交流電力" }}
       onNav={onNav}
     />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-28 | v1.1
+    </p>
   </>
 );
 
@@ -751,6 +1151,7 @@ const AcBasicsPage = ({ onNav }) => (
    2.4 RLC 共振
    ============================================================ */
 const RlcResonancePage = ({ onNav }) => (
+  // last-updated: 2026-04-28 | v1.1 | M4/M12/M13/M23/M7適用
   <>
     <MetaStrip difficulty="★★★★★" importance="S" frequency="高" />
     <LearningMap
@@ -781,11 +1182,15 @@ const RlcResonancePage = ({ onNav }) => (
     <Analogy type="mechanical" icon="⚙️">
       RLC 回路はバネ（C）・質量（L）・ダンパー（R）の機械振動系と数学的に同型。共振はブランコが最大に揺れる状態。XL = XC のとき、インピーダンスが最小（直列）または最大（並列）になり、電流・電圧が極端な挙動を示す。
     </Analogy>
+    <Callout variant="tip" title="5秒で思い出す">
+      直列共振 = インピーダンス最小・電流最大。並列共振 = インピーダンス最大・電流最小。共振周波数は f₀=1/(2π√LC)。
+    </Callout>
     <p>
       Q値：共振の「鋭さ」。Q大きい = 共振ピークが細く高い = 選択性が高い（ラジオのチューニングに利用）。直列共振時はコイル・コンデンサの電圧が入力の Q 倍に拡大されるため、高Q回路では過電圧に注意。
     </p>
 
     <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
     <FormulaTable
       layer="A"
       rows={[
@@ -802,16 +1207,22 @@ const RlcResonancePage = ({ onNav }) => (
           notWhen: "—",
         },
         {
+          formula: "I_{max} = V/R",
+          meaning: "直列共振時の電流。リアクタンス成分が相殺されRのみ残る",
+          when: "直列共振点のみ",
+          notWhen: "共振点以外では I {'<'} V/R",
+        },
+      ]}
+    />
+    <h3>レイヤーB：応用変換</h3>
+    <FormulaTable
+      layer="B"
+      rows={[
+        {
           formula: "Q = \\omega_0 L / R = 1 / (\\omega_0 CR)",
           meaning: "直列共振のQ値。共振時の電圧拡大率でもある",
           when: "直列RLC共振",
           notWhen: "並列共振では Q = R/(ω₀L) と逆転する",
-        },
-        {
-          formula: "I_{max} = V/R",
-          meaning: "直列共振時の電流。リアクタンス成分が相殺されRのみ残る",
-          when: "直列共振点のみ",
-          notWhen: "共振点以外では I < V/R",
         },
         {
           formula: "Z_{共振} \\approx L / (Cr)",
@@ -823,48 +1234,78 @@ const RlcResonancePage = ({ onNav }) => (
     />
 
     <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
-    <table>
+    <table className="data-table">
       <thead>
         <tr><th></th><th>直列RLC</th><th>並列RLC</th></tr>
       </thead>
       <tbody>
-        <tr><td>インピーダンス</td><td><strong>共振時 最小（= R）</strong></td><td><strong>共振時 最大（= R）</strong></td></tr>
-        <tr><td>電流</td><td><strong>共振時 最大</strong></td><td><strong>共振時 最小</strong></td></tr>
+        <tr><td>インピーダンス</td><td><span className="marker">共振時 最小（= R）</span></td><td><span className="marker">共振時 最大</span></td></tr>
+        <tr><td>電流</td><td><span className="marker">共振時 最大</span></td><td><span className="marker">共振時 最小</span></td></tr>
         <tr><td>Q値の定義</td><td>Q = ω₀L/R</td><td>Q = R/(ω₀L)</td></tr>
         <tr><td>用途</td><td>選択フィルタ</td><td>タンク回路</td></tr>
       </tbody>
     </table>
-    <table>
+    <table className="data-table">
       <thead>
         <tr><th>条件</th><th>回路の性質</th><th>電流の位相</th></tr>
       </thead>
       <tbody>
-        <tr><td>XL &gt; XC</td><td>誘導性</td><td>電圧より遅れ</td></tr>
-        <tr><td>XL &lt; XC</td><td>容量性</td><td>電圧より進み</td></tr>
-        <tr><td>XL = XC</td><td>共振（純抵抗的）</td><td>電圧と同位相</td></tr>
+        <tr><td>XL {'>'} XC</td><td>誘導性</td><td>電圧より遅れ</td></tr>
+        <tr><td>XL {'<'} XC</td><td>容量性</td><td>電圧より進み</td></tr>
+        <tr><td><span className="marker">XL = XC</span></td><td><span className="marker">共振（純抵抗的）</span></td><td>電圧と同位相</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      RLC共振は進相コンデンサと系統インダクタンスの組み合わせで起こる「高調波共振」として実プラントに現れる。系統設計時に共振周波数を確認する。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>進相コンデンサ設置後の高調波拡大</td><td>並列共振でインピーダンス最大</td><td>系統のL成分と共振周波数を計算し高調波次数と一致しないか確認</td></tr>
+        <tr><td>インバータ出力フィルタの設計</td><td>直列共振で特定周波数を遮断</td><td>カットオフ周波数を f₀=1/(2π√LC) で設定し不要高調波を減衰</td></tr>
+        <tr><td>直列コンデンサ補償回路の共振過電圧</td><td>Q値が高いと電圧が Q 倍に拡大</td><td>Q値を設計値以内に抑えてコンデンサの過電圧保護を確認</td></tr>
       </tbody>
     </table>
 
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
-    <p><strong>問:</strong> R=10Ω、XL=20Ω、XC=12Ω の直列RLC回路のインピーダンスの大きさと位相角を求めよ。</p>
+    <Callout variant="note" title="例題1：直列RLCのインピーダンス（R04下 問2 類題）[要確認]">
+      R=10Ω、XL=20Ω、XC=12Ω の直列RLC回路のインピーダンスの大きさと位相角を求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>Z = √(10²+(20-12)²) = √(100+64) = √164 ≈ <strong>12.8Ω</strong></p>
-      <p>tanφ = 8/10 → φ ≈ 38.7°（誘導性：電流が電圧より遅れ）</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：合成リアクタンス X = XL - XC = 20 - 12 = 8Ω（誘導性）</p>
+      <p>ステップ②：Z = √(R²+X²) = √(10²+8²) = √164 ≈ <strong>12.8Ω</strong></p>
+      <p>ステップ③：tanφ = X/R = 8/10 → φ ≈ 38.7°（電流が電圧より遅れ）</p>
+      <p><strong>答え：Z≈12.8Ω、φ≈38.7°（誘導性・電流遅れ）</strong></p>
     </details>
-    <p><strong>問:</strong> R=10Ω、L=10mH、C=10μF の直列RLC回路の共振周波数と Q 値を求めよ。</p>
+    <Callout variant="tip" title="この例題のツボ">
+      XL-XC の符号が正なら誘導性（電流遅れ）、負なら容量性（電流進み）。符号から性質を即判定する。
+    </Callout>
+
+    <Callout variant="note" title="例題2：共振周波数とQ値">
+      R=10Ω、L=10mH、C=10μF の直列RLC回路の共振周波数と Q 値を求めよ。[要確認]
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>ω₀ = 1/√(LC) = 1/√(10×10⁻³ × 10×10⁻⁶) = 10⁴ rad/s → f₀ ≈ <strong>1591 Hz</strong></p>
-      <p>Q = ω₀L/R = 10⁴ × 10×10⁻³ / 10 = <strong>10</strong>。コイル電圧は入力の 10 倍に拡大。</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：ω₀ = 1/√(LC) = 1/√(10×10⁻³ × 10×10⁻⁶) = 10⁴ rad/s</p>
+      <p>ステップ②：f₀ = ω₀/(2π) ≈ <strong>1591 Hz</strong></p>
+      <p>ステップ③：Q = ω₀L/R = 10⁴ × 10×10⁻³ / 10 = <strong>10</strong></p>
+      <p><strong>答え：f₀≈1591Hz、Q=10（コイル・コンデンサ電圧は入力の10倍）</strong></p>
     </details>
+    <Callout variant="tip" title="この例題のツボ">
+      Q=10 は「共振時にコイル・コンデンサに入力の10倍の電圧がかかる」を意味する。高Q設計は過電圧リスクと表裏一体。
+    </Callout>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
-    <Callout variant="warn" title="直列インピーダンスはベクトル合成">
-      Z = R + XL + XC とスカラーで足してはいけない。Z = √(R²+(XL-XC)²)。直角三角形を思い出す。
+    <Callout variant="warn" title="直列インピーダンスはベクトル合成（スカラー加算は誤り）">
+      <span className="marker">Z = √(R²+(XL-XC)²)</span>。Z = R + XL + XC とスカラーで足すと誤り。直角三角形の斜辺が Z。（R05上 頻出）[要確認]
     </Callout>
     <Callout variant="warn" title="並列共振のQ値は直列と逆数">
-      直列：Q = ω₀L/R。並列：Q = R/(ω₀L)。並列回路ではRが大きいほど電流を制限してQが上がる（直列とは逆）。問題文で「並列」と書いてあれば必ず確認する。
+      直列：<span className="marker">Q = ω₀L/R</span>。並列：<span className="marker">Q = R/(ω₀L)</span>。問題文で「並列」と書いてあれば必ず式を切り替える。（H28・R02 頻出）[要確認]
     </Callout>
     <Callout variant="warn" title="共振時でもコイル・コンデンサの電圧は消えない">
       共振時は VL と VC が打ち消し合うが、それぞれの大きさは QVs。Q=10 なら各素子に入力の 10 倍の電圧がかかる。高Q回路では過電圧に注意。
@@ -885,6 +1326,9 @@ const RlcResonancePage = ({ onNav }) => (
       next={{ id: "bridge-circuit", title: "2.5 ブリッジ回路" }}
       onNav={onNav}
     />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-28 | v1.1
+    </p>
   </>
 );
 
@@ -892,6 +1336,7 @@ const RlcResonancePage = ({ onNav }) => (
    3.1 インダクタンス
    ============================================================ */
 const InductancePage = ({ onNav }) => (
+  // last-updated: 2026-04-28 | v1.1 | M4/M12/M13/M23/M7適用
   <>
     <MetaStrip difficulty="★★★★" importance="A" frequency="中" />
     <LearningMap
@@ -922,11 +1367,15 @@ const InductancePage = ({ onNav }) => (
     <Analogy type="flywheel" icon="🌀">
       フライホイール（はずみ車）は回転の変化に抵抗する。インダクタも同じで、電流が急に増えようとすると逆起電力で抵抗し、電流が急に減ろうとすると維持しようとする。「電流の慣性」がインダクタンスの本質。
     </Analogy>
+    <Callout variant="tip" title="5秒で思い出す">
+      コイル = 電流の慣性。e = -L(dI/dt)。巻数2倍でL=4倍（N²比例）。直列の相互結合は和動+2M・差動-2M。
+    </Callout>
     <p>
       エネルギーの蓄え方が違う：コンデンサは電界に蓄える（電荷 → 電圧）、インダクタは磁界に蓄える（電流 → 磁束）。双対の概念として一緒に整理する。
     </p>
 
     <h2 id="formulas"><span className="h-num">§2</span>公式</h2>
+    <h3>レイヤーA：基本概念</h3>
     <FormulaTable
       layer="A"
       rows={[
@@ -948,6 +1397,12 @@ const InductancePage = ({ onNav }) => (
           when: "電流が定常状態",
           notWhen: "過渡状態では瞬時値が変化",
         },
+      ]}
+    />
+    <h3>レイヤーB：応用変換</h3>
+    <FormulaTable
+      layer="B"
+      rows={[
         {
           formula: "L_{和動} = L_1 + L_2 + 2M",
           meaning: "磁束が同方向に強め合う和動直列接続の合成インダクタンス",
@@ -964,25 +1419,25 @@ const InductancePage = ({ onNav }) => (
           formula: "k = M / \\sqrt{L_1 L_2} \\quad (0 \\le k \\le 1)",
           meaning: "結合係数：どれだけ磁束が共有されているか。k=1 は理想変圧器",
           when: "常に定義可能",
-          notWhen: "k=1 は理想値（現実は k<1）",
+          notWhen: "k=1 は理想値（現実は k {'<'} 1）",
         },
       ]}
     />
 
     <h2 id="comparison"><span className="h-num">§3</span>比較・まとめ</h2>
-    <table>
+    <table className="data-table">
       <thead>
         <tr><th>項目</th><th>コンデンサ（C）</th><th>インダクタ（L）</th></tr>
       </thead>
       <tbody>
         <tr><td>蓄えるエネルギー</td><td>電界</td><td>磁界</td></tr>
-        <tr><td>エネルギー式</td><td>W = CV²/2</td><td>W = LI²/2</td></tr>
-        <tr><td>急変を嫌うもの</td><td>電圧（V）</td><td>電流（I）</td></tr>
-        <tr><td>直流定常状態</td><td>開放（電流ゼロ）</td><td>短絡（電圧ゼロ）</td></tr>
+        <tr><td>エネルギー式</td><td>W = CV²/2</td><td><span className="marker">W = LI²/2</span></td></tr>
+        <tr><td>急変を嫌うもの</td><td>電圧（V）</td><td><span className="marker">電流（I）</span></td></tr>
+        <tr><td>直流定常状態</td><td>開放（電流ゼロ）</td><td><span className="marker">短絡（電圧ゼロ）</span></td></tr>
         <tr><td>インピーダンス</td><td>Z = 1/(jωC)</td><td>Z = jωL</td></tr>
       </tbody>
     </table>
-    <table>
+    <table className="data-table">
       <thead>
         <tr><th>接続</th><th>コンデンサ C</th><th>インダクタ L（相互結合なし）</th></tr>
       </thead>
@@ -992,32 +1447,62 @@ const InductancePage = ({ onNav }) => (
       </tbody>
     </table>
 
+    <h2 id="practical"><span className="h-num">実務</span>実務でどう活きる</h2>
+    <Callout variant="tip" title="プラント電気・計装での使われどころ">
+      インダクタンスはトランス・リアクトル・電動機の磁気設計の根幹。突入電流抑制・高調波フィルタ・保護リレー整定すべてにLの知識が必要。
+    </Callout>
+    <table className="data-table">
+      <thead>
+        <tr><th>現場シーン</th><th>効いている物理</th><th>技術者の判断</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>変圧器の突入電流計算</td><td>e = -L(dI/dt)による電流制限</td><td>スイッチ投入時の磁束変化レートからL値で突入電流ピークを推算</td></tr>
+        <tr><td>高調波フィルタリアクトル選定</td><td>L=μN²A/l の巻数・鉄心設計</td><td>目標インダクタンスから巻数と断面積をバランス設計し飽和電流を確認</td></tr>
+        <tr><td>差動保護リレーの相互インダクタンス補正</td><td>相互結合 M による誘起電圧</td><td>近接ケーブル間のMが誤差電流を生じないかを計算で確認</td></tr>
+      </tbody>
+    </table>
+
     <h2 id="examples"><span className="h-num">§4</span>例題</h2>
-    <p><strong>問:</strong> L=50mH のコイルに 5A の電流が流れているとき、蓄えられているエネルギーを求めよ。</p>
+    <Callout variant="note" title="例題1：コイルの蓄積エネルギー（H26 問3 類題）[要確認]">
+      L=50mH のコイルに 5A の電流が流れているとき、蓄えられているエネルギーを求めよ。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>W = LI²/2 = 0.05 × 25/2 = <strong>0.625 J</strong></p>
-      <p>運動エネルギー mv²/2 との対応で覚える。</p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：公式 W = LI²/2 を適用</p>
+      <p>ステップ②：W = 0.05 × 5² / 2 = 0.05 × 25 / 2 = <strong>0.625 J</strong></p>
+      <p><strong>答え：0.625 J</strong></p>
     </details>
-    <p><strong>問:</strong> 和動接続で L=120mH、差動接続で L=40mH のとき、相互インダクタンス M と結合係数 k を求めよ（L₁=L₂ とする）。</p>
+    <Callout variant="tip" title="この例題のツボ">
+      W = LI²/2 は運動エネルギー mv²/2 と同型。「電流の慣性」のアナロジーそのままで覚える。
+    </Callout>
+
+    <Callout variant="note" title="例題2：相互インダクタンスと結合係数（R03 問4 類題）[要確認]">
+      和動接続で L=120mH、差動接続で L=40mH のとき、相互インダクタンス M と結合係数 k を求めよ（L₁=L₂ とする）。
+    </Callout>
     <details>
-      <summary>解答</summary>
-      <p>M = (L和動 - L差動)/4 = (120-40)/4 = <strong>20mH</strong></p>
-      <p>L₁+L₂=80mH → L₁=L₂=40mH。k = M/√(L₁L₂) = 20/√(40×40) = 20/40 = <strong>0.5</strong></p>
+      <summary>解答・解説</summary>
+      <p>ステップ①：L和動 = L₁+L₂+2M、L差動 = L₁+L₂-2M より、差を取ると 4M = 120-40 = 80mH</p>
+      <p>ステップ②：M = 80/4 = <strong>20mH</strong></p>
+      <p>ステップ③：L₁+L₂ = (120+40)/2 = 80mH → L₁=L₂=40mH</p>
+      <p>ステップ④：k = M/√(L₁L₂) = 20/√(40×40) = 20/40 = <strong>0.5</strong></p>
+      <p><strong>答え：M=20mH、k=0.5</strong></p>
     </details>
+    <Callout variant="tip" title="この例題のツボ">
+      和動と差動の差 = 4M。この関係式で M を一発算出。結合係数はその後 k=M/√(L₁L₂) で計算。
+    </Callout>
 
     <h2 id="traps"><span className="h-num">§5</span>引っかけポイント</h2>
-    <Callout variant="warn" title="自己誘導のマイナス符号はレンツの法則">
-      e = -L(dI/dt) のマイナスは「変化を妨げる向き」を示す物理的意味がある。符号を落とすとエネルギーの授受が逆転する。
+    <Callout variant="warn" title="自己誘導のマイナス符号はレンツの法則（物理的意味あり）">
+      <span className="marker">e = -L(dI/dt) のマイナスは「変化を妨げる向き」</span>を示す物理的意味がある。符号を落とすとエネルギーの授受が逆転する。
     </Callout>
     <Callout variant="warn" title="直列接続でも相互結合があれば L₁+L₂ ではない">
-      相互結合がある場合は必ず ±2M を加減する。和動か差動かは同名端子の向きで判別。
+      相互結合がある場合は必ず ±2M を加減する。<span className="marker">和動か差動かは同名端子の向きで判別</span>。（H27・R04 頻出）[要確認]
     </Callout>
     <Callout variant="warn" title="k=1 は現実には存在しない">
-      k=1 は「漏れ磁束がゼロ」の理想変圧器の条件。現実のコイルは必ず漏れ磁束があるので k&lt;1。
+      k=1 は「漏れ磁束がゼロ」の理想変圧器の条件。現実のコイルは必ず漏れ磁束があるので <span className="marker">k {'<'} 1</span>。
     </Callout>
     <Callout variant="tip" title="巻数を2倍にすると L は4倍">
-      L = μN²A/l なので L は N² に比例。巻数を2倍にするとLは4倍。「巻数とLの関係を求めよ」は頻出。
+      <span className="marker">L ∝ N²</span>。巻数を2倍にするとLは4倍。「巻数とLの関係を求めよ」は頻出。（H24・R06 頻出）[要確認]
     </Callout>
 
     <h2 id="related"><span className="h-num">§6</span>関連項目</h2>
@@ -1032,6 +1517,9 @@ const InductancePage = ({ onNav }) => (
       next={{ id: "transient", title: "3.2 過渡現象" }}
       onNav={onNav}
     />
+    <p style={{fontSize:"0.8em", color:"var(--ink-mute)", marginTop:"2rem"}}>
+      最終改定: 2026-04-28 | v1.1
+    </p>
   </>
 );
 

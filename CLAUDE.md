@@ -24,6 +24,9 @@
 12. **CLAUDE.md自己学習** — プロジェクト固有の発見（ライブラリの必須オプション・繰り返しエラーと対策・ビルド/テストコマンド）を発見したら当該CLAUDE.mdに即記録する。使うほど精度が上がる設計にする
 13. **Self-Improvement Loop** — ユーザーから訂正を受けたら `knowledge/claude-lessons.md` に即記録する（ミス・ルール・適用場面の3点）。同じミスを繰り返さない
 14. **Subagent戦略** — 調査・探索・並列分析はサブエージェントにオフロードしてメインコンテキストを保護する。1エージェント=1タスク（集中実行）
+15. **学び・改善案の出力** — 一通りの対応が完了したタイミングで必ず以下を出力する：
+    - **今回の学び**: 今回の作業で判明した事実・発見・失敗パターン（箇条書き、具体的に）
+    - **改善案**: 次回以降に活かせる手順・ルール・自動化の提案（実装コスト付き）
 
 ## トークン節約ルール
 
@@ -32,6 +35,11 @@
 - セッションが長くなったら `/cost` でキャッシュ比率を確認するよう提案する
 - 無関係な新タスクへ切り替わる際は新セッション開始を推奨する
 - ひと言返答・確認は端的に。余計な前置き・締め言葉は書かない
+- **大型HTML編集ルール**: HTMLファイル1本 = 1セッション（複数ファイルまたがない）。30分以上のセッションでは `/compact` を実行してからプロンプトを送る
+- **ファイル削除前の必須チェック**: `Grep output_mode:"files_with_matches"` でファイル名を検索し、残存リンクがないことを確認してから削除する
+- **launch.json変更時**: `runtimeArgs` に指定したファイルパスが実在するか必ず確認する
+- **新規HTMLファイル作成時**: portal-v2.html か関連ダッシュボードへのリンクを同時に追加する（孤立ファイル防止）
+- **Claude Design → Claude Code ワークフロー**: Claude DesignのHTMLは「Design Filesタブ → index.htmlを右クリック → Download」で取得。ブラウザ経由コード抽出（React fiber / IndexedDB / fetch傍受）は試みない。ユーザーに「Downloads/index.htmlを読んで実装して」と言ってもらうのが最短
 
 ## 知識3層モデル
 
@@ -72,6 +80,22 @@
 - AI会話→knowledge/同期: **Stop hookで自動化済み**（ai-exports/process_exports.pyは廃止）
 - 日報・週次レビュー・e-log・トラブルログ → **OneDrive/.secretary**
 
+### 過去問履歴同期コマンド（自動実行）
+
+「過去問履歴を更新して」と言われたら → PowerShell で以下を実行：
+```powershell
+cd C:\Users\kfuru\.secretary\denken3-study-dashboard
+python update_dashboard.py
+```
+
+**処理内容**:
+- Notion DB（ff4fcb73cc14408caedf87c904ae2fd9）から551件の過去問データ取得
+- data/records.json（SR追跡）と統合
+- index.html へ統計を注入：達成率・分野別ブレークダウン・弱点抽出・PDCA記録・今日のセッション
+- 成功時: `✅ 更新完了: YYYY-MM-DD` メッセージが表示される
+
+**環境変数**: NOTION_TOKEN は Windows に永続設定済み（ntn_2920507337527...）
+
 ## Obsidian運用
 
 - Vault: `.secretary/` フォルダ = Obsidian Vault（データ移行不要）
@@ -97,3 +121,113 @@
 - **contextファイル（正）**: OneDrive側。更新時はOneDrive→secretaryにコピー
 - **L1→L2自動昇格**: `promote.py`（`py promote.py` / `--dry-run`でプレビュー / `--list-drafts`でレビュー待ち一覧）
 - **週次運用サイクル**: 月曜08:00自動昇格 → `py promote.py --list-drafts` でdraft確認 → level: draft→review→published に手動更新
+
+## サイト棲み分けルール
+
+「サイトに追記して」と言われたら、以下の軸で追記先を判断する。
+
+| 軸 | 外部公開 (GitHub Pages) | 内部参照 (ローカル HTML) |
+|----|------------------------|------------------------|
+| 対象 | 他者に見せる・共有したい | 自分専用・深い解説 |
+| 例 | `genai-db` `ei-wiki` `denken-wiki系` | `it-wiki.html` `business-skills/` `claude-code-guide.html` |
+| 追記判断 | 「共有したい」「polish済み」 | 「自分で引く」「アナロジー重視」 |
+
+**AI用語の重複ルール**: `genai-db` が正（ツール・動向・最新情報）。`it-wiki.html` は概念理解・アナロジー用。
+
+**追記フロー**: 「〇〇についてサイトに追記して」→ 内容と共有要否を確認 → 該当サイトのファイルを Read → 既存パターンに合わせて Edit
+
+## HTMLコーディングルール（Wiki・ローカルHTMLファイル共通）
+
+- **`§` 使用禁止**: 文字化けの原因になる。セクション番号は `1.` `2.` などの数字＋ピリオドで表記する
+- 既存の `<span className="h-num">` パターンも同様（`§2` → `2.`）
+- **数式は必ず `<Eq tex="..." />` を使う**: `{String.raw\`$...$\`}` や `$...$` 生テキストはKaTeXレンダリングされず文字化けになる
+- **HTML編集後の検証必須**: 編集後は必ず Ctrl+Shift+R（ハードリフレッシュ）で確認する。`navigate` ツールは HTTP キャッシュを使うため Babel 再トランスパイルが走らず変更が反映されないことがある。ローカルサーバーは `dev-server.py`（Cache-Control: no-store）を使うこと（`launch.json` で設定済み）
+
+## Wiki編集ワークフロー（確定版 2026-04-30）
+
+### 編集フロー（毎回この順番）
+```
+1. Grep → 行番号特定
+2. Read ±20行のみ
+3. Edit 適用
+4. python wiki_verify.py <page>  ← 検証はこれだけ
+```
+
+### 検証ツール（優先順位厳守）
+| 優先 | ツール | トークン | 用途 |
+|------|--------|---------|------|
+| ✅ 最優先 | `python wiki_verify.py <page>` | ~500 | DOM確認・エラー検知 |
+| ✅ 補助 | `preview_eval` + 最小JS | ~100 | 単一値確認 |
+| ❌ 禁止 | `preview_snapshot` | ~34,000 | 136K chars = 使わない |
+| ❌ 禁止 | `preview_screenshot` | タイムアウト | Babelで30秒→失敗 |
+
+### wiki_ai.py 使い分け（無料優先ポリシー）
+**原則: Groq無料 → 品質不足時だけ `--model gemini/openai`**
+
+| クエリ種別 | 正解ツール |
+|-----------|-----------|
+| パターン検索（単語・記号） | `Grep` ツール直結（wiki_ai不要） |
+| コード構造の複雑な探索 | `wiki_ai.py find "英語KW" <file>`（Groq） |
+| SVG図生成（簡易） | `wiki_ai.py svg "説明"`（Groq） |
+| SVG図生成（高品質） | `wiki_ai.py svg "説明" --model openai` |
+| 大ファイル全体分析 | `wiki_ai.py find "..." <file> --model gemini`（1Mコンテキスト） |
+| 汎用質問・抽象的な内容 | Claude直接（Groq不向き） |
+
+### 禁止事項（実測による）
+- HTMLファイル全体Read禁止（11K行 ≒ 8,000tokens）
+- `wiki_ai.py find` に日本語1フレーズだけ渡さない（grep範囲が広くなりすぎる）
+- Groqに抽象的な質問を投げない（的外れ回答になる）
+- **ブラウザスクリーンショット（MCP Chrome）はセッション全体で最大1枚**。構造確認は `preview_eval` + JS queryで代替する
+
+### 構造確認JS（~100トークン）
+```js
+// h2の構造確認（セクション番号・タイトル一覧）
+Array.from(document.querySelectorAll('.main h2[id]')).map(h=>h.id+': '+h.textContent.trim())
+// TOCアイテム数
+document.querySelectorAll('.toc li').length
+// JSエラー確認
+window.__errors || []
+```
+
+### 教育的明瞭さ改善ワークフロー
+外部で調査した内容をClaudeCodeで適用する手順：
+
+1. **外部調査結果を保存**: `inbox/wiki-clarity-audit-<page>.md` に以下の形式で記録
+   ```markdown
+   # Wiki明瞭さ監査: <page名>
+   ## 問題点
+   - [セクション名] 問題の説明
+   ## 改善案
+   - [セクション名] 具体的な修正内容
+   ```
+2. **ClaudeCodeへ指示**: `「wiki明瞭さ修正 <ページハッシュ>」` と入力
+3. **ClaudeCode動作**: `inbox/wiki-clarity-audit-<page>.md` を Read → 問題点を確認 → 編集フロー（Grep→Read→Edit→wiki_verify.py）で適用
+
+**教育的明瞭さチェックリスト**（ページレビュー時に確認）
+- [ ] 引っかけポイントは公式セクションの直後にあるか
+- [ ] SVG図のラベルは重複・重なりがないか
+- [ ] `[要確認]` などの未完成プレースホルダーが残っていないか
+- [ ] `§` 記号を使っていないか（`1.` `2.` 形式に）
+- [ ] TOCと本文の番号が一致しているか
+
+### 外部AI活用コマンド
+```bash
+python wiki_ai.py find "search-chip CSS"  denken3-riron-wiki.html  # コード探索
+python wiki_ai.py svg  "RC直列回路、電圧源付き"                    # SVG生成
+python wiki_verify.py  transistor                                   # DOM検証
+python wiki_verify.py  transistor --screenshot                      # PNG保存付き
+```
+
+### AI分業パターン
+| タスク | 担当 |
+|--------|------|
+| 大ファイル内の編集箇所特定 | `wiki_ai.py find`（Groq 無料） |
+| SVGダイアグラム生成 | `wiki_ai.py svg`（Groq 無料） |
+| 実際のファイル編集 | Claude Code（Edit ツール精度が高い） |
+| 検証・DOM確認 | `wiki_verify.py`（Python Playwright） |
+| スクリーンショット | `wiki_verify.py --screenshot` |
+
+### 設定済みAPIキー（Windows環境変数）
+- `GROQ_API_KEY`: Llama3-70b 無料・128K context（メイン）
+- `GEMINI_API_KEY`: 要課金（現在クレジット枯渇中 → 補充で有効化）
+- `OPENAI_API_KEY`: 要課金（課金追加で有効化、GPT-4o-mini SVG生成向け）

@@ -7,6 +7,7 @@ link_checker.py — Secretary システム HTMLリンク検証ツール
   py health-monitor/link_checker.py --file portal-v2.html  # 単一ファイル
   py health-monitor/link_checker.py --fix            # 修正コマンド候補を出力
   py health-monitor/link_checker.py --check-external # 外部URLも検証（遅い）
+  py health-monitor/link_checker.py --orphan         # 孤立HTMLファイル検出
 """
 
 import os
@@ -360,6 +361,103 @@ def write_json(all_results: list[dict], root: Path, output_path: Path):
     print(f"📝 結果を保存しました: {output_path}")
 
 
+# ========== ポータル ct カウント検証 ==========
+
+def check_portal_counts(root: Path) -> list[dict]:
+    """portal-v2.html の各セクションの ct 値と実項目数（class="site"）を比較する。
+    戻り値: [{"section": str, "ct": int, "actual": int}]（不一致のみ）
+    """
+    portal = root / "portal-v2.html"
+    if not portal.exists():
+        return []
+    content = portal.read_text(encoding="utf-8", errors="replace")
+
+    mismatches = []
+    # セクション境界で分割
+    sec_blocks = re.split(r'<div class="sec(?:\s[^"]*)?"\s*>', content)[1:]
+    for block in sec_blocks:
+        # h4 内のタイトルと ct 値を取得
+        m = re.search(
+            r'<h4>[^<]*<span[^>]*bar[^>]*>[^<]*</span>\s*([^<]+?)\s*<span[^>]*ct[^>]*>(\d+)</span>',
+            block
+        )
+        if not m:
+            continue
+        title  = m.group(1).strip()
+        ct     = int(m.group(2))
+        actual = len(re.findall(r'class="site"', block))
+        if ct != actual:
+            mismatches.append({"section": title, "ct": ct, "actual": actual})
+
+    return mismatches
+
+
+def print_count_check(mismatches: list[dict]):
+    if not mismatches:
+        print("✅ ポータル ct カウント: 全セクション一致")
+        return
+    print(f"\n⚠️  ポータル ct 不一致 ({len(mismatches)}件):")
+    for m in mismatches:
+        diff = m["ct"] - m["actual"]
+        label = f"ct過大+{diff}" if diff > 0 else f"ct過小{diff}"
+        print(f"  • {m['section']}: ct={m['ct']} / 実={m['actual']} ({label})")
+    print("  → portal-v2.html の <span class=\"ct\"> を修正してください")
+
+
+# ========== 孤立ファイル検出 ==========
+
+# ポータル・エントリポイントとして孤立扱いしないファイル
+ORPHAN_EXCLUDE = {
+    "portal-v2.html", "index.html", "dashboard.html", "memory-dashboard.html",
+}
+
+def find_orphan_html(all_html_files: list[Path], root: Path) -> list[Path]:
+    """どのHTMLからも参照されていない孤立HTMLファイルを返す。
+
+    .claude/worktrees/ 以下は除外。ORPHAN_EXCLUDE に含まれるファイルも除外。
+    """
+    # 全HTMLファイルから参照されているローカルhrefを収集
+    referenced: set[Path] = set()
+    for html_path in all_html_files:
+        links, _ = extract_links(html_path)
+        html_dir = html_path.parent
+        for _, _, url in links:
+            if classify_link(url) != "relative":
+                continue
+            clean = url.split("?")[0].split("#")[0]
+            if not clean or not clean.endswith(".html"):
+                continue
+            try:
+                resolved = (html_dir / clean).resolve()
+                if resolved.exists():
+                    referenced.add(resolved)
+            except Exception:
+                pass
+
+    orphans = []
+    for html_path in all_html_files:
+        if html_path.name in ORPHAN_EXCLUDE:
+            continue
+        if html_path not in referenced:
+            orphans.append(html_path)
+    return orphans
+
+
+def print_orphans(orphans: list[Path], root: Path):
+    """孤立ファイルをコンソールに出力する"""
+    if not orphans:
+        print("✅ 孤立HTMLファイル: なし")
+        return
+    print(f"\n⚠️  孤立HTMLファイル ({len(orphans)}件) — どのHTMLからも参照されていません:")
+    for p in sorted(orphans):
+        try:
+            rel = p.relative_to(root)
+        except ValueError:
+            rel = p
+        print(f"  • {str(rel).replace(chr(92), '/')}")
+    print("  → portal-v2.html か関連ダッシュボードへのリンク追加を検討してください")
+
+
 # ========== エントリポイント ==========
 
 def main():
@@ -383,6 +481,14 @@ def main():
     parser.add_argument(
         "--root", metavar="DIR",
         help=f"Secretaryルートディレクトリ（デフォルト: {SECRETARY_ROOT}）",
+    )
+    parser.add_argument(
+        "--orphan", action="store_true",
+        help="どのHTMLからも参照されていない孤立ファイルを検出する",
+    )
+    parser.add_argument(
+        "--count-check", action="store_true",
+        help="portal-v2.html の ct カウントと実項目数の不一致を検出する",
     )
     args = parser.parse_args()
 
@@ -427,6 +533,18 @@ def main():
 
     # JSON保存
     write_json(all_results, root, RESULTS_JSON)
+
+    # 孤立ファイル検出
+    if args.orphan:
+        print()
+        orphans = find_orphan_html(all_html_files, root)
+        print_orphans(orphans, root)
+
+    # ポータル ct カウント検証
+    if args.count_check:
+        print()
+        mismatches = check_portal_counts(root)
+        print_count_check(mismatches)
 
     # 終了コード: 壊れたリンクがあれば1
     sys.exit(1 if broken_count > 0 else 0)

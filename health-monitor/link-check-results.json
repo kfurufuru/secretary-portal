@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-04-25T12:32:03.007515+00:00",
-  "total_links": 1,
-  "ok": 1,
+  "checked_at": "2026-05-01T06:19:52.332510+00:00",
+  "total_links": 0,
+  "ok": 0,
   "broken": 0,
   "warnings": 0,
   "files": [
     {
-      "file": "denken-study.html",
-      "ok": 1,
+      "file": "denken-hoki-wiki.html",
+      "ok": 0,
       "broken": 0,
       "warnings": 0,
       "links": []

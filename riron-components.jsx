@@ -75,7 +75,7 @@ const Callout = ({ variant = "info", title, children }) => {
           {c.icon}
         </span>
       )}
-      <div style={{ color: "var(--ink)", lineHeight: "1.75" }}>{children}</div>
+      <div style={{ color: "var(--ink)", lineHeight: "1.75", overflowWrap: "anywhere" }}>{children}</div>
     </aside>
   );
 };
@@ -113,8 +113,8 @@ const FormulaTable = ({ layer = "A", rows = [] }) => {
         <table className="data">
           <thead>
             <tr>
-              <th style={{ width: "28%" }}>公式</th>
-              <th style={{ width: "28%" }}>意味</th>
+              <th style={{ width: "24%" }}>公式</th>
+              <th style={{ width: "32%" }}>意味</th>
               <th style={{ width: "22%" }}>使える条件</th>
               <th style={{ width: "22%" }}>使えない条件</th>
             </tr>
@@ -296,6 +296,110 @@ const TrapCard = ({ num, category, trap, correct, cite }) => (
           paddingLeft: "2px",
         }}
       >
+        出典: {cite}
+      </div>
+    )}
+  </div>
+);
+
+/* ============================================================
+   4b. TrapBlock
+   引っかけポイント3層構造コンポーネント（RULE-05準拠）
+   正解最上段 → 誤解補足 → 判別ステップ → 出典
+   ============================================================ */
+
+const TrapBlock = ({ correct, trap, cite, steps = [] }) => (
+  <div style={{
+    border: "1px solid var(--rule)",
+    borderRadius: "8px",
+    margin: "16px 0",
+    overflow: "hidden",
+  }}>
+    {/* 正解（最上段・最初に目に入る） */}
+    <div style={{
+      background: "var(--ok-soft)",
+      borderBottom: "1px solid color-mix(in oklab, var(--ok) 25%, transparent)",
+      padding: "12px 16px",
+    }}>
+      <div style={{
+        fontWeight: 700,
+        fontSize: "12px",
+        color: "var(--ok)",
+        marginBottom: "4px",
+        display: "flex",
+        alignItems: "center",
+        gap: "5px",
+      }}>
+        <span>✅</span>
+        <span>正解の原則</span>
+      </div>
+      <div style={{ color: "var(--ink)", lineHeight: "1.7", fontSize: "14px" }}>
+        {correct}
+      </div>
+    </div>
+
+    {/* 誤解パターン（amber系・補足扱い・RULE-16: hue 0-30の赤禁止） */}
+    {trap && (
+      <div style={{
+        background: "var(--warn-soft)",
+        borderBottom: steps.length > 0
+          ? "1px solid color-mix(in oklab, var(--warn) 25%, transparent)"
+          : "none",
+        padding: "10px 16px",
+      }}>
+        <div style={{
+          fontWeight: 700,
+          fontSize: "12px",
+          color: "var(--warn)",
+          marginBottom: "4px",
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+        }}>
+          <span>⚠</span>
+          <span>よくある誤解</span>
+        </div>
+        <div style={{ color: "var(--ink)", lineHeight: "1.6", fontSize: "13px", fontStyle: "italic" }}>
+          {trap}
+        </div>
+      </div>
+    )}
+
+    {/* 判別ステップ */}
+    {steps.length > 0 && (
+      <div style={{
+        padding: "10px 16px",
+        background: "var(--bg-elev)",
+        borderBottom: cite ? "1px solid var(--rule)" : "none",
+      }}>
+        <div style={{
+          fontWeight: 700,
+          fontSize: "12px",
+          color: "var(--accent-ink)",
+          marginBottom: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+        }}>
+          <span>🔍</span>
+          <span>判別ステップ</span>
+        </div>
+        <ol style={{ margin: 0, paddingLeft: "1.4em", lineHeight: "1.7", fontSize: "13px" }}>
+          {steps.map((s, i) => (
+            <li key={i} style={{ marginBottom: i < steps.length - 1 ? "4px" : 0 }}>{s}</li>
+          ))}
+        </ol>
+      </div>
+    )}
+
+    {/* 出典 */}
+    {cite && (
+      <div style={{
+        fontSize: "11px",
+        color: "var(--ink-mute)",
+        padding: "6px 16px",
+        background: "var(--bg-sunken)",
+      }}>
         出典: {cite}
       </div>
     )}
@@ -644,6 +748,7 @@ Object.assign(window, {
   FormulaTable,
   Analogy,
   TrapCard,
+  TrapBlock,
   MetaStrip,
   LearningMap,
   TrapPatternsPage,

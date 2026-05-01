@@ -26,7 +26,26 @@
       "Bash(git commit -m ' *)",
       "mcp__Claude_Preview__preview_start",
       "Bash(python3 -c ' *)",
-      "mcp__10ecf44d-862f-43c1-affd-e1f1bce1dee2__notion-search"
+      "mcp__10ecf44d-862f-43c1-affd-e1f1bce1dee2__notion-search",
+      "Bash(netstat -ano)",
+      "Bash(rtk git *)",
+      "Bash(grep -v '^$')",
+      "Bash(python -c \"import json; d=json.load\\(open\\('news.json',encoding='utf-8'\\)\\); print\\(len\\(d\\)\\); [print\\(x['url']\\) for x in d[:30]]\")",
+      "Bash(rtk ls *)",
+      "Bash(python portal-link-checker.py)",
+      "Bash(rtk grep *)",
+      "Bash(rtk read *)",
+      "Bash(python -c \"import json; data = json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json', encoding='utf-8'\\)\\); print\\(f'Total: {len\\(data\\)}'\\); urls = [item['url'] for item in data]; print\\('\\\\n'.join\\(urls[:30]\\)\\)\")",
+      "Bash(rtk find *)",
+      "Bash(python -c \"import json; data=json.load\\(open\\('news.json',encoding='utf-8'\\)\\); urls=[d['url'] for d in data]; print\\('Total:', len\\(data\\)\\); print\\('Latest 5 URLs:'\\); [print\\(' ', u\\) for u in urls[:5]]\")",
+      "Bash(python update_dashboard.py)",
+      "Bash(env)",
+      "Bash(python -c \"import json; data=json.load\\(open\\('news.json',encoding='utf-8'\\)\\); urls=[a['url'] for a in data]; print\\('TOTAL:', len\\(data\\)\\); print\\('FIRST_DATE:', data[0].get\\('published',''\\)\\); print\\('LAST_DATE:', data[-1].get\\('published',''\\)\\); print\\('---URLS_SAMPLE---'\\); [print\\(u\\) for u in urls[:30]]\")",
+      "Bash(python -c \"import json; data=json.load\\(open\\('news.json',encoding='utf-8'\\)\\); [print\\(a['url']\\) for a in data]\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); print\\('count:',len\\(d\\)\\); urls=[x['url'] for x in d]; print\\('first 5 urls:'\\); [print\\(u\\) for u in urls[:5]]\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); urls=[x['url'] for x in d]; [print\\(u\\) for u in urls]\")",
+      "Bash(python -c \"import json; data=json.load\\(open\\(r'C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); print\\('Total:',len\\(data\\)\\); urls=[d['url'] for d in data]; print\\('First 5 urls:'\\); [print\\(u\\) for u in urls[:5]]\")",
+      "Bash(python -c \"import json; data=json.load\\(open\\(r'C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); urls=set\\(d['url'] for d in data\\); import sys; [sys.stdout.write\\(u+'\\\\n'\\) for u in list\\(urls\\)]\")"
     ]
   }
 }

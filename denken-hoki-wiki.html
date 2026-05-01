@@ -1,0 +1,1851 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>電験3種 法規Wiki（新）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* ウォーム系トーン */
+    --bg:        oklch(0.985 0.008 75);    /* オフホワイト */
+    --bg-2:      oklch(0.965 0.012 70);    /* 淡いベージュ */
+    --bg-3:      oklch(0.945 0.018 70);    /* もう一段濃いベージュ */
+    --card:      oklch(0.995 0.004 75);
+    --line:      oklch(0.90 0.012 70);
+    --line-2:    oklch(0.84 0.015 65);
+    --ink:       oklch(0.22 0.012 60);     /* 主文字 */
+    --ink-2:     oklch(0.42 0.012 60);     /* 副文字 */
+    --ink-3:     oklch(0.58 0.012 60);     /* 補助 */
+    --accent:    oklch(0.62 0.13 45);      /* テラコッタ */
+    --accent-2:  oklch(0.55 0.08 70);      /* ベージュブラウン */
+    --accent-soft: oklch(0.93 0.04 55);
+    --rank-s-bg: oklch(0.62 0.13 45);
+    --rank-s-fg: oklch(0.99 0.005 75);
+    --rank-a-bg: oklch(0.86 0.08 60);
+    --rank-a-fg: oklch(0.32 0.06 50);
+    --rank-b-bg: oklch(0.93 0.03 75);
+    --rank-b-fg: oklch(0.42 0.02 60);
+    --warn:      oklch(0.65 0.15 35);
+    --good:      oklch(0.55 0.09 145);
+    --shadow-sm: 0 1px 0 oklch(0.90 0.012 70 / 0.6);
+    --shadow:    0 1px 2px oklch(0.30 0.02 60 / 0.04), 0 4px 14px oklch(0.30 0.02 60 / 0.05);
+    --radius:    10px;
+    --radius-lg: 14px;
+    --serif: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+    --sans:  'Noto Sans JP', 'Hiragino Sans', system-ui, sans-serif;
+    --mono:  'JetBrains Mono', ui-monospace, monospace;
+  }
+  [data-theme="dark"] {
+    --bg:        oklch(0.20 0.010 60);
+    --bg-2:      oklch(0.24 0.012 60);
+    --bg-3:      oklch(0.28 0.014 60);
+    --card:      oklch(0.23 0.010 60);
+    --line:      oklch(0.33 0.012 60);
+    --line-2:    oklch(0.40 0.015 60);
+    --ink:       oklch(0.92 0.008 70);
+    --ink-2:     oklch(0.74 0.010 65);
+    --ink-3:     oklch(0.58 0.010 65);
+    --accent-soft: oklch(0.30 0.05 50);
+    --rank-a-bg: oklch(0.34 0.06 55);
+    --rank-a-fg: oklch(0.88 0.06 60);
+    --rank-b-bg: oklch(0.28 0.03 65);
+    --rank-b-fg: oklch(0.74 0.02 60);
+    --shadow-sm: 0 1px 0 oklch(0.08 0 0 / 0.4);
+    --shadow:    0 1px 2px oklch(0.08 0 0 / 0.3), 0 4px 14px oklch(0.08 0 0 / 0.20);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-feature-settings: "palt";
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ── レイアウト ── */
+  .app {
+    display: grid;
+    grid-template-columns: 256px 1fr;
+    min-height: 100vh;
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* ── サイドバー ── */
+  .sidebar {
+    border-right: 1px solid var(--line);
+    background: var(--bg-2);
+    padding: 22px 14px 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 14px;
+  }
+  .brand-mark {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--rank-s-fg);
+    display: grid; place-items: center;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 16px;
+    box-shadow: inset 0 0 0 2px oklch(0.99 0.005 75 / 0.18);
+  }
+  .brand-name {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: -2px;
+    letter-spacing: 0.06em;
+  }
+  .nav-group {
+    margin: 14px 0 6px;
+  }
+  .nav-group-title {
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0 8px;
+    margin-bottom: 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.3;
+    cursor: pointer;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--bg-3); color: var(--ink); }
+  .nav-item.active {
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .nav-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    width: 18px;
+    flex: none;
+  }
+  .nav-item.active .nav-num { color: var(--accent); }
+  .nav-children {
+    margin: 2px 0 6px 18px;
+    padding-left: 10px;
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .nav-child {
+    padding: 4px 8px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .nav-child:hover { background: var(--bg-3); color: var(--ink); }
+  .nav-foot {
+    margin-top: 18px;
+    padding: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .streak-row {
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .streak-num {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .streak-unit {
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .streak-label {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+    letter-spacing: 0.06em;
+  }
+  .streak-dots {
+    display: flex; gap: 3px; margin-top: 8px;
+  }
+  .streak-dot {
+    width: 10px; height: 10px; border-radius: 3px;
+    background: var(--bg-3);
+  }
+  .streak-dot.on { background: var(--accent); }
+  .streak-dot.today { background: var(--accent); outline: 2px solid var(--accent-soft); outline-offset: 1px; }
+
+  /* ── メイン ── */
+  .main {
+    min-width: 0;
+  }
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: oklch(0.985 0.008 75 / 0.85);
+    backdrop-filter: saturate(1.2) blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .crumbs {
+    font-size: 12.5px;
+    color: var(--ink-3);
+    display: flex; gap: 6px; align-items: center;
+  }
+  .crumbs .sep { color: var(--line-2); }
+  .search {
+    flex: 1;
+    max-width: 520px;
+    margin-left: auto;
+    position: relative;
+  }
+  .search input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 12px 8px 34px;
+    font-size: 13px;
+    color: var(--ink);
+    font-family: inherit;
+    outline: none;
+  }
+  .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search .icn { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-3); font-size: 13px; }
+  .search .kbd {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: 10.5px; color: var(--ink-3);
+    border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px;
+    background: var(--bg);
+  }
+  .search-results {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; box-shadow: var(--shadow);
+    z-index: 200; overflow: hidden; display: none;
+  }
+  .search-results.open { display: block; }
+  .sr-item {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 9px 14px; cursor: pointer;
+    border-bottom: 1px solid var(--line); transition: background 0.1s;
+  }
+  .sr-item:last-child { border-bottom: none; }
+  .sr-item:hover, .sr-item.focused { background: var(--accent-soft); }
+  .sr-label { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .sr-sub   { font-size: 11px; color: var(--ink-3); }
+  .sr-empty { padding: 12px 14px; font-size: 13px; color: var(--ink-3); text-align: center; }
+  .top-actions { display: flex; gap: 8px; align-items: center; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    display: grid; place-items: center;
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+  .icon-btn:hover { border-color: var(--line-2); color: var(--ink); }
+
+  .content {
+    padding: 28px 28px 80px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  /* ── ヒーロー ── */
+  .hero {
+    background:
+      radial-gradient(80% 120% at 90% -10%, oklch(0.93 0.06 55) 0%, transparent 60%),
+      radial-gradient(60% 100% at 0% 110%, oklch(0.95 0.03 80) 0%, transparent 55%),
+      var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+  }
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; padding: 22px; }
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 38px;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    margin: 0 0 10px;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, transparent 65%, var(--accent-soft) 65%);
+    padding: 0 2px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--ink-2);
+    margin: 0 0 22px;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+  .cta-row {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    border-radius: 9px;
+    font-size: 13.5px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: transform 0.05s ease, background 0.15s;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn.primary {
+    background: var(--accent);
+    color: var(--rank-s-fg);
+  }
+  .btn.primary:hover { background: oklch(0.58 0.14 45); }
+  .btn.secondary {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line-2);
+  }
+  .btn.secondary:hover { background: var(--bg-2); }
+  .btn .arrow { transition: transform 0.15s; }
+  .btn:hover .arrow { transform: translateX(2px); }
+
+  .hero-side {
+    background: oklch(0.99 0.005 75 / 0.5);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .resume-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+  }
+  .resume-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .resume-meta {
+    font-size: 12px;
+    color: var(--ink-3);
+    display: flex; gap: 8px; align-items: center;
+    margin-top: 4px;
+  }
+  .progress {
+    height: 6px;
+    background: var(--bg-3);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  .progress > span {
+    display: block; height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+  .progress-text {
+    display: flex; justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    margin-top: 6px;
+    font-family: var(--mono);
+  }
+  .resume-btn {
+    margin-top: 4px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── セクション ── */
+  .section {
+    margin-top: 44px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 4px 0 0;
+  }
+  .section-link {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line-2);
+    padding-bottom: 1px;
+  }
+  .section-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── ロードマップ ── */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    position: relative;
+  }
+  @media (max-width: 1000px) {
+    .roadmap { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .roadmap { grid-template-columns: 1fr; }
+  }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 16px 18px;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .step.done { background: oklch(0.97 0.02 70); }
+  .step.current { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-sm); }
+  .step-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .step-no {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.12em;
+  }
+  .step.current .step-no { color: var(--accent); }
+  .step-status {
+    font-size: 10.5px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+  .status-done { background: oklch(0.92 0.05 145); color: oklch(0.32 0.07 145); }
+  .status-now  { background: var(--accent); color: var(--rank-s-fg); }
+  .status-next { background: var(--bg-3); color: var(--ink-3); }
+  .step-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 15px;
+    margin: 4px 0 6px;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .step-desc {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .step-progress {
+    height: 4px;
+    background: var(--bg-3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .step-progress > span {
+    display: block; height: 100%;
+    background: var(--accent);
+  }
+  .step-meta {
+    margin-top: 6px;
+    display: flex; justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-3);
+  }
+
+  /* ── 頻出テーマカード ── */
+  .topics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 1000px) { .topics { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px)  { .topics { grid-template-columns: 1fr; } }
+  .topic {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.15s, transform 0.05s;
+    cursor: pointer;
+  }
+  .topic:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .topic-head {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .topic-name {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .rank {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+  }
+  .rank-S { background: var(--rank-s-bg); color: var(--rank-s-fg); }
+  .rank-A { background: var(--rank-a-bg); color: var(--rank-a-fg); }
+  .rank-B { background: var(--rank-b-bg); color: var(--rank-b-fg); }
+  .topic-meta {
+    font-size: 11.5px;
+    color: var(--ink-3);
+    font-family: var(--mono);
+    display: flex; gap: 10px;
+  }
+  .topic-tags {
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+  .tag {
+    font-size: 11px;
+    color: var(--ink-2);
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: var(--mono);
+  }
+  .tag.warn { color: oklch(0.45 0.12 35); background: oklch(0.96 0.04 50); border-color: oklch(0.88 0.06 45); }
+  .tag.hot  { color: var(--accent); background: var(--accent-soft); border-color: oklch(0.86 0.06 50); }
+
+  /* ── 表暗記 ── */
+  .tables {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 760px) { .tables { grid-template-columns: 1fr; } }
+  .table-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 0 0;
+    overflow: hidden;
+  }
+  .table-card-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px 10px;
+  }
+  .table-card-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .table-card-sub {
+    font-size: 11.5px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    border-top: 1px solid var(--line);
+  }
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    min-width: 380px;
+  }
+  .mini-table th, .mini-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .mini-table th {
+    background: var(--bg-2);
+    font-weight: 500;
+    color: var(--ink-2);
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+  }
+  .mini-table td.num {
+    font-family: var(--mono);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .table-card-foot {
+    padding: 10px 16px;
+    display: flex; justify-content: space-between;
+    border-top: 1px solid var(--line);
+    background: var(--bg-2);
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .table-card-foot a { color: var(--accent); }
+
+  /* ── 過去問検索 ── */
+  .past {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+  }
+  .past-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 900px) { .past-grid { grid-template-columns: repeat(2, 1fr); } }
+  .filter {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .filter-label {
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .select {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--ink);
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%), linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+    background-position: calc(100% - 14px) 14px, calc(100% - 9px) 14px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 26px;
+  }
+  .past-tags {
+    margin-top: 14px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .chip {
+    font-size: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 4px 11px;
+    color: var(--ink-2);
+    cursor: pointer;
+    user-select: none;
+    font-family: var(--mono);
+  }
+  .chip:hover { border-color: var(--line-2); }
+  .chip.on {
+    background: var(--accent);
+    color: var(--rank-s-fg);
+    border-color: var(--accent);
+  }
+  .past-foot {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .past-count {
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .past-count strong {
+    font-family: var(--serif);
+    font-weight: 900;
+    color: var(--accent);
+    font-size: 18px;
+    margin: 0 4px;
+  }
+
+  /* ── 直前チェック ── */
+  .last {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 760px) { .last { grid-template-columns: 1fr; } }
+  .last-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .last-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+  .last-card-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+  }
+  .last-card-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 18px;
+    margin: 6px 0;
+  }
+  .last-card-desc {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+  }
+  .last-card-stat {
+    display: flex; gap: 14px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background: var(--bg-2);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .last-card-stat strong {
+    font-family: var(--mono);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* ── 今日の一問 ── */
+  .daily {
+    background: linear-gradient(135deg, oklch(0.96 0.025 65) 0%, var(--card) 60%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    align-items: center;
+  }
+  @media (max-width: 880px) { .daily { grid-template-columns: 1fr; } }
+  .daily-eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .daily-q {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.5;
+    margin: 0 0 12px;
+    text-wrap: pretty;
+  }
+  .daily-meta {
+    font-size: 12px;
+    color: var(--ink-3);
+    display: flex; gap: 12px; align-items: center;
+  }
+  .daily-choices {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .choice {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex; gap: 10px; align-items: center;
+    text-align: left;
+  }
+  .choice:hover { border-color: var(--accent); }
+  .choice .key {
+    font-family: var(--mono);
+    font-weight: 700;
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--bg-2);
+    display: grid; place-items: center;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    flex: none;
+  }
+  .choice.correct { border-color: var(--good); background: oklch(0.96 0.04 145); }
+  .choice.correct .key { background: var(--good); color: white; }
+  .choice.wrong   { border-color: var(--warn); background: oklch(0.96 0.04 35); }
+  .choice.wrong   .key { background: var(--warn); color: white; }
+
+  /* ── フッター ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-3);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .footer .updated {
+    font-family: var(--mono);
+  }
+
+  /* テーマ別: 4 列見出し */
+  .col-2 {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (max-width: 1000px) { .col-2 { grid-template-columns: 1fr; } }
+
+  /* スクロールバー */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 999px; border: 2px solid var(--bg); }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  /* アクセント引用 */
+  .pull {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 14px;
+    color: var(--ink-2);
+    font-size: 13px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ====== サイドバー ====== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">法</div>
+      <div>
+        <div class="brand-name">電験3種 法規Wiki</div>
+        <div class="brand-sub">2026年度 試験対応</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">学習カテゴリ</div>
+
+      <div class="nav-item" data-section="top">
+        <span class="nav-num">00</span><span>はじめに</span>
+      </div>
+
+      <div class="nav-item active" data-section="roadmap">
+        <span class="nav-num">01</span><span>B問題・計算問題対策</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" data-section="roadmap">B問題の全体像</div>
+        <div class="nav-child" data-section="tables">絶縁耐力試験</div>
+        <div class="nav-child" data-section="tables">電圧降下</div>
+        <div class="nav-child" data-section="tables">支線の引張強さ</div>
+        <div class="nav-child" data-section="tables">変圧器の全日効率</div>
+        <div class="nav-child" data-section="tables">力率改善</div>
+        <div class="nav-child" data-section="tables">需要率・不等率・負荷率</div>
+        <div class="nav-child" data-section="tables">B種接地抵抗値</div>
+        <div class="nav-child" data-section="tables">地絡電流・対地静電容量</div>
+      </div>
+
+      <div class="nav-item" data-section="topics">
+        <span class="nav-num">02</span><span>電気設備技術基準・解釈</span>
+      </div>
+      <div class="nav-item" data-section="topics">
+        <span class="nav-num">03</span><span>法令・ルールの目的</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" data-section="koji-shi-ho">電気工事士法</div>
+      </div>
+      <div class="nav-item" data-section="topics">
+        <span class="nav-num">04</span><span>施設管理・保安</span>
+      </div>
+      <div class="nav-item" data-section="tables">
+        <span class="nav-num">05</span><span>頻出数値・表暗記</span>
+      </div>
+      <div class="nav-item" data-section="past">
+        <span class="nav-num">06</span><span>過去問テーマ別演習</span>
+      </div>
+      <div class="nav-item" data-section="last-mile">
+        <span class="nav-num">07</span><span>直前チェック</span>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">マイ学習</div>
+      <div class="nav-item"><span class="nav-num">★</span><span>間違いノート</span></div>
+      <div class="nav-item"><span class="nav-num">⌕</span><span>あとで読む</span></div>
+      <div class="nav-item"><span class="nav-num">⏱</span><span>学習履歴</span></div>
+    </div>
+
+    <div class="nav-foot">
+      <div class="streak-label">学習ストリーク</div>
+      <div class="streak-row">
+        <span class="streak-num">23</span>
+        <span class="streak-unit">日連続</span>
+      </div>
+      <div class="streak-dots" id="streak-dots"></div>
+    </div>
+  </aside>
+
+  <!-- ====== メイン ====== -->
+  <main class="main">
+
+    <!-- トップバー -->
+    <div class="topbar">
+      <div class="crumbs">
+        <span>ホーム</span>
+      </div>
+      <div class="search">
+        <span class="icn">⌕</span>
+        <input placeholder="ページ・条文・タグを検索（例：B種接地抵抗）" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" title="お気に入り">♡</button>
+        <button class="icon-btn" title="進捗">▦</button>
+        <button class="icon-btn" title="アカウント">◐</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ====== ヒーロー ====== -->
+      <section class="hero" id="top">
+        <div>
+          <div class="hero-eyebrow">電験3種 / 法規 / 学習Wiki</div>
+          <h1>
+            <em>B問題で点を取り、</em><br/>
+            表暗記でA問題を拾う。
+          </h1>
+          <p class="hero-sub">
+            条文を丸暗記する科目ではありません。頻出論点・表暗記・B問題計算・過去問演習の4つを正しい順序で組み合わせれば、60点は安定して取れます。
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#roadmap">B問題から始める <span class="arrow">→</span></a>
+            <a class="btn secondary" href="#topics">頻出Sランクを見る</a>
+            <a class="btn secondary" href="#last-mile">直前チェックを見る</a>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <div>
+            <div class="resume-label">前回のつづき</div>
+            <div class="resume-title">B種接地抵抗値の計算</div>
+            <div class="resume-meta">
+              <span class="rank rank-S">S</span>
+              <span>B問題対策</span>
+              <span>·</span>
+              <span>3分前</span>
+            </div>
+          </div>
+          <div>
+            <div class="progress"><span style="width: 62%"></span></div>
+            <div class="progress-text">
+              <span>全体進捗</span>
+              <span>62% / 78ページ</span>
+            </div>
+          </div>
+          <a href="#roadmap" class="btn primary resume-btn">続きから学習する <span class="arrow">→</span></a>
+        </aside>
+      </section>
+
+      <!-- ====== 今日の一問 ====== -->
+      <section class="section" id="daily">
+        <div class="section-head">
+          <div>
+            <div class="section-num">DAILY · 1問1分</div>
+            <h2 class="section-title">今日の一問</h2>
+            <p class="section-sub">毎日1問。23日連続で続いています。</p>
+          </div>
+          <a href="#past" class="section-link">過去の一問 →</a>
+        </div>
+
+        <div class="daily">
+          <div>
+            <div class="daily-eyebrow">2026年5月1日 · R5上期 改</div>
+            <p class="daily-q">高圧電路に施設する変圧器の低圧側の中性点に施す接地工事は、原則として何種接地工事か。</p>
+            <div class="daily-meta">
+              <span class="rank rank-S">S</span>
+              <span class="tag">#高圧</span>
+              <span class="tag">#頻出S</span>
+              <span>· 平均正答率 71%</span>
+            </div>
+          </div>
+          <div class="daily-choices" id="daily-choices">
+            <button class="choice" data-correct="false"><span class="key">A</span>A種接地工事</button>
+            <button class="choice" data-correct="true"><span class="key">B</span>B種接地工事</button>
+            <button class="choice" data-correct="false"><span class="key">C</span>C種接地工事</button>
+            <button class="choice" data-correct="false"><span class="key">D</span>D種接地工事</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 学習ロードマップ ====== -->
+      <section class="section" id="roadmap">
+        <div class="section-head">
+          <div>
+            <div class="section-num">LEARNING ROADMAP</div>
+            <h2 class="section-title">5ステップで合格まで</h2>
+            <p class="section-sub">B問題を最初に置くのが、法規で60点を取る最短ルートです。</p>
+          </div>
+          <a href="#" class="section-link">学習計画を編集 →</a>
+        </div>
+
+        <div class="roadmap">
+          <article class="step done">
+            <div class="step-head">
+              <span class="step-no">STEP 01</span>
+              <span class="step-status status-done">完了</span>
+            </div>
+            <h3 class="step-title">B問題・計算問題</h3>
+            <p class="step-desc">配点が大きく、パターンも限られている。最優先で固める。</p>
+            <div class="step-progress"><span style="width:100%"></span></div>
+            <div class="step-meta"><span>9 / 9 ページ</span><span>100%</span></div>
+          </article>
+          <article class="step current">
+            <div class="step-head">
+              <span class="step-no">STEP 02</span>
+              <span class="step-status status-now">学習中</span>
+            </div>
+            <h3 class="step-title">接地・絶縁・離隔距離</h3>
+            <p class="step-desc">表で横断的に覚える。ここで得点源が増える。</p>
+            <div class="step-progress"><span style="width:62%"></span></div>
+            <div class="step-meta"><span>8 / 13 ページ</span><span>62%</span></div>
+          </article>
+          <article class="step">
+            <div class="step-head">
+              <span class="step-no">STEP 03</span>
+              <span class="step-status status-next">次へ</span>
+            </div>
+            <h3 class="step-title">電気工作物・主任技術者・保安規程</h3>
+            <p class="step-desc">A問題で必ず出る、施設管理の定番論点。</p>
+            <div class="step-progress"><span style="width:18%"></span></div>
+            <div class="step-meta"><span>2 / 11 ページ</span><span>18%</span></div>
+          </article>
+          <article class="step">
+            <div class="step-head">
+              <span class="step-no">STEP 04</span>
+              <span class="step-status status-next">次へ</span>
+            </div>
+            <h3 class="step-title">過去問テーマ別演習</h3>
+            <p class="step-desc">年度順ではなく、テーマ別に潰す。</p>
+            <div class="step-progress"><span style="width:0%"></span></div>
+            <div class="step-meta"><span>0 / 24 セット</span><span>0%</span></div>
+          </article>
+          <article class="step">
+            <div class="step-head">
+              <span class="step-no">STEP 05</span>
+              <span class="step-status status-next">直前期</span>
+            </div>
+            <h3 class="step-title">間違いノート・直前チェック</h3>
+            <p class="step-desc">試験前日は、自分の弱点だけを見る。</p>
+            <div class="step-progress"><span style="width:0%"></span></div>
+            <div class="step-meta"><span>未着手</span><span>—</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ====== 頻出テーマ ====== -->
+      <section class="section" id="topics">
+        <div class="section-head">
+          <div>
+            <div class="section-num">HOT TOPICS</div>
+            <h2 class="section-title">頻出テーマ</h2>
+            <p class="section-sub">過去10年の出題回数が多い順。Sランクから手を付ける。</p>
+          </div>
+          <a href="#topics" class="section-link">すべてのテーマ →</a>
+        </div>
+
+        <div class="topics">
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">B問題</span>
+              <span class="rank rank-S">S</span>
+            </div>
+            <div class="topic-meta"><span>9ページ</span><span>·</span><span>過去10年で20回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag hot">#B問題対策</span>
+              <span class="tag">#頻出S</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">接地</span>
+              <span class="rank rank-S">S</span>
+            </div>
+            <div class="topic-meta"><span>6ページ</span><span>·</span><span>17回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#高圧</span>
+              <span class="tag hot">#表暗記</span>
+              <span class="tag warn">#ひっかけ注意</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">絶縁</span>
+              <span class="rank rank-S">S</span>
+            </div>
+            <div class="topic-meta"><span>5ページ</span><span>·</span><span>15回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#低圧</span>
+              <span class="tag">#高圧</span>
+              <span class="tag hot">#表暗記</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">主任技術者</span>
+              <span class="rank rank-A">A</span>
+            </div>
+            <div class="topic-meta"><span>4ページ</span><span>·</span><span>12回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#頻出A</span>
+              <span class="tag warn">#ひっかけ注意</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">保安規程</span>
+              <span class="rank rank-A">A</span>
+            </div>
+            <div class="topic-meta"><span>3ページ</span><span>·</span><span>11回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#頻出A</span>
+              <span class="tag">#直前確認</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">事故報告</span>
+              <span class="rank rank-A">A</span>
+            </div>
+            <div class="topic-meta"><span>2ページ</span><span>·</span><span>10回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#表暗記</span>
+              <span class="tag warn">#ひっかけ注意</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">電線路</span>
+              <span class="rank rank-A">A</span>
+            </div>
+            <div class="topic-meta"><span>5ページ</span><span>·</span><span>9回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#特別高圧</span>
+              <span class="tag">#高圧</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">分散型電源</span>
+              <span class="rank rank-B">B</span>
+            </div>
+            <div class="topic-meta"><span>3ページ</span><span>·</span><span>5回出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#法改正注意</span>
+            </div>
+          </article>
+          <article class="topic">
+            <div class="topic-head">
+              <span class="topic-name">電気工事士法</span>
+              <span class="rank rank-B">B</span>
+            </div>
+            <div class="topic-meta"><span>1ページ</span><span>·</span><span>R06下・H20 出題</span></div>
+            <div class="topic-tags">
+              <span class="tag">#法令</span>
+              <span class="tag warn">#ひっかけ注意</span>
+              <span class="tag">#免状</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ====== 電気工事士法 ====== -->
+      <section class="section" id="koji-shi-ho">
+        <div class="section-head">
+          <div>
+            <div class="section-num">LAW · 電気工事士法</div>
+            <h2 class="section-title">電気工事士法</h2>
+            <p class="section-sub">「資格と義務を定めて工事欠陥を防ぐ」が目的。第一種でも500kW以上の自家用は不可。</p>
+          </div>
+          <span class="rank rank-B">B</span>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px">
+          <span style="font-size:12px;color:var(--ink-3)">出題実績 → R06下 / H20</span>
+          <span class="tag warn">#ひっかけ注意</span>
+          <span class="tag">#法令</span>
+          <span class="tag">#免状</span>
+        </div>
+
+        <div class="tables">
+          <article class="table-card">
+            <div class="table-card-head">
+              <div>
+                <div class="table-card-title">電気工事士の種類と作業範囲</div>
+                <div class="table-card-sub">第一種でも最大電力500kW以上の自家用は対象外</div>
+              </div>
+              <span class="rank rank-B">B</span>
+            </div>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead>
+                  <tr><th>資格</th><th>一般用電気工作物</th><th>自家用電気工作物</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>第一種電気工事士</td><td class="num">○ 全作業</td><td class="num">○ 500kW未満</td></tr>
+                  <tr><td>第二種電気工事士</td><td class="num">○ 全作業</td><td class="num">× 不可</td></tr>
+                  <tr><td>認定電気工事従事者</td><td class="num">× 不可</td><td class="num">△ 600V以下の簡易工事</td></tr>
+                  <tr><td>特種電気工事資格者</td><td class="num">× 不可</td><td class="num">△ ネオン・非常用予備電源</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-card-foot"><span>最終確認日 · 2026/05/01</span></div>
+          </article>
+
+          <article class="table-card">
+            <div class="table-card-head">
+              <div>
+                <div class="table-card-title">免状・義務のまとめ</div>
+                <div class="table-card-sub">「都道府県知事が交付」が頻出ポイント</div>
+              </div>
+              <span class="rank rank-B">B</span>
+            </div>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead>
+                  <tr><th>項目</th><th>内容</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>免状の交付者</td><td>都道府県知事（経済産業大臣ではない）</td></tr>
+                  <tr><td>第一種の免状交付条件</td><td>試験合格 + 実務経験3年以上</td></tr>
+                  <tr><td>第二種の免状交付条件</td><td>試験合格のみ（実務経験不要）</td></tr>
+                  <tr><td>電気工事士の義務</td><td>電気設備技術基準に適合した工事の実施</td></tr>
+                  <tr><td>免状の携帯義務</td><td>なし（保管義務のみ）</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-card-foot"><span>最終確認日 · 2026/05/01</span></div>
+          </article>
+        </div>
+
+        <article class="step current" style="margin-top:16px;padding:14px 16px;border-radius:var(--radius)">
+          <div class="step-head">
+            <span class="step-no">ひっかけポイント 3選</span>
+            <span class="step-status status-now">要注意</span>
+          </div>
+          <ul style="margin:10px 0 0;padding-left:20px;font-size:13px;color:var(--ink-2);line-height:1.9">
+            <li>「第一種 = 自家用すべてOK」は誤り → 最大電力<strong>500kW以上</strong>の自家用は作業不可</li>
+            <li>「免状は経済産業大臣が交付」は誤り → 正解は<strong>都道府県知事</strong></li>
+            <li>第二種で自家用電気工作物の工事を行うと<strong>電気工事士法違反</strong></li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ====== 表暗記 ====== -->
+      <section class="section" id="tables">
+        <div class="section-head">
+          <div>
+            <div class="section-num">MEMORIZE BY TABLE</div>
+            <h2 class="section-title">表で覚える</h2>
+            <p class="section-sub">数字は文章ではなく、表で横断比較するのが最短です。</p>
+          </div>
+          <a href="#tables" class="section-link">すべての暗記表 →</a>
+        </div>
+
+        <div class="tables">
+          <article class="table-card">
+            <div class="table-card-head">
+              <div>
+                <div class="table-card-title">接地工事一覧表</div>
+                <div class="table-card-sub">A種・B種・C種・D種の対応条件と接地抵抗値</div>
+              </div>
+              <span class="rank rank-S">S</span>
+            </div>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead>
+                  <tr><th>種別</th><th>対象</th><th>接地抵抗値</th><th>電線太さ</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>A種</td><td>高圧・特高機器</td><td class="num">10 Ω 以下</td><td class="num">2.6 mm 以上</td></tr>
+                  <tr><td>B種</td><td>変圧器中性点</td><td class="num">150 / Ig</td><td class="num">4.0 mm 以上</td></tr>
+                  <tr><td>C種</td><td>300V 超低圧</td><td class="num">10 Ω 以下</td><td class="num">1.6 mm 以上</td></tr>
+                  <tr><td>D種</td><td>300V 以下低圧</td><td class="num">100 Ω 以下</td><td class="num">1.6 mm 以上</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-card-foot">
+              <span>最終確認日 · 2026/04/28</span>
+              <a href="#">表を開く →</a>
+            </div>
+          </article>
+
+          <article class="table-card">
+            <div class="table-card-head">
+              <div>
+                <div class="table-card-title">絶縁耐力試験一覧表</div>
+                <div class="table-card-sub">電路の最大使用電圧と試験電圧の倍率</div>
+              </div>
+              <span class="rank rank-S">S</span>
+            </div>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead>
+                  <tr><th>電路</th><th>最大使用電圧</th><th>倍率</th><th>時間</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>低圧</td><td class="num">7,000 V 以下</td><td class="num">1.5 倍</td><td class="num">10 分</td></tr>
+                  <tr><td>高圧</td><td class="num">7,000 V 超 60kV 以下</td><td class="num">1.25 倍</td><td class="num">10 分</td></tr>
+                  <tr><td>特高 (中性点直接接地)</td><td class="num">170kV 超</td><td class="num">0.64 倍</td><td class="num">10 分</td></tr>
+                  <tr><td>特高 (その他)</td><td class="num">60kV 超</td><td class="num">1.25 倍</td><td class="num">10 分</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-card-foot">
+              <span>最終確認日 · 2026/04/27</span>
+              <a href="#">表を開く →</a>
+            </div>
+          </article>
+
+          <article class="table-card">
+            <div class="table-card-head">
+              <div>
+                <div class="table-card-title">離隔距離一覧表</div>
+                <div class="table-card-sub">架空電線・建造物・他物との離隔</div>
+              </div>
+              <span class="rank rank-A">A</span>
+            </div>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead>
+                  <tr><th>区分</th><th>低圧</th><th>高圧</th><th>特別高圧</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>建造物上部</td><td class="num">2 m</td><td class="num">2 m</td><td class="num">3 m</td></tr>
+                  <tr><td>建造物側方</td><td class="num">1 m</td><td class="num">1.2 m</td><td class="num">3 m</td></tr>
+                  <tr><td>道路横断</td><td class="num">5 m</td><td class="num">6 m</td><td class="num">6 m</td></tr>
+                  <tr><td>鉄道横断</td><td class="num">5.5 m</td><td class="num">5.5 m</td><td class="num">6 m</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-card-foot">
+              <span>最終確認日 · 2026/04/26</span>
+              <a href="#">表を開く →</a>
+            </div>
+          </article>
+
+          <article class="table-card">
+            <div class="table-card-head">
+              <div>
+                <div class="table-card-title">電圧区分一覧表</div>
+                <div class="table-card-sub">交流・直流別の低圧／高圧／特別高圧</div>
+              </div>
+              <span class="rank rank-A">A</span>
+            </div>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead>
+                  <tr><th>区分</th><th>交流</th><th>直流</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>低圧</td><td class="num">600 V 以下</td><td class="num">750 V 以下</td></tr>
+                  <tr><td>高圧</td><td class="num">600 V 超 7,000 V 以下</td><td class="num">750 V 超 7,000 V 以下</td></tr>
+                  <tr><td>特別高圧</td><td class="num">7,000 V 超</td><td class="num">7,000 V 超</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-card-foot">
+              <span>最終確認日 · 2026/04/25</span>
+              <a href="#">表を開く →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ====== 過去問検索 ====== -->
+      <section class="section" id="past">
+        <div class="section-head">
+          <div>
+            <div class="section-num">PAST EXAMS</div>
+            <h2 class="section-title">過去問をテーマで探す</h2>
+            <p class="section-sub">年度順ではなく、論点とタグで横断検索できます。</p>
+          </div>
+          <a href="#past" class="section-link">全件を表示 →</a>
+        </div>
+
+        <div class="past">
+          <div class="past-grid">
+            <div class="filter">
+              <label class="filter-label">年度</label>
+              <select class="select">
+                <option>すべて</option>
+                <option>2025（R7）</option>
+                <option>2024（R6）</option>
+                <option>2023（R5）</option>
+                <option>2022（R4）</option>
+                <option>過去10年</option>
+              </select>
+            </div>
+            <div class="filter">
+              <label class="filter-label">テーマ</label>
+              <select class="select">
+                <option>すべて</option>
+                <option>接地</option>
+                <option>絶縁</option>
+                <option>主任技術者</option>
+                <option>保安規程</option>
+                <option>事故報告</option>
+                <option>電線路</option>
+                <option>分散型電源</option>
+              </select>
+            </div>
+            <div class="filter">
+              <label class="filter-label">出題形式</label>
+              <select class="select">
+                <option>すべて</option>
+                <option>A問題</option>
+                <option>B問題</option>
+              </select>
+            </div>
+            <div class="filter">
+              <label class="filter-label">頻出度</label>
+              <select class="select">
+                <option>すべて</option>
+                <option>S ランク</option>
+                <option>A ランク</option>
+                <option>B ランク</option>
+              </select>
+            </div>
+            <div class="filter">
+              <label class="filter-label">正答率</label>
+              <select class="select">
+                <option>すべて</option>
+                <option>苦手のみ（&lt; 50%）</option>
+                <option>未着手のみ</option>
+                <option>復習要</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="past-tags" id="past-chips">
+            <button class="chip on">#B問題対策</button>
+            <button class="chip">#高圧</button>
+            <button class="chip">#低圧</button>
+            <button class="chip">#特別高圧</button>
+            <button class="chip">#頻出S</button>
+            <button class="chip">#頻出A</button>
+            <button class="chip">#頻出B</button>
+            <button class="chip">#表暗記</button>
+            <button class="chip">#ひっかけ注意</button>
+            <button class="chip">#直前確認</button>
+            <button class="chip">#法改正注意</button>
+          </div>
+
+          <div class="past-foot">
+            <div class="past-count">条件に一致 <strong>34</strong> 問</div>
+            <a class="btn primary" href="#">この条件で演習を始める <span class="arrow">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 直前チェック ====== -->
+      <section class="section" id="last-mile">
+        <div class="section-head">
+          <div>
+            <div class="section-num">LAST-MILE CHECK</div>
+            <h2 class="section-title">試験直前チェック</h2>
+            <p class="section-sub">前日・当日は、自分の弱点だけを見る。</p>
+          </div>
+          <a href="#last-mile" class="section-link">直前チェックTOP →</a>
+        </div>
+
+        <div class="last">
+          <article class="last-card">
+            <div class="last-card-eyebrow">15 分</div>
+            <h3 class="last-card-title">数字だけ確認</h3>
+            <p class="last-card-desc">接地抵抗値・絶縁耐力倍率・離隔距離・報告期限のみを高速で復習。</p>
+            <div class="last-card-stat"><span>収録 <strong>42</strong> 値</span><span>苦手 <strong>7</strong> 値</span></div>
+            <a href="#" class="btn secondary">数字だけ見る <span class="arrow">→</span></a>
+          </article>
+          <article class="last-card">
+            <div class="last-card-eyebrow">10 分</div>
+            <h3 class="last-card-title">公式だけ確認</h3>
+            <p class="last-card-desc">B種接地抵抗・電圧降下・力率改善・全日効率などB問題用公式集。</p>
+            <div class="last-card-stat"><span>収録 <strong>14</strong> 式</span><span>マスター <strong>9</strong> 式</span></div>
+            <a href="#" class="btn secondary">公式だけ見る <span class="arrow">→</span></a>
+          </article>
+          <article class="last-card">
+            <div class="last-card-eyebrow">20 分</div>
+            <h3 class="last-card-title">ひっかけだけ確認</h3>
+            <p class="last-card-desc">あなたが過去に間違えた論点。間違いノートから自動生成。</p>
+            <div class="last-card-stat"><span>登録 <strong>23</strong> 件</span><span>未復習 <strong>5</strong> 件</span></div>
+            <a href="#" class="btn primary">マイひっかけ集 <span class="arrow">→</span></a>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>電験3種 法規Wiki · 2026年度版</div>
+        <div class="updated">準拠：電気事業法 R6改正 / 最終確認 2026-04-30</div>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script>
+  // ── ストリーク（localStorage管理）──
+  (function () {
+    const wrap = document.getElementById('streak-dots');
+    const numEl = document.querySelector('.streak-num');
+    if (!wrap) return;
+    const saved = parseInt(localStorage.getItem('hoki-streak') || '23', 10);
+    if (numEl) numEl.textContent = saved;
+    const dots = Math.min(saved, 14);
+    for (let i = 0; i < 14; i++) {
+      const d = document.createElement('span');
+      d.className = 'streak-dot';
+      if (i < dots - 1) d.classList.add('on');
+      if (i === dots - 1) d.classList.add('today');
+      wrap.appendChild(d);
+    }
+  })();
+
+  // ── 進捗（localStorage管理）──
+  (function () {
+    const pct = parseInt(localStorage.getItem('hoki-progress') || '62', 10);
+    const bar = document.querySelector('.progress > span');
+    const txt = document.querySelector('.progress-text span:last-child');
+    const totalPages = 78;
+    if (bar) bar.style.width = pct + '%';
+    if (txt) txt.textContent = pct + '% / ' + totalPages + 'ページ';
+  })();
+
+  // ── 今日の一問 ──
+  (function () {
+    const wrap = document.getElementById('daily-choices');
+    if (!wrap) return;
+    wrap.querySelectorAll('.choice').forEach(btn => {
+      btn.addEventListener('click', () => {
+        wrap.querySelectorAll('.choice').forEach(b => {
+          b.classList.remove('correct', 'wrong');
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if (btn.dataset.correct !== 'true') btn.classList.add('wrong');
+      });
+    });
+  })();
+
+  // ── タグチップトグル ──
+  (function () {
+    const chips = document.getElementById('past-chips');
+    if (!chips) return;
+    chips.addEventListener('click', e => {
+      const c = e.target.closest('.chip');
+      if (!c) return;
+      c.classList.toggle('on');
+    });
+  })();
+
+  // ── サイドバーナビ → セクションスクロール ──
+  (function () {
+    function scrollTo(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar .nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const sec = item.dataset.section;
+        if (sec) scrollTo(sec);
+      });
+    });
+    document.querySelectorAll('.sidebar .nav-child').forEach(child => {
+      child.addEventListener('click', () => {
+        const sec = child.dataset.section;
+        if (sec) scrollTo(sec);
+      });
+    });
+  })();
+
+  // ── IntersectionObserver：スクロールで nav-item を自動ハイライト ──
+  (function () {
+    const sections = ['top','daily','roadmap','topics','tables','past','last-mile'];
+    const sectionNavMap = {
+      'top': '[data-section="top"]',
+      'daily': '[data-section="daily"]',
+      'roadmap': '[data-section="roadmap"]',
+      'topics': '[data-section="topics"]',
+      'tables': '[data-section="tables"]',
+      'past': '[data-section="past"]',
+      'last-mile': '[data-section="last-mile"]'
+    };
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        const sel = sectionNavMap[id];
+        if (!sel) return;
+        document.querySelectorAll('.sidebar .nav-item').forEach(i => i.classList.remove('active'));
+        const navItem = document.querySelector('.sidebar .nav-item' + sel);
+        if (navItem) navItem.classList.add('active');
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+  })();
+
+  // ── 検索バー：コンテンツインデックス＋ドロップダウン ──
+  (function () {
+    const input = document.querySelector('.search input');
+    if (!input) return;
+
+    // ① ドロップダウンDOM追加
+    const drop = document.createElement('div');
+    drop.className = 'search-results';
+    input.closest('.search').appendChild(drop);
+
+    // ② 検索インデックス（動的再構築対応）
+    let index = [];
+    const sectionMap = {
+      daily: '今日の一問', roadmap: 'B問題・計算問題対策',
+      topics: '頻出テーマ', 'koji-shi-ho': '電気工事士法',
+      tables: '表で覚える',
+      past: '過去問テーマ別演習', 'last-mile': '試験直前チェック'
+    };
+
+    function rebuildIndex() {
+      index.length = 0;
+
+      // セクション見出し
+      Object.entries(sectionMap).forEach(([id, label]) => {
+        const el = document.getElementById(id);
+        if (el) index.push({ label, sublabel: 'セクション', el, keywords: label.toLowerCase() });
+      });
+
+      // nav-child（B問題の全体像・絶縁耐力試験 etc.）
+      document.querySelectorAll('.nav-child[data-section]').forEach(child => {
+        const label = child.textContent.trim();
+        const el = document.getElementById(child.dataset.section);
+        if (el) index.push({ label, sublabel: sectionMap[child.dataset.section] || child.dataset.section, el, keywords: label.toLowerCase() });
+      });
+
+      // 頻出テーマカード
+      document.querySelectorAll('.topic').forEach(article => {
+        const nameEl = article.querySelector('.topic-name');
+        const rankEl = article.querySelector('.rank');
+        if (!nameEl) return;
+        const label = nameEl.textContent.trim();
+        const rank  = rankEl ? 'ランク' + rankEl.textContent.trim() : '';
+        const tags  = [...article.querySelectorAll('.tag')].map(t => t.textContent).join(' ');
+        index.push({ label, sublabel: rank + ' · ' + tags, el: article, keywords: (label + ' ' + tags).toLowerCase() });
+      });
+
+      // 表カード
+      document.querySelectorAll('.table-card-title').forEach(t => {
+        const label = t.textContent.trim();
+        const el = t.closest('article') || document.getElementById('tables');
+        index.push({ label, sublabel: '表で覚える', el, keywords: label.toLowerCase() });
+      });
+
+      // 直前チェック
+      document.querySelectorAll('.last-card-title').forEach(t => {
+        const label = t.textContent.trim();
+        const el = t.closest('div') || document.getElementById('last-mile');
+        index.push({ label, sublabel: '試験直前チェック', el, keywords: label.toLowerCase() });
+      });
+    }
+
+    rebuildIndex();
+
+    // MutationObserver：コンテンツ追加時に自動再構築（デバウンス200ms）
+    let rebuildTimer = null;
+    new MutationObserver(() => {
+      clearTimeout(rebuildTimer);
+      rebuildTimer = setTimeout(rebuildIndex, 200);
+    }).observe(document.querySelector('.main') || document.body, { childList: true, subtree: true });
+
+    // ③ ユーティリティ
+    let focusIdx = -1;
+
+    function closeDrop() {
+      drop.classList.remove('open');
+      drop.innerHTML = '';
+      focusIdx = -1;
+    }
+
+    function jump(r) {
+      r.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      closeDrop();
+      input.value = '';
+      document.querySelectorAll('.nav-child').forEach(c => c.style.display = '');
+      document.querySelectorAll('.nav-item').forEach(c => c.style.opacity = '');
+    }
+
+    function render(results) {
+      drop.innerHTML = '';
+      focusIdx = -1;
+      if (!results.length) {
+        drop.innerHTML = '<div class="sr-empty">一致するページが見つかりません</div>';
+        drop.classList.add('open');
+        return;
+      }
+      results.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'sr-item';
+        div.innerHTML = `<span class="sr-label">${r.label}</span><span class="sr-sub">${r.sublabel}</span>`;
+        div.addEventListener('mousedown', e => { e.preventDefault(); jump(r); });
+        drop.appendChild(div);
+      });
+      drop.classList.add('open');
+    }
+
+    // ④ イベント
+    document.addEventListener('keydown', e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); input.focus(); input.select(); }
+      if (e.key === 'Escape') { input.blur(); closeDrop(); }
+    });
+
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      if (!q) { closeDrop(); return; }
+      render(index.filter(r => r.keywords.includes(q)).slice(0, 8));
+    });
+
+    input.addEventListener('keydown', e => {
+      const items = drop.querySelectorAll('.sr-item');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusIdx = Math.min(focusIdx + 1, items.length - 1);
+        items.forEach((el, i) => el.classList.toggle('focused', i === focusIdx));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusIdx = Math.max(focusIdx - 1, 0);
+        items.forEach((el, i) => el.classList.toggle('focused', i === focusIdx));
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const target = focusIdx >= 0 ? items[focusIdx] : items[0];
+        if (target) target.dispatchEvent(new MouseEvent('mousedown'));
+        input.blur();
+      }
+    });
+
+    input.addEventListener('blur', () => setTimeout(closeDrop, 150));
+    input.addEventListener('focus', () => { if (input.value.trim()) input.dispatchEvent(new Event('input')); });
+  })();
+
+  // ── ダークモードトグル（◐ボタン）──
+  (function () {
+    const btn = document.querySelector('.icon-btn[title="アカウント"]');
+    if (!btn) return;
+    btn.title = 'ダークモード切替';
+    const saved = localStorage.getItem('hoki-theme');
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+    btn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('hoki-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('hoki-theme', 'dark');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -189,13 +189,15 @@
     .cards-grid { grid-template-columns: 1fr; }
   }
 </style>
+<script src="skill-tracker.js" defer></script>
+<script src="selfcheck-bridge.js" defer></script>
 </head>
 <body>
 
 <nav class="top-nav">
-  <a class="nav-back" href="index.html">
+  <a class="nav-back" href="../capability-dashboard.html">
     <i data-lucide="chevron-left" width="16" height="16"></i>
-    Business Skills
+    コックピットへ戻る
   </a>
   <span class="nav-title-text">脳を活性化する「10の実践」</span>
   <div class="nav-spacer"></div>
@@ -673,26 +675,26 @@
   <div class="nou-check-card">
     <h2 class="nou-check-title">セルフチェック：脳活性化習慣</h2>
     <p class="nou-check-sub">以下5項目に正直に答えてください。チェック数で脳活性化の実践レベルを診断します。</p>
-    <div class="nou-check-list" id="nou-check-wrap">
-      <div class="nou-check-item" onclick="nouToggle(this)">
-        <input type="checkbox" id="nc1">
-        <label for="nc1"><strong>毎日7時間以上の睡眠を確保できている</strong>（睡眠削りで業務をこなす習慣がない）</label>
+    <div class="nou-check-list selfcheck-section" id="nou-check-wrap">
+      <div class="nou-check-item">
+        <input type="checkbox" id="c1">
+        <label for="c1"><strong>毎日7時間以上の睡眠を確保できている</strong>（睡眠削りで業務をこなす習慣がない）</label>
       </div>
-      <div class="nou-check-item" onclick="nouToggle(this)">
-        <input type="checkbox" id="nc2">
-        <label for="nc2"><strong>週3回以上、20〜30分の有酸素運動（早歩き・ジョギング等）を実施している</strong></label>
+      <div class="nou-check-item">
+        <input type="checkbox" id="c2">
+        <label for="c2"><strong>週3回以上、20〜30分の有酸素運動（早歩き・ジョギング等）を実施している</strong></label>
       </div>
-      <div class="nou-check-item" onclick="nouToggle(this)">
-        <input type="checkbox" id="nc3">
-        <label for="nc3"><strong>業務外の新しいテーマ（技術・語学・趣味を問わず）を継続的に学習している</strong></label>
+      <div class="nou-check-item">
+        <input type="checkbox" id="c3">
+        <label for="c3"><strong>業務外の新しいテーマ（技術・語学・趣味を問わず）を継続的に学習している</strong></label>
       </div>
-      <div class="nou-check-item" onclick="nouToggle(this)">
-        <input type="checkbox" id="nc4">
-        <label for="nc4"><strong>「なぜそうなるのか」を自分の言葉で説明できるまで理解を確認する習慣がある</strong></label>
+      <div class="nou-check-item">
+        <input type="checkbox" id="c4">
+        <label for="c4"><strong>「なぜそうなるのか」を自分の言葉で説明できるまで理解を確認する習慣がある</strong></label>
       </div>
-      <div class="nou-check-item" onclick="nouToggle(this)">
-        <input type="checkbox" id="nc5">
-        <label for="nc5"><strong>週1回以上、後輩や同僚に知識・技術を教えるまたは対話する機会を作っている</strong></label>
+      <div class="nou-check-item">
+        <input type="checkbox" id="c5">
+        <label for="c5"><strong>週1回以上、後輩や同僚に知識・技術を教えるまたは対話する機会を作っている</strong></label>
       </div>
     </div>
     <div class="nou-score-display" id="nou-score-area">

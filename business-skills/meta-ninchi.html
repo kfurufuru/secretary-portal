@@ -67,6 +67,8 @@
   .meta-habits-grid { grid-template-columns: 1fr; }
 }
 </style>
+<script src="skill-tracker.js" defer></script>
+<script src="selfcheck-bridge.js" defer></script>
 </head>
 <body>
 <nav class="top-nav">
@@ -186,25 +188,25 @@
     <h2 class="selfcheck-title">総合セルフチェック</h2>
     <p class="selfcheck-sub">5問。直近の判断・対応を振り返る。</p>
     <div class="check-list">
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>自分の思考に気づいた</strong> — 「いま何を考えているか」「なぜそう考えているか」をリアルタイムで観察できた場面がある</label>
+      <div class="check-item">
+        <input type="checkbox" id="c1">
+        <label for="c1"><strong>自分の思考に気づいた</strong> — 「いま何を考えているか」「なぜそう考えているか」をリアルタイムで観察できた場面がある</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>思考の根拠を問い直した</strong> — 「そう判断した理由は何か」「それは事実か推測か」と自問した</label>
+      <div class="check-item">
+        <input type="checkbox" id="c2">
+        <label for="c2"><strong>思考の根拠を問い直した</strong> — 「そう判断した理由は何か」「それは事実か推測か」と自問した</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>感情に名前をつけた</strong> — 「いま怒りを感じている」「焦りが出ている」と感情を客観化できた</label>
+      <div class="check-item">
+        <input type="checkbox" id="c3">
+        <label for="c3"><strong>感情に名前をつけた</strong> — 「いま怒りを感じている」「焦りが出ている」と感情を客観化できた</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>自分のバイアスに気づいた</strong> — 「都合のいい情報だけ集めていないか」「過去の成功パターンに固執していないか」と疑った</label>
+      <div class="check-item">
+        <input type="checkbox" id="c4">
+        <label for="c4"><strong>自分のバイアスに気づいた</strong> — 「都合のいい情報だけ集めていないか」「過去の成功パターンに固執していないか」と疑った</label>
       </div>
-      <div class="check-item" onclick="toggle(this, event)">
-        <input type="checkbox">
-        <label><strong>判断結果を検証した</strong> — 決定後に「実際はどうだったか」「予想と違う点は何か」を記録・分析した</label>
+      <div class="check-item">
+        <input type="checkbox" id="c5">
+        <label for="c5"><strong>判断結果を検証した</strong> — 決定後に「実際はどうだったか」「予想と違う点は何か」を記録・分析した</label>
       </div>
     </div>
     <div class="score-display" id="score-disp">
@@ -457,16 +459,6 @@ function goAndScroll(i) {
   document.querySelector('.tab-nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function toggle(item, event) {
-  const cb = item.querySelector('input');
-  if (!event || event.target !== cb) cb.checked = !cb.checked;
-  item.style.background = cb.checked ? 'rgba(56,189,248,0.07)' : '';
-  item.style.borderColor = cb.checked ? 'rgba(56,189,248,0.3)' : '';
-  const total = document.querySelectorAll('.check-item input:checked').length;
-  document.getElementById('score-num').textContent = total;
-  const msgs = ['まず1つ試してみてください', '少しずつメタ認知が身についています', '半分実践中。継続してください', 'かなり高い自己認識を持っています', '5つ全部実践中。判断の質が設計できています'];
-  document.getElementById('score-msg').textContent = msgs[total] || msgs[0];
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   go(0);

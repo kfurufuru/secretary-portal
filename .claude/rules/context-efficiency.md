@@ -16,7 +16,7 @@ description: コンテキスト効率化ルール。トークン節約・Progres
 
 - ファイル参照は Read してから使う（内容を会話に貼らない）
 - `commands-reference.md` は「ヘルプ」コマンド時のみ Read（常時展開しない）
-- `web-ui-style.md` は UI 作成コマンド（「[名前] 作って」）時のみ Read
+- `web-ui-style.md` は `.claude/refs/web-ui-style.md` に移動済み（UI 作成コマンド（「[名前] 作って」）時のみ Read）
 - 1ファイル500行超 → 分割して Read 参照に切り替える
 
 ## 信頼度チェック（実装前に必ず自己評価）
@@ -33,6 +33,24 @@ description: コンテキスト効率化ルール。トークン節約・Progres
 
 - 絶対ルールは CLAUDE.md 冒頭か末尾に置く（中盤は認識精度低下）
 - 重要な制約ほど先頭に
+
+## 検索戦略（優先順位厳守）
+
+| 局面 | 正解ツール | 禁止 |
+|------|-----------|------|
+| ファイル在否・参照箇所特定 | `Grep output_mode:"files_with_matches"` | Python subprocess |
+| 特定行の内容確認 | `Grep output_mode:"content" head_limit:20` | grep/rg Bash |
+| 複数ファイル横断集計 | Python `<<'PYEOF'` heredoc形式のみ | ワンライナー禁止（Windows+日本語でエスケープ地雷） |
+| 大ファイル構造把握 | `Read offset:N limit:50` で分割 | 全読み禁止（1000行超） |
+| ディレクトリ探索 | `Glob path:"直下ディレクトリ"` で範囲限定 | worktreeを含む広範囲Glob |
+
+**worktree除外**: Glob/検索時は `.claude/worktrees` を含まないよう `path` を限定する。
+
+## 編集単位最適化（ターン数削減）
+
+- **同一ファイルの複数箇所変更は1回のEditにまとめる**（old_string を大きく取って一括置換）
+- 小さなEditを連打しない。ターン数 ∝ トークン消費
+- Edit範囲の目安：変更が2箇所以上あるなら、前後の共通ブロックを含めて1回でカバーする
 
 ## Tool Output 上限意識
 

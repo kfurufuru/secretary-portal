@@ -1,0 +1,227 @@
+{
+  "meta": {
+    "generated_at": "2026-04-30T03:19:35.468438+00:00",
+    "sessions_analyzed": 5
+  },
+  "sessions": [
+    {
+      "session_id": "07b6557c",
+      "tool_call_count": 35,
+      "findings": [
+        {
+          "type": "repeated_bash",
+          "label": "find",
+          "count": 4,
+          "examples": [
+            "find /c/Users/kfuru/.secretary -name \"*.md\" -newer /c/Users/kfuru/.secretary/log",
+            "find /c/Users/kfuru/.secretary -type d | head -40",
+            "find /c/Users/kfuru/.secretary -type d | grep -v worktrees | head -40"
+          ],
+          "severity": 4,
+          "suggestion": "Python: glob.glob / Path.rglob (Globツールも可)"
+        },
+        {
+          "type": "repeated_bash",
+          "label": "ls",
+          "count": 4,
+          "examples": [
+            "ls -la /c/Users/kfuru/.secretary/knowledge/ei/",
+            "ls -la /c/Users/kfuru/.secretary/knowledge/",
+            "ls -la /c/Users/kfuru/.secretary/notes/ /c/Users/kfuru/.secretary/reviews/ /c/Us"
+          ],
+          "severity": 4,
+          "suggestion": "Python: list(Path('.').iterdir()) または Globツール使用"
+        },
+        {
+          "type": "repeated_bash",
+          "label": "grep",
+          "count": 6,
+          "examples": [
+            "grep -rl \"電気計装\\|計装\\|保護リレー\\|インバータ\\|防爆\\|DCS\\|SCADA\\|接地\\|高圧\\|変圧器\\|配電\\|トラブル\" /c/User",
+            "grep -rl \"電気計装\\|計装\\|保護リレー\\|インバータ\\|防爆\\|DCS\\|SCADA\\|接地\\|高圧\\|変圧器\\|配電\\|トラブル\" /c/User",
+            "grep -l \"電気計装\\|計装\\|保護リレー\\|インバータ\\|防爆\\|DCS\\|SCADA\\|接地\\|高圧\\|変圧器\\|配電\\|設備トラブル\\|電計\" /c"
+          ],
+          "severity": 6,
+          "suggestion": "Python: re.search / Path.read_text (ファイル1回読み込み + 全パターン同時マッチ)"
+        },
+        {
+          "type": "duplicate_read",
+          "file": "C:\\Users\\kfuru\\.secretary\\logs\\ei-wiki-daily.log",
+          "count": 2,
+          "severity": 2,
+          "suggestion": "1回読み込んでメモリに保持。変更がない限り再読不要。"
+        },
+        {
+          "type": "sequential_bash",
+          "count": 6,
+          "examples": [
+            "ls -la /c/Users/kfuru/.secretary/knowledge/ei/",
+            "ls -la /c/Users/kfuru/.secretary/knowledge/",
+            "grep -rl \"電気計装\\|計装\\|保護リレー\\|インバータ\\|防爆\\|DCS\\|SCADA\\|接地\\|高圧\\|変圧",
+            "grep -rl \"電気計装\\|計装\\|保護リレー\\|インバータ\\|防爆\\|DCS\\|SCADA\\|接地\\|高圧\\|変圧"
+          ],
+          "severity": 6,
+          "suggestion": "独立したコマンドは並列Bash呼び出し or Agentサブエージェント化で同時実行"
+        },
+        {
+          "type": "sequential_bash",
+          "count": 4,
+          "examples": [
+            "ls -la /c/Users/kfuru/.secretary/ai-exports/ 2>/dev/null",
+            "grep -l \"電気\\|計装\\|設備\\|トラブル\\|保護\\|インバータ\\|PLC\\|DCS\" /c/Users/kfu",
+            "grep -n \"電気\\|計装\\|設備\\|トラブル\\|保護\\|インバータ\\|PLC\\|DCS\" /c/Users/kfu",
+            "grep -n \"電気\\|計装\\|設備\\|トラブル\\|保護\\|インバータ\\|PLC\\|DCS\" /c/Users/kfu"
+          ],
+          "severity": 4,
+          "suggestion": "独立したコマンドは並列Bash呼び出し or Agentサブエージェント化で同時実行"
+        },
+        {
+          "type": "grep_without_python",
+          "count": 6,
+          "severity": 6,
+          "suggestion": "grep 6回 → evaluate_wiki.py のような一括解析スクリプト化を検討。 Python: pathlib + re で全パターンを1パスで処理可能"
+        },
+        {
+          "type": "find_glob_mix",
+          "find_count": 4,
+          "glob_count": 10,
+          "severity": 4,
+          "suggestion": "Globツールに統一（find コマンドより軽量・トークン節約）"
+        }
+      ],
+      "total_severity": 36
+    },
+    {
+      "session_id": "1f47d075",
+      "tool_call_count": 53,
+      "findings": [
+        {
+          "type": "sequential_bash",
+          "count": 4,
+          "examples": [
+            "curl -s http://localhost:8092/business-skills/dashboard-data",
+            "cd C:/Users/kfuru/.secretary && git add business-skills/scan",
+            "cd C:/Users/kfuru/.secretary && ls promote.py 2>&1 && wc -l ",
+            "cd C:/Users/kfuru/.secretary && grep -n \"def main\\|if __name"
+          ],
+          "severity": 4,
+          "suggestion": "独立したコマンドは並列Bash呼び出し or Agentサブエージェント化で同時実行"
+        },
+        {
+          "type": "sequential_bash",
+          "count": 8,
+          "examples": [
+            "cd C:/Users/kfuru/.secretary && grep -n \"^from pathlib\\|^imp",
+            "cd C:/Users/kfuru/.secretary && py -c \"import ast; ast.parse",
+            "cd C:/Users/kfuru/.secretary && git add promote.py && git co",
+            "cd C:/Users/kfuru/.secretary && ls knowledge/promote-py-auto"
+          ],
+          "severity": 8,
+          "suggestion": "独立したコマンドは並列Bash呼び出し or Agentサブエージェント化で同時実行"
+        }
+      ],
+      "total_severity": 12
+    },
+    {
+      "session_id": "f15cf45f",
+      "tool_call_count": 9,
+      "findings": [],
+      "total_severity": 0
+    },
+    {
+      "session_id": "67b6511a",
+      "tool_call_count": 43,
+      "findings": [
+        {
+          "type": "repeated_bash",
+          "label": "head",
+          "count": 3,
+          "examples": [
+            "head -20 /c/Users/kfuru/.secretary/inbox/1on1-agenda-2026-04-22.md",
+            "head -30 /c/Users/kfuru/.secretary/knowledge/*.md | head -50",
+            "head -30 /c/Users/kfuru/.secretary/business-skills/dashboard-data.json"
+          ],
+          "severity": 3,
+          "suggestion": "Readツール推奨 (limit パラメータで先頭N行のみ取得)"
+        },
+        {
+          "type": "repeated_bash",
+          "label": "grep",
+          "count": 6,
+          "examples": [
+            "grep -l \"昇格済み\" /c/Users/kfuru/.secretary/inbox/*.md 2>/dev/null | head -3",
+            "grep -A 2 \"昇格済み\" /c/Users/kfuru/.secretary/inbox/handoff-2026-04-21-secretary.md",
+            "grep -n \"const ITEMS\\|</section>\" /c/Users/kfuru/.secretary/business-skills/pyth"
+          ],
+          "severity": 6,
+          "suggestion": "Python: re.search / Path.read_text (ファイル1回読み込み + 全パターン同時マッチ)"
+        },
+        {
+          "type": "duplicate_read",
+          "file": "C:\\Users\\kfuru\\.secretary\\inbox\\handoff-2026-04-23-Phase3-Decision.md",
+          "count": 2,
+          "severity": 2,
+          "suggestion": "1回読み込んでメモリに保持。変更がない限り再読不要。"
+        },
+        {
+          "type": "duplicate_read",
+          "file": "C:\\Users\\kfuru\\.secretary\\business-skills\\python-dekirukoto.html",
+          "count": 12,
+          "severity": 12,
+          "suggestion": "1回読み込んでメモリに保持。変更がない限り再読不要。"
+        },
+        {
+          "type": "sequential_bash",
+          "count": 4,
+          "examples": [
+            "head -20 /c/Users/kfuru/.secretary/inbox/1on1-agenda-2026-04",
+            "head -30 /c/Users/kfuru/.secretary/knowledge/*.md | head -50",
+            "grep -l \"昇格済み\" /c/Users/kfuru/.secretary/inbox/*.md 2>/dev/n",
+            "grep -A 2 \"昇格済み\" /c/Users/kfuru/.secretary/inbox/handoff-202"
+          ],
+          "severity": 4,
+          "suggestion": "独立したコマンドは並列Bash呼び出し or Agentサブエージェント化で同時実行"
+        }
+      ],
+      "total_severity": 27
+    },
+    {
+      "session_id": "b0447eb7",
+      "tool_call_count": 19,
+      "findings": [
+        {
+          "type": "repeated_bash",
+          "label": "ls",
+          "count": 7,
+          "examples": [
+            "ls .claude/skills/ 2>/dev/null | head -30; echo \"---\"; ls .claude/commands/ 2>/d",
+            "ls -la C:/Users/kfuru/.secretary/.claude/ 2>&1 | head -20",
+            "ls C:/Users/kfuru/.secretary/.claude/scheduled-tasks/ 2>&1; echo \"---\"; cat C:/U"
+          ],
+          "severity": 7,
+          "suggestion": "Python: list(Path('.').iterdir()) または Globツール使用"
+        },
+        {
+          "type": "sequential_bash",
+          "count": 4,
+          "examples": [
+            "ls .claude/skills/ 2>/dev/null | head -30; echo \"---\"; ls .c",
+            "ls -la C:/Users/kfuru/.secretary/.claude/ 2>&1 | head -20",
+            "ls C:/Users/kfuru/.secretary/.claude/scheduled-tasks/ 2>&1; ",
+            "ls C:/Users/kfuru/.secretary/.claude/scheduled-tasks/top3-mo"
+          ],
+          "severity": 4,
+          "suggestion": "独立したコマンドは並列Bash呼び出し or Agentサブエージェント化で同時実行"
+        }
+      ],
+      "total_severity": 11
+    }
+  ],
+  "pattern_summary": {
+    "repeated_bash": 6,
+    "duplicate_read": 3,
+    "sequential_bash": 6,
+    "grep_without_python": 1,
+    "find_glob_mix": 1
+  }
+}

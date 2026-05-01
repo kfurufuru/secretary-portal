@@ -1,4 +1,5 @@
-対象: 51 HTMLファイル | ルート: C:\Users\kfuru\.secretary
+対象: 65 HTMLファイル | ルート: C:\Users\kfuru\.secretary
+外部URLチェック: 有効（遅い場合があります）
 
 🔗 リンクチェック結果
 
@@ -6,6 +7,12 @@
   ✅ 1 links OK
 
 📄 ai-news/claude-code-non-engineer-report.html
+  ✅ 10 links OK
+  ❌ 2 broken links:
+    L672: href="https://alexlieberman.com/claude-code-beyond-engineering-11-powerful-use-cases-from-ultra-users/" → error: The read operation timed out
+    L677: href="https://www.producttalk.org/claude-code-what-it-is-and-how-its-different/" → error: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)>
+
+📄 ai-news/claude-code-tips.html
   ✅ 0 links OK
 
 📄 business-skills/ai-gyomu-sentaku.html
@@ -23,6 +30,9 @@
 📄 business-skills/atama-ga-ii.html
   ✅ 5 links OK
 
+📄 business-skills/brain-detox.html
+  ✅ 1 links OK
+
 📄 business-skills/bunsho-ryoku.html
   ✅ 4 links OK
 
@@ -31,6 +41,9 @@
 
 📄 business-skills/dandori-ryoku.html
   ✅ 4 links OK
+
+📄 business-skills/fast-slow-manager.html
+  ✅ 1 links OK
 
 📄 business-skills/gakushuu-kouritu.html
   ✅ 5 links OK
@@ -59,6 +72,9 @@
 📄 business-skills/kangae-wo-fukaku.html
   ✅ 3 links OK
 
+📄 business-skills/karada.html
+  ✅ 1 links OK
+
 📄 business-skills/kosho-ryoku.html
   ✅ 4 links OK
 
@@ -79,6 +95,9 @@
 
 📄 business-skills/ningen-seichou.html
   ✅ 4 links OK
+
+📄 business-skills/nou-kasseika.html
+  ✅ 3 links OK
 
 📄 business-skills/python-catalog-presentation.html
   ✅ 0 links OK
@@ -125,20 +144,34 @@
 📄 business-skills/yusen-juni.html
   ✅ 4 links OK
 
+📄 claude-code-guide.html
+  ✅ 2 links OK
+
 📄 dashboard.html
   ✅ 1 links OK
 
 📄 denken-news/index.html
-  ✅ 2 links OK
+  ✅ 7 links OK
 
 📄 denken-study.html
   ✅ 1 links OK
+
+📄 denken3-kikai-wiki.html
+  ✅ 0 links OK
+
+📄 denken3-riron-wiki.html
+  ✅ 0 links OK
 
 📄 denken3-study-dashboard/denken-map.html
   ✅ 1 links OK
 
 📄 denken3-study-dashboard/index.html
-  ✅ 3 links OK
+  ✅ 14 links OK
+  ❌ 4 broken links:
+    L999: href="https://www.notion.so/af4180a0286e4c76b153fe6071cacf0a" → http_404
+    L1000: href="https://www.notion.so/ff4fcb73cc14408caedf87c904ae2fd9" → http_404
+    L1001: href="https://www.notion.so/ff4fcb73cc14408caedf87c904ae2fd9?v=81cd39ea-67fa-4a4f-8701-4926db05a044" → http_404
+    L1002: href="https://www.notion.so/6413af86a82e4bb390c4dc399b6f98cd" → http_404
 
 📄 denken3-study-dashboard/stats.html
   ✅ 1 links OK
@@ -146,21 +179,39 @@
 📄 denken3-study-dashboard/study-weakness-ranking.html
   ✅ 1 links OK
 
+📄 knowledge/dashboard.html
+  ✅ 19 links OK
+
 📄 knowledge/knowledge-graph.html
+  ✅ 2 links OK
+
+📄 knowledge-dashboard.html
   ✅ 0 links OK
 
+📄 links.html
+  ✅ 21 links OK
+  ❌ 2 broken links:
+    L439: href="https://news.ycombinator.com/" → http_405
+    L459: href="https://x.com/AnthropicAI" → http_403
+
+📄 memory-dashboard.html
+  ✅ 1 links OK
+
 📄 portal-v2.html
-  ✅ 7 links OK
-  ⚠️  4 warning:
-    L861: href="http://localhost:8096/dashboard.html" → localhost_server_down
-    L862: href="http://localhost:8765/denken-study.html" → localhost_server_down
-    L882: href="http://localhost:8765/denken-study.html" → localhost_server_down
-    L926: href="http://localhost:8096/dashboard.html" → localhost_server_down
+  ✅ 31 links OK
+  ⚠️  1 warning:
+    L670: href="http://localhost:8096/dashboard.html" → localhost_server_down
+
+📄 reviews/session-graph-2026-04-26.html
+  ✅ 0 links OK
+
+📄 skills-reference.html
+  ✅ 1 links OK
 
 📄 study-methods.html
   ✅ 2 links OK
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-合計: 172 links / 168 OK / 0 broken / 4 warning
+合計: 279 links / 270 OK / 8 broken / 1 warning
 
 📝 結果を保存しました: C:\Users\kfuru\.secretary\health-monitor\link-check-results.json
