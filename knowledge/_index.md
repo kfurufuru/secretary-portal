@@ -8,6 +8,7 @@
 - [[cc-playbook.md]] — Claude Code プレイブック — 全17スライドのエッセンス (published, 2026-04-25)
 - [[claude-long-edit-syntax-risk.md]] — Claude長編集での構文破壊リスクと検証プロトコル (published, 2026-04-23)
 - [[ideas-from-news/2026-04-20.md]] — 製造現場AIファースト設計：UI廃棄戦略と工場音声IoT転用（2026-04-20蒸留） (published, 2026-04-20)
+- [[learning-roadmap-filter.md]] — 学習ロードマップ判定フレームワーク（作る側/使う側 × ROI） (draft, 2026-05-01)
 - [[ideas-from-news/2026-04-21.md]] — 設備AI活用の判断精度向上：xhigh使い分けルールとAI導入治験フェーズモデル（2026-04-21蒸留） (published, 2026-04-21)
 - [[mcp-claude-integration.md]] — MCP — Claudeを実行AIに変える接続基盤 (review, 2026-04-22)
 - [[promote-py-auto-promote-access-log.md]] — promote.py アクセスログベース自動昇格機能 (published, 2026-04-21)
