@@ -12,6 +12,7 @@ Usage:
     python denken_hoki_audit.py --quiet          # SUMMARYのみ
 """
 from __future__ import annotations
+import json
 import re
 import sys
 import io
@@ -24,6 +25,7 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 WIKI_PATH = Path(__file__).parent / "denken-hoki-wiki.html"
+VALUES_PATH = Path(__file__).parent / "denken_hoki_values.json"
 
 # 監査対象ページ（実装済み・StubPage除外）
 TARGET_PAGES = [
@@ -176,6 +178,28 @@ def audit_page(name: str, body: str) -> list[tuple[str, str, str]]:
     return results
 
 
+def audit_values(name: str, body: str, values_db: dict) -> list[tuple[str, str, str]]:
+    """ground-truth JSON と照合（must_contain 全件チェック）。"""
+    results = []
+    page_data = values_db.get(name)
+    if not page_data:
+        results.append(("WARN", "ground-truth", f"{name} の must_contain 未定義（denken_hoki_values.json）"))
+        return results
+
+    must = page_data.get("must_contain", [])
+    if not must:
+        return results
+
+    missing = [v for v in must if v not in body]
+    if missing:
+        results.append(("FAIL", "ground-truth 数値照合",
+                       f"{len(missing)}/{len(must)} 必須値が欠落: {missing}"))
+    else:
+        results.append(("PASS", "ground-truth 数値照合",
+                       f"全 {len(must)} 必須値が wiki に存在"))
+    return results
+
+
 def main() -> None:
     args = sys.argv[1:]
     strict = "--strict" in args
@@ -191,6 +215,13 @@ def main() -> None:
         sys.exit(2)
 
     text = WIKI_PATH.read_text(encoding="utf-8")
+    values_db = {}
+    if VALUES_PATH.exists():
+        try:
+            values_db = json.loads(VALUES_PATH.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            print(f"{ANSI['y']}⚠ {VALUES_PATH.name} parse error: {e}{ANSI['0']}")
+
     overall_pass = True
     summary: dict[str, dict[str, int]] = defaultdict(
         lambda: {"PASS": 0, "WARN": 0, "FAIL": 0}
@@ -205,7 +236,7 @@ def main() -> None:
 
         if not quiet:
             print(f"\n{ANSI['c']}{ANSI['b']}━━━ {page} ━━━{ANSI['0']}")
-        results = audit_page(page, body)
+        results = audit_page(page, body) + audit_values(page, body, values_db)
         for sev, check, msg in results:
             summary[page][sev] += 1
             if sev == "FAIL" or (strict and sev == "WARN"):
