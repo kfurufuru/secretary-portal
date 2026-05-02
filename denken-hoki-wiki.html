@@ -273,7 +273,35 @@
   .sr-item:hover, .sr-item.focused { background: var(--accent-soft); }
   .sr-label { font-size: 13px; color: var(--ink); font-weight: 500; }
   .sr-sub   { font-size: 11px; color: var(--ink-3); }
+  .sr-def   { font-size: 12px; color: var(--ink-2); line-height: 1.5; margin-top: 2px; }
+  .sr-reading { font-size: 11px; color: var(--ink-3); font-weight: 400; margin-left: 2px; }
+  .sr-tag-term, .sr-tag-page {
+    display: inline-block; font-size: 9.5px; font-weight: 700;
+    border-radius: 3px; padding: 1px 5px; margin-right: 6px;
+    vertical-align: 1px; letter-spacing: 0.04em;
+  }
+  .sr-tag-term { background: var(--accent-soft); color: var(--accent); }
+  .sr-tag-page { background: var(--bg-2); color: var(--ink-3); border: 1px solid var(--line); }
   .sr-empty { padding: 12px 14px; font-size: 13px; color: var(--ink-3); text-align: center; }
+  .search-results { max-height: 60vh; overflow-y: auto; }
+  .sr-meta { font-size: 11px; color: var(--ink-3); margin-top: 6px; line-height: 1.6; }
+  .sr-meta-confused { color: #c0392b; }
+  .sr-meta-related { color: var(--ink-3); }
+  .sr-chip {
+    display: inline-block;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1px 7px;
+    margin: 0 3px 2px 0;
+    font-size: 11px;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .sr-chip:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .sr-chip-confused { border-color: #f5c0b8; background: #fdf0ec; color: #c0392b; }
+  .sr-chip-confused:hover { background: #fbd9d0; border-color: #c0392b; }
   .top-actions { display: flex; gap: 8px; align-items: center; }
   .icon-btn {
     width: 32px; height: 32px;
@@ -997,6 +1025,103 @@ window.WIKI_DATA = { chapters: [
   ]}
 ]};
 
+// ============================================================
+// WIKI_GLOSSARY — 法規 用語辞典（検索専用データ）
+// ============================================================
+// 過去問で扱われた専門用語。検索窓ヒット時に意味をその場で表示。
+// 定義文は「何のための用語か」を1〜2行で。条文番号・具体数値は記載しない（誤記防止）。
+// related: 該当する詳細ページのid（クリックで遷移）。
+window.WIKI_GLOSSARY = [
+  // ── 電気工作物の区分 ──
+  { term:"一般用電気工作物", reading:"いっぱんよう", def:"600V以下で受電し、構内で電気を使用する小規模な工作物。一般家庭・小規模商店が該当。電気主任技術者の選任不要。", related:"kosakubutsu-bunrui", group:"G-kosakubutsu" },
+  { term:"自家用電気工作物", reading:"じかよう", def:"事業用電気工作物のうち電気事業の用に供しないもの。工場・ビルなど。電気主任技術者の選任義務あり。", related:"kosakubutsu-bunrui", group:"G-kosakubutsu" },
+  { term:"事業用電気工作物", reading:"じぎょうよう", def:"一般用電気工作物以外の電気工作物の総称。電気事業用＋自家用の上位概念。", related:"kosakubutsu-bunrui", group:"G-kosakubutsu" },
+  { term:"小規模事業用電気工作物", reading:"しょうきぼじぎょうよう", def:"50kW未満の太陽電池発電設備・20kW未満の風力発電設備など。2023年区分新設。", related:"kosakubutsu-bunrui", group:"G-kosakubutsu" },
+
+  // ── 電気事業者 ──
+  { term:"小売電気事業者", reading:"こうりでんき", def:"一般家庭などへ電気を販売する事業者。登録制。", related:"kosakubutsu-bunrui", group:"G-jigyousha" },
+  { term:"一般送配電事業者", reading:"いっぱんそうはいでん", def:"地域の送配電網を維持・運用する事業者。許可制。旧電力会社の送配電部門。", related:"kosakubutsu-bunrui", group:"G-jigyousha" },
+  { term:"発電事業者", reading:"はつでんじぎょうしゃ", def:"一定規模以上の発電設備を持ち電気を供給する事業者。届出制。", related:"kosakubutsu-bunrui", group:"G-jigyousha" },
+  { term:"特定送配電事業者", reading:"とくていそうはいでん", def:"自営線で特定の供給地点へ送配電を行う事業者。届出制。", related:"kosakubutsu-bunrui", group:"G-jigyousha" },
+
+  // ── 主任技術者 ──
+  { term:"電気主任技術者", reading:"でんきしゅにんぎじゅつしゃ", def:"事業用電気工作物の工事・維持・運用の保安監督を行う者。第1〜3種に区分。", related:"shunin-gijutsusya" },
+  { term:"第三種電気主任技術者", reading:"だいさんしゅ", def:"電圧50,000V未満の事業用電気工作物（出力5,000kW以上の発電所を除く）の保安監督が可能。電験3種で取得。", related:"shunin-gijutsusya" },
+  { term:"専任", reading:"せんにん", def:"主任技術者を当該事業場に常勤で配置する原則的な選任形態。", related:"shunin-gijutsusya", group:"G-shunin" },
+  { term:"兼任", reading:"けんにん", def:"主任技術者が複数事業場を兼務する例外的な選任形態。経済産業大臣の承認が必要。", related:"shunin-gijutsusya", group:"G-shunin" },
+  { term:"外部委託承認制度", reading:"がいぶいたく", def:"自家用電気工作物の保安管理を電気保安法人や個人事業者へ委託する制度。一定規模以下の設備が対象。", related:"shunin-gijutsusya", group:"G-shunin" },
+  { term:"保安規程", reading:"ほあんきてい", def:"自家用電気工作物の保安を確保するための社内規程。設置者が定め、使用前に届け出る義務。", related:"hoan-kitei" },
+
+  // ── 電気工事士法 ──
+  { term:"第一種電気工事士", reading:"だいいっしゅでんきこうじし", def:"自家用電気工作物（最大電力500kW未満）と一般用電気工作物の工事に従事可能。", related:"koji-shi-ho", group:"G-koujishi" },
+  { term:"第二種電気工事士", reading:"だいにしゅでんきこうじし", def:"一般用電気工作物の工事に従事可能。", related:"koji-shi-ho", group:"G-koujishi" },
+  { term:"認定電気工事従事者", reading:"にんていでんきこうじじゅうじしゃ", def:"自家用電気工作物のうち簡易電気工事（600V以下）に従事できる資格。", related:"koji-shi-ho", group:"G-koujishi" },
+  { term:"特殊電気工事資格者", reading:"とくしゅでんきこうじしかくしゃ", def:"ネオン工事・非常用予備発電装置工事など特殊な電気工事に従事できる資格。", related:"koji-shi-ho", group:"G-koujishi" },
+
+  // ── 電気工事業法 ──
+  { term:"登録電気工事業者", reading:"とうろくでんきこうじぎょうしゃ", def:"一般用電気工作物の工事を行う事業者。登録制。", related:"koji-gyoho", group:"G-koujigyo" },
+  { term:"通知電気工事業者", reading:"つうちでんきこうじぎょうしゃ", def:"自家用電気工作物のみを扱う電気工事業者。通知制。", related:"koji-gyoho", group:"G-koujigyo" },
+  { term:"主任電気工事士", reading:"しゅにんでんきこうじし", def:"登録電気工事業者の各営業所に置く必置資格者。第一種電気工事士または第二種電気工事士で実務3年以上。", related:"koji-gyoho" },
+
+  // ── 電気用品安全法 ──
+  { term:"電気用品", reading:"でんきようひん", def:"一般用電気工作物の部分・接続して使用される機械器具・材料。電気用品安全法の規制対象。", related:"denki-yohin-anzen", group:"G-yohin" },
+  { term:"特定電気用品", reading:"とくていでんきようひん", def:"危険・障害発生のおそれが多い電気用品。第三者機関による適合性検査が必要。<PS>Eマーク。", related:"denki-yohin-anzen", group:"G-yohin" },
+  { term:"PSEマーク", reading:"ぴーえすいー", def:"電気用品安全法の技術基準適合を示す表示。特定電気用品は<PS>E、それ以外は(PS)E。", related:"denki-yohin-anzen" },
+
+  // ── 検査・届出 ──
+  { term:"使用前自主検査", reading:"しようまえじしゅけんさ", def:"工事計画届出を要する自家用電気工作物について、設置者自身が使用開始前に行う検査。", related:"shiyo-jishu-kensa" },
+  { term:"工事計画届出", reading:"こうじけいかくとどけで", def:"一定規模以上の事業用電気工作物の設置・変更工事を着工前に経済産業大臣へ届け出る制度。", related:"shiyo-jishu-kensa" },
+
+  // ── 事故報告 ──
+  { term:"事故報告", reading:"じこほうこく", def:"電気事故が発生した際に設置者が経済産業大臣へ提出する報告。速報と詳報の2段階。", related:"jiko-hokoku" },
+  { term:"電気事故", reading:"でんきじこ", def:"電気工作物に起因する人身・物損・供給支障を伴う事故。設置者は経済産業大臣へ報告義務。", related:"jiko-hokoku" },
+  { term:"波及事故", reading:"はきゅうじこ", def:"自家用電気工作物の事故が一般送配電事業者の供給支障を引き起こす事故。重大事故扱い。", related:"jiko-hokoku" },
+  { term:"感電死傷事故", reading:"かんでんししょう", def:"電気工作物の故障・損傷による感電で死亡または入院を要する負傷が発生した事故。", related:"jiko-hokoku" },
+  { term:"速報", reading:"そくほう", def:"事故報告のうち、事故発生後すみやかに行う第一報。電話・FAX等で簡易に行う。", related:"jiko-hokoku", group:"G-jiko-hokoku" },
+  { term:"詳報", reading:"しょうほう", def:"事故報告のうち、原因究明後に書面で提出する詳細報告。", related:"jiko-hokoku", group:"G-jiko-hokoku" },
+
+  // ── 電圧区分 ──
+  { term:"低圧", reading:"ていあつ", def:"直流750V以下、交流600V以下の電圧。", related:"den-atsu-kubun", group:"G-denatsu" },
+  { term:"高圧", reading:"こうあつ", def:"直流750V超〜7,000V以下、交流600V超〜7,000V以下の電圧。", related:"den-atsu-kubun", group:"G-denatsu" },
+  { term:"特別高圧", reading:"とくべつこうあつ", def:"7,000Vを超える電圧。", related:"den-atsu-kubun", group:"G-denatsu" },
+
+  // ── 絶縁・接地 ──
+  { term:"絶縁耐力試験", reading:"ぜつえんたいりょくしけん", def:"電路の絶縁が規定電圧に耐えるかを確認する試験。新設・改修時の必須検査。", related:"zetsuen-tairyoku" },
+  { term:"絶縁抵抗", reading:"ぜつえんていこう", def:"電路の電線相互間および電線と大地間の抵抗。電圧区分ごとに最小値が規定されている。", related:"denro-zetsuen" },
+  { term:"A種接地工事", reading:"えーしゅせっち", def:"高圧・特別高圧機器の鉄台・金属製外箱の接地。最も厳しい接地抵抗値が要求される。", related:"setsuchi-koji", group:"G-setsuchi" },
+  { term:"B種接地工事", reading:"びーしゅせっち", def:"高圧または特別高圧と低圧を結合する変圧器の低圧側中性点に施す接地。混触防止が目的。", related:"bshu-setsuchi", group:"G-setsuchi" },
+  { term:"C種接地工事", reading:"しーしゅせっち", def:"300Vを超える低圧用機器の鉄台・金属製外箱の接地。", related:"setsuchi-koji", group:"G-setsuchi" },
+  { term:"D種接地工事", reading:"でぃーしゅせっち", def:"300V以下の低圧用機器の鉄台・金属製外箱の接地。最も一般的。", related:"setsuchi-koji", group:"G-setsuchi" },
+
+  // ── 電線路・配線 ──
+  { term:"電線路", reading:"でんせんろ", def:"発電所・変電所・需要設備相互間を接続する電線および支持物。架空電線路と地中電線路に区分。", related:"densenro" },
+  { term:"架空電線路", reading:"がくうでんせんろ", def:"電柱などの支持物で架空に施設する電線路。", related:"densenro" },
+  { term:"地中電線路", reading:"ちちゅうでんせんろ", def:"地下に埋設する電線路。直接埋設式・管路式・暗渠式がある。", related:"chichuu-densenro" },
+  { term:"引込線", reading:"ひきこみせん", def:"架空電線路の支持物から需要場所の取付点までの架空電線。", related:"densenro", group:"G-hikikomi" },
+  { term:"連接引込線", reading:"れんせつひきこみせん", def:"1需要場所の引込線から分岐して支持物を経由せず他の需要場所の引込口に至る電線。", related:"densenro", group:"G-hikikomi" },
+  { term:"支持物", reading:"しじぶつ", def:"木柱・鉄柱・鉄筋コンクリート柱・鉄塔の総称。架空電線路を支える構造物。", related:"densenro" },
+  { term:"支線", reading:"しせん", def:"支持物の傾倒・倒壊を防ぐため斜めに張る補強線。引張強さの規定あり。", related:"shisen-hikisama" },
+  { term:"離隔距離", reading:"りかくきょり", def:"電線・電気機械器具と他物（建造物・植物・通信線等）との間に保つべき最小距離。", related:"rikkaku-ichiran" },
+
+  // ── 保護 ──
+  { term:"過電流遮断器", reading:"かでんりゅうしゃだんき", def:"短絡・過負荷時に自動で電路を遮断する装置。配線用遮断器・ヒューズなど。", related:"kako-denryu", group:"G-shadan" },
+  { term:"漏電遮断器", reading:"ろうでんしゃだんき", def:"地絡電流を検出して電路を自動遮断する装置。感電・電気火災防止用。", related:"kako-denryu", group:"G-shadan" },
+
+  // ── 分散型電源・再エネ ──
+  { term:"分散型電源", reading:"ぶんさんがたでんげん", def:"需要地近傍に設置される小規模発電設備。太陽光・風力・コージェネ等。", related:"bunsangata-dengen" },
+  { term:"系統連系", reading:"けいとうれんけい", def:"分散型電源を電力会社の電力系統に接続して並列運転すること。保護装置の規定あり。", related:"keito-renkei" },
+  { term:"逆潮流", reading:"ぎゃくちょうりゅう", def:"分散型電源から電力系統へ電力が流れる状態。買取制度の対象。", related:"keito-renkei" },
+
+  // ── 電気施設管理 ──
+  { term:"需要率", reading:"じゅようりつ", def:"設備容量に対する最大需要電力の比率。設備の使用度合を示す指標。", related:"juyoritsu-gainen" },
+  { term:"負荷率", reading:"ふりつ", def:"最大需要電力に対する平均需要電力の比率。負荷の平準化度合を示す指標。", related:"furitsu" },
+  { term:"不等率", reading:"ふとうりつ", def:"各個別最大需要電力の合計に対する合成最大需要電力の比。常に1以上。", related:"futorito" },
+  { term:"設備利用率", reading:"せつびりようりつ", def:"設備容量に対する平均出力の比率。発電設備の稼働度合を示す。", related:"juyoritsu-gainen" },
+  { term:"力率", reading:"りきりつ", def:"皮相電力に対する有効電力の比。電力使用効率の指標。", related:"ryokuritsu-kaizen" },
+  { term:"力率改善", reading:"りきりつかいぜん", def:"進相コンデンサ等で無効電力を補償し、力率を1に近づける対策。", related:"ryokuritsu-kaizen" },
+  { term:"全日効率", reading:"ぜんじつこうりつ", def:"変圧器の1日の出力電力量に対する出力＋損失の比。鉄損・銅損のバランスで決まる。", related:"henshatsuki-koritu" }
+];
+
 
 // ============================================================
 // コンポーネント定義
@@ -1600,6 +1725,7 @@ function TOC({ page }) {
 
 function TopBar({ page, onNav }) {
   const data = window.WIKI_DATA;
+  const glossary = window.WIKI_GLOSSARY || [];
   let pageTitle = page;
   if (data && data.chapters) {
     data.chapters.forEach(ch => {
@@ -1608,6 +1734,117 @@ function TopBar({ page, onNav }) {
       });
     });
   }
+
+  const [query, setQuery] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+  const [focusIdx, setFocusIdx] = React.useState(-1);
+  const wrapRef = React.useRef(null);
+
+  // 検索インデックス: ページ + 用語
+  const allItems = React.useMemo(() => {
+    const items = [];
+    if (data && data.chapters) {
+      data.chapters.forEach(ch => {
+        (ch.pages || []).forEach(p => {
+          if (p.id === 'top') return;
+          items.push({ kind: 'page', id: p.id, label: p.title, sub: `${ch.num} ${ch.title}` });
+        });
+      });
+    }
+    glossary.forEach(g => {
+      items.push({
+        kind: 'term',
+        id: g.related || 'top',
+        label: g.term,
+        reading: g.reading || '',
+        def: g.def,
+        related: g.related,
+        group: g.group || null,
+      });
+    });
+    return items;
+  }, [data, glossary]);
+
+  // 用語名 → 用語データの逆引き（混同・関連表示用）
+  const termByName = React.useMemo(() => {
+    const map = {};
+    glossary.forEach(g => { map[g.term] = g; });
+    return map;
+  }, [glossary]);
+
+  // 用語が属する混同グループ・関連グループの他用語を返す
+  const peersOf = (term) => {
+    const t = termByName[term];
+    if (!t) return { confused: [], related: [] };
+    const confused = [];
+    const related = [];
+    glossary.forEach(g => {
+      if (g.term === term) return;
+      if (t.group && g.group === t.group) {
+        confused.push(g.term);
+      } else if (t.related && g.related === t.related) {
+        related.push(g.term);
+      }
+    });
+    return { confused: confused.slice(0, 6), related: related.slice(0, 5) };
+  };
+
+  const results = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    const scored = [];
+    allItems.forEach(it => {
+      const label = it.label.toLowerCase();
+      const reading = (it.reading || '').toLowerCase();
+      const def = (it.def || '').toLowerCase();
+      let score = -1;
+      if (label.startsWith(q)) score = 100;
+      else if (label.includes(q)) score = 80;
+      else if (reading.includes(q)) score = 60;
+      else if (def.includes(q)) score = 30;
+      if (score >= 0) scored.push({ ...it, score });
+    });
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 12);
+  }, [query, allItems]);
+
+  // 外側クリックで閉じる
+  React.useEffect(() => {
+    const handler = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Ctrl+K / Cmd+K でフォーカス
+  React.useEffect(() => {
+    const handler = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const inp = wrapRef.current && wrapRef.current.querySelector('input');
+        if (inp) inp.focus();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
+  const selectItem = (it) => {
+    if (!it) return;
+    setQuery('');
+    setOpen(false);
+    setFocusIdx(-1);
+    if (it.id) onNav(it.id);
+  };
+
+  const onKeyDown = (e) => {
+    if (!open || results.length === 0) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); setFocusIdx(i => Math.min(i + 1, results.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setFocusIdx(i => Math.max(i - 1, 0)); }
+    else if (e.key === 'Enter') { e.preventDefault(); selectItem(results[focusIdx >= 0 ? focusIdx : 0]); }
+    else if (e.key === 'Escape') { setOpen(false); }
+  };
 
   return (
     <div className="topbar" style={{
@@ -1634,21 +1871,75 @@ function TopBar({ page, onNav }) {
           <span className="page-title" style={{ color: 'var(--ink-2)' }}>{pageTitle}</span>
         </>
       )}
-      <div style={{ flex: 1 }} />
-      <input
-        type="text"
-        placeholder="検索（準備中）"
-        disabled
-        style={{
-          padding: '5px 12px',
-          borderRadius: 'var(--radius)',
-          border: '1px solid var(--line)',
-          fontSize: '12px',
-          background: 'var(--bg-2)',
-          color: 'var(--ink-3)',
-          width: '160px',
-        }}
-      />
+      <div className="search" ref={wrapRef}>
+        <span className="icn">🔍</span>
+        <input
+          type="text"
+          placeholder="用語・ページを検索（Ctrl+K）"
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setOpen(true); setFocusIdx(-1); }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={onKeyDown}
+        />
+        <span className="kbd">Ctrl+K</span>
+        <div className={`search-results${open && query.trim() ? ' open' : ''}`}>
+          {results.length === 0 ? (
+            <div className="sr-empty">該当なし</div>
+          ) : results.map((it, i) => {
+            const peers = it.kind === 'term' ? peersOf(it.label) : { confused: [], related: [] };
+            const switchQuery = (e, term) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuery(term);
+              setFocusIdx(0);
+              setOpen(true);
+            };
+            return (
+              <div
+                key={it.kind + ':' + it.label + i}
+                className={`sr-item${focusIdx === i ? ' focused' : ''}`}
+                onMouseEnter={() => setFocusIdx(i)}
+                onMouseDown={(e) => { e.preventDefault(); selectItem(it); }}
+              >
+                <div className="sr-label">
+                  {it.kind === 'term'
+                    ? <><span className="sr-tag-term">用語</span> {it.label}{it.reading ? <span className="sr-reading">（{it.reading}）</span> : null}</>
+                    : <><span className="sr-tag-page">ページ</span> {it.label}</>
+                  }
+                </div>
+                {it.kind === 'term'
+                  ? <div className="sr-def">{it.def}</div>
+                  : <div className="sr-sub">{it.sub}</div>
+                }
+                {it.kind === 'term' && peers.confused.length > 0 && (
+                  <div className="sr-meta sr-meta-confused">
+                    ⚠️ よく混同：
+                    {peers.confused.map(name => (
+                      <span
+                        key={name}
+                        className="sr-chip sr-chip-confused"
+                        onMouseDown={(e) => switchQuery(e, name)}
+                      >{name}</span>
+                    ))}
+                  </div>
+                )}
+                {it.kind === 'term' && peers.related.length > 0 && (
+                  <div className="sr-meta sr-meta-related">
+                    📎 関連：
+                    {peers.related.map(name => (
+                      <span
+                        key={name}
+                        className="sr-chip"
+                        onMouseDown={(e) => switchQuery(e, name)}
+                      >{name}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2011,30 +2302,12 @@ function HomePage({ onNav, data }) {
         </div>
       </section>
 
-      {/* ====== 学習優先順 ====== */}
-      <section style={{ marginBottom: 40 }}>
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>PRIORITY ORDER</div>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>学習の優先順</h2>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>S→A→Bの順で攻める。上から順にやれば合格ラインに届く。</p>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {CH_TABLE.map((row) => (
-            <div key={row.ch} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--bg-elev)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink-3)', minWidth: 20, textAlign: 'center' }}>{row.order}</span>
-              <span style={{ fontWeight: 600, flex: 1 }}>{row.content}</span>
-              <span className={`rank rank-${row.rank}`}>{row.rank}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ====== 法規の学習マップ ====== */}
       <section style={{ marginBottom: 40 }}>
         <div style={{ marginBottom: 16 }}>
           <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>LEARNING MAP</div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>法規の学習マップ</h2>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>法規6チャプターの構成と他科目との関係。CH04の計算は理論・電力・機械の知識が土台。</p>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>法規6チャプターの全体像。<span style={{ color: '#c62828', fontWeight: 700 }}>赤枠 = Sランク</span>（最優先で固める）</p>
         </div>
         <div style={{ overflowX: 'auto' }}>
           <svg viewBox="0 0 740 500" style={{ width: '100%', maxWidth: 740, display: 'block' }}>
@@ -2044,6 +2317,7 @@ function HomePage({ onNav, data }) {
             </defs>
             <style>{`
               .card{filter:url(#ds)} .ch-label{font-size:11px;font-weight:700} .ch-item{font-size:9.5px;fill:#78909c}
+              .ch-item-s{font-size:9.5px;fill:#c62828;font-weight:600}
               .area-label{font-size:12px;font-weight:700;fill:#90a4ae;letter-spacing:0.05em}
             `}</style>
 
@@ -2051,76 +2325,82 @@ function HomePage({ onNav, data }) {
             <rect x="8" y="8" width="724" height="300" rx="10" fill="none" stroke="#ccc" strokeWidth="0.8" strokeDasharray="4,3" />
             <text x="24" y="28" className="area-label">法規科目 ── 出題範囲</text>
 
-            {/* CH01 */}
+            {/* CH01 電気事業法 ★S */}
             <g className="card">
-              <rect x="20" y="44" width="165" height="118" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
-              <rect x="20" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
-              <rect x="20" y="56" width="165" height="12" fill="#b39ddb" />
+              <rect x="20" y="44" width="165" height="118" rx="8" fill="#ffebee" stroke="#c62828" strokeWidth="2" />
+              <rect x="20" y="44" width="165" height="24" rx="8" fill="#c62828" />
+              <rect x="20" y="56" width="165" height="12" fill="#c62828" />
               <text x="102" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH01 電気事業法</text>
-              <circle cx="36" cy="82" r="2" fill="#b39ddb" /><text x="44" y="86" className="ch-item">電気工作物の定義</text>
-              <circle cx="36" cy="98" r="2" fill="#b39ddb" /><text x="44" y="102" className="ch-item">主任技術者</text>
-              <circle cx="36" cy="114" r="2" fill="#b39ddb" /><text x="44" y="118" className="ch-item">保安規程</text>
-              <circle cx="36" cy="130" r="2" fill="#b39ddb" /><text x="44" y="134" className="ch-item">使用前自主検査</text>
-              <circle cx="36" cy="146" r="2" fill="#b39ddb" /><text x="44" y="150" className="ch-item">事故報告</text>
+              <circle cx="34" cy="62" r="7" fill="#ffca28" /><text x="34" y="65" textAnchor="middle" fill="#c62828" fontSize="8" fontWeight="800">S</text>
+              <circle cx="36" cy="82" r="2" fill="#c62828" /><text x="44" y="86" className="ch-item-s">電気工作物の定義</text>
+              <circle cx="36" cy="98" r="2" fill="#c62828" /><text x="44" y="102" className="ch-item-s">主任技術者</text>
+              <circle cx="36" cy="114" r="2" fill="#c62828" /><text x="44" y="118" className="ch-item-s">保安規程</text>
+              <circle cx="36" cy="130" r="2" fill="#c62828" /><text x="44" y="134" className="ch-item">使用前自主検査</text>
+              <circle cx="36" cy="146" r="2" fill="#c62828" /><text x="44" y="150" className="ch-item">事故報告</text>
             </g>
 
-            {/* CH03 */}
+            {/* CH03 技術基準 ★S */}
             <g className="card">
-              <rect x="197" y="44" width="165" height="118" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
-              <rect x="197" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
-              <rect x="197" y="56" width="165" height="12" fill="#b39ddb" />
+              <rect x="197" y="44" width="165" height="118" rx="8" fill="#ffebee" stroke="#c62828" strokeWidth="2" />
+              <rect x="197" y="44" width="165" height="24" rx="8" fill="#c62828" />
+              <rect x="197" y="56" width="165" height="12" fill="#c62828" />
               <text x="279" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH03 電気設備技術基準</text>
-              <circle cx="213" cy="82" r="2" fill="#b39ddb" /><text x="221" y="86" className="ch-item">用語の定義</text>
-              <circle cx="213" cy="98" r="2" fill="#b39ddb" /><text x="221" y="102" className="ch-item">電路の絶縁</text>
-              <circle cx="213" cy="114" r="2" fill="#b39ddb" /><text x="221" y="118" className="ch-item">接地工事</text>
-              <circle cx="213" cy="130" r="2" fill="#b39ddb" /><text x="221" y="134" className="ch-item">電線路・過電流保護</text>
-              <circle cx="213" cy="146" r="2" fill="#b39ddb" /><text x="221" y="150" className="ch-item">分散型電源連系</text>
+              <circle cx="211" cy="62" r="7" fill="#ffca28" /><text x="211" y="65" textAnchor="middle" fill="#c62828" fontSize="8" fontWeight="800">S</text>
+              <circle cx="213" cy="82" r="2" fill="#c62828" /><text x="221" y="86" className="ch-item-s">電路の絶縁</text>
+              <circle cx="213" cy="98" r="2" fill="#c62828" /><text x="221" y="102" className="ch-item-s">接地工事</text>
+              <circle cx="213" cy="114" r="2" fill="#c62828" /><text x="221" y="118" className="ch-item">電線路・過電流保護</text>
+              <circle cx="213" cy="130" r="2" fill="#c62828" /><text x="221" y="134" className="ch-item">屋内配線</text>
+              <circle cx="213" cy="146" r="2" fill="#c62828" /><text x="221" y="150" className="ch-item">分散型電源連系</text>
             </g>
 
-            {/* CH02 */}
+            {/* CH02 その他法令 A */}
             <g className="card">
               <rect x="374" y="44" width="165" height="102" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
               <rect x="374" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
               <rect x="374" y="56" width="165" height="12" fill="#b39ddb" />
               <text x="456" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH02 その他法令</text>
+              <circle cx="388" cy="62" r="7" fill="#ffe0b2" /><text x="388" y="65" textAnchor="middle" fill="#e65100" fontSize="8" fontWeight="800">A</text>
               <circle cx="390" cy="82" r="2" fill="#b39ddb" /><text x="398" y="86" className="ch-item">電気用品安全法</text>
               <circle cx="390" cy="98" r="2" fill="#b39ddb" /><text x="398" y="102" className="ch-item">電気工事士法</text>
               <circle cx="390" cy="114" r="2" fill="#b39ddb" /><text x="398" y="118" className="ch-item">電気工事業法</text>
             </g>
 
-            {/* CH05 */}
+            {/* CH05 再エネ B */}
             <g className="card">
               <rect x="551" y="44" width="165" height="102" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
               <rect x="551" y="44" width="165" height="24" rx="8" fill="#b39ddb" />
               <rect x="551" y="56" width="165" height="12" fill="#b39ddb" />
               <text x="633" y="62" textAnchor="middle" fill="#fff" className="ch-label">CH05 再エネ技術基準</text>
+              <circle cx="565" cy="62" r="7" fill="#e0e0e0" /><text x="565" y="65" textAnchor="middle" fill="#616161" fontSize="8" fontWeight="800">B</text>
               <circle cx="567" cy="82" r="2" fill="#b39ddb" /><text x="575" y="86" className="ch-item">風力発電の技術基準</text>
               <circle cx="567" cy="98" r="2" fill="#b39ddb" /><text x="575" y="102" className="ch-item">太陽電池発電の技術基準</text>
               <circle cx="567" cy="114" r="2" fill="#b39ddb" /><text x="575" y="118" className="ch-item">系統連系・保護装置</text>
             </g>
 
-            {/* CH04 計算 */}
+            {/* CH04 計算 ★S */}
             <g className="card">
-              <rect x="20" y="178" width="400" height="118" rx="8" fill="#e8f5e9" stroke="#81c784" strokeWidth="1.2" />
-              <rect x="20" y="178" width="400" height="24" rx="8" fill="#66bb6a" />
-              <rect x="20" y="190" width="400" height="12" fill="#66bb6a" />
+              <rect x="20" y="178" width="400" height="118" rx="8" fill="#e8f5e9" stroke="#c62828" strokeWidth="2" />
+              <rect x="20" y="178" width="400" height="24" rx="8" fill="#2e7d32" />
+              <rect x="20" y="190" width="400" height="12" fill="#2e7d32" />
               <text x="220" y="196" textAnchor="middle" fill="#fff" className="ch-label">CH04 計算問題（B問題対策）</text>
-              <circle cx="36" cy="218" r="2" fill="#66bb6a" /><text x="44" y="222" className="ch-item">絶縁耐力試験</text>
-              <circle cx="160" cy="218" r="2" fill="#66bb6a" /><text x="168" y="222" className="ch-item">電圧降下</text>
-              <circle cx="260" cy="218" r="2" fill="#66bb6a" /><text x="268" y="222" className="ch-item">支線の引張強さ</text>
-              <circle cx="36" cy="238" r="2" fill="#66bb6a" /><text x="44" y="242" className="ch-item">変圧器の全日効率</text>
-              <circle cx="160" cy="238" r="2" fill="#66bb6a" /><text x="168" y="242" className="ch-item">力率改善</text>
-              <circle cx="260" cy="238" r="2" fill="#66bb6a" /><text x="268" y="242" className="ch-item">B種接地抵抗値</text>
-              <circle cx="36" cy="258" r="2" fill="#66bb6a" /><text x="44" y="262" className="ch-item">需要率・負荷率・不等率</text>
-              <text x="220" y="286" textAnchor="middle" fontSize="9" fontWeight="600" fill="#43a047">他科目の計算力がそのまま得点になる</text>
+              <circle cx="34" cy="196" r="7" fill="#ffca28" /><text x="34" y="199" textAnchor="middle" fill="#c62828" fontSize="8" fontWeight="800">S</text>
+              <circle cx="36" cy="218" r="2" fill="#2e7d32" /><text x="44" y="222" className="ch-item-s">絶縁耐力試験</text>
+              <circle cx="160" cy="218" r="2" fill="#2e7d32" /><text x="168" y="222" className="ch-item-s">電圧降下</text>
+              <circle cx="280" cy="218" r="2" fill="#2e7d32" /><text x="288" y="222" className="ch-item-s">支線の引張強さ</text>
+              <circle cx="36" cy="238" r="2" fill="#2e7d32" /><text x="44" y="242" className="ch-item-s">変圧器の全日効率</text>
+              <circle cx="160" cy="238" r="2" fill="#2e7d32" /><text x="168" y="242" className="ch-item-s">力率改善</text>
+              <circle cx="280" cy="238" r="2" fill="#2e7d32" /><text x="288" y="242" className="ch-item-s">B種接地抵抗値</text>
+              <circle cx="36" cy="258" r="2" fill="#2e7d32" /><text x="44" y="262" className="ch-item-s">需要率・負荷率・不等率</text>
+              <text x="220" y="286" textAnchor="middle" fontSize="9" fontWeight="600" fill="#2e7d32">他科目の計算力がそのまま得点になる</text>
             </g>
 
-            {/* CH06 施設管理 */}
+            {/* CH06 施設管理 A */}
             <g className="card">
               <rect x="440" y="178" width="276" height="118" rx="8" fill="#ede7f6" stroke="#b39ddb" strokeWidth="1.2" />
               <rect x="440" y="178" width="276" height="24" rx="8" fill="#b39ddb" />
               <rect x="440" y="190" width="276" height="12" fill="#b39ddb" />
               <text x="578" y="196" textAnchor="middle" fill="#fff" className="ch-label">CH06 電気施設管理</text>
+              <circle cx="454" cy="196" r="7" fill="#ffe0b2" /><text x="454" y="199" textAnchor="middle" fill="#e65100" fontSize="8" fontWeight="800">A</text>
               <circle cx="456" cy="218" r="2" fill="#b39ddb" /><text x="464" y="222" className="ch-item">需要率・負荷率・不等率（概念）</text>
               <circle cx="456" cy="238" r="2" fill="#b39ddb" /><text x="464" y="242" className="ch-item">変圧器容量</text>
               <circle cx="456" cy="258" r="2" fill="#b39ddb" /><text x="464" y="262" className="ch-item">配電管理</text>
@@ -2159,8 +2439,64 @@ function HomePage({ onNav, data }) {
             <line x1="135" y1="366" x2="135" y2="300" stroke="#78909c" strokeWidth="1.2" markerEnd="url(#arr)" />
             <line x1="370" y1="366" x2="280" y2="300" stroke="#78909c" strokeWidth="1.2" markerEnd="url(#arr)" />
             <line x1="605" y1="366" x2="400" y2="300" stroke="#78909c" strokeWidth="1.2" markerEnd="url(#arr)" />
-            <text x="370" y="440" textAnchor="middle" fontSize="10" fill="#78909c" fontStyle="italic">他科目で学んだ計算パターンが、法規CH04のB問題でそのまま出る</text>
+            <text x="370" y="460" textAnchor="middle" fontSize="10" fill="#78909c" fontStyle="italic">他科目で学んだ計算パターンが、法規CH04のB問題でそのまま出る</text>
           </svg>
+        </div>
+      </section>
+
+      {/* ====== 法令の階層 — 暗記より「なぜ」 ====== */}
+      <section style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>HOW TO READ</div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>法令の階層 — 暗記より「なぜ」</h2>
+          <p style={{ margin: '8px 0 0', fontSize: 13, color: 'var(--ink-2)', lineHeight: 1.7 }}>
+            条文を覚えるのではなく、<strong>「現場の意図 → 条文の数値」</strong>の順で「なぜそのルールなのか」を押さえる。法令は上位から下位へ階層になっており、出題は<strong>省令〜解釈レベル</strong>が中心。上位ほど「規制の根拠」、下位ほど「具体的な実装」。
+          </p>
+        </div>
+
+        <div style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px' }}>
+          {[
+            { tier: '法律',     name: '電気事業法',                                   role: '規制の根拠',         maps: 'CH01' },
+            { tier: '政令',     name: '電気事業法施行令',                             role: '規制の範囲',         maps: '—' },
+            { tier: '省令',     name: '電気設備に関する技術基準を定める省令(電技)',   role: '守るべき事項',       maps: 'CH03' },
+            { tier: '解釈',     name: '電気設備の技術基準の解釈(電技解釈)',           role: '電技を満たす実装例', maps: 'CH03' },
+            { tier: '規格類',   name: 'JESC・JEC 等の民間規格',                       role: '具体的な数値の根拠', maps: 'CH03 / CH04' },
+          ].map((row, i, arr) => (
+            <React.Fragment key={row.tier}>
+              <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr auto', gap: 12, alignItems: 'center', padding: '8px 4px' }}>
+                <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 700, letterSpacing: '0.05em' }}>{row.tier}</div>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600 }}>{row.name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--ink-3)' }}>{row.role}</div>
+                </div>
+                <div style={{ fontSize: 10, color: row.maps === '—' ? 'var(--ink-3)' : 'var(--accent)', fontWeight: 700, letterSpacing: '0.03em', whiteSpace: 'nowrap', padding: '3px 8px', border: `1px solid ${row.maps === '—' ? 'var(--border)' : 'var(--accent)'}`, borderRadius: 999, background: 'var(--bg)' }}>{row.maps === '—' ? '出題稀' : `→ ${row.maps}`}</div>
+              </div>
+              {i < arr.length - 1 && (
+                <div style={{ paddingLeft: 40, color: 'var(--ink-3)', fontSize: 14, lineHeight: 1, margin: '-2px 0' }}>↓</div>
+              )}
+            </React.Fragment>
+          ))}
+          <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px dashed var(--border)', fontSize: 11, color: 'var(--ink-3)', lineHeight: 1.6 }}>
+            ※ 上表は電気事業法から派生する縦の階層。CH02「その他法令」(電気工事士法・電気用品安全法 等)は別系統の法律群で、本表の範囲外。
+          </div>
+        </div>
+      </section>
+
+      {/* ====== 学習優先順 ====== */}
+      <section style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>PRIORITY ORDER</div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>学習の優先順</h2>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>S→A→Bの順で攻める。上から順にやれば合格ラインに届く。</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {CH_TABLE.map((row) => (
+            <div key={row.ch} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--bg-elev)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink-3)', minWidth: 20, textAlign: 'center' }}>{row.order}</span>
+              <span style={{ fontWeight: 600, flex: 1 }}>{row.content}</span>
+              <span className={`rank rank-${row.rank}`}>{row.rank}</span>
+            </div>
+          ))}
         </div>
       </section>
 
