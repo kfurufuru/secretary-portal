@@ -1442,7 +1442,7 @@ function PlainExplain({ children }) {
   );
 }
 
-function MemTable({ headers, rows, note }) {
+function MemTable({ headers, rows, note, source }) {
   return (
     <div style={{ marginBottom: '24px' }}>
       <table className="mini-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
@@ -1469,6 +1469,11 @@ function MemTable({ headers, rows, note }) {
           ))}
         </tbody>
       </table>
+      {source && (
+        <div style={{ fontSize: '11px', color: 'var(--ink-3)', marginTop: '6px', fontStyle: 'italic' }}>
+          {source}
+        </div>
+      )}
       {note && <div style={{ fontSize: '12px', color: 'var(--ink-3)', marginTop: '6px' }}>{note}</div>}
     </div>
   );
@@ -3403,6 +3408,7 @@ function SetsuchiIchiranPage({ onNav, data }) {
           ["C種", "300V 超低圧",     "10 Ω 以下",  "1.6 mm 以上"],
           ["D種", "300V 以下低圧",   "100 Ω 以下", "1.6 mm 以上"],
         ]}
+        source="出典：電気設備の技術基準の解釈 第17条（接地工事の種類及び施設方法・省令第11条由来）／令和7年11月版"
         note="B種の 150/Ig は「1秒以内に自動遮断される場合は 300/Ig」に緩和される"
       />
 
@@ -3474,8 +3480,25 @@ function ZetsuenIchiranPage({ onNav, data }) {
           ["特高（中性点直接接地）","170kV 超",           "0.64 倍","10 分"],
           ["特高（その他）",        "60kV 超",            "1.25 倍","10 分"],
         ]}
+        source="出典：電気設備の技術基準の解釈 第14条（低圧電路）・第15条 別表第2の2（高圧又は特別高圧の電路）／令和7年11月版"
         note="低圧は1.5倍（高い）、高圧・特高は1.25倍が基本。中性点直接接地の特高だけ0.64倍（低い）"
       />
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderLeft: '3px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '12px 16px',
+        marginBottom: '24px',
+        fontSize: '13px',
+        lineHeight: '1.7',
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: 4, fontSize: '13px' }}>なぜ 0.64倍 だけ低いのか（B問題対策）</div>
+        中性点直接接地の電路では、地絡時も <strong>対地電圧が相電圧（線間電圧の 1/√3）に抑制</strong>される。
+        そこに試験マージン 1.1倍を掛けて、<strong>1.1 × (1/√3) ≒ 0.6351 → 0.64倍</strong>。
+        他系統は線間電圧基準（1.25倍・1.5倍）なのに対し、中性点直接接地のみ相電圧基準で算定するため低くなる。
+      </div>
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
@@ -3544,6 +3567,7 @@ function RikkakuIchiranPage({ onNav, data }) {
           ["道路横断",   "5 m",   "6 m",   "6 m"],
           ["鉄道横断",   "5.5 m", "5.5 m", "6 m"],
         ]}
+        source="出典：電気設備の技術基準の解釈 第68条 68-1表（架空電線の高さ・道路/鉄道横断）／第71条（建造物との離隔）／令和7年11月版"
         note="道路横断は高圧・特高で6m（低圧の5mより1m高い）。鉄道横断は低圧・高圧とも5.5mで同じ"
       />
 
@@ -3613,6 +3637,7 @@ function DenAtsuKubunPage({ onNav, data }) {
           ["高圧",     "600 V 超 7,000 V 以下","750 V 超 7,000 V 以下"],
           ["特別高圧", "7,000 V 超",           "7,000 V 超"],
         ]}
+        source="出典：電気設備に関する技術基準を定める省令 第2条（電圧の種別等）／令和5年版"
         note="交流と直流で低圧の上限が違う（交流600V・直流750V）。特別高圧は7,000V超で交流・直流共通"
       />
 
