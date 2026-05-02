@@ -2692,13 +2692,13 @@ window.renderPage = function(page, navigate) {
     case 'densen-size':            return React.createElement(StubPage, { ...props, pageId: 'densen-size' });
     case 'hokoku-todoke-kigen':    return React.createElement(StubPage, { ...props, pageId: 'hokoku-todoke-kigen' });
     case 'denro-zetsuen':          return React.createElement(DenroZetsuenPage, props);
-    case 'setsuchi-koji':          return React.createElement(StubPage, { ...props, pageId: 'setsuchi-koji' });
-    case 'densenro':               return React.createElement(StubPage, { ...props, pageId: 'densenro' });
-    case 'okunai-haisen':          return React.createElement(StubPage, { ...props, pageId: 'okunai-haisen' });
+    case 'setsuchi-koji':          return React.createElement(SetsuchiKojiPage, props);
+    case 'densenro':               return React.createElement(DensenroPage, props);
+    case 'okunai-haisen':          return React.createElement(OkunaiHaisenPage, props);
     case 'kako-denryu':            return React.createElement(StubPage, { ...props, pageId: 'kako-denryu' });
     case 'chichuu-densenro':       return React.createElement(StubPage, { ...props, pageId: 'chichuu-densenro' });
     case 'bunsangata-dengen':      return React.createElement(StubPage, { ...props, pageId: 'bunsangata-dengen' });
-    case 'gijutsu-kijun-gaiyou':   return React.createElement(StubPage, { ...props, pageId: 'gijutsu-kijun-gaiyou' });
+    case 'gijutsu-kijun-gaiyou':   return React.createElement(GijutsuKijunGaiyouPage, props);
     case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
     case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
     case 'hoan-kitei':             return React.createElement(HoanKiteiPage, props);
@@ -3489,6 +3489,494 @@ function HomePage({ onNav, data }) {
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-B. GijutsuKijunGaiyouPage（電気設備技術基準の概要・freq:mid）
+// ─────────────────────────────────────────────
+function GijutsuKijunGaiyouPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電気設備技術基準（電技）の構成として正しいものはどれか"
+        choices={[
+          "省令と政令の2階層",
+          "省令（電技省令）と告示（電技解釈）の2階層",
+          "法律と省令と告示の3階層",
+          "省令のみの単層構造",
+        ]}
+        correctIndex={1}
+        year="基本"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電気設備技術基準の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技省令', sub: '電気設備技術基準（78条）', theme: 'blue' }}
+        top={{ label: '電気事業法 第39条', sub: '上位法（技術基準遵守義務）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '電技解釈', sub: '具体的方法（告示）', theme: 'orange', arrowLabel: '具体化' }}
+        right={{ label: '別表第1〜18', sub: '数値・許容値', theme: 'cyan', arrowLabel: '数値' }}
+        bottom={{ label: '8章構成', sub: '総則/施設/絶縁/保安/特殊', theme: 'green', arrowLabel: '構成' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本基準との関係"]}
+        rows={[
+          ["電気事業法 第39条",     "技術基準への適合義務を定める",   "上位（技術基準遵守の根拠）"],
+          ["電技省令（78条）",      "技術基準の本則を定める",         "本則（性能規定が中心）"],
+          ["電技解釈（告示）",      "電技省令を満たす具体的方法を例示", "委任先（仕様規定が中心）"],
+          ["別表第1〜18",           "許容電流・絶縁抵抗等の数値を規定", "詳細（試験頻出の数値）"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／同解釈（令和5年版／令和7年11月版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>2階層構造: <strong>電技省令（性能規定）</strong> + <strong>電技解釈（仕様規定）</strong></li>
+          <li>電技省令: 78条構成・<strong>8章</strong>に分類</li>
+          <li>電技解釈: 約240条・別表第1〜18で数値規定</li>
+          <li>関係: 解釈に従えば省令適合とみなされる（みなし適合）</li>
+          <li>遵守義務: 電気事業法<strong>第39条</strong>（事業者・設置者の義務）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R02・H30"
+        tags={["技術基準","概要","構造","2階層"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電気の安全ルール本体",   "電気設備に関する技術基準を定める省令", "電技省令（経済産業省令）"],
+          ["やり方マニュアル",        "電気設備の技術基準の解釈",         "電技解釈（経済産業省告示）"],
+          ["要求性能だけ書く",        "性能規定",                         "省令本則の特徴（手段は問わない）"],
+          ["具体的な施工方法を書く",  "仕様規定",                         "解釈の特徴（具体例として示す）"],
+          ["これに従えばOK扱い",      "みなし適合",                       "解釈に従えば省令適合とみなされる"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／同解釈（令和5年版／令和7年11月版）"
+      />
+
+      <h2 id="tables">電技省令の8章構成</h2>
+      <MemTable
+        headers={["章", "タイトル", "条文", "主要内容"]}
+        rows={[
+          ["第1章", "総則",                       "第1〜2条",   "目的・電圧の種別"],
+          ["第2章", "電気の供給のための電気設備の施設","第3〜32条","電気設備の保安原則・絶縁・接地等"],
+          ["第3章", "電気使用場所の施設",         "第33〜78条", "屋内配線・対地電圧制限・特殊場所"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／令和5年版"
+        note="3章構成・78条。試験頻出は第2章（保安原則・接地・絶縁）と第3章（屋内配線）"
+      />
+
+      <h2 id="kankei-tables">省令と解釈の関係</h2>
+      <MemTable
+        headers={["観点", "電技省令", "電技解釈"]}
+        rows={[
+          ["性格",       "性能規定（要求性能）",         "仕様規定（具体例）"],
+          ["条文数",     "78条",                         "約240条"],
+          ["数値",       "原則数値なし（性能のみ）",     "別表第1〜18で具体数値"],
+          ["位置づけ",   "経済産業省令（法的拘束力強）", "経済産業省告示（解釈例示）"],
+          ["変更頻度",   "稀（数年に1回）",              "年1回程度（最新令和7年11月）"],
+        ]}
+        source="出典：電技省令／電技解釈（令和5年版／令和7年11月版・経済産業省）"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "電技省令と電技解釈は同じ法令",
+          correct: "省令は経済産業省令（法的拘束力強）、解釈は告示（みなし適合の例示）" },
+        { wrong: "電技解釈に従わなければ違法",
+          correct: "解釈は『例示』。同等以上の方法なら他の方法でもOK（性能規定の特徴）" },
+        { wrong: "電技省令には数値が多く書かれている",
+          correct: "省令は性能規定中心で数値は少ない。具体数値は解釈の別表" },
+        { wrong: "技術基準遵守は電気主任技術者の義務",
+          correct: "遵守義務は『事業者・設置者』にある（第39条）。主任技術者は監督する立場" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "電技省令の条文数は？",                 a: "78条" },
+        { q: "電技解釈はどんな性格の法令か？",       a: "経済産業省告示（仕様規定・みなし適合の例示）" },
+        { q: "技術基準への適合義務の根拠条文は？",   a: "電気事業法第39条" },
+        { q: "電技省令と解釈、数値が多いのは？",     a: "電技解釈（別表第1〜18で具体数値）" },
+        { q: "解釈に従わない場合の扱いは？",         a: "同等以上の方法ならOK（性能規定の特徴）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第4弾" }]} />
+      <PageNav
+        prevId="den-atsu-kubun" prevTitle="電圧区分一覧"
+        nextId="denro-zetsuen"  nextTitle="電路の絶縁"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-C. SetsuchiKojiPage（接地工事・条文ベース・freq:max・required）
+// ─────────────────────────────────────────────
+function SetsuchiKojiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="接地工事の目的として最も適切なものはどれか"
+        choices={[
+          "電気機器の効率を上げるため",
+          "感電・火災防止と保護装置の確実な動作のため",
+          "電圧降下を防ぐため",
+          "送電損失を減らすため",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 接地工事の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技省令第10〜12条', sub: '接地工事の保安原則', theme: 'blue' }}
+        top={{ label: '電気事業法 第39条', sub: '上位法（保安義務）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '電技省令第10条', sub: '機械器具等の保安原則', theme: 'orange', arrowLabel: '原則' }}
+        right={{ label: '電技解釈第17条', sub: 'A〜D種の具体方法', theme: 'cyan', arrowLabel: '具体化' }}
+        bottom={{ label: '電技解釈第18・19条', sub: '共用接地・統合接地', theme: 'green', arrowLabel: '例外' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第10条",  "機械器具・電線路の感電・火災防止", "本条（接地義務の根拠）"],
+          ["電技省令 第11条",  "電路の保護装置の電源確保",         "本条（B種接地の根拠）"],
+          ["電技省令 第12条",  "特別高圧電路の保安原則",           "本条（特高機器の接地）"],
+          ["電技解釈 第17条",  "A〜D種接地工事の具体方法",         "委任先（数値・施設方法）"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／同解釈（令和5年版／令和7年11月版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>接地の目的: <strong>感電防止 + 火災防止 + 保護装置の確実動作</strong></li>
+          <li>原則: 露出非充電金属部・電源側中性点等を<strong>大地に接続</strong></li>
+          <li>A種: 高圧・特高機器の鉄台等（10Ω以下）</li>
+          <li>B種: 変圧器の二次側中性点（150/Ig）</li>
+          <li>C種: 300V超低圧機器（10Ω以下）／D種: 300V以下低圧機器（100Ω以下）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 接地"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R06上・R05・R04・R03"
+        tags={["接地","頻出S","条文","保安原則"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["金属の外装",         "露出非充電金属部",       "感電のリスクがある接地対象"],
+          ["真ん中の点",         "中性点",                 "B種接地の対象（変圧器二次側）"],
+          ["地面に逃がす",       "大地と電気的に接続する", "接地の本質的定義"],
+          ["1秒以内に切れる",     "1秒以内に自動遮断される","B種抵抗値の特例条件（300/Igに緩和）"],
+          ["保護装置",           "過電流遮断器・地絡遮断装置","接地と組み合わせて感電・火災を防ぐ"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令 第10〜12条／令和5年版"
+      />
+
+      <h2 id="tables">接地が必要な箇所（電技解釈第29条等）</h2>
+      <MemTable
+        headers={["対象", "接地種別", "目的"]}
+        rows={[
+          ["高圧電路の機械器具の鉄台・金属外箱", "A種", "感電防止（高電圧での触感を防ぐ）"],
+          ["変圧器の二次側中性点（高圧→低圧）", "B種", "混触時の対地電圧制限（150V以下）"],
+          ["300V 超 低圧機械器具の鉄台",        "C種", "感電防止（低圧でも電圧高め）"],
+          ["300V 以下 低圧機械器具の鉄台",      "D種", "感電防止（一般家庭・事務所等）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条・第29条／令和7年11月版"
+        note="数値（10Ω等）の詳細は『接地工事一覧表』ページ参照"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "接地工事は電気を効率よく流すための工事",
+          correct: "目的は『感電防止・火災防止・保護装置の確実動作』" },
+        { wrong: "接地は電技解釈にしか規定されていない",
+          correct: "原則は省令第10〜12条、具体方法が解釈第17条" },
+        { wrong: "B種接地は感電防止が目的",
+          correct: "B種は混触時の対地電圧制限（150V以下）が目的・他種とは目的が違う" },
+        { wrong: "300Vの低圧機器はD種でよい",
+          correct: "300V『超』はC種、300V『以下』がD種（境界の300Vはどちらか確認）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "接地工事の3つの目的は？",         a: "感電防止・火災防止・保護装置の確実動作" },
+        { q: "接地義務の原則を定める条文は？",   a: "電技省令第10〜12条" },
+        { q: "A〜D種の具体方法を定める条文は？", a: "電技解釈第17条" },
+        { q: "B種接地の目的は？",                a: "混触時の対地電圧制限（150V以下）" },
+        { q: "C種とD種の境界は？",               a: "300V（超はC種、以下はD種）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第4弾" }]} />
+      <PageNav
+        prevId="denro-zetsuen" prevTitle="電路の絶縁"
+        nextId="densenro"      nextTitle="電線路"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-D. DensenroPage（電線路・freq:high・required）
+// ─────────────────────────────────────────────
+function DensenroPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電線路の種類として該当しないものはどれか"
+        choices={[
+          "架空電線路",
+          "地中電線路",
+          "屋内電路",
+          "引込電線路",
+        ]}
+        correctIndex={2}
+        year="基本"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電線路の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技解釈第49〜132条', sub: '電線路の通則', theme: 'blue' }}
+        top={{ label: '電技省令第20〜32条', sub: '保安原則', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '架空電線路', sub: '第65〜109条', theme: 'orange', arrowLabel: '種類1' }}
+        right={{ label: '地中電線路', sub: '第120〜125条', theme: 'cyan', arrowLabel: '種類2' }}
+        bottom={{ label: '引込線・連接引込', sub: '第116〜118条', theme: 'green', arrowLabel: '種類3' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第20〜32条",   "電線路の保安原則を定める",       "上位（電線路全般の根拠）"],
+          ["電技解釈 第49〜50条",   "電線路の通則・支持物の強度",     "本条（電線路全般の規定）"],
+          ["電技解釈 第65〜109条",  "架空電線路の具体規定",           "種類1（最大ボリューム）"],
+          ["電技解釈 第120〜125条", "地中電線路の埋設方式",           "種類2（直埋・管路・暗渠）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>電線路 = <strong>電線+支持物（電柱・がいし等）</strong>の一式</li>
+          <li>「電線」「電路」「電線路」は別概念（試験頻出ひっかけ）</li>
+          <li>主な種類: <strong>架空電線路 / 地中電線路 / 引込電線路</strong></li>
+          <li>架空: 電柱・鉄塔で空中支持／地中: 直接埋設・管路・暗渠</li>
+          <li>引込: 電線路 → 需要家への引込部分（第116〜118条）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 電線路"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R03・H29"
+        tags={["電線路","頻出A","用語混同","架空地中"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電線そのもの",         "電線",                   "導体本体（被覆含む）"],
+          ["通電している通路",     "電路",                   "電源〜負荷の閉回路（電気が流れる経路）"],
+          ["電線+支柱の一式",     "電線路",                 "電線+支持物（電柱・がいし・鉄塔等）の総称"],
+          ["空中の電線",           "架空電線",               "支持物で空中支持される電線"],
+          ["地面の中の電線",       "地中電線",               "直接埋設・管路・暗渠で地中に施設"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第49条・第120条／令和7年11月版"
+      />
+
+      <h2 id="tables">電線路の主な種類と規定条文</h2>
+      <MemTable
+        headers={["種類", "規定条文", "支持物", "代表的特徴"]}
+        rows={[
+          ["架空電線路",   "電技解釈 第65〜109条", "電柱・鉄塔", "支持物の強度・他物との離隔距離"],
+          ["地中電線路",   "電技解釈 第120〜125条","地中（管路等）", "埋設方式（直埋/管路/暗渠）"],
+          ["引込電線路",   "電技解釈 第116〜118条","支持物または地中","電線路から需要家への引込"],
+          ["連接引込線",   "電技解釈 第117条",     "—",          "1需要家から他需要家へ引込"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第65・116・120条／令和7年11月版"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "「電線」と「電線路」は同じ意味",
+          correct: "電線=導体本体、電線路=電線+支持物の一式（別概念）" },
+        { wrong: "屋内電路は電線路に含まれる",
+          correct: "電線路は『屋外の電線+支持物』。屋内配線は電線路ではない" },
+        { wrong: "引込線は架空電線路の一種",
+          correct: "引込線は独立した区分（第116〜118条）。架空・地中とは別" },
+        { wrong: "地中電線路の方法は直接埋設のみ",
+          correct: "直接埋設・管路式・暗渠式の3種類（解釈第120条）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "電線路の定義は？",                a: "電線+支持物の一式（電柱・がいし・鉄塔等を含む）" },
+        { q: "電線路の主な3種類は？",            a: "架空電線路・地中電線路・引込電線路" },
+        { q: "地中電線路の3つの埋設方式は？",     a: "直接埋設・管路式・暗渠式" },
+        { q: "電線・電路・電線路の違いは？",     a: "電線=導体、電路=通路、電線路=電線+支持物の一式" },
+        { q: "引込線の規定条文は？",             a: "電技解釈第116〜118条" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第4弾" }]} />
+      <PageNav
+        prevId="setsuchi-koji" prevTitle="接地工事"
+        nextId="okunai-haisen" nextTitle="屋内配線"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-E. OkunaiHaisenPage（屋内配線・freq:mid）
+// ─────────────────────────────────────────────
+function OkunaiHaisenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="低圧屋内電路の対地電圧の制限値として正しいものはどれか"
+        choices={[
+          "150 V 以下",
+          "300 V 以下",
+          "600 V 以下",
+          "対地電圧の制限はない",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 屋内配線の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技解釈第142〜200条', sub: '屋内電気使用場所の施設', theme: 'blue' }}
+        top={{ label: '電技省令第33〜78条', sub: '上位（電気使用場所）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '対地電圧制限', sub: '原則300V以下（解釈143条）', theme: 'orange', arrowLabel: '原則' }}
+        right={{ label: '配線方法', sub: 'ケーブル/がいし引き等', theme: 'cyan', arrowLabel: '工法' }}
+        bottom={{ label: '特殊場所', sub: '湿気・粉じん・爆発の場所', theme: 'green', arrowLabel: '例外' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第56条",     "配線の感電・火災防止",             "上位（屋内配線の根拠）"],
+          ["電技解釈 第142条",    "電気使用場所の施設の通則",         "本条（屋内全般の通則）"],
+          ["電技解釈 第143条",    "対地電圧の制限（原則300V以下）",   "本条（対地電圧の数値根拠）"],
+          ["電技解釈 第156〜163条","屋内配線の工事方法（金属管・ケーブル等）","具体化（工法別の規定）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>原則: 低圧屋内電路の対地電圧は<strong>300 V 以下</strong>（解釈第143条）</li>
+          <li>例外: 住宅以外で機器の容量が大きい等の条件で<strong>300V超〜600V以下</strong>可</li>
+          <li>住宅: 原則<strong>150V以下</strong>（小容量需要）</li>
+          <li>主な工事方法: <strong>金属管・合成樹脂管・ケーブル・がいし引き</strong></li>
+          <li>禁止場所: 爆発性ガス・引火性物質の場所等は厳格な工法のみ可</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 屋内配線"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R04・R02・H30"
+        tags={["屋内配線","対地電圧","頻出A","工事方法"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["家やビルの中の電気配線", "屋内配線／屋内電路",         "電気使用場所の電路（解釈第142条以下）"],
+          ["大地に対する電圧",       "対地電圧",                   "電線と大地の間の電圧（住宅150V以下等）"],
+          ["金属の管に通す配線",     "金属管工事／合成樹脂管工事", "工事方法の代表（解釈第156〜158条）"],
+          ["天井裏・床下の配線",     "がいし引き工事／ケーブル工事","工事方法（解釈第156条等）"],
+          ["危険な場所での工事",     "粉じんの多い場所等の特殊施設","解釈第175条以下の特殊規定"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第142〜200条／令和7年11月版"
+      />
+
+      <h2 id="tables">対地電圧の制限まとめ</h2>
+      <MemTable
+        headers={["施設場所", "対地電圧の上限", "根拠"]}
+        rows={[
+          ["住宅",                   "150 V 以下",   "解釈第143条第1項"],
+          ["住宅以外の屋内（原則）", "300 V 以下",   "解釈第143条第1項"],
+          ["住宅以外の屋内（例外）", "300 V 超〜600V以下", "解釈第143条第2項（機器容量等の条件）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第143条／令和7年11月版"
+        note="住宅は150V・住宅以外は300Vが原則。機器容量大なら600Vまで緩和（例外）"
+      />
+
+      <h2 id="koji-tables">主な工事方法（解釈第156〜163条）</h2>
+      <MemTable
+        headers={["工事方法", "条文", "適用場所", "特徴"]}
+        rows={[
+          ["金属管工事",       "第159条", "ほぼ全ての場所",     "金属管に絶縁電線を入れる"],
+          ["合成樹脂管工事",   "第158条", "湿気の多い場所等可", "合成樹脂管に絶縁電線を入れる"],
+          ["ケーブル工事",     "第164条", "ほぼ全ての場所",     "ケーブルを直接施設"],
+          ["がいし引き工事",   "第157条", "乾燥した場所",       "絶縁電線をがいしで支持"],
+          ["金属可とう電線管工事","第160条","ほぼ全ての場所",     "可とう性のある金属管"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第156〜164条／令和7年11月版"
+        note="湿気・水気・爆発性場所では工法が限定される（解釈第175条以下）"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "住宅も住宅以外も対地電圧上限は300V",
+          correct: "住宅は『150V以下』、住宅以外は『300V以下』（住宅の方が厳しい）" },
+        { wrong: "屋内配線にがいし引き工事は使えない",
+          correct: "乾燥した場所では使用可（解釈第157条）" },
+        { wrong: "対地電圧600Vの屋内配線は違法",
+          correct: "住宅以外で機器容量等の条件を満たせば300V超〜600V可（解釈第143条第2項）" },
+        { wrong: "屋内配線も電線路に含まれる",
+          correct: "電線路は『屋外の電線+支持物』。屋内配線は別カテゴリ" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "住宅の対地電圧の上限は？",         a: "150 V 以下" },
+        { q: "住宅以外の屋内（原則）の対地電圧上限は？", a: "300 V 以下" },
+        { q: "住宅以外の屋内（例外）の対地電圧上限は？", a: "600 V 以下（機器容量等の条件あり）" },
+        { q: "屋内配線の主な4工法は？",         a: "金属管・合成樹脂管・ケーブル・がいし引き" },
+        { q: "対地電圧の規定条文は？",           a: "電技解釈第143条" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第4弾" }]} />
+      <PageNav
+        prevId="densenro"        prevTitle="電線路"
+        nextId="kako-denryu"     nextTitle="過電流保護"
+        onNav={onNav}
+      />
     </div>
   );
 }

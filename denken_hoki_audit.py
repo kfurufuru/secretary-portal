@@ -29,7 +29,11 @@ VALUES_PATH = Path(__file__).parent / "denken_hoki_values.json"
 
 # 監査対象ページ（実装済み・StubPage除外）
 TARGET_PAGES = [
+    "GijutsuKijunGaiyouPage",
     "DenroZetsuenPage",
+    "SetsuchiKojiPage",
+    "DensenroPage",
+    "OkunaiHaisenPage",
     "KosakubutsuBunruiPage",
     "ShuninGijutsusyaPage",
     "HoanKiteiPage",
