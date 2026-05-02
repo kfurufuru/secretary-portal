@@ -33,9 +33,11 @@ inbox/wiki-shusyu-2026-05-02-summary.md を読んで P1 の修正実行プラン
 
 **出典行フォーマット**: `出典：電技解釈第○条 別表第○（令和7年11月版）` 版数表記必須（取得日表記は不可）
 
-## モデル戦略（メモリ参照: feedback_model_strategy.md）
+## モデル戦略
 
-新セッションは **`/model sonnet` でSonnetメイン**で開始。0.64倍の根拠文作成だけ `Agent({model:"opus", ...})` でOpusサブ起動推奨。
+**修正点が多いため全Opusで実行**（`/model opus`）。Sonnetメイン+Opusサブ部分起動はサブ起動オーバーヘッドで逆に高くつく（5回以上のOpus判断が必要なら全Opus一択）。
+
+詳細は `knowledge/claude-code-model-strategy.md` 参照。
 
 ## 監修成果物（参照ファイル）
 
