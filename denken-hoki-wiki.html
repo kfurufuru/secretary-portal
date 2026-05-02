@@ -2663,6 +2663,71 @@ const CH_TABLE = [
   { ch: 'CH05 再エネ',    content: '風力・太陽光',         rank: 'B', order: 6, wiki: '06 再エネ' },
 ];
 
+// ============================================================
+// Lv.2 学習履歴カード（topページに表示・PDCAのCheck/Action導線）
+// ============================================================
+function Lv2HistoryCard() {
+  const stats = React.useMemo(() => loadQuizStats(), []);
+  const glossary = window.WIKI_GLOSSARY || [];
+
+  const total = Object.values(stats).reduce((a, v) => a + (v.ok || 0) + (v.ng || 0), 0);
+  const totalOk = Object.values(stats).reduce((a, v) => a + (v.ok || 0), 0);
+  const rate = total > 0 ? Math.round((totalOk / total) * 100) : 0;
+  const totalMs = Object.values(stats).reduce((a, v) => a + (v.totalMs || 0), 0);
+  const avgMs = total > 0 ? Math.round(totalMs / total) : 0;
+  const weak = weakGroups(stats).slice(0, 3);
+
+  const groupLabel = (gKey) => {
+    const first = glossary.find(g => g.group === gKey);
+    return first ? first.term + ' グループ' : gKey;
+  };
+
+  const startLv2 = () => {
+    try { localStorage.setItem('hoki_studyLevel', '2'); } catch (e) {}
+    location.reload();
+  };
+
+  const cardStyle = { marginTop: 14, background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 18px' };
+
+  if (total === 0) {
+    return (
+      <div style={cardStyle}>
+        <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 4 }}>🎓 Lv.2 ハードモード（混同ペアブラインドテスト）</div>
+        <div style={{ fontSize: 13, color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: 10 }}>
+          まだ未挑戦。検索窓のトグル「🎓 学習OFF」を2回押すと起動します。混同しやすい用語ペア（A〜D種接地・専任/兼任・速報/詳報など）を弁別学習で潰せます。
+        </div>
+        <button className="btn primary" onClick={startLv2}>Lv.2 を始める →</button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={cardStyle}>
+      <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 8, fontWeight: 600, letterSpacing: '0.05em' }}>🎓 Lv.2 学習履歴（累計）</div>
+      <div style={{ display: 'flex', gap: 20, marginBottom: 12, fontSize: 13, flexWrap: 'wrap' }}>
+        <div><span style={{ color: 'var(--ink-3)' }}>累計 </span><strong>{total}問</strong></div>
+        <div><span style={{ color: 'var(--ink-3)' }}>正答率 </span><strong style={{ color: rate >= 70 ? '#1b5e20' : '#c0392b' }}>{rate}%</strong></div>
+        <div><span style={{ color: 'var(--ink-3)' }}>平均 </span><strong>{(avgMs / 1000).toFixed(1)}秒</strong></div>
+      </div>
+      {weak.length > 0 ? (
+        <div style={{ marginBottom: 10, fontSize: 12 }}>
+          <div style={{ color: '#c0392b', fontWeight: 700, marginBottom: 4 }}>⚠️ 弱点グループ TOP{weak.length}</div>
+          {weak.map((w, i) => (
+            <div key={w.group} style={{ display: 'flex', gap: 8, padding: '3px 0', color: 'var(--ink-2)' }}>
+              <span style={{ minWidth: 22, color: '#c0392b', fontWeight: 700 }}>#{i + 1}</span>
+              <span style={{ flex: 1 }}>{groupLabel(w.group)}</span>
+              <span style={{ color: '#c0392b', fontWeight: 600 }}>{Math.round(w.rate * 100)}% ({w.total}問)</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ marginBottom: 10, fontSize: 12, color: 'var(--ink-3)' }}>📈 弱点なし（全グループ70%以上、または3問未満）</div>
+      )}
+      <button className="btn primary" style={{ width: '100%' }} onClick={startLv2}>Lv.2 で弱点を潰す →</button>
+    </div>
+  );
+}
+
 function HomePage({ onNav, data }) {
   // 今日の一問の選択肢状態
   const [answered, setAnswered] = React.useState(null); // null | 'correct' | 'wrong'
@@ -2750,6 +2815,9 @@ function HomePage({ onNav, data }) {
             続きから学習する →
           </button>
         </div>
+
+        {/* Lv.2 学習履歴カード */}
+        <Lv2HistoryCard />
       </section>
 
       {/* ====== 法規の学習マップ ====== */}
