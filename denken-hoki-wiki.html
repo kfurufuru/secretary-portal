@@ -429,6 +429,60 @@
     color: var(--ink-3);
     text-align: center;
   }
+  .quiz-summary-stats {
+    background: var(--bg-2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0 14px;
+  }
+  .quiz-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .quiz-stat-label { color: var(--ink-3); }
+  .quiz-stat-value { font-weight: 600; color: var(--ink); }
+  .quiz-weak {
+    border: 1px solid #f5c0b8;
+    background: #fdf0ec;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .quiz-weak-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .quiz-weak-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .quiz-weak-rank { font-weight: 700; color: #c0392b; min-width: 24px; }
+  .quiz-weak-name { flex: 1; }
+  .quiz-weak-rate { color: #c0392b; font-weight: 600; }
+  .quiz-weak-hint {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-3);
+    font-style: italic;
+  }
+  .quiz-weak-empty {
+    background: var(--bg-2);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: var(--ink-3);
+    text-align: center;
+  }
   .top-actions { display: flex; gap: 8px; align-items: center; }
   .icon-btn {
     width: 32px; height: 32px;
@@ -1861,9 +1915,43 @@ function TOC({ page }) {
 // 学習モード Lv.2: 混同ペアブラインドテスト
 // ============================================================
 
-// 純関数：用語データから1問のクイズを生成
+// 純関数：localStorageから統計読込
+function loadQuizStats() {
+  try {
+    const raw = localStorage.getItem('hoki_quiz_stats');
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) { return {}; }
+}
+function saveQuizStats(stats) {
+  try { localStorage.setItem('hoki_quiz_stats', JSON.stringify(stats)); } catch (e) {}
+}
+function recordQuizResult(stats, groupId, isCorrect, responseMs) {
+  const next = { ...stats };
+  const g = next[groupId] || { ok: 0, ng: 0, totalMs: 0 };
+  next[groupId] = {
+    ok: g.ok + (isCorrect ? 1 : 0),
+    ng: g.ng + (isCorrect ? 0 : 1),
+    totalMs: g.totalMs + (responseMs || 0),
+  };
+  saveQuizStats(next);
+  return next;
+}
+// 弱点グループ（正答率<70%、最低3問挑戦済み）を返す。降順
+function weakGroups(stats) {
+  return Object.entries(stats)
+    .filter(([k, v]) => (v.ok + v.ng) >= 3)
+    .map(([k, v]) => ({
+      group: k,
+      total: v.ok + v.ng,
+      rate: v.ok / (v.ok + v.ng),
+    }))
+    .filter(x => x.rate < 0.7)
+    .sort((a, b) => a.rate - b.rate);
+}
+
+// 純関数：用語データから1問のクイズを生成（弱点重み付け対応）
 // returns: { def, answer, choices, group } or null（混同グループ不足時）
-function buildQuiz(glossary) {
+function buildQuiz(glossary, stats) {
   const groups = {};
   glossary.forEach(g => {
     if (g.group) {
@@ -1873,7 +1961,22 @@ function buildQuiz(glossary) {
   });
   const groupKeys = Object.keys(groups).filter(k => groups[k].length >= 2);
   if (groupKeys.length === 0) return null;
-  const gKey = groupKeys[Math.floor(Math.random() * groupKeys.length)];
+  // 重み付き抽選: 弱点グループ（正答率<70%・3問以上挑戦）は重み3倍
+  const weights = groupKeys.map(k => {
+    if (!stats || !stats[k]) return 1;
+    const v = stats[k];
+    const total = v.ok + v.ng;
+    if (total < 3) return 1;
+    const rate = v.ok / total;
+    return rate < 0.7 ? 3 : 1;
+  });
+  const totalWeight = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * totalWeight;
+  let gKey = groupKeys[0];
+  for (let i = 0; i < groupKeys.length; i++) {
+    r -= weights[i];
+    if (r <= 0) { gKey = groupKeys[i]; break; }
+  }
   const groupTerms = groups[gKey];
   const answer = groupTerms[Math.floor(Math.random() * groupTerms.length)];
   // 選択肢: 同グループ全語 + 他グループから1〜2語ダミー
@@ -1897,9 +2000,74 @@ function buildQuiz(glossary) {
 function QuizPanel({ glossary, onExit }) {
   const [seed, setSeed] = React.useState(0);
   const [picked, setPicked] = React.useState(null);
-  const [score, setScore] = React.useState({ ok: 0, ng: 0 });
+  const [score, setScore] = React.useState({ ok: 0, ng: 0, totalMs: 0 });
+  const [stats, setStats] = React.useState(() => loadQuizStats());
+  const [showSummary, setShowSummary] = React.useState(false);
+  const [questionStartedAt, setQuestionStartedAt] = React.useState(() => Date.now());
+  const [responseMs, setResponseMs] = React.useState(null);
 
-  const quiz = React.useMemo(() => buildQuiz(glossary), [seed, glossary]);
+  // stats を渡して弱点重み付け抽選
+  const quiz = React.useMemo(() => buildQuiz(glossary, stats), [seed, glossary]);
+
+  // 新しい問題が出た瞬間にタイマーをリセット
+  React.useEffect(() => {
+    setQuestionStartedAt(Date.now());
+    setResponseMs(null);
+  }, [seed]);
+
+  if (showSummary) {
+    const total = score.ok + score.ng;
+    const rate = total > 0 ? Math.round((score.ok / total) * 100) : 0;
+    const avgMs = total > 0 ? Math.round(score.totalMs / total) : 0;
+    const weak = weakGroups(stats).slice(0, 3);
+    const groupLabel = (gKey) => {
+      // 同グループの最初の用語名を代表とする
+      const first = glossary.find(g => g.group === gKey);
+      return first ? first.term + ' グループ' : gKey;
+    };
+    return (
+      <div className="sr-quiz-panel">
+        <div className="quiz-header">📊 セッションサマリ</div>
+        <div className="quiz-summary-stats">
+          <div className="quiz-stat-row">
+            <span className="quiz-stat-label">出題数</span>
+            <span className="quiz-stat-value">{total} 問</span>
+          </div>
+          <div className="quiz-stat-row">
+            <span className="quiz-stat-label">正解 / 不正解</span>
+            <span className="quiz-stat-value"><span style={{color:'#1b5e20'}}>{score.ok}</span> / <span style={{color:'#c0392b'}}>{score.ng}</span></span>
+          </div>
+          <div className="quiz-stat-row">
+            <span className="quiz-stat-label">正答率</span>
+            <span className="quiz-stat-value" style={{color: rate >= 70 ? '#1b5e20' : '#c0392b'}}>{rate}%</span>
+          </div>
+          <div className="quiz-stat-row">
+            <span className="quiz-stat-label">平均回答時間</span>
+            <span className="quiz-stat-value">{(avgMs / 1000).toFixed(1)} 秒</span>
+          </div>
+        </div>
+        {weak.length > 0 ? (
+          <div className="quiz-weak">
+            <div className="quiz-weak-title">⚠️ 弱点グループ TOP{weak.length}（累計データ・正答率&lt;70%）</div>
+            {weak.map((w, i) => (
+              <div key={w.group} className="quiz-weak-row">
+                <span className="quiz-weak-rank">#{i + 1}</span>
+                <span className="quiz-weak-name">{groupLabel(w.group)}</span>
+                <span className="quiz-weak-rate">{Math.round(w.rate * 100)}% ({w.total}問)</span>
+              </div>
+            ))}
+            <div className="quiz-weak-hint">→ 次回の Lv.2 では弱点グループが優先出題されます</div>
+          </div>
+        ) : (
+          <div className="quiz-weak-empty">📈 累計データはまだ少ないか、弱点はありません（3問以上挑戦＆正答率&lt;70%で表示）</div>
+        )}
+        <div className="quiz-actions">
+          <button className="quiz-next" onClick={() => { setShowSummary(false); setScore({ ok: 0, ng: 0, totalMs: 0 }); setSeed(s => s + 1); }}>もう1セット</button>
+          <button className="quiz-exit" onClick={onExit}>閉じる</button>
+        </div>
+      </div>
+    );
+  }
 
   if (!quiz) {
     return <div className="sr-empty">混同グループが不足しています</div>;
@@ -1908,12 +2076,20 @@ function QuizPanel({ glossary, onExit }) {
   const isCorrect = picked === quiz.answer;
   const handlePick = (choice) => {
     if (picked) return;
+    const elapsed = Date.now() - questionStartedAt;
+    setResponseMs(elapsed);
     setPicked(choice);
-    setScore(s => choice === quiz.answer
-      ? { ...s, ok: s.ok + 1 }
-      : { ...s, ng: s.ng + 1 });
+    const correct = choice === quiz.answer;
+    setScore(s => ({
+      ok: s.ok + (correct ? 1 : 0),
+      ng: s.ng + (correct ? 0 : 1),
+      totalMs: s.totalMs + elapsed,
+    }));
+    // 永続化（弱点重み付けの根拠データ）
+    setStats(prev => recordQuizResult(prev, quiz.group, correct, elapsed));
   };
   const next = () => { setPicked(null); setSeed(s => s + 1); };
+  const finish = () => { setShowSummary(true); };
   const answerDef = glossary.find(g => g.term === quiz.answer)?.def || '';
 
   return (
@@ -1941,17 +2117,17 @@ function QuizPanel({ glossary, onExit }) {
       {picked && (
         <>
           <div className={`quiz-feedback${isCorrect ? ' correct' : ' wrong'}`}>
-            {isCorrect ? '✓ 正解！' : `✗ 残念。正解は「${quiz.answer}」`}
+            {isCorrect ? `✓ 正解！ (${(responseMs / 1000).toFixed(1)}秒)` : `✗ 残念。正解は「${quiz.answer}」 (${(responseMs / 1000).toFixed(1)}秒)`}
             <div className="quiz-feedback-def">{answerDef}</div>
           </div>
           <div className="quiz-actions">
             <button className="quiz-next" onClick={next}>次の問題 →</button>
-            <button className="quiz-exit" onClick={onExit}>終了</button>
+            <button className="quiz-exit" onClick={finish}>終了してサマリ表示</button>
           </div>
         </>
       )}
       <div className="quiz-meta">
-        正解 {score.ok} / 不正解 {score.ng}（連続出題）
+        セッション中：正解 {score.ok} / 不正解 {score.ng}
       </div>
     </div>
   );
