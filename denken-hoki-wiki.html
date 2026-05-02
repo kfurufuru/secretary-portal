@@ -461,10 +461,14 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 4px 0;
+    padding: 5px 8px;
+    margin: 0 -8px;
     font-size: 12px;
     color: var(--ink-2);
+    border-radius: 4px;
+    transition: background 0.1s;
   }
+  .quiz-weak-row:hover { background: rgba(192, 57, 43, 0.08); }
   .quiz-weak-rank { font-weight: 700; color: #c0392b; min-width: 24px; }
   .quiz-weak-name { flex: 1; }
   .quiz-weak-rate { color: #c0392b; font-weight: 600; }
@@ -1997,7 +2001,7 @@ function buildQuiz(glossary, stats) {
   return { def: answer.def, answer: answer.term, choices, group: gKey };
 }
 
-function QuizPanel({ glossary, onExit }) {
+function QuizPanel({ glossary, onExit, onNav }) {
   const [seed, setSeed] = React.useState(0);
   const [picked, setPicked] = React.useState(null);
   const [score, setScore] = React.useState({ ok: 0, ng: 0, totalMs: 0 });
@@ -2048,14 +2052,24 @@ function QuizPanel({ glossary, onExit }) {
         </div>
         {weak.length > 0 ? (
           <div className="quiz-weak">
-            <div className="quiz-weak-title">⚠️ 弱点グループ TOP{weak.length}（累計データ・正答率&lt;70%）</div>
-            {weak.map((w, i) => (
-              <div key={w.group} className="quiz-weak-row">
-                <span className="quiz-weak-rank">#{i + 1}</span>
-                <span className="quiz-weak-name">{groupLabel(w.group)}</span>
-                <span className="quiz-weak-rate">{Math.round(w.rate * 100)}% ({w.total}問)</span>
-              </div>
-            ))}
+            <div className="quiz-weak-title">⚠️ 弱点グループ TOP{weak.length}（クリックで該当ページへ）</div>
+            {weak.map((w, i) => {
+              const pid = groupToPageId(glossary, w.group);
+              const clickable = !!pid && !!onNav;
+              return (
+                <div
+                  key={w.group}
+                  className="quiz-weak-row"
+                  style={clickable ? { cursor: 'pointer' } : undefined}
+                  onClick={clickable ? () => { onExit(); onNav(pid); } : undefined}
+                  title={clickable ? "クリックで該当ページへ移動（Lv.2は終了）" : undefined}
+                >
+                  <span className="quiz-weak-rank">#{i + 1}</span>
+                  <span className="quiz-weak-name" style={clickable ? { textDecoration: 'underline', textUnderlineOffset: '2px' } : undefined}>{groupLabel(w.group)}</span>
+                  <span className="quiz-weak-rate">{Math.round(w.rate * 100)}% ({w.total}問)</span>
+                </div>
+              );
+            })}
             <div className="quiz-weak-hint">→ 次回の Lv.2 では弱点グループが優先出題されます</div>
           </div>
         ) : (
@@ -2318,7 +2332,7 @@ function TopBar({ page, onNav }) {
         <span className="kbd">Ctrl+K</span>
         <div className={`search-results${(studyLevel === 2 || (open && query.trim())) ? ' open' : ''}`}>
           {studyLevel === 2 ? (
-            <QuizPanel glossary={glossary} onExit={() => setStudyLevel(0)} />
+            <QuizPanel glossary={glossary} onExit={() => setStudyLevel(0)} onNav={onNav} />
           ) : results.length === 0 ? (
             <div className="sr-empty">該当なし</div>
           ) : results.map((it, i) => {
@@ -2663,10 +2677,16 @@ const CH_TABLE = [
   { ch: 'CH05 再エネ',    content: '風力・太陽光',         rank: 'B', order: 6, wiki: '06 再エネ' },
 ];
 
+// 純関数：グループID → 代表ページID（同グループ最初の用語の related）
+function groupToPageId(glossary, gKey) {
+  const first = glossary.find(g => g.group === gKey && g.related);
+  return first ? first.related : null;
+}
+
 // ============================================================
 // Lv.2 学習履歴カード（topページに表示・PDCAのCheck/Action導線）
 // ============================================================
-function Lv2HistoryCard() {
+function Lv2HistoryCard({ onNav }) {
   const stats = React.useMemo(() => loadQuizStats(), []);
   const glossary = window.WIKI_GLOSSARY || [];
 
@@ -2680,6 +2700,10 @@ function Lv2HistoryCard() {
   const groupLabel = (gKey) => {
     const first = glossary.find(g => g.group === gKey);
     return first ? first.term + ' グループ' : gKey;
+  };
+  const goWeakPage = (gKey) => {
+    const pid = groupToPageId(glossary, gKey);
+    if (pid && onNav) onNav(pid);
   };
 
   const startLv2 = () => {
@@ -2711,11 +2735,23 @@ function Lv2HistoryCard() {
       </div>
       {weak.length > 0 ? (
         <div style={{ marginBottom: 10, fontSize: 12 }}>
-          <div style={{ color: '#c0392b', fontWeight: 700, marginBottom: 4 }}>⚠️ 弱点グループ TOP{weak.length}</div>
+          <div style={{ color: '#c0392b', fontWeight: 700, marginBottom: 4 }}>⚠️ 弱点グループ TOP{weak.length}（クリックで該当ページへ）</div>
           {weak.map((w, i) => (
-            <div key={w.group} style={{ display: 'flex', gap: 8, padding: '3px 0', color: 'var(--ink-2)' }}>
+            <div
+              key={w.group}
+              onClick={() => goWeakPage(w.group)}
+              style={{
+                display: 'flex', gap: 8, padding: '5px 6px',
+                color: 'var(--ink-2)', borderRadius: 4,
+                cursor: 'pointer',
+                transition: 'background 0.1s',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-soft)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+              title="クリックで該当ページへ"
+            >
               <span style={{ minWidth: 22, color: '#c0392b', fontWeight: 700 }}>#{i + 1}</span>
-              <span style={{ flex: 1 }}>{groupLabel(w.group)}</span>
+              <span style={{ flex: 1, textDecoration: 'underline', textUnderlineOffset: '2px', textDecorationColor: 'var(--line)' }}>{groupLabel(w.group)}</span>
               <span style={{ color: '#c0392b', fontWeight: 600 }}>{Math.round(w.rate * 100)}% ({w.total}問)</span>
             </div>
           ))}
@@ -2817,7 +2853,7 @@ function HomePage({ onNav, data }) {
         </div>
 
         {/* Lv.2 学習履歴カード */}
-        <Lv2HistoryCard />
+        <Lv2HistoryCard onNav={onNav} />
       </section>
 
       {/* ====== 法規の学習マップ ====== */}
