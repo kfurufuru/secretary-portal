@@ -2691,7 +2691,7 @@ window.renderPage = function(page, navigate) {
     case 'den-atsu-kubun':         return React.createElement(DenAtsuKubunPage, props);
     case 'densen-size':            return React.createElement(StubPage, { ...props, pageId: 'densen-size' });
     case 'hokoku-todoke-kigen':    return React.createElement(StubPage, { ...props, pageId: 'hokoku-todoke-kigen' });
-    case 'denro-zetsuen':          return React.createElement(StubPage, { ...props, pageId: 'denro-zetsuen' });
+    case 'denro-zetsuen':          return React.createElement(DenroZetsuenPage, props);
     case 'setsuchi-koji':          return React.createElement(StubPage, { ...props, pageId: 'setsuchi-koji' });
     case 'densenro':               return React.createElement(StubPage, { ...props, pageId: 'densenro' });
     case 'okunai-haisen':          return React.createElement(StubPage, { ...props, pageId: 'okunai-haisen' });
@@ -2699,9 +2699,9 @@ window.renderPage = function(page, navigate) {
     case 'chichuu-densenro':       return React.createElement(StubPage, { ...props, pageId: 'chichuu-densenro' });
     case 'bunsangata-dengen':      return React.createElement(StubPage, { ...props, pageId: 'bunsangata-dengen' });
     case 'gijutsu-kijun-gaiyou':   return React.createElement(StubPage, { ...props, pageId: 'gijutsu-kijun-gaiyou' });
-    case 'kosakubutsu-bunrui':     return React.createElement(StubPage, { ...props, pageId: 'kosakubutsu-bunrui' });
+    case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
     case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
-    case 'hoan-kitei':             return React.createElement(StubPage, { ...props, pageId: 'hoan-kitei' });
+    case 'hoan-kitei':             return React.createElement(HoanKiteiPage, props);
     case 'shiyo-jishu-kensa':      return React.createElement(StubPage, { ...props, pageId: 'shiyo-jishu-kensa' });
     case 'jiko-hokoku':            return React.createElement(StubPage, { ...props, pageId: 'jiko-hokoku' });
     case 'denki-yohin-anzen':      return React.createElement(StubPage, { ...props, pageId: 'denki-yohin-anzen' });
@@ -3489,6 +3489,371 @@ function HomePage({ onNav, data }) {
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-A. DenroZetsuenPage（電路の絶縁・freq:max・required）
+// ─────────────────────────────────────────────
+function DenroZetsuenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電路の絶縁の原則の例外として、絶縁を要しないものはどれか"
+        choices={[
+          "高圧電路の中性点",
+          "低圧電線路の中性点・接地点",
+          "屋内の照明配線",
+          "高圧コンデンサの絶縁部分",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電路の絶縁の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技省令第5条第1項', sub: '電路の絶縁原則', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法（保安原則）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '原則', sub: '大地から絶縁', theme: 'orange', arrowLabel: '本則' }}
+        right={{ label: '例外', sub: '解釈第13条10項目', theme: 'cyan', arrowLabel: '例外' }}
+        bottom={{ label: '関連: 第14・15条', sub: '絶縁性能（試験電圧）', theme: 'green', arrowLabel: '具体化' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第5条第1項",  "電路の絶縁原則を定める",         "本条（原則の根拠）"],
+          ["電技解釈 第13条",      "絶縁を要しない例外を10項目規定", "例外（接地点・避雷器等）"],
+          ["電技解釈 第14条",      "低圧電路の絶縁性能を規定",       "並立（絶縁の具体的試験基準）"],
+          ["電技解釈 第15条",      "高圧/特高電路の絶縁性能を規定",  "並立（絶縁の具体的試験基準）"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／同解釈（令和5年版／令和7年11月版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>原則: 電路は<strong>大地から絶縁</strong>する（電技省令第5条第1項）</li>
+          <li>例外（解釈第13条）: <strong>低圧電線路の中性点・接地点</strong>等10項目</li>
+          <li>避雷器の接地・B種接地は例外として<strong>大地に接続必須</strong></li>
+          <li>絶縁の具体的性能は<strong>第14・15条</strong>で試験電圧として定量化</li>
+          <li>絶縁不良 → 漏電 → 感電・火災 → <strong>保安上の最重要原則</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 絶縁"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R06上・R05・R04・R02"
+        tags={["電路の絶縁","頻出S","原則と例外","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["大地と切り離す",         "大地から絶縁する",         "第5条の原則（電路 = 通電部分の通路）"],
+          ["例外として地面につなぐ", "絶縁を要しない",           "第13条の例外（接地点・避雷器等）"],
+          ["真ん中の線をアースする", "中性点・中性線を接地する", "B種接地・低圧電線路の中性点等"],
+          ["雷を逃がす装置",         "避雷器",                   "例外（接地必須・第13条第3号）"],
+          ["絶縁を確かめる試験",     "絶縁耐力試験",             "第14・15条で具体化（試験電圧×10分）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第13条／令和7年11月版"
+      />
+
+      <h2 id="tables">絶縁を要しない箇所（解釈第13条・主要例外）</h2>
+      <MemTable
+        headers={["No", "例外", "根拠"]}
+        rows={[
+          ["1", "低圧電線路の中性点（B種接地）",       "保安上必要（混触時の対地電圧抑制）"],
+          ["2", "計器用変成器の二次側",                "保安上必要（高圧→低圧変換）"],
+          ["3", "避雷器の接地",                        "雷サージを大地に逃がすため必須"],
+          ["4", "電気炉・電解槽の電路",                "電路自体が大地に直接接触する装置"],
+          ["5", "電気防食用陽極の電路",                "意図的に大地に電流を流す装置"],
+          ["6", "試験用変圧器・X線発生装置の電路",     "試験目的で一時的に絶縁不要"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第13条／令和7年11月版"
+        note="第13条には10項目の例外があり、試験で頻出は『中性点接地』『避雷器』『計器用変成器二次側』の3つ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "高圧電路の中性点は絶縁を要しない",
+          correct: "例外は『低圧電線路の中性点』。高圧の中性点は原則絶縁（一部B種接地）" },
+        { wrong: "全ての電路は大地から絶縁しなければならない",
+          correct: "例外（解釈第13条10項目）あり。中性点接地・避雷器接地等は大地接続必須" },
+        { wrong: "絶縁原則と接地義務は矛盾する",
+          correct: "矛盾しない。原則=電路本体は絶縁、例外=保安上必要な点だけ大地に接続" },
+        { wrong: "避雷器は絶縁する必要がある",
+          correct: "避雷器は雷サージを大地に逃がすため『接地必須』（第13条例外）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "電路の絶縁原則の根拠条文は？",          a: "電技省令第5条第1項" },
+        { q: "絶縁を要しない例外を定める条文は？",    a: "電技解釈第13条（10項目の例外）" },
+        { q: "例外の代表例3つは？",                   a: "低圧中性点接地・避雷器接地・計器用変成器二次側" },
+        { q: "B種接地は絶縁原則の例外か？",           a: "Yes（低圧電線路の中性点接地として例外）" },
+        { q: "絶縁原則と接地義務の関係は？",          a: "原則=電路本体は絶縁、例外=保安上必要な点だけ接地（矛盾しない）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第2弾" }]} />
+      <PageNav
+        prevId="den-atsu-kubun"  prevTitle="電圧区分一覧"
+        nextId="setsuchi-koji"   nextTitle="接地工事"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-B. KosakubutsuBunruiPage（電気工作物の区分・freq:max・required）
+// ─────────────────────────────────────────────
+function KosakubutsuBunruiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="次のうち『一般用電気工作物』に該当するものはどれか"
+        choices={[
+          "受電電圧 6.6 kV・最大需要電力 30 kW の事務所",
+          "受電電圧 600 V・最大需要電力 50 kW 未満の小規模店舗",
+          "受電電圧 6.6 kV・最大需要電力 500 kW の工場",
+          "受電電圧 600 V・最大需要電力 100 kW の倉庫",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電気工作物の区分の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気事業法第38条', sub: '電気工作物の区分', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法（保安体制）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '一般用電気工作物', sub: '600V以下/50kW未満', theme: 'cyan', arrowLabel: '区分1' }}
+        right={{ label: '自家用電気工作物', sub: '主任技術者必要', theme: 'orange', arrowLabel: '区分2' }}
+        bottom={{ label: '事業用電気工作物', sub: '電気事業の用', theme: 'green', arrowLabel: '区分3' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気事業法 第38条",       "電気工作物の区分定義",         "本条（区分の根拠）"],
+          ["電気事業法施行規則 第48条","一般用電気工作物の範囲を規定", "具体化（600V/50kW判定基準）"],
+          ["電気事業法 第43条",       "自家用設置者の主任技術者義務", "適用先（区分→義務発生）"],
+          ["電気事業法 第42条",       "保安規程の届出義務",           "適用先（自家用→届出義務）"],
+        ]}
+        source="出典：電気事業法／同施行規則（e-Gov 令和6年現行版／施行規則は令和8年版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>一般用電気工作物</strong>: 600 V 以下で受電 + 最大需要電力 50 kW 未満</li>
+          <li><strong>自家用電気工作物</strong>: 一般用以外で電気事業の用に供しない（工場・ビル等）</li>
+          <li><strong>事業用電気工作物</strong>: 電気事業の用に供する（電力会社・発電事業者）</li>
+          <li>主任技術者選任義務は<strong>自家用電気工作物の設置者</strong>に発生</li>
+          <li>保安規程の届出義務も<strong>自家用</strong>に発生（一般用は不要）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="01 法令・制度"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R06上・R05・R04・R02"
+        tags={["電気工作物","頻出S","区分判定","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["家庭の電気設備",     "一般用電気工作物",       "600 V 以下受電 + 最大需要電力 50 kW 未満"],
+          ["工場の自家設備",     "自家用電気工作物",       "主任技術者選任 + 保安規程の届出が必要"],
+          ["電力会社の設備",     "事業用電気工作物",       "電気事業の用に供する設備（一般送配電・発電事業者等）"],
+          ["商売として電気を売る","電気事業を営む",         "事業用電気工作物に該当する前提条件"],
+          ["自分で発電して使う", "自家発電設備",           "発電出力により自家用に該当（10 kW 以上等）"],
+        ]}
+        source="出典：電気事業法 第38条／施行規則 第48条（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="tables">区分判定基準</h2>
+      <MemTable
+        headers={["区分", "受電電圧", "最大需要電力", "発電出力", "主任技術者"]}
+        rows={[
+          ["一般用電気工作物", "600 V 以下",      "50 kW 未満", "10 kW 未満",  "不要"],
+          ["自家用電気工作物", "600 V 超 or 大規模","50 kW 以上", "10 kW 以上", "必要"],
+          ["事業用電気工作物", "全範囲",          "—",          "—",           "必要（事業者が負う）"],
+        ]}
+        source="出典：電気事業法施行規則 第48条／令和8年版"
+        note="一般用の判定は『電圧』と『需要電力』の AND 条件。どちらか1つでも超えれば自家用になる"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "受電電圧 600 V 以下なら全て一般用電気工作物",
+          correct: "電圧 600 V 以下 + 最大需要電力 50 kW 未満の AND 条件。50 kW 以上は自家用" },
+        { wrong: "自家用電気工作物は電力会社の設備",
+          correct: "電力会社の設備は『事業用電気工作物』。自家用は工場・ビル等の自前設備" },
+        { wrong: "一般用電気工作物にも主任技術者の選任が必要",
+          correct: "一般用には選任義務なし。義務は自家用の設置者に発生" },
+        { wrong: "発電設備は全て自家用電気工作物",
+          correct: "発電出力 10 kW 未満は一般用に該当（小規模太陽光等）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "一般用電気工作物の電圧上限は？",            a: "600 V 以下" },
+        { q: "一般用電気工作物の最大需要電力上限は？",     a: "50 kW 未満" },
+        { q: "自家用電気工作物の例は？",                  a: "工場・ビル等の自前設備（電気事業の用に供しない）" },
+        { q: "事業用電気工作物の例は？",                  a: "電力会社・発電事業者の設備（電気事業の用に供する）" },
+        { q: "主任技術者の選任義務が発生するのは何の設置者か？", a: "自家用電気工作物の設置者" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第2弾" }]} />
+      <PageNav
+        prevId="koji-gyoho"        prevTitle="電気工事業法"
+        nextId="shunin-gijutsusya" nextTitle="主任技術者"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-C. HoanKiteiPage（保安規程・freq:max・required）
+// ─────────────────────────────────────────────
+function HoanKiteiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="保安規程の届出に関する記述として正しいものはどれか"
+        choices={[
+          "保安規程は電気主任技術者が経済産業大臣に届け出る",
+          "保安規程は使用の開始前に経済産業大臣に届け出る",
+          "保安規程は使用開始後30日以内に都道府県知事に届け出る",
+          "保安規程の変更は届出不要",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 保安規程の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気事業法第42条', sub: '保安規程の届出義務', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法（保安体制）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '設置者', sub: '届出義務者', theme: 'orange', arrowLabel: '主体' }}
+        right={{ label: '主任技術者', sub: '運用・遵守', theme: 'cyan', arrowLabel: '実行' }}
+        bottom={{ label: '経済産業大臣', sub: '届出先（保安監督部経由）', theme: 'green', arrowLabel: '届出' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気事業法 第42条",        "保安規程の制定・届出義務を定める", "本条（届出義務の根拠）"],
+          ["電気事業法 第42条第2項",   "変更時の届出義務を規定",           "本条の派生（変更時も必要）"],
+          ["電気事業法施行規則 第50条","保安規程の記載事項を規定",         "具体化（規程の中身）"],
+          ["電気事業法 第43条",        "主任技術者の選任義務",             "並立（規程の遵守者として）"],
+        ]}
+        source="出典：電気事業法／同施行規則（e-Gov 令和6年現行版／施行規則は令和8年版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>届出義務者: <strong>自家用電気工作物の設置者</strong>（事業者ではない）</li>
+          <li>届出先: <strong>経済産業大臣</strong>（実務は産業保安監督部長経由）</li>
+          <li>届出時期: <strong>使用の開始前</strong>に届出</li>
+          <li>変更時も<strong>遅滞なく届出</strong>必要（追加届出義務）</li>
+          <li>規程の対象: <strong>工事・維持・運用</strong>の保安に関する事項</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="01 法令・制度"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R06下・R05・R03・R01"
+        tags={["保安規程","頻出S","届出","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["安全のためのルールブック",   "保安規程",                 "工事・維持・運用に関する保安基準書"],
+          ["国にルールを提出する",      "経済産業大臣に届け出る",   "産業保安監督部長を経由して届出"],
+          ["設備を使い始める前に",       "使用の開始前に",           "届出のタイミング（事後ではない）"],
+          ["守るべき範囲",              "工事・維持・運用に関する保安","規程の対象範囲"],
+          ["ルールを書き換える",        "変更する",                 "変更時も遅滞なく届出義務あり"],
+        ]}
+        source="出典：電気事業法 第42条／施行規則 第50条（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="tables">保安規程の主要記載事項（施行規則第50条）</h2>
+      <MemTable
+        headers={["項目", "内容"]}
+        rows={[
+          ["業務管理体制",     "保安に関する業務を管理する者の職務及び組織"],
+          ["主任技術者",       "主任技術者の職務範囲・指揮命令系統"],
+          ["教育訓練",         "従事者への保安教育の方針・内容"],
+          ["巡視・点検",       "工事・維持・運用に関する巡視・点検・検査の頻度と方法"],
+          ["運転・操作",       "電気工作物の運転又は操作に関する事項"],
+          ["災害対策",         "災害その他非常の場合の措置"],
+          ["記録",             "保安に関する記録の作成・保存"],
+        ]}
+        source="出典：電気事業法施行規則 第50条／令和8年版"
+        note="記載事項は8〜9項目。試験では『業務管理体制』『主任技術者の職務』『教育』『巡視・点検』『災害対策』が頻出"
+      />
+
+      <h2 id="todoke-tables">届出のタイミング</h2>
+      <MemTable
+        headers={["契機", "届出時期", "届出先"]}
+        rows={[
+          ["新設・使用開始",  "使用の開始前",             "経済産業大臣（産業保安監督部長経由）"],
+          ["規程の変更",      "遅滞なく",                 "経済産業大臣（同上）"],
+          ["設置者の変更",    "変更後遅滞なく",           "経済産業大臣（同上）"],
+          ["届出失念",        "罰則適用（30万円以下の罰金）", "—"],
+        ]}
+        source="出典：電気事業法 第42条第1項・第2項・第119条／令和6年現行版"
+        note="届出は『事前』が原則（使用開始前）。変更時のみ『事後・遅滞なく』"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "保安規程は主任技術者が届け出る",
+          correct: "届出義務者は『設置者』。主任技術者は規程に従って業務を行う立場" },
+        { wrong: "保安規程の届出先は都道府県知事",
+          correct: "届出先は『経済産業大臣』（実務は産業保安監督部長経由）" },
+        { wrong: "保安規程は使用開始後に届け出る",
+          correct: "『使用の開始前』に届出（事後ではない）" },
+        { wrong: "保安規程の変更は届出不要",
+          correct: "変更時も『遅滞なく』届出が必要" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "保安規程の届出義務者は？",         a: "自家用電気工作物の設置者" },
+        { q: "保安規程の届出先は？",             a: "経済産業大臣（産業保安監督部長経由）" },
+        { q: "保安規程の届出時期は？",           a: "使用の開始前" },
+        { q: "保安規程を変更したら？",           a: "遅滞なく届出" },
+        { q: "保安規程の対象は何の保安？",       a: "工事・維持・運用に関する保安" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第2弾" }]} />
+      <PageNav
+        prevId="shunin-gijutsusya" prevTitle="主任技術者"
+        nextId="shiyo-jishu-kensa" nextTitle="使用前自主検査"
+        onNav={onNav}
+      />
     </div>
   );
 }
