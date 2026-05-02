@@ -302,6 +302,47 @@
   .sr-chip:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .sr-chip-confused { border-color: #f5c0b8; background: #fdf0ec; color: #c0392b; }
   .sr-chip-confused:hover { background: #fbd9d0; border-color: #c0392b; }
+  .sr-quiz {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--ink-3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sr-quiz-reveal {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .sr-quiz-reveal:hover { background: var(--accent); color: #fff; }
+  .study-toggle {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink-3);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .study-toggle:hover { border-color: var(--ink-3); }
+  .study-toggle.on {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
   .top-actions { display: flex; gap: 8px; align-items: center; }
   .icon-btn {
     width: 32px; height: 32px;
@@ -1738,7 +1779,18 @@ function TopBar({ page, onNav }) {
   const [query, setQuery] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const [focusIdx, setFocusIdx] = React.useState(-1);
+  const [studyMode, setStudyMode] = React.useState(() => {
+    try { return localStorage.getItem('hoki_studyMode') === '1'; } catch (e) { return false; }
+  });
+  const [revealed, setRevealed] = React.useState({});
   const wrapRef = React.useRef(null);
+
+  React.useEffect(() => {
+    try { localStorage.setItem('hoki_studyMode', studyMode ? '1' : '0'); } catch (e) {}
+  }, [studyMode]);
+
+  // クエリが変わったら revealed をリセット（次の用語で再度想起させる）
+  React.useEffect(() => { setRevealed({}); }, [query]);
 
   // 検索インデックス: ページ + 用語
   const allItems = React.useMemo(() => {
@@ -1881,6 +1933,11 @@ function TopBar({ page, onNav }) {
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
         />
+        <span
+          className={`study-toggle${studyMode ? ' on' : ''}`}
+          onClick={() => setStudyMode(s => !s)}
+          title="学習モード：ONにすると定義が隠れ、想起してから答えを見る形式になる"
+        >🎓 {studyMode ? '学習中' : '学習OFF'}</span>
         <span className="kbd">Ctrl+K</span>
         <div className={`search-results${open && query.trim() ? ' open' : ''}`}>
           {results.length === 0 ? (
@@ -1907,10 +1964,24 @@ function TopBar({ page, onNav }) {
                     : <><span className="sr-tag-page">ページ</span> {it.label}</>
                   }
                 </div>
-                {it.kind === 'term'
-                  ? <div className="sr-def">{it.def}</div>
-                  : <div className="sr-sub">{it.sub}</div>
-                }
+                {it.kind === 'page' && <div className="sr-sub">{it.sub}</div>}
+                {it.kind === 'term' && (
+                  studyMode && !revealed[i]
+                    ? (
+                      <div className="sr-quiz">
+                        <span>💭 定義を思い出してみて...</span>
+                        <button
+                          className="sr-quiz-reveal"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setRevealed(r => ({ ...r, [i]: true }));
+                          }}
+                        >答えを見る</button>
+                      </div>
+                    )
+                    : <div className="sr-def">{it.def}</div>
+                )}
                 {it.kind === 'term' && peers.confused.length > 0 && (
                   <div className="sr-meta sr-meta-confused">
                     ⚠️ よく混同：
