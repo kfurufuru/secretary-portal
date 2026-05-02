@@ -343,6 +343,92 @@
     color: var(--accent);
     font-weight: 600;
   }
+  .study-toggle.lv2 {
+    background: #fdf0ec;
+    border-color: #c0392b;
+    color: #c0392b;
+    font-weight: 600;
+  }
+  .sr-quiz-panel { padding: 14px 16px; }
+  .quiz-header {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .quiz-prompt {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .quiz-def {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.55;
+    background: var(--bg-2);
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 12px;
+  }
+  .quiz-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+  .quiz-choice {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 140px;
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 0.12s;
+  }
+  .quiz-choice:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+  .quiz-choice:disabled { cursor: default; opacity: 0.7; }
+  .quiz-choice.correct { background: #e8f5e9; border-color: #2e7d32; color: #1b5e20; opacity: 1; }
+  .quiz-choice.wrong { background: #fdf0ec; border-color: #c0392b; color: #c0392b; opacity: 1; }
+  .quiz-feedback {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .quiz-feedback.correct { background: #e8f5e9; color: #1b5e20; }
+  .quiz-feedback.wrong { background: #fdf0ec; color: #c0392b; }
+  .quiz-feedback-def {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    background: var(--card);
+    padding: 8px 10px;
+    border-radius: 4px;
+  }
+  .quiz-actions { margin-top: 10px; display: flex; gap: 8px; }
+  .quiz-next, .quiz-exit {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .quiz-next { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .quiz-next:hover { filter: brightness(1.1); }
+  .quiz-exit:hover { background: var(--bg-2); }
+  .quiz-meta {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--ink-3);
+    text-align: center;
+  }
   .top-actions { display: flex; gap: 8px; align-items: center; }
   .icon-btn {
     width: 32px; height: 32px;
@@ -1147,6 +1233,13 @@ window.WIKI_GLOSSARY = [
   // ── 保護 ──
   { term:"過電流遮断器", reading:"かでんりゅうしゃだんき", def:"短絡・過負荷時に自動で電路を遮断する装置。配線用遮断器・ヒューズなど。", related:"kako-denryu", group:"G-shadan" },
   { term:"漏電遮断器", reading:"ろうでんしゃだんき", def:"地絡電流を検出して電路を自動遮断する装置。感電・電気火災防止用。", related:"kako-denryu", group:"G-shadan" },
+  { term:"過負荷保護", reading:"かふかほご", def:"定格電流を超える電流が継続的に流れた際に電路を遮断する保護。発熱による絶縁劣化を防ぐ。", related:"kako-denryu", group:"G-hogo" },
+  { term:"短絡保護", reading:"たんらくほご", def:"短絡時の大電流を検出して電路を瞬時遮断する保護。機器・配線の損傷を防ぐ。", related:"kako-denryu", group:"G-hogo" },
+  { term:"地絡電流", reading:"ちらくでんりゅう", def:"電路と大地間に生じる漏れ電流。漏電遮断器の検出対象。", related:"kako-denryu" },
+
+  // ── 屋内配線 ──
+  { term:"分岐回路", reading:"ぶんきかいろ", def:"幹線から分岐して各負荷へ電気を供給する配線。過電流遮断器で個別保護される。", related:"okunai-haisen" },
+  { term:"低圧幹線", reading:"ていあつかんせん", def:"低圧電路で電源側から分岐回路へ電気を送る幹となる配線。許容電流の規定あり。", related:"okunai-haisen" },
 
   // ── 分散型電源・再エネ ──
   { term:"分散型電源", reading:"ぶんさんがたでんげん", def:"需要地近傍に設置される小規模発電設備。太陽光・風力・コージェネ等。", related:"bunsangata-dengen" },
@@ -1764,6 +1857,106 @@ function TOC({ page }) {
   );
 }
 
+// ============================================================
+// 学習モード Lv.2: 混同ペアブラインドテスト
+// ============================================================
+
+// 純関数：用語データから1問のクイズを生成
+// returns: { def, answer, choices, group } or null（混同グループ不足時）
+function buildQuiz(glossary) {
+  const groups = {};
+  glossary.forEach(g => {
+    if (g.group) {
+      if (!groups[g.group]) groups[g.group] = [];
+      groups[g.group].push(g);
+    }
+  });
+  const groupKeys = Object.keys(groups).filter(k => groups[k].length >= 2);
+  if (groupKeys.length === 0) return null;
+  const gKey = groupKeys[Math.floor(Math.random() * groupKeys.length)];
+  const groupTerms = groups[gKey];
+  const answer = groupTerms[Math.floor(Math.random() * groupTerms.length)];
+  // 選択肢: 同グループ全語 + 他グループから1〜2語ダミー
+  const otherGroups = groupKeys.filter(k => k !== gKey);
+  const dummies = [];
+  const dummyCount = Math.min(otherGroups.length, groupTerms.length <= 2 ? 2 : 1);
+  const shuffledOthers = [...otherGroups].sort(() => Math.random() - 0.5).slice(0, dummyCount);
+  shuffledOthers.forEach(k => {
+    const t = groups[k][Math.floor(Math.random() * groups[k].length)];
+    if (!dummies.includes(t.term)) dummies.push(t.term);
+  });
+  let choices = [...groupTerms.map(t => t.term), ...dummies];
+  // Fisher-Yates shuffle
+  for (let i = choices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [choices[i], choices[j]] = [choices[j], choices[i]];
+  }
+  return { def: answer.def, answer: answer.term, choices, group: gKey };
+}
+
+function QuizPanel({ glossary, onExit }) {
+  const [seed, setSeed] = React.useState(0);
+  const [picked, setPicked] = React.useState(null);
+  const [score, setScore] = React.useState({ ok: 0, ng: 0 });
+
+  const quiz = React.useMemo(() => buildQuiz(glossary), [seed, glossary]);
+
+  if (!quiz) {
+    return <div className="sr-empty">混同グループが不足しています</div>;
+  }
+
+  const isCorrect = picked === quiz.answer;
+  const handlePick = (choice) => {
+    if (picked) return;
+    setPicked(choice);
+    setScore(s => choice === quiz.answer
+      ? { ...s, ok: s.ok + 1 }
+      : { ...s, ng: s.ng + 1 });
+  };
+  const next = () => { setPicked(null); setSeed(s => s + 1); };
+  const answerDef = glossary.find(g => g.term === quiz.answer)?.def || '';
+
+  return (
+    <div className="sr-quiz-panel">
+      <div className="quiz-header">🎓 LV.2 混同ペアブラインドテスト</div>
+      <div className="quiz-prompt">この定義はどの用語でしょう？</div>
+      <div className="quiz-def">{quiz.def}</div>
+      <div className="quiz-choices">
+        {quiz.choices.map(c => {
+          let cls = 'quiz-choice';
+          if (picked) {
+            if (c === quiz.answer) cls += ' correct';
+            else if (c === picked) cls += ' wrong';
+          }
+          return (
+            <button
+              key={c}
+              className={cls}
+              disabled={!!picked}
+              onClick={() => handlePick(c)}
+            >{c}</button>
+          );
+        })}
+      </div>
+      {picked && (
+        <>
+          <div className={`quiz-feedback${isCorrect ? ' correct' : ' wrong'}`}>
+            {isCorrect ? '✓ 正解！' : `✗ 残念。正解は「${quiz.answer}」`}
+            <div className="quiz-feedback-def">{answerDef}</div>
+          </div>
+          <div className="quiz-actions">
+            <button className="quiz-next" onClick={next}>次の問題 →</button>
+            <button className="quiz-exit" onClick={onExit}>終了</button>
+          </div>
+        </>
+      )}
+      <div className="quiz-meta">
+        正解 {score.ok} / 不正解 {score.ng}（連続出題）
+      </div>
+    </div>
+  );
+}
+
 function TopBar({ page, onNav }) {
   const data = window.WIKI_DATA;
   const glossary = window.WIKI_GLOSSARY || [];
@@ -1779,15 +1972,22 @@ function TopBar({ page, onNav }) {
   const [query, setQuery] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const [focusIdx, setFocusIdx] = React.useState(-1);
-  const [studyMode, setStudyMode] = React.useState(() => {
-    try { return localStorage.getItem('hoki_studyMode') === '1'; } catch (e) { return false; }
+  const [studyLevel, setStudyLevel] = React.useState(() => {
+    try {
+      const stored = localStorage.getItem('hoki_studyLevel');
+      if (stored !== null) return Math.max(0, Math.min(2, parseInt(stored, 10) || 0));
+      // 旧キーマイグレーション
+      const legacy = localStorage.getItem('hoki_studyMode');
+      if (legacy === '1') return 1;
+      return 0;
+    } catch (e) { return 0; }
   });
   const [revealed, setRevealed] = React.useState({});
   const wrapRef = React.useRef(null);
 
   React.useEffect(() => {
-    try { localStorage.setItem('hoki_studyMode', studyMode ? '1' : '0'); } catch (e) {}
-  }, [studyMode]);
+    try { localStorage.setItem('hoki_studyLevel', String(studyLevel)); } catch (e) {}
+  }, [studyLevel]);
 
   // クエリが変わったら revealed をリセット（次の用語で再度想起させる）
   React.useEffect(() => { setRevealed({}); }, [query]);
@@ -1927,20 +2127,23 @@ function TopBar({ page, onNav }) {
         <span className="icn">🔍</span>
         <input
           type="text"
-          placeholder="用語・ページを検索（Ctrl+K）"
+          placeholder={studyLevel === 2 ? "Lv.2 テスト中…" : "用語・ページを検索（Ctrl+K）"}
           value={query}
+          disabled={studyLevel === 2}
           onChange={(e) => { setQuery(e.target.value); setOpen(true); setFocusIdx(-1); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
         />
         <span
-          className={`study-toggle${studyMode ? ' on' : ''}`}
-          onClick={() => setStudyMode(s => !s)}
-          title="学習モード：ONにすると定義が隠れ、想起してから答えを見る形式になる"
-        >🎓 {studyMode ? '学習中' : '学習OFF'}</span>
+          className={`study-toggle${studyLevel === 1 ? ' on' : ''}${studyLevel === 2 ? ' lv2' : ''}`}
+          onClick={() => setStudyLevel(l => (l + 1) % 3)}
+          title="学習モード切替：OFF → Lv.1想起 → Lv.2テスト → OFF"
+        >🎓 {studyLevel === 0 ? '学習OFF' : studyLevel === 1 ? 'Lv.1 想起' : 'Lv.2 テスト'}</span>
         <span className="kbd">Ctrl+K</span>
-        <div className={`search-results${open && query.trim() ? ' open' : ''}`}>
-          {results.length === 0 ? (
+        <div className={`search-results${(studyLevel === 2 || (open && query.trim())) ? ' open' : ''}`}>
+          {studyLevel === 2 ? (
+            <QuizPanel glossary={glossary} onExit={() => setStudyLevel(0)} />
+          ) : results.length === 0 ? (
             <div className="sr-empty">該当なし</div>
           ) : results.map((it, i) => {
             const peers = it.kind === 'term' ? peersOf(it.label) : { confused: [], related: [] };
@@ -1966,7 +2169,7 @@ function TopBar({ page, onNav }) {
                 </div>
                 {it.kind === 'page' && <div className="sr-sub">{it.sub}</div>}
                 {it.kind === 'term' && (
-                  studyMode && !revealed[i]
+                  studyLevel === 1 && !revealed[i]
                     ? (
                       <div className="sr-quiz">
                         <span>💭 定義を思い出してみて...</span>
