@@ -5,6 +5,21 @@
     "usage": "denken_hoki_audit.py が must_contain を全件チェック。一致しなければFAIL",
     "update_rule": "法令改正があった場合のみ更新。改正前後の値を残し『改正履歴』フィールドに記録"
   },
+  "ShuninGijutsusyaPage": {
+    "source": "電気事業法 第43条／施行規則 第52・53条（e-Gov 令和6年現行版／施行規則は令和8年版）",
+    "must_contain": [
+      "全電圧",
+      "170,000 V",
+      "50,000 V",
+      "5,000 kW",
+      "500 kW",
+      "自家用電気工作物の設置者",
+      "経済産業大臣",
+      "兼任",
+      "外部委託",
+      "不選任"
+    ]
+  },
   "KojiShiHoPage": {
     "source": "電気工事士法 第3条・第4条・第5条／施行令／施行規則（e-Gov 令和6年現行版）",
     "must_contain": [
