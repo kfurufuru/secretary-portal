@@ -2702,11 +2702,11 @@ window.renderPage = function(page, navigate) {
     case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
     case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
     case 'hoan-kitei':             return React.createElement(HoanKiteiPage, props);
-    case 'shiyo-jishu-kensa':      return React.createElement(StubPage, { ...props, pageId: 'shiyo-jishu-kensa' });
-    case 'jiko-hokoku':            return React.createElement(StubPage, { ...props, pageId: 'jiko-hokoku' });
-    case 'denki-yohin-anzen':      return React.createElement(StubPage, { ...props, pageId: 'denki-yohin-anzen' });
+    case 'shiyo-jishu-kensa':      return React.createElement(ShiyoJishuKensaPage, props);
+    case 'jiko-hokoku':            return React.createElement(JikoHokokuPage, props);
+    case 'denki-yohin-anzen':      return React.createElement(DenkiYohinAnzenPage, props);
     case 'koji-shi-ho':            return React.createElement(KojiShiHoPage, props);
-    case 'koji-gyoho':             return React.createElement(StubPage, { ...props, pageId: 'koji-gyoho' });
+    case 'koji-gyoho':             return React.createElement(KojiGyohoPage, props);
     case 'furyoku-gijutsukijun':   return React.createElement(StubPage, { ...props, pageId: 'furyoku-gijutsukijun' });
     case 'taiyouchi-gijutsukijun': return React.createElement(StubPage, { ...props, pageId: 'taiyouchi-gijutsukijun' });
     case 'keito-renkei':           return React.createElement(StubPage, { ...props, pageId: 'keito-renkei' });
@@ -3720,6 +3720,484 @@ function KosakubutsuBunruiPage({ onNav, data }) {
       <PageNav
         prevId="koji-gyoho"        prevTitle="電気工事業法"
         nextId="shunin-gijutsusya" nextTitle="主任技術者"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-D. ShiyoJishuKensaPage（使用前自主検査・freq:high）
+// ─────────────────────────────────────────────
+function ShiyoJishuKensaPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="使用前自主検査について正しいものはどれか"
+        choices={[
+          "経済産業大臣による検査を受ける制度",
+          "設置者自らが検査し記録を保存する制度",
+          "電気主任技術者のみが検査できる",
+          "使用開始後30日以内に実施すればよい",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 使用前自主検査の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気事業法第51条', sub: '使用前自主検査', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法（保安体制）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '対象設備', sub: '工事計画届出対象', theme: 'orange', arrowLabel: '範囲' }}
+        right={{ label: '検査主体', sub: '設置者自身', theme: 'cyan', arrowLabel: '主体' }}
+        bottom={{ label: '記録保存', sub: '5年間', theme: 'green', arrowLabel: '結果' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気事業法 第51条",        "使用前自主検査の義務を定める", "本条（自主検査の根拠）"],
+          ["電気事業法 第48条",        "工事計画届出義務を規定",       "前提（届出対象=自主検査対象）"],
+          ["電気事業法施行規則 第73条","検査の方法・記録事項を規定",   "具体化（検査内容）"],
+          ["電気事業法 第55条",        "使用前安全管理審査",           "並立（自主検査の事後チェック）"],
+        ]}
+        source="出典：電気事業法／同施行規則（e-Gov 令和6年現行版／施行規則は令和8年版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>検査主体: <strong>設置者自身</strong>（経済産業大臣による検査ではない）</li>
+          <li>対象: <strong>工事計画届出対象設備</strong>（第48条対象設備）</li>
+          <li>時期: <strong>使用の開始前</strong>に実施</li>
+          <li>記録保存: <strong>5年間</strong>保存義務</li>
+          <li>事後審査: 経済産業大臣による<strong>使用前安全管理審査</strong>（第55条）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="01 法令・制度"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R02・H30"
+        tags={["使用前自主検査","頻出A","届出","記録保存"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["自分で検査する",      "使用前自主検査を行う",     "設置者自身が検査主体（第三者検査ではない）"],
+          ["検査記録を残す",      "検査の結果に係る記録を作成する","検査ごとに記録作成義務"],
+          ["記録を5年保管する",   "記録を保存する",           "保存期間 5年間"],
+          ["国がチェックする",    "使用前安全管理審査",       "経済産業大臣による事後審査（第55条）"],
+          ["設備を使い始める",    "使用の開始",               "自主検査の前提となる行為"],
+        ]}
+        source="出典：電気事業法 第51条／施行規則 第73条（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="tables">使用前自主検査の制度フロー</h2>
+      <MemTable
+        headers={["ステップ", "内容", "根拠条文"]}
+        rows={[
+          ["1. 工事計画届出",   "経済産業大臣に工事計画を届出",       "電気事業法 第48条"],
+          ["2. 工事実施",       "届出に従って設備工事を実施",         "—"],
+          ["3. 使用前自主検査", "設置者自身が技術基準適合を検査",     "電気事業法 第51条"],
+          ["4. 記録保存",       "検査記録を5年間保存",                "施行規則 第73条"],
+          ["5. 安全管理審査",   "経済産業大臣による事後審査",         "電気事業法 第55条"],
+          ["6. 使用開始",       "審査合格後に運用開始",               "—"],
+        ]}
+        source="出典：電気事業法 第48・51・55条／施行規則 第73条／令和8年版"
+        note="フロー全体は『届出→工事→自主検査→記録→審査→使用』の6段階"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "使用前自主検査は経済産業大臣が行う",
+          correct: "検査主体は『設置者自身』。大臣が行うのは事後の安全管理審査（第55条）" },
+        { wrong: "検査記録の保存期間は3年",
+          correct: "保存期間は『5年間』" },
+        { wrong: "使用開始後に自主検査を行えばよい",
+          correct: "『使用の開始前』に実施（事後ではない）" },
+        { wrong: "全ての電気工作物に自主検査義務がある",
+          correct: "『工事計画届出対象設備』のみ（小規模設備は対象外）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "使用前自主検査の検査主体は？",      a: "設置者自身" },
+        { q: "使用前自主検査の根拠条文は？",       a: "電気事業法 第51条" },
+        { q: "検査記録の保存期間は？",             a: "5年間" },
+        { q: "自主検査の対象設備は？",             a: "工事計画届出対象設備（第48条対象）" },
+        { q: "自主検査後の事後審査の名称は？",     a: "使用前安全管理審査（第55条）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第3弾" }]} />
+      <PageNav
+        prevId="hoan-kitei"  prevTitle="保安規程"
+        nextId="jiko-hokoku" nextTitle="事故報告"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-E. JikoHokokuPage（事故報告・freq:high）
+// ─────────────────────────────────────────────
+function JikoHokokuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電気事故報告の速報は事故発生から何時間以内に行うか"
+        choices={[
+          "12 時間以内",
+          "24 時間以内",
+          "48 時間以内",
+          "72 時間以内",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 事故報告の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気関係報告規則第3条', sub: '事故報告義務', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法（保安体制）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '速報', sub: '24時間以内', theme: 'orange', arrowLabel: '第1段階' }}
+        right={{ label: '詳報', sub: '30日以内', theme: 'cyan', arrowLabel: '第2段階' }}
+        bottom={{ label: '産業保安監督部長', sub: '報告先', theme: 'green', arrowLabel: '宛先' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気事業法 第106条",      "電気工作物の使用状況等の報告義務", "上位（報告制度の根拠）"],
+          ["電気関係報告規則 第3条",  "事故報告の対象・期限を規定",       "本条（24時間/30日の根拠）"],
+          ["電気関係報告規則 第3条第2項","速報の方法（電話・FAX等）を規定","具体化（速報手段）"],
+          ["電気関係報告規則 別表第1","報告対象事故の種類を列挙",         "対象（感電死傷・破損・主要電気工作物等）"],
+        ]}
+        source="出典：電気関係報告規則／電気事業法（e-Gov 令和6年現行版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>速報期限: 事故発生を知った日から<strong>24時間以内</strong>（電話・FAX等）</li>
+          <li>詳報期限: 事故発生を知った日から<strong>30日以内</strong>（書面）</li>
+          <li>報告先: <strong>産業保安監督部長</strong>（経済産業大臣に代わって）</li>
+          <li>報告対象: 感電死傷・電気工作物破損・主要電気工作物機能停止等</li>
+          <li>2段階報告: <strong>速報（24h）→ 詳報（30日）</strong>がセット</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="01 法令・制度"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R03・H29"
+        tags={["事故報告","頻出A","期限暗記","2段階報告"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["とりあえず一報入れる",   "速報する",                 "電話・FAX等で24時間以内"],
+          ["詳しい報告書を出す",     "詳報する",                 "書面で30日以内"],
+          ["事故が起きたことを知る","事故の発生を知った日",     "起算点（事故発生日ではない）"],
+          ["国の出先機関",           "産業保安監督部長",         "報告先（経済産業大臣の代行）"],
+          ["対象になる事故",         "電気関係報告規則の対象事故","別表第1の8種類"],
+        ]}
+        source="出典：電気関係報告規則 第3条／令和6年現行版"
+      />
+
+      <h2 id="tables">事故報告の期限と方法</h2>
+      <MemTable
+        headers={["段階", "期限", "方法", "起算点"]}
+        rows={[
+          ["速報", "24時間以内", "電話・FAX・電子メール等", "事故の発生を知った日"],
+          ["詳報", "30日以内",   "所定様式の書面",          "事故の発生を知った日"],
+        ]}
+        source="出典：電気関係報告規則 第3条／令和6年現行版"
+        note="期限は『発生日』ではなく『発生を知った日』が起算点。試験で頻出のひっかけ"
+      />
+
+      <h2 id="taisho-tables">主な報告対象事故（別表第1抜粋）</h2>
+      <MemTable
+        headers={["No", "事故の種類", "概要"]}
+        rows={[
+          ["1", "感電死傷事故",       "感電による死亡又は負傷（休業1日以上）"],
+          ["2", "電気火災事故",       "電気工作物の故障により発生した火災"],
+          ["3", "他物損傷事故",       "電気工作物の破損による他人の物の損傷"],
+          ["4", "主要電気工作物破損", "発電所・変電所等の主要電気工作物の破損"],
+          ["5", "波及事故",           "供給支障を伴う事故"],
+          ["6", "ダム事故",           "水力発電のダム関連事故"],
+        ]}
+        source="出典：電気関係報告規則 別表第1／令和6年現行版"
+        note="試験で頻出は『感電死傷』『主要電気工作物破損』『波及事故』の3つ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "事故報告の速報期限は48時間以内",
+          correct: "速報は『24時間以内』。詳報が30日以内" },
+        { wrong: "事故発生日から24時間以内に速報",
+          correct: "起算点は『発生を知った日』（実際の発生日ではない）" },
+        { wrong: "事故報告の宛先は経済産業大臣",
+          correct: "実務的な報告先は『産業保安監督部長』（経済産業大臣の代行）" },
+        { wrong: "詳報のみで速報は不要",
+          correct: "速報（24h）→ 詳報（30日）の2段階報告が必須" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "事故報告の速報期限は？",            a: "事故の発生を知った日から24時間以内" },
+        { q: "事故報告の詳報期限は？",            a: "事故の発生を知った日から30日以内" },
+        { q: "事故報告の宛先は？",                a: "産業保安監督部長" },
+        { q: "報告期限の起算点は？",              a: "事故の発生を知った日（発生日ではない）" },
+        { q: "速報の方法は？",                    a: "電話・FAX・電子メール等" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第3弾" }]} />
+      <PageNav
+        prevId="shiyo-jishu-kensa" prevTitle="使用前自主検査"
+        nextId="denki-yohin-anzen" nextTitle="電気用品安全法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-F. DenkiYohinAnzenPage（電気用品安全法・freq:mid）
+// ─────────────────────────────────────────────
+function DenkiYohinAnzenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電気用品安全法（PSE法）の表示マークについて正しいものはどれか"
+        choices={[
+          "全ての電気用品に丸PSEマークを表示する",
+          "特定電気用品には◇PSE、特定電気用品以外は○PSEを表示する",
+          "特定電気用品には○PSE、特定電気用品以外は◇PSEを表示する",
+          "電気用品安全法はPSEマークの表示義務はない",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電気用品安全法の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気用品安全法', sub: 'PSE法・経済産業省所管', theme: 'blue' }}
+        top={{ label: '消費生活用製品安全法', sub: '上位の安全法体系', theme: 'red', arrowLabel: '並立' }}
+        left={{ label: '特定電気用品', sub: '◇PSE・第三者認証', theme: 'orange', arrowLabel: '区分1' }}
+        right={{ label: '特定以外の電気用品', sub: '○PSE・自主検査', theme: 'cyan', arrowLabel: '区分2' }}
+        bottom={{ label: '事業届出 + 検査義務', sub: '経済産業大臣に届出', theme: 'green', arrowLabel: '義務' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気用品安全法 第3条", "事業届出義務を定める",         "本法（届出制の根拠）"],
+          ["電気用品安全法 第8条", "技術基準適合義務",             "本法（製造事業者の義務）"],
+          ["電気用品安全法 第9条", "特定電気用品の第三者認証義務", "本法（◇PSEの根拠）"],
+          ["電気用品安全法 第10条","表示義務（PSEマーク）",        "本法（PSEマーク表示）"],
+        ]}
+        source="出典：電気用品安全法（電安法／e-Gov 令和7年版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>所管: <strong>経済産業大臣</strong>（消費者庁ではない）</li>
+          <li>区分: <strong>特定電気用品（116品目）</strong> と <strong>特定以外（341品目）</strong></li>
+          <li>特定電気用品: <strong>◇PSE</strong>マーク・第三者認証必須（コンセント・電線等）</li>
+          <li>特定以外: <strong>○PSE</strong>マーク・自主検査でOK（テレビ・冷蔵庫等）</li>
+          <li>事業者は<strong>事業開始の日から30日以内</strong>に届出</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH02"
+        category="04 法令・制度"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R04・H28"
+        tags={["電気用品安全法","PSE","区分判定","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["コンセント・電源コード等",  "特定電気用品",             "危険・障害発生の蓋然性が高いもの（116品目）"],
+          ["テレビ・冷蔵庫等",          "特定電気用品以外の電気用品", "それ以外の電気用品（341品目）"],
+          ["第三者の検査機関",          "登録検査機関",             "特定電気用品の認証主体"],
+          ["PSEマークを付ける",          "表示を付する",             "第10条の表示義務"],
+          ["事業を始めると国に伝える",   "事業の届出を行う",         "事業開始から30日以内（第3条）"],
+        ]}
+        source="出典：電気用品安全法／令和7年版"
+      />
+
+      <h2 id="tables">特定電気用品 vs 特定以外</h2>
+      <MemTable
+        headers={["区分", "PSEマーク", "認証", "代表例", "品目数"]}
+        rows={[
+          ["特定電気用品",         "◇PSE",   "登録検査機関の第三者認証", "コンセント・電源コード・配線器具", "116品目"],
+          ["特定電気用品以外の電気用品","○PSE", "自主検査",                 "テレビ・冷蔵庫・洗濯機",         "341品目"],
+        ]}
+        source="出典：電気用品安全法施行令／令和7年版"
+        note="◇（ひし形）= 特定 = より厳しい認証。試験で頻出のひっかけは『○と◇の混同』"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "特定電気用品には○PSEを表示",
+          correct: "特定電気用品は『◇PSE』。○PSEは特定以外の電気用品" },
+        { wrong: "電気用品安全法の所管は消費者庁",
+          correct: "所管は『経済産業大臣（経済産業省）』" },
+        { wrong: "特定電気用品も自主検査でよい",
+          correct: "特定電気用品は『登録検査機関の第三者認証』が必須" },
+        { wrong: "事業届出は事業開始前に行う",
+          correct: "事業開始の『日から30日以内』（事後届出）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "電気用品安全法の所管官庁は？",        a: "経済産業大臣（経済産業省）" },
+        { q: "特定電気用品のPSEマークは？",         a: "◇PSE（ひし形）" },
+        { q: "特定電気用品以外のPSEマークは？",     a: "○PSE（丸）" },
+        { q: "特定電気用品の認証方法は？",          a: "登録検査機関の第三者認証" },
+        { q: "事業届出の期限は？",                  a: "事業開始の日から30日以内" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第3弾" }]} />
+      <PageNav
+        prevId="jiko-hokoku"   prevTitle="事故報告"
+        nextId="koji-shi-ho"   nextTitle="電気工事士法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-G. KojiGyohoPage（電気工事業法・freq:mid）
+// ─────────────────────────────────────────────
+function KojiGyohoPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電気工事業を営もうとする者は誰の登録を受ける必要があるか"
+        choices={[
+          "経済産業大臣のみ",
+          "都道府県知事のみ",
+          "経済産業大臣又は都道府県知事（営業所の数による）",
+          "市町村長",
+        ]}
+        correctIndex={2}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電気工事業法の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気工事業法第3条', sub: '登録制', theme: 'blue' }}
+        top={{ label: '電気工事士法', sub: '並立法（資格者規制）', theme: 'red', arrowLabel: '並立' }}
+        left={{ label: '都道府県知事', sub: '1都道府県内', theme: 'orange', arrowLabel: '登録先1' }}
+        right={{ label: '経済産業大臣', sub: '2以上の都道府県', theme: 'cyan', arrowLabel: '登録先2' }}
+        bottom={{ label: '主任電気工事士', sub: '営業所ごとに必置', theme: 'green', arrowLabel: '義務' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気工事業法 第3条",   "登録の義務を定める",       "本法（登録制の根拠）"],
+          ["電気工事業法 第19条",  "主任電気工事士の選任義務", "本法（営業所ごとに必要）"],
+          ["電気工事業法 第26条",  "電気工事士の使用義務",     "本法（無資格者使用禁止）"],
+          ["電気工事士法",         "電気工事士の資格を規定",   "並立（個人の資格規制）"],
+        ]}
+        source="出典：電気工事業の業務の適正化に関する法律／電気工事士法（e-Gov 令和6年現行版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>登録制: 電気工事業を営むには<strong>登録</strong>必要（許可制ではない）</li>
+          <li>登録先: <strong>1都道府県内 → 都道府県知事</strong></li>
+          <li>登録先: <strong>2以上の都道府県 → 経済産業大臣</strong></li>
+          <li>営業所ごとに<strong>主任電気工事士</strong>を選任（第19条）</li>
+          <li>登録の有効期間: <strong>5年間</strong>（更新登録必要）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH02"
+        category="04 法令・制度"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R03・H30"
+        tags={["電気工事業法","登録制","主任電気工事士","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電気工事の会社を作る",   "電気工事業を営む",         "登録（許可ではない）が必要"],
+          ["国に登録する",            "経済産業大臣の登録を受ける","2以上の都道府県に営業所がある場合"],
+          ["県に登録する",            "都道府県知事の登録を受ける","1都道府県内のみの場合"],
+          ["店長役の電気工事士",     "主任電気工事士",           "営業所ごとに選任義務（第19条）"],
+          ["有資格者を使う",          "電気工事士を使用する",     "無資格者使用禁止（第26条）"],
+        ]}
+        source="出典：電気工事業法 第3・19・26条／令和6年現行版"
+      />
+
+      <h2 id="tables">登録区分と主任電気工事士の選任要件</h2>
+      <MemTable
+        headers={["項目", "内容", "根拠"]}
+        rows={[
+          ["登録の方式",        "登録制（許可制ではない）",     "電気工事業法 第3条"],
+          ["登録先（1都道府県）","都道府県知事",                "電気工事業法 第3条第1項"],
+          ["登録先（2都道府県以上）","経済産業大臣",            "電気工事業法 第3条第1項"],
+          ["登録の有効期間",    "5年間（更新登録必要）",       "電気工事業法 第3条第3項"],
+          ["主任電気工事士",    "営業所ごとに1名選任",         "電気工事業法 第19条"],
+          ["主任電気工事士の資格","第一種電気工事士 or 第二種電気工事士で実務3年以上","電気工事業法 第19条"],
+        ]}
+        source="出典：電気工事業法 第3・19条／令和6年現行版"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "電気工事業を営むには許可が必要",
+          correct: "『登録』が必要（許可ではない・違いに注意）" },
+        { wrong: "全ての電気工事業者は経済産業大臣の登録",
+          correct: "1都道府県内なら『都道府県知事』、2以上なら『経済産業大臣』" },
+        { wrong: "主任電気工事士は会社全体で1名でよい",
+          correct: "『営業所ごとに』1名選任（複数営業所なら複数必要）" },
+        { wrong: "登録は無期限で有効",
+          correct: "登録の有効期間は『5年間』。更新登録が必要" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "電気工事業の許認可制度は？",       a: "登録制（許可制ではない）" },
+        { q: "1都道府県内のみの登録先は？",      a: "都道府県知事" },
+        { q: "2以上の都道府県にまたがる登録先は？", a: "経済産業大臣" },
+        { q: "主任電気工事士の選任単位は？",     a: "営業所ごとに1名" },
+        { q: "登録の有効期間は？",               a: "5年間（更新登録必要）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第3弾" }]} />
+      <PageNav
+        prevId="koji-shi-ho"  prevTitle="電気工事士法"
+        nextId="furyoku-gijutsukijun" nextTitle="風力発電の技術基準"
         onNav={onNav}
       />
     </div>
