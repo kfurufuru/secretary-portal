@@ -1442,6 +1442,82 @@ function PlainExplain({ children }) {
   );
 }
 
+function HoukiOverviewSvg({ center, top, left, right, bottom }) {
+  const themes = {
+    blue:   { fill: '#e3f2fd', stroke: '#1565c0', text: '#0d47a1' },
+    red:    { fill: '#ffebee', stroke: '#c62828', text: '#b71c1c' },
+    orange: { fill: '#fff3e0', stroke: '#ef6c00', text: '#e65100' },
+    green:  { fill: '#e8f5e9', stroke: '#2e7d32', text: '#1b5e20' },
+    cyan:   { fill: '#e1f5fe', stroke: '#0288d1', text: '#01579b' },
+  };
+  const Box = ({ x, y, w, h, node, accent }) => {
+    if (!node) return null;
+    const t = themes[node.theme] || themes.blue;
+    return (
+      <g>
+        <rect x={x} y={y} width={w} height={h} rx="6"
+          fill={t.fill} stroke={t.stroke} strokeWidth={accent ? 2.5 : 1.5} />
+        <text x={x + w / 2} y={y + (node.sub ? h / 2 - 4 : h / 2 + 4)}
+          textAnchor="middle" fontSize="12" fontWeight="700" fill={t.text}>
+          {node.label}
+        </text>
+        {node.sub && (
+          <text x={x + w / 2} y={y + h / 2 + 14}
+            textAnchor="middle" fontSize="10" fill={t.text}>
+            {node.sub}
+          </text>
+        )}
+      </g>
+    );
+  };
+  const Arrow = ({ x1, y1, x2, y2, label, lx, ly }) => (
+    <g>
+      <line x1={x1} y1={y1} x2={x2} y2={y2}
+        stroke="#888" strokeWidth="1.5" markerEnd="url(#hoArr)" />
+      {label && (
+        <text x={lx} y={ly} textAnchor="middle" fontSize="10" fill="#666">
+          {label}
+        </text>
+      )}
+    </g>
+  );
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--radius)',
+      padding: '12px',
+      marginBottom: '20px',
+    }}>
+      <div>
+        <svg viewBox="0 0 720 340" style={{ width: '100%', height: 'auto', display: 'block' }}
+          xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="hoArr" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#888" />
+            </marker>
+          </defs>
+          {/* Top → Center */}
+          {top && <Arrow x1={360} y1={75} x2={360} y2={138} label={top.arrowLabel || '上位'} lx={395} ly={110} />}
+          {/* Left → Center */}
+          {left && <Arrow x1={245} y1={170} x2={295} y2={170} label={left.arrowLabel || ''} lx={270} ly={160} />}
+          {/* Right → Center */}
+          {right && <Arrow x1={480} y1={170} x2={425} y2={170} label={right.arrowLabel || ''} lx={452} ly={160} />}
+          {/* Center → Bottom */}
+          {bottom && <Arrow x1={360} y1={205} x2={360} y2={262} label={bottom.arrowLabel || '委任'} lx={395} ly={240} />}
+          {/* Boxes */}
+          <Box x={300} y={20}  w={120} h={55} node={top} />
+          <Box x={85}  y={140} w={160} h={60} node={left} />
+          <Box x={295} y={140} w={130} h={65} node={center} accent />
+          <Box x={480} y={140} w={160} h={60} node={right} />
+          <Box x={300} y={265} w={120} h={55} node={bottom} />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 function MemTable({ headers, rows, note, source }) {
   return (
     <div style={{ marginBottom: '24px' }}>
@@ -3275,6 +3351,25 @@ function KojiShiHoPage({ onNav, data }) {
         note="このページを読み終えたら戻ってきて解こう"
       />
 
+      <h2 id="overview">1. 全体像 — 電気工事士法の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気工事士法', sub: '資格と作業範囲', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法', theme: 'red', arrowLabel: '上位' }}
+        left={{ label: '一般用電気工作物', sub: '第一種/第二種', theme: 'cyan', arrowLabel: '対象' }}
+        right={{ label: '自家用電気工作物', sub: '500kW未満のみ', theme: 'orange', arrowLabel: '対象' }}
+        bottom={{ label: '施行規則・施行令', sub: '免状交付詳細', theme: 'green', arrowLabel: '委任' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本法との関係"]}
+        rows={[
+          ["電気事業法",         "電気工作物の枠組みを定める",     "上位法（電気工事士法はこの一部を具体化）"],
+          ["電気工事士法 第3条", "資格区分と作業範囲を規定",       "本法の中核"],
+          ["施行規則",           "免状交付・実務経験の手続を定める","具体化（試験範囲外の手続規定）"],
+          ["電気設備技術基準",   "工事の技術的基準を定める",       "並立（資格者が遵守すべき技術規範）"],
+        ]}
+        source="出典：電気工事士法／同施行規則／電気事業法"
+      />
+
       <ConclusionBox>
         <ul>
           <li>免状交付者は<strong>都道府県知事</strong>（経済産業大臣ではない）</li>
@@ -3293,6 +3388,19 @@ function KojiShiHoPage({ onNav, data }) {
         targets="R06下・H20"
         tags={["法令", "免状", "ひっかけ注意"]}
         lastChecked="2026-05-01"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電気工事の資格証",         "免状",                       "第一種/第二種電気工事士の身分証（交付者は都道府県知事）"],
+          ["工事できる範囲",            "作業従事できる範囲",         "資格区分により施設範囲が制限される"],
+          ["資格不要の小工事",          "軽微な工事",                 "第3条但書（露出型開閉器の取付け等の例外）"],
+          ["資格取得試験に通る",        "試験に合格する",             "免状交付の前提（第一種は実務経験3年が追加要件）"],
+          ["資格を持つ人",              "電気工事士／認定電気工事従事者", "別資格・別範囲（混同が頻出ひっかけ）"],
+        ]}
+        source="出典：電気工事士法 第1条・第3条／同施行規則"
       />
 
       <h2 id="exam-focus">3. 試験で問われること</h2>
@@ -3379,6 +3487,25 @@ function SetsuchiIchiranPage({ onNav, data }) {
         note="読み終えたら戻って解こう"
       />
 
+      <h2 id="overview">1. 全体像 — 接地工事の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技解釈第17条', sub: '接地工事の種類', theme: 'blue' }}
+        top={{ label: '電技省令第11条', sub: '電気の保安原則', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: 'B種', sub: '計算式型(150/Ig)', theme: 'orange', arrowLabel: '内訳' }}
+        right={{ label: 'A・C・D種', sub: '固定値型(10/10/100Ω)', theme: 'cyan', arrowLabel: '内訳' }}
+        bottom={{ label: '解釈第18・19条', sub: '埋設・接続方法', theme: 'green', arrowLabel: '具体化' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令第11条",    "電気機械器具の保安原則を定める",     "上位（接地義務の根拠）"],
+          ["電技解釈第17条",    "A〜D種の抵抗値・電線太さを規定",     "本条（数値の出典）"],
+          ["電技解釈第18・19条","共用接地・統合接地の例外を規定",     "並立（複合接地の特例）"],
+          ["電技解釈第29条",    "機械器具の鉄台等の接地",             "適用先（どの機器をどの種で接地するか）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
       <ConclusionBox>
         <ul>
           <li><strong>A種</strong>: 高圧・特高機器 → 10 Ω 以下 / 2.6 mm 以上</li>
@@ -3397,6 +3524,19 @@ function SetsuchiIchiranPage({ onNav, data }) {
         targets="R05・R04・R03"
         tags={["接地","頻出S","表暗記","高圧"]}
         lastChecked="2026-04-28"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["アースを取る",          "接地を施す",                 "大地と電気的に接続する（「設置する」「アース」では不正解）"],
+          ["地面に流れる地絡電流",  "1線地絡電流（Ig）",          "B種接地の R = 150/Ig の分母（A）"],
+          ["電気を逃がす線",        "接地線",                     "太さ規定あり（A種2.6mm以上、B種4.0mm以上等）"],
+          ["真ん中の点",            "中性点",                     "B種接地の対象（変圧器の二次側中性点）"],
+          ["低圧電路の対地電圧150V","低圧電路の対地電圧の制限",   "B種接地が 150/Ig である理由（300V→1秒遮断で 300/Ig）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
       />
 
       <h2 id="tables">接地工事一覧表</h2>
@@ -3450,6 +3590,25 @@ function ZetsuenIchiranPage({ onNav, data }) {
         note="読み終えたら戻って解こう"
       />
 
+      <h2 id="overview">1. 全体像 — 絶縁耐力試験の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '解釈第14・15条', sub: '絶縁耐力試験', theme: 'blue' }}
+        top={{ label: '電技省令第5条', sub: '電路の絶縁原則', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '低圧（第14条）', sub: '1.5倍 × 10分', theme: 'orange', arrowLabel: '内訳' }}
+        right={{ label: '高圧/特高（第15条）', sub: '1.25倍 × 10分', theme: 'cyan', arrowLabel: '内訳' }}
+        bottom={{ label: '中性点直接接地特例', sub: '0.64倍（170kV超）', theme: 'green', arrowLabel: '例外' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令第5条第2項", "電路の絶縁原則を定める",         "上位（絶縁性能要求の根拠）"],
+          ["電技解釈第14条",     "低圧電路の絶縁性能を規定",       "本条（低圧の試験電圧 = 1.5倍）"],
+          ["電技解釈第15条 別表第2の2", "高圧/特高電路の絶縁性能を規定", "本条（高圧/特高の試験電圧 = 1.25倍/0.64倍）"],
+          ["電技解釈第58条",     "低圧屋内配線の絶縁抵抗値",       "並立（絶縁抵抗測定の数値根拠 0.1/0.2/0.4MΩ）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
       <ConclusionBox>
         <ul>
           <li><strong>低圧（7kV以下）</strong>: 1.5倍 × 10分</li>
@@ -3469,6 +3628,19 @@ function ZetsuenIchiranPage({ onNav, data }) {
         targets="R05・R04・H30"
         tags={["絶縁","頻出S","表暗記","高圧","特別高圧"]}
         lastChecked="2026-04-27"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電気が漏れない性質",     "絶縁性能／絶縁耐力",         "試験で確認すべき性能（絶縁=漏電抑止、耐力=高電圧に耐える）"],
+          ["いちばん高く使う電圧",    "最大使用電圧",               "試験電圧計算の基準値（公称電圧×1.15/1.1）"],
+          ["試験で印加する電圧",      "試験電圧",                   "最大使用電圧 × 倍率（1.5 / 1.25 / 0.64）"],
+          ["真ん中をアースしている",  "中性点直接接地",             "0.64倍が適用される条件（170kV超のみ）"],
+          ["連続して耐える",          "10分間連続して印加",         "全電路で試験時間は一律10分（電圧によらず）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第14条・第15条／令和7年11月版"
       />
 
       <h2 id="tables">絶縁耐力試験一覧表</h2>
@@ -3538,6 +3710,25 @@ function RikkakuIchiranPage({ onNav, data }) {
         note="読み終えたら戻って解こう"
       />
 
+      <h2 id="overview">1. 全体像 — 離隔距離の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '解釈第68・71条', sub: '架空電線の高さ/離隔', theme: 'blue' }}
+        top={{ label: '電技省令第25・29条', sub: '保安原則', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '第68条 68-1表', sub: '路面・横断高さ', theme: 'orange', arrowLabel: '内訳' }}
+        right={{ label: '第71条', sub: '建造物との接近', theme: 'cyan', arrowLabel: '内訳' }}
+        bottom={{ label: '第75・78条等', sub: '他物との離隔', theme: 'green', arrowLabel: '関連' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令第25条", "架空電線の高さ確保を定める",       "上位（高さ規定の根拠）"],
+          ["電技省令第29条", "架空電線と建造物の離隔を定める",   "上位（離隔規定の根拠）"],
+          ["電技解釈第68条", "低圧/高圧架空電線の高さを規定",   "本条（道路6m・鉄道5.5m等の数値出典）"],
+          ["電技解釈第71条", "建造物との接近・側方距離を規定",   "本条（上部2m・側方1m等の数値出典）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
       <ConclusionBox>
         <ul>
           <li><strong>建造物上部</strong>: 低圧2m / 高圧2m / 特高3m</li>
@@ -3556,6 +3747,19 @@ function RikkakuIchiranPage({ onNav, data }) {
         targets="R04・R01・H29"
         tags={["離隔距離","頻出A","表暗記","高圧","特別高圧"]}
         lastChecked="2026-04-26"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["距離を取る",            "離隔距離を確保する",         "数値以上を維持する義務（第71条）"],
+          ["上を通る電線の高さ",     "架空電線の路面上の高さ",     "道路横断・鉄道横断で異なる規定（第68条 68-1表）"],
+          ["横の建物との隙間",       "建造物との接近・側方距離",   "第71条の対象（上部・側方で別数値）"],
+          ["頭上を渡す電線",         "架空電線",                   "電線路（=電線+支持物）と区別（電線=導体本体）"],
+          ["線路をまたぐ",           "鉄道又は軌道を横断する",     "5.5m基準（低圧・高圧とも同じ）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第68条・第71条／令和7年11月版"
       />
 
       <h2 id="tables">離隔距離一覧表</h2>
@@ -3609,6 +3813,25 @@ function DenAtsuKubunPage({ onNav, data }) {
         note="読み終えたら戻って解こう"
       />
 
+      <h2 id="overview">1. 全体像 — 電圧区分の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技省令第2条', sub: '電圧の種別等', theme: 'blue' }}
+        top={{ label: '電気事業法', sub: '上位法（保安原則）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '低圧', sub: '交流600V/直流750V以下', theme: 'cyan', arrowLabel: '区分1' }}
+        right={{ label: '高圧', sub: '〜7,000V以下', theme: 'orange', arrowLabel: '区分2' }}
+        bottom={{ label: '特別高圧', sub: '7,000V超（交直共通）', theme: 'green', arrowLabel: '区分3' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気事業法",          "電気工作物の枠組みを定める",   "上位（電圧区分の前提）"],
+          ["電技省令第2条",       "電圧の種別を定義（低圧/高圧/特別高圧）", "本条（区分の数値出典）"],
+          ["電技解釈第14・15条",  "電圧区分ごとの絶縁性能を規定", "適用先（区分→試験電圧倍率）"],
+          ["電技解釈第17条",      "接地工事の種類（C種=300V超低圧）","適用先（区分→接地種別の判定）"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／令和5年版"
+      />
+
       <ConclusionBox>
         <ul>
           <li><strong>低圧</strong>: 交流600V以下 / 直流750V以下</li>
@@ -3627,6 +3850,19 @@ function DenAtsuKubunPage({ onNav, data }) {
         targets="R03・H28・H25"
         tags={["電圧区分","頻出A","表暗記","ひっかけ注意"]}
         lastChecked="2026-04-25"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["一般家庭の電圧",       "低圧",                       "交流600V以下／直流750V以下"],
+          ["工場の動力線電圧",     "高圧",                       "交流600V超〜7,000V以下／直流750V超〜7,000V以下"],
+          ["送電線の電圧",         "特別高圧",                   "7,000V超（交流・直流共通）"],
+          ["流れ続ける電気",       "直流",                       "低圧上限が750V（交流より高い）。直流の方が同電圧での感電リスクが低いため"],
+          ["行ったり来たりする電気","交流",                      "低圧上限が600V（直流より低い）。実効値ベースで規定"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令 第2条／令和5年版"
       />
 
       <h2 id="tables">電圧区分一覧表</h2>
