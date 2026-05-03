@@ -133,7 +133,7 @@
     /* ── AI社員吹き出し ── */
     .persona-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: var(--sp-4);
     }
     .persona-card {
@@ -187,6 +187,10 @@
     .munger .persona-tag { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.2); color: var(--purple); }
     .horie .persona-tag { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); color: var(--yellow); }
     .hiro .persona-tag { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.2); color: var(--green); }
+    .persona-card.jobs::before { background: var(--accent); }
+    .persona-card.jobs { border-color: rgba(56,189,248,0.25); }
+    .jobs .persona-avatar { background: rgba(56,189,248,0.15); color: var(--accent); }
+    .jobs .persona-tag { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.25); color: var(--accent); }
 
     /* ── Level Tabs ── */
     .level-tabs-nav {
@@ -413,6 +417,7 @@
     <div class="nav-tab" onclick="switchLevel('intermediate'); scrollToSection('guide')">中級</div>
     <div class="nav-tab" onclick="switchLevel('advanced'); scrollToSection('guide')">上級</div>
     <div class="nav-tab" onclick="scrollToSection('routines')">Routines</div>
+    <div class="nav-tab" onclick="scrollToSection('tips')">活用Tips</div>
     <div class="nav-tab" onclick="scrollToSection('shortcuts')">ショートカット</div>
   </div>
 </nav>
@@ -475,6 +480,20 @@
           「<strong>セッションは記憶の単位</strong>、ってことなんですよね。タスクが変わったら新しいセッションを作る。混ぜると精度が落ちる。あと <strong>/compact</strong> は、会話が長くなったと思ったら打てばいい。それだけです。」
         </p>
         <span class="persona-tag">→ セッション管理</span>
+      </div>
+
+      <div class="persona-card jobs">
+        <div class="persona-header">
+          <div class="persona-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.03-3.13 2.56-4.63 2.67-4.71-1.46-2.13-3.73-2.42-4.54-2.46-1.93-.2-3.77 1.14-4.75 1.14-.99 0-2.49-1.11-4.1-1.08-2.11.03-4.06 1.23-5.14 3.12-2.19 3.81-.56 9.43 1.58 12.51 1.05 1.51 2.29 3.2 3.92 3.14 1.58-.06 2.18-1.02 4.09-1.02 1.91 0 2.45 1.02 4.12.99 1.7-.03 2.78-1.54 3.82-3.06 1.2-1.76 1.69-3.46 1.72-3.55-.04-.02-3.3-1.27-3.34-5.02zM13.91 3.34c.87-1.06 1.46-2.53 1.3-4-1.25.05-2.77.84-3.67 1.89-.81.93-1.51 2.42-1.32 3.86 1.39.11 2.81-.71 3.69-1.75z"/></svg></div>
+          <div>
+            <div class="persona-name">スティーブ・ジョブズ</div>
+            <div class="persona-role">本質追求 / レビューセッション担当</div>
+          </div>
+        </div>
+        <p class="persona-quote">
+          「Opusは美しい。だが <strong>すべてをOpusで書く必要はない</strong>。grepはHaikuで十分、設計はOpusで深く考える。<strong>モデル切替を覚えるだけで月額が1/5</strong> になる。質を落とさず無駄を消せ——それが Think Different だ。」
+        </p>
+        <span class="persona-tag">→ モデル＆工数Tips</span>
       </div>
 
     </div>
@@ -671,8 +690,162 @@ Cmd+Shift+E — Effort 切替メニュー</pre>
   </div>
 </div>
 
+<!-- 活用Tips: モデル＆工数 -->
+<div class="section" id="tips">
+  <div class="container">
+    <div class="section-title">モデル＆工数 完全ガイド</div>
+
+    <p style="color:var(--text2);margin-bottom:var(--sp-6);max-width:780px;line-height:1.7;">
+      Claude Codeは <strong style="color:var(--text)">モデル × 工数（Effort）</strong> の2軸で性能とコストが決まる。
+      シーンに応じた切替で <strong style="color:var(--green)">月額コストを1/5</strong> に抑えながら品質を維持できる。
+    </p>
+
+    <!-- ① モデル比較 -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">① モデル5種比較</h3>
+    <div class="feature-card" style="margin-bottom:var(--sp-8);overflow-x:auto">
+      <table class="shortcut-table">
+        <thead>
+          <tr>
+            <th>モデル</th>
+            <th>入力 ($/MTok)</th>
+            <th>出力 ($/MTok)</th>
+            <th>速度</th>
+            <th>主用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong style="color:var(--text)">Opus 4.7</strong></td><td>$15</td><td>$75</td><td>50-70 t/s</td><td>最高品質。複雑な設計・長文編集</td></tr>
+          <tr><td><strong style="color:var(--text)">Opus 4.7 1M</strong></td><td>$15→$30 ※</td><td>$75→$150 ※</td><td>50-70 t/s</td><td>1M context版。大型HTML全体読込</td></tr>
+          <tr><td><strong style="color:var(--text)">Sonnet 4.6</strong></td><td>$3</td><td>$15</td><td>80-100 t/s</td><td>バランス型。日常実装の主力</td></tr>
+          <tr><td><strong style="color:var(--text)">Haiku 4.5</strong></td><td>$1</td><td>$5</td><td>150-200 t/s</td><td>並列エージェント・grep的探索</td></tr>
+          <tr><td><strong style="color:var(--text)">Opus 4.6 レガシー</strong></td><td>$15</td><td>$75</td><td>通常〜高速 ✨</td><td><kbd>/fast</kbd> 対応</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:var(--fs-sm);color:var(--text3);margin-top:var(--sp-3);line-height:1.6">
+        ※ 200K超の入力時は単価2倍。<br>
+        Opusは Sonnet の <strong style="color:var(--accent)">5倍コスト</strong>、Haiku の 15倍コスト。Sonnetで足りる作業はSonnetに寄せる。
+      </p>
+    </div>
+
+    <!-- ② 工数比較 -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">② 工数（Extended Thinking）レベル</h3>
+    <div class="feature-card" style="margin-bottom:var(--sp-8);overflow-x:auto">
+      <table class="shortcut-table">
+        <thead>
+          <tr>
+            <th>工数</th>
+            <th>思考トークン目安</th>
+            <th>速度</th>
+            <th>用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>低</td><td>〜2K</td><td>最速</td><td>雑談・確認・単純編集</td></tr>
+          <tr><td>中</td><td>〜8K</td><td>速</td><td>通常コーディング</td></tr>
+          <tr><td><strong style="color:var(--accent)">高（推奨デフォルト）</strong></td><td>〜16K</td><td>中</td><td>複雑な設計・PlanMode</td></tr>
+          <tr><td>超高</td><td>〜32K</td><td>遅</td><td>多変数の最適化・難バグ</td></tr>
+          <tr><td>Max</td><td>64K以上</td><td>最遅</td><td>数学的証明・大規模アーキ判断</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:var(--fs-sm);color:var(--text3);margin-top:var(--sp-3);line-height:1.6">
+        工数を上げると <strong style="color:var(--yellow)">思考トークンも課金対象</strong>。Opus×Maxは1ターン $0.5〜$2 食う場面あり。
+      </p>
+    </div>
+
+    <!-- ③ /fast モード -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">③ <kbd>/fast</kbd> 高速モードの正体</h3>
+    <div class="feature-grid" style="grid-template-columns:1fr;margin-bottom:var(--sp-8)">
+      <div class="feature-card" style="border-left:3px solid var(--green)">
+        <div class="feature-icon"><i data-lucide="rocket" size="18"></i></div>
+        <div class="feature-title">小型モデルへの劣化ではない</div>
+        <div class="feature-desc">
+          <strong style="color:var(--green)">Opus 4.6 レガシー専用</strong> の機能。Opus 4.7 では使えない。<br>
+          モデル品質は Opus 4.6 のまま、<strong style="color:var(--text)">出力速度のみ高速化</strong> される。
+        </div>
+        <div class="feature-when"><strong>使うとき：</strong>Opus品質が必要だが速度も欲しい時（大型HTMLの連続Edit等）</div>
+        <div class="feature-when" style="color:var(--yellow)">
+          <strong style="color:var(--yellow)">トレードオフ：</strong>Opus 4.7 の最新コーディング精度向上分は使えない
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>/fast    # トグル（Opus 4.6 選択時のみ有効）</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ シーン別推奨 -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">④ シーン別 推奨モデル＆工数（Fカンパニー実戦）</h3>
+    <div class="feature-card" style="margin-bottom:var(--sp-8);overflow-x:auto">
+      <table class="shortcut-table">
+        <thead>
+          <tr>
+            <th>シーン</th>
+            <th>モデル</th>
+            <th>工数</th>
+            <th>理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>大型HTML編集（denken-hoki/riron-wiki）</td><td><strong style="color:var(--accent)">Opus 4.7 1M</strong></td><td>高</td><td>500KB級の単一HTMLを全体把握</td></tr>
+          <tr><td>法規記事 新規作成（公式PDF照合）</td><td>Opus 4.7</td><td><strong style="color:var(--accent)">超高</strong></td><td>数値1つの誤りでサイト信頼度毀損</td></tr>
+          <tr><td>過去問履歴更新・grep探索</td><td><strong style="color:var(--green)">Sonnet 4.6</strong></td><td>低</td><td>定型処理。安価＆高速</td></tr>
+          <tr><td>並列エージェント（Haikuタスク）</td><td><strong style="color:var(--green)">Haiku 4.5</strong></td><td>低</td><td>コスト1/15。本体精度を保つため</td></tr>
+          <tr><td>Babel構文エラー連発対応</td><td>Opus 4.6 ＋ <kbd>/fast</kbd></td><td>中</td><td>速度優先。修正サイクル短縮</td></tr>
+          <tr><td>レビューセッション・設計判断</td><td>Opus 4.7</td><td>高〜超高</td><td>多角的視点・トレードオフ考慮</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ⑤ トークン節約Tips -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">⑤ トークン節約Tips（実戦則）</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="layers" size="18"></i></div>
+        <div class="feature-title">同一ファイルEditは1ターンに集約</div>
+        <div class="feature-desc">複数箇所の修正は <code>old_string</code> を大きく取って一括置換。Edit連打はターン数=トークン消費。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="search" size="18"></i></div>
+        <div class="feature-title">Grep優先・全Read禁止</div>
+        <div class="feature-desc">100KB超ファイルの全Readはトークン爆食い。<code>Grep output_mode:"content" head_limit:20</code> で局所抽出。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="refresh-cw" size="18"></i></div>
+        <div class="feature-title">/compact をこまめに打つ</div>
+        <div class="feature-desc">15往復超 or 重コマンド後に実行。会話履歴を圧縮して次ターンの入力単価を抑える。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="git-branch" size="18"></i></div>
+        <div class="feature-title">タスクごと新セッション</div>
+        <div class="feature-desc">無関係な新タスクへの切替時は新セッション。コンテキスト引き継ぎは精度低下＋コスト増の両損。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="users" size="18"></i></div>
+        <div class="feature-title">調査はサブエージェントへ</div>
+        <div class="feature-desc">codebase探索・並列分析はAgent toolで分離。メインのコンテキストを枯渇させない。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="bar-chart-3" size="18"></i></div>
+        <div class="feature-title"><code>/cost</code> でキャッシュ比率確認</div>
+        <div class="feature-desc">セッション長期化時に実行。キャッシュヒット率が下がっていたら新セッション推奨サイン。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="lock" size="18"></i></div>
+        <div class="feature-title">編集ロック宣言で並列衝突防止</div>
+        <div class="feature-desc">大型HTML編集前に <code>python claim_edit.py claim --target &lt;file&gt;</code>。並列セッションのcommit巻込み事故を防ぐ。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="image-off" size="18"></i></div>
+        <div class="feature-title">スクリーンショットは最後の手段</div>
+        <div class="feature-desc">画像はテキストの4-10倍トークン消費。構造確認は <code>preview_eval</code> + JS queryで代替する。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ショートカット -->
-<div class="section" id="shortcuts">
+<div class="section" id="shortcuts" style="background: rgba(15,23,42,0.5); border-top:1px solid var(--border);">
   <div class="container">
     <div class="section-title">キーボードショートカット</div>
     <div class="feature-card" style="max-width:700px">
