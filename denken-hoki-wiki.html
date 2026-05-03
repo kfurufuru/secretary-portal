@@ -1963,17 +1963,128 @@ function ExamAnswer({ correct, explanations }) {
   );
 }
 
+// QuickReview: 1分復習 + PDCA記録
+// localStorage: hoki_quickreview_stats = { [pageId+":"+q]: { ng, ok, lastNgAt } }
+// ✕押下時は denken-hoki-machigai-notes にも自動push
+function loadQRStats() {
+  try { return JSON.parse(localStorage.getItem('hoki_quickreview_stats') || '{}'); }
+  catch { return {}; }
+}
+function saveQRStats(s) {
+  try { localStorage.setItem('hoki_quickreview_stats', JSON.stringify(s)); } catch {}
+}
+function pushMachigaiNote(pageId, q, a) {
+  const KEY = 'denken-hoki-machigai-notes';
+  let notes = [];
+  try { notes = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch {}
+  // 重複チェック（同じpageId+q）
+  if (notes.some(n => n.source === `1分復習・${pageId}` && n.wrong === q)) return;
+  const newNote = {
+    id: Date.now(),
+    date: new Date().toISOString().slice(0, 10),
+    topic: pageId,
+    wrong: q,
+    correct: a,
+    source: `1分復習・${pageId}`,
+  };
+  notes.unshift(newNote);
+  try { localStorage.setItem(KEY, JSON.stringify(notes)); } catch {}
+}
+
 function QuickReview({ items }) {
   const limited = items.slice(0, 5);
+  const pageId = (location.hash.slice(1) || 'top');
+  const [stats, setStats] = React.useState(loadQRStats);
+  const [opened, setOpened] = React.useState({});
+  const STALE_DAYS = 7;
+  const now = Date.now();
+
+  const recordResult = (q, a, isCorrect) => {
+    const key = `${pageId}:${q}`;
+    const cur = stats[key] || { ng: 0, ok: 0, lastNgAt: null };
+    const next = {
+      ...stats,
+      [key]: {
+        ng: cur.ng + (isCorrect ? 0 : 1),
+        ok: cur.ok + (isCorrect ? 1 : 0),
+        lastNgAt: isCorrect ? cur.lastNgAt : now,
+      },
+    };
+    setStats(next);
+    saveQRStats(next);
+    if (!isCorrect) pushMachigaiNote(pageId, q, a);
+  };
+
+  const ngTotal = limited.reduce((sum, it) => {
+    const s = stats[`${pageId}:${it.q}`];
+    return sum + (s?.ng || 0);
+  }, 0);
+  const stale = limited.filter(it => {
+    const s = stats[`${pageId}:${it.q}`];
+    return s?.lastNgAt && (now - s.lastNgAt) > STALE_DAYS * 86400 * 1000;
+  }).length;
+
   return (
     <div className="quick-review" style={{ marginBottom: '24px' }}>
-      <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '10px', color: 'var(--ink-2)' }}>1分復習</div>
-      {limited.map((item, i) => (
-        <details key={i} className="quick-review">
-          <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
-          <div className="quick-review-answer">A: {item.a}</div>
-        </details>
-      ))}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ fontWeight: '700', fontSize: '13px', color: 'var(--ink-2)' }}>1分復習</div>
+        {ngTotal > 0 && (
+          <div style={{ fontSize: '11px', color: 'var(--ink-3)' }}>
+            ✕累計 <strong style={{ color: '#d95454' }}>{ngTotal}</strong>
+            {stale > 0 && <span style={{ marginLeft: '8px', color: '#ef6c00' }}>📅 再挑戦{stale}件</span>}
+          </div>
+        )}
+      </div>
+      {limited.map((item, i) => {
+        const key = `${pageId}:${item.q}`;
+        const s = stats[key];
+        const isStale = s?.lastNgAt && (now - s.lastNgAt) > STALE_DAYS * 86400 * 1000;
+        return (
+          <details
+            key={i}
+            className="quick-review"
+            open={!!opened[i]}
+            onToggle={(e) => setOpened({ ...opened, [i]: e.currentTarget.open })}
+          >
+            <summary>
+              Q{i + 1}: {item.q}　（クリックで答えを確認）
+              {s?.ng > 0 && (
+                <span className="qr-badge" style={{
+                  marginLeft: '8px', fontSize: '10px', padding: '1px 6px', borderRadius: '8px',
+                  background: isStale ? '#fff3e0' : '#fde8e8',
+                  color: isStale ? '#ef6c00' : '#c0392b', fontWeight: 700,
+                }}>
+                  ✕{s.ng}{isStale ? ' 📅' : ''}
+                </span>
+              )}
+            </summary>
+            <div className="quick-review-answer">
+              <div style={{ marginBottom: '10px' }}>A: {item.a}</div>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', fontSize: '12px' }}>
+                <button
+                  className="qr-btn qr-btn-ok"
+                  onClick={() => recordResult(item.q, item.a, true)}
+                >○ 覚えた</button>
+                <button
+                  className="qr-btn qr-btn-ng"
+                  onClick={() => recordResult(item.q, item.a, false)}
+                >✕ 間違えた</button>
+                {s && (
+                  <span style={{ color: 'var(--ink-3)', fontSize: '11px' }}>
+                    ○{s.ok} / ✕{s.ng}
+                    {s.lastNgAt && ` ・ 最終誤答 ${new Date(s.lastNgAt).toISOString().slice(0,10)}`}
+                  </span>
+                )}
+              </div>
+              {s?.ng > 0 && (
+                <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--ink-3)' }}>
+                  ✕記録は <a href="#chokuzen-machigai" style={{ color: 'var(--accent)' }}>間違いノート</a> に自動追加されます
+                </div>
+              )}
+            </div>
+          </details>
+        );
+      })}
     </div>
   );
 }
@@ -2917,6 +3028,11 @@ function App() {
     .quick-review details { border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 8px; }
     .quick-review summary { padding: 10px 14px; cursor: pointer; font-size: 13px; }
     .quick-review-answer { padding: 10px 14px; font-size: 13px; background: var(--bg-2); }
+    .qr-btn { padding: 4px 12px; font-size: 12px; border-radius: 4px; border: 1px solid var(--line); cursor: pointer; font-weight: 600; transition: all 0.15s; }
+    .qr-btn-ok { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+    .qr-btn-ok:hover { background: #c8e6c9; }
+    .qr-btn-ng { background: #fde8e8; color: #c0392b; border-color: #f5c6cb; }
+    .qr-btn-ng:hover { background: #f5c6cb; }
     .next-action { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
     .next-action-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; cursor: pointer; transition: border-color 0.15s; }
     .next-action-card:hover { border-color: var(--accent); }
@@ -3243,11 +3359,111 @@ function Lv2HistoryCard({ onNav }) {
   );
 }
 
+function ActiveEditsBanner() {
+  // inbox/active-edits.md を fetch して BEGIN_ACTIVE 〜 END_ACTIVE の中身をパース・表示
+  // 並列セッション衝突防止（2026-05-03 a9675b0 事案を受けて構築）
+  const [data, setData] = React.useState(null);
+  const [error, setError] = React.useState(false);
+
+  React.useEffect(() => {
+    const load = () => {
+      fetch('inbox/active-edits.md', { cache: 'no-store' })
+        .then(r => r.ok ? r.text() : Promise.reject())
+        .then(txt => {
+          const m = txt.match(/<!-- BEGIN_ACTIVE -->([\s\S]*?)<!-- END_ACTIVE -->/);
+          if (!m || !m[1].trim()) { setData([]); return; }
+          const block = m[1].trim();
+          const chunks = block.split(/\n(?=### )/).filter(c => c.trim());
+          const entries = chunks.map(c => {
+            const sm = c.match(/### (.+?) — (.+?) 開始/);
+            const tm = c.match(/\*\*対象\*\*:\s*`(.+?)`/);
+            const rm = c.match(/\*\*作業内容\*\*:\s*(.+)/);
+            const dm = c.match(/\*\*期限\*\*:\s*(.+)/);
+            return {
+              session: sm && sm[1],
+              started: sm && sm[2],
+              target: tm && tm[1],
+              reason: rm && rm[1],
+              deadline: dm && dm[1],
+            };
+          });
+          setData(entries);
+        })
+        .catch(() => setError(true));
+    };
+    load();
+    const id = setInterval(load, 30000); // 30秒自動更新
+    return () => clearInterval(id);
+  }, []);
+
+  if (error || data === null) return null;
+
+  const obsidianURL = 'obsidian://open?vault=.secretary&file=inbox%2Factive-edits.md';
+  const isEmpty = data.length === 0;
+  const bg = isEmpty ? '#e8f5e9' : '#fff3e0';
+  const border = isEmpty ? '#2e7d32' : '#ef6c00';
+  const tx = isEmpty ? '#1b5e20' : '#e65100';
+
+  return (
+    <div style={{
+      background: bg,
+      border: '1px solid ' + border,
+      borderLeft: '4px solid ' + border,
+      borderRadius: 'var(--radius)',
+      padding: '10px 14px',
+      marginBottom: 16,
+      fontSize: 12,
+      lineHeight: 1.6,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+        <span style={{ fontWeight: 700, color: tx }}>
+          {isEmpty
+            ? '🔒 編集ロック: ✓ 衝突なし（並列セッション安全）'
+            : '🔒 編集ロック: ⚠ ' + data.length + '件 編集中'}
+        </span>
+        <a href={obsidianURL}
+           style={{ marginLeft: 'auto', fontSize: 11, color: tx, textDecoration: 'underline' }}
+           title="Obsidian（個人利用無料）で active-edits.md を開く">
+          📝 Obsidian で開く
+        </a>
+        <a href="inbox/active-edits.md" target="_blank"
+           style={{ fontSize: 11, color: tx, textDecoration: 'underline' }}
+           title="ブラウザで raw markdown を表示">
+          🔗 raw を見る
+        </a>
+      </div>
+      {!isEmpty && (
+        <ul style={{ margin: '6px 0 0', paddingLeft: 20, color: tx, fontSize: 11 }}>
+          {data.map((e, i) => (
+            <li key={i}>
+              <code style={{ fontSize: 11, background: 'rgba(255,255,255,0.5)', padding: '0 4px', borderRadius: 3 }}>
+                {e.target}
+              </code>
+              {' — ' + (e.reason || '(理由未記載)')}
+              <span style={{ opacity: 0.7, marginLeft: 6 }}>
+                ({e.session}, 期限: {e.deadline || '未設定'})
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function HomePage({ onNav, data }) {
   // 今日の一問の選択肢状態
   const [answered, setAnswered] = React.useState(null); // null | 'correct' | 'wrong'
   // 過去問フィルター状態
   const [activeChip, setActiveChip] = React.useState('#B問題対策');
+  // マイ・ウォッチリスト（v1: 手動JSON運用・2026-06-03 自動化判定）
+  const [watchlist, setWatchlist] = React.useState(null);
+  React.useEffect(() => {
+    fetch('data/hoki-watchlist.json', { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => setWatchlist(d))
+      .catch(() => {});
+  }, []);
 
   const DAILY_Q = {
     date: '2026年5月1日 · R5上期 改',
@@ -3320,6 +3536,7 @@ function HomePage({ onNav, data }) {
 
   return (
     <div>
+      <ActiveEditsBanner />
       {/* ====== Hero ====== */}
       <section style={{ marginBottom: 40 }}>
         <div style={{ marginBottom: 20 }}>
@@ -3418,6 +3635,44 @@ function HomePage({ onNav, data }) {
             </div>
           );
         })()}
+
+        {/* マイ・ウォッチリスト（v1: 手動JSON運用・2026-06-03 自動化判定）
+            データソース: data/hoki-watchlist.json
+            設計: 池谷（誤答リトライ）+ オークレー（チャンク）+ エリクソン（限界的練習ドリル）の3者統合
+            v2移行条件: Notion法規records >= 50件 で自動算出に切り替え */}
+        {watchlist && Array.isArray(watchlist.items) && watchlist.items.length > 0 && (
+          <div style={{ marginTop: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em' }}>📌 MY WATCHLIST</span>
+              <span style={{ fontSize: 11, color: 'var(--ink-3)' }}>{watchlist.lastUpdate} 更新</span>
+              <span style={{ fontSize: 11, color: 'var(--ink-3)', marginLeft: 'auto' }}>覚えるべき・注意事項</span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
+              {watchlist.items.map((it, i) => {
+                const colorMap = { mistake: '#d95454', chunk: '#e6a817', drill: 'var(--accent)' };
+                const labelMap = { mistake: '昨日の誤答リトライ', chunk: '今日の重点チャンク', drill: '限界的練習ドリル' };
+                const c = colorMap[it.type] || 'var(--accent)';
+                return (
+                  <div key={i}
+                    onClick={() => onNav(it.ref)}
+                    style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: `3px solid ${c}`, borderRadius: 'var(--radius)', padding: '12px 14px', cursor: 'pointer' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                      <span className={`rank rank-${it.rank}`}>{it.rank}</span>
+                      <span style={{ fontSize: 10, color: c, fontWeight: 700, letterSpacing: '0.03em' }}>{labelMap[it.type] || it.type}</span>
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4, lineHeight: 1.4 }}>{it.topic}</div>
+                    <div style={{ fontSize: 12, color: 'var(--ink-2)', lineHeight: 1.5, marginBottom: 6 }}>{it.hint}</div>
+                    {it.selfCheck && (
+                      <div style={{ fontSize: 11, color: 'var(--ink-3)', borderTop: '1px dashed var(--border)', paddingTop: 6, lineHeight: 1.5 }}>
+                        <span style={{ fontWeight: 700, color: 'var(--ink-2)' }}>Q. </span>{it.selfCheck}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Lv.2 学習履歴カード */}
         <Lv2HistoryCard onNav={onNav} />
@@ -3899,18 +4154,19 @@ function ChokuzenSuuchiPage({ onNav, data }) {
           ["C種", "300V 超低圧",     "10 Ω 以下",  "1.6 mm 以上"],
           ["D種", "300V 以下低圧",   "100 Ω 以下", "1.6 mm 以上"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
-        note="B種は1秒以内自動遮断で300/Ig、0.5秒以内で600/Igに緩和"
+        source="出典：電気設備の技術基準の解釈 第17条 17-1表／令和7年11月版"
+        note="B種は1秒以下自動遮断で600/Ig、1秒超2秒以下で300/Igに緩和（17-1表）"
       />
 
-      <h2 id="zetsuen-tables">⚡ 絶縁耐力試験 倍率（電技解釈第14・15条）</h2>
+      <h2 id="zetsuen-tables">⚡ 絶縁耐力試験 倍率（電技解釈第15条 15-1表）</h2>
       <MemTable
-        headers={["電路", "倍率", "時間"]}
+        headers={["電路（最大使用電圧基準）", "倍率", "時間"]}
         rows={[
-          ["低圧 7,000V以下",                  "1.5 倍",  "10 分"],
-          ["高圧 7,000V超 60kV以下",           "1.25 倍", "10 分"],
-          ["特高（中性点直接接地・170kV超）",  "0.64 倍", "10 分"],
-          ["特高（その他・60kV超）",           "1.25 倍", "10 分"],
+          ["7,000V以下（低圧・公称6.6kV高圧）", "1.5 倍",  "10 分"],
+          ["7,000V超 60kV以下",                "1.25 倍", "10 分"],
+          ["60kV超（中性点直接接地以外）",      "1.1 倍",  "10 分"],
+          ["170kV以下（中性点直接接地式）",     "0.72 倍", "10 分"],
+          ["170kV超（中性点直接接地式）",       "0.64 倍", "10 分"],
         ]}
         source="出典：電気設備の技術基準の解釈 第14・15条 別表第2の2／令和7年11月版"
         note="0.64 = 1.1×(1/√3)。中性点直接接地で対地電圧が相電圧に抑制される"
@@ -4067,13 +4323,13 @@ function ChokuzenFormulaPage({ onNav, data }) {
 
       <h2 id="zetsuen-tables">📐 絶縁耐力試験計算（3段階）</h2>
       <MemTable
-        headers={["段階", "式", "例（公称6.6kV・高圧）"]}
+        headers={["段階", "式", "例（公称6.6kV・最大使用電圧7,000V以下）"]}
         rows={[
-          ["1. 公称→最大", "公称電圧 × 1.15 / 1.1",       "6.6 × 1.15 / 1.1 ≒ 6.9 kV"],
-          ["2. 倍率選択",  "区分→1.5/1.25/0.64",          "高圧→1.25"],
-          ["3. 試験電圧",  "最大使用電圧 × 倍率",         "6,900 × 1.25 = 8,625 V"],
+          ["1. 公称→最大", "公称電圧 × 1.15 / 1.1",                   "6.6 × 1.15 / 1.1 ≒ 6.9 kV"],
+          ["2. 倍率選択",  "最大使用電圧の区分で決定（1.5/1.25/1.1/0.72/0.64）", "6,900V≦7,000V → 1.5"],
+          ["3. 試験電圧",  "最大使用電圧 × 倍率",                     "6,900 × 1.5 = 10,350 V"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第14・15条／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第15条 15-1表／令和7年11月版"
       />
 
       <h2 id="denatsu-tables">📐 電圧降下（配線方式別 k）</h2>
@@ -4131,11 +4387,11 @@ function ChokuzenFormulaPage({ onNav, data }) {
       <MemTable
         headers={["条件", "K", "式", "Ig=5A 例"]}
         rows={[
-          ["原則（遮断装置なし or 1秒超）", "150", "R_B = 150 / Ig", "30 Ω 以下"],
-          ["1秒以内に自動遮断",             "300", "R_B = 300 / Ig", "60 Ω 以下"],
-          ["0.5秒以内に自動遮断",           "600", "R_B = 600 / Ig", "120 Ω 以下"],
+          ["原則（遮断装置なし or 2秒超）", "150", "R_B = 150 / Ig", "30 Ω 以下"],
+          ["1秒を超え2秒以下に自動遮断",     "300", "R_B = 300 / Ig", "60 Ω 以下"],
+          ["1秒以下に自動遮断",              "600", "R_B = 600 / Ig", "120 Ω 以下"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第17条第2項／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第17条第2項 17-1表／令和7年11月版"
       />
 
       <h2 id="juyoritsu-tables">📐 需要率・負荷率・不等率</h2>
@@ -4195,7 +4451,7 @@ function ChokuzenHikkakePage({ onNav, data }) {
       <MemTable
         headers={["類型", "出題例", "対策"]}
         rows={[
-          ["数値の桁",       "150/Ig vs 1500/Ig",         "B種は『150』。300は1秒以内・600は0.5秒以内"],
+          ["数値の桁",       "150/Ig vs 1500/Ig",         "B種は『150』。1秒以下→K=600、1秒超2秒以下→K=300（17-1表）"],
           ["数値の単位",     "0.4Ω vs 0.4MΩ",             "絶縁抵抗は『MΩ』、接地抵抗は『Ω』"],
           ["数値の向き",     "T = F/sinθ vs T = F×sinθ",  "支線張力は『割り算』"],
           ["用語の混同",     "電線/電路/電線路",           "別概念。電線路=電線+支持物"],
@@ -4264,7 +4520,7 @@ function ChokuzenHikkakePage({ onNav, data }) {
 
       <h2 id="quick-review">1分復習・直前頻出</h2>
       <QuickReview items={[
-        { q: "B種接地式の K は？",          a: "150（原則）/ 300（1秒以内）/ 600（0.5秒以内）" },
+        { q: "B種接地式の K は？",          a: "150（原則）/ 300（1秒超2秒以下）/ 600（1秒以下）" },
         { q: "事故報告速報は？",            a: "24時間以内（産業保安監督部長）" },
         { q: "高圧道路横断の高さは？",      a: "6 m 以上（低圧は5 m）" },
         { q: "保安規程届出義務者は？",      a: "自家用電気工作物の設置者" },
@@ -5628,21 +5884,21 @@ function ZetsuenTairyokuPage({ onNav, data }) {
       <MemTable
         headers={["条文/規定", "役割", "本計算との関係"]}
         rows={[
-          ["電技解釈 第14条",       "低圧電路の絶縁耐力試験電圧",       "本則（1.5倍）"],
-          ["電技解釈 第15条 別表第2の2","高圧/特高電路の絶縁耐力試験電圧","本則（1.25倍/0.64倍）"],
-          ["JEC 規格・公称電圧",    "公称電圧と最大使用電圧の関係",     "前提（1.15/1.1係数）"],
-          ["B問題出題傾向",         "6.6kV/22kV/77kV/154kV/275kV",     "頻出公称電圧"],
+          ["電技解釈 第15条 15-1表",  "全電圧区分の絶縁耐力試験電圧",     "本則（最大使用電圧基準で区分別倍率）"],
+          ["電技解釈 第14条",         "低圧電路の絶縁性能（漏えい電流1mA）","関連（試験電圧の根拠ではない）"],
+          ["JEC-0222-2009",          "公称電圧と最大使用電圧の関係",     "前提（1,000V以下=×1.15、超=×1.15/1.1）"],
+          ["B問題出題傾向",          "6.6kV/22kV/66kV/154kV/275kV",      "頻出公称電圧"],
         ]}
-        source="出典：電気設備の技術基準の解釈／JEC規格（令和7年11月版／2010）"
+        source="出典：電気設備の技術基準の解釈 第15条 15-1表（令和7年11月版）／JEC-0222-2009"
       />
 
       <ConclusionBox>
         <ul>
           <li>3段階計算: <strong>公称電圧 → 最大使用電圧 → 試験電圧</strong></li>
-          <li>公称→最大: <strong>1,000V以下=×1.15/1.1、超=×1.15/1.1</strong>（基本的に×1.15/1.1）</li>
+          <li>公称→最大: <strong>1,000V以下=×1.15、1,000V超=×1.15/1.1</strong>（≒1.0455）</li>
           <li>具体例: 公称6.6kV → 最大 6.6×1.15/1.1 = <strong>6,900V</strong></li>
-          <li>最大→試験(高圧): <strong>×1.25</strong> → 6,900×1.25 = <strong>8,625V</strong></li>
-          <li>※ 設問で『×1.5倍』と問われるなら: 6,900×1.5 = <strong>10,350V</strong>（誤答誘発しやすい）</li>
+          <li>最大→試験: <strong>最大使用電圧7,000V以下=×1.5、7,000V超60,000V以下=×1.25、60,000V超=×1.1（中性点直接接地以外）／×0.72（170kV以下中性点直接接地）／×0.64（170kV超中性点直接接地）</strong></li>
+          <li>具体例: 6,900V × 1.5 = <strong>10,350V</strong>（公称6.6kVの試験電圧）</li>
         </ul>
       </ConclusionBox>
 
@@ -5674,35 +5930,35 @@ function ZetsuenTairyokuPage({ onNav, data }) {
       <MemTable
         headers={["公称電圧", "最大使用電圧", "倍率", "試験電圧", "区分"]}
         rows={[
-          ["100/200 V",  "115/230 V",  "1.5",  "172.5/345 V",   "低圧"],
-          ["6.6 kV",     "6,900 V",    "1.25", "8,625 V",        "高圧"],
-          ["22 kV",      "23,000 V",   "1.25", "28,750 V",       "高圧"],
-          ["66 kV",      "69,000 V",   "1.25", "86,250 V",       "高圧"],
-          ["154 kV",     "161,000 V",  "1.25", "201,250 V",      "特高（その他）"],
-          ["275 kV",     "287,500 V",  "0.64", "184,000 V",      "特高（中性点直接接地）"],
+          ["100/200 V",  "115/230 V",  "1.5",  "172.5/345 V",  "最大使用電圧7,000V以下"],
+          ["6.6 kV",     "6,900 V",    "1.5",  "10,350 V",     "最大使用電圧7,000V以下（高圧）"],
+          ["22 kV",      "23,000 V",   "1.25", "28,750 V",     "7,000V超60,000V以下"],
+          ["66 kV",      "69,000 V",   "1.1",  "75,900 V",     "60,000V超（中性点直接接地以外）"],
+          ["154 kV",     "161,000 V",  "0.72", "115,920 V",    "170kV以下（中性点直接接地式）"],
+          ["275 kV",     "287,500 V",  "0.64", "184,000 V",    "170kV超（中性点直接接地式）"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第14・15条 別表第2の2／令和7年11月版"
-        note="頻出は6.6kV→8,625V。275kV直接接地は0.64倍で『試験電圧が下がる』のがポイント"
+        source="出典：電気設備の技術基準の解釈 第15条 15-1表（令和7年11月版）"
+        note="頻出は6.6kV→10,350V（×1.5・最大使用電圧7,000V以下）。275kV中性点直接接地は0.64倍で試験電圧が下がるのがポイント"
       />
 
       <h2 id="hint-tables">試験電圧計算の3ステップ（B問題解法）</h2>
       <MemTable
         headers={["ステップ", "式", "例（公称6.6kV）"]}
         rows={[
-          ["1. 最大使用電圧",   "公称電圧 × 1.15 / 1.1",       "6.6 × 1.15 / 1.1 = 6.9 kV"],
-          ["2. 倍率を選ぶ",     "区分→1.5 / 1.25 / 0.64",     "高圧→1.25倍"],
-          ["3. 試験電圧",       "最大使用電圧 × 倍率",         "6,900 × 1.25 = 8,625 V"],
+          ["1. 最大使用電圧",   "公称電圧 × 1.15/1.1（1,000V超）",  "6.6 × 1.15 / 1.1 = 6.9 kV"],
+          ["2. 倍率を選ぶ",     "最大使用電圧の区分で決定",          "6,900V≦7,000V → ×1.5"],
+          ["3. 試験電圧",       "最大使用電圧 × 倍率",               "6,900 × 1.5 = 10,350 V"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第14・15条／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第15条 15-1表（令和7年11月版）"
         note="必ず『最大使用電圧』を経由する。公称電圧に直接倍率を掛けるのは誤り"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "公称電圧6.6kV × 1.25 = 8,250V が試験電圧",
-          correct: "正しくは『最大使用電圧6,900V × 1.25 = 8,625V』。最大使用電圧を経由する" },
-        { wrong: "高圧電路の倍率は1.5倍",
-          correct: "高圧は1.25倍。1.5倍は低圧（7,000V以下）" },
+          correct: "公称6.6kVの最大使用電圧は6,900V（≦7,000V）。倍率は×1.5なので 6,900 × 1.5 = 10,350V が試験電圧" },
+        { wrong: "公称6.6kV高圧の倍率は1.25倍",
+          correct: "最大使用電圧7,000V以下は×1.5（公称6.6kV→最大6,900V→×1.5）。×1.25は最大使用電圧7,000V超60,000V以下に適用" },
         { wrong: "275kVの試験電圧は最も高い",
           correct: "中性点直接接地（170kV超）は0.64倍で試験電圧は『下がる』" },
         { wrong: "試験時間は電圧によって異なる",
@@ -5711,10 +5967,10 @@ function ZetsuenTairyokuPage({ onNav, data }) {
 
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
-        { q: "公称電圧 → 最大使用電圧 の係数は？",       a: "×1.15/1.1（≒1.045倍）" },
+        { q: "公称電圧 → 最大使用電圧 の係数は？",       a: "1,000V超は×1.15/1.1（≒1.0455）、1,000V以下は×1.15" },
         { q: "公称6.6kVの最大使用電圧は？",                a: "6,900 V" },
-        { q: "公称6.6kVの試験電圧は？",                    a: "8,625 V（6,900×1.25）" },
-        { q: "275kV(中性点直接接地)の倍率は？",            a: "0.64倍" },
+        { q: "公称6.6kVの試験電圧は？",                    a: "10,350 V（6,900×1.5・最大使用電圧7,000V以下）" },
+        { q: "275kV(中性点直接接地)の倍率は？",            a: "0.64倍（170kV超）" },
         { q: "試験時間は？",                               a: "10分間（全区分共通）" },
       ]} />
 
@@ -5892,10 +6148,10 @@ function ShisenHikisamaPage({ onNav, data }) {
       <ConclusionBox>
         <ul>
           <li>支線張力: <strong>T = F / sinθ</strong>（θ=支線と柱の角度）</li>
-          <li>必要引張強さ: <strong>T_必要 = T × 安全率（2.5 以上）</strong></li>
-          <li>素線条数: <strong>3条以上</strong>（解釈第62条）</li>
-          <li>素線径: 直径 <strong>2.6 mm 以上</strong>の金属線</li>
-          <li>例外: 木柱・A種コン柱で取付高さ4.5m未満等は安全率<strong>1.5</strong>でよい</li>
+          <li>必要引張強さ: <strong>T_必要 = T × 安全率（2.5 以上）</strong>。支線全体の最低引張強さ <strong>10.7 kN以上</strong>（解釈第61条第1項一号）</li>
+          <li>素線条数: <strong>3条以上</strong>（解釈第61条第1項三号イ）</li>
+          <li>素線径: 直径 <strong>2 mm 以上、引張強さ 0.69 kN/mm² 以上</strong>の金属線（解釈第61条第1項三号ロ）</li>
+          <li>例外: 第62条適用支線（高圧/特高架空電線路の木柱・A種鉄筋C柱・A種鉄柱）は安全率<strong>1.5以上</strong>、引張強さ<strong>6.46 kN以上</strong>でよい</li>
         </ul>
       </ConclusionBox>
 
@@ -5936,16 +6192,16 @@ function ShisenHikisamaPage({ onNav, data }) {
         note="頻出は『θ=30°→sin30°=0.5』『θ=45°→sin45°=√2/2』。3角関数の即答が鍵"
       />
 
-      <h2 id="anzenritsu-tables">安全率の例外規定（解釈第61条第3項）</h2>
+      <h2 id="anzenritsu-tables">安全率・引張強さの例外規定（解釈第61条第1項一号・二号）</h2>
       <MemTable
-        headers={["対象", "安全率", "条件"]}
+        headers={["対象", "安全率", "引張強さ最低", "条件"]}
         rows={[
-          ["原則",                       "2.5 以上", "鉄塔・鉄柱・コンクリート柱・特高用支線等"],
-          ["木柱・A種鉄筋コンクリート柱","1.5 以上", "取付高さ4.5m未満かつ風圧荷重等の小さい場合"],
-          ["特高架空電線路の支線",       "2.5 以上", "例外なし"],
+          ["原則（一般支線）",                   "2.5 以上", "10.7 kN以上", "鉄塔・B種鉄筋C柱・特高用支線等"],
+          ["第62条適用支線",                    "1.5 以上", "6.46 kN以上", "高圧/特高架空電線路の木柱・A種鉄筋C柱・A種鉄柱"],
+          ["第70条第3項適用支線",                "1.5 以上", "6.46 kN以上", "（道路横断等の特定箇所）"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第61条第3項／令和7年11月版"
-        note="原則 2.5 / 木柱の小規模なら 1.5 / 特高は必ず 2.5"
+        source="出典：電気設備の技術基準の解釈 第61条第1項一号・二号（令和7年11月版）"
+        note="原則は安全率2.5・引張強さ10.7kN以上。第62条/第70条第3項適用支線（高圧・特高の木柱等）は1.5・6.46kNでよい。元の『取付高さ4.5m未満』記述は法令根拠なしのため削除"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
@@ -5963,10 +6219,10 @@ function ShisenHikisamaPage({ onNav, data }) {
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
         { q: "支線張力 T の計算式は？",          a: "T = F / sinθ" },
-        { q: "支線の原則安全率は？",             a: "2.5 以上" },
-        { q: "支線の素線最低条数は？",           a: "3 条以上" },
-        { q: "素線径の最低値は？",               a: "直径 2.6 mm 以上" },
-        { q: "θ=30°のとき sinθ は？",           a: "0.5（→T = F/0.5 = 2F）" },
+        { q: "支線の原則安全率は？",             a: "2.5 以上（第62条適用は1.5以上）" },
+        { q: "支線の素線最低条数は？",           a: "3 条以上（解釈第61条第1項三号イ）" },
+        { q: "素線径の最低値は？",               a: "直径 2 mm 以上、引張強さ 0.69 kN/mm² 以上" },
+        { q: "支線全体の最低引張強さは？",       a: "10.7 kN（第62条適用は6.46 kN）" },
       ]} />
 
       <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
@@ -6368,11 +6624,11 @@ function BshuSetsuchiPage({ onNav, data }) {
   return (
     <div>
       <GoalQuestion
-        question="高圧電路の1線地絡電流が 5A、低圧側の保護装置が 1秒以内に自動遮断する場合、B種接地抵抗値の最大値は何 Ω 以下か"
-        choices={["30 Ω","60 Ω","100 Ω","150 Ω"]}
-        correctIndex={1}
+        question="高圧電路の1線地絡電流が 5A、低圧側の保護装置が 1秒以下に自動遮断する場合、B種接地抵抗値の最大値は何 Ω 以下か"
+        choices={["30 Ω","60 Ω","120 Ω","300 Ω"]}
+        correctIndex={2}
         year="頻出"
-        note="1秒以内→300/Ig が適用される（150/Ig ではない）"
+        note="1秒以下→K=600 が適用される（17-1表 令和7年11月版）"
       />
 
       <h2 id="overview">1. 全体像 — B種接地抵抗値の位置づけ</h2>
@@ -6380,8 +6636,8 @@ function BshuSetsuchiPage({ onNav, data }) {
         center={{ label: 'R_B = K / Ig', sub: 'B種接地抵抗値の式', theme: 'blue' }}
         top={{ label: '電技解釈第17条', sub: 'B種接地の規定', theme: 'red', arrowLabel: '由来' }}
         left={{ label: '原則', sub: 'K=150（混触時150V以下）', theme: 'orange', arrowLabel: '基本' }}
-        right={{ label: '1秒以内遮断', sub: 'K=300', theme: 'cyan', arrowLabel: '緩和1' }}
-        bottom={{ label: '0.5秒以内遮断', sub: 'K=600', theme: 'green', arrowLabel: '緩和2' }}
+        right={{ label: '1秒超2秒以下遮断', sub: 'K=300', theme: 'cyan', arrowLabel: '緩和1' }}
+        bottom={{ label: '1秒以下遮断', sub: 'K=600', theme: 'green', arrowLabel: '緩和2' }}
       />
       <MemTable
         headers={["条文/規定", "役割", "本計算との関係"]}
@@ -6397,9 +6653,9 @@ function BshuSetsuchiPage({ onNav, data }) {
       <ConclusionBox>
         <ul>
           <li>基本式: <strong>R_B = K / Ig</strong> [Ω]（Ig = 1線地絡電流 [A]）</li>
-          <li>K=<strong>150</strong>: 原則（混触時の対地電圧を150V以下に制限）</li>
-          <li>K=<strong>300</strong>: 1秒以内に高圧電路を自動遮断する場合</li>
-          <li>K=<strong>600</strong>: 0.5秒以内に高圧電路を自動遮断する場合</li>
+          <li>K=<strong>150</strong>: 原則（混触時の対地電圧を150V以下に制限・遮断装置なしor2秒超）</li>
+          <li>K=<strong>300</strong>: 1秒を超え2秒以下に高圧電路を自動遮断する場合</li>
+          <li>K=<strong>600</strong>: 1秒以下に高圧電路を自動遮断する場合</li>
           <li>遮断時間が短いほど許容抵抗値が大きい（合理的・コスト減）</li>
         </ul>
       </ConclusionBox>
@@ -6421,22 +6677,22 @@ function BshuSetsuchiPage({ onNav, data }) {
         rows={[
           ["地面に流れる電流",     "1線地絡電流 Ig",             "B種抵抗値の分母 [A]"],
           ["B種の式",              "R_B = K / Ig",               "K=150/300/600"],
-          ["素早く切れる",          "1秒以内の自動遮断",          "K=300 緩和の条件"],
-          ["もっと素早く切れる",    "0.5秒以内の自動遮断",        "K=600 緩和の条件"],
+          ["素早く切れる",          "1秒以下の自動遮断",          "K=600 緩和の条件"],
+          ["少し遅く切れる",        "1秒を超え2秒以下の自動遮断", "K=300 緩和の条件"],
           ["高圧と低圧が触れる事故","混触事故",                   "B種接地の防護対象"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第17条 17-1表（令和7年11月版）"
       />
 
       <h2 id="tables">B種接地抵抗値の早見表（K の選択）</h2>
       <MemTable
         headers={["遮断条件", "K", "R_B 式", "Ig=5A 例"]}
         rows={[
-          ["原則（遮断装置なし or 遅い）",  "150", "R_B = 150 / Ig", "30 Ω 以下"],
-          ["1秒以内に自動遮断",             "300", "R_B = 300 / Ig", "60 Ω 以下"],
-          ["0.5秒以内に自動遮断",           "600", "R_B = 600 / Ig", "120 Ω 以下"],
+          ["原則（遮断装置なし or 2秒超）",  "150", "R_B = 150 / Ig", "30 Ω 以下"],
+          ["1秒を超え2秒以下に自動遮断",     "300", "R_B = 300 / Ig", "60 Ω 以下"],
+          ["1秒以下に自動遮断",              "600", "R_B = 600 / Ig", "120 Ω 以下"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第17条第2項／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第17条第2項 17-1表（令和7年11月版）"
         note="同じ Ig でも遮断時間で許容抵抗が4倍違う（150→600）。遮断装置の重要性"
       />
 
@@ -6444,20 +6700,20 @@ function BshuSetsuchiPage({ onNav, data }) {
       <MemTable
         headers={["ステップ", "計算内容", "備考"]}
         rows={[
-          ["1. 1線地絡電流 Ig",  "電路条件から Ig を算出",       "問題で与えられる場合多い"],
-          ["2. 遮断時間判定",    "1秒以内 / 0.5秒以内 / 該当なし","K=300/600/150 を選択"],
-          ["3. R_B 計算",        "K / Ig",                       "Ω 単位で算出"],
-          ["4. 安全確認",        "実際の接地抵抗 ≤ R_B",        "計算値以下であること"],
+          ["1. 1線地絡電流 Ig",  "電路条件から Ig を算出",            "問題で与えられる場合多い"],
+          ["2. 遮断時間判定",    "1秒以下 / 1秒超2秒以下 / 該当なし", "K=600/300/150 を選択"],
+          ["3. R_B 計算",        "K / Ig",                            "Ω 単位で算出"],
+          ["4. 安全確認",        "実際の接地抵抗 ≤ R_B",             "計算値以下であること"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第17条 17-1表（令和7年11月版）"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "B種接地抵抗値は一律 150 / Ig",
           correct: "遮断時間によって K=150/300/600 の3パターン" },
-        { wrong: "1秒以内遮断なら K=600",
-          correct: "1秒以内は K=300。0.5秒以内が K=600" },
+        { wrong: "1秒以下遮断なら K=300",
+          correct: "1秒以下は K=600。1秒を超え2秒以下が K=300（17-1表 令和7年11月版）" },
         { wrong: "B種接地は感電防止が目的",
           correct: "B種は『混触時の対地電圧150V以下制限』が目的（感電防止はA・C・D種）" },
         { wrong: "R_B = Ig / K で計算",
@@ -6467,9 +6723,9 @@ function BshuSetsuchiPage({ onNav, data }) {
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
         { q: "B種接地抵抗値の基本式は？",          a: "R_B = K / Ig（K=150/300/600）" },
-        { q: "K=150 が適用される条件は？",          a: "原則（遮断装置なし or 1秒超）" },
-        { q: "K=300 が適用される条件は？",          a: "1秒以内に高圧電路を自動遮断" },
-        { q: "K=600 が適用される条件は？",          a: "0.5秒以内に高圧電路を自動遮断" },
+        { q: "K=150 が適用される条件は？",          a: "原則（遮断装置なし or 2秒超）" },
+        { q: "K=300 が適用される条件は？",          a: "1秒を超え2秒以下に高圧電路を自動遮断" },
+        { q: "K=600 が適用される条件は？",          a: "1秒以下に高圧電路を自動遮断" },
         { q: "B種接地の目的は？",                   a: "高低圧混触時の対地電圧150V以下制限" },
       ]} />
 

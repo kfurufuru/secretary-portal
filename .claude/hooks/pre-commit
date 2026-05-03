@@ -40,6 +40,27 @@ if echo "$staged" | grep -q "^denken-hoki-wiki\.html$"; then
     echo "[pre-commit] ✓ audit PASS"
 fi
 
+# ============================================================
+# (3) アクティブ編集ロックチェック（並列セッション衝突防止）
+# ============================================================
+if [ -f inbox/active-edits.md ] && [ -f claim_edit.py ]; then
+    blocked=0
+    for f in $staged; do
+        if python claim_edit.py check --target "$f" --not-mine 2>/dev/null; then
+            blocked=1
+            echo "[pre-commit] ⚠ '$f' は別セッションが claim 中（上記参照）"
+        fi
+    done
+    if [ "$blocked" = "1" ]; then
+        echo ""
+        echo "[pre-commit] ✗ FAIL: 別セッションの編集中ファイルを commit しようとしています"
+        echo "  対処1: 別セッション完了を待つ（python claim_edit.py list で確認）"
+        echo "  対処2: 自分が claim している場合は --session で同じIDを指定"
+        echo "  対処3: 緊急回避（非推奨）: git commit --no-verify"
+        exit 1
+    fi
+fi
+
 # Babel構文チェック（読み込み停止事故の再発防止：2026-05-03 L4567 a:キー欠落事案）
 if echo "$staged" | grep -qE "^denken-(hoki|3-riron)-wiki\.html$"; then
     if curl -sf -o /dev/null -m 2 "http://localhost:8092/"; then
