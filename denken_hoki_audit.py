@@ -34,6 +34,9 @@ TARGET_PAGES = [
     "SetsuchiKojiPage",
     "DensenroPage",
     "OkunaiHaisenPage",
+    "KakoDenryuPage",
+    "ChichuuDensenroPage",
+    "BunsangataDengenPage",
     "KosakubutsuBunruiPage",
     "ShuninGijutsusyaPage",
     "HoanKiteiPage",
@@ -46,6 +49,8 @@ TARGET_PAGES = [
     "ZetsuenIchiranPage",
     "RikkakuIchiranPage",
     "DenAtsuKubunPage",
+    "DensenSizePage",
+    "HokokuTodokeKigenPage",
 ]
 
 # ページ固有の特殊チェック

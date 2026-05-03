@@ -1168,24 +1168,24 @@ window.WIKI_DATA = { chapters: [
     { id:"hokoku-todoke-kigen", num:"2.6", title:"報告・届出期限一覧表", freq:"high", ch:"CH01", ext:"themes/jigyoho-taikei/" }
   ]},
   { id:"sec03", num:"03", title:"電気設備技術基準・解釈", ch:"CH03", pages:[
-    { id:"denro-zetsuen",        num:"3.1", title:"電路の絶縁",           freq:"max",  ch:"CH03", priority:"required", ext:"articles/kijun/5/" },
-    { id:"setsuchi-koji",        num:"3.2", title:"接地工事",             freq:"max",  ch:"CH03", priority:"required", ext:"themes/setsuchi/" },
-    { id:"densenro",             num:"3.3", title:"電線路",               freq:"high", ch:"CH03", priority:"required", ext:"themes/kachiku-densen/" },
-    { id:"okunai-haisen",        num:"3.4", title:"屋内配線",             freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/haisen-koji/" },
+    { id:"denro-zetsuen",        num:"3.1", title:"電路の絶縁",           freq:"max",  ch:"CH03", priority:"required", ready:true, ext:"articles/kijun/5/" },
+    { id:"setsuchi-koji",        num:"3.2", title:"接地工事",             freq:"max",  ch:"CH03", priority:"required", ready:true, ext:"themes/setsuchi/" },
+    { id:"densenro",             num:"3.3", title:"電線路",               freq:"high", ch:"CH03", priority:"required", ready:true, ext:"themes/kachiku-densen/" },
+    { id:"okunai-haisen",        num:"3.4", title:"屋内配線",             freq:"mid",  ch:"CH03", priority:"optional", ready:true, ext:"themes/haisen-koji/" },
     { id:"kako-denryu",          num:"3.5", title:"過電流保護",           freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/hogo-sochi/" },
     { id:"chichuu-densenro",     num:"3.6", title:"地中電線路",           freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/chichuu-densen/" },
     { id:"bunsangata-dengen",    num:"3.7", title:"分散型電源連系",       freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/bunsan-dengen/" },
-    { id:"gijutsu-kijun-gaiyou", num:"3.0", title:"電気設備技術基準の概要", freq:"mid", ch:"CH03", priority:"optional", ext:"articles/kijun/" }
+    { id:"gijutsu-kijun-gaiyou", num:"3.0", title:"電気設備技術基準の概要", freq:"mid", ch:"CH03", priority:"optional", ready:true, ext:"articles/kijun/" }
   ]},
   { id:"sec04", num:"04", title:"法令・制度", ch:"CH01+CH02", pages:[
-    { id:"kosakubutsu-bunrui", num:"4.1", title:"電気工作物の区分", freq:"max",  ch:"CH01", priority:"required", ext:"themes/kosakubutsu-bunrui/" },
-    { id:"shunin-gijutsusya",  num:"4.2", title:"主任技術者",       freq:"max",  ch:"CH01", priority:"required", ext:"themes/shunin-gijutsusha/" },
-    { id:"hoan-kitei",         num:"4.3", title:"保安規程",         freq:"max",  ch:"CH01", priority:"required", ext:"themes/hoan-gensoku/" },
-    { id:"shiyo-jishu-kensa",  num:"4.4", title:"使用前自主検査",   freq:"high", ch:"CH01", priority:"optional", ext:"themes/jigyoho-taikei/" },
-    { id:"jiko-hokoku",        num:"4.5", title:"事故報告",         freq:"high", ch:"CH01", priority:"optional", ext:"themes/jigyoho-taikei/" },
-    { id:"denki-yohin-anzen",  num:"4.6", title:"電気用品安全法",   freq:"mid",  ch:"CH02", priority:"optional", ext:"themes/pse-anzen-ho/" },
+    { id:"kosakubutsu-bunrui", num:"4.1", title:"電気工作物の区分", freq:"max",  ch:"CH01", priority:"required", ready:true, ext:"themes/kosakubutsu-bunrui/" },
+    { id:"shunin-gijutsusya",  num:"4.2", title:"主任技術者",       freq:"max",  ch:"CH01", priority:"required", ready:true, ext:"themes/shunin-gijutsusha/" },
+    { id:"hoan-kitei",         num:"4.3", title:"保安規程",         freq:"max",  ch:"CH01", priority:"required", ready:true, ext:"themes/hoan-gensoku/" },
+    { id:"shiyo-jishu-kensa",  num:"4.4", title:"使用前自主検査",   freq:"high", ch:"CH01", priority:"optional", ready:true, ext:"themes/jigyoho-taikei/" },
+    { id:"jiko-hokoku",        num:"4.5", title:"事故報告",         freq:"high", ch:"CH01", priority:"optional", ready:true, ext:"themes/jigyoho-taikei/" },
+    { id:"denki-yohin-anzen",  num:"4.6", title:"電気用品安全法",   freq:"mid",  ch:"CH02", priority:"optional", ready:true, ext:"themes/pse-anzen-ho/" },
     { id:"koji-shi-ho",        num:"4.7", title:"電気工事士法",     freq:"mid",  ch:"CH02", priority:"optional", ready:true, ext:"themes/denki-koji-shi/" },
-    { id:"koji-gyoho",         num:"4.8", title:"電気工事業法",     freq:"mid",  ch:"CH02", priority:"optional", ext:"themes/denki-koji-gyo/" }
+    { id:"koji-gyoho",         num:"4.8", title:"電気工事業法",     freq:"mid",  ch:"CH02", priority:"optional", ready:true, ext:"themes/denki-koji-gyo/" }
   ]},
   { id:"sec05", num:"05", title:"再エネ技術基準", ch:"CH05", pages:[
     { id:"furyoku-gijutsukijun",   num:"5.1", title:"風力発電の技術基準",    freq:"mid", ch:"CH05", ext:"themes/bunsan-dengen/" },
@@ -2689,15 +2689,15 @@ window.renderPage = function(page, navigate) {
     case 'zetsuen-ichiran':        return React.createElement(ZetsuenIchiranPage, props);
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
     case 'den-atsu-kubun':         return React.createElement(DenAtsuKubunPage, props);
-    case 'densen-size':            return React.createElement(StubPage, { ...props, pageId: 'densen-size' });
-    case 'hokoku-todoke-kigen':    return React.createElement(StubPage, { ...props, pageId: 'hokoku-todoke-kigen' });
+    case 'densen-size':            return React.createElement(DensenSizePage, props);
+    case 'hokoku-todoke-kigen':    return React.createElement(HokokuTodokeKigenPage, props);
     case 'denro-zetsuen':          return React.createElement(DenroZetsuenPage, props);
     case 'setsuchi-koji':          return React.createElement(SetsuchiKojiPage, props);
     case 'densenro':               return React.createElement(DensenroPage, props);
     case 'okunai-haisen':          return React.createElement(OkunaiHaisenPage, props);
-    case 'kako-denryu':            return React.createElement(StubPage, { ...props, pageId: 'kako-denryu' });
-    case 'chichuu-densenro':       return React.createElement(StubPage, { ...props, pageId: 'chichuu-densenro' });
-    case 'bunsangata-dengen':      return React.createElement(StubPage, { ...props, pageId: 'bunsangata-dengen' });
+    case 'kako-denryu':            return React.createElement(KakoDenryuPage, props);
+    case 'chichuu-densenro':       return React.createElement(ChichuuDensenroPage, props);
+    case 'bunsangata-dengen':      return React.createElement(BunsangataDengenPage, props);
     case 'gijutsu-kijun-gaiyou':   return React.createElement(GijutsuKijunGaiyouPage, props);
     case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
     case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
@@ -2976,20 +2976,43 @@ function HomePage({ onNav, data }) {
     // A ランク（4枚）
     { name: '電気工事士法',     pageId: 'koji-shi-ho',        rank: 'A', count:  8, tags: ['#頻出A', '#法令'],                     ready: true },
     { name: 'ランダム10問演習', pageId: 'kakomon-random',     rank: 'A', count: 10, tags: ['#過去問', '#65分タイマー'],            ready: true },
-    { name: '主任技術者',       pageId: 'shunin-gijutsusya',  rank: 'A', count: 12, tags: ['#頻出A', '#ひっかけ注意', '#本サイト'], ready: false, ext: 'themes/shunin-gijutsusha/' },
-    { name: '保安規程',         pageId: 'hoan-kitei',         rank: 'A', count: 11, tags: ['#頻出A', '#直前確認', '#本サイト'],     ready: false, ext: 'themes/hoan-gensoku/' },
+    { name: '主任技術者',       pageId: 'shunin-gijutsusya',  rank: 'A', count: 12, tags: ['#頻出A', '#ひっかけ注意'], ready: true,  ext: 'themes/shunin-gijutsusha/' },
+    { name: '保安規程',         pageId: 'hoan-kitei',         rank: 'A', count: 11, tags: ['#頻出A', '#直前確認'],     ready: true,  ext: 'themes/hoan-gensoku/' },
   ];
 
-  // TODO: portal-summary.json から取得（denken3-study-dashboard/data/portal-summary.json）
-  // 現状はWIKI_DATA から ready:true の集計をベタ書き（実態反映、嘘数字撤去 2026-05-02）
-  // 集計方法: data.chapters[N].pages.filter(p => p.ready).length / data.chapters[N].pages.length
-  const ROADMAP = [
-    { step: '01', status: 'next',    label: '未着手', title: 'B問題・計算問題',                  desc: '配点が大きく、パターンも限られている。最優先で固める。', prog:  0,  cur: 0,  total: 7,  unit: 'ページ' },
-    { step: '02', status: 'current', label: '学習中', title: '接地・絶縁・離隔距離・電圧区分',    desc: '表で横断的に覚える。ここで得点源が増える。',           prog: 67, cur: 4,  total: 6,  unit: 'ページ' },
-    { step: '03', status: 'next',    label: '次へ',   title: '電気工作物・主任技術者・保安規程',  desc: 'A問題で必ず出る、施設管理の定番論点。',                prog:  7,  cur: 1,  total: 15, unit: 'ページ' },
-    { step: '04', status: 'next',    label: '次へ',   title: '過去問テーマ別演習',                desc: 'ランダム10問モードのみ稼働。テーマ別演習は未実装。',   prog: 11, cur: 1,  total: 9,  unit: 'モード' },
-    { step: '05', status: 'next',    label: '直前期', title: '直前チェック・間違いノート',        desc: '試験前日は、自分の弱点だけを見る。',                   prog:  0,  cur: 0,  total: 4,  unit: 'ページ' },
-  ];
+  // ROADMAP: WIKI_DATA から ready:true 件数を動的集計（並列セッションの実装追加に追従）
+  // TODO(Phase3): portal-summary.json と統合して学習進捗（閲覧済み）も反映
+  const ROADMAP = React.useMemo(() => {
+    const wd = window.WIKI_DATA;
+    const sumCh = (chId) => {
+      const ch = wd?.chapters?.find(c => c.id === chId);
+      const pages = ch?.pages || [];
+      const cur = pages.filter(p => p.ready).length;
+      const total = pages.length;
+      return { cur, total, prog: total > 0 ? Math.round(cur / total * 100) : 0 };
+    };
+    const sumMulti = (chIds) => {
+      const ts = chIds.map(sumCh);
+      const cur = ts.reduce((a, t) => a + t.cur, 0);
+      const total = ts.reduce((a, t) => a + t.total, 0);
+      return { cur, total, prog: total > 0 ? Math.round(cur / total * 100) : 0 };
+    };
+    const statusOf = (prog) => prog >= 100 ? 'done' : prog > 0 ? 'current' : 'next';
+    const labelOf = (prog) => prog >= 100 ? '完了' : prog > 0 ? '学習中' : '未着手';
+
+    const s1 = sumCh('sec01');
+    const s2 = sumCh('sec02');
+    const s34 = sumMulti(['sec03', 'sec04']);
+    const s7 = sumCh('sec07');
+    const s8 = sumCh('sec08');
+    return [
+      { step: '01', status: statusOf(s1.prog),  label: labelOf(s1.prog),  title: 'B問題・計算問題',          desc: '配点が大きく、パターンも限られている。最優先で固める。', ...s1,  unit: 'ページ' },
+      { step: '02', status: statusOf(s2.prog),  label: labelOf(s2.prog),  title: '頻出数値・表暗記',         desc: '表で横断的に覚える。ここで得点源が増える。',           ...s2,  unit: 'ページ' },
+      { step: '03', status: statusOf(s34.prog), label: labelOf(s34.prog), title: '電気設備技術基準・法令制度', desc: 'A問題で必ず出る、技術基準と施設管理の定番論点。',      ...s34, unit: 'ページ' },
+      { step: '04', status: statusOf(s7.prog),  label: labelOf(s7.prog),  title: '過去問テーマ別演習',       desc: 'ランダム10問モードを軸に、テーマ別へ拡張中。',         ...s7,  unit: 'モード' },
+      { step: '05', status: statusOf(s8.prog),  label: '直前期',          title: '直前チェック・間違いノート', desc: '試験前日は、自分の弱点だけを見る。',                   ...s8,  unit: 'ページ' },
+    ];
+  }, []);
 
   const PAST_CHIPS = ['#B問題対策','#高圧','#低圧','#特別高圧','#頻出S','#頻出A','#頻出B','#表暗記','#ひっかけ注意','#直前確認','#法改正注意'];
 
@@ -3489,6 +3512,628 @@ function HomePage({ onNav, data }) {
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 2-E. DensenSizePage（電線サイズ一覧表・freq:mid）
+// ─────────────────────────────────────────────
+function DensenSizePage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="600V ビニル絶縁電線（IV）の 5.5 mm² の許容電流（周囲温度30℃・がいし引き工事）は概ね何 A か"
+        choices={["27 A","34 A","49 A","61 A"]}
+        correctIndex={2}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 電線サイズの位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技解釈第146条 別表第1', sub: '電線の許容電流', theme: 'blue' }}
+        top={{ label: '電技省令第57条', sub: '配線の使用電線', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: 'IV線・HIV線', sub: 'ビニル絶縁・600V', theme: 'orange', arrowLabel: '種類1' }}
+        right={{ label: 'CV線・CVT線', sub: '架橋PE絶縁・高圧用', theme: 'cyan', arrowLabel: '種類2' }}
+        bottom={{ label: '電流減少係数', sub: '本数・周囲温度補正', theme: 'green', arrowLabel: '補正' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第57条",          "配線の使用電線の保安原則", "上位（電線選定の根拠）"],
+          ["電技解釈 第146条 別表第1", "絶縁電線の許容電流",       "本条（IV/HIV線の許容電流）"],
+          ["電技解釈 第146条 別表第3", "電流減少係数",             "補正（複数本数の場合）"],
+          ["電技解釈 第148条 別表",    "ケーブルの許容電流",       "並立（CV/CVT線の許容電流）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>絶縁電線の代表: <strong>IV線（600V）・HIV線（600V耐熱）</strong></li>
+          <li>ケーブルの代表: <strong>CV線（架橋PE・高圧）・CVT線（CV3線をより合わせ）</strong></li>
+          <li>許容電流: 単線太さ・絶縁種別・周囲温度・本数で決まる</li>
+          <li>サイズ呼称: 単線=<strong>mm（直径）</strong>、より線=<strong>mm²（公称断面積）</strong></li>
+          <li>主な代表値（IV・がいし引き・周温30℃）: 1.6mm=<strong>27A</strong>、5.5mm²=<strong>49A</strong>、14mm²=<strong>88A</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="02 電線サイズ"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題・B問題"
+        targets="R05・R03・H30"
+        tags={["電線サイズ","許容電流","数値暗記","表暗記"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["ビニルに包まれた電線",     "600V ビニル絶縁電線（IV）",  "屋内配線の標準（耐熱60℃まで）"],
+          ["熱に強いビニル電線",       "600V 二種ビニル絶縁電線（HIV）","耐熱75℃・高温場所用"],
+          ["架橋ポリエチレンケーブル","CV ケーブル",                 "高圧用・架橋PE絶縁"],
+          ["3本まとめた高圧ケーブル",  "CVT ケーブル",                 "CV3線をより合わせ・高圧配電"],
+          ["電線が流せる電流の上限",   "許容電流",                     "電線太さ・絶縁種・温度・本数で決まる"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第146・148条／令和7年11月版"
+      />
+
+      <h2 id="tables">代表的な絶縁電線の許容電流（IV・がいし引き・周温30℃）</h2>
+      <MemTable
+        headers={["呼称", "断面積（mm²）", "許容電流（A）"]}
+        rows={[
+          ["1.6 mm",  "（単線）2.0", "27 A"],
+          ["2.0 mm",  "（単線）3.1", "35 A"],
+          ["2.6 mm",  "（単線）5.3", "48 A"],
+          ["5.5 mm²", "5.5",         "49 A"],
+          ["8 mm²",   "8.0",         "61 A"],
+          ["14 mm²",  "14",          "88 A"],
+          ["22 mm²",  "22",          "115 A"],
+          ["38 mm²",  "38",          "162 A"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第146条 別表第1／令和7年11月版"
+        note="IV線・がいし引き工事・周囲温度30℃の値。電線管内・複数本では電流減少係数で補正"
+      />
+
+      <h2 id="hosei-tables">電流減少係数（同一電線管内の複数本数）</h2>
+      <MemTable
+        headers={["同一管内本数", "電流減少係数"]}
+        rows={[
+          ["3本以下",  "0.70"],
+          ["4本",      "0.63"],
+          ["5〜6本",   "0.56"],
+          ["7〜15本",  "0.49"],
+          ["16〜40本", "0.43"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第146条 別表第3／令和7年11月版"
+        note="管内本数が増えると放熱が悪くなり許容電流が減る。3本以下=0.70が頻出"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "電線の許容電流は太さだけで決まる",
+          correct: "太さ + 絶縁種 + 周囲温度 + 本数 で決まる" },
+        { wrong: "電流減少係数は周囲温度の補正",
+          correct: "電流減少係数は『同一電線管内の本数』補正。温度補正は別の係数" },
+        { wrong: "1.6mm の単線と 5.5mm² より線は同じ許容電流",
+          correct: "断面積が大きく異なるため別物（1.6mm=27A、5.5mm²=49A）" },
+        { wrong: "CV線は屋内配線の標準",
+          correct: "CV線は『高圧用ケーブル』。屋内配線の標準は『IV線』" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "IV 1.6mm の許容電流（がいし引き・周温30℃）は？",  a: "27 A" },
+        { q: "IV 2.0mm の許容電流は？",                          a: "35 A" },
+        { q: "IV 5.5mm² の許容電流は？",                         a: "49 A" },
+        { q: "電流減少係数（同一管内3本以下）は？",              a: "0.70" },
+        { q: "電線サイズ規定の根拠条文は？",                     a: "電技解釈第146条 別表第1" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第5弾" }]} />
+      <PageNav
+        prevId="den-atsu-kubun"     prevTitle="電圧区分一覧"
+        nextId="hokoku-todoke-kigen" nextTitle="報告・届出期限一覧"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 2-F. HokokuTodokeKigenPage（報告・届出期限一覧表・freq:high）
+// ─────────────────────────────────────────────
+function HokokuTodokeKigenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="主任技術者を選任した場合の届出期限として正しいものはどれか"
+        choices={["事前に届出","遅滞なく","30日以内","60日以内"]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 報告・届出期限の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気事業法/関係報告規則', sub: '届出・報告制度', theme: 'blue' }}
+        top={{ label: '電気事業法 第39条等', sub: '保安体制の構築義務', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '事前届出', sub: '保安規程・工事計画', theme: 'orange', arrowLabel: '区分1' }}
+        right={{ label: '事後届出', sub: '主任技術者・事故', theme: 'cyan', arrowLabel: '区分2' }}
+        bottom={{ label: '産業保安監督部長', sub: '実務上の窓口', theme: 'green', arrowLabel: '宛先' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電気事業法 第42条",     "保安規程の届出（使用前）",       "事前届出（典型例）"],
+          ["電気事業法 第43条",     "主任技術者の選任届出（遅滞なく）","事後届出（典型例）"],
+          ["電気事業法 第48条",     "工事計画の届出（30日前）",       "事前届出（工事系）"],
+          ["電気関係報告規則 第3条","事故報告（速報24h・詳報30日）",  "事故対応"],
+        ]}
+        source="出典：電気事業法／電気関係報告規則／施行規則（e-Gov 令和6年現行版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>事前届出: <strong>保安規程</strong>（使用開始前）・<strong>工事計画</strong>（30日前）</li>
+          <li>事後届出: <strong>主任技術者選任</strong>（遅滞なく）・<strong>事故報告</strong>（24h/30日）</li>
+          <li>窓口: 形式上は<strong>経済産業大臣</strong>、実務上は<strong>産業保安監督部長</strong></li>
+          <li>主任技術者の届出は『選任した日から遅滞なく』（事前ではない）</li>
+          <li>事故報告は2段階: <strong>速報（24h以内）→ 詳報（30日以内）</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="01 法令・制度"
+        importance="A"
+        freq="毎年"
+        examType="A問題"
+        targets="R06上・R05・R03・H30"
+        tags={["届出期限","頻出A","期限暗記","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["事前に届出",       "使用の開始前に届け出る",     "保安規程（事前型）"],
+          ["事後に届出",       "選任後遅滞なく届け出る",     "主任技術者選任（事後型）"],
+          ["工事の前に届出",   "工事の開始の30日前までに",   "工事計画届出（電気事業法第48条）"],
+          ["とりあえず一報",   "速報する",                   "事故発生を知った日から24時間以内"],
+          ["詳しい報告書",     "詳報する",                   "事故発生を知った日から30日以内"],
+        ]}
+        source="出典：電気事業法 第42・43・48条／電気関係報告規則 第3条（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="tables">主要な届出・報告期限一覧</h2>
+      <MemTable
+        headers={["項目", "期限", "宛先", "根拠"]}
+        rows={[
+          ["保安規程の届出",       "使用の開始前",           "経済産業大臣", "電気事業法 第42条"],
+          ["保安規程の変更届出",   "遅滞なく",               "経済産業大臣", "電気事業法 第42条第2項"],
+          ["主任技術者の選任届出", "遅滞なく",               "経済産業大臣", "電気事業法 第43条第3項"],
+          ["主任技術者の解任届出", "遅滞なく",               "経済産業大臣", "電気事業法 第43条第3項"],
+          ["工事計画の届出",       "工事開始の30日前",       "経済産業大臣", "電気事業法 第48条"],
+          ["事故報告（速報）",     "24時間以内",             "産業保安監督部長","電気関係報告規則 第3条"],
+          ["事故報告（詳報）",     "30日以内",               "産業保安監督部長","電気関係報告規則 第3条"],
+          ["使用前自主検査記録",   "5年間保存",              "—（保存義務）","電気事業法 第51条"],
+        ]}
+        source="出典：電気事業法／電気関係報告規則／施行規則（令和6年現行版）"
+        note="事前型（保安規程・工事計画）と事後型（主任技術者・事故）を対比して覚える"
+      />
+
+      <h2 id="taibi-tables">事前届出 vs 事後届出</h2>
+      <MemTable
+        headers={["分類", "代表例", "ポイント"]}
+        rows={[
+          ["事前届出（使用前）",   "保安規程",               "使用『開始前』に届け出てから運用開始"],
+          ["事前届出（工事前）",   "工事計画（30日前）",     "工事『開始前30日』に届け出てから工事"],
+          ["事後届出（即時）",     "主任技術者選任・解任",   "選任『後』に遅滞なく届出"],
+          ["事後届出（速報・詳報）","事故報告（24h/30日）",   "事故『発生後』に2段階で報告"],
+        ]}
+        source="出典：電気事業法／電気関係報告規則（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "主任技術者の選任は事前に届け出る",
+          correct: "主任技術者は選任『後』に遅滞なく届出（事後型）" },
+        { wrong: "保安規程は使用開始後に届け出る",
+          correct: "保安規程は『使用の開始前』に届出（事前型）" },
+        { wrong: "工事計画の届出期限は工事開始の60日前",
+          correct: "『30日前』が正解（電気事業法第48条）" },
+        { wrong: "事故報告の速報期限は48時間",
+          correct: "速報は『24時間以内』。詳報が30日以内（2段階）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "保安規程の届出期限は？",        a: "使用の開始前" },
+        { q: "主任技術者選任の届出期限は？",  a: "遅滞なく（事後）" },
+        { q: "工事計画の届出期限は？",        a: "工事開始の30日前" },
+        { q: "事故報告の速報期限は？",        a: "事故の発生を知った日から24時間以内" },
+        { q: "事故報告の詳報期限は？",        a: "事故の発生を知った日から30日以内" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第5弾" }]} />
+      <PageNav
+        prevId="densen-size"   prevTitle="電線サイズ"
+        nextId="kosakubutsu-bunrui" nextTitle="電気工作物の区分"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-F. KakoDenryuPage（過電流保護・freq:mid）
+// ─────────────────────────────────────────────
+function KakoDenryuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="低圧電路の過電流遮断器として配線用遮断器（MCCB）を施設する場合、定格電流の何倍の電流に対し何分以内に動作する性能が必要か（定格電流30A以下）"
+        choices={["1.25倍で60分以内","1.6倍で60分以内","2.0倍で2分以内","定格の100%で瞬時"]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 過電流保護の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技省令第14条', sub: '過電流からの保護', theme: 'blue' }}
+        top={{ label: '電気事業法 第39条', sub: '保安義務', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '低圧用', sub: 'MCCB/ヒューズ', theme: 'orange', arrowLabel: '区分1' }}
+        right={{ label: '高圧用', sub: 'PF/CB組合せ', theme: 'cyan', arrowLabel: '区分2' }}
+        bottom={{ label: '解釈第33〜37条', sub: '具体性能規定', theme: 'green', arrowLabel: '具体化' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第14条",  "過電流からの電線・機器保護",       "本条（過電流遮断義務）"],
+          ["電技省令 第63条",  "低圧電路の保護",                   "上位（低圧過電流保護）"],
+          ["電技解釈 第33条",  "低圧電路の過電流遮断器の性能",     "具体化（MCCB/ヒューズ性能）"],
+          ["電技解釈 第34〜37条","高圧電路の過電流遮断器",         "具体化（PF・CB組合せ等）"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令／同解釈（令和5年版／令和7年11月版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>目的: 過電流による<strong>電線焼損・火災防止 + 機器保護</strong></li>
+          <li>低圧: <strong>配線用遮断器（MCCB）</strong> または <strong>ヒューズ</strong></li>
+          <li>高圧: <strong>過電流遮断器（CB）</strong> または <strong>高圧限流ヒューズ（PF）+ 高圧交流負荷開閉器（LBS）</strong></li>
+          <li>低圧MCCB（30A以下）: 定格の<strong>1.25倍で60分以内</strong> + <strong>2.0倍で2分以内</strong></li>
+          <li>低圧ヒューズ（30A以下）: 定格の<strong>1.6倍で60分以内</strong> + <strong>2.0倍で2分以内</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 過電流保護"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R03・H30"
+        tags={["過電流","遮断器","頻出A","数値暗記"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電気を流しすぎ",     "過電流",                     "定格を超えた電流（過負荷+短絡）"],
+          ["電気を切る装置",     "過電流遮断器",               "MCCB/ヒューズ/CB等の総称"],
+          ["ブレーカー",         "配線用遮断器（MCCB）",       "低圧用の代表（住宅・ビル）"],
+          ["瞬時に切る",         "瞬時動作",                   "短絡電流で即遮断（保護協調の最初）"],
+          ["時間をかけて切る",   "限時動作",                   "過負荷で時間遅れ動作（焼損前に切る）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第33〜37条／令和7年11月版"
+      />
+
+      <h2 id="tables">低圧過電流遮断器の動作性能（解釈第33条・30A以下）</h2>
+      <MemTable
+        headers={["遮断器の種類", "1.0倍（定格）", "1.25倍", "1.6倍", "2.0倍"]}
+        rows={[
+          ["配線用遮断器（MCCB）", "動作しない",   "60分以内", "—",        "2分以内"],
+          ["ヒューズ",             "動作しない",   "—",        "60分以内", "2分以内"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第33条／令和7年11月版"
+        note="MCCBは1.25倍/2.0倍、ヒューズは1.6倍/2.0倍。30A超はそれぞれ別表で時間規定あり"
+      />
+
+      <h2 id="koatsu-tables">高圧過電流遮断器の組合せ</h2>
+      <MemTable
+        headers={["組合せ", "代表例", "用途"]}
+        rows={[
+          ["CB（過電流継電器付き遮断器）","真空遮断器VCB + OCR",   "受電設備の主遮断装置"],
+          ["PF + LBS",                    "高圧限流ヒューズ + 負荷開閉器","変圧器一次側等の小容量"],
+          ["PF + CB",                     "限流ヒューズ + 遮断器", "短絡電流の限流効果"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第34〜37条／令和7年11月版"
+        note="高圧は単独遮断器（CB）または『限流装置（PF）+ 開閉装置（LBS/CB）』の組合せ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "MCCBもヒューズも1.25倍で60分以内が動作基準",
+          correct: "MCCBは1.25倍、ヒューズは1.6倍が60分以内（基準が違う）" },
+        { wrong: "高圧電路はCB（遮断器）でしか保護できない",
+          correct: "PF（高圧限流ヒューズ）+ LBS（負荷開閉器）の組合せも可" },
+        { wrong: "過電流遮断器は定格電流で必ず動作する",
+          correct: "定格電流（1.0倍）では動作しない。1.25倍/1.6倍以上で動作" },
+        { wrong: "過電流遮断器の主目的は感電防止",
+          correct: "目的は『電線焼損・火災防止 + 機器保護』。感電防止は地絡遮断器の役割" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "過電流保護の根拠条文は？",                  a: "電技省令第14条" },
+        { q: "MCCBの動作性能（30A以下・1.25倍）は？",     a: "60分以内" },
+        { q: "MCCBの動作性能（30A以下・2.0倍）は？",      a: "2分以内" },
+        { q: "ヒューズの動作性能（30A以下・1.6倍）は？",  a: "60分以内" },
+        { q: "高圧の代表的な遮断装置の組合せは？",         a: "CB単独 または PF+LBS の組合せ" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第5弾" }]} />
+      <PageNav
+        prevId="okunai-haisen"     prevTitle="屋内配線"
+        nextId="chichuu-densenro"  nextTitle="地中電線路"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-G. ChichuuDensenroPage（地中電線路・freq:mid）
+// ─────────────────────────────────────────────
+function ChichuuDensenroPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="地中電線を直接埋設式により施設する場合、車両その他の重量物の圧力を受けるおそれがある場所での埋設深さは何m以上か"
+        choices={["0.3 m 以上","0.6 m 以上","1.2 m 以上","1.5 m 以上"]}
+        correctIndex={2}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 地中電線路の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技解釈第120条', sub: '地中電線路の施設', theme: 'blue' }}
+        top={{ label: '電技省令第21条', sub: '地中電線路の保安原則', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '直接埋設式', sub: '直に地中に埋める', theme: 'orange', arrowLabel: '方式1' }}
+        right={{ label: '管路式', sub: '管に通して埋める', theme: 'cyan', arrowLabel: '方式2' }}
+        bottom={{ label: '暗渠式', sub: 'トンネル状構造物に施設', theme: 'green', arrowLabel: '方式3' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技省令 第21条",  "地中電線路の保安原則を定める",     "上位（地中施設の根拠）"],
+          ["電技解釈 第120条", "地中電線路の施設方式を規定",       "本条（直埋・管路・暗渠の3方式）"],
+          ["電技解釈 第121条", "地中電線・地中箱の保護",           "並立（保護管・地中箱の規定）"],
+          ["電技解釈 第125条", "地中電線と他の地中電線等との接近", "並立（離隔距離規定）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>3方式: <strong>直接埋設式 / 管路式 / 暗渠式</strong>（解釈第120条）</li>
+          <li>直接埋設式の埋設深さ: 重量物圧力<strong>1.2 m 以上</strong> / それ以外<strong>0.6 m 以上</strong></li>
+          <li>管路式: 電線を保護管に通す（堅牢な保護必要）</li>
+          <li>暗渠式: トンネル状構造物に施設（耐火措置等）</li>
+          <li>表示義務: 物件の名称・管理者名・電圧等を<strong>2 m 間隔以下</strong>で表示</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 電線路"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R04・H29"
+        tags={["地中電線路","埋設深さ","数値暗記"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["地面の中に直接埋める",  "直接埋設式",               "電線を直に土中に埋設する方式"],
+          ["管の中に通して埋める",  "管路式",                   "保護管（鋼管等）の中に通す方式"],
+          ["地下トンネルに通す",    "暗渠式",                   "共同溝・洞道等の構造物に施設"],
+          ["重い車が通る場所",      "車両その他の重量物の圧力を受けるおそれがある場所", "1.2m深さの適用条件"],
+          ["目印を付ける",          "物件の表示を行う",         "管理者・電圧等を明示する義務"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第120条／令和7年11月版"
+      />
+
+      <h2 id="tables">3つの埋設方式と埋設深さ</h2>
+      <MemTable
+        headers={["方式", "埋設深さ（重量物あり）", "埋設深さ（その他）", "保護"]}
+        rows={[
+          ["直接埋設式", "1.2 m 以上", "0.6 m 以上", "ケーブル単独で堅ろう"],
+          ["管路式",     "—",          "—",          "保護管が必須（堅ろう必要）"],
+          ["暗渠式",     "—",          "—",          "暗渠構造物（耐火措置必要）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第120条／令和7年11月版"
+        note="埋設深さの数値規定は『直接埋設式』のみ。管路式・暗渠式は深さ規定なし（保護方法が異なる）"
+      />
+
+      <h2 id="hyoji-tables">地中電線路の表示義務</h2>
+      <MemTable
+        headers={["項目", "内容", "条件"]}
+        rows={[
+          ["表示対象",   "管理者名・電圧・施設年月等",       "需要場所に施設する場合は省略可"],
+          ["表示間隔",   "おおむね 2 m 以下の間隔",         "直接埋設式の場合"],
+          ["施設位置",   "ケーブルの直上",                   "土被り中等で表示"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第120条／令和7年11月版"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "地中電線路の埋設深さは一律 1.2 m 以上",
+          correct: "1.2m以上は『重量物圧力あり』の場合。それ以外は0.6m以上" },
+        { wrong: "管路式・暗渠式にも埋設深さ規定がある",
+          correct: "深さ規定は『直接埋設式』のみ。管路式・暗渠式は保護方法で代替" },
+        { wrong: "地中電線路の表示は5 m 間隔",
+          correct: "おおむね『2 m 以下』の間隔で表示" },
+        { wrong: "暗渠式は地下トンネルだけ",
+          correct: "暗渠式は『共同溝・洞道』等のトンネル状構造物全般" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "地中電線路の3つの施設方式は？",                  a: "直接埋設式・管路式・暗渠式" },
+        { q: "直接埋設式（重量物あり）の埋設深さは？",          a: "1.2 m 以上" },
+        { q: "直接埋設式（その他）の埋設深さは？",              a: "0.6 m 以上" },
+        { q: "地中電線路の表示間隔は？",                        a: "おおむね 2 m 以下" },
+        { q: "地中電線路の規定条文は？",                        a: "電技解釈第120〜125条" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第5弾" }]} />
+      <PageNav
+        prevId="kako-denryu"      prevTitle="過電流保護"
+        nextId="bunsangata-dengen" nextTitle="分散型電源連系"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 3-H. BunsangataDengenPage（分散型電源連系・freq:mid）
+// ─────────────────────────────────────────────
+function BunsangataDengenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="分散型電源を電力系統に連系する際、系統側の事故時に分散型電源を系統から切り離す動作を何というか"
+        choices={["逆潮流","解列","連系","協調"]}
+        correctIndex={1}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 分散型電源連系の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電技解釈第220〜232条', sub: '分散型電源連系', theme: 'blue' }}
+        top={{ label: '系統連系規程（JEAC9701）', sub: '業界標準', theme: 'red', arrowLabel: '上位ガイド' }}
+        left={{ label: '低圧連系', sub: '太陽光・小型風力等', theme: 'orange', arrowLabel: '区分1' }}
+        right={{ label: '高圧連系', sub: '中規模太陽光・風力', theme: 'cyan', arrowLabel: '区分2' }}
+        bottom={{ label: '逆変換装置・解列装置', sub: '保護装置', theme: 'green', arrowLabel: '機器' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本条との関係"]}
+        rows={[
+          ["電技解釈 第220条",   "分散型電源の系統連系の通則",     "本条（連系全般の規定）"],
+          ["電技解釈 第221〜225条","低圧連系の具体規定",           "区分1（低圧での連系要件）"],
+          ["電技解釈 第226〜232条","高圧連系の具体規定",           "区分2（高圧での連系要件）"],
+          ["系統連系規程 JEAC9701","業界標準（電気協同研究会）",   "並立（実務上の詳細指針）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／系統連系規程（令和7年11月版／JEAC9701）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>分散型電源: <strong>太陽光・風力・燃料電池・コージェネ</strong>等の小規模電源</li>
+          <li>連系: 分散型電源を<strong>電力系統と並列接続</strong>する</li>
+          <li>逆潮流: 分散型電源 → 電力系統への<strong>電力流入</strong>（売電）</li>
+          <li>解列: 系統側事故時に分散型電源を<strong>系統から切り離す</strong></li>
+          <li>逆変換装置（インバータ）: 直流発電 → 交流に変換（太陽光・燃料電池）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 分散型電源"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R05・R02"
+        tags={["分散型電源","系統連系","太陽光","ひっかけ注意"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["太陽光を電力会社の線につなぐ", "電力系統に分散型電源を連系する", "『連係』ではなく『連系』"],
+          ["発電した電気を売る",          "逆潮流を生じる",                 "需要家→系統への電力流入"],
+          ["切り離す",                    "解列する",                       "系統異常時の自動切り離し"],
+          ["インバータ",                  "逆変換装置",                     "直流→交流変換装置"],
+          ["電力会社の線",                "電力系統",                       "発電・送電・配電の系統全体"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第220条（令和7年11月版）"
+      />
+
+      <h2 id="tables">分散型電源の代表的な種類</h2>
+      <MemTable
+        headers={["種類", "発電方式", "出力特性", "逆変換装置"]}
+        rows={[
+          ["太陽光発電",     "光起電力効果（DC）",   "日射に依存・出力変動大", "必要"],
+          ["風力発電",       "回転発電（AC/DC）",   "風速に依存・出力変動大", "AC出力なら不要"],
+          ["燃料電池",       "化学反応（DC）",       "安定出力可能",           "必要"],
+          ["コージェネ",     "ガス機関等（AC）",     "安定出力可能",           "不要（同期発電機）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第220〜232条（令和7年11月版）／系統連系規程JEAC9701"
+      />
+
+      <h2 id="hogo-tables">主な保護装置と機能</h2>
+      <MemTable
+        headers={["保護装置", "機能", "動作条件"]}
+        rows={[
+          ["過電圧継電器（OVR）","系統電圧上昇時に解列","電圧上限超過時"],
+          ["不足電圧継電器（UVR）","系統電圧低下時に解列","電圧下限未満時"],
+          ["周波数上昇継電器（OFR）","系統周波数上昇時に解列","周波数上限超過時"],
+          ["周波数低下継電器（UFR）","系統周波数低下時に解列","周波数下限未満時"],
+          ["単独運転検出装置","系統停電時に解列","受動的・能動的方式"],
+        ]}
+        source="出典：系統連系規程 JEAC9701／電技解釈第220〜232条（令和7年11月版）"
+        note="単独運転検出は『分散型電源だけが系統と切り離されて運転を続ける状態』を防ぐ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "「連係」と書いて電力系統との接続を表す",
+          correct: "正しくは『連系』（系統連系）。法令上の正式表記" },
+        { wrong: "逆潮流とは系統から需要家への電力流入",
+          correct: "逆潮流は『需要家→系統』（売電方向）の電力流入" },
+        { wrong: "解列とは系統との並列運転を始める動作",
+          correct: "解列は『切り離す』動作（系統異常時の安全対策）" },
+        { wrong: "風力発電は必ず逆変換装置（インバータ）が必要",
+          correct: "AC発電方式の風力ならインバータ不要。DC方式や可変速制御では必要" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "分散型電源連系の規定条文は？",         a: "電技解釈第220〜232条" },
+        { q: "逆潮流とは？",                         a: "需要家→電力系統への電力流入（売電方向）" },
+        { q: "解列とは？",                           a: "系統異常時に分散型電源を系統から切り離す動作" },
+        { q: "逆変換装置の役割は？",                 a: "直流→交流変換（太陽光・燃料電池等で必要）" },
+        { q: "単独運転検出装置の目的は？",           a: "系統停電時に分散型電源だけが運転を続ける状態を防ぐ" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第5弾" }]} />
+      <PageNav
+        prevId="chichuu-densenro" prevTitle="地中電線路"
+        nextId="kosakubutsu-bunrui" nextTitle="電気工作物の区分"
+        onNav={onNav}
+      />
     </div>
   );
 }
