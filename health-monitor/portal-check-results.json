@@ -1,0 +1,127 @@
+{
+  "target": "portal-v2.html",
+  "errors": 11,
+  "warnings": 9,
+  "issues": [
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 590,
+      "message": "リンク先が存在しません: denken3-study-dashboard/index.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 603,
+      "message": "リンク先が存在しません: dashboard.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 604,
+      "message": "リンク先が存在しません: knowledge/knowledge-graph.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 605,
+      "message": "リンク先が存在しません: ai-news/ai-news/dashboard.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 615,
+      "message": "リンク先が存在しません: claude-code-guide.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 623,
+      "message": "リンク先が存在しません: denken-news/index.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 624,
+      "message": "リンク先が存在しません: business-skills/index.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 625,
+      "message": "リンク先が存在しません: business-skills/python-dekirukoto.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 626,
+      "message": "リンク先が存在しません: business-skills/brain-detox.html"
+    },
+    {
+      "severity": "error",
+      "category": "dead_links",
+      "line": 628,
+      "message": "リンク先が存在しません: memory-dashboard.html"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": null,
+      "message": "summary_unreadable: denken3-study-dashboard/summary.json が見つかりません"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 496,
+      "message": "進捗バーに hardcoded パーセント: width:94%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 497,
+      "message": "進捗バーに hardcoded パーセント: width:78%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 498,
+      "message": "進捗バーに hardcoded パーセント: width:62%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 499,
+      "message": "進捗バーに hardcoded パーセント: width:55%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 550,
+      "message": "進捗バーに hardcoded パーセント: width:94%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 551,
+      "message": "進捗バーに hardcoded パーセント: width:78%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 552,
+      "message": "進捗バーに hardcoded パーセント: width:62%"
+    },
+    {
+      "severity": "warning",
+      "category": "hardcoded_pct",
+      "line": 553,
+      "message": "進捗バーに hardcoded パーセント: width:55%"
+    },
+    {
+      "severity": "error",
+      "category": "forbidden_decorations",
+      "line": 613,
+      "message": "禁止装飾: localhost URL in href"
+    }
+  ]
+}
