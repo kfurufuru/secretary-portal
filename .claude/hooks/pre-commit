@@ -24,4 +24,42 @@ if [ -n "$HITS" ]; then
   exit 1
 fi
 
+# ============================================================
+# (2) denken-(hoki|3-riron)-wiki.html: audit + Babel構文チェック
+# ============================================================
+staged=$(git diff --cached --name-only)
+
+if echo "$staged" | grep -q "^denken-hoki-wiki\.html$"; then
+    echo "[pre-commit] denken-hoki-wiki.html 変更検出 → audit 実行..."
+    if ! python denken_hoki_audit.py --quiet; then
+        echo ""
+        echo "[pre-commit] ✗ FAIL: 'python denken_hoki_audit.py' で詳細確認"
+        echo "[pre-commit] 緊急回避: git commit --no-verify （非推奨）"
+        exit 1
+    fi
+    echo "[pre-commit] ✓ audit PASS"
+fi
+
+# Babel構文チェック（読み込み停止事故の再発防止：2026-05-03 L4567 a:キー欠落事案）
+if echo "$staged" | grep -qE "^denken-(hoki|3-riron)-wiki\.html$"; then
+    if curl -sf -o /dev/null -m 2 "http://localhost:8092/"; then
+        targets=""
+        echo "$staged" | grep -q "^denken-hoki-wiki\.html$"   && targets="$targets hoki"
+        echo "$staged" | grep -q "^denken3-riron-wiki\.html$" && targets="$targets riron"
+        for t in $targets; do
+            echo "[pre-commit] babel_check.py $t 実行..."
+            if ! python babel_check.py $t; then
+                echo ""
+                echo "[pre-commit] ✗ Babel構文エラー検出。修正してから再commit"
+                echo "[pre-commit] 緊急回避: git commit --no-verify （非推奨）"
+                exit 1
+            fi
+        done
+        echo "[pre-commit] ✓ babel_check PASS"
+    else
+        echo "[pre-commit] ⚠ dev-server (8092) 未起動 → babel_check スキップ"
+        echo "[pre-commit]   推奨: 'python dev-server.py 8092 .' 起動後に再commit"
+    fi
+fi
+
 exit 0

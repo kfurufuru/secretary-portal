@@ -54,7 +54,7 @@ python babel_check.py riron   # denken3-riron-wiki.html
 
 エラー時は **行番号・列番号・周辺コード5行** が表示されるので即修正できる。`wiki_verify.py` の前段（DOM検証より先）として位置付ける。
 
-`pre-commit` フックに統合済み（`.git/hooks/pre-commit`）。bypass 禁止（`--no-verify` 厳禁）。
+`pre-commit` フックに統合済み（`.claude/hooks/pre-commit` — `core.hooksPath` で `.git/hooks` ではなくこちらが使われる）。bypass 禁止（`--no-verify` 厳禁）。
 
 ## 参照
 - 上位ルール: `CLAUDE.md` §HTMLコーディングルール / §Wiki編集ワークフロー
