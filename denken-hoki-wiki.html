@@ -1527,6 +1527,169 @@ function HoukiOverviewSvg({ center, top, left, right, bottom }) {
   );
 }
 
+function ZetsuenFullMapSvg() {
+  // 絶縁耐力試験ページ専用: 法令ピラミッド + K値暗記 + 実務フローを1枚で
+  const C = {
+    grayBg: '#f5f5f5', grayLn: '#9e9e9e', grayTx: '#616161',
+    redBg: '#ffebee', redLn: '#c62828', redTx: '#b71c1c',
+    orangeBg: '#fff3e0', orangeLn: '#ef6c00', orangeTx: '#e65100',
+    blueBg: '#e3f2fd', blueLn: '#1565c0', blueTx: '#0d47a1',
+    cyanBg: '#e1f5fe', cyanLn: '#0288d1', cyanTx: '#01579b',
+    greenBg: '#e8f5e9', greenLn: '#2e7d32', greenTx: '#1b5e20',
+    arrow: '#888', arrowTx: '#666',
+  };
+  const Box = ({ x, y, w, h, label, sub, sub2, bg, ln, tx, accent }) => (
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx="6"
+        fill={bg} stroke={ln} strokeWidth={accent ? 2.5 : 1.5} />
+      <text x={x + w / 2} y={y + (sub ? 18 : h / 2 + 4)}
+        textAnchor="middle" fontSize="12" fontWeight="700" fill={tx}>
+        {label}
+      </text>
+      {sub && (
+        <text x={x + w / 2} y={y + 34} textAnchor="middle" fontSize="10" fill={tx}>
+          {sub}
+        </text>
+      )}
+      {sub2 && (
+        <text x={x + w / 2} y={y + 48} textAnchor="middle" fontSize="10" fill={tx}>
+          {sub2}
+        </text>
+      )}
+    </g>
+  );
+  const Arrow = ({ x1, y1, x2, y2, label, lx, ly }) => (
+    <g>
+      <line x1={x1} y1={y1} x2={x2} y2={y2}
+        stroke={C.arrow} strokeWidth="1.5" markerEnd="url(#zfmArr)" />
+      {label && (
+        <text x={lx} y={ly} textAnchor="middle" fontSize="10" fill={C.arrowTx}>
+          {label}
+        </text>
+      )}
+    </g>
+  );
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--radius)',
+      padding: '12px',
+      marginBottom: '20px',
+    }}>
+      <svg viewBox="0 0 760 580" style={{ width: '100%', height: 'auto', display: 'block' }}
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="zfmArr" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={C.arrow} />
+          </marker>
+        </defs>
+
+        {/* 階層ラベル（左端） */}
+        <text x="8"  y="34"  fontSize="9" fill={C.grayTx}>L0 最上位</text>
+        <text x="8"  y="100" fontSize="9" fill={C.grayTx}>L1 根拠法</text>
+        <text x="8"  y="178" fontSize="9" fill={C.grayTx}>L2 省令</text>
+        <text x="8"  y="262" fontSize="9" fill={C.grayTx}>L3 解釈・本条</text>
+        <text x="8"  y="378" fontSize="9" fill={C.grayTx}>L4 例外</text>
+        <text x="8"  y="478" fontSize="9" fill={C.grayTx}>実務フロー</text>
+
+        {/* L0: 憲法・条約 */}
+        <Box x={210} y={20} w={220} h={40} label="日本国憲法・条約" bg={C.grayBg} ln={C.grayLn} tx={C.grayTx} />
+
+        {/* L0→L1 矢印 */}
+        <Arrow x1={320} y1={60} x2={320} y2={88} />
+
+        {/* L1: 根拠法 — 電技省令第5条 + 自主保安体制 */}
+        <Box x={70}  y={88} w={170} h={56} label="保安規程" sub="電気主任技術者の職務" bg={C.orangeBg} ln={C.orangeLn} tx={C.orangeTx} />
+        <Box x={250} y={88} w={170} h={56} label="電技省令 第5条" sub="電路の絶縁原則" bg={C.redBg} ln={C.redLn} tx={C.redTx} accent />
+        <text x={500} y={114} fontSize="11" fontWeight="700" fill={C.orangeTx}>自主保安体制</text>
+        <text x={500} y={130} fontSize="10" fill={C.orangeTx}>（事業者責任）</text>
+
+        {/* L1→L2 矢印 */}
+        <Arrow x1={335} y1={144} x2={335} y2={170} label="由来" lx={365} ly={160} />
+        <Arrow x1={155} y1={144} x2={300} y2={170} />
+
+        {/* L2: 省令本体 */}
+        <Box x={180} y={170} w={300} h={42} label="電気設備に関する技術基準を定める省令" bg={C.redBg} ln={C.redLn} tx={C.redTx} accent />
+
+        {/* L2→L3 矢印 */}
+        <Arrow x1={330} y1={212} x2={330} y2={238} />
+
+        {/* L3 中央: 解釈第14・15条 */}
+        <Box x={250} y={238} w={170} h={56} label="解釈 第14・15条" sub="絶縁耐力試験" bg={C.blueBg} ln={C.blueLn} tx={C.blueTx} accent />
+
+        {/* L3 左: 第14条（低圧） */}
+        <Box x={40}  y={238} w={180} h={70} label="第14条（低圧）"
+             sub="最大使用電圧 × 1.5倍" sub2="10分間印加"
+             bg={C.orangeBg} ln={C.orangeLn} tx={C.orangeTx} />
+
+        {/* L3 右: 第15条（高圧/特高） */}
+        <Box x={450} y={238} w={270} h={70} label="第15条（高圧/特別高圧）"
+             sub="基本: 最大使用電圧 × 1.25倍 × 10分"
+             sub2="特例: 中性点直接接地 170kV超 → 0.64倍"
+             bg={C.cyanBg} ln={C.cyanLn} tx={C.cyanTx} />
+
+        {/* 内訳矢印（中央→左/右） */}
+        <Arrow x1={250} y1={266} x2={224} y2={266} label="低圧" lx={232} ly={258} />
+        <Arrow x1={420} y1={266} x2={446} y2={266} label="高圧/特高" lx={432} ly={258} />
+
+        {/* L3→L4 矢印 */}
+        <Arrow x1={335} y1={308} x2={335} y2={344} label="例外" lx={365} ly={328} />
+
+        {/* L4: 第16条 機械器具の絶縁（例外） */}
+        <Box x={170} y={344} w={320} h={66} label="第16条 機械器具の絶縁（例外）"
+             sub="発電機・変圧器・電力用コンデンサ等"
+             sub2="それぞれの構造に応じた試験電圧と時間"
+             bg={C.greenBg} ln={C.greenLn} tx={C.greenTx} />
+
+        {/* 右側カード: K値暗記 */}
+        <rect x={530} y={170} w={210} h={130} rx="6" fill="#fffde7" stroke="#fbc02d" strokeWidth="1.5" />
+        <text x={635} y={188} textAnchor="middle" fontSize="11" fontWeight="700" fill="#f57f17">★ K値暗記</text>
+        <line x1={540} y1={196} x2={730} y2={196} stroke="#fbc02d" strokeWidth="0.8" />
+        <text x={545} y={216} fontSize="11" fill="#5d4037">7,000V 以下　　 → K = 1.5</text>
+        <text x={545} y={236} fontSize="11" fill="#5d4037">7,000V 超　　　 → K = 1.25</text>
+        <text x={545} y={256} fontSize="11" fill="#5d4037">170kV 超（特例）→ K = 0.64</text>
+        <text x={545} y={278} fontSize="9" fill="#8d6e63">※ 中性点直接接地のみ 0.64</text>
+        <text x={545} y={292} fontSize="9" fill="#8d6e63">　 試験電圧 = 最大使用電圧 × K</text>
+
+        {/* 右側カード: 暗記ポイント（電圧種別） */}
+        <rect x={530} y={344} w={210} h={66} rx="6" fill="#fce4ec" stroke="#d81b60" strokeWidth="1.5" />
+        <text x={635} y={362} textAnchor="middle" fontSize="11" fontWeight="700" fill="#880e4f">★ 電圧の3用語</text>
+        <line x1={540} y1={370} x2={730} y2={370} stroke="#d81b60" strokeWidth="0.8" />
+        <text x={545} y={388} fontSize="11" fill="#4a148c">最大使用電圧 ＞ 公称電圧 ＞ 基準電圧</text>
+        <text x={545} y={402} fontSize="9" fill="#6a1b9a">　K計算は「最大使用電圧」が基準</text>
+
+        {/* 仕切り線 */}
+        <line x1={20} y1={428} x2={740} y2={428} stroke="#bdbdbd" strokeWidth="0.8" strokeDasharray="4 3" />
+
+        {/* 実務フロー */}
+        <Box x={40}  y={448} w={200} h={56} label="試験成績書の作成" sub="（要点記載）" bg={C.blueBg} ln={C.blueLn} tx={C.blueTx} />
+        <Arrow x1={240} y1={476} x2={282} y2={476} />
+        <Box x={282} y={448} w={200} h={56} label="10年保存義務" sub="★ 重要（保安規程）" bg={C.greenBg} ln={C.greenLn} tx={C.greenTx} accent />
+        <Arrow x1={482} y1={476} x2={524} y2={476} />
+        <Box x={524} y={448} w={200} h={56} label="保安規程に反映" sub="次回試験計画へ" bg={C.orangeBg} ln={C.orangeLn} tx={C.orangeTx} />
+
+        {/* 凡例 */}
+        <text x={20}  y={540} fontSize="9" fill={C.grayTx}>凡例:</text>
+        <rect x={55}  y={532} w={12} h={10} fill={C.redBg} stroke={C.redLn} />
+        <text x={72}  y={540} fontSize="9" fill={C.redTx}>根拠法/省令</text>
+        <rect x={150} y={532} w={12} h={10} fill={C.blueBg} stroke={C.blueLn} />
+        <text x={167} y={540} fontSize="9" fill={C.blueTx}>本条/解釈</text>
+        <rect x={240} y={532} w={12} h={10} fill={C.orangeBg} stroke={C.orangeLn} />
+        <text x={257} y={540} fontSize="9" fill={C.orangeTx}>低圧/自主保安</text>
+        <rect x={350} y={532} w={12} h={10} fill={C.cyanBg} stroke={C.cyanLn} />
+        <text x={367} y={540} fontSize="9" fill={C.cyanTx}>高圧/特別高圧</text>
+        <rect x={460} y={532} w={12} h={10} fill={C.greenBg} stroke={C.greenLn} />
+        <text x={477} y={540} fontSize="9" fill={C.greenTx}>例外/重要保管</text>
+      </svg>
+      <div style={{ fontSize: '11px', color: 'var(--ink-3)', marginTop: '8px', lineHeight: '1.6' }}>
+        <strong>読み方</strong>: 上から下へ「憲法 → 省令 → 解釈本条 → 例外」の法体系。中央青ボックス（解釈第14・15条）が試験で問われる本丸。右側カードで K値（試験電圧の倍率）を一気に暗記。下部の実務フローは <strong>10年保存義務</strong> が頻出。
+      </div>
+    </div>
+  );
+}
+
 function MemTable({ headers, rows, note, source }) {
   return (
     <div style={{ marginBottom: '24px' }}>
@@ -2707,15 +2870,15 @@ window.renderPage = function(page, navigate) {
     case 'denki-yohin-anzen':      return React.createElement(DenkiYohinAnzenPage, props);
     case 'koji-shi-ho':            return React.createElement(KojiShiHoPage, props);
     case 'koji-gyoho':             return React.createElement(KojiGyohoPage, props);
-    case 'furyoku-gijutsukijun':   return React.createElement(StubPage, { ...props, pageId: 'furyoku-gijutsukijun' });
-    case 'taiyouchi-gijutsukijun': return React.createElement(StubPage, { ...props, pageId: 'taiyouchi-gijutsukijun' });
-    case 'keito-renkei':           return React.createElement(StubPage, { ...props, pageId: 'keito-renkei' });
-    case 'juyoritsu-gainen':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-gainen' });
-    case 'furitsu':                return React.createElement(StubPage, { ...props, pageId: 'furitsu' });
-    case 'futorito':               return React.createElement(StubPage, { ...props, pageId: 'futorito' });
-    case 'hensyatsuki-yoryo':      return React.createElement(StubPage, { ...props, pageId: 'hensyatsuki-yoryo' });
-    case 'haiden-kanri':           return React.createElement(StubPage, { ...props, pageId: 'haiden-kanri' });
-    case 'juden-setsubi-kanri':    return React.createElement(StubPage, { ...props, pageId: 'juden-setsubi-kanri' });
+    case 'furyoku-gijutsukijun':   return React.createElement(FuryokuGijutsukijunPage, props);
+    case 'taiyouchi-gijutsukijun': return React.createElement(TaiyouchiGijutsukijunPage, props);
+    case 'keito-renkei':           return React.createElement(KeitoRenkeiPage, props);
+    case 'juyoritsu-gainen':       return React.createElement(JuyoritsuGainenPage, props);
+    case 'furitsu':                return React.createElement(FuritsuPage, props);
+    case 'futorito':               return React.createElement(FutoritoPage, props);
+    case 'hensyatsuki-yoryo':      return React.createElement(HensyatsukiYoryoPage, props);
+    case 'haiden-kanri':           return React.createElement(HaidenKanriPage, props);
+    case 'juden-setsubi-kanri':    return React.createElement(JudenSetsubiKanriPage, props);
     case 'kakomon-b':              return React.createElement(StubPage, { ...props, pageId: 'kakomon-b' });
     case 'kakomon-setsuchi':       return React.createElement(StubPage, { ...props, pageId: 'kakomon-setsuchi' });
     case 'kakomon-zetsuen':        return React.createElement(StubPage, { ...props, pageId: 'kakomon-zetsuen' });
@@ -3511,6 +3674,1128 @@ function HomePage({ onNav, data }) {
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6-A. JuyoritsuGainenPage（電気施設管理: 需要率・負荷率・不等率 概念・freq:high）
+// ─────────────────────────────────────────────
+function JuyoritsuGainenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="需要率・負荷率・不等率の定性的な特徴として正しいものはどれか"
+        choices={[
+          "需要率は1を超えることがある",
+          "負荷率は理想的には1.0（100%）に近づける",
+          "不等率は1未満になる",
+          "3指標とも単位は kW である",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="計算ページは1.6を参照。本ページは概念中心"
+      />
+
+      <h2 id="overview">1. 全体像 — 3指標の概念体系</h2>
+      <HoukiOverviewSvg
+        center={{ label: '電気施設管理3指標', sub: '需要率/負荷率/不等率', theme: 'blue' }}
+        top={{ label: '電気事業便覧・配電設計', sub: '実務体系', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '需要率（％）', sub: '設備容量の利用度', theme: 'orange', arrowLabel: '指標1' }}
+        right={{ label: '負荷率（％）', sub: '稼働の平準化度', theme: 'cyan', arrowLabel: '指標2' }}
+        bottom={{ label: '不等率（≥1）', sub: 'ピーク分散度', theme: 'green', arrowLabel: '指標3' }}
+      />
+      <MemTable
+        headers={["指標", "定義（概念）", "高い意味", "低い意味"]}
+        rows={[
+          ["需要率",  "設備容量に対する最大需要の比率",  "設備をフル活用（経済的）", "設備過剰（無駄）"],
+          ["負荷率",  "最大需要に対する平均需要の比率",  "稼働平準化（効率良）",     "ピーク偏重（変動大）"],
+          ["不等率",  "個別最大の和に対する合成最大の比率","ピーク時刻が分散",         "全員同時ピーク"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>需要率: <strong>0 〜 100%</strong>（設備容量を分母とするため必ず1以下）</li>
+          <li>負荷率: <strong>0 〜 100%</strong>（最大需要を分母とするため必ず1以下）</li>
+          <li>不等率: <strong>必ず1以上</strong>（合成最大は個別最大の和より小さいため）</li>
+          <li>負荷率が高い = 平準化 = <strong>設備効率が良い</strong>（理想100%）</li>
+          <li>不等率が高い = ピーク分散 = <strong>変圧器を小型化できる</strong>（経済性UP）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R03・H30"
+        tags={["施設管理","需要率","負荷率","不等率","概念"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["どれだけ設備を使っているか", "需要率",                     "設備容量÷最大需要"],
+          ["どれだけ平均的に使っているか","負荷率",                     "最大需要÷平均需要"],
+          ["みんな同時に使うか",         "不等率",                     "個別最大の和÷合成最大"],
+          ["最大に使う電力",             "最大需要電力",               "瞬時のピーク値"],
+          ["1日/1月の平均使用",         "平均需要電力",               "電力量÷時間で算出"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <h2 id="tables">3指標の概念比較</h2>
+      <MemTable
+        headers={["指標", "範囲", "目標", "改善策"]}
+        rows={[
+          ["需要率", "30〜80% 程度", "実情に合わせ最適化", "設備容量を需要に合わせて適正化"],
+          ["負荷率", "20〜60% 程度", "高いほど良い",       "夜間負荷活用・ピークシフト"],
+          ["不等率", "1.0〜1.5 程度","高いほど良い",       "需要家の操業時間ずらし"],
+        ]}
+        source="出典：電気事業便覧"
+        note="3指標とも『無次元（％ or 比）』。kW などの単位はない"
+      />
+
+      <h2 id="kankei-tables">3指標の関係性</h2>
+      <MemTable
+        headers={["関係", "意味"]}
+        rows={[
+          ["需要率↑ × 負荷率↑",          "設備フル活用かつ平準化（理想形）"],
+          ["不等率↑ → 合成最大↓",        "ピーク分散で必要な変圧器容量が小さくなる"],
+          ["負荷率↑ → 電力単価↓",        "ピークが少ない=高い時間帯料金回避（電力料金体系上のメリット）"],
+          ["変圧器容量 = 合成最大÷力率",  "合成最大 = (Σ個別最大)/不等率"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "需要率は1を超えることがある",
+          correct: "需要率の分母は設備容量（max=合計）なので必ず1以下" },
+        { wrong: "負荷率が低いほど経済的",
+          correct: "負荷率は『高いほど』効率良。低いとピーク設備が無駄" },
+        { wrong: "不等率は1未満になる",
+          correct: "不等率は『必ず1以上』。1=全員同時ピーク（最悪）" },
+        { wrong: "需要率と負荷率は同じ",
+          correct: "別指標。需要率=最大/設備、負荷率=平均/最大" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "需要率の範囲は？",       a: "0 〜 100%（必ず1以下）" },
+        { q: "負荷率の理想値は？",     a: "100%（高いほど稼働平準化）" },
+        { q: "不等率の最小値は？",     a: "1.0（必ず1以上）" },
+        { q: "負荷率が高いメリットは？","設備効率良 + 電力料金軽減" },
+        { q: "不等率が高いメリットは？","変圧器容量を小型化できる" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
+      <PageNav
+        prevId="juyoritsu-keisan" prevTitle="需要率・負荷率・不等率（計算）"
+        nextId="furitsu"          nextTitle="負荷率"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6-B. FuritsuPage（電気施設管理: 負荷率・freq:high）
+// ─────────────────────────────────────────────
+function FuritsuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="ある工場の月間電力量が 7,200 kWh、月間最大需要電力が 30 kW のとき、負荷率は概ね何 % か（1ヶ月=720h）"
+        choices={["10 %","20 %","33 %","50 %"]}
+        correctIndex={2}
+        year="頻出"
+        note="負荷率 = 平均/最大、平均 = 電力量/時間"
+      />
+
+      <h2 id="overview">1. 全体像 — 負荷率の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '負荷率 = 平均/最大', sub: '稼働の平準化度', theme: 'blue' }}
+        top={{ label: '電気事業便覧', sub: '指標体系', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '日負荷率', sub: '24時間平均/日最大', theme: 'orange', arrowLabel: '区分1' }}
+        right={{ label: '月負荷率', sub: '月平均/月最大', theme: 'cyan', arrowLabel: '区分2' }}
+        bottom={{ label: '年負荷率', sub: '年平均/年最大', theme: 'green', arrowLabel: '区分3' }}
+      />
+      <MemTable
+        headers={["概念", "意味", "計算"]}
+        rows={[
+          ["負荷率",          "需要の平準化度を示す指標", "平均需要 / 最大需要 × 100"],
+          ["平均需要",        "対象期間の平均電力",       "電力量 [kWh] / 時間 [h]"],
+          ["最大需要",        "瞬時ピーク",               "デマンド計の30分平均値等"],
+          ["時間スケール",    "日/月/年で別計算",         "それぞれ日負荷率/月/年負荷率"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>定義: <strong>負荷率 = 平均需要 / 最大需要 × 100 [%]</strong></li>
+          <li>平均需要: <strong>電力量 [kWh] / 時間 [h]</strong></li>
+          <li>典型値: 一般家庭 <strong>30〜40%</strong>、産業用 <strong>50〜70%</strong>、24h操業工場 <strong>80%以上</strong></li>
+          <li>負荷率が高い = ピークと谷の差が小さい = 設備効率良</li>
+          <li>電力会社の基本料金は最大需要電力（kW）×単価で決まるため、負荷率改善で料金低減</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="A"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R05・R04・R03・H30"
+        tags={["施設管理","負荷率","計算","頻出A"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["平均的な使用",   "平均需要電力",     "電力量[kWh]÷時間[h]"],
+          ["瞬間最大",       "最大需要電力",     "デマンド計30分平均値"],
+          ["どれだけ平均的", "負荷率",           "平均/最大 × 100[%]"],
+          ["1日の平均",     "日負荷率",         "24時間で計算"],
+          ["1ヶ月の平均",    "月負荷率",         "720時間で計算"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <h2 id="tables">負荷率計算ステップ</h2>
+      <MemTable
+        headers={["ステップ", "計算", "例"]}
+        rows={[
+          ["1. 期間の決定",   "日/月/年いずれか",          "1ヶ月 = 720h"],
+          ["2. 電力量取得",   "電力量計から積算 [kWh]",    "7,200 kWh"],
+          ["3. 平均需要",     "電力量 / 時間",             "7,200 / 720 = 10 kW"],
+          ["4. 最大需要",     "デマンド値（与えられる）",  "30 kW"],
+          ["5. 負荷率",       "平均 / 最大 × 100",         "10 / 30 × 100 ≒ 33 %"],
+        ]}
+        source="出典：電気事業便覧"
+      />
+
+      <h2 id="kaizen-tables">負荷率改善のメリットと方法</h2>
+      <MemTable
+        headers={["項目", "内容"]}
+        rows={[
+          ["メリット1", "電力料金の基本料金低減（最大需要×単価）"],
+          ["メリット2", "設備（変圧器・送電線）の小型化・コスト減"],
+          ["方法1",     "ピーク時間帯の操業を分散（操業シフト）"],
+          ["方法2",     "夜間電力の活用（蓄熱・蓄電）"],
+          ["方法3",     "デマンド監視装置で瞬時ピークを抑制"],
+        ]}
+        source="出典：電気事業便覧／省エネ法"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "負荷率 = 最大需要 / 平均需要",
+          correct: "負荷率 = 『平均 / 最大』（割る順序が逆だと1超になり矛盾）" },
+        { wrong: "負荷率は kW の単位がある",
+          correct: "負荷率は『無次元（％）』。比率なので単位なし" },
+        { wrong: "1ヶ月=600時間",
+          correct: "1ヶ月=24h×30日=720時間（計算問題で頻出）" },
+        { wrong: "負荷率が低いほど電気料金が安い",
+          correct: "負荷率が低い=ピーク高い=基本料金高い。負荷率高い方が安くなる" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "負荷率の式は？",            a: "平均需要 / 最大需要 × 100 [%]" },
+        { q: "1ヶ月の時間は？",          a: "720 h（24×30）" },
+        { q: "1年の時間は？",            a: "8,760 h（24×365）" },
+        { q: "電力量 7,200kWh / 720h は？", a: "平均需要 10 kW" },
+        { q: "負荷率改善のメリットは？",   a: "基本料金低減 + 設備小型化" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
+      <PageNav
+        prevId="juyoritsu-gainen" prevTitle="需要率・負荷率・不等率（概念）"
+        nextId="futorito"         nextTitle="不等率"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6-C. FutoritoPage（電気施設管理: 不等率・freq:mid）
+// ─────────────────────────────────────────────
+function FutoritoPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="3つの需要家の最大需要電力がそれぞれ 60, 80, 100 kW で、合成最大需要電力が 200 kW のとき、不等率はいくらか"
+        choices={["1.0","1.2","1.5","2.0"]}
+        correctIndex={1}
+        year="頻出"
+        note="不等率 = 個別最大の和 / 合成最大"
+      />
+
+      <h2 id="overview">1. 全体像 — 不等率の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '不等率 = Σ個別最大/合成最大', sub: 'ピーク分散度（≥1）', theme: 'blue' }}
+        top={{ label: '配電設計指針', sub: '実務基準', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '個別最大の和', sub: '分子（大）', theme: 'orange', arrowLabel: '分子' }}
+        right={{ label: '合成最大', sub: '分母（小）', theme: 'cyan', arrowLabel: '分母' }}
+        bottom={{ label: '変圧器容量算定', sub: '実務適用', theme: 'green', arrowLabel: '応用' }}
+      />
+      <MemTable
+        headers={["概念", "意味", "計算"]}
+        rows={[
+          ["個別最大需要",   "需要家ごとの最大需要電力", "各需要家のピーク値"],
+          ["合成最大需要",   "全需要家の合計最大需要",   "ピーク時刻が違うため和より小"],
+          ["不等率",         "両者の比",                 "Σ個別最大 / 合成最大"],
+          ["範囲",           "1以上",                    "全員同時ピーク=1、ずれると1超"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>定義: <strong>不等率 = 個別最大需要の和 / 合成最大需要</strong></li>
+          <li>必ず<strong>1以上</strong>（合成最大が個別最大の和を超えることはない）</li>
+          <li>不等率=1: 全需要家が<strong>同じ時刻にピーク</strong>（最悪）</li>
+          <li>不等率>1: ピーク時刻が<strong>分散</strong>している（理想）</li>
+          <li>変圧器容量算定: <strong>合成最大 = Σ個別最大 / 不等率</strong> を使う</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題・B問題"
+        targets="R04・R02・H29"
+        tags={["施設管理","不等率","計算","変圧器容量"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["みんな同時にピーク", "合成最大需要 = 個別最大の和", "不等率 = 1.0（最悪パターン）"],
+          ["ピークがバラバラ",   "不等率 > 1",                  "ピーク分散・経済的"],
+          ["1人の最大",         "個別最大需要",                "需要家ごとのピーク"],
+          ["全体のピーク",      "合成最大需要",                "全需要家の合計ピーク"],
+          ["時間ずらし",        "ピークシフト",                "不等率改善の手段"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <h2 id="tables">不等率の典型値</h2>
+      <MemTable
+        headers={["対象", "典型不等率", "意味"]}
+        rows={[
+          ["住宅地（10戸）",       "1.3〜1.5", "夕方ピークが集中するため低め"],
+          ["事務所ビル",           "1.1〜1.3", "始業・昼食時にピーク集中"],
+          ["工場（多種混在）",     "1.5〜2.0", "操業時間が異なる場合は高め"],
+          ["変電所（地区合計）",   "2.0〜3.0", "需要家タイプ多様で分散大"],
+        ]}
+        source="出典：配電設計指針"
+        note="不等率は対象規模が大きいほど高くなる傾向（ピーク分散しやすい）"
+      />
+
+      <h2 id="hint-tables">変圧器容量算定（不等率の応用）</h2>
+      <MemTable
+        headers={["ステップ", "計算", "例"]}
+        rows={[
+          ["1. 個別最大の和", "Σ各需要家の最大需要", "60+80+100 = 240 kW"],
+          ["2. 不等率",       "問題で与えられる",    "1.2"],
+          ["3. 合成最大",     "Σ個別最大 / 不等率",  "240 / 1.2 = 200 kW"],
+          ["4. 変圧器容量",   "合成最大 / 力率",     "200 / 0.8 = 250 kVA"],
+        ]}
+        source="出典：配電設計指針"
+        note="不等率を考慮しないと変圧器を過大設計（無駄なコスト）になる"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "不等率 = 合成最大 / 個別最大の和",
+          correct: "正しくは『個別最大の和 / 合成最大』（割る順序が逆）" },
+        { wrong: "不等率は0.5など1未満になる",
+          correct: "不等率は『必ず1以上』。1未満なら計算ミス" },
+        { wrong: "不等率は需要家数が増えると1に近づく",
+          correct: "需要家数が増えるとピーク分散しやすく『1から大きく離れる（>1.5等）』" },
+        { wrong: "変圧器容量 = Σ個別最大 / 力率",
+          correct: "変圧器容量 = 合成最大 / 力率 = (Σ個別最大 / 不等率) / 力率" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "不等率の式は？",                      a: "Σ個別最大需要 / 合成最大需要" },
+        { q: "不等率の最小値は？",                  a: "1.0（必ず1以上）" },
+        { q: "不等率1.0の意味は？",                  a: "全需要家が同時にピーク（最悪）" },
+        { q: "不等率を高めるメリットは？",          a: "変圧器を小型化できる（経済性UP）" },
+        { q: "個別最大240kW・不等率1.2の合成最大は？", a: "240 / 1.2 = 200 kW" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
+      <PageNav
+        prevId="furitsu"           prevTitle="負荷率"
+        nextId="hensyatsuki-yoryo" nextTitle="変圧器容量"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6-D. HensyatsukiYoryoPage（変圧器容量・freq:high）
+// ─────────────────────────────────────────────
+function HensyatsukiYoryoPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="設備容量 500 kW、需要率 0.6、力率 0.8 のとき、必要な変圧器容量 [kVA] はおおよそいくらか"
+        choices={["240 kVA","300 kVA","375 kVA","500 kVA"]}
+        correctIndex={2}
+        year="頻出"
+        note="設備×需要率÷力率 = 必要kVA"
+      />
+
+      <h2 id="overview">1. 全体像 — 変圧器容量算定の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: 'kVA = (合成最大)/cosθ', sub: '変圧器容量算定', theme: 'blue' }}
+        top={{ label: '配電設計指針・JIS C 4304', sub: '上位規格', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '需要率', sub: '設備→個別最大', theme: 'orange', arrowLabel: '段階1' }}
+        right={{ label: '不等率', sub: '個別最大→合成最大', theme: 'cyan', arrowLabel: '段階2' }}
+        bottom={{ label: '力率', sub: '合成最大→kVA', theme: 'green', arrowLabel: '段階3' }}
+      />
+      <MemTable
+        headers={["項目", "意味", "本計算との関係"]}
+        rows={[
+          ["設備容量",   "全機器の定格合計 [kW]",       "出発点"],
+          ["需要率",     "実最大需要/設備容量",         "段階1係数"],
+          ["不等率",     "Σ個別最大/合成最大",          "段階2係数"],
+          ["力率 cosθ",  "P/S = 有効/皮相",             "kW→kVA変換係数"],
+        ]}
+        source="出典：配電設計指針／JIS C 4304"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>1段階: <strong>個別最大需要 = 設備容量 × 需要率</strong> [kW]</li>
+          <li>2段階: <strong>合成最大需要 = Σ個別最大 / 不等率</strong> [kW]</li>
+          <li>3段階: <strong>変圧器容量 = 合成最大 / 力率</strong> [kVA]</li>
+          <li>余裕: 算出 kVA に対し<strong>10〜20%余裕</strong>を持って規格容量を選ぶ</li>
+          <li>標準容量 [kVA]: 50, 75, 100, 150, 200, 300, 500, 750, 1000 等</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="B問題"
+        targets="R04・R02・H30"
+        tags={["変圧器容量","kVA","計算","頻出A"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["変圧器の大きさ",       "変圧器容量",                 "皮相電力 [kVA] で表記"],
+          ["有効電力",             "P [kW]",                     "実際に仕事をする電力"],
+          ["皮相電力",             "S [kVA]",                    "電圧×電流（変圧器の能力）"],
+          ["設備の定格合計",       "設備容量",                   "需要率算定の分母"],
+          ["余裕を見込む",         "余裕率（10〜20%）",          "実用上の安全マージン"],
+        ]}
+        source="出典：配電設計指針／JIS C 4304"
+      />
+
+      <h2 id="tables">変圧器容量算定の3段階</h2>
+      <MemTable
+        headers={["段階", "計算", "例（設備500kW・需要率0.6・力率0.8）"]}
+        rows={[
+          ["1段階",  "個別最大 = 設備 × 需要率",  "500 × 0.6 = 300 kW"],
+          ["2段階",  "合成最大 = Σ個別最大 / 不等率（単一なら省略）","（不等率1.0と仮定）300 kW"],
+          ["3段階",  "kVA = 合成最大 / 力率",     "300 / 0.8 = 375 kVA"],
+          ["選定",   "標準容量+余裕で選ぶ",       "375 → 標準500 kVA を選定"],
+        ]}
+        source="出典：配電設計指針／JIS C 4304"
+      />
+
+      <h2 id="hyojun-tables">標準変圧器容量（JIS C 4304）</h2>
+      <MemTable
+        headers={["容量 [kVA]", "用途例"]}
+        rows={[
+          ["50, 75, 100",         "小規模事務所・店舗"],
+          ["150, 200, 300",       "中規模ビル・小工場"],
+          ["500, 750, 1000",      "中工場・大規模ビル"],
+          ["1500, 2000, 3000",    "大工場・受電変電所"],
+        ]}
+        source="出典：JIS C 4304"
+        note="標準容量から『算出値以上で最も近いもの』を選ぶ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "変圧器容量 = 設備容量 / 力率",
+          correct: "需要率を介する：設備容量 × 需要率 / 力率" },
+        { wrong: "変圧器容量の単位は kW",
+          correct: "変圧器容量は『kVA』（皮相電力）。kW は有効電力の単位" },
+        { wrong: "算出値ぴったりの容量を選ぶ",
+          correct: "標準容量から余裕を持って『以上で最も近い』ものを選ぶ" },
+        { wrong: "需要家が複数でも不等率は1とする",
+          correct: "複数需要家なら不等率を考慮（>1で合成最大が小さくなる）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "変圧器容量算定の3段階は？",            a: "①設備×需要率 ②÷不等率 ③÷力率" },
+        { q: "変圧器容量の単位は？",                 a: "kVA（皮相電力）" },
+        { q: "設備500kW・需要率0.6・力率0.8の必要kVAは？", a: "500×0.6/0.8 = 375 kVA" },
+        { q: "標準容量の選び方は？",                 a: "算出値以上で最も近い標準値（余裕10〜20%）" },
+        { q: "標準容量100kVAの上の標準は？",         a: "150 kVA" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
+      <PageNav
+        prevId="futorito"     prevTitle="不等率"
+        nextId="haiden-kanri" nextTitle="配電管理"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6-E. HaidenKanriPage（配電管理・freq:mid）
+// ─────────────────────────────────────────────
+function HaidenKanriPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="配電系統の信頼度向上策として最も一般的なものはどれか"
+        choices={["架空電線路の撤去","ループ系統化・ネットワーク化","変圧器容量の最小化","電圧の引き下げ"]}
+        correctIndex={1}
+        year="基本"
+        note="ループ・ネットワーク化で停電時間を短縮"
+      />
+
+      <h2 id="overview">1. 全体像 — 配電管理の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '配電管理', sub: '電圧・力率・信頼度', theme: 'blue' }}
+        top={{ label: '電気事業法・電技解釈', sub: '上位（保安・品質）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '電圧管理', sub: '101±6V/202±20V', theme: 'orange', arrowLabel: '管理1' }}
+        right={{ label: '力率管理', sub: 'cosθ ≥ 0.85（割引境界）', theme: 'cyan', arrowLabel: '管理2' }}
+        bottom={{ label: '信頼度', sub: 'ループ化・自動切替', theme: 'green', arrowLabel: '管理3' }}
+      />
+      <MemTable
+        headers={["管理項目", "目的", "代表的施策"]}
+        rows={[
+          ["電圧管理",   "需要家への電圧維持",         "電技解釈第14条 / 100V系=101±6V維持"],
+          ["力率管理",   "電力品質・効率",             "進相コンデンサ自動切替"],
+          ["信頼度管理", "停電時間短縮",               "ループ系統・自動区分開閉器・配電自動化"],
+          ["損失低減",   "配電損失の最小化",           "電圧昇圧・力率改善・電線太径化"],
+        ]}
+        source="出典：電気事業法／電技解釈／電気事業便覧"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>電圧管理: 100V系=<strong>101±6V</strong>、200V系=<strong>202±20V</strong>（電気事業法）</li>
+          <li>力率管理: cosθ ≥ <strong>0.85</strong>で電力料金割引（電力会社契約）</li>
+          <li>信頼度向上: <strong>ループ化・自動区分開閉器・配電自動化システム</strong></li>
+          <li>配電損失: 電圧昇圧（22kV→33kV等）で <strong>I²R損失を 1/n² に削減</strong></li>
+          <li>停電対応: 区間ごとに自動区分→事故区間のみ切り離し→他区間早期復電</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R03・H30・H28"
+        tags={["配電管理","電圧維持","信頼度","力率"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電圧をきちんと保つ", "電圧維持義務",                "事業法第26条で需要家供給電圧を規定"],
+          ["停電時間を減らす",  "供給信頼度の向上",            "ループ化・自動化で実現"],
+          ["配電線が一筆書き",   "放射状配電（ラジアル方式）",  "シンプルだが事故時影響大"],
+          ["配電線が輪",        "ループ配電方式",              "事故時迂回可・信頼度高"],
+          ["他区間に切り替え",   "自動区分開閉器による系統切替","停電時間短縮の中核"],
+        ]}
+        source="出典：電気事業法／電気事業便覧"
+      />
+
+      <h2 id="tables">電圧維持の規定値（電気事業法施行規則第38条）</h2>
+      <MemTable
+        headers={["公称電圧", "維持範囲", "備考"]}
+        rows={[
+          ["100 V", "101 ± 6 V（95〜107 V）", "一般家庭用"],
+          ["200 V", "202 ± 20 V（182〜222 V）","動力用"],
+        ]}
+        source="出典：電気事業法施行規則 第38条／令和6年現行版"
+        note="100V系は ±6V、200V系は ±20V（200V系の方が広い）"
+      />
+
+      <h2 id="shintaisei-tables">配電方式と信頼度</h2>
+      <MemTable
+        headers={["方式", "特徴", "信頼度", "コスト"]}
+        rows={[
+          ["放射状（ラジアル）", "1筆書き・末端で行き止まり",     "低（事故で全停電）",   "低"],
+          ["ループ",             "両端で電源接続・迂回可",         "中",                   "中"],
+          ["スポットネットワーク","複数電源並列・自動切替",         "高（瞬時復電）",       "高"],
+          ["バンクスポット",     "都市部高層ビル等の超高信頼度",   "極高",                 "極高"],
+        ]}
+        source="出典：電気事業便覧"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "100V系の電圧維持範囲は ±20V",
+          correct: "100V系は『±6V』（95〜107V）。±20V は 200V系" },
+        { wrong: "ループ配電は信頼度が低い",
+          correct: "ループ配電は信頼度『中〜高』（迂回可で停電時間短縮）" },
+        { wrong: "電圧昇圧すると配電損失は変わらない",
+          correct: "電圧をn倍にすると同じ電力で電流は1/n、I²R損失は1/n²に減少" },
+        { wrong: "力率は1.0が常に経済的",
+          correct: "過補償（進み力率）は機器悪影響あり。0.85〜0.95が実用域" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "100V系の電圧維持範囲は？",  a: "101 ± 6 V（95〜107 V）" },
+        { q: "200V系の電圧維持範囲は？",  a: "202 ± 20 V（182〜222 V）" },
+        { q: "電力料金割引の力率境界は？", a: "cosθ ≥ 0.85" },
+        { q: "信頼度最高の配電方式は？",  a: "スポットネットワーク（瞬時復電）" },
+        { q: "電圧昇圧の損失削減効果は？", a: "電流1/n、損失1/n²" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
+      <PageNav
+        prevId="hensyatsuki-yoryo"  prevTitle="変圧器容量"
+        nextId="juden-setsubi-kanri" nextTitle="受電設備管理"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 6-F. JudenSetsubiKanriPage（受電設備管理・freq:mid）
+// ─────────────────────────────────────────────
+function JudenSetsubiKanriPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="高圧受電設備の主任技術者による日常点検として推奨されない項目はどれか"
+        choices={["異音・異臭の確認","碍子の汚損確認","充電部の直接接触による温度測定","保護継電器の動作表示確認"]}
+        correctIndex={2}
+        year="基本"
+        note="充電部直接接触は感電事故の元・サーモグラフィ等で非接触測定"
+      />
+
+      <h2 id="overview">1. 全体像 — 受電設備管理の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '受電設備管理', sub: '日常/月次/年次点検', theme: 'blue' }}
+        top={{ label: '電気事業法第43条', sub: '主任技術者の監督義務', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '日常点検', sub: '目視・異音・温度', theme: 'orange', arrowLabel: '頻度1' }}
+        right={{ label: '月次点検', sub: '計器・保護継電器', theme: 'cyan', arrowLabel: '頻度2' }}
+        bottom={{ label: '年次点検', sub: '停電・絶縁抵抗測定', theme: 'green', arrowLabel: '頻度3' }}
+      />
+      <MemTable
+        headers={["項目", "目的", "実施頻度"]}
+        rows={[
+          ["日常点検",       "異常の早期発見（外観・五感）",     "毎日〜毎週"],
+          ["月次点検",       "計器類・保護継電器の動作確認",     "月1回"],
+          ["年次点検",       "停電して内部点検・絶縁抵抗測定",   "年1回"],
+          ["精密点検",       "数年ごとの大規模分解整備",         "3〜5年に1回"],
+        ]}
+        source="出典：保安規程モデル／電気事業便覧"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>日常点検: <strong>目視・異音・異臭・温度</strong>（充電部に直接触れない）</li>
+          <li>月次点検: <strong>保護継電器動作表示・計器値・接地抵抗</strong>等</li>
+          <li>年次点検: <strong>停電して絶縁抵抗測定・接続部締付確認</strong></li>
+          <li>絶縁抵抗測定: 低圧 = <strong>絶縁抵抗計（メガー・500V/1000V）</strong></li>
+          <li>主任技術者は点検記録を作成・保存（保安規程に基づく）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R03・H29"
+        tags={["受電設備","日常点検","年次点検","主任技術者"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["毎日のチェック",     "日常点検",                   "目視・五感中心（停電不要）"],
+          ["月1回のチェック",   "月次点検",                   "計器値読取・保護動作確認"],
+          ["年1回の停電点検",    "年次点検",                   "停電して絶縁抵抗測定等"],
+          ["停電して測る抵抗",   "絶縁抵抗測定",               "メガー（絶縁抵抗計）使用"],
+          ["熱を非接触で測る",   "サーモグラフィによる温度測定", "充電部直接接触禁止のため"],
+        ]}
+        source="出典：保安規程モデル／電気事業便覧"
+      />
+
+      <h2 id="tables">点検頻度別の主要項目</h2>
+      <MemTable
+        headers={["頻度", "主要点検項目", "工具"]}
+        rows={[
+          ["日常点検", "異音/異臭/振動/温度/外観/油漏れ",         "目視・サーモグラフィ・耳"],
+          ["月次点検", "保護継電器動作表示/計器値/接地抵抗",       "接地抵抗計・操作盤"],
+          ["年次点検", "絶縁抵抗測定/接続部締付/油試験/動作試験", "メガー・トルクレンチ・試験器"],
+          ["精密点検", "分解整備/部品交換/絶縁油濾過",             "専門業者・大規模設備"],
+        ]}
+        source="出典：保安規程モデル"
+      />
+
+      <h2 id="zetsuen-tables">絶縁抵抗測定（低圧電路・電技解釈第58条）</h2>
+      <MemTable
+        headers={["対地電圧", "絶縁抵抗値"]}
+        rows={[
+          ["150 V 以下",        "0.1 MΩ 以上"],
+          ["150V超 300V以下",   "0.2 MΩ 以上"],
+          ["300V超",            "0.4 MΩ 以上"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第58条／令和7年11月版"
+        note="数値の根拠は絶縁劣化判定。年次点検で測定して 0.1/0.2/0.4 を下回らないこと"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "日常点検は停電して実施",
+          correct: "日常点検は『活線状態』。停電は年次点検" },
+        { wrong: "充電部の温度は触って確認",
+          correct: "感電事故になる。サーモグラフィ等の『非接触測定』" },
+        { wrong: "絶縁抵抗測定の単位は Ω",
+          correct: "絶縁抵抗は『MΩ（メガオーム）』。0.1/0.2/0.4 MΩ" },
+        { wrong: "保護継電器の動作確認は年1回でよい",
+          correct: "保護継電器の動作表示は『月次点検』で確認" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "日常点検の主な確認項目は？",   a: "異音/異臭/温度/外観（活線状態）" },
+        { q: "年次点検の主な実施項目は？",   a: "停電→絶縁抵抗測定/接続締付/動作試験" },
+        { q: "対地電圧150V以下の絶縁抵抗値は？", a: "0.1 MΩ 以上" },
+        { q: "対地電圧300V超の絶縁抵抗値は？",   a: "0.4 MΩ 以上" },
+        { q: "絶縁抵抗測定に使う計器は？",       a: "絶縁抵抗計（メガー・500V/1000V）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
+      <PageNav
+        prevId="haiden-kanri"          prevTitle="配電管理"
+        nextId="furyoku-gijutsukijun"   nextTitle="風力発電の技術基準"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-A. FuryokuGijutsukijunPage（風力発電の技術基準・freq:mid）
+// ─────────────────────────────────────────────
+function FuryokuGijutsukijunPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="風力発電設備の風車構造に関する技術基準で、想定すべき風況条件として正しいものはどれか"
+        choices={["平均風速のみ","最大瞬間風速のみ","平均風速・最大瞬間風速・乱流強度","風向のみ"]}
+        correctIndex={2}
+        year="基本"
+        note="風力発電技術基準（経産省告示）"
+      />
+
+      <h2 id="overview">1. 全体像 — 風力発電技術基準の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '発電用風力設備技術基準', sub: '経産省告示', theme: 'blue' }}
+        top={{ label: '電気事業法 第39条', sub: '上位法（技術基準遵守）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '構造強度', sub: '風荷重・タワー等', theme: 'orange', arrowLabel: '対象1' }}
+        right={{ label: '保護装置', sub: 'ブレーキ・ヨー制御', theme: 'cyan', arrowLabel: '対象2' }}
+        bottom={{ label: '系統連系', sub: '連系規程・解列要件', theme: 'green', arrowLabel: '関連' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本基準との関係"]}
+        rows={[
+          ["電気事業法 第39条",            "技術基準遵守義務",       "上位（適合義務の根拠）"],
+          ["発電用風力設備技術基準（告示）","風力設備の技術要件",     "本則（経産省告示）"],
+          ["JIS C 1400-1（IEC 61400）",   "風車構造設計の国際規格", "並立（実務基準）"],
+          ["系統連系規程 JEAC9701",       "電力系統との連系要件",   "関連（接続条件）"],
+        ]}
+        source="出典：電気事業法／発電用風力設備技術基準（経産省告示）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>対象: <strong>20 kW 以上</strong>の風力発電設備（経産省告示）</li>
+          <li>構造: <strong>風荷重・地震荷重・自重</strong>に対する強度確保</li>
+          <li>風況評価: <strong>平均風速・最大瞬間風速・乱流強度</strong>を考慮</li>
+          <li>保護装置: <strong>ブレーキ・ヨー制御・過回転防止</strong>必須</li>
+          <li>系統連系: 系統連系規程JEAC9701に従う（解列・電圧・周波数）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH05"
+        category="05 再エネ技術基準"
+        importance="B"
+        freq="散発"
+        examType="A問題"
+        targets="R04・H30"
+        tags={["風力発電","再エネ","技術基準","系統連系"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["風で発電する設備",     "発電用風力設備",             "20kW以上で技術基準対象"],
+          ["風の強さ",             "風速",                       "平均/最大瞬間/乱流"],
+          ["回転を止める",         "ブレーキ装置",               "緊急停止・空転防止"],
+          ["風向きに合わせる",     "ヨー制御",                   "ロータを風向に向ける機構"],
+          ["回りすぎを防ぐ",       "過回転防止装置",             "発電機保護（オーバースピード）"],
+        ]}
+        source="出典：発電用風力設備技術基準（経産省告示）"
+      />
+
+      <h2 id="tables">風力設備の主要技術要件</h2>
+      <MemTable
+        headers={["項目", "要件", "備考"]}
+        rows={[
+          ["対象規模",   "20 kW 以上",                    "小型風力（〜20kW）は別告示"],
+          ["構造強度",   "風荷重・地震荷重・自重に耐える","JIS C 1400-1相当"],
+          ["保護装置",   "ブレーキ・ヨー制御・過回転防止","複数の独立系統"],
+          ["系統連系",   "JEAC9701準拠",                  "解列・電圧・周波数管理"],
+          ["騒音・振動", "周辺環境配慮",                  "風車騒音規制等"],
+        ]}
+        source="出典：発電用風力設備技術基準（経産省告示）／JIS C 1400-1"
+      />
+
+      <h2 id="hogo-tables">風力発電の主要保護装置</h2>
+      <MemTable
+        headers={["保護装置", "目的", "動作条件"]}
+        rows={[
+          ["ブレーキ",         "緊急停止・点検時停止",       "外部信号 or 過回転検知"],
+          ["ヨー制御",         "ロータを風向に追従",         "風向計測値に基づく自動制御"],
+          ["過回転防止",       "発電機の過回転防止",         "ロータ回転数監視"],
+          ["雷保護装置",       "落雷時の機器保護",           "雷電流をブレード→大地へ"],
+          ["系統連系保護",     "OVR/UVR/OFR/UFR/単独運転検出","系統異常時に解列"],
+        ]}
+        source="出典：発電用風力設備技術基準／系統連系規程JEAC9701"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "風力発電技術基準は全規模に適用",
+          correct: "対象は『20 kW 以上』。小型風力は別告示" },
+        { wrong: "風況評価は平均風速だけでよい",
+          correct: "『平均風速・最大瞬間風速・乱流強度』の3要素を評価" },
+        { wrong: "ヨー制御はブレーキの役割",
+          correct: "ヨー制御は『ロータを風向に向ける』機構（追従）" },
+        { wrong: "風力発電は系統連系規程の対象外",
+          correct: "風力も他の分散型電源同様『JEAC9701』に従う" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "風力発電技術基準の対象規模は？",     a: "20 kW 以上" },
+        { q: "風況評価の3要素は？",               a: "平均風速・最大瞬間風速・乱流強度" },
+        { q: "ヨー制御の役割は？",                a: "ロータを風向に追従させる" },
+        { q: "風力の系統連系規程は？",            a: "JEAC9701" },
+        { q: "風力技術基準の根拠条文は？",        a: "電気事業法第39条 + 経産省告示" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec05" }]} />
+      <PageNav
+        prevId="juden-setsubi-kanri"     prevTitle="受電設備管理"
+        nextId="taiyouchi-gijutsukijun"  nextTitle="太陽電池発電の技術基準"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-B. TaiyouchiGijutsukijunPage（太陽電池発電の技術基準・freq:mid）
+// ─────────────────────────────────────────────
+function TaiyouchiGijutsukijunPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="太陽電池発電設備の支持物の構造強度は何に対して耐える設計とすべきか"
+        choices={[
+          "自重のみ",
+          "自重+風荷重のみ",
+          "自重+風荷重+地震荷重+積雪荷重",
+          "電気的負荷のみ",
+        ]}
+        correctIndex={2}
+        year="頻出"
+        note="設備支持物は自重・風・地震・積雪を考慮"
+      />
+
+      <h2 id="overview">1. 全体像 — 太陽電池発電技術基準の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '発電用太陽電池設備技術基準', sub: '経産省告示', theme: 'blue' }}
+        top={{ label: '電気事業法 第39条', sub: '上位法（技術基準遵守）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '支持物構造', sub: '自重/風/地震/積雪', theme: 'orange', arrowLabel: '対象1' }}
+        right={{ label: '電気回路', sub: '直流回路の保護', theme: 'cyan', arrowLabel: '対象2' }}
+        bottom={{ label: '系統連系', sub: '逆変換装置・解列', theme: 'green', arrowLabel: '関連' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本基準との関係"]}
+        rows={[
+          ["電気事業法 第39条",                 "技術基準遵守義務",           "上位（適合義務の根拠）"],
+          ["発電用太陽電池設備技術基準（告示）", "太陽光設備の技術要件",       "本則（経産省告示）"],
+          ["JIS C 8955",                        "太陽電池アレイ用支持物の設計", "並立（実務規格）"],
+          ["系統連系規程 JEAC9701",            "電力系統との連系要件",       "関連（接続条件）"],
+        ]}
+        source="出典：電気事業法／発電用太陽電池設備技術基準（経産省告示）／JIS C 8955"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>対象: 出力<strong>10 kW 以上</strong>の太陽電池発電設備（小規模事業用）</li>
+          <li>支持物: <strong>自重・風荷重・地震荷重・積雪荷重</strong>に対する強度確保</li>
+          <li>電気回路: <strong>直流側の絶縁・接地・過電流保護</strong>必須</li>
+          <li>逆変換装置（PCS）: <strong>系統連系保護機能</strong>を内蔵</li>
+          <li>感電防止: <strong>充電部のカバー・絶縁・接地</strong>等</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH05"
+        category="05 再エネ技術基準"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R03・H30"
+        tags={["太陽電池","太陽光","再エネ","技術基準"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["太陽光パネル",       "太陽電池モジュール",         "発電単位（複数で1アレイ）"],
+          ["パネルの架台",       "支持物",                     "自重/風/地震/積雪に耐える"],
+          ["インバータ",         "逆変換装置（PCS）",         "直流→交流変換 + 系統連系保護"],
+          ["パネルの直流側",     "直流回路",                   "絶縁・接地・過電流保護対象"],
+          ["太陽光発電所",       "太陽電池発電設備",           "10kW以上で技術基準対象"],
+        ]}
+        source="出典：発電用太陽電池設備技術基準（経産省告示）"
+      />
+
+      <h2 id="tables">太陽電池発電設備の主要技術要件</h2>
+      <MemTable
+        headers={["項目", "要件", "備考"]}
+        rows={[
+          ["対象規模",   "10 kW 以上の事業用",            "小規模住宅用は対象外"],
+          ["支持物",     "自重+風+地震+積雪に耐える",     "JIS C 8955準拠"],
+          ["直流側絶縁", "感電・地絡防止のための絶縁",     "電技解釈準拠"],
+          ["接地",       "PCS筐体・支持物等の接地",        "電技解釈第17条のC種/D種"],
+          ["系統連系",   "PCS内蔵保護 + JEAC9701準拠",   "解列・電圧・周波数管理"],
+        ]}
+        source="出典：発電用太陽電池設備技術基準／JIS C 8955"
+      />
+
+      <h2 id="kasai-tables">太陽光発電火災事故の主因</h2>
+      <MemTable
+        headers={["原因", "対策"]}
+        rows={[
+          ["直流側のアーク（断線・接続不良）","定期点検・サーモグラフィ点検"],
+          ["逆流防止ダイオード故障",         "保守点検・予備品交換"],
+          ["パネル裏面の発熱（影・破損）",   "影回避設計・破損時即停止"],
+          ["接続ボックス内の絶縁劣化",       "防水・年次絶縁抵抗測定"],
+        ]}
+        source="出典：消防庁太陽光発電火災事故報告"
+        note="直流アークは交流アークと違い『自然消弧しない』ため危険"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "太陽電池発電技術基準は全規模に適用",
+          correct: "対象は『10 kW 以上』の事業用。小規模住宅用は対象外" },
+        { wrong: "支持物は自重と風荷重だけで設計",
+          correct: "『自重+風+地震+積雪』の4要素を考慮" },
+        { wrong: "PCSは直流→直流変換装置",
+          correct: "PCSは『直流→交流』変換装置 + 系統連系保護機能内蔵" },
+        { wrong: "直流アークは交流アーク同様に自然消弧する",
+          correct: "直流アークは『自然消弧しない』。火災リスクが高い" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "太陽電池発電技術基準の対象規模は？", a: "10 kW 以上の事業用" },
+        { q: "支持物が耐えるべき4荷重は？",        a: "自重・風荷重・地震荷重・積雪荷重" },
+        { q: "PCSの2大機能は？",                   a: "直流→交流変換 + 系統連系保護" },
+        { q: "支持物設計のJIS規格は？",            a: "JIS C 8955" },
+        { q: "直流アークの特徴は？",               a: "自然消弧しない（火災リスク高）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec05" }]} />
+      <PageNav
+        prevId="furyoku-gijutsukijun"  prevTitle="風力発電の技術基準"
+        nextId="keito-renkei"          nextTitle="系統連系・保護装置"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-C. KeitoRenkeiPage（系統連系・保護装置・freq:mid）
+// ─────────────────────────────────────────────
+function KeitoRenkeiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="分散型電源の系統連系における『単独運転検出装置』の主目的はどれか"
+        choices={[
+          "電圧降下の防止",
+          "系統停電時に分散型電源の運転継続を防ぐ",
+          "力率の改善",
+          "過電圧時の解列",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="単独運転は感電・機器損傷の元・必ず解列"
+      />
+
+      <h2 id="overview">1. 全体像 — 系統連系保護の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '系統連系規程 JEAC9701', sub: '保護協調・解列要件', theme: 'blue' }}
+        top={{ label: '電気事業法・解釈', sub: '上位（保安体制）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '電圧異常検出', sub: 'OVR/UVR', theme: 'orange', arrowLabel: '保護1' }}
+        right={{ label: '周波数異常検出', sub: 'OFR/UFR', theme: 'cyan', arrowLabel: '保護2' }}
+        bottom={{ label: '単独運転検出', sub: '受動・能動方式', theme: 'green', arrowLabel: '保護3' }}
+      />
+      <MemTable
+        headers={["規定/装置", "役割", "本系統連系との関係"]}
+        rows={[
+          ["系統連系規程 JEAC9701", "連系の技術要件・保護協調", "本則（実務基準）"],
+          ["電技解釈 第220〜232条","分散型電源連系の法的根拠", "上位（法令）"],
+          ["保護継電器（OVR等）",  "系統異常を検知し解列指令", "実装（具体機器）"],
+          ["単独運転検出装置",     "系統停電時に解列指令",     "実装（必須装置）"],
+        ]}
+        source="出典：系統連系規程JEAC9701／電気設備の技術基準の解釈（令和7年11月版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>連系規程: <strong>JEAC9701（系統連系規程）</strong>が業界標準</li>
+          <li>5大保護: <strong>OVR / UVR / OFR / UFR / 単独運転検出</strong></li>
+          <li>単独運転: 系統停電時に分散型電源だけが運転継続する状態（<strong>必ず解列</strong>）</li>
+          <li>単独運転検出: <strong>受動的方式（電圧・周波数監視）</strong> + <strong>能動的方式（信号注入）</strong></li>
+          <li>解列時間: 異常検出から<strong>0.1〜数秒以内</strong>で電力系統から切り離し</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH05"
+        category="05 再エネ技術基準"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R03・H30"
+        tags={["系統連系","保護装置","単独運転","解列"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電力会社の線につなぐ", "電力系統に連系する",         "JEAC9701に従う"],
+          ["切り離す",             "解列する",                   "保護継電器の動作結果"],
+          ["勝手に運転を続ける",   "単独運転状態",               "感電・機器損傷の原因"],
+          ["停電を見つける",       "単独運転検出",               "受動 + 能動の両方式併用"],
+          ["電圧が高すぎる",       "過電圧（OVR動作条件）",      "OVR=Over Voltage Relay"],
+        ]}
+        source="出典：系統連系規程JEAC9701"
+      />
+
+      <h2 id="tables">系統連系の5大保護装置</h2>
+      <MemTable
+        headers={["略称", "名称", "動作条件", "目的"]}
+        rows={[
+          ["OVR", "過電圧継電器",           "電圧上限超過",   "系統電圧上昇時に解列"],
+          ["UVR", "不足電圧継電器",         "電圧下限未満",   "系統電圧低下時に解列"],
+          ["OFR", "周波数上昇継電器",       "周波数上限超過", "系統周波数上昇時に解列"],
+          ["UFR", "周波数低下継電器",       "周波数下限未満", "系統周波数低下時に解列"],
+          ["—",   "単独運転検出装置",       "系統停電",       "停電時に分散型電源を解列"],
+        ]}
+        source="出典：系統連系規程JEAC9701"
+        note="OVR/UVR/OFR/UFR + 単独運転検出 の5装置が連系保護の柱"
+      />
+
+      <h2 id="tandoku-tables">単独運転検出方式</h2>
+      <MemTable
+        headers={["方式", "原理", "メリット", "デメリット"]}
+        rows={[
+          ["受動的方式", "電圧/周波数の急変を監視",      "シンプル・低コスト",   "検出感度低い場合あり"],
+          ["能動的方式", "意図的に信号を注入し応答監視", "確実な検出",           "通常運転に微小影響"],
+          ["併用",       "受動+能動の組合せ",            "確実性・即応性両立",   "コスト高"],
+        ]}
+        source="出典：系統連系規程JEAC9701"
+        note="現代の系統連系では『受動+能動の併用』が標準"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "OVR は過電流検出装置",
+          correct: "OVR は『Over Voltage Relay = 過電圧継電器』。過電流ではない" },
+        { wrong: "単独運転は望ましい状態",
+          correct: "単独運転は『系統停電時に分散型電源だけが運転継続』する危険状態。必ず解列" },
+        { wrong: "受動的方式だけで単独運転を確実に検出可能",
+          correct: "受動方式は感度限界あり。実用上は『能動的方式と併用』" },
+        { wrong: "解列時間は数分でよい",
+          correct: "異常検出から『0.1〜数秒以内』に解列が必要（迅速性が鍵）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "系統連系規程の名称は？",            a: "JEAC9701（電気協同研究会）" },
+        { q: "5大保護装置は？",                   a: "OVR・UVR・OFR・UFR + 単独運転検出装置" },
+        { q: "単独運転とは？",                    a: "系統停電時に分散型電源だけが運転継続する危険状態" },
+        { q: "単独運転検出の2方式は？",           a: "受動的方式 + 能動的方式（実用は併用）" },
+        { q: "解列の時間目安は？",                a: "0.1〜数秒以内（異常検出から）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec05" }]} />
+      <PageNav
+        prevId="taiyouchi-gijutsukijun" prevTitle="太陽電池発電の技術基準"
+        nextId="kosakubutsu-bunrui"     nextTitle="電気工作物の区分"
+        onNav={onNav}
+      />
     </div>
   );
 }
@@ -6735,6 +8020,9 @@ function ZetsuenIchiranPage({ onNav, data }) {
         year="頻出"
         note="読み終えたら戻って解こう"
       />
+
+      <h2 id="quick-map">0. 1分マップ — 絶縁耐力試験の全体像</h2>
+      <ZetsuenFullMapSvg />
 
       <h2 id="overview">1. 全体像 — 絶縁耐力試験の位置づけ</h2>
       <HoukiOverviewSvg

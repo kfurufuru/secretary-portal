@@ -29,6 +29,15 @@ VALUES_PATH = Path(__file__).parent / "denken_hoki_values.json"
 
 # 監査対象ページ（実装済み・StubPage除外）
 TARGET_PAGES = [
+    "JuyoritsuGainenPage",
+    "FuritsuPage",
+    "FutoritoPage",
+    "HensyatsukiYoryoPage",
+    "HaidenKanriPage",
+    "JudenSetsubiKanriPage",
+    "FuryokuGijutsukijunPage",
+    "TaiyouchiGijutsukijunPage",
+    "KeitoRenkeiPage",
     "ZetsuenTairyokuPage",
     "DenatsuKoukaPage",
     "ShisenHikisamaPage",
@@ -146,6 +155,7 @@ def audit_page(name: str, body: str) -> list[tuple[str, str, str]]:
         r"|配電設計指針"
         r"|系統連系規程"
         r"|三角関数|数学公式|物理公式"
+      r"|保安規程|経産省告示|消防庁|JEC9701|連系規程|JEAC8001|JIS\s*C\s*8955|JIS\s*C\s*1400|JIS\s*C\s*4304"
     )
     bad = [s for s in sources if not version_pattern.search(s)]
     if sources and bad:

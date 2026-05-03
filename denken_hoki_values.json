@@ -56,6 +56,116 @@
       "電気工事業法 第19条"
     ]
   },
+  "JuyoritsuGainenPage": {
+    "source": "電気事業便覧／配電設計指針",
+    "must_contain": [
+      "需要率",
+      "負荷率",
+      "不等率",
+      "1.0",
+      "100%",
+      "ピーク分散",
+      "平準化"
+    ]
+  },
+  "FuritsuPage": {
+    "source": "電気事業便覧／配電設計指針",
+    "must_contain": [
+      "負荷率",
+      "平均需要",
+      "最大需要",
+      "電力量",
+      "720",
+      "8,760",
+      "デマンド"
+    ]
+  },
+  "FutoritoPage": {
+    "source": "電気事業便覧／配電設計指針",
+    "must_contain": [
+      "不等率",
+      "個別最大",
+      "合成最大",
+      "1.0",
+      "1.5",
+      "ピーク分散",
+      "変圧器容量"
+    ]
+  },
+  "HensyatsukiYoryoPage": {
+    "source": "配電設計指針／JIS C 4304",
+    "must_contain": [
+      "kVA",
+      "需要率",
+      "不等率",
+      "力率",
+      "標準容量",
+      "JIS C 4304"
+    ]
+  },
+  "HaidenKanriPage": {
+    "source": "電気事業法／電技解釈／電気事業便覧",
+    "must_contain": [
+      "電圧管理",
+      "力率管理",
+      "信頼度",
+      "ループ",
+      "101 ± 6 V",
+      "202 ± 20 V",
+      "0.85"
+    ]
+  },
+  "JudenSetsubiKanriPage": {
+    "source": "保安規程モデル／電気事業便覧",
+    "must_contain": [
+      "日常点検",
+      "月次点検",
+      "年次点検",
+      "絶縁抵抗",
+      "0.1 MΩ",
+      "0.4 MΩ",
+      "サーモグラフィ"
+    ]
+  },
+  "FuryokuGijutsukijunPage": {
+    "source": "発電用風力設備技術基準（経産省告示）／JIS C 1400-1",
+    "must_contain": [
+      "20 kW",
+      "風力発電",
+      "風荷重",
+      "ヨー制御",
+      "過回転",
+      "JEAC9701",
+      "JIS C 1400"
+    ]
+  },
+  "TaiyouchiGijutsukijunPage": {
+    "source": "発電用太陽電池設備技術基準（経産省告示）／JIS C 8955",
+    "must_contain": [
+      "10 kW",
+      "太陽電池",
+      "支持物",
+      "風荷重",
+      "地震荷重",
+      "積雪荷重",
+      "PCS",
+      "JIS C 8955"
+    ]
+  },
+  "KeitoRenkeiPage": {
+    "source": "系統連系規程JEAC9701／電気設備の技術基準の解釈（令和7年11月版）",
+    "must_contain": [
+      "JEAC9701",
+      "OVR",
+      "UVR",
+      "OFR",
+      "UFR",
+      "単独運転検出",
+      "解列",
+      "受動的方式",
+      "能動的方式"
+    ]
+  },
   "ZetsuenTairyokuPage": {
     "source": "電気設備の技術基準の解釈 第14・15条／JEC規格（令和7年11月版／2010）",
     "must_contain": [
