@@ -3046,8 +3046,14 @@ function HomePage({ onNav, data }) {
             TODO(Phase2): localStorage の hoki_lastSeen_* から最終閲覧ページを取得
             TODO(Phase2): portal-summary.json から進捗率を取得（現在は実態反映のハードコード） */}
         {(() => {
-          // 実装済みページから最終閲覧を localStorage で取得（フォールバック付き）
-          const readyIds = ['setsuchi-ichiran', 'zetsuen-ichiran', 'rikkaku-ichiran', 'den-atsu-kubun', 'koji-shi-ho', 'kakomon-random'];
+          // 実装済みページ（ready:true）を WIKI_DATA から動的取得（並列セッションの追加実装に追従）
+          const wd = window.WIKI_DATA;
+          const allReady = (wd?.chapters || []).flatMap(ch => (ch.pages || []).filter(p => p.ready));
+          const allTotal = (wd?.chapters || []).flatMap(ch => ch.pages || []);
+          // top は学習対象外なので除外
+          const readyPages = allReady.filter(p => p.id !== 'top');
+          const readyIds = readyPages.map(p => p.id);
+          const titleById = Object.fromEntries(allReady.map(p => [p.id, p.title]));
           let lastPage = null;
           let lastTime = 0;
           readyIds.forEach(id => {
@@ -3055,19 +3061,12 @@ function HomePage({ onNav, data }) {
             if (t > lastTime) { lastTime = t; lastPage = id; }
           });
           // フォールバック: 接地工事一覧（最頻出）
-          const targetId = lastPage || 'setsuchi-ichiran';
-          const targetTitle = {
-            'setsuchi-ichiran': '接地工事一覧表',
-            'zetsuen-ichiran':  '絶縁耐力試験一覧表',
-            'rikkaku-ichiran':  '離隔距離一覧表',
-            'den-atsu-kubun':   '電圧区分一覧表',
-            'koji-shi-ho':      '電気工事士法',
-            'kakomon-random':   'ランダム10問演習',
-          }[targetId] || '学習を開始';
-          // 実態の実装率: 7/53 ≒ 13%
-          const implRate = 13;
-          const implCur = 7;
-          const implTotal = 53;
+          const targetId = lastPage || (readyIds[0] || 'setsuchi-ichiran');
+          const targetTitle = titleById[targetId] || '学習を開始';
+          // 実装率を動的計算（並列セッションが追加実装してもズレない）
+          const implCur = readyPages.length;
+          const implTotal = allTotal.length - 1; // top除外
+          const implRate = implTotal > 0 ? Math.round(implCur / implTotal * 100) : 0;
           const elapsedLabel = lastTime > 0
             ? `· ${Math.round((Date.now() - lastTime) / 60000)}分前`
             : '· 未学習';
