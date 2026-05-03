@@ -10,7 +10,7 @@ understanding_score: 4
 source: "2026-04-23 セッション（Fカンパニー導線診断→link_checker拡張→cron化）"
 verification_method: "link-check-results.json / heal_log.json の実データ検証"
 tags: ["ポータル", "ヘルスチェック", "link_checker", "セルフヒール", "可観測性", "cron"]
-related: ["portal-v2.html", "health-monitor/link_checker.py", "knowledge/mcp-claude-integration.md", "knowledge/promote-py-auto-promote-access-log.md", "knowledge/claude-long-edit-syntax-risk.md", "knowledge/cc-playbook.md"]
+related: ["portal.html", "health-monitor/link_checker.py", "knowledge/mcp-claude-integration.md", "knowledge/promote-py-auto-promote-access-log.md", "knowledge/claude-long-edit-syntax-risk.md", "knowledge/cc-playbook.md"]
 ---
 # Fカンパニーポータルの健全性可視化パターン
 
@@ -23,7 +23,7 @@ related: ["portal-v2.html", "health-monitor/link_checker.py", "knowledge/mcp-cla
 ## 4つの発見
 
 ### 1. サイト構造診断は back-link の数を数えるだけで分かる
-portal-v2.html から9サイトにリンク、各サイトはportalへの戻りリンクを持つ → ハブ&スポーク構造。ただし **サイト間横断リンクは business-skills のみ**で他は portal 経由必須 → ハブが死ぬと全断する脆弱構造。
+portal.html から9サイトにリンク、各サイトはportalへの戻りリンクを持つ → ハブ&スポーク構造。ただし **サイト間横断リンクは business-skills のみ**で他は portal 経由必須 → ハブが死ぬと全断する脆弱構造。
 
 ### 2. 「詳細を見る→」別ページは使われない
 heal_log.json（44KB）が2日前更新されても可視化UIが無いため誰も見ていなかった。portal の System Health カードに fetch + サマリ表示する形で統合 → 1クリックで状況把握。
