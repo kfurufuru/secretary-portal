@@ -21,7 +21,7 @@ status: 改善提案（実装は未着手）
 | 4 | admonition 7種類 → 4種類に圧縮（tip/note統合、abstract/info統合） | 全条文記事 | 30分 | 中 |
 | 5 | ==マーカー==使用を section 13（正解選択肢）のみに限定 | 1ファイル | 10分 | 中 |
 | 6 | section 14 委任フロー表を section 1 と統合・圧縮 | 1ファイル | 15分 | 中 |
-| 7 | SVG内 font-size 固定値 → CSS変数化（design-tokens 連携） | SVG 2件 | 15分 | 低 |
+| 7 | SVG内 font-size 固定値 → CSS変数化（design-tokens 連携） | SVG 2件 | 15分 | **見送り**（実測2件のみ・SVG attribute は CSS変数非対応・style属性回避策はROI低） |
 | 8 | linear-gradient 乱用（全体像クロス図の5色グラデ） | CSS | 10分 | 低 |
 | 9 | section 12 ひっかけ番号付きリストの 🔴🟡🟢 を残す（意味あり） | — | — | 維持 |
 | 10 | セルフチェック折りたたみ（??? question）の使用パターンは効果的 | — | — | 維持 |
