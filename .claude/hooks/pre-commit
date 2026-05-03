@@ -58,6 +58,8 @@ if [ -f inbox/active-edits.md ] && [ -f claim_edit.py ]; then
         echo "  対処2: 自分が claim している場合は --session で同じIDを指定"
         echo "  対処3: 緊急回避（非推奨）: git commit --no-verify"
         exit 1
+    else
+        echo "[pre-commit] ✓ アクティブな別セッションなし（claim 衝突 0 件）"
     fi
 fi
 

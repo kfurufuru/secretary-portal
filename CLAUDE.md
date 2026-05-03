@@ -52,6 +52,7 @@
 - **手動バックアップ禁止**: `.bak` `.old` `.tmp` `~` 付きファイルを作らない。退避は `git stash` または `git branch backup-XXX` を使う（`.gitignore` 登録済みだが、そもそも作成しないのが原則）
 - **同一リポへの並列Claudeセッション禁止**: 同じgitリポジトリに対し複数のClaude Codeセッションを同時稼働させない。`git add`/`commit`/`pull --rebase` が他セッションのstaged変更を巻き込み、コミットメッセージとファイル内容の対応が壊れる（実例: 2026-05-02、第57条 audit修正が「第7条fix」コミットにバンドルされた）。並列が必要なら **別ブランチ** または **時間分離** で運用する
 - **並列セッション発生時の引継ぎプロトコル**（2026-05-03 確立）: 並列稼働に気づいたら、止める側は以下を引継ぎ書として渡す：①該当アーキテクチャ書のパス（必読）②ext: フィールド等の実装規約 ③動的化の有無 ④残タスク（優先度付き）⑤試験日等のタイムライン。受け取る側は **着手前に** ①引継ぎ書を Read ②`git log --since="24 hours ago" -- <file>` で並列分の差分確認 ③矛盾を整理してから実装。実例: 2026-05-03、denken-hoki-wiki.html で並列稼働発生→引継ぎ書 `inbox/handoff-2026-05-03-denken-hoki-phase3.md` でクリーンに統合
+- **commit 前 diff 確認の必須化**（2026-05-03 確立）: `git commit` 実行直前に必ず `git diff --cached --stat <staged-files>` で実差分を目視確認する。Editツール成功 ≠ ファイル変更維持。並列セッションの `git reset --hard` や Obsidian同期で巻き戻されるケースがある。差分0件のままcommitすると空commit/部分commitで履歴が壊れる。**事前予防（このルール）+ 事後検出（pre-commit hook セクション5）の二段防衛**。実例: 2026-05-03、claude-code-guide.html の7編集が並列セッションで全revert → `git commit -o` が「no changes added」で失敗 → 並列完了確認後に再適用で復旧
 - **denken-hoki-wiki.html 編集規約**（Phase 3 完了後・2026-05-03）: ①新ページ実装時は WIKI_DATA に `ready:true` 不要（renderPage の switch が真実のソース）②`ext:` フィールド変更時は `python scripts/denken_hoki_link_check.py` を実行し death link なし確認 ③編集後は `python denken_hoki_audit.py --quiet` で 全PASS 確認（pre-commit hook 自動実行）④Hub-Body 責務境界：本文・条文解説は Body (mkdocs)、進捗・履歴・横断まとめは Hub。重複禁止
 
 ## ファイルルール
