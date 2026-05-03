@@ -45,7 +45,34 @@
       "Bash(python -c \"import json; d=json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); print\\('count:',len\\(d\\)\\); urls=[x['url'] for x in d]; print\\('first 5 urls:'\\); [print\\(u\\) for u in urls[:5]]\")",
       "Bash(python -c \"import json; d=json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); urls=[x['url'] for x in d]; [print\\(u\\) for u in urls]\")",
       "Bash(python -c \"import json; data=json.load\\(open\\(r'C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); print\\('Total:',len\\(data\\)\\); urls=[d['url'] for d in data]; print\\('First 5 urls:'\\); [print\\(u\\) for u in urls[:5]]\")",
-      "Bash(python -c \"import json; data=json.load\\(open\\(r'C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); urls=set\\(d['url'] for d in data\\); import sys; [sys.stdout.write\\(u+'\\\\n'\\) for u in list\\(urls\\)]\")"
+      "Bash(python -c \"import json; data=json.load\\(open\\(r'C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); urls=set\\(d['url'] for d in data\\); import sys; [sys.stdout.write\\(u+'\\\\n'\\) for u in list\\(urls\\)]\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('news.json',encoding='utf-8'\\)\\); print\\('total:',len\\(d\\)\\); urls=[x['url'] for x in d]; print\\('first 30 URLs:'\\); [print\\(u\\) for u in urls[:30]]\")",
+      "Bash(python -c \"import json; data=json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); print\\('total:',len\\(data\\)\\); print\\('urls_sample:'\\); [print\\(d['url']\\) for d in data[:5]]\")",
+      "Bash(python -c \"import json; data=json.load\\(open\\('C:/Users/kfuru/.secretary/ai-news/news.json',encoding='utf-8'\\)\\); [print\\(d['url']\\) for d in data]\")"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/active-edits-status.sh",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/active-edits-cleanup.sh",
+            "timeout": 3
+          }
+        ]
+      }
     ]
   }
 }

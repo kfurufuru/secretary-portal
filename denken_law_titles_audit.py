@@ -66,6 +66,7 @@ class Finding:
     h1_title: str
     expected_title: str | None
     status: str  # OK / MISMATCH / NOT_IN_SHOREI / NO_H1
+    section2_present: bool = False  # §2.1 必須セクション「条文原文」の存在
 
 
 def fetch_egov_xml(refresh: bool = False) -> str:
@@ -127,10 +128,26 @@ def normalize_title(s: str) -> str:
     return s
 
 
+SECTION2_PATTERN = re.compile(
+    r"^##\s+.*条文原文",
+    re.MULTILINE,
+)
+
+
+def has_section2(text: str) -> bool:
+    """記事内に section 2「条文原文」（## 📜 条文原文 / ## 2. 条文原文 等）が存在するか。
+
+    denken-hoki-style.md §2.1 で全タイプ必須セクション。2026-05-03 監査で
+    11/21記事に欠落していた事故の再発防止用。
+    """
+    return bool(SECTION2_PATTERN.search(text))
+
+
 def audit_file(path: Path, official_map: dict[int, str]) -> Finding:
     text = path.read_text(encoding="utf-8")
     rel = str(path.relative_to(WIKI_KIJUN.parent))
     num, h1_title = parse_h1(text)
+    sec2 = has_section2(text)
 
     if num is None or h1_title is None:
         return Finding(
@@ -139,6 +156,7 @@ def audit_file(path: Path, official_map: dict[int, str]) -> Finding:
             h1_title=h1_title or "",
             expected_title=None,
             status="NO_H1",
+            section2_present=sec2,
         )
 
     expected = official_map.get(num)
@@ -149,6 +167,7 @@ def audit_file(path: Path, official_map: dict[int, str]) -> Finding:
             h1_title=h1_title,
             expected_title=None,
             status="NOT_IN_SHOREI",
+            section2_present=sec2,
         )
 
     if normalize_title(h1_title) == normalize_title(expected):
@@ -158,6 +177,7 @@ def audit_file(path: Path, official_map: dict[int, str]) -> Finding:
             h1_title=h1_title,
             expected_title=expected,
             status="OK",
+            section2_present=sec2,
         )
     return Finding(
         file_path=rel,
@@ -165,33 +185,39 @@ def audit_file(path: Path, official_map: dict[int, str]) -> Finding:
         h1_title=h1_title,
         expected_title=expected,
         status="MISMATCH",
+        section2_present=sec2,
     )
 
 
 def format_human(findings: list[Finding]) -> str:
     out = []
     counts = {"OK": 0, "MISMATCH": 0, "NOT_IN_SHOREI": 0, "NO_H1": 0}
+    section2_missing = 0
     for f in findings:
         counts[f.status] = counts.get(f.status, 0) + 1
+        sec2_marker = "" if f.section2_present else " [§2欠落]"
+        if not f.section2_present:
+            section2_missing += 1
         if f.status == "OK":
-            out.append(f"  [OK] {f.file_path} 第{f.article_num}条 {f.h1_title}")
+            out.append(f"  [OK]{sec2_marker} {f.file_path} 第{f.article_num}条 {f.h1_title}")
         elif f.status == "MISMATCH":
             out.append(
-                f"  [NG] {f.file_path} 第{f.article_num}条\n"
+                f"  [NG]{sec2_marker} {f.file_path} 第{f.article_num}条\n"
                 f"        H1: {f.h1_title}\n"
                 f"        正: {f.expected_title}"
             )
         elif f.status == "NOT_IN_SHOREI":
             out.append(
-                f"  [WARN] {f.file_path} 第{f.article_num}条 は省令に存在しない（解釈 or 別法令の可能性）"
+                f"  [WARN]{sec2_marker} {f.file_path} 第{f.article_num}条 は省令に存在しない（解釈 or 別法令の可能性）"
             )
         elif f.status == "NO_H1":
-            out.append(f"  [SKIP] {f.file_path} H1 パース失敗")
+            out.append(f"  [SKIP]{sec2_marker} {f.file_path} H1 パース失敗")
     out.append("\n=== Summary ===")
     out.append(f"  OK: {counts['OK']}")
     out.append(f"  MISMATCH: {counts['MISMATCH']}")
     out.append(f"  NOT_IN_SHOREI: {counts['NOT_IN_SHOREI']}")
     out.append(f"  NO_H1: {counts['NO_H1']}")
+    out.append(f"  §2 条文原文 欠落: {section2_missing}（denken-hoki-style.md §2.1 違反）")
     return "\n".join(out)
 
 
@@ -222,7 +248,8 @@ def main(argv: list[str]) -> int:
 
     if strict:
         mismatch = sum(1 for f in findings if f.status == "MISMATCH")
-        if mismatch > 0:
+        section2_missing = sum(1 for f in findings if not f.section2_present)
+        if mismatch > 0 or section2_missing > 0:
             return 2
     return 0
 
