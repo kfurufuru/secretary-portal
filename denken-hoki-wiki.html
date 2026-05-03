@@ -1148,7 +1148,7 @@ window.MKDOCS_BASE = MKDOCS_BASE;
 
 window.WIKI_DATA = { chapters: [
   { id:"sec00", num:"00", title:"はじめに", pages:[
-    { id:"top", num:"00.0", title:"法規の学習マップ", ready:true }
+    { id:"top", num:"00.0", title:"法規の学習マップ" }
   ]},
   { id:"sec01", num:"01", title:"B問題・計算問題対策", ch:"CH04", pages:[
     { id:"zetsuen-tairyoku",   num:"1.1", title:"絶縁耐力試験",                   freq:"max",  ch:"CH04", ext:"themes/zetsuen/" },
@@ -1160,32 +1160,32 @@ window.WIKI_DATA = { chapters: [
     { id:"bshu-setsuchi",      num:"1.7", title:"B種接地抵抗値",                  freq:"max",  ch:"CH04", ext:"articles/kaishaku/18/" }
   ]},
   { id:"sec02", num:"02", title:"頻出数値・表暗記", ch:"CH03/04", pages:[
-    { id:"setsuchi-ichiran",    num:"2.1", title:"接地工事一覧表",       freq:"max",  ch:"CH03", ready:true, ext:"themes/setsuchi/" },
-    { id:"zetsuen-ichiran",     num:"2.2", title:"絶縁耐力試験一覧表",   freq:"max",  ch:"CH03", ready:true, ext:"themes/zetsuen/" },
-    { id:"rikkaku-ichiran",     num:"2.3", title:"離隔距離一覧表",       freq:"high", ch:"CH03", ready:true, ext:"themes/kachiku-densen/" },
-    { id:"den-atsu-kubun",      num:"2.4", title:"電圧区分一覧表",       freq:"high", ch:"CH03", ready:true, ext:"articles/kijun/2/" },
+    { id:"setsuchi-ichiran",    num:"2.1", title:"接地工事一覧表",       freq:"max",  ch:"CH03", ext:"themes/setsuchi/" },
+    { id:"zetsuen-ichiran",     num:"2.2", title:"絶縁耐力試験一覧表",   freq:"max",  ch:"CH03", ext:"themes/zetsuen/" },
+    { id:"rikkaku-ichiran",     num:"2.3", title:"離隔距離一覧表",       freq:"high", ch:"CH03", ext:"themes/kachiku-densen/" },
+    { id:"den-atsu-kubun",      num:"2.4", title:"電圧区分一覧表",       freq:"high", ch:"CH03", ext:"articles/kijun/2/" },
     { id:"densen-size",         num:"2.5", title:"電線サイズ一覧表",     freq:"mid",  ch:"CH03", ext:"themes/densen-cable/" },
     { id:"hokoku-todoke-kigen", num:"2.6", title:"報告・届出期限一覧表", freq:"high", ch:"CH01", ext:"themes/jigyoho-taikei/" }
   ]},
   { id:"sec03", num:"03", title:"電気設備技術基準・解釈", ch:"CH03", pages:[
-    { id:"denro-zetsuen",        num:"3.1", title:"電路の絶縁",           freq:"max",  ch:"CH03", priority:"required", ready:true, ext:"articles/kijun/5/" },
-    { id:"setsuchi-koji",        num:"3.2", title:"接地工事",             freq:"max",  ch:"CH03", priority:"required", ready:true, ext:"themes/setsuchi/" },
-    { id:"densenro",             num:"3.3", title:"電線路",               freq:"high", ch:"CH03", priority:"required", ready:true, ext:"themes/kachiku-densen/" },
-    { id:"okunai-haisen",        num:"3.4", title:"屋内配線",             freq:"mid",  ch:"CH03", priority:"optional", ready:true, ext:"themes/haisen-koji/" },
+    { id:"denro-zetsuen",        num:"3.1", title:"電路の絶縁",           freq:"max",  ch:"CH03", priority:"required", ext:"articles/kijun/5/" },
+    { id:"setsuchi-koji",        num:"3.2", title:"接地工事",             freq:"max",  ch:"CH03", priority:"required", ext:"themes/setsuchi/" },
+    { id:"densenro",             num:"3.3", title:"電線路",               freq:"high", ch:"CH03", priority:"required", ext:"themes/kachiku-densen/" },
+    { id:"okunai-haisen",        num:"3.4", title:"屋内配線",             freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/haisen-koji/" },
     { id:"kako-denryu",          num:"3.5", title:"過電流保護",           freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/hogo-sochi/" },
     { id:"chichuu-densenro",     num:"3.6", title:"地中電線路",           freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/chichuu-densen/" },
     { id:"bunsangata-dengen",    num:"3.7", title:"分散型電源連系",       freq:"mid",  ch:"CH03", priority:"optional", ext:"themes/bunsan-dengen/" },
-    { id:"gijutsu-kijun-gaiyou", num:"3.0", title:"電気設備技術基準の概要", freq:"mid", ch:"CH03", priority:"optional", ready:true, ext:"articles/kijun/" }
+    { id:"gijutsu-kijun-gaiyou", num:"3.0", title:"電気設備技術基準の概要", freq:"mid", ch:"CH03", priority:"optional", ext:"articles/kijun/" }
   ]},
   { id:"sec04", num:"04", title:"法令・制度", ch:"CH01+CH02", pages:[
-    { id:"kosakubutsu-bunrui", num:"4.1", title:"電気工作物の区分", freq:"max",  ch:"CH01", priority:"required", ready:true, ext:"themes/kosakubutsu-bunrui/" },
-    { id:"shunin-gijutsusya",  num:"4.2", title:"主任技術者",       freq:"max",  ch:"CH01", priority:"required", ready:true, ext:"themes/shunin-gijutsusha/" },
-    { id:"hoan-kitei",         num:"4.3", title:"保安規程",         freq:"max",  ch:"CH01", priority:"required", ready:true, ext:"themes/hoan-gensoku/" },
-    { id:"shiyo-jishu-kensa",  num:"4.4", title:"使用前自主検査",   freq:"high", ch:"CH01", priority:"optional", ready:true, ext:"themes/jigyoho-taikei/" },
-    { id:"jiko-hokoku",        num:"4.5", title:"事故報告",         freq:"high", ch:"CH01", priority:"optional", ready:true, ext:"themes/jigyoho-taikei/" },
-    { id:"denki-yohin-anzen",  num:"4.6", title:"電気用品安全法",   freq:"mid",  ch:"CH02", priority:"optional", ready:true, ext:"themes/pse-anzen-ho/" },
-    { id:"koji-shi-ho",        num:"4.7", title:"電気工事士法",     freq:"mid",  ch:"CH02", priority:"optional", ready:true, ext:"themes/denki-koji-shi/" },
-    { id:"koji-gyoho",         num:"4.8", title:"電気工事業法",     freq:"mid",  ch:"CH02", priority:"optional", ready:true, ext:"themes/denki-koji-gyo/" }
+    { id:"kosakubutsu-bunrui", num:"4.1", title:"電気工作物の区分", freq:"max",  ch:"CH01", priority:"required", ext:"themes/kosakubutsu-bunrui/" },
+    { id:"shunin-gijutsusya",  num:"4.2", title:"主任技術者",       freq:"max",  ch:"CH01", priority:"required", ext:"themes/shunin-gijutsusha/" },
+    { id:"hoan-kitei",         num:"4.3", title:"保安規程",         freq:"max",  ch:"CH01", priority:"required", ext:"themes/hoan-gensoku/" },
+    { id:"shiyo-jishu-kensa",  num:"4.4", title:"使用前自主検査",   freq:"high", ch:"CH01", priority:"optional", ext:"themes/jigyoho-taikei/" },
+    { id:"jiko-hokoku",        num:"4.5", title:"事故報告",         freq:"high", ch:"CH01", priority:"optional", ext:"themes/jigyoho-taikei/" },
+    { id:"denki-yohin-anzen",  num:"4.6", title:"電気用品安全法",   freq:"mid",  ch:"CH02", priority:"optional", ext:"themes/pse-anzen-ho/" },
+    { id:"koji-shi-ho",        num:"4.7", title:"電気工事士法",     freq:"mid",  ch:"CH02", priority:"optional", ext:"themes/denki-koji-shi/" },
+    { id:"koji-gyoho",         num:"4.8", title:"電気工事業法",     freq:"mid",  ch:"CH02", priority:"optional", ext:"themes/denki-koji-gyo/" }
   ]},
   { id:"sec05", num:"05", title:"再エネ技術基準", ch:"CH05", pages:[
     { id:"furyoku-gijutsukijun",   num:"5.1", title:"風力発電の技術基準",    freq:"mid", ch:"CH05", ext:"themes/bunsan-dengen/" },
@@ -1209,7 +1209,7 @@ window.WIKI_DATA = { chapters: [
     { id:"kakomon-jiko",     num:"7.6", title:"事故報告" },
     { id:"kakomon-densenro", num:"7.7", title:"電線路" },
     { id:"kakomon-saiene",   num:"7.8", title:"再エネ" },
-    { id:"kakomon-random",   num:"7.R", title:"ランダム10問モード（65分タイマー）", ready:true }
+    { id:"kakomon-random",   num:"7.R", title:"ランダム10問モード（65分タイマー）" }
   ]},
   { id:"sec08", num:"08", title:"直前チェック", pages:[
     { id:"chokuzen-suuchi",   num:"8.1", title:"数値だけ確認" },
@@ -2029,7 +2029,7 @@ function Sidebar({ data, page, onNav }) {
     if (!data || !data.chapters) return [];
     if (showStubs) return data.chapters;
     return data.chapters
-      .map(ch => ({ ...ch, pages: (ch.pages || []).filter(p => p.ready) }))
+      .map(ch => ({ ...ch, pages: (ch.pages || []).filter(p => window.isPageReady(p.id)) }))
       .filter(ch => ch.pages.length > 0);
   }, [data, showStubs]);
 
@@ -2067,7 +2067,7 @@ function Sidebar({ data, page, onNav }) {
 
   // 件数集計（バッジ表示用）
   const totalPages = data.chapters.reduce((s, ch) => s + (ch.pages || []).length, 0);
-  const readyPages = data.chapters.reduce((s, ch) => s + (ch.pages || []).filter(p => p.ready).length, 0);
+  const readyPages = data.chapters.reduce((s, ch) => s + (ch.pages || []).filter(p => window.isPageReady(p.id)).length, 0);
 
   return (
     <aside className="sidebar" style={{ height: '100vh', overflowY: 'auto', borderRight: '1px solid var(--line)', padding: '12px 0' }}>
@@ -2130,14 +2130,14 @@ function Sidebar({ data, page, onNav }) {
                 onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'var(--bg-2)'; }}
                 onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
               >
-                <span style={{ flex: 1, lineHeight: '1.4', opacity: p.ready ? 1 : 0.55 }}>
-                  {!p.ready && <span title="Hubでは作成中" style={{ marginRight: 4, fontSize: 10 }}>🚧</span>}
+                <span style={{ flex: 1, lineHeight: '1.4', opacity: window.isPageReady(p.id) ? 1 : 0.55 }}>
+                  {!window.isPageReady(p.id) && <span title="Hubでは作成中" style={{ marginRight: 4, fontSize: 10 }}>🚧</span>}
                   {p.title}
                 </span>
                 {p.priority === 'required' && (
                   <span className="priority-label">★必須</span>
                 )}
-                {!p.ready && p.ext && (
+                {!window.isPageReady(p.id) && p.ext && (
                   <a
                     href={(window.MKDOCS_BASE || 'https://kfurufuru.github.io/denken-wiki/') + p.ext}
                     target="_blank"
@@ -2499,7 +2499,7 @@ function TopBar({ page, onNav }) {
         def: g.def,
         related: g.related,
         group: g.group || null,
-        ready: pageInfo ? pageInfo.ready : false,
+        ready: pageInfo ? window.isPageReady(pageInfo.id) : false,
         ext: pageInfo ? pageInfo.ext : null,
       });
     });
@@ -2698,7 +2698,7 @@ function TopBar({ page, onNav }) {
                     ))}
                   </div>
                 )}
-                {it.kind === 'term' && !it.ready && it.ext && (
+                {it.kind === 'term' && !window.isPageReady(it.id) && it.ext && (
                   <div className="sr-meta" style={{ marginTop: 4, fontSize: 11 }}>
                     <a
                       href={(window.MKDOCS_BASE || 'https://kfurufuru.github.io/denken-wiki/') + it.ext}
@@ -2882,6 +2882,20 @@ window.renderPage = function(page, navigate) {
     case 'chokuzen-machigai':      return React.createElement(ChokuzenMachigaiPage, props);
     default:                       return React.createElement(StubPage, { ...props, pageId: page });
   }
+};
+
+
+// ─────────────────────────────────────────────
+// READY_PAGE_IDS - renderPage の switch を真実のソースに（P0: 廃止）
+// ─────────────────────────────────────────────
+window.READY_PAGE_IDS = (() => {
+  const src = window.renderPage.toString();
+  const matches = src.match(/case '([^']+)':\s*return React\.createElement\((?!StubPage)/g) || [];
+  return new Set(matches.map(c => c.match(/case '([^']+)'/)[1]));
+})();
+
+window.isPageReady = function(pageId) {
+  return window.READY_PAGE_IDS.has(pageId);
 };
 
 // ─────────────────────────────────────────────
@@ -3120,25 +3134,25 @@ function HomePage({ onNav, data }) {
   // count値は仮（kakomon.yml集計に置き換え予定）
   const HOT_TOPICS = [
     // S ランク（4枚）
-    { name: '接地工事一覧',     pageId: 'setsuchi-ichiran',   rank: 'S', count: 17, tags: ['#高圧', '#表暗記', '#ひっかけ注意'], ready: true },
-    { name: '絶縁耐力試験一覧', pageId: 'zetsuen-ichiran',    rank: 'S', count: 15, tags: ['#低圧', '#高圧', '#表暗記'],         ready: true },
-    { name: '電圧区分',         pageId: 'den-atsu-kubun',     rank: 'S', count: 12, tags: ['#頻出S', '#法令', '#基本'],           ready: true },
-    { name: '離隔距離一覧',     pageId: 'rikkaku-ichiran',    rank: 'S', count: 14, tags: ['#高圧', '#特別高圧', '#表暗記'],     ready: true },
+    { name: '接地工事一覧',     pageId: 'setsuchi-ichiran',   rank: 'S', count: 17, tags: ['#高圧', '#表暗記', '#ひっかけ注意'] },
+    { name: '絶縁耐力試験一覧', pageId: 'zetsuen-ichiran',    rank: 'S', count: 15, tags: ['#低圧', '#高圧', '#表暗記'] },
+    { name: '電圧区分',         pageId: 'den-atsu-kubun',     rank: 'S', count: 12, tags: ['#頻出S', '#法令', '#基本'] },
+    { name: '離隔距離一覧',     pageId: 'rikkaku-ichiran',    rank: 'S', count: 14, tags: ['#高圧', '#特別高圧', '#表暗記'] },
     // A ランク（4枚）
-    { name: '電気工事士法',     pageId: 'koji-shi-ho',        rank: 'A', count:  8, tags: ['#頻出A', '#法令'],                     ready: true },
-    { name: 'ランダム10問演習', pageId: 'kakomon-random',     rank: 'A', count: 10, tags: ['#過去問', '#65分タイマー'],            ready: true },
-    { name: '主任技術者',       pageId: 'shunin-gijutsusya',  rank: 'A', count: 12, tags: ['#頻出A', '#ひっかけ注意'], ready: true,  ext: 'themes/shunin-gijutsusha/' },
-    { name: '保安規程',         pageId: 'hoan-kitei',         rank: 'A', count: 11, tags: ['#頻出A', '#直前確認'],     ready: true,  ext: 'themes/hoan-gensoku/' },
+    { name: '電気工事士法',     pageId: 'koji-shi-ho',        rank: 'A', count:  8, tags: ['#頻出A', '#法令'] },
+    { name: 'ランダム10問演習', pageId: 'kakomon-random',     rank: 'A', count: 10, tags: ['#過去問', '#65分タイマー'] },
+    { name: '主任技術者',       pageId: 'shunin-gijutsusya',  rank: 'A', count: 12, tags: ['#頻出A', '#ひっかけ注意'],  ext: 'themes/shunin-gijutsusha/' },
+    { name: '保安規程',         pageId: 'hoan-kitei',         rank: 'A', count: 11, tags: ['#頻出A', '#直前確認'],  ext: 'themes/hoan-gensoku/' },
   ];
 
-  // ROADMAP: WIKI_DATA から ready:true 件数を動的集計（並列セッションの実装追加に追従）
+  // ROADMAP: WIKI_DATA から 件数を動的集計（並列セッションの実装追加に追従）
   // TODO(Phase3): portal-summary.json と統合して学習進捗（閲覧済み）も反映
   const ROADMAP = React.useMemo(() => {
     const wd = window.WIKI_DATA;
     const sumCh = (chId) => {
       const ch = wd?.chapters?.find(c => c.id === chId);
       const pages = ch?.pages || [];
-      const cur = pages.filter(p => p.ready).length;
+      const cur = pages.filter(p => window.isPageReady(p.id)).length;
       const total = pages.length;
       return { cur, total, prog: total > 0 ? Math.round(cur / total * 100) : 0 };
     };
@@ -3197,9 +3211,9 @@ function HomePage({ onNav, data }) {
             TODO(Phase2): localStorage の hoki_lastSeen_* から最終閲覧ページを取得
             TODO(Phase2): portal-summary.json から進捗率を取得（現在は実態反映のハードコード） */}
         {(() => {
-          // 実装済みページ（ready:true）を WIKI_DATA から動的取得（並列セッションの追加実装に追従）
+          // 実装済みページ（）を WIKI_DATA から動的取得（並列セッションの追加実装に追従）
           const wd = window.WIKI_DATA;
-          const allReady = (wd?.chapters || []).flatMap(ch => (ch.pages || []).filter(p => p.ready));
+          const allReady = (wd?.chapters || []).flatMap(ch => (ch.pages || []).filter(p => window.isPageReady(p.id)));
           const allTotal = (wd?.chapters || []).flatMap(ch => ch.pages || []);
           // top は学習対象外なので除外
           const readyPages = allReady.filter(p => p.id !== 'top');
@@ -3566,33 +3580,33 @@ function HomePage({ onNav, data }) {
               onClick={() => onNav && onNav(t.pageId)}
               style={{
                 background: 'var(--bg-elev)',
-                border: t.ready ? '1px solid var(--border)' : '1px dashed var(--border)',
+                border: window.isPageReady(t.pageId) ? '1px solid var(--border)' : '1px dashed var(--border)',
                 borderRadius: 'var(--radius)',
                 padding: '14px 16px',
                 cursor: 'pointer',
-                opacity: t.ready ? 1 : 0.7,
+                opacity: window.isPageReady(t.pageId) ? 1 : 0.7,
                 transition: 'border-color 0.15s, transform 0.15s',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}
-              title={t.ready ? '' : '準備中（クリックでスタブページに移動）'}
+              title={window.isPageReady(t.pageId) ? '' : '準備中（クリックでスタブページに移動）'}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                 <span style={{ fontWeight: 600, fontSize: 14 }}>
-                  {!t.ready && <span style={{ marginRight: 4, fontSize: 11 }}>🚧</span>}
+                  {!window.isPageReady(t.pageId) && <span style={{ marginRight: 4, fontSize: 11 }}>🚧</span>}
                   {t.name}
                 </span>
                 <span className={`rank rank-${t.rank}`}>{t.rank}</span>
               </div>
               <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8 }}>
-                {t.note || `過去10年で${t.count}回出題`}{!t.ready && t.ext && '（本サイトで読める）'}
+                {t.note || `過去10年で${t.count}回出題`}{!window.isPageReady(t.pageId) && t.ext && '（本サイトで読める）'}
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: !t.ready && t.ext ? 8 : 0 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: !window.isPageReady(t.pageId) && t.ext ? 8 : 0 }}>
                 {t.tags.map(tag => (
                   <span key={tag} className={`tag${tag === '#ひっかけ注意' || tag === '#法改正注意' || tag === '#準備中' ? ' warn' : tag === '#B問題対策' || tag === '#表暗記' || tag === '#本サイト' ? ' hot' : ''}`}>{tag}</span>
                 ))}
               </div>
-              {!t.ready && t.ext && (
+              {!window.isPageReady(t.pageId) && t.ext && (
                 <a
                   href={(window.MKDOCS_BASE || 'https://kfurufuru.github.io/denken-wiki/') + t.ext}
                   target="_blank"
