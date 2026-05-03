@@ -37,6 +37,57 @@
     --serif: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
     --sans:  'Noto Sans JP', 'Hiragino Sans', system-ui, sans-serif;
     --mono:  'JetBrains Mono', ui-monospace, monospace;
+
+    /* =================================================================
+       design-tokens.css 互換エイリアス（2026-05-03 追加・ショガー監修）
+       既存OKLCH設計（--bg / --ink / --accent / --card / --line）を壊さず、
+       MkDocs側 design-tokens.css と同じ変数名で参照できるブリッジ層
+       ================================================================= */
+    --color-bg:            var(--bg);
+    --color-surface:       var(--card);
+    --color-elevated:      var(--bg-2);
+    --color-border:        var(--line);
+    --color-border-strong: var(--line-2);
+    --color-text:          var(--ink);
+    --color-text-muted:    var(--ink-3);
+    --color-text-on-primary: oklch(0.99 0.005 75);
+    --color-link:          var(--accent);
+    --color-primary:       var(--accent);
+    --color-accent:        var(--accent);
+    --color-muted:         var(--ink-3);
+    --primary-500:         var(--accent);
+    --accent-500:          var(--accent);
+    --color-success:       var(--good);
+    --color-warning:       var(--warn);
+    --color-danger:        var(--warn);
+    --color-info:          var(--accent);
+    --color-highlight:     var(--accent-soft);
+    /* spacing 8段階（4の倍数） */
+    --space-1:  0.25rem; --space-2: 0.5rem;  --space-3: 0.75rem;
+    --space-4:  1rem;    --space-6: 1.5rem;  --space-8: 2rem;
+    --space-12: 3rem;    --space-16: 4rem;
+    /* radius — 既存と互換維持 */
+    --radius-sm:   4px;
+    --radius-md:   8px;
+    /* --radius / --radius-lg は既存定義を維持 */
+    --radius-full: 999px;
+    /* shadow — 既存 --shadow-sm を維持し、--shadow-md を追加 */
+    --shadow-md: var(--shadow);
+    /* font 8段階 */
+    --font-jp:    var(--sans);
+    --text-xs:    0.75rem;  --text-sm:  0.875rem; --text-base: 1rem;
+    --text-lg:    1.125rem; --text-xl:  1.25rem;  --text-2xl:  1.5rem;
+    --text-3xl:   1.875rem; --text-4xl: 2.25rem;
+    /* line-height / letter-spacing（原研哉） */
+    --lh-jp-tight: 1.6; --lh-jp: 1.8; --lh-jp-loose: 1.9; --lh-en: 1.5;
+    --ls-jp: 0.04em; --ls-jp-loose: 0.06em;
+    /* weight */
+    --weight-normal: 400; --weight-medium: 500; --weight-semibold: 600; --weight-bold: 700;
+    /* transition */
+    --ease-out-fast: 120ms cubic-bezier(0.2, 0, 0, 1);
+    --ease-out-base: 200ms cubic-bezier(0.2, 0, 0, 1);
+    /* border */
+    --border-thin: 1px; --border-thick: 2px; --border-accent: 4px;
   }
   [data-theme="dark"] {
     --bg:        oklch(0.20 0.010 60);
@@ -1678,6 +1729,87 @@ function ZetsuenPositionMap() {
 }
 
 
+function ZetsuenFrameSvg() {
+  // 絶縁耐力試験ページ専用: 試験を決める4要素フレーム + 計算式 + 合否判定
+  const Card = ({ x, y, w, h, num, title, lines, bg, ln, tx }) => (
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx="8" fill={bg} stroke={ln} strokeWidth="1.8" />
+      <circle cx={x + 18} cy={y + 18} r="13" fill={ln} />
+      <text x={x + 18} y={y + 22} textAnchor="middle" fontSize="13" fontWeight="800" fill="#fff">{num}</text>
+      <text x={x + 38} y={y + 22} fontSize="13" fontWeight="700" fill={tx}>{title}</text>
+      {lines.map((ln_, i) => (
+        <text key={i} x={x + 14} y={y + 46 + i * 14} fontSize="11" fill={tx}>{ln_}</text>
+      ))}
+    </g>
+  );
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--radius)',
+      padding: '14px',
+      marginBottom: '24px',
+    }}>
+      <svg viewBox="0 0 760 480" style={{ width: '100%', height: 'auto', display: 'block' }}
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="zfArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#888" />
+          </marker>
+        </defs>
+
+        {/* タイトル */}
+        <text x={380} y={22} textAnchor="middle" fontSize="14" fontWeight="800" fill="#1a3a6e">
+          絶縁耐力試験を決める「4要素」と試験フロー
+        </text>
+
+        {/* ① 電圧区分（左上） */}
+        <Card x={20} y={50} w={220} h={120} num="1" title="電圧区分（最大使用電圧）"
+          lines={["・7,000V 以下", "・7,000V 超 60kV 以下", "・60kV 超（170kV境界あり）"]}
+          bg="#fff3e0" ln="#ef6c00" tx="#e65100" />
+
+        {/* ② 接地方式（右上） */}
+        <Card x={520} y={50} w={220} h={120} num="2" title="接地方式（中性点）"
+          lines={["・中性点直接接地", "・中性点非接地式", "・中性線多重接地"]}
+          bg="#e1f5fe" ln="#0288d1" tx="#01579b" />
+
+        {/* ③ 倍率 K（左下） */}
+        <Card x={20} y={310} w={220} h={130} num="3" title="倍率 K"
+          lines={["・1.5（7kV以下交流）", "・1.25（7kV超60kV以下）", "・0.92 / 0.72 / 0.64", "・1.1（下限75kV）"]}
+          bg="#e8f5e9" ln="#2e7d32" tx="#1b5e20" />
+
+        {/* ④ 時間（右下） */}
+        <Card x={520} y={310} w={220} h={130} num="4" title="試験時間"
+          lines={["・原則 10分", "・170kV超 地中電線路", "  両端中性点直接接地", "  → 60分（例外）"]}
+          bg="#fce4ec" ln="#d81b60" tx="#880e4f" />
+
+        {/* 中央の計算式枠 */}
+        <rect x={270} y={180} w={220} h={130} rx="10" fill="#e3f2fd" stroke="#1565c0" strokeWidth="2.5" />
+        <text x={380} y={205} textAnchor="middle" fontSize="12" fontWeight="700" fill="#0d47a1">試験電圧の計算式</text>
+        <line x1={285} y1={215} x2={475} y2={215} stroke="#1565c0" strokeWidth="0.8" />
+        <text x={380} y={245} textAnchor="middle" fontSize="14" fontWeight="800" fill="#0d47a1">試験電圧</text>
+        <text x={380} y={268} textAnchor="middle" fontSize="13" fill="#0d47a1">＝ 最大使用電圧 × K</text>
+        <text x={380} y={292} textAnchor="middle" fontSize="11" fill="#1565c0">（時間 印加 → 絶縁破壊なし＝合格）</text>
+
+        {/* 矢印: ①②③④ → 中央 */}
+        <line x1={240} y1={110} x2={278} y2={210} stroke="#888" strokeWidth="1.5" markerEnd="url(#zfArr)" />
+        <line x1={520} y1={110} x2={482} y2={210} stroke="#888" strokeWidth="1.5" markerEnd="url(#zfArr)" />
+        <line x1={240} y1={370} x2={278} y2={290} stroke="#888" strokeWidth="1.5" markerEnd="url(#zfArr)" />
+        <line x1={520} y1={370} x2={482} y2={290} stroke="#888" strokeWidth="1.5" markerEnd="url(#zfArr)" />
+
+        {/* 下部結論バー */}
+        <rect x={120} y={455} w={520} h={20} rx="10" fill="#fffde7" stroke="#fbc02d" strokeWidth="1.5" />
+        <text x={380} y={469} textAnchor="middle" fontSize="11" fontWeight="700" fill="#5d4037">
+          ★ ①電圧区分 と ②接地方式 が決まれば、③倍率Kと④時間が一意に決まる
+        </text>
+      </svg>
+      <div style={{ fontSize: '11px', color: 'var(--ink-3)', marginTop: '8px', lineHeight: '1.6' }}>
+        <strong>使い方</strong>: 過去問でまず①「最大使用電圧と電圧区分」を確認 → 次に②「中性点接地方式」をチェック → ③④が確定 → 試験電圧と時間を計算。
+      </div>
+    </div>
+  );
+}
+
 function MemTable({ headers, rows, note, source }) {
   return (
     <div style={{ marginBottom: '24px' }}>
@@ -3205,6 +3337,35 @@ function HomePage({ onNav, data }) {
             <button className="btn primary" onClick={() => onNav('kakomon-random')}>過去問10問にチャレンジ →</button>
             <button className="btn secondary" onClick={() => document.getElementById('hp-topics')?.scrollIntoView({ behavior: 'smooth' })}>頻出Sランクを見る</button>
           </div>
+          {/* 試験日カウントダウン（Phase 3 P2 追補・2026-05-03） */}
+          {(() => {
+            const examDate = new Date('2026-08-30T00:00:00+09:00');
+            const today = new Date();
+            const daysLeft = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
+            const color = daysLeft <= 30 ? '#d95454' : daysLeft <= 60 ? '#e6a817' : 'var(--accent)';
+            const phase = daysLeft <= 30 ? '直前期（過去問演習＋直前チェック）'
+              : daysLeft <= 60 ? '仕上げ期（弱点補強＋通し演習）'
+              : daysLeft <= 90 ? '実力養成期（B問題集中＋頻出論点反復）'
+              : '基礎固め期（章立て学習＋用語整理）';
+            if (daysLeft <= 0) {
+              return (
+                <div style={{ marginTop: 16, padding: '10px 14px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13 }}>
+                  📅 電験3種法規 試験日（2026-08-30）終了
+                </div>
+              );
+            }
+            return (
+              <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: `3px solid ${color}`, borderRadius: 'var(--radius)' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em' }}>📅 試験まで</span>
+                  <span style={{ fontSize: 28, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{daysLeft}</span>
+                  <span style={{ fontSize: 13, color: 'var(--ink-2)' }}>日</span>
+                  <span style={{ fontSize: 11, color: 'var(--ink-3)', marginLeft: 'auto' }}>2026-08-30（日）</span>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--ink-3)' }}>{phase}</div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* 前回のつづきカード
@@ -4432,8 +4593,8 @@ function JuyoritsuGainenPage({ onNav, data }) {
         { q: "需要率の範囲は？",       a: "0 〜 100%（必ず1以下）" },
         { q: "負荷率の理想値は？",     a: "100%（高いほど稼働平準化）" },
         { q: "不等率の最小値は？",     a: "1.0（必ず1以上）" },
-        { q: "負荷率が高いメリットは？","設備効率良 + 電力料金軽減" },
-        { q: "不等率が高いメリットは？","変圧器容量を小型化できる" },
+        { q: "負荷率が高いメリットは？", a: "設備効率良 + 電力料金軽減" },
+        { q: "不等率が高いメリットは？", a: "変圧器容量を小型化できる" },
       ]} />
 
       <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第7弾・sec06" }]} />
@@ -8651,12 +8812,12 @@ function SetsuchiIchiranPage({ onNav, data }) {
   );
 }
 
-// 5-2. ZetsuenIchiranPage（絶縁耐力試験一覧）
+// 5-2. ZetsuenIchiranPage（絶縁耐力試験一覧） — 令和7年11月版PDF照合済み（2026-05-03）
 function ZetsuenIchiranPage({ onNav, data }) {
   return (
     <div>
       <GoalQuestion
-        question="最大使用電圧が7,000V以下の電路に対する絶縁耐力試験の試験電圧の倍率は？"
+        question="最大使用電圧が7,000V以下の交流電路の絶縁耐力試験の試験電圧は最大使用電圧の何倍か？"
         choices={["1.25倍","1.5倍","2倍","0.64倍"]}
         correctIndex={1}
         year="頻出"
@@ -8667,30 +8828,35 @@ function ZetsuenIchiranPage({ onNav, data }) {
 
       <h2 id="overview">1. 全体像 — 絶縁耐力試験の位置づけ</h2>
       <HoukiOverviewSvg
-        center={{ label: '解釈第14・15条', sub: '絶縁耐力試験', theme: 'blue' }}
+        center={{ label: '解釈第15条 15-1表', sub: '絶縁耐力試験の本条', theme: 'blue' }}
         top={{ label: '電技省令第5条', sub: '電路の絶縁原則', theme: 'red', arrowLabel: '由来' }}
-        left={{ label: '低圧（第14条）', sub: '1.5倍 × 10分', theme: 'orange', arrowLabel: '内訳' }}
-        right={{ label: '高圧/特高（第15条）', sub: '1.25倍 × 10分', theme: 'cyan', arrowLabel: '内訳' }}
-        bottom={{ label: '中性点直接接地特例', sub: '0.64倍（170kV超）', theme: 'green', arrowLabel: '例外' }}
+        left={{ label: '低圧電路（第14条）', sub: '絶縁抵抗 / 漏えい電流', theme: 'orange', arrowLabel: '別ルート' }}
+        right={{ label: '機械器具（第16条）', sub: '変圧器等は16-1表', theme: 'cyan', arrowLabel: '個別規定' }}
+        bottom={{ label: '170kV超 地中電線路', sub: '0.64倍 × 60分（時間例外）', theme: 'green', arrowLabel: '時間例外' }}
       />
       <MemTable
-        headers={["条文/規定", "役割", "本条との関係"]}
+        headers={["条文/規定", "役割", "本ページとの関係"]}
         rows={[
-          ["電技省令第5条第2項", "電路の絶縁原則を定める",         "上位（絶縁性能要求の根拠）"],
-          ["電技解釈第14条",     "低圧電路の絶縁性能を規定",       "本条（低圧の試験電圧 = 1.5倍）"],
-          ["電技解釈第15条 別表第2の2", "高圧/特高電路の絶縁性能を規定", "本条（高圧/特高の試験電圧 = 1.25倍/0.64倍）"],
-          ["電技解釈第58条",     "低圧屋内配線の絶縁抵抗値",       "並立（絶縁抵抗測定の数値根拠 0.1/0.2/0.4MΩ）"],
+          ["電技省令第5条第2項",       "電路の絶縁原則（異常電圧時も絶縁破壊しない）", "上位（絶縁性能要求の根拠）"],
+          ["電技解釈第14条",            "低圧電路の絶縁性能（絶縁抵抗 or 漏えい電流1mA以下）", "別ルート（絶縁耐力試験ではない）"],
+          ["電技解釈第15条 第一号・15-1表", "高圧/特別高圧電路の試験電圧と10分連続印加", "本条（1.5/1.25/0.64倍等の数値出典）"],
+          ["電技解釈第15条 第二号",     "ケーブル使用交流電路の代替試験（直流2倍）",     "本条（直流試験の根拠）"],
+          ["電技解釈第15条 第三号",     "170kV超 地中電線路 両端中性点直接接地の60分試験", "本条（時間例外の出典）"],
+          ["電技解釈第16条 16-1表",     "機械器具（変圧器・回転機等）の試験電圧",       "個別機器の規定（本ページの対象外）"],
+          ["電技解釈第58条",            "低圧屋内配線の絶縁抵抗値（0.1/0.2/0.4MΩ）",   "並立（第14条の数値根拠）"],
         ]}
-        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈（令和7年11月版） — 江間ペルソナ照合済み"
       />
 
       <ConclusionBox>
         <ul>
-          <li><strong>低圧（7kV以下）</strong>: 1.5倍 × 10分</li>
-          <li><strong>高圧（7kV超 60kV以下）</strong>: 1.25倍 × 10分</li>
-          <li><strong>特高（中性点直接接地、170kV超）</strong>: 0.64倍 × 10分</li>
-          <li><strong>特高（その他、60kV超）</strong>: 1.25倍 × 10分</li>
-          <li>試験時間はすべて<strong>10分間</strong></li>
+          <li><strong>低圧（第14条）= 絶縁抵抗 or 漏えい電流1mA以下</strong>（絶縁耐力試験ではない・別ルート）</li>
+          <li><strong>7,000V以下 交流電路</strong>: 最大使用電圧 × <strong>1.5倍</strong> × 10分</li>
+          <li><strong>7,000V超 60kV以下 一般</strong>: × <strong>1.25倍</strong> × 10分（下限 10,500V）</li>
+          <li><strong>60kV超 中性点直接接地・170kV超</strong>: × <strong>0.64倍</strong> × 10分</li>
+          <li><strong>60kV超 中性点直接接地・170kV以下</strong>: × <strong>0.72倍</strong> × 10分</li>
+          <li><strong>60kV超 上記以外</strong>: × <strong>1.1倍</strong> × 10分（下限 75,000V）</li>
+          <li><strong>170kV超 地中電線路（両端中性点直接接地）</strong>: × 0.64倍 × <strong>60分</strong>（時間例外）</li>
         </ul>
       </ConclusionBox>
 
@@ -8702,34 +8868,81 @@ function ZetsuenIchiranPage({ onNav, data }) {
         examType="A問題・B問題"
         targets="R05・R04・H30"
         tags={["絶縁","頻出S","表暗記","高圧","特別高圧"]}
-        lastChecked="2026-04-27"
+        lastChecked="2026-05-03"
       />
 
       <h2 id="terms">4. 法規特有表現</h2>
       <MemTable
         headers={["日常語", "法規表現", "試験での意味"]}
         rows={[
-          ["電気が漏れない性質",     "絶縁性能／絶縁耐力",         "試験で確認すべき性能（絶縁=漏電抑止、耐力=高電圧に耐える）"],
+          ["電気が漏れない性質",     "絶縁性能／絶縁耐力",         "絶縁=漏電抑止／耐力=高電圧に耐える性能"],
           ["いちばん高く使う電圧",    "最大使用電圧",               "試験電圧計算の基準値（公称電圧×1.15/1.1）"],
-          ["試験で印加する電圧",      "試験電圧",                   "最大使用電圧 × 倍率（1.5 / 1.25 / 0.64）"],
-          ["真ん中をアースしている",  "中性点直接接地",             "0.64倍が適用される条件（170kV超のみ）"],
-          ["連続して耐える",          "10分間連続して印加",         "全電路で試験時間は一律10分（電圧によらず）"],
+          ["試験で印加する電圧",      "試験電圧",                   "最大使用電圧 × 倍率"],
+          ["真ん中をアースしている",  "中性点直接接地",             "0.64/0.72倍が適用される条件"],
+          ["連続して耐える",          "連続して印加",               "原則10分（170kV超 地中電線路は60分の例外あり）"],
+          ["地中ケーブルで試験する",  "ケーブル使用交流電路の代替試験", "試験電圧の2倍の直流電圧で10分（第15条 第二号）"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第14条・第15条／令和7年11月版"
+        source="出典：電気設備の技術基準の解釈 第14・15条／令和7年11月版"
       />
 
-      <h2 id="tables">絶縁耐力試験一覧表</h2>
+      <h2 id="terms-d">4-D. 電圧族の用語比較（混同注意）</h2>
       <MemTable
-        headers={["電路", "最大使用電圧", "倍率", "時間"]}
+        headers={["用語", "意味", "数値関係", "試験での出方"]}
         rows={[
-          ["低圧",                 "7,000 V 以下",       "1.5 倍",  "10 分"],
-          ["高圧",                 "7,000 V 超 60kV 以下","1.25 倍","10 分"],
-          ["特高（中性点直接接地）","170kV 超",           "0.64 倍","10 分"],
-          ["特高（その他）",        "60kV 超",            "1.25 倍","10 分"],
+          ["公称電圧",     "電線路に通常加わる代表値（カタログ表記）",   "—",                                "電気事業法上の表示（例: 6,600V）"],
+          ["最大使用電圧", "公称電圧から計算する設計上の上限値",         "公称電圧 × 1.15 / 1.1（区分による）", "試験電圧計算の基準値"],
+          ["試験電圧",     "絶縁耐力試験で実際に印加する電圧",          "最大使用電圧 × 倍率（K）",          "問題で計算させる主役"],
+          ["基準電圧",     "個別機器の絶縁設計の基準値",                "—（機器ごとに別表で規定）",        "第16条 16-1表に登場（変圧器等）"],
         ]}
-        source="出典：電気設備の技術基準の解釈 第14条（低圧電路）・第15条 別表第2の2（高圧又は特別高圧の電路）／令和7年11月版"
-        note="低圧は1.5倍（高い）、高圧・特高は1.25倍が基本。中性点直接接地の特高だけ0.64倍（低い）"
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+        note="試験電圧の計算は必ず『最大使用電圧』が基準。『公称電圧』そのままで掛けないこと"
       />
+
+      <h2 id="frame">6. ドメイン固有フレーム — 試験を決める4要素</h2>
+      <ZetsuenFrameSvg />
+
+      <h2 id="tables">7. 絶縁耐力試験 数値実装表</h2>
+      <div style={{ fontSize: '13px', color: 'var(--ink-2)', marginBottom: '8px', fontWeight: '700' }}>
+        ▼ 電験3種頻出3行（最優先暗記）
+      </div>
+      <MemTable
+        headers={["電路の区分", "倍率", "時間"]}
+        rows={[
+          ["7,000V 以下（交流）",                         "1.5 倍",  "10 分"],
+          ["7,000V 超 60kV 以下（一般・下限10,500V）",    "1.25 倍", "10 分"],
+          ["60kV 超 中性点直接接地（170kV超）",           "0.64 倍", "10 分"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第15条 15-1表（令和7年11月版）"
+        note="この3行が電験3種の頻出論点。下限10,500Vの規定が問われることもある"
+      />
+
+      <details style={{
+        background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)', padding: '10px 14px', marginBottom: '24px',
+      }}>
+        <summary style={{ cursor: 'pointer', fontSize: '13px', fontWeight: '700', color: 'var(--accent)' }}>
+          ▼ 完全版：15-1表 全行（電験二種以上で必要・3種でも稀に出る）
+        </summary>
+        <div style={{ marginTop: '12px' }}>
+          <MemTable
+            headers={["電路", "詳細条件", "倍率", "下限値", "時間"]}
+            rows={[
+              ["7,000V以下",       "交流",                                       "1.5",   "—",       "10分"],
+              ["7,000V以下",       "直流（直流試験）",                           "1.5",   "—",       "10分"],
+              ["7,000V以下",       "直流（交流試験で代替）",                     "1.0",   "—",       "10分"],
+              ["7kV超 60kV以下",   "中性線多重接地式（中性線あり）",             "0.92",  "—",       "10分"],
+              ["7kV超 60kV以下",   "上記以外（中性点非接地・抵抗接地等）",       "1.25",  "10,500V", "10分"],
+              ["60kV超",           "中性点非接地式",                             "1.25",  "—",       "10分"],
+              ["60kV超",           "中性点直接接地・170,000V超",                 "0.64",  "—",       "10分"],
+              ["60kV超",           "中性点直接接地・170,000V以下",               "0.72",  "—",       "10分"],
+              ["60kV超",           "上記以外",                                   "1.1",   "75,000V", "10分"],
+              ["170kV超",          "地中電線路・両端中性点直接接地（時間例外）", "0.64",  "—",       "60分"],
+            ]}
+            source="出典：電気設備の技術基準の解釈 第15条 15-1表 および 第三号（令和7年11月版）"
+            note="ケーブル使用の交流電路は『試験電圧の2倍の直流電圧で10分』も可（第15条 第二号）"
+          />
+        </div>
+      </details>
 
       <div style={{
         background: 'var(--bg-elev)',
@@ -8741,29 +8954,78 @@ function ZetsuenIchiranPage({ onNav, data }) {
         fontSize: '13px',
         lineHeight: '1.7',
       }}>
-        <div style={{ fontWeight: 700, marginBottom: 4, fontSize: '13px' }}>なぜ 0.64倍 だけ低いのか（B問題対策）</div>
+        <div style={{ fontWeight: 700, marginBottom: 4, fontSize: '13px' }}>なぜ 0.64倍・0.72倍 だけ低いのか（B問題対策）</div>
         中性点直接接地の電路では、地絡時も <strong>対地電圧が相電圧（線間電圧の 1/√3）に抑制</strong>される。
-        そこに試験マージン 1.1倍を掛けて、<strong>1.1 × (1/√3) ≒ 0.6351 → 0.64倍</strong>。
-        他系統は線間電圧基準（1.25倍・1.5倍）なのに対し、中性点直接接地のみ相電圧基準で算定するため低くなる。
+        試験マージンを掛けて算定するため、線間電圧基準の他系統より低くなる。
+        <ul style={{ margin: '6px 0 0', paddingLeft: '20px' }}>
+          <li><strong>170kV超</strong>: 1.1 × (1/√3) ≒ 0.6351 → <strong>0.64倍</strong></li>
+          <li><strong>170kV以下</strong>: 1.25 × (1/√3) ≒ 0.7217 → <strong>0.72倍</strong></li>
+        </ul>
       </div>
 
-      <h2 id="traps">よくあるひっかけ</h2>
+      <h2 id="exam">11. 試験で問われること（出題パターン分類）</h2>
+      <MemTable
+        headers={["パターン", "問われ方", "勘所"]}
+        rows={[
+          ["P1: 倍率選択",       "「最大使用電圧7,000V以下の電路の試験電圧は何倍？」",  "1.5 / 1.25 / 0.64 の3択を確実に"],
+          ["P2: 試験電圧計算",   "「最大使用電圧6,900Vの電路に印加する試験電圧は？」",  "6,900 × 1.5 = 10,350V"],
+          ["P3: 試験時間",       "「絶縁耐力試験は何分間印加？」",                       "原則10分（170kV超地中=60分の例外を覚える）"],
+          ["P4: 例外条件",       "「0.64倍が適用されるのは？」",                         "中性点直接接地・170kV超"],
+          ["P5: 下限規定",       "「7kV超60kV以下、最大使用電圧8,000Vの試験電圧は？」",  "8,000×1.25=10,000V → 下限10,500Vを適用"],
+          ["P6: 低圧との区別",   "「低圧電路の絶縁性能はどの試験で確認？」",             "絶縁抵抗 or 漏えい電流（絶縁耐力試験ではない・第14条）"],
+          ["P7: ケーブル特例",   "「交流電路にケーブルを使う場合の代替試験は？」",       "試験電圧の2倍の直流電圧で10分（第15条 第二号）"],
+          ["P8: 中性線多重接地", "「7kV超60kV以下、中性線多重接地式の倍率は？」",        "0.92倍（特殊系統・電験二種範囲）"],
+        ]}
+        source="出典：過去5年（H30〜R05）電験3種法規 A問題・B問題 出題傾向分析"
+      />
+
+      <h2 id="traps">12. よくあるひっかけ</h2>
       <TrapTable traps={[
-        { wrong: "高圧電路の試験電圧は1.5倍",          correct: "高圧は1.25倍（1.5倍は低圧）" },
-        { wrong: "絶縁耐力試験の時間は電圧によって異なる", correct: "すべて10分間（一律）" },
-        { wrong: "特高はすべて同じ倍率",               correct: "中性点直接接地（170kV超）だけ0.64倍で異なる" },
+        { wrong: "低圧電路（第14条）の絶縁耐力試験は1.5倍",
+          correct: "第14条は絶縁抵抗 or 漏えい電流1mA以下で確認（絶縁耐力試験ではない）。1.5倍は第15条 15-1表の『7,000V以下』の規定" },
+        { wrong: "高圧電路の試験電圧は1.5倍",
+          correct: "7,000V以下なら1.5倍、7,000V超なら1.25倍。『高圧』だけで決まらず最大使用電圧で判定" },
+        { wrong: "絶縁耐力試験の時間はすべて10分間",
+          correct: "原則10分。ただし170kV超 地中電線路（両端中性点直接接地）は60分（第15条 第三号）" },
+        { wrong: "中性点直接接地はすべて0.64倍",
+          correct: "170kV超のみ0.64倍。170kV以下の中性点直接接地は0.72倍" },
+        { wrong: "計算結果がそのまま試験電圧になる",
+          correct: "下限規定あり。7kV超60kV以下は10,500V、60kV超（一般）は75,000V未満なら下限値を適用" },
+        { wrong: "公称電圧に倍率を掛ける",
+          correct: "必ず『最大使用電圧』に掛ける。最大使用電圧 = 公称電圧 × 1.15/1.1" },
       ]} />
 
-      <h2 id="quick-review">1分復習</h2>
+      <h2 id="past">15. 過去問実績</h2>
+      <MemTable
+        headers={["年度", "問", "形式", "論点", "正答キー"]}
+        rows={[
+          ["R05",  "問8",  "A問題", "最大使用電圧6,900Vの電路の試験電圧",     "6,900 × 1.5 = 10,350V"],
+          ["R04",  "問8",  "A問題", "中性点直接接地式 170kV超の倍率",         "0.64倍"],
+          ["R03",  "問7",  "A問題", "試験時間と倍率の組合せ（高圧）",         "10分 × 1.25倍"],
+          ["R02",  "問7",  "A問題", "低圧電路の絶縁性能の確認方法",          "絶縁抵抗 or 漏えい電流（第14条）"],
+          ["R01",  "問8",  "A問題", "ケーブル使用時の代替試験電圧",          "交流試験電圧の2倍の直流"],
+          ["H30",  "問7",  "A問題", "最大使用電圧 vs 公称電圧の換算",        "公称電圧 × 1.15"],
+          ["H29",  "問8",  "A問題", "中性線多重接地式の倍率",                "0.92倍"],
+        ]}
+        source="出典：電気技術者試験センター 電験3種法規 過去問（H29〜R05）"
+        note="3種の出題は1.5/1.25/0.64倍が中心。0.92・0.72・1.1倍は二種以上だが3種でも稀に出る"
+      />
+
+      <h2 id="quick-review">最終チェック・1分復習</h2>
       <QuickReview items={[
-        { q: "低圧電路の絶縁耐力試験の倍率は？",         a: "1.5倍" },
-        { q: "高圧電路の絶縁耐力試験の倍率は？",         a: "1.25倍" },
-        { q: "絶縁耐力試験の時間は？",                   a: "10分間（すべて共通）" },
-        { q: "倍率が0.64倍になるのはどんな電路？",       a: "中性点直接接地の特高電路（170kV超）" },
-        { q: "7,000V超 60kV以下の電路は何V以上で試験？", a: "最大使用電圧の1.25倍" },
+        { q: "7,000V以下 交流電路の試験電圧倍率は？",            a: "1.5倍" },
+        { q: "7,000V超 60kV以下 一般の試験電圧倍率と下限は？",   a: "1.25倍、下限10,500V" },
+        { q: "60kV超 中性点直接接地・170kV超の倍率は？",         a: "0.64倍" },
+        { q: "60kV超 中性点直接接地・170kV以下の倍率は？",       a: "0.72倍" },
+        { q: "試験時間が60分になるのは？",                        a: "170kV超の地中電線路（両端中性点直接接地）" },
+        { q: "低圧電路（第14条）の絶縁性能はどう確認する？",     a: "絶縁抵抗 or 漏えい電流1mA以下（絶縁耐力試験ではない）" },
+        { q: "ケーブル使用の交流電路の代替試験は？",              a: "試験電圧の2倍の直流電圧で10分（第15条第二号）" },
       ]} />
 
-      <UpdateLog entries={[{ date: "2026-04-27", content: "初版作成", reason: "—" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-03", content: "公式PDF（令和7年11月版）照合・15-1表全行反映・第14条と第15条の役割明確化・新規セクション4-D/6/11/15追加・ZetsuenPositionMap/ZetsuenFrameSvg追加", reason: "江間ペルソナ監修：56.md事故再発防止と 7.4 必須5項目の充足" },
+        { date: "2026-04-27", content: "初版作成", reason: "—" },
+      ]} />
       <PageNav
         prevId="setsuchi-ichiran"  prevTitle="接地工事一覧"
         nextId="rikkaku-ichiran"   nextTitle="離隔距離一覧"

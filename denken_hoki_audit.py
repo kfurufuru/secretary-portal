@@ -150,6 +150,7 @@ def audit_page(name: str, body: str) -> list[tuple[str, str, str]]:
     sources = re.findall(r'source="([^"]+)"', body)
     version_pattern = re.compile(
         r"令和[\d元]+年|平成[\d元]+年|昭和[\d元]+年"
+        r"|[RHS]\d{1,2}\b"  # R05/H30/S60 等の元号略記
         r"|\b(?:19|20)\d{2}年|\b(?:19|20)\d{2}\b"
         r"|JIS\s*[A-Z]?\s*\d{3,5}"
         r"|JEAC\s*\d{3,5}"
