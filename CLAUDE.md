@@ -27,6 +27,12 @@
 14a. **エージェント委譲の禁止事項** — 以下はエージェント不可（本体で直接実行）：①ネットワークI/O（WebFetch/curl/PDF DL等）②mkdocs/build等の決定論的検証③小規模ファイル編集（3ファイル以下）。理由：エージェントは外部リソース失敗時にリトライ暴走する（2026-05-02 METI PDF取得で30分消費した実例）。本体並列ツール呼び出しのほうが起動コスト・トークンともに圧倒的に少ない
 14b. **ローカル資産優先探索** — 外部リソース（WebFetch・curl・API）に取りに行く前に、必ず以下を `ls` で確認する：①`OneDrive/デスクトップ/`（電験PDF・各種資料の格納場所）②`.secretary/refs/`（公式ソース一次キャッシュ）③`OneDrive/ドキュメント/Claude/`（Fカンパニー資産）。実例：METI dengikaishaku.pdf を30分かけて取得失敗 → ユーザー指摘で `OneDrive/デスクトップ/01_資格・勉強/電験3種/法令/` に最新版（令和7年11月）が揃っていたことが判明（2026-05-02）
 14c. **編集ロック宣言** — 大型ファイル編集前に必ず `python claim_edit.py claim --target <file> --reason <text>` で宣言する。完了時は `release` で解除。**対象**：単一HTML React アプリ（`denken-hoki-wiki.html` `denken3-riron-wiki.html`）／30分以上の編集予定／長文 knowledge ページ。**根拠**：2026-05-03 a9675b0 並列セッション衝突事故。pre-commit hook が他セッションの claim を物理ブロック。**確認方法**：`http://localhost:8092/denken-hoki-wiki.html#top` のバナー or `python claim_edit.py list`。詳細: `inbox/active-edits.md` / `inbox/parallel-session-incident-2026-05-03.md`
+14d. **編集ロックの自動通知 hook（オプション・推奨）** — `.claude/hooks/active-edits-status.sh` は他セッションの claim を `<system-reminder>` として Claude に注入する UserPromptSubmit hook。`.claude/hooks/active-edits-cleanup.sh` は期限切れエントリを自動削除する Stop hook。**有効化**：`~/.claude/settings.json` か `.claude/settings.local.json` の `hooks.UserPromptSubmit` / `hooks.Stop` 配列に下記を追記（既存hookは保持）。詳細スクリプトは `bash .claude/hooks/active-edits-{status,cleanup}.sh` で動作確認可。
+
+```json
+"UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "bash .claude/hooks/active-edits-status.sh", "timeout": 3 }] }],
+"Stop":             [{ "hooks": [{ "type": "command", "command": "bash .claude/hooks/active-edits-cleanup.sh", "timeout": 3 }] }]
+```
 15. **学び・改善案の出力** — 一通りの対応が完了したタイミングで必ず以下を出力する：
     - **今回の学び**: 今回の作業で判明した事実・発見・失敗パターン（箇条書き、具体的に）
     - **改善案**: 次回以降に活かせる手順・ルール・自動化の提案（実装コスト付き）
