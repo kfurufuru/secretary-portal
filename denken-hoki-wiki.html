@@ -2678,13 +2678,13 @@ window.renderPage = function(page, navigate) {
   const props = { onNav: navigate, data: window.WIKI_DATA };
   switch (page) {
     case 'top':                    return React.createElement(HomePage, props);
-    case 'zetsuen-tairyoku':       return React.createElement(StubPage, { ...props, pageId: 'zetsuen-tairyoku' });
-    case 'denatsu-kouka':          return React.createElement(StubPage, { ...props, pageId: 'denatsu-kouka' });
-    case 'shisen-hikisama':        return React.createElement(StubPage, { ...props, pageId: 'shisen-hikisama' });
-    case 'henshatsuki-koritu':     return React.createElement(StubPage, { ...props, pageId: 'henshatsuki-koritu' });
-    case 'ryokuritsu-kaizen':      return React.createElement(StubPage, { ...props, pageId: 'ryokuritsu-kaizen' });
-    case 'juyoritsu-keisan':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-keisan' });
-    case 'bshu-setsuchi':          return React.createElement(StubPage, { ...props, pageId: 'bshu-setsuchi' });
+    case 'zetsuen-tairyoku':       return React.createElement(ZetsuenTairyokuPage, props);
+    case 'denatsu-kouka':          return React.createElement(DenatsuKoukaPage, props);
+    case 'shisen-hikisama':        return React.createElement(ShisenHikisamaPage, props);
+    case 'henshatsuki-koritu':     return React.createElement(HenshatsukiKorituPage, props);
+    case 'ryokuritsu-kaizen':      return React.createElement(RyokuritsuKaizenPage, props);
+    case 'juyoritsu-keisan':       return React.createElement(JuyoritsuKeisanPage, props);
+    case 'bshu-setsuchi':          return React.createElement(BshuSetsuchiPage, props);
     case 'setsuchi-ichiran':       return React.createElement(SetsuchiIchiranPage, props);
     case 'zetsuen-ichiran':        return React.createElement(ZetsuenIchiranPage, props);
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
@@ -3511,6 +3511,886 @@ function HomePage({ onNav, data }) {
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-A. ZetsuenTairyokuPage（B問題: 絶縁耐力試験計算・freq:max）
+// ─────────────────────────────────────────────
+function ZetsuenTairyokuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="公称電圧 6.6 kV の高圧電路の絶縁耐力試験電圧は何 V か"
+        choices={["7,590 V","8,250 V","9,375 V","10,350 V"]}
+        correctIndex={3}
+        year="頻出"
+        note="公称→最大使用電圧→×倍率の3段階計算。読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 絶縁耐力試験計算の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '試験電圧 = 最大使用電圧×倍率', sub: 'B問題3段階計算', theme: 'blue' }}
+        top={{ label: '解釈第14・15条', sub: '法令の倍率規定', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '段階1: 公称→最大', sub: '×1.15/1.1', theme: 'orange', arrowLabel: '計算1' }}
+        right={{ label: '段階2: 最大→試験', sub: '×1.5/1.25/0.64', theme: 'cyan', arrowLabel: '計算2' }}
+        bottom={{ label: '試験時間 10分', sub: '全電圧共通', theme: 'green', arrowLabel: '時間' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本計算との関係"]}
+        rows={[
+          ["電技解釈 第14条",       "低圧電路の絶縁耐力試験電圧",       "本則（1.5倍）"],
+          ["電技解釈 第15条 別表第2の2","高圧/特高電路の絶縁耐力試験電圧","本則（1.25倍/0.64倍）"],
+          ["JEC 規格・公称電圧",    "公称電圧と最大使用電圧の関係",     "前提（1.15/1.1係数）"],
+          ["B問題出題傾向",         "6.6kV/22kV/77kV/154kV/275kV",     "頻出公称電圧"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／JEC規格（令和7年11月版／2010）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>3段階計算: <strong>公称電圧 → 最大使用電圧 → 試験電圧</strong></li>
+          <li>公称→最大: <strong>1,000V以下=×1.15/1.1、超=×1.15/1.1</strong>（基本的に×1.15/1.1）</li>
+          <li>具体例: 公称6.6kV → 最大 6.6×1.15/1.1 = <strong>6,900V</strong></li>
+          <li>最大→試験(高圧): <strong>×1.25</strong> → 6,900×1.25 = <strong>8,625V</strong></li>
+          <li>※ 設問で『×1.5倍』と問われるなら: 6,900×1.5 = <strong>10,350V</strong>（誤答誘発しやすい）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="S"
+        freq="毎年"
+        examType="B問題"
+        targets="R06上・R05・R04・R03"
+        tags={["B問題","絶縁耐力","計算","頻出S"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電線の名前としての電圧",   "公称電圧",                 "6.6kV/22kV等の標準値（呼称）"],
+          ["実際に使う最高電圧",       "最大使用電圧",             "公称×1.15/1.1で算出"],
+          ["試験で印加する電圧",       "試験電圧",                 "最大×1.5/1.25/0.64"],
+          ["試験で連続印加する時間",   "10分間連続",               "全区分共通（電圧によらず）"],
+          ["真ん中をアース直結",       "中性点直接接地",           "0.64倍が適用される（170kV超）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第14・15条／令和7年11月版"
+      />
+
+      <h2 id="tables">公称電圧 → 最大使用電圧 → 試験電圧 早見表</h2>
+      <MemTable
+        headers={["公称電圧", "最大使用電圧", "倍率", "試験電圧", "区分"]}
+        rows={[
+          ["100/200 V",  "115/230 V",  "1.5",  "172.5/345 V",   "低圧"],
+          ["6.6 kV",     "6,900 V",    "1.25", "8,625 V",        "高圧"],
+          ["22 kV",      "23,000 V",   "1.25", "28,750 V",       "高圧"],
+          ["66 kV",      "69,000 V",   "1.25", "86,250 V",       "高圧"],
+          ["154 kV",     "161,000 V",  "1.25", "201,250 V",      "特高（その他）"],
+          ["275 kV",     "287,500 V",  "0.64", "184,000 V",      "特高（中性点直接接地）"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第14・15条 別表第2の2／令和7年11月版"
+        note="頻出は6.6kV→8,625V。275kV直接接地は0.64倍で『試験電圧が下がる』のがポイント"
+      />
+
+      <h2 id="hint-tables">試験電圧計算の3ステップ（B問題解法）</h2>
+      <MemTable
+        headers={["ステップ", "式", "例（公称6.6kV）"]}
+        rows={[
+          ["1. 最大使用電圧",   "公称電圧 × 1.15 / 1.1",       "6.6 × 1.15 / 1.1 = 6.9 kV"],
+          ["2. 倍率を選ぶ",     "区分→1.5 / 1.25 / 0.64",     "高圧→1.25倍"],
+          ["3. 試験電圧",       "最大使用電圧 × 倍率",         "6,900 × 1.25 = 8,625 V"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第14・15条／令和7年11月版"
+        note="必ず『最大使用電圧』を経由する。公称電圧に直接倍率を掛けるのは誤り"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "公称電圧6.6kV × 1.25 = 8,250V が試験電圧",
+          correct: "正しくは『最大使用電圧6,900V × 1.25 = 8,625V』。最大使用電圧を経由する" },
+        { wrong: "高圧電路の倍率は1.5倍",
+          correct: "高圧は1.25倍。1.5倍は低圧（7,000V以下）" },
+        { wrong: "275kVの試験電圧は最も高い",
+          correct: "中性点直接接地（170kV超）は0.64倍で試験電圧は『下がる』" },
+        { wrong: "試験時間は電圧によって異なる",
+          correct: "試験時間は『10分間』で全区分共通" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "公称電圧 → 最大使用電圧 の係数は？",       a: "×1.15/1.1（≒1.045倍）" },
+        { q: "公称6.6kVの最大使用電圧は？",                a: "6,900 V" },
+        { q: "公称6.6kVの試験電圧は？",                    a: "8,625 V（6,900×1.25）" },
+        { q: "275kV(中性点直接接地)の倍率は？",            a: "0.64倍" },
+        { q: "試験時間は？",                               a: "10分間（全区分共通）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="top"           prevTitle="トップ"
+        nextId="denatsu-kouka" nextTitle="電圧降下"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-B. DenatsuKoukaPage（B問題: 電圧降下・freq:high）
+// ─────────────────────────────────────────────
+function DenatsuKoukaPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="単相3線式（中性線あり）の電圧降下の式として正しいものはどれか（I=線電流、R=1線抵抗、X=1線リアクタンス、cosθ・sinθ=力率）"
+        choices={[
+          "v = I(R cosθ + X sinθ)",
+          "v = 2 I(R cosθ + X sinθ)",
+          "v = √3 I(R cosθ + X sinθ)",
+          "v = I R cosθ",
+        ]}
+        correctIndex={0}
+        year="頻出"
+        note="単相2線=2I, 単相3線=I, 三相3線=√3I"
+      />
+
+      <h2 id="overview">1. 全体像 — 電圧降下の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: 'v = k×I(R cosθ+X sinθ)', sub: '電圧降下の基本式', theme: 'blue' }}
+        top={{ label: '内線規程・配線計算', sub: '実務基準（JEAC8001）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '単相2線式', sub: 'k=2', theme: 'orange', arrowLabel: '配線方式1' }}
+        right={{ label: '三相3線式', sub: 'k=√3', theme: 'cyan', arrowLabel: '配線方式2' }}
+        bottom={{ label: '単相3線式', sub: 'k=1（中性線基準）', theme: 'green', arrowLabel: '配線方式3' }}
+      />
+      <MemTable
+        headers={["規程/規定", "役割", "本計算との関係"]}
+        rows={[
+          ["内線規程 1310-1",      "電圧降下の許容値（2%/3%/4%）",   "実務基準（試験引用あり）"],
+          ["電技解釈 第143条",     "低圧屋内電路の対地電圧制限",     "並立（電圧維持の上位概念）"],
+          ["B問題定石",            "配線方式別の係数 k=2/√3/1",     "出題形式の典型"],
+          ["集中負荷 vs 分散負荷", "末端集中 vs 一様分散の式違い",   "応用問題の分岐点"],
+        ]}
+        source="出典：内線規程JEAC8001／電技解釈（令和7年11月版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>基本式: <strong>v = k × I × (R cosθ + X sinθ)</strong></li>
+          <li>配線方式別係数: <strong>単相2線=2 / 三相3線=√3 / 単相3線=1</strong></li>
+          <li>抵抗のみ（X≒0）の場合: <strong>v = k × I × R × cosθ</strong></li>
+          <li>許容値: 一般的に<strong>2%（幹線）/ 4%（最終枝）</strong>以内</li>
+          <li>分散負荷（一様）: 集中負荷の<strong>1/2</strong>として計算</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="B問題"
+        targets="R05・R03・H30"
+        tags={["B問題","電圧降下","配線方式","頻出A"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電線で電圧が下がる",     "電圧降下",                   "v = kIR cosθ+kIX sinθ で計算"],
+          ["1本の線の抵抗",         "1線抵抗・抵抗成分",         "Ω/m × 長さで算出"],
+          ["1本の線の誘導性抵抗",   "1線リアクタンス",           "X = ωL（高圧で重要）"],
+          ["端末で集中する負荷",     "集中負荷",                   "末端に1負荷"],
+          ["平均的にばらつく負荷",   "一様分散負荷",               "電圧降下は集中の1/2"],
+        ]}
+        source="出典：内線規程JEAC8001／電気事業便覧"
+      />
+
+      <h2 id="tables">配線方式別の電圧降下係数 k</h2>
+      <MemTable
+        headers={["配線方式", "係数 k", "代表的用途", "備考"]}
+        rows={[
+          ["単相2線式",   "k = 2",   "100V回路（家電等）",         "往復2線分の電圧降下"],
+          ["単相3線式",   "k = 1",   "100V/200V併用（住宅幹線）",  "中性線基準・1線あたり"],
+          ["三相3線式",   "k = √3",  "200V動力（モータ等）",       "線間電圧基準"],
+          ["三相4線式",   "k = √3",  "高圧配電",                   "中性線あり・係数同じ"],
+        ]}
+        source="出典：内線規程JEAC8001／電気事業便覧"
+        note="単相3線式（k=1）が最も電圧降下が小さい。係数の違いが頻出ひっかけ"
+      />
+
+      <h2 id="hint-tables">電圧降下計算の3ステップ（B問題解法）</h2>
+      <MemTable
+        headers={["ステップ", "内容", "式の例"]}
+        rows={[
+          ["1. 配線方式判定",    "k を決定",                       "三相3線→ k=√3"],
+          ["2. 1線抵抗・X算出",  "電線の長さ × 抵抗率/m",          "R = 1.78×10⁻²×ℓ/A（IV線・銅）"],
+          ["3. 公式適用",        "v = kI(R cosθ + X sinθ)",        "数値代入で v を計算"],
+        ]}
+        source="出典：内線規程JEAC8001"
+        note="抵抗のみ（X省略可）の小規模回路ならステップ3は v = kIR cosθ で簡略化"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "三相3線式の係数 k は 3",
+          correct: "三相3線式の k は『√3』（線間電圧基準）" },
+        { wrong: "単相3線式の係数 k は 2",
+          correct: "単相3線式は中性線基準で k=1（最も電圧降下が小さい）" },
+        { wrong: "電圧降下の許容値は10%以内",
+          correct: "一般的に幹線2%/最終枝4%以内（内線規程）" },
+        { wrong: "一様分散負荷の電圧降下は集中負荷と同じ",
+          correct: "一様分散負荷は集中の『1/2』" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "電圧降下の基本式は？",                a: "v = k × I × (R cosθ + X sinθ)" },
+        { q: "単相2線式の係数 k は？",              a: "k = 2" },
+        { q: "三相3線式の係数 k は？",              a: "k = √3" },
+        { q: "単相3線式の係数 k は？",              a: "k = 1（中性線基準）" },
+        { q: "一様分散負荷の電圧降下は集中の何倍？", a: "1/2" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="zetsuen-tairyoku" prevTitle="絶縁耐力試験計算"
+        nextId="shisen-hikisama"  nextTitle="支線の引張強さ"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-C. ShisenHikisamaPage（B問題: 支線の引張強さ・freq:high）
+// ─────────────────────────────────────────────
+function ShisenHikisamaPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電技解釈で定める支線の安全率の最低値はいくつか"
+        choices={["1.5","2.0","2.5","3.0"]}
+        correctIndex={2}
+        year="頻出"
+        note="（木柱・A種鉄筋C柱の支線等は安全率1.5の例外あり）"
+      />
+
+      <h2 id="overview">1. 全体像 — 支線計算の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: 'T = F / (sinθ × η)', sub: '支線の必要引張強さ', theme: 'blue' }}
+        top={{ label: '電技解釈第61条', sub: '支線の規定', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '安全率', sub: '原則 2.5 以上', theme: 'orange', arrowLabel: '係数' }}
+        right={{ label: '取付け角度θ', sub: '柱と支線の角度', theme: 'cyan', arrowLabel: '幾何' }}
+        bottom={{ label: '水平荷重 F', sub: '電線張力等', theme: 'green', arrowLabel: '荷重' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本計算との関係"]}
+        rows={[
+          ["電技解釈 第61条", "支線・支柱の施設基準",         "本則（強度・最低条数）"],
+          ["電技解釈 第61条第3項","支線の安全率（2.5以上）",  "係数（原則）"],
+          ["電技解釈 第62条", "支線の最低条数（3条以上）",   "本則（並立）"],
+          ["B問題定石",       "θ・F・η から支線張力 T 算出","典型出題"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／令和7年11月版"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>支線張力: <strong>T = F / sinθ</strong>（θ=支線と柱の角度）</li>
+          <li>必要引張強さ: <strong>T_必要 = T × 安全率（2.5 以上）</strong></li>
+          <li>素線条数: <strong>3条以上</strong>（解釈第62条）</li>
+          <li>素線径: 直径 <strong>2.6 mm 以上</strong>の金属線</li>
+          <li>例外: 木柱・A種コン柱で取付高さ4.5m未満等は安全率<strong>1.5</strong>でよい</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="B問題"
+        targets="R05・R03・R01"
+        tags={["B問題","支線","計算","頻出A"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["支えの線",             "支線",                       "電柱を引っ張って支える鋼線"],
+          ["余裕度（×倍）",       "安全率",                     "原則2.5・例外1.5"],
+          ["線の本数",             "素線の条数",                 "3条以上必須"],
+          ["柱と支線の角度",       "取付角度θ",                  "鉛直線と支線の角度"],
+          ["電線が引っ張る力",     "水平荷重F",                  "風圧荷重・電線張力等"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第61・62条／令和7年11月版"
+      />
+
+      <h2 id="tables">支線計算のステップ</h2>
+      <MemTable
+        headers={["ステップ", "式", "例"]}
+        rows={[
+          ["1. 必要張力T",     "T = F / sinθ",                "F=2,000N, θ=30° → T=4,000N"],
+          ["2. 安全率適用",    "T_必要 = T × 安全率",         "4,000 × 2.5 = 10,000N"],
+          ["3. 1条あたり",     "T_必要 / 条数",               "10,000 / 7条 ≒ 1,428N/条"],
+          ["4. 素線径選定",    "1条強さ ≥ 計算値の素線を選ぶ", "≥1,428Nの素線を選定"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第61・62条／令和7年11月版"
+        note="頻出は『θ=30°→sin30°=0.5』『θ=45°→sin45°=√2/2』。3角関数の即答が鍵"
+      />
+
+      <h2 id="anzenritsu-tables">安全率の例外規定（解釈第61条第3項）</h2>
+      <MemTable
+        headers={["対象", "安全率", "条件"]}
+        rows={[
+          ["原則",                       "2.5 以上", "鉄塔・鉄柱・コンクリート柱・特高用支線等"],
+          ["木柱・A種鉄筋コンクリート柱","1.5 以上", "取付高さ4.5m未満かつ風圧荷重等の小さい場合"],
+          ["特高架空電線路の支線",       "2.5 以上", "例外なし"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第61条第3項／令和7年11月版"
+        note="原則 2.5 / 木柱の小規模なら 1.5 / 特高は必ず 2.5"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "支線の安全率は一律 1.5",
+          correct: "原則は『2.5 以上』。1.5 は木柱等の例外のみ" },
+        { wrong: "支線の素線条数は 2 条以上",
+          correct: "『3 条以上』（解釈第62条）" },
+        { wrong: "支線張力 T = F × sinθ で計算",
+          correct: "T = F / sinθ（割り算が正しい）" },
+        { wrong: "θが大きい（45°より60°）と支線張力は小さくなる",
+          correct: "θが大きいと sinθ が大きくなり T = F/sinθ は小さくなる（正しい）。ただし水平距離が長くなる" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "支線張力 T の計算式は？",          a: "T = F / sinθ" },
+        { q: "支線の原則安全率は？",             a: "2.5 以上" },
+        { q: "支線の素線最低条数は？",           a: "3 条以上" },
+        { q: "素線径の最低値は？",               a: "直径 2.6 mm 以上" },
+        { q: "θ=30°のとき sinθ は？",           a: "0.5（→T = F/0.5 = 2F）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="denatsu-kouka"     prevTitle="電圧降下"
+        nextId="henshatsuki-koritu" nextTitle="変圧器の全日効率"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-D. HenshatsukiKorituPage（B問題: 変圧器の全日効率・freq:high）
+// ─────────────────────────────────────────────
+function HenshatsukiKorituPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="変圧器の全日効率の式として正しいものはどれか（W_o=1日の出力電力量、P_i=無負荷損、ΣP_c×t=負荷損の総和）"
+        choices={[
+          "η = W_o / (W_o + 24×P_i + ΣP_c×t)",
+          "η = W_o / (W_o + P_i + P_c)",
+          "η = (W_o − 24×P_i) / W_o",
+          "η = P_o / (P_o + P_i + P_c)",
+        ]}
+        correctIndex={0}
+        year="頻出"
+        note="無負荷損は『常時24h発生』、負荷損は『負荷時のみ』"
+      />
+
+      <h2 id="overview">1. 全体像 — 変圧器全日効率の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: 'η_全日 = W_o / (W_o + 損失)', sub: '1日平均効率', theme: 'blue' }}
+        top={{ label: 'JIS C 4304等', sub: '変圧器規格', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '無負荷損 P_i', sub: '24h定常発生（鉄損）', theme: 'orange', arrowLabel: '損失1' }}
+        right={{ label: '負荷損 P_c', sub: '負荷時のみ（銅損）', theme: 'cyan', arrowLabel: '損失2' }}
+        bottom={{ label: '出力電力量 W_o', sub: 'kWh単位（時刻別積算）', theme: 'green', arrowLabel: '出力' }}
+      />
+      <MemTable
+        headers={["規格/規定", "役割", "本計算との関係"]}
+        rows={[
+          ["JIS C 4304等",   "変圧器の効率定義",                 "本則（無負荷損・負荷損の分離）"],
+          ["瞬時効率",       "η = P_o / (P_o + P_i + P_c)",     "比較対象（瞬時値）"],
+          ["全日効率",       "η_d = W_o / (W_o + W_loss)",       "本ページの主題"],
+          ["B問題出題傾向",  "時刻別負荷率データから計算",       "頻出形式"],
+        ]}
+        source="出典：JIS C 4304／電気事業便覧"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>全日効率: <strong>η_d = W_o / (W_o + W_iron + W_copper)</strong></li>
+          <li>1日鉄損(無負荷損)積算: <strong>W_iron = 24 × P_i</strong>（常時発生）</li>
+          <li>1日銅損(負荷損)積算: <strong>W_copper = Σ(α²×P_c × t)</strong>（α=負荷率, t=継続時間）</li>
+          <li>負荷損は<strong>負荷率の2乗に比例</strong>（重要）</li>
+          <li>瞬時最高効率の条件: <strong>無負荷損 = 負荷損</strong>（α²P_c = P_i）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="A"
+        freq="2〜3年に1回"
+        examType="B問題"
+        targets="R05・R02・H30"
+        tags={["B問題","変圧器","効率","頻出A"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["何もしなくても出る損失",   "無負荷損（鉄損）",         "鉄心のヒステリシス損+うず電流損"],
+          ["負荷をかけると出る損失",   "負荷損（銅損）",           "巻線の I²R 損"],
+          ["1日の平均効率",            "全日効率 η_d",             "出力エネルギー/(出力+損失エネルギー)"],
+          ["定格に対する負荷の割合",   "負荷率 α",                 "α=実負荷/定格負荷"],
+          ["時刻ごとの負荷",           "日負荷曲線",               "時間帯別の負荷率データ"],
+        ]}
+        source="出典：JIS C 4304／電気事業便覧"
+      />
+
+      <h2 id="tables">全日効率の計算ステップ（B問題解法）</h2>
+      <MemTable
+        headers={["ステップ", "計算内容", "式"]}
+        rows={[
+          ["1. 出力電力量 W_o",   "時刻別負荷を時間で積算",          "W_o = Σ(P_o × t) [kWh]"],
+          ["2. 無負荷損 W_iron",   "常時発生 × 24h",                  "W_iron = 24 × P_i [kWh]"],
+          ["3. 負荷損 W_copper",   "α² × 定格負荷損 × 時間 を積算",  "W_copper = Σ(α²×P_c×t) [kWh]"],
+          ["4. 全日効率 η_d",     "出力/(出力+損失)",                "η_d = W_o / (W_o + W_iron + W_copper)"],
+        ]}
+        source="出典：JIS C 4304／電気事業便覧"
+        note="負荷損が『α² に比例』を忘れない。α=0.5 なら負荷損は定格時の0.25倍"
+      />
+
+      <h2 id="koritsu-tables">瞬時最高効率の条件</h2>
+      <MemTable
+        headers={["条件", "式", "意味"]}
+        rows={[
+          ["最高効率時の負荷率", "α_max = √(P_i / P_c)",       "無負荷損=負荷損 となる負荷率"],
+          ["最高効率の値",       "η_max = P_o / (P_o + 2P_i)", "損失=2P_i（無負荷+負荷=同等）"],
+          ["全日効率の最高条件", "1日積算で同等",               "鉄損積算=銅損積算"],
+        ]}
+        source="出典：JIS C 4304／電気事業便覧"
+        note="α_max = √(P_i/P_c) は瞬時最高効率の必須公式"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "無負荷損は負荷時のみ発生する",
+          correct: "無負荷損は『常時24h発生』する（鉄心の磁化に必要）" },
+        { wrong: "負荷損は負荷率に比例する",
+          correct: "負荷損は『負荷率の2乗』に比例（I²R）" },
+        { wrong: "全日効率は瞬時効率と同じ式",
+          correct: "全日効率は『1日積算』。鉄損=24×P_i、銅損=Σ(α²P_c×t)" },
+        { wrong: "最高効率は α=1.0（定格負荷）で得られる",
+          correct: "最高効率は α_max=√(P_i/P_c) のとき。一般に α<1 で発生" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "全日効率の式は？",                       a: "η_d = W_o / (W_o + 24×P_i + Σα²P_c×t)" },
+        { q: "無負荷損の発生時間は？",                 a: "24時間（常時）" },
+        { q: "負荷損は負荷率の何乗に比例？",           a: "2乗（α²）" },
+        { q: "最高効率時の負荷率の式は？",             a: "α_max = √(P_i / P_c)" },
+        { q: "最高効率時の損失は何の何倍？",           a: "無負荷損P_iの2倍（無負荷+負荷=2P_i）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="shisen-hikisama"  prevTitle="支線の引張強さ"
+        nextId="ryokuritsu-kaizen" nextTitle="力率改善"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-E. RyokuritsuKaizenPage（B問題: 力率改善・freq:mid）
+// ─────────────────────────────────────────────
+function RyokuritsuKaizenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="有効電力 P=100kW、力率 cosθ_1=0.8 を cosθ_2=1.0 に改善するために必要な進相コンデンサの容量 [kvar] はおおよそいくらか"
+        choices={["50 kvar","60 kvar","75 kvar","100 kvar"]}
+        correctIndex={2}
+        year="頻出"
+        note="Q_c = P × (tanθ_1 − tanθ_2)。読み終えたら戻って解こう"
+      />
+
+      <h2 id="overview">1. 全体像 — 力率改善の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: 'Q_c = P×(tanθ₁−tanθ₂)', sub: '進相コンデンサ容量', theme: 'blue' }}
+        top={{ label: '電力品質・電気使用合理化', sub: '上位（省エネ法等）', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '改善前 cosθ₁', sub: '通常 0.8 程度', theme: 'orange', arrowLabel: '前' }}
+        right={{ label: '改善後 cosθ₂', sub: '0.95〜1.0 目標', theme: 'cyan', arrowLabel: '後' }}
+        bottom={{ label: '進相コンデンサ', sub: 'SC・無効電力供給', theme: 'green', arrowLabel: '機器' }}
+      />
+      <MemTable
+        headers={["概念/規定", "役割", "本計算との関係"]}
+        rows={[
+          ["有効電力 P",       "実際に仕事をする電力 [kW]",       "改善前後で不変"],
+          ["無効電力 Q",       "有効電力に直交 [kvar]",           "改善で減少"],
+          ["皮相電力 S",       "S = √(P² + Q²) [kVA]",           "改善で減少（電線負担減）"],
+          ["力率 cosθ",        "cosθ = P / S",                   "改善で 1 に近づく"],
+        ]}
+        source="出典：電気事業便覧／省エネ法"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>進相コンデンサ容量: <strong>Q_c = P × (tanθ₁ − tanθ₂)</strong></li>
+          <li>tanθ = √(1−cos²θ) / cosθ で算出</li>
+          <li>cosθ=0.8 → tanθ=0.75、cosθ=1.0 → tanθ=0</li>
+          <li>力率改善のメリット: <strong>電線損失減・電力料金軽減・電圧降下軽減</strong></li>
+          <li>過補償（進み力率）は機器に悪影響（電圧上昇）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="B"
+        freq="散発"
+        examType="B問題"
+        targets="R04・H29"
+        tags={["B問題","力率改善","コンデンサ","計算"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["効率の良い電気の使い方", "力率改善",                   "cosθを1に近づける"],
+          ["コンデンサを並列に入れる","進相コンデンサ（SC）の並列接続","無効電力を供給"],
+          ["遅れ力率",               "誘導性負荷",                 "モータ等・力率改善対象"],
+          ["進み力率",               "容量性負荷",                 "過補償の状態（注意）"],
+          ["仕事をしない電力",       "無効電力Q [kvar]",           "改善で減らす対象"],
+        ]}
+        source="出典：電気事業便覧"
+      />
+
+      <h2 id="tables">cosθ ⇔ tanθ 早見表</h2>
+      <MemTable
+        headers={["cosθ", "sinθ", "tanθ", "用途"]}
+        rows={[
+          ["0.6",  "0.80", "1.33", "（悪い力率の例）"],
+          ["0.7",  "0.71", "1.02", "—"],
+          ["0.8",  "0.60", "0.75", "改善前の典型値"],
+          ["0.85", "0.53", "0.62", "—"],
+          ["0.9",  "0.44", "0.48", "—"],
+          ["0.95", "0.31", "0.33", "改善目標値（電力料金割引境界）"],
+          ["1.0",  "0",    "0",    "完全力率改善"],
+        ]}
+        source="出典：三角関数表（数学公式）"
+        note="cosθ=0.8→tanθ=0.75（よく使う値）。覚えておくと B問題が秒速で解ける"
+      />
+
+      <h2 id="hint-tables">力率改善計算のステップ（B問題解法）</h2>
+      <MemTable
+        headers={["ステップ", "計算", "例（P=100kW, 0.8→1.0）"]}
+        rows={[
+          ["1. tanθ₁ 算出",  "改善前 tanθ₁",                "0.8 → 0.75"],
+          ["2. tanθ₂ 算出",  "改善後 tanθ₂",                "1.0 → 0"],
+          ["3. Q_c 算出",    "Q_c = P × (tanθ₁ − tanθ₂)",   "100 × (0.75−0) = 75 kvar"],
+        ]}
+        source="出典：電気事業便覧"
+        note="cosθ=1.0 にする場合は tanθ₂=0 なので、Q_c = P × tanθ₁ で簡略化"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "Q_c = P × (cosθ₁ − cosθ₂) で求める",
+          correct: "正しくは『tanθ₁ − tanθ₂』。cos差では誤り" },
+        { wrong: "力率改善は皮相電力 S を増やす",
+          correct: "S は『減少』する（無効電力Qが減るため）" },
+        { wrong: "力率を1.0にすると常に最善",
+          correct: "過補償（進み力率）は機器電圧上昇等の悪影響あり。0.95程度が実務的" },
+        { wrong: "力率改善で有効電力 P も増える",
+          correct: "P は不変（力率改善は無効電力削減・実エネルギーは変わらず）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "進相コンデンサ容量の式は？",          a: "Q_c = P × (tanθ₁ − tanθ₂)" },
+        { q: "cosθ=0.8 の tanθ は？",                a: "0.75" },
+        { q: "P=100kW を cosθ 0.8→1.0 に改善するQ_c は？", a: "75 kvar" },
+        { q: "力率改善で皮相電力 S はどうなる？",  a: "減少する" },
+        { q: "実務的な改善目標 cosθ は？",          a: "0.95程度（過補償回避のため）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="henshatsuki-koritu" prevTitle="変圧器の全日効率"
+        nextId="juyoritsu-keisan"   nextTitle="需要率・負荷率・不等率（計算）"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-F. JuyoritsuKeisanPage（B問題: 需要率・負荷率・不等率 計算・freq:max）
+// ─────────────────────────────────────────────
+function JuyoritsuKeisanPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="設備容量 100kW、最大需要電力 60kW、平均需要電力 30kW のとき、需要率・負荷率はそれぞれいくらか"
+        choices={[
+          "需要率 60%・負荷率 30%",
+          "需要率 60%・負荷率 50%",
+          "需要率 30%・負荷率 60%",
+          "需要率 50%・負荷率 60%",
+        ]}
+        correctIndex={1}
+        year="頻出"
+        note="需要率=最大/設備、負荷率=平均/最大"
+      />
+
+      <h2 id="overview">1. 全体像 — 3つの率の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '需要率・負荷率・不等率', sub: '電気施設管理3指標', theme: 'blue' }}
+        top={{ label: '電気事業便覧・配電設計', sub: '実務基準', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '需要率', sub: '最大÷設備', theme: 'orange', arrowLabel: '指標1' }}
+        right={{ label: '負荷率', sub: '平均÷最大', theme: 'cyan', arrowLabel: '指標2' }}
+        bottom={{ label: '不等率', sub: '個別最大和÷合成最大', theme: 'green', arrowLabel: '指標3' }}
+      />
+      <MemTable
+        headers={["指標", "意味", "本計算との関係"]}
+        rows={[
+          ["需要率",  "設備容量に対する最大需要電力の比率", "需要率 = 最大需要 / 設備容量 [%]"],
+          ["負荷率",  "最大需要に対する平均需要電力の比率", "負荷率 = 平均需要 / 最大需要 [%]"],
+          ["不等率",  "個別最大の和に対する合成最大の比率（≥1）", "不等率 = Σ最大 / 合成最大"],
+          ["B問題",   "3指標を組合せた応用問題が頻出",     "受験得点直結"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>需要率: <strong>需要率 = 最大需要電力 / 設備容量</strong>（通常 30〜80%）</li>
+          <li>負荷率: <strong>負荷率 = 平均需要電力 / 最大需要電力</strong>（高いほど効率良）</li>
+          <li>不等率: <strong>不等率 = 個別最大需要の和 / 合成最大需要</strong>（≥1）</li>
+          <li>不等率が大きい = 各需要のピークがずれている = 変圧器容量を小さくできる</li>
+          <li>負荷率が高い = 設備が常時稼働 = 効率良（理想は100%）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="S"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R06上・R05・R04・R03"
+        tags={["B問題","需要率","負荷率","不等率","頻出S"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["設備の総量",           "設備容量",                   "全機器の定格合計 [kW]"],
+          ["1年で最も大きい使用量","最大需要電力",               "需要率の分子"],
+          ["1年の平均使用量",     "平均需要電力",               "負荷率の分子"],
+          ["バラバラのピーク",     "需要の不等性",               "不等率の根拠"],
+          ["まとめた最大",         "合成最大需要電力",           "不等率の分母"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <h2 id="tables">3指標の式と典型値</h2>
+      <MemTable
+        headers={["指標", "式", "範囲", "意味"]}
+        rows={[
+          ["需要率",  "最大需要 / 設備容量 × 100 [%]",   "30〜80%",   "高いほど設備フル活用（経済的）"],
+          ["負荷率",  "平均需要 / 最大需要 × 100 [%]",   "20〜60%",   "高いほど稼働平準化（理想100%）"],
+          ["不等率",  "Σ個別最大 / 合成最大",            "≥ 1.0",     "大きいほどピーク分散（変圧器小型化）"],
+        ]}
+        source="出典：電気事業便覧"
+        note="不等率は『1以上』が必須（合成最大は個別最大の和より小さい）"
+      />
+
+      <h2 id="hint-tables">複合計算（変圧器容量算定）</h2>
+      <MemTable
+        headers={["ステップ", "計算内容", "例"]}
+        rows={[
+          ["1. 個別最大",       "各需要家の最大需要 = 設備容量 × 需要率", "100×0.6=60kW（×n台）"],
+          ["2. Σ個別最大",      "全需要家の最大需要を合計",               "60×3 = 180kW"],
+          ["3. 合成最大",       "Σ個別最大 / 不等率",                     "180 / 1.2 = 150kW"],
+          ["4. 変圧器容量",     "合成最大 / 力率",                         "150 / 0.8 = 187.5kVA"],
+        ]}
+        source="出典：配電設計指針"
+        note="B問題定石: 設備容量×需要率で個別最大→合計÷不等率で合成最大→÷力率で変圧器kVA"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "需要率は『平均需要 / 設備容量』",
+          correct: "需要率は『最大需要 / 設備容量』。平均と最大を間違えやすい" },
+        { wrong: "負荷率は『最大需要 / 設備容量』",
+          correct: "負荷率は『平均需要 / 最大需要』。需要率と混同注意" },
+        { wrong: "不等率は1未満になることがある",
+          correct: "不等率は『必ず1以上』。1未満なら計算ミス" },
+        { wrong: "負荷率が高いほど経済性が悪い",
+          correct: "負荷率が高い=平準化されている=効率良。電力料金体系上もメリット" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "需要率の式は？",   a: "需要率 = 最大需要電力 / 設備容量" },
+        { q: "負荷率の式は？",   a: "負荷率 = 平均需要電力 / 最大需要電力" },
+        { q: "不等率の式は？",   a: "不等率 = Σ個別最大需要 / 合成最大需要（≥1）" },
+        { q: "不等率の最小値は？", a: "1.0（必ず1以上）" },
+        { q: "変圧器容量算定式は？", a: "合成最大 / 力率 = (Σ個別最大/不等率)/cosθ" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="ryokuritsu-kaizen" prevTitle="力率改善"
+        nextId="bshu-setsuchi"     nextTitle="B種接地抵抗値"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 1-G. BshuSetsuchiPage（B問題: B種接地抵抗値・freq:max）
+// ─────────────────────────────────────────────
+function BshuSetsuchiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="高圧電路の1線地絡電流が 5A、低圧側の保護装置が 1秒以内に自動遮断する場合、B種接地抵抗値の最大値は何 Ω 以下か"
+        choices={["30 Ω","60 Ω","100 Ω","150 Ω"]}
+        correctIndex={1}
+        year="頻出"
+        note="1秒以内→300/Ig が適用される（150/Ig ではない）"
+      />
+
+      <h2 id="overview">1. 全体像 — B種接地抵抗値の位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: 'R_B = K / Ig', sub: 'B種接地抵抗値の式', theme: 'blue' }}
+        top={{ label: '電技解釈第17条', sub: 'B種接地の規定', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '原則', sub: 'K=150（混触時150V以下）', theme: 'orange', arrowLabel: '基本' }}
+        right={{ label: '1秒以内遮断', sub: 'K=300', theme: 'cyan', arrowLabel: '緩和1' }}
+        bottom={{ label: '0.5秒以内遮断', sub: 'K=600', theme: 'green', arrowLabel: '緩和2' }}
+      />
+      <MemTable
+        headers={["条文/規定", "役割", "本計算との関係"]}
+        rows={[
+          ["電技解釈 第17条第2項",  "B種接地抵抗値の算定式",         "本則（K の選択基準）"],
+          ["電技省令 第12条",       "高低圧混触時の対地電圧制限",    "上位（150V以下要求の根拠）"],
+          ["B問題出題傾向",         "Ig と遮断時間の組合せ問題",     "頻出形式"],
+          ["1線地絡電流 Ig",        "計算上 5A 等の典型値",          "分母"],
+        ]}
+        source="出典：電気設備の技術基準の解釈／同省令（令和7年11月版／令和5年版）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>基本式: <strong>R_B = K / Ig</strong> [Ω]（Ig = 1線地絡電流 [A]）</li>
+          <li>K=<strong>150</strong>: 原則（混触時の対地電圧を150V以下に制限）</li>
+          <li>K=<strong>300</strong>: 1秒以内に高圧電路を自動遮断する場合</li>
+          <li>K=<strong>600</strong>: 0.5秒以内に高圧電路を自動遮断する場合</li>
+          <li>遮断時間が短いほど許容抵抗値が大きい（合理的・コスト減）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題"
+        importance="S"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R06上・R05・R04・R03"
+        tags={["B問題","B種接地","計算","頻出S"]}
+        lastChecked="2026-05-03"
+      />
+
+      <h2 id="terms">4. 法規特有表現</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["地面に流れる電流",     "1線地絡電流 Ig",             "B種抵抗値の分母 [A]"],
+          ["B種の式",              "R_B = K / Ig",               "K=150/300/600"],
+          ["素早く切れる",          "1秒以内の自動遮断",          "K=300 緩和の条件"],
+          ["もっと素早く切れる",    "0.5秒以内の自動遮断",        "K=600 緩和の条件"],
+          ["高圧と低圧が触れる事故","混触事故",                   "B種接地の防護対象"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
+      />
+
+      <h2 id="tables">B種接地抵抗値の早見表（K の選択）</h2>
+      <MemTable
+        headers={["遮断条件", "K", "R_B 式", "Ig=5A 例"]}
+        rows={[
+          ["原則（遮断装置なし or 遅い）",  "150", "R_B = 150 / Ig", "30 Ω 以下"],
+          ["1秒以内に自動遮断",             "300", "R_B = 300 / Ig", "60 Ω 以下"],
+          ["0.5秒以内に自動遮断",           "600", "R_B = 600 / Ig", "120 Ω 以下"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条第2項／令和7年11月版"
+        note="同じ Ig でも遮断時間で許容抵抗が4倍違う（150→600）。遮断装置の重要性"
+      />
+
+      <h2 id="hint-tables">B問題定石: Ig 算出から R_B まで</h2>
+      <MemTable
+        headers={["ステップ", "計算内容", "備考"]}
+        rows={[
+          ["1. 1線地絡電流 Ig",  "電路条件から Ig を算出",       "問題で与えられる場合多い"],
+          ["2. 遮断時間判定",    "1秒以内 / 0.5秒以内 / 該当なし","K=300/600/150 を選択"],
+          ["3. R_B 計算",        "K / Ig",                       "Ω 単位で算出"],
+          ["4. 安全確認",        "実際の接地抵抗 ≤ R_B",        "計算値以下であること"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "B種接地抵抗値は一律 150 / Ig",
+          correct: "遮断時間によって K=150/300/600 の3パターン" },
+        { wrong: "1秒以内遮断なら K=600",
+          correct: "1秒以内は K=300。0.5秒以内が K=600" },
+        { wrong: "B種接地は感電防止が目的",
+          correct: "B種は『混触時の対地電圧150V以下制限』が目的（感電防止はA・C・D種）" },
+        { wrong: "R_B = Ig / K で計算",
+          correct: "R_B = K / Ig（割り算の向きが逆）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "B種接地抵抗値の基本式は？",          a: "R_B = K / Ig（K=150/300/600）" },
+        { q: "K=150 が適用される条件は？",          a: "原則（遮断装置なし or 1秒超）" },
+        { q: "K=300 が適用される条件は？",          a: "1秒以内に高圧電路を自動遮断" },
+        { q: "K=600 が適用される条件は？",          a: "0.5秒以内に高圧電路を自動遮断" },
+        { q: "B種接地の目的は？",                   a: "高低圧混触時の対地電圧150V以下制限" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（StubPage→実装移行）", reason: "P1パイロット第6弾・B問題系" }]} />
+      <PageNav
+        prevId="juyoritsu-keisan" prevTitle="需要率・負荷率・不等率（計算）"
+        nextId="setsuchi-ichiran" nextTitle="接地工事一覧表"
+        onNav={onNav}
+      />
     </div>
   );
 }

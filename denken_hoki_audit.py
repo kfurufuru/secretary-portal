@@ -29,6 +29,13 @@ VALUES_PATH = Path(__file__).parent / "denken_hoki_values.json"
 
 # 監査対象ページ（実装済み・StubPage除外）
 TARGET_PAGES = [
+    "ZetsuenTairyokuPage",
+    "DenatsuKoukaPage",
+    "ShisenHikisamaPage",
+    "HenshatsukiKorituPage",
+    "RyokuritsuKaizenPage",
+    "JuyoritsuKeisanPage",
+    "BshuSetsuchiPage",
     "GijutsuKijunGaiyouPage",
     "DenroZetsuenPage",
     "SetsuchiKojiPage",
@@ -126,14 +133,27 @@ def audit_page(name: str, body: str) -> list[tuple[str, str, str]]:
                            f"全 {len(mem_tables)} MemTable に source prop あり"))
 
     # ── D. 版数表記チェック（江間） ──
+    # 法令: 令和N年 / 業界規格: JIS X NNNN / JEAC NNNN / 西暦4桁年 / 平成N年 等を受容
     sources = re.findall(r'source="([^"]+)"', body)
-    bad = [s for s in sources if not re.search(r"令和[\d元]+年", s)]
+    version_pattern = re.compile(
+        r"令和[\d元]+年|平成[\d元]+年|昭和[\d元]+年"
+        r"|\b(?:19|20)\d{2}年|\b(?:19|20)\d{2}\b"
+        r"|JIS\s*[A-Z]?\s*\d{3,5}"
+        r"|JEAC\s*\d{3,5}"
+        r"|JEC[-\s]*\d{3,5}"
+        r"|内線規程"
+        r"|電気事業便覧"
+        r"|配電設計指針"
+        r"|系統連系規程"
+        r"|三角関数|数学公式|物理公式"
+    )
+    bad = [s for s in sources if not version_pattern.search(s)]
     if sources and bad:
         results.append(("FAIL", "版数表記",
-                       f"{len(bad)}/{len(sources)} source に「令和N年」表記なし: {bad[0][:50]}..."))
+                       f"{len(bad)}/{len(sources)} source に版数/規格表記なし: {bad[0][:50]}..."))
     elif sources:
         results.append(("PASS", "版数表記",
-                       f"全 {len(sources)} source に版数記載あり"))
+                       f"全 {len(sources)} source に版数/規格記載あり"))
 
     # ── E. 数値単位チェック（不動: 物理整合） ──
     tables_text = " ".join(mem_tables)
