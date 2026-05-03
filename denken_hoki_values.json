@@ -56,6 +56,57 @@
       "電気工事業法 第19条"
     ]
   },
+  "ChokuzenSuuchiPage": {
+    "source": "denken-hoki-wiki 各実装ページの集約",
+    "must_contain": [
+      "10 Ω",
+      "150 / Ig",
+      "100 Ω",
+      "1.5 倍",
+      "1.25 倍",
+      "0.64 倍",
+      "5 m",
+      "6 m",
+      "24時間以内",
+      "30日以内"
+    ]
+  },
+  "ChokuzenFormulaPage": {
+    "source": "denken-hoki-wiki 各 sec01 ページの集約",
+    "must_contain": [
+      "v = k×I(R cosθ + X sinθ)",
+      "Q_c",
+      "tanθ",
+      "η_d",
+      "R_B = K / Ig",
+      "T = F / sinθ",
+      "α_max"
+    ]
+  },
+  "ChokuzenHikkakePage": {
+    "source": "denken-hoki-wiki 各実装ページの TrapTable 集約",
+    "must_contain": [
+      "C種",
+      "D種",
+      "150/Ig",
+      "1.25倍",
+      "1.5倍",
+      "都道府県知事",
+      "経済産業大臣",
+      "登録制"
+    ]
+  },
+  "ChokuzenMachigaiPage": {
+    "source": "本サイト独自実装（localStorage完結）",
+    "must_contain": [
+      "localStorage",
+      "Markdown",
+      "topic",
+      "wrong",
+      "correct",
+      "間違いノート"
+    ]
+  },
   "JuyoritsuGainenPage": {
     "source": "電気事業便覧／配電設計指針",
     "must_contain": [

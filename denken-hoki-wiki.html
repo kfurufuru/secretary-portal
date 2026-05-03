@@ -1527,168 +1527,156 @@ function HoukiOverviewSvg({ center, top, left, right, bottom }) {
   );
 }
 
-function ZetsuenFullMapSvg() {
-  // 絶縁耐力試験ページ専用: 法令ピラミッド + K値暗記 + 実務フローを1枚で
-  const C = {
-    grayBg: '#f5f5f5', grayLn: '#9e9e9e', grayTx: '#616161',
-    redBg: '#ffebee', redLn: '#c62828', redTx: '#b71c1c',
-    orangeBg: '#fff3e0', orangeLn: '#ef6c00', orangeTx: '#e65100',
-    blueBg: '#e3f2fd', blueLn: '#1565c0', blueTx: '#0d47a1',
-    cyanBg: '#e1f5fe', cyanLn: '#0288d1', cyanTx: '#01579b',
-    greenBg: '#e8f5e9', greenLn: '#2e7d32', greenTx: '#1b5e20',
-    arrow: '#888', arrowTx: '#666',
-  };
-  const Box = ({ x, y, w, h, label, sub, sub2, bg, ln, tx, accent }) => (
-    <g>
-      <rect x={x} y={y} width={w} height={h} rx="6"
-        fill={bg} stroke={ln} strokeWidth={accent ? 2.5 : 1.5} />
-      <text x={x + w / 2} y={y + (sub ? 18 : h / 2 + 4)}
-        textAnchor="middle" fontSize="12" fontWeight="700" fill={tx}>
-        {label}
-      </text>
-      {sub && (
-        <text x={x + w / 2} y={y + 34} textAnchor="middle" fontSize="10" fill={tx}>
-          {sub}
-        </text>
-      )}
-      {sub2 && (
-        <text x={x + w / 2} y={y + 48} textAnchor="middle" fontSize="10" fill={tx}>
-          {sub2}
-        </text>
-      )}
-    </g>
+function ZetsuenPositionMap() {
+  // 絶縁耐力試験ページ専用: 3ステップカード型「法令で見る位置づけ」
+  const Step = ({ n, title, color, children }) => (
+    <div style={{
+      position: 'relative',
+      background: 'var(--bg-elev)',
+      border: `2px solid ${color}`,
+      borderRadius: '10px',
+      padding: '14px 18px 14px 60px',
+      marginBottom: '8px',
+    }}>
+      <div style={{
+        position: 'absolute', left: '-2px', top: '-2px',
+        width: '46px', height: 'calc(100% + 4px)',
+        background: color, color: '#fff',
+        borderRadius: '8px 0 0 8px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '20px', fontWeight: '800',
+      }}>{n}</div>
+      <div style={{ fontSize: '14px', fontWeight: '700', color: color, marginBottom: '8px' }}>{title}</div>
+      <div style={{ fontSize: '13px', lineHeight: '1.7', color: 'var(--ink-1)' }}>{children}</div>
+    </div>
   );
-  const Arrow = ({ x1, y1, x2, y2, label, lx, ly }) => (
-    <g>
-      <line x1={x1} y1={y1} x2={x2} y2={y2}
-        stroke={C.arrow} strokeWidth="1.5" markerEnd="url(#zfmArr)" />
-      {label && (
-        <text x={lx} y={ly} textAnchor="middle" fontSize="10" fill={C.arrowTx}>
-          {label}
-        </text>
-      )}
-    </g>
+  const Arrow = () => (
+    <div style={{
+      textAlign: 'center', color: '#2e7d32', fontSize: '20px',
+      lineHeight: '1', margin: '-2px 0 6px',
+    }}>▼</div>
+  );
+  const SubBox = ({ label, body, color }) => (
+    <div style={{
+      flex: '1 1 180px',
+      background: '#f8fbfd',
+      border: `1.5px solid ${color}`,
+      borderRadius: '6px',
+      padding: '8px 10px',
+    }}>
+      <div style={{ fontWeight: '700', fontSize: '12px', color: color, marginBottom: '3px' }}>{label}</div>
+      <div style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: '1.5' }}>{body}</div>
+    </div>
   );
   return (
     <div style={{
-      background: 'var(--bg-elev)',
-      border: '1px solid var(--border)',
-      borderRadius: 'var(--radius)',
-      padding: '12px',
-      marginBottom: '20px',
+      background: 'linear-gradient(180deg, #f0f7fc 0%, #fafdff 100%)',
+      border: '1px solid #c5d9e8',
+      borderRadius: '12px',
+      padding: '20px',
+      marginBottom: '24px',
     }}>
-      <svg viewBox="0 0 760 580" style={{ width: '100%', height: 'auto', display: 'block' }}
-        xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <marker id="zfmArr" viewBox="0 0 10 10" refX="9" refY="5"
-            markerWidth="7" markerHeight="7" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill={C.arrow} />
-          </marker>
-        </defs>
+      {/* ヘッダー */}
+      <div style={{ borderBottom: '2px solid #1a3a6e', paddingBottom: '10px', marginBottom: '16px' }}>
+        <div style={{ fontSize: '18px', fontWeight: '800', color: '#1a3a6e' }}>
+          📖 法令で見る　絶縁耐力試験の位置づけ
+        </div>
+        <div style={{ fontSize: '12px', color: '#5f7a99', marginTop: '4px' }}>
+          ── 絶縁耐力試験は、法令上どこに位置づくのかを整理
+        </div>
+      </div>
 
-        {/* 階層ラベル（左端） */}
-        <text x="8"  y="34"  fontSize="9" fill={C.grayTx}>L0 最上位</text>
-        <text x="8"  y="100" fontSize="9" fill={C.grayTx}>L1 根拠法</text>
-        <text x="8"  y="178" fontSize="9" fill={C.grayTx}>L2 省令</text>
-        <text x="8"  y="262" fontSize="9" fill={C.grayTx}>L3 解釈・本条</text>
-        <text x="8"  y="378" fontSize="9" fill={C.grayTx}>L4 例外</text>
-        <text x="8"  y="478" fontSize="9" fill={C.grayTx}>実務フロー</text>
+      {/* ① 上位ルール */}
+      <Step n="①" title="上位ルール：省令" color="#1565c0">
+        <div style={{ fontWeight: '700', marginBottom: '6px', color: '#0d47a1' }}>
+          電気設備に関する技術基準を定める省令　第5条
+        </div>
+        <ul style={{ margin: '0', paddingLeft: '20px' }}>
+          <li><strong>第1項</strong>: 電路は原則として大地から絶縁する</li>
+          <li><strong>第2項</strong>: 絶縁性能は、事故時に想定される異常電圧を考慮し、絶縁破壊による危険のおそれがないこと</li>
+        </ul>
+      </Step>
 
-        {/* L0: 憲法・条約 */}
-        <Box x={210} y={20} w={220} h={40} label="日本国憲法・条約" bg={C.grayBg} ln={C.grayLn} tx={C.grayTx} />
+      <Arrow />
 
-        {/* L0→L1 矢印 */}
-        <Arrow x1={320} y1={60} x2={320} y2={88} />
+      {/* ② 具体化 */}
+      <Step n="②" title="具体化：技術基準の解釈" color="#2e7d32">
+        <div style={{ marginBottom: '10px', color: 'var(--ink-2)' }}>
+          省令第5条の「絶縁性能」を、具体的な確認方法に落とし込む
+        </div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <SubBox label="低圧電路（解釈第14条）" body="主として絶縁抵抗で確認" color="#ef6c00" />
+          <SubBox label="高圧・特別高圧電路（解釈第15条）" body="主として絶縁耐力試験で確認" color="#0288d1" />
+        </div>
+        <div style={{
+          background: '#fff8e1', border: '1px dashed #f57f17',
+          borderRadius: '6px', padding: '8px 10px', fontSize: '12px', color: '#5d4037',
+        }}>
+          🔧 <strong>個別機器も個別条文で具体化</strong>　例: 変圧器・回転機などは、個別条文（解釈第16条等）で絶縁耐力が定められる
+        </div>
+      </Step>
 
-        {/* L1: 根拠法 — 電技省令第5条 + 自主保安体制 */}
-        <Box x={70}  y={88} w={170} h={56} label="保安規程" sub="電気主任技術者の職務" bg={C.orangeBg} ln={C.orangeLn} tx={C.orangeTx} />
-        <Box x={250} y={88} w={170} h={56} label="電技省令 第5条" sub="電路の絶縁原則" bg={C.redBg} ln={C.redLn} tx={C.redTx} accent />
-        <text x={500} y={114} fontSize="11" fontWeight="700" fill={C.orangeTx}>自主保安体制</text>
-        <text x={500} y={130} fontSize="10" fill={C.orangeTx}>（事業者責任）</text>
+      <Arrow />
 
-        {/* L1→L2 矢印 */}
-        <Arrow x1={335} y1={144} x2={335} y2={170} label="由来" lx={365} ly={160} />
-        <Arrow x1={155} y1={144} x2={300} y2={170} />
+      {/* ③ 試験の位置づけ */}
+      <Step n="③" title="絶縁耐力試験（耐電圧試験）の位置づけ" color="#1565c0">
+        <div style={{ lineHeight: '1.8' }}>
+          高圧・特別高圧の<strong>絶縁性能を確認するための、代表的な法令上の確認方法</strong>。<br />
+          所定の試験電圧を一定時間印加し、絶縁破壊しないことを確認する。<br />
+          つまり「<span style={{ color: '#c62828', fontWeight: '700' }}>絶縁の原則</span>」→「<span style={{ color: '#ef6c00', fontWeight: '700' }}>絶縁性能</span>」→「<span style={{ color: '#0288d1', fontWeight: '700' }}>具体的確認方法</span>」の流れの中に位置づく。
+        </div>
+      </Step>
 
-        {/* L2: 省令本体 */}
-        <Box x={180} y={170} w={300} h={42} label="電気設備に関する技術基準を定める省令" bg={C.redBg} ln={C.redLn} tx={C.redTx} accent />
+      {/* 比較表 */}
+      <div style={{ marginTop: '20px' }}>
+        <div style={{ fontSize: '13px', fontWeight: '700', color: '#1a3a6e', marginBottom: '6px' }}>
+          📊 低圧と高圧以上の違い（イメージ）
+        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', background: 'var(--bg-elev)' }}>
+          <thead>
+            <tr style={{ background: '#e3eef7' }}>
+              <th style={{ padding: '8px 12px', textAlign: 'left', borderBottom: '2px solid #1a3a6e', color: '#1a3a6e', width: '35%' }}>区分</th>
+              <th style={{ padding: '8px 12px', textAlign: 'left', borderBottom: '2px solid #1a3a6e', color: '#1a3a6e' }}>主な確認の考え方</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)' }}>低圧　🔌</td>
+              <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)' }}>主として<strong>絶縁抵抗</strong></td>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)' }}>高圧・特別高圧　⚡</td>
+              <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)' }}>主として<strong>絶縁耐力試験</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        {/* L2→L3 矢印 */}
-        <Arrow x1={330} y1={212} x2={330} y2={238} />
+      {/* この試験で見たいこと */}
+      <div style={{
+        marginTop: '16px',
+        background: '#e8f5e9',
+        border: '1px solid #2e7d32',
+        borderLeft: '4px solid #2e7d32',
+        borderRadius: '6px',
+        padding: '12px 16px',
+      }}>
+        <div style={{ fontSize: '13px', fontWeight: '700', color: '#1b5e20', marginBottom: '4px' }}>
+          🎯 この試験で見たいこと
+        </div>
+        <div style={{ fontSize: '13px', color: '#1b5e20', lineHeight: '1.7' }}>
+          通常時だけでなく、<strong>事故時に想定される異常電圧</strong>に対しても、絶縁が危険なく耐えられるかを確認する。
+        </div>
+      </div>
 
-        {/* L3 中央: 解釈第14・15条 */}
-        <Box x={250} y={238} w={170} h={56} label="解釈 第14・15条" sub="絶縁耐力試験" bg={C.blueBg} ln={C.blueLn} tx={C.blueTx} accent />
-
-        {/* L3 左: 第14条（低圧） */}
-        <Box x={40}  y={238} w={180} h={70} label="第14条（低圧）"
-             sub="最大使用電圧 × 1.5倍" sub2="10分間印加"
-             bg={C.orangeBg} ln={C.orangeLn} tx={C.orangeTx} />
-
-        {/* L3 右: 第15条（高圧/特高） */}
-        <Box x={450} y={238} w={270} h={70} label="第15条（高圧/特別高圧）"
-             sub="基本: 最大使用電圧 × 1.25倍 × 10分"
-             sub2="特例: 中性点直接接地 170kV超 → 0.64倍"
-             bg={C.cyanBg} ln={C.cyanLn} tx={C.cyanTx} />
-
-        {/* 内訳矢印（中央→左/右） */}
-        <Arrow x1={250} y1={266} x2={224} y2={266} label="低圧" lx={232} ly={258} />
-        <Arrow x1={420} y1={266} x2={446} y2={266} label="高圧/特高" lx={432} ly={258} />
-
-        {/* L3→L4 矢印 */}
-        <Arrow x1={335} y1={308} x2={335} y2={344} label="例外" lx={365} ly={328} />
-
-        {/* L4: 第16条 機械器具の絶縁（例外） */}
-        <Box x={170} y={344} w={320} h={66} label="第16条 機械器具の絶縁（例外）"
-             sub="発電機・変圧器・電力用コンデンサ等"
-             sub2="それぞれの構造に応じた試験電圧と時間"
-             bg={C.greenBg} ln={C.greenLn} tx={C.greenTx} />
-
-        {/* 右側カード: K値暗記 */}
-        <rect x={530} y={170} w={210} h={130} rx="6" fill="#fffde7" stroke="#fbc02d" strokeWidth="1.5" />
-        <text x={635} y={188} textAnchor="middle" fontSize="11" fontWeight="700" fill="#f57f17">★ K値暗記</text>
-        <line x1={540} y1={196} x2={730} y2={196} stroke="#fbc02d" strokeWidth="0.8" />
-        <text x={545} y={216} fontSize="11" fill="#5d4037">7,000V 以下　　 → K = 1.5</text>
-        <text x={545} y={236} fontSize="11" fill="#5d4037">7,000V 超　　　 → K = 1.25</text>
-        <text x={545} y={256} fontSize="11" fill="#5d4037">170kV 超（特例）→ K = 0.64</text>
-        <text x={545} y={278} fontSize="9" fill="#8d6e63">※ 中性点直接接地のみ 0.64</text>
-        <text x={545} y={292} fontSize="9" fill="#8d6e63">　 試験電圧 = 最大使用電圧 × K</text>
-
-        {/* 右側カード: 暗記ポイント（電圧種別） */}
-        <rect x={530} y={344} w={210} h={66} rx="6" fill="#fce4ec" stroke="#d81b60" strokeWidth="1.5" />
-        <text x={635} y={362} textAnchor="middle" fontSize="11" fontWeight="700" fill="#880e4f">★ 電圧の3用語</text>
-        <line x1={540} y1={370} x2={730} y2={370} stroke="#d81b60" strokeWidth="0.8" />
-        <text x={545} y={388} fontSize="11" fill="#4a148c">最大使用電圧 ＞ 公称電圧 ＞ 基準電圧</text>
-        <text x={545} y={402} fontSize="9" fill="#6a1b9a">　K計算は「最大使用電圧」が基準</text>
-
-        {/* 仕切り線 */}
-        <line x1={20} y1={428} x2={740} y2={428} stroke="#bdbdbd" strokeWidth="0.8" strokeDasharray="4 3" />
-
-        {/* 実務フロー */}
-        <Box x={40}  y={448} w={200} h={56} label="試験成績書の作成" sub="（要点記載）" bg={C.blueBg} ln={C.blueLn} tx={C.blueTx} />
-        <Arrow x1={240} y1={476} x2={282} y2={476} />
-        <Box x={282} y={448} w={200} h={56} label="10年保存義務" sub="★ 重要（保安規程）" bg={C.greenBg} ln={C.greenLn} tx={C.greenTx} accent />
-        <Arrow x1={482} y1={476} x2={524} y2={476} />
-        <Box x={524} y={448} w={200} h={56} label="保安規程に反映" sub="次回試験計画へ" bg={C.orangeBg} ln={C.orangeLn} tx={C.orangeTx} />
-
-        {/* 凡例 */}
-        <text x={20}  y={540} fontSize="9" fill={C.grayTx}>凡例:</text>
-        <rect x={55}  y={532} w={12} h={10} fill={C.redBg} stroke={C.redLn} />
-        <text x={72}  y={540} fontSize="9" fill={C.redTx}>根拠法/省令</text>
-        <rect x={150} y={532} w={12} h={10} fill={C.blueBg} stroke={C.blueLn} />
-        <text x={167} y={540} fontSize="9" fill={C.blueTx}>本条/解釈</text>
-        <rect x={240} y={532} w={12} h={10} fill={C.orangeBg} stroke={C.orangeLn} />
-        <text x={257} y={540} fontSize="9" fill={C.orangeTx}>低圧/自主保安</text>
-        <rect x={350} y={532} w={12} h={10} fill={C.cyanBg} stroke={C.cyanLn} />
-        <text x={367} y={540} fontSize="9" fill={C.cyanTx}>高圧/特別高圧</text>
-        <rect x={460} y={532} w={12} h={10} fill={C.greenBg} stroke={C.greenLn} />
-        <text x={477} y={540} fontSize="9" fill={C.greenTx}>例外/重要保管</text>
-      </svg>
-      <div style={{ fontSize: '11px', color: 'var(--ink-3)', marginTop: '8px', lineHeight: '1.6' }}>
-        <strong>読み方</strong>: 上から下へ「憲法 → 省令 → 解釈本条 → 例外」の法体系。中央青ボックス（解釈第14・15条）が試験で問われる本丸。右側カードで K値（試験電圧の倍率）を一気に暗記。下部の実務フローは <strong>10年保存義務</strong> が頻出。
+      {/* 注意書き */}
+      <div style={{ marginTop: '12px', fontSize: '11px', color: '#888', display: 'flex', alignItems: 'center', gap: '4px' }}>
+        ⚠ ※学習用の整理図です。条文の詳細・例外・試験条件は必ず原文で確認してください。
       </div>
     </div>
   );
 }
+
 
 function MemTable({ headers, rows, note, source }) {
   return (
@@ -2888,10 +2876,10 @@ window.renderPage = function(page, navigate) {
     case 'kakomon-densenro':       return React.createElement(StubPage, { ...props, pageId: 'kakomon-densenro' });
     case 'kakomon-saiene':         return React.createElement(StubPage, { ...props, pageId: 'kakomon-saiene' });
     case 'kakomon-random':         return React.createElement(RandomModePage, props);
-    case 'chokuzen-suuchi':        return React.createElement(StubPage, { ...props, pageId: 'chokuzen-suuchi' });
-    case 'chokuzen-formula':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-formula' });
-    case 'chokuzen-hikkake':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-hikkake' });
-    case 'chokuzen-machigai':      return React.createElement(StubPage, { ...props, pageId: 'chokuzen-machigai' });
+    case 'chokuzen-suuchi':        return React.createElement(ChokuzenSuuchiPage, props);
+    case 'chokuzen-formula':       return React.createElement(ChokuzenFormulaPage, props);
+    case 'chokuzen-hikkake':       return React.createElement(ChokuzenHikkakePage, props);
+    case 'chokuzen-machigai':      return React.createElement(ChokuzenMachigaiPage, props);
     default:                       return React.createElement(StubPage, { ...props, pageId: page });
   }
 };
@@ -3674,6 +3662,646 @@ function HomePage({ onNav, data }) {
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 8-A. ChokuzenSuuchiPage（直前チェック: 数値だけ確認・横断まとめ）
+// ─────────────────────────────────────────────
+function ChokuzenSuuchiPage({ onNav, data }) {
+  return (
+    <div>
+      <div style={{
+        background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        borderLeft: '3px solid var(--accent)', borderRadius: 'var(--radius)',
+        padding: '14px 18px', marginBottom: '24px', fontSize: '13px',
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>📋 試験本番直前用・数値だけを横断的に総ざらい</div>
+        覚え漏れがないか30分以内で全件確認できる構成。各数値の根拠条文を併記しているので、迷ったら該当ページへ。
+      </div>
+
+      <h2 id="overview">1. 全体像 — 暗記すべき数値の章別マップ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '直前数値チェック', sub: '横断的暗記', theme: 'blue' }}
+        top={{ label: 'sec02 表暗記', sub: '接地/絶縁/離隔/電圧', theme: 'red', arrowLabel: '由来1' }}
+        left={{ label: 'sec03 技術基準', sub: '対地電圧/絶縁抵抗', theme: 'orange', arrowLabel: '由来2' }}
+        right={{ label: 'sec01 B問題', sub: '計算公式', theme: 'cyan', arrowLabel: '由来3' }}
+        bottom={{ label: 'sec04 法令期限', sub: '届出/事故報告', theme: 'green', arrowLabel: '由来4' }}
+      />
+      <MemTable
+        headers={["カテゴリ", "代表数値", "根拠ページ"]}
+        rows={[
+          ["接地工事",   "10/10/100Ω・1.6/2.6/4.0mm", "setsuchi-ichiran"],
+          ["絶縁試験",   "1.5/1.25/0.64倍×10分",       "zetsuen-ichiran"],
+          ["離隔距離",   "2/3/5/5.5/6m",               "rikkaku-ichiran"],
+          ["電圧区分",   "600/750/7,000V",             "den-atsu-kubun"],
+          ["B種接地",    "150/300/600 ÷ Ig",           "bshu-setsuchi"],
+          ["事故報告",   "24h/30日",                   "jiko-hokoku"],
+        ]}
+        source="出典：denken-hoki-wiki 各実装ページの集約（令和7年11月版/令和5年版/令和6年現行版）"
+      />
+
+      <h2 id="terms">4. 法規特有表現（数値関連）</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["電気の流せる上限",   "許容電流",                   "電線サイズ × 電流減少係数"],
+          ["離隔の最低距離",     "離隔距離",                   "建造物/道路/鉄道で異なる"],
+          ["地面に流れる電流",   "1線地絡電流 Ig",             "B種接地値の分母"],
+          ["最大に使う電圧",     "最大使用電圧",               "公称×1.15/1.1"],
+          ["試験で印加する電圧", "試験電圧",                   "最大×倍率"],
+        ]}
+        source="出典：本サイト各ページの集約"
+      />
+
+      <h2 id="setsuchi-tables">⚡ 接地工事 数値（電技解釈第17条）</h2>
+      <MemTable
+        headers={["種別", "対象", "接地抵抗値", "電線太さ"]}
+        rows={[
+          ["A種", "高圧・特高機器",  "10 Ω 以下",  "2.6 mm 以上"],
+          ["B種", "変圧器中性点",    "150 / Ig",   "4.0 mm 以上"],
+          ["C種", "300V 超低圧",     "10 Ω 以下",  "1.6 mm 以上"],
+          ["D種", "300V 以下低圧",   "100 Ω 以下", "1.6 mm 以上"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条／令和7年11月版"
+        note="B種は1秒以内自動遮断で300/Ig、0.5秒以内で600/Igに緩和"
+      />
+
+      <h2 id="zetsuen-tables">⚡ 絶縁耐力試験 倍率（電技解釈第14・15条）</h2>
+      <MemTable
+        headers={["電路", "倍率", "時間"]}
+        rows={[
+          ["低圧 7,000V以下",                  "1.5 倍",  "10 分"],
+          ["高圧 7,000V超 60kV以下",           "1.25 倍", "10 分"],
+          ["特高（中性点直接接地・170kV超）",  "0.64 倍", "10 分"],
+          ["特高（その他・60kV超）",           "1.25 倍", "10 分"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第14・15条 別表第2の2／令和7年11月版"
+        note="0.64 = 1.1×(1/√3)。中性点直接接地で対地電圧が相電圧に抑制される"
+      />
+
+      <h2 id="rikkaku-tables">⚡ 離隔距離（電技解釈第68・71条）</h2>
+      <MemTable
+        headers={["区分", "低圧", "高圧", "特別高圧"]}
+        rows={[
+          ["建造物上部", "2 m",   "2 m",   "3 m"],
+          ["建造物側方", "1 m",   "1.2 m", "3 m"],
+          ["道路横断",   "5 m",   "6 m",   "6 m"],
+          ["鉄道横断",   "5.5 m", "5.5 m", "6 m"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第68条 68-1表・第71条／令和7年11月版"
+      />
+
+      <h2 id="denatsu-tables">⚡ 電圧区分（電技省令第2条）</h2>
+      <MemTable
+        headers={["区分", "交流", "直流"]}
+        rows={[
+          ["低圧",     "600 V 以下",          "750 V 以下"],
+          ["高圧",     "600 V 超 7,000 V 以下","750 V 超 7,000 V 以下"],
+          ["特別高圧", "7,000 V 超",           "7,000 V 超"],
+        ]}
+        source="出典：電気設備に関する技術基準を定める省令 第2条／令和5年版"
+      />
+
+      <h2 id="zetsuen-r-tables">⚡ 絶縁抵抗値（電技解釈第58条）</h2>
+      <MemTable
+        headers={["対地電圧", "絶縁抵抗値"]}
+        rows={[
+          ["150 V 以下",        "0.1 MΩ 以上"],
+          ["150V超 300V以下",   "0.2 MΩ 以上"],
+          ["300V 超",           "0.4 MΩ 以上"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第58条／令和7年11月版"
+      />
+
+      <h2 id="kako-tables">⚡ 過電流遮断器の動作（電技解釈第33条・30A以下）</h2>
+      <MemTable
+        headers={["遮断器", "1.25倍", "1.6倍", "2.0倍"]}
+        rows={[
+          ["MCCB（配線用遮断器）", "60分以内", "—",        "2分以内"],
+          ["ヒューズ",             "—",        "60分以内", "2分以内"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第33条／令和7年11月版"
+      />
+
+      <h2 id="kigen-tables">⚡ 届出・報告期限（電気事業法系）</h2>
+      <MemTable
+        headers={["項目", "期限", "宛先"]}
+        rows={[
+          ["保安規程",        "使用の開始前",   "経済産業大臣"],
+          ["主任技術者選任",  "遅滞なく",       "経済産業大臣"],
+          ["工事計画",        "工事開始30日前", "経済産業大臣"],
+          ["事故報告 速報",   "24時間以内",     "産業保安監督部長"],
+          ["事故報告 詳報",   "30日以内",       "産業保安監督部長"],
+          ["自主検査記録",    "5年間保存",      "—"],
+        ]}
+        source="出典：電気事業法／電気関係報告規則（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="kosakubutsu-tables">⚡ 電気工作物区分（電気事業法第38条）</h2>
+      <MemTable
+        headers={["区分", "電圧", "需要電力", "発電出力", "主任技術者"]}
+        rows={[
+          ["一般用", "600 V 以下", "50 kW 未満", "10 kW 未満",  "不要"],
+          ["自家用", "600 V 超等", "50 kW 以上", "10 kW 以上",  "必要"],
+          ["事業用", "全範囲",     "—",          "—",           "必要"],
+        ]}
+        source="出典：電気事業法 第38条／施行規則 第48条（e-Gov 令和6年現行版）"
+      />
+
+      <h2 id="shunin-tables">⚡ 主任技術者種別（電気事業法施行規則第52条）</h2>
+      <MemTable
+        headers={["種別", "電圧範囲", "備考"]}
+        rows={[
+          ["第一種", "全電圧",          "なし（最強）"],
+          ["第二種", "170,000 V 未満",  "17万V以上は不可"],
+          ["第三種", "50,000 V 未満",   "出力5,000 kW 以上の発電所は不可"],
+        ]}
+        source="出典：電気事業法施行規則 第52条／令和8年版"
+        note="外部委託承認の上限は高圧 500 kW 未満"
+      />
+
+      <h2 id="quick-review">1分復習・最頻出数値</h2>
+      <QuickReview items={[
+        { q: "B種接地の式は？",                      a: "R_B = K/Ig（K=150/300/600）" },
+        { q: "高圧の絶縁耐力試験倍率は？",            a: "1.25倍（×10分）" },
+        { q: "事故報告の速報期限は？",                a: "24時間以内" },
+        { q: "高圧架空電線が道路を横断する高さは？",  a: "6 m 以上" },
+        { q: "第三種電気主任技術者の電圧範囲は？",    a: "50,000 V 未満（出力5,000 kW 未満）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（横断的数値まとめ）", reason: "Phase 1パイロット第8弾・sec08" }]} />
+      <PageNav
+        prevId="kakomon-random"   prevTitle="ランダム10問"
+        nextId="chokuzen-formula" nextTitle="公式だけ確認"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 8-B. ChokuzenFormulaPage（直前チェック: 公式だけ確認・横断まとめ）
+// ─────────────────────────────────────────────
+function ChokuzenFormulaPage({ onNav, data }) {
+  return (
+    <div>
+      <div style={{
+        background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        borderLeft: '3px solid var(--accent)', borderRadius: 'var(--radius)',
+        padding: '14px 18px', marginBottom: '24px', fontSize: '13px',
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>📐 試験本番直前用・B問題公式だけ総ざらい</div>
+        計算式の暗記漏れチェック。各公式の使用条件・典型値・3角関数の早見も併記。
+      </div>
+
+      <h2 id="overview">1. 全体像 — B問題公式の章別マップ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '直前公式チェック', sub: 'B問題公式集', theme: 'blue' }}
+        top={{ label: 'sec01 B問題系', sub: '計算公式の本拠', theme: 'red', arrowLabel: '由来1' }}
+        left={{ label: '電圧/電流関係', sub: 'V=IR・電圧降下', theme: 'orange', arrowLabel: '区分1' }}
+        right={{ label: '電力/効率', sub: 'P=VIcosθ・効率η', theme: 'cyan', arrowLabel: '区分2' }}
+        bottom={{ label: '指標/接地', sub: '需要率・R_B', theme: 'green', arrowLabel: '区分3' }}
+      />
+      <MemTable
+        headers={["公式", "用途", "根拠ページ"]}
+        rows={[
+          ["v = k×I(R cosθ + X sinθ)",   "電圧降下",           "denatsu-kouka"],
+          ["Q_c = P×(tanθ₁ − tanθ₂)",     "力率改善",           "ryokuritsu-kaizen"],
+          ["η_d = W_o / (W_o + 24×P_i + Σα²P_c×t)", "全日効率","henshatsuki-koritu"],
+          ["R_B = K / Ig",                "B種接地抵抗",        "bshu-setsuchi"],
+          ["T = F / sinθ",                "支線張力",           "shisen-hikisama"],
+          ["試験電圧 = 最大使用電圧×倍率","絶縁耐力試験",       "zetsuen-tairyoku"],
+        ]}
+        source="出典：denken-hoki-wiki 各 sec01 ページの集約"
+      />
+
+      <h2 id="terms">4. 法規特有表現（公式関連）</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["有効電力",       "P [kW]",           "実際に仕事をする電力"],
+          ["皮相電力",       "S [kVA]",          "電圧×電流（変圧器容量）"],
+          ["無効電力",       "Q [kvar]",         "力率改善で減らす対象"],
+          ["公称電圧",       "公称電圧",         "6.6kV/22kV等の標準値"],
+          ["最大使用電圧",   "最大使用電圧",     "公称×1.15/1.1"],
+        ]}
+        source="出典：本サイト各 sec01 ページ"
+      />
+
+      <h2 id="zetsuen-tables">📐 絶縁耐力試験計算（3段階）</h2>
+      <MemTable
+        headers={["段階", "式", "例（公称6.6kV・高圧）"]}
+        rows={[
+          ["1. 公称→最大", "公称電圧 × 1.15 / 1.1",       "6.6 × 1.15 / 1.1 ≒ 6.9 kV"],
+          ["2. 倍率選択",  "区分→1.5/1.25/0.64",          "高圧→1.25"],
+          ["3. 試験電圧",  "最大使用電圧 × 倍率",         "6,900 × 1.25 = 8,625 V"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第14・15条／令和7年11月版"
+      />
+
+      <h2 id="denatsu-tables">📐 電圧降下（配線方式別 k）</h2>
+      <MemTable
+        headers={["配線方式", "係数 k", "式"]}
+        rows={[
+          ["単相2線式",  "k = 2",  "v = 2×I(R cosθ + X sinθ)"],
+          ["単相3線式",  "k = 1",  "v = I(R cosθ + X sinθ)"],
+          ["三相3線式",  "k = √3", "v = √3×I(R cosθ + X sinθ)"],
+        ]}
+        source="出典：内線規程JEAC8001"
+        note="単相3線式が最も電圧降下が小さい（中性線基準）"
+      />
+
+      <h2 id="ryokuritsu-tables">📐 力率改善（cosθ⇔tanθ早見）</h2>
+      <MemTable
+        headers={["cosθ", "tanθ", "用途"]}
+        rows={[
+          ["0.6",  "1.33", "改善前の悪い例"],
+          ["0.7",  "1.02", "—"],
+          ["0.8",  "0.75", "典型改善前値"],
+          ["0.85", "0.62", "電力料金割引境界"],
+          ["0.9",  "0.48", "—"],
+          ["0.95", "0.33", "改善目標値"],
+          ["1.0",  "0",    "完全力率"],
+        ]}
+        source="出典：三角関数表（数学公式）"
+        note="Q_c = P×(tanθ₁ − tanθ₂)。cosθ=0.8→tanθ=0.75 を即答できると秒速"
+      />
+
+      <h2 id="koritu-tables">📐 変圧器全日効率</h2>
+      <MemTable
+        headers={["項目", "式", "意味"]}
+        rows={[
+          ["全日効率",        "η_d = W_o / (W_o + W_iron + W_copper)", "1日平均効率"],
+          ["1日鉄損",         "W_iron = 24 × P_i",                     "常時発生"],
+          ["1日銅損",         "W_copper = Σ(α² × P_c × t)",             "負荷時のみ"],
+          ["最高効率時負荷率","α_max = √(P_i / P_c)",                   "鉄損=銅損 の負荷率"],
+        ]}
+        source="出典：JIS C 4304／電気事業便覧"
+      />
+
+      <h2 id="shisen-tables">📐 支線張力</h2>
+      <MemTable
+        headers={["段階", "式", "備考"]}
+        rows={[
+          ["1. 必要張力",  "T = F / sinθ",          "θ=支線と柱の角度"],
+          ["2. 安全率適用","T_必要 = T × 安全率",   "安全率 2.5 以上（例外1.5）"],
+          ["3. 1条あたり","T_必要 / 条数",          "条数3以上"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第61・62条／令和7年11月版"
+      />
+
+      <h2 id="bshu-tables">📐 B種接地抵抗値</h2>
+      <MemTable
+        headers={["条件", "K", "式", "Ig=5A 例"]}
+        rows={[
+          ["原則（遮断装置なし or 1秒超）", "150", "R_B = 150 / Ig", "30 Ω 以下"],
+          ["1秒以内に自動遮断",             "300", "R_B = 300 / Ig", "60 Ω 以下"],
+          ["0.5秒以内に自動遮断",           "600", "R_B = 600 / Ig", "120 Ω 以下"],
+        ]}
+        source="出典：電気設備の技術基準の解釈 第17条第2項／令和7年11月版"
+      />
+
+      <h2 id="juyoritsu-tables">📐 需要率・負荷率・不等率</h2>
+      <MemTable
+        headers={["指標", "式", "範囲"]}
+        rows={[
+          ["需要率",  "最大需要 / 設備容量",       "30〜80%（必ず1以下）"],
+          ["負荷率",  "平均需要 / 最大需要",       "20〜60%（必ず1以下）"],
+          ["不等率",  "Σ個別最大 / 合成最大",      "必ず1以上"],
+          ["変圧器kVA","合成最大 / 力率",          "= (Σ個別最大/不等率)/cosθ"],
+        ]}
+        source="出典：電気事業便覧／配電設計指針"
+      />
+
+      <h2 id="quick-review">1分復習・最頻出公式</h2>
+      <QuickReview items={[
+        { q: "電圧降下の基本式は？",         a: "v = k×I(R cosθ + X sinθ)" },
+        { q: "力率改善のQ_c式は？",          a: "Q_c = P×(tanθ₁ − tanθ₂)" },
+        { q: "B種接地抵抗値の式は？",        a: "R_B = K / Ig（K=150/300/600）" },
+        { q: "支線張力の式は？",             a: "T = F / sinθ" },
+        { q: "変圧器最高効率時の負荷率は？", a: "α_max = √(P_i / P_c)" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（横断的公式まとめ）", reason: "Phase 1パイロット第8弾・sec08" }]} />
+      <PageNav
+        prevId="chokuzen-suuchi"  prevTitle="数値だけ確認"
+        nextId="chokuzen-hikkake" nextTitle="ひっかけだけ確認"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 8-C. ChokuzenHikkakePage（直前チェック: ひっかけだけ確認・横断まとめ）
+// ─────────────────────────────────────────────
+function ChokuzenHikkakePage({ onNav, data }) {
+  return (
+    <div>
+      <div style={{
+        background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        borderLeft: '3px solid var(--accent)', borderRadius: 'var(--radius)',
+        padding: '14px 18px', marginBottom: '24px', fontSize: '13px',
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>⚠️ 試験本番直前用・出題傾向のあるひっかけだけ集約</div>
+        全実装ページの『よくあるひっかけ』を全件集約。直前30分で全件チェック可能。
+      </div>
+
+      <h2 id="overview">1. 全体像 — ひっかけ分類マップ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '直前ひっかけ集', sub: '4大類型', theme: 'blue' }}
+        top={{ label: '実装ページ全件', sub: 'TrapTable集約', theme: 'red', arrowLabel: '由来' }}
+        left={{ label: '数値ひっかけ', sub: '単位/桁/向き', theme: 'orange', arrowLabel: '類型1' }}
+        right={{ label: '用語ひっかけ', sub: '混同/反対意味', theme: 'cyan', arrowLabel: '類型2' }}
+        bottom={{ label: '主体ひっかけ', sub: '誰が誰に', theme: 'green', arrowLabel: '類型3' }}
+      />
+      <MemTable
+        headers={["類型", "出題例", "対策"]}
+        rows={[
+          ["数値の桁",       "150/Ig vs 1500/Ig",         "B種は『150』。300は1秒以内・600は0.5秒以内"],
+          ["数値の単位",     "0.4Ω vs 0.4MΩ",             "絶縁抵抗は『MΩ』、接地抵抗は『Ω』"],
+          ["数値の向き",     "T = F/sinθ vs T = F×sinθ",  "支線張力は『割り算』"],
+          ["用語の混同",     "電線/電路/電線路",           "別概念。電線路=電線+支持物"],
+          ["主体の混同",     "選任義務者は誰",             "保安規程・主任技術者は『設置者』"],
+        ]}
+        source="出典：denken-hoki-wiki 各実装ページの TrapTable 集約"
+      />
+
+      <h2 id="terms">4. 法規特有表現（混同しやすい用語）</h2>
+      <MemTable
+        headers={["混同パターン", "正しい区別", "備考"]}
+        rows={[
+          ["「連係」vs「連系」",      "正：連系（系統連系）",       "法令上の表記"],
+          ["「設置」vs「施設」",       "正：施設（電気法令動詞）",   "「設置する」は誤り"],
+          ["「敷設」vs「架設」",       "実務用語・法令外",           "条文では出ない"],
+          ["「接地」vs「アース」",     "正：接地を施す",             "「アースを取る」は口語"],
+          ["「電線」vs「電線路」",     "電線=導体、電線路=電線+支持物","別概念"],
+        ]}
+        source="出典：本サイト各ページの法規特有表現セクション集約"
+      />
+
+      <h2 id="kazu-traps">⚠️ 数値のひっかけ TOP15</h2>
+      <TrapTable traps={[
+        { wrong: "C種とD種の接地抵抗値は同じ",              correct: "C種10Ω以下、D種100Ω以下（10倍違う）" },
+        { wrong: "B種接地抵抗は固定値",                     correct: "150/Ig（地絡電流次第の計算値）" },
+        { wrong: "高圧電路の試験電圧は1.5倍",                correct: "高圧は1.25倍。1.5倍は低圧" },
+        { wrong: "275kV試験電圧は最も高い",                  correct: "中性点直接接地（170kV超）は0.64倍で下がる" },
+        { wrong: "道路横断は低圧・高圧とも5m",               correct: "低圧5m・高圧6m（高圧は1m高い）" },
+        { wrong: "鉄道横断は電圧で異なる",                   correct: "低圧/高圧とも5.5m。特高だけ6m" },
+        { wrong: "直流1,000Vは低圧",                          correct: "直流750V超なので高圧" },
+        { wrong: "事故報告速報は48時間以内",                  correct: "24時間以内（詳報が30日）" },
+        { wrong: "1.6mm IV線の許容電流は11A",                "correct": "27A（1.6mm単線・がいし引き・周温30℃）" },
+        { wrong: "MCCBもヒューズも1.25倍で60分",              correct: "MCCBは1.25倍、ヒューズは1.6倍" },
+        { wrong: "100V系の電圧維持範囲は±20V",                correct: "100V系は±6V。±20Vは200V系" },
+        { wrong: "支線安全率は一律1.5",                       correct: "原則2.5。1.5は木柱等の例外" },
+        { wrong: "工事計画届出は60日前",                      correct: "30日前（電気事業法第48条）" },
+        { wrong: "絶縁抵抗の単位はΩ",                         correct: "MΩ（メガオーム）" },
+        { wrong: "電気主任技術者第三種は5,000kW以上もOK",    correct: "電圧5万V未満かつ出力5,000kW未満" },
+      ]} />
+
+      <h2 id="yougo-traps">⚠️ 用語のひっかけ TOP10</h2>
+      <TrapTable traps={[
+        { wrong: "「電線」と「電線路」は同じ",             correct: "電線=導体、電線路=電線+支持物の一式" },
+        { wrong: "B種接地は感電防止が目的",                correct: "B種は『混触時の対地電圧150V以下制限』" },
+        { wrong: "OVR は過電流検出装置",                   correct: "OVR=過電圧（Over Voltage Relay）" },
+        { wrong: "PCS は直流→直流変換装置",                correct: "PCS は『直流→交流』+ 系統連系保護" },
+        { wrong: "「連係」と書く",                          correct: "正は『連系』（系統連系）" },
+        { wrong: "「アースを取る」が法規表現",              correct: "正は『接地を施す』" },
+        { wrong: "ヨー制御はブレーキの役割",                correct: "ヨー制御は『ロータを風向に向ける』機構" },
+        { wrong: "解列は系統との並列開始",                  correct: "解列は『切り離す』動作" },
+        { wrong: "需要率と負荷率は同じ",                    correct: "需要率=最大/設備、負荷率=平均/最大" },
+        { wrong: "電気工事業は許可制",                      correct: "登録制（許可ではない）" },
+      ]} />
+
+      <h2 id="shutai-traps">⚠️ 主体・宛先のひっかけ TOP8</h2>
+      <TrapTable traps={[
+        { wrong: "免状交付は経済産業大臣",                   correct: "都道府県知事（電気工事士法）" },
+        { wrong: "保安規程の届出主体は主任技術者",            correct: "設置者（主任技術者は規程に従う側）" },
+        { wrong: "保安規程の届出先は都道府県知事",            correct: "経済産業大臣（産業保安監督部長経由）" },
+        { wrong: "事故報告の宛先は経済産業大臣",              correct: "実務上『産業保安監督部長』" },
+        { wrong: "主任技術者選任義務は事業者",                correct: "『自家用電気工作物の設置者』" },
+        { wrong: "外部委託（不選任）すれば主任技術者不要",    correct: "外部の電気保安法人が役割を担う（人がいなくなるわけではない）" },
+        { wrong: "電気事業の許可は都道府県知事",              correct: "経済産業大臣（電気事業法）" },
+        { wrong: "PSE法の所管は消費者庁",                     correct: "経済産業大臣" },
+      ]} />
+
+      <h2 id="quick-review">1分復習・直前頻出</h2>
+      <QuickReview items={[
+        { q: "B種接地式の K は？",          a: "150（原則）/ 300（1秒以内）/ 600（0.5秒以内）" },
+        { q: "事故報告速報は？",            a: "24時間以内（産業保安監督部長）" },
+        { q: "高圧道路横断の高さは？",      a: "6 m 以上（低圧は5 m）" },
+        { q: "保安規程届出義務者は？",      a: "自家用電気工作物の設置者" },
+        { q: "直流の低圧上限は？",          a: "750 V 以下（交流は600V以下）" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（ひっかけ横断集約）", reason: "Phase 1パイロット第8弾・sec08" }]} />
+      <PageNav
+        prevId="chokuzen-formula"  prevTitle="公式だけ確認"
+        nextId="chokuzen-machigai" nextTitle="間違いノート"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 8-D. ChokuzenMachigaiPage（直前チェック: 間違いノート・localStorage連動）
+// ─────────────────────────────────────────────
+function ChokuzenMachigaiPage({ onNav, data }) {
+  const STORAGE_KEY = 'denken-hoki-machigai-notes';
+  const [notes, setNotes] = React.useState(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  });
+  const [draft, setDraft] = React.useState({ topic: '', wrong: '', correct: '', source: '' });
+
+  React.useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); } catch {}
+  }, [notes]);
+
+  const addNote = () => {
+    if (!draft.wrong.trim() || !draft.correct.trim()) return;
+    const newNote = {
+      id: Date.now(),
+      date: new Date().toISOString().slice(0, 10),
+      topic: draft.topic.trim() || '未分類',
+      wrong: draft.wrong.trim(),
+      correct: draft.correct.trim(),
+      source: draft.source.trim(),
+    };
+    setNotes([newNote, ...notes]);
+    setDraft({ topic: '', wrong: '', correct: '', source: '' });
+  };
+  const removeNote = (id) => setNotes(notes.filter(n => n.id !== id));
+  const exportNotes = () => {
+    const md = notes.map(n =>
+      `## ${n.date} - ${n.topic}\n\n**誤**: ${n.wrong}\n\n**正**: ${n.correct}\n` +
+      (n.source ? `\n**出典**: ${n.source}\n` : '')
+    ).join('\n---\n\n');
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `machigai-notes-${new Date().toISOString().slice(0,10)}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const inputStyle = {
+    width: '100%', padding: '8px 10px', fontSize: '13px',
+    border: '1px solid var(--border)', borderRadius: '4px',
+    background: 'var(--bg)', color: 'var(--ink)', marginBottom: '8px',
+  };
+
+  return (
+    <div>
+      <div style={{
+        background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        borderLeft: '3px solid var(--accent)', borderRadius: 'var(--radius)',
+        padding: '14px 18px', marginBottom: '24px', fontSize: '13px',
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>📝 個人用・間違いノート（localStorage保存）</div>
+        過去問・模擬で間違えた論点を記録。データはブラウザに永続保存。Markdown出力可。
+      </div>
+
+      <h2 id="overview">1. 全体像 — 間違いノートの位置づけ</h2>
+      <HoukiOverviewSvg
+        center={{ label: '個人間違いノート', sub: 'localStorage連動', theme: 'blue' }}
+        top={{ label: '誤答ログ', sub: '過去問・模擬の間違い', theme: 'red', arrowLabel: '入力' }}
+        left={{ label: '誤った理解', sub: '何を誤解したか', theme: 'orange', arrowLabel: 'wrong' }}
+        right={{ label: '正しい理解', sub: '正解とその根拠', theme: 'cyan', arrowLabel: 'correct' }}
+        bottom={{ label: 'Markdown出力', sub: '試験前まとめ', theme: 'green', arrowLabel: '出力' }}
+      />
+      <MemTable
+        headers={["項目", "目的"]}
+        rows={[
+          ["topic",   "分類タグ（例: B種接地・絶縁試験）"],
+          ["wrong",   "自分が選んだ/書いた誤った答え"],
+          ["correct", "正解+理由（根拠条文・公式）"],
+          ["source",  "出典（過去問年度・模擬試験名等）"],
+        ]}
+        source="出典：本サイト独自実装（localStorage完結）"
+      />
+
+      <h2 id="add-note">📝 ノート追加</h2>
+      <div style={{
+        background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)', padding: '16px 18px', marginBottom: '24px',
+      }}>
+        <input style={inputStyle} placeholder="topic（例: B種接地・電圧降下）"
+          value={draft.topic} onChange={e => setDraft({ ...draft, topic: e.target.value })} />
+        <textarea style={{ ...inputStyle, minHeight: '60px' }}
+          placeholder="wrong: 誤った理解・選んだ選択肢"
+          value={draft.wrong} onChange={e => setDraft({ ...draft, wrong: e.target.value })} />
+        <textarea style={{ ...inputStyle, minHeight: '60px' }}
+          placeholder="correct: 正しい答え+理由（根拠条文・公式）"
+          value={draft.correct} onChange={e => setDraft({ ...draft, correct: e.target.value })} />
+        <input style={inputStyle} placeholder="source（例: R05下A問題6・電気書院模試3）"
+          value={draft.source} onChange={e => setDraft({ ...draft, source: e.target.value })} />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button className="btn primary" onClick={addNote}
+            disabled={!draft.wrong.trim() || !draft.correct.trim()}>
+            追加する
+          </button>
+          {notes.length > 0 && (
+            <button className="btn secondary" onClick={exportNotes}>
+              Markdown出力（{notes.length}件）
+            </button>
+          )}
+        </div>
+      </div>
+
+      <h2 id="notes-list">📋 記録済みノート（{notes.length}件）</h2>
+      {notes.length === 0 ? (
+        <div style={{
+          background: 'var(--bg-elev)', border: '1px dashed var(--border)',
+          borderRadius: 'var(--radius)', padding: '24px',
+          textAlign: 'center', color: 'var(--ink-3)', fontSize: '13px',
+        }}>
+          まだノートがありません。過去問で間違えた論点を上記フォームから追加してください。
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {notes.map(n => (
+            <div key={n.id} style={{
+              background: 'var(--bg-elev)', border: '1px solid var(--border)',
+              borderRadius: 'var(--radius)', padding: '14px 18px', fontSize: '13px',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div>
+                  <span style={{
+                    background: 'var(--accent)', color: '#fff', padding: '2px 8px',
+                    borderRadius: '3px', fontSize: '11px', fontWeight: 700,
+                  }}>{n.topic}</span>
+                  <span style={{ marginLeft: '8px', color: 'var(--ink-3)', fontSize: '11px' }}>
+                    {n.date}
+                  </span>
+                </div>
+                <button onClick={() => removeNote(n.id)} style={{
+                  background: 'none', border: 'none', color: 'var(--ink-3)',
+                  cursor: 'pointer', fontSize: '11px', padding: '0 4px',
+                }}>削除</button>
+              </div>
+              <div style={{ marginBottom: '6px' }}>
+                <strong style={{ color: '#d95454' }}>誤</strong>: {n.wrong}
+              </div>
+              <div style={{ marginBottom: '6px' }}>
+                <strong style={{ color: '#2e7d32' }}>正</strong>: {n.correct}
+              </div>
+              {n.source && (
+                <div style={{ fontSize: '11px', color: 'var(--ink-3)' }}>
+                  出典: {n.source}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h2 id="terms">4. 法規特有表現（ノート活用）</h2>
+      <MemTable
+        headers={["日常語", "法規表現", "試験での意味"]}
+        rows={[
+          ["過去問で間違えた",  "誤答記録",                   "弱点の可視化"],
+          ["復習する",          "間違いの再評価",             "正解の根拠を再確認"],
+          ["まとめる",          "Markdown出力",               "試験直前確認用"],
+          ["分類する",          "topicタグ",                  "分野別集計"],
+          ["蓄積する",          "localStorage 永続保存",      "ブラウザ依存（バックアップ推奨）"],
+        ]}
+        source="出典：本サイト独自実装"
+      />
+
+      <h2 id="usage-tables">📋 推奨運用フロー</h2>
+      <MemTable
+        headers={["タイミング", "アクション", "効果"]}
+        rows={[
+          ["過去問演習後", "間違えた問題を即記録",         "忘却曲線対策"],
+          ["週末",         "週中の間違いを通読",           "短期記憶→長期記憶"],
+          ["月末",         "全ノートをMarkdown出力",       "試験前のまとめ素材"],
+          ["試験1週間前", "全件を1度通読",                 "弱点の最終確認"],
+          ["試験前日",     "出力Markdownを印刷して持参",   "試験会場での最終確認"],
+        ]}
+        source="出典：本サイト独自実装"
+      />
+
+      <h2 id="quick-review">1分復習・運用ルール</h2>
+      <QuickReview items={[
+        { q: "ノートはどこに保存される？",          a: "ブラウザのlocalStorage（バックアップ推奨）" },
+        { q: "Markdownエクスポートの目的は？",       a: "試験前まとめ・印刷持参用" },
+        { q: "topicは何のために？",                  a: "分野別集計・弱点の可視化" },
+        { q: "推奨記録タイミングは？",               a: "過去問演習直後（忘却曲線対策）" },
+        { q: "試験1週間前の使い方は？",              a: "全件を1度通読して弱点最終確認" },
+      ]} />
+
+      <UpdateLog entries={[{ date: "2026-05-03", content: "初版作成（localStorage連動間違いノート）", reason: "Phase 1パイロット第8弾・sec08" }]} />
+      <PageNav
+        prevId="chokuzen-hikkake" prevTitle="ひっかけだけ確認"
+        nextId="top"              nextTitle="トップ"
+        onNav={onNav}
+      />
     </div>
   );
 }
@@ -8021,8 +8649,7 @@ function ZetsuenIchiranPage({ onNav, data }) {
         note="読み終えたら戻って解こう"
       />
 
-      <h2 id="quick-map">0. 1分マップ — 絶縁耐力試験の全体像</h2>
-      <ZetsuenFullMapSvg />
+      <ZetsuenPositionMap />
 
       <h2 id="overview">1. 全体像 — 絶縁耐力試験の位置づけ</h2>
       <HoukiOverviewSvg
