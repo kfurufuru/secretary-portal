@@ -83,4 +83,43 @@ if echo "$staged" | grep -qE "^denken-(hoki|3-riron)-wiki\.html$"; then
     fi
 fi
 
+# ============================================================
+# (5) 巻き戻り検出: staged 名前リストにあるが実差分0件のファイルを検出
+#     並列セッションの git reset --hard / Obsidian同期で
+#     私のEditが消失したケースを検知する
+#     根拠: 2026-05-03 並列セッション衝突事故（claude-code-guide.html リバート）
+# ============================================================
+if [ -n "$staged" ]; then
+    reverted=""
+    for f in $staged; do
+        # --numstat: "<追加> <削除> <ファイル>"。バイナリは "- - <ファイル>"
+        line=$(git diff --cached --numstat -- "$f" 2>/dev/null)
+        added=$(echo "$line" | awk '{print $1}')
+        deleted=$(echo "$line" | awk '{print $2}')
+        # 数値かつ両方0なら no-op staging（巻き戻り疑い）
+        if [ "$added" = "0" ] && [ "$deleted" = "0" ]; then
+            reverted="$reverted $f"
+        fi
+    done
+    if [ -n "$reverted" ]; then
+        echo ""
+        echo "[pre-commit] 🚨 巻き戻り検出: 以下のファイルは staged だが実差分0件"
+        for f in $reverted; do
+            echo "  - $f"
+        done
+        echo ""
+        echo "  原因の可能性:"
+        echo "    1. 並列Claudeセッションが git reset --hard を実行"
+        echo "    2. Obsidian同期 / 外部エディタによる巻き戻り"
+        echo "    3. mode-only change（権限ビット変更のみ）"
+        echo ""
+        echo "  対処:"
+        echo "    1. python claim_edit.py list で並列セッション確認"
+        echo "    2. Edit を再適用してから git diff --stat <file> で差分確認"
+        echo "    3. mode-only が意図なら git update-index --chmod=+x <file>"
+        echo "  緊急回避（非推奨）: git commit --no-verify"
+        exit 1
+    fi
+fi
+
 exit 0
