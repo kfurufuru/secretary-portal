@@ -1,0 +1,5 @@
+.private/
+.tmp/
+__pycache__/
+logs/
+node_modules/
