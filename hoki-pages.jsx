@@ -978,11 +978,11 @@ function HokokuTodokeKigenPage({ onNav, data }) {
         textAlign: 'center'
       }}>
         <div style={{ fontSize: 32, marginBottom: 12 }}>🧭</div>
-        <h2 style={{ margin: '0 0 12px', fontSize: 18 }}>用語が混同するとき</h2>
+        <h2 style={{ margin: '0 0 12px', fontSize: 18, lineHeight: 1.4 }}>手続き6用語の使い分け<br />（許可・認可・登録・届出・承認・報告）</h2>
         <p style={{ color: 'var(--ink-2)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
-          <strong>許可・認可・登録・届出・承認・報告</strong> の使い分け／<br />
+          6用語の識別表（事前/事後・大規模/中規模）／<br />
           申請先（経産大臣／産業保安監督部長／知事）が違う理由／<br />
-          「これは何の手続き？」判断フロー
+          「これは何の手続き？」判断フロー＋自己チェック4択
         </p>
         <a
           href="https://kfurufuru.github.io/denken-wiki/reference/permit-types/"
@@ -991,7 +991,7 @@ function HokokuTodokeKigenPage({ onNav, data }) {
           className="btn primary"
           style={{ display: 'inline-block', textDecoration: 'none' }}
         >
-          denken-wiki「手続き6用語の使い分け」を開く →
+          denken-wiki「手続き6用語の使い分け（許可・認可・登録・届出・承認・報告）」を開く →
         </a>
       </div>
 
