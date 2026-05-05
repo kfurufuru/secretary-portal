@@ -2721,7 +2721,33 @@ function HokokuTodokeKigenPage({ onNav, data }) {
           className="btn primary"
           style={{ display: 'inline-block', textDecoration: 'none' }}
         >
-          denken-wiki「届出・申請期限一覧」を開く →
+          denken-wiki「届出・申請期限一覧（誰に＋何を＋いつ）」を開く →
+        </a>
+      </div>
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '2px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '24px 28px',
+        margin: '24px 0',
+        textAlign: 'center'
+      }}>
+        <div style={{ fontSize: 32, marginBottom: 12 }}>🧭</div>
+        <h2 style={{ margin: '0 0 12px', fontSize: 18 }}>用語が混同するとき</h2>
+        <p style={{ color: 'var(--ink-2)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
+          <strong>許可・認可・登録・届出・承認・報告</strong> の使い分け／<br />
+          申請先（経産大臣／産業保安監督部長／知事）が違う理由／<br />
+          「これは何の手続き？」判断フロー
+        </p>
+        <a
+          href="https://kfurufuru.github.io/denken-wiki/reference/permit-types/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn primary"
+          style={{ display: 'inline-block', textDecoration: 'none' }}
+        >
+          denken-wiki「手続き6用語の使い分け」を開く →
         </a>
       </div>
 
@@ -2736,10 +2762,13 @@ function HokokuTodokeKigenPage({ onNav, data }) {
         color: 'var(--ink-2)'
       }}>
         💡 <strong>棲み分けルール</strong>: 数値・暗記はこのHub、条文・解説・"なぜ"は denken-wiki。
-        届出期限は「条文の整理」に該当するため denken-wiki が SOT。
+        届出期限・用語使い分けは「条文の整理」に該当するため denken-wiki が SOT。
       </div>
 
-      <UpdateLog entries={[{ date: "2026-05-05", content: "スタブ→denken-wikiへのリンクページに変更", reason: "二重実装回避・SOT統一" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-05", content: "「手続き6用語の使い分け」へのリンク追加（許可/認可/登録/届出/承認/報告の整理ページ）", reason: "受験者が混同しやすい概念を1ページに集約" },
+        { date: "2026-05-05", content: "スタブ→denken-wikiへのリンクページに変更", reason: "二重実装回避・SOT統一" }
+      ]} />
       <PageNav
         prevId="densen-size"       prevTitle="電線サイズ一覧"
         nextId="denro-zetsuen"     nextTitle="電路の絶縁"
