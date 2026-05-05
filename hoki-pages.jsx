@@ -20,7 +20,7 @@ window.renderPage = function(page, navigate) {
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
     case 'den-atsu-kubun':         return React.createElement(DenAtsuKubunPage, props);
     case 'densen-size':            return React.createElement(StubPage, { ...props, pageId: 'densen-size' });
-    case 'hokoku-todoke-kigen':    return React.createElement(StubPage, { ...props, pageId: 'hokoku-todoke-kigen' });
+    case 'hokoku-todoke-kigen':    return React.createElement(HokokuTodokeKigenPage, props);
     case 'denro-zetsuen':          return React.createElement(StubPage, { ...props, pageId: 'denro-zetsuen' });
     case 'setsuchi-koji':          return React.createElement(StubPage, { ...props, pageId: 'setsuchi-koji' });
     case 'densenro':               return React.createElement(StubPage, { ...props, pageId: 'densenro' });
@@ -214,6 +214,26 @@ function HomePage({ onNav, data }) {
           <p style={{ margin: '0 0 16px', fontSize: 14, color: 'var(--ink-2)', lineHeight: 1.7 }}>
             条文を丸暗記する科目ではありません。頻出論点・表暗記・B問題計算・過去問演習の4つを正しい順序で組み合わせれば、60点は安定して取れます。
           </p>
+          {/* 棲み分け1行ルール（denken-wikiとの役割分担明示） */}
+          <div style={{
+            background: 'var(--bg-elev)',
+            border: '1px solid var(--border)',
+            borderLeft: '4px solid var(--accent)',
+            borderRadius: 'var(--radius)',
+            padding: '12px 16px',
+            margin: '0 0 16px',
+            fontSize: 13,
+            lineHeight: 1.6
+          }}>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>🧭 棲み分けルール</div>
+            <div style={{ color: 'var(--ink-2)' }}>
+              <strong>数値・暗記</strong>はこのHub、<strong>条文・解説・"なぜ"</strong>は{' '}
+              <a href="https://kfurufuru.github.io/denken-wiki/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
+                denken-wiki
+              </a>
+              {' '}へ。
+            </div>
+          </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <button className="btn primary" onClick={() => onNav('top')}>B問題から始める →</button>
             <button className="btn secondary" onClick={() => document.getElementById('hp-topics')?.scrollIntoView({ behavior: 'smooth' })}>頻出Sランクを見る</button>
@@ -713,6 +733,23 @@ function ZetsuenIchiranPage({ onNav, data }) {
         { q: "7,000V超 60kV以下の電路は何V以上で試験？", a: "最大使用電圧の1.25倍" },
       ]} />
 
+      {/* denken-wiki への逆リンク（条文ベース解説） */}
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderLeft: '4px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '12px 16px',
+        margin: '20px 0',
+        fontSize: 13
+      }}>
+        📚 <strong>じっくり理解したい時</strong> →{' '}
+        <a href="https://kfurufuru.github.io/denken-wiki/reference/grounding-comparison/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
+          denken-wiki「接地工事種別比較表」
+        </a>
+        （条文ベース解説・ELB緩和・省略条件）
+      </div>
+
       <UpdateLog entries={[{ date: "2026-04-27", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="setsuchi-ichiran"  prevTitle="接地工事一覧"
@@ -783,6 +820,23 @@ function RikkakuIchiranPage({ onNav, data }) {
         { q: "道路横断で低圧と高圧の高さの差は？",           a: "1 m（低圧5m、高圧6m）" },
       ]} />
 
+      {/* denken-wiki への逆リンク（条文ベース解説） */}
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderLeft: '4px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '12px 16px',
+        margin: '20px 0',
+        fontSize: 13
+      }}>
+        📚 <strong>じっくり理解したい時</strong> →{' '}
+        <a href="https://kfurufuru.github.io/denken-wiki/reference/numbers/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
+          denken-wiki「頻出数値一覧（離隔距離）」
+        </a>
+        （条文との対応・出題文脈）
+      </div>
+
       <UpdateLog entries={[{ date: "2026-04-26", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="zetsuen-ichiran"  prevTitle="絶縁耐力試験一覧"
@@ -852,10 +906,87 @@ function DenAtsuKubunPage({ onNav, data }) {
         { q: "交流7,001Vは何圧？",         a: "特別高圧（7,000V超が特別高圧）" },
       ]} />
 
+      {/* denken-wiki への逆リンク（条文ベース解説） */}
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderLeft: '4px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '12px 16px',
+        margin: '20px 0',
+        fontSize: 13
+      }}>
+        📚 <strong>じっくり理解したい時</strong> →{' '}
+        <a href="https://kfurufuru.github.io/denken-wiki/reference/voltage-zones/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
+          denken-wiki「電圧区分早見表」
+        </a>
+        （条文ベース解説・出題文脈）
+      </div>
+
       <UpdateLog entries={[{ date: "2026-04-25", content: "初版作成", reason: "—" }]} />
       <PageNav
         prevId="rikkaku-ichiran"   prevTitle="離隔距離一覧"
         nextId="densen-size"       nextTitle="電線サイズ"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// 5-5. HokokuTodokeKigenPage（報告・届出期限一覧 — denken-wikiへリンク）
+function HokokuTodokeKigenPage({ onNav, data }) {
+  return (
+    <div>
+      <h1 style={{ margin: '0 0 12px', fontSize: 24, fontWeight: 800 }}>
+        📅 報告・届出期限一覧
+      </h1>
+      <p style={{ color: 'var(--ink-2)', fontSize: 14, marginBottom: 24 }}>
+        届出・申請期限の一覧は <strong>denken-wiki</strong> に集約しています。
+      </p>
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '2px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '24px 28px',
+        margin: '24px 0',
+        textAlign: 'center'
+      }}>
+        <div style={{ fontSize: 32, marginBottom: 12 }}>📚</div>
+        <h2 style={{ margin: '0 0 16px', fontSize: 18 }}>SOTはdenken-wiki</h2>
+        <p style={{ color: 'var(--ink-2)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
+          事前30日・事前90日・事後24時間・事後30日 等の<br />
+          届出・申請期限を <strong>denken-wiki</strong> に一元管理しています。
+        </p>
+        <a
+          href="https://kfurufuru.github.io/denken-wiki/reference/deadlines/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn primary"
+          style={{ display: 'inline-block', textDecoration: 'none' }}
+        >
+          denken-wiki「届出・申請期限一覧」を開く →
+        </a>
+      </div>
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderLeft: '4px solid var(--ink-3)',
+        borderRadius: 'var(--radius)',
+        padding: '12px 16px',
+        margin: '20px 0',
+        fontSize: 13,
+        color: 'var(--ink-2)'
+      }}>
+        💡 <strong>棲み分けルール</strong>: 数値・暗記はこのHub、条文・解説・"なぜ"は denken-wiki。
+        届出期限は「条文の整理」に該当するため denken-wiki が SOT。
+      </div>
+
+      <UpdateLog entries={[{ date: "2026-05-05", content: "スタブ→denken-wikiへのリンクページに変更", reason: "二重実装回避・SOT統一" }]} />
+      <PageNav
+        prevId="densen-size"       prevTitle="電線サイズ一覧"
+        nextId="denro-zetsuen"     nextTitle="電路の絶縁"
         onNav={onNav}
       />
     </div>
