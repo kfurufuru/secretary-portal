@@ -1,6 +1,12 @@
 // hoki-components.jsx
 // 法規Wikiコンポーネント定義ファイル（Babel CDN変換前提）
 // import文なし — React/ReactDOMはグローバル変数として利用
+//
+// localStorage 規約（落合陽一の指摘）:
+//   hoki_quiz_<cardType>_<suffix>
+//     例: hoki_quiz_glossary_progress, hoki_quiz_glossary_lastBackup
+//   将来: hoki_quiz_formula_progress, hoki_quiz_trap_progress, hoki_quiz_mistake_progress
+//   既存個別キー（hoki_lastSeen_*, hoki_sidebar_mode 等）はそのまま維持
 
 // ============================================================
 // 1. テンプレートコンポーネント

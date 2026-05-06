@@ -3,14 +3,40 @@ build-hoki-wiki.py — 電験3種 法規Wiki HTML組み立てスクリプト
 ソース:
   denken-hoki-wiki.html  → CSS/head部分(行0-899)を再利用
   hoki-data.js           → WIKI_DATA定義
+  hoki-glossary-data.js  → GLOSSARY_TERMS_V1定義（用語クイズ）
   hoki-components.jsx    → Sidebar/TOC/App + 15テンプレートコンポーネント
+  hoki-glossary.jsx      → ChokuzenYougoPage（用語クイズ）
   hoki-pages.jsx         → renderPage + 全ページコンポーネント
 出力:
   denken-hoki-wiki.html  → 上書き（生成前に .bak を作成）
+
+着手前防衛策（ひろゆき指摘）: bundle前に .js ファイルを node --check で構文検証。
+JSX は Babel CDN がブラウザで検証するため事前検証スキップ。
 """
-import os, shutil
+import os, shutil, subprocess, sys
 
 BASE = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
+
+# bundle対象 (順序: data → comps → pages、glossary は data/comps/pages の各群末尾に追加)
+JS_BUNDLES   = ['hoki-data.js', 'hoki-glossary-data.js']
+JSX_BUNDLES  = ['hoki-components.jsx', 'hoki-glossary.jsx', 'hoki-pages.jsx']
+
+# --- 防衛策: .js 構文検証 ---
+for js_file in JS_BUNDLES:
+    path = f'{BASE}/{js_file}'
+    if not os.path.exists(path):
+        print(f'MISSING: {js_file}'); sys.exit(1)
+    result = subprocess.run(['node', '--check', path], capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f'SYNTAX ERROR in {js_file}:')
+        print(result.stderr)
+        sys.exit(1)
+print(f'Syntax OK: {", ".join(JS_BUNDLES)}')
+
+# --- 存在チェック: .jsx ---
+for jsx_file in JSX_BUNDLES:
+    if not os.path.exists(f'{BASE}/{jsx_file}'):
+        print(f'MISSING: {jsx_file}'); sys.exit(1)
 
 def read(name):
     with open(f'{BASE}/{name}', encoding='utf-8') as f:
@@ -56,9 +82,11 @@ body_open = """
 """
 
 # ソースファイル読み込み
-data_js   = read('hoki-data.js')
-comps_jsx = read('hoki-components.jsx')
-pages_jsx = read('hoki-pages.jsx')
+data_js          = read('hoki-data.js')
+glossary_data_js = read('hoki-glossary-data.js')
+comps_jsx        = read('hoki-components.jsx')
+glossary_jsx     = read('hoki-glossary.jsx')
+pages_jsx        = read('hoki-pages.jsx')
 
 # 出題頻度ランキング JSON（サイドバー「テーマ別」タブで参照）
 ranking_json = read('data/hoki-theme-ranking.json')
@@ -78,9 +106,19 @@ script_block = f"""
 {data_js}
 
 // ============================================================
+// GLOSSARY_TERMS_V1（用語クイズデータ）
+// ============================================================
+{glossary_data_js}
+
+// ============================================================
 // コンポーネント定義
 // ============================================================
 {comps_jsx}
+
+// ============================================================
+// 用語クイズページ（ChokuzenYougoPage）
+// ============================================================
+{glossary_jsx}
 
 // ============================================================
 // ページ定義

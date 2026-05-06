@@ -61,6 +61,7 @@ window.renderPage = function(page, navigate) {
     case 'chokuzen-formula':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-formula' });
     case 'chokuzen-hikkake':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-hikkake' });
     case 'chokuzen-machigai':      return React.createElement(StubPage, { ...props, pageId: 'chokuzen-machigai' });
+    case 'chokuzen-yougo':         return React.createElement(window.ChokuzenYougoPage, props);
     default:                       return React.createElement(StubPage, { ...props, pageId: page });
   }
 };

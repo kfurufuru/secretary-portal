@@ -1422,9 +1422,136 @@ window.WIKI_DATA = { chapters: [
     { id:"chokuzen-suuchi",   num:"8.1", title:"数値だけ確認" },
     { id:"chokuzen-formula",  num:"8.2", title:"公式だけ確認" },
     { id:"chokuzen-hikkake",  num:"8.3", title:"ひっかけだけ確認" },
-    { id:"chokuzen-machigai", num:"8.4", title:"間違いノート" }
+    { id:"chokuzen-machigai", num:"8.4", title:"間違いノート" },
+    { id:"chokuzen-yougo",    num:"8.5", title:"用語クイズ" }
   ]}
 ]};
+
+
+// ============================================================
+// GLOSSARY_TERMS_V1（用語クイズデータ）
+// ============================================================
+// hoki-glossary-data.js — 電験3種 法規Wiki 用語クイズデータ
+// schema_version 1: id/term/yomi/meaning/field/articles/exam_note/distractors/addedDate
+// localStorage 規約: hoki_quiz_<cardType>_<field>  (e.g. hoki_quiz_glossary_progress)
+
+window.GLOSSARY_TERMS_V1 = {
+  schema_version: 1,
+  cardType: 'glossary',
+  config: { stage_intervals_days: [0, 7, 30, 90, 180] },
+  terms: [
+    {
+      id: 'shiyo-denatsu',
+      term: '使用電圧',
+      yomi: 'しようでんあつ',
+      meaning: '電路に印加される線間電圧',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '「対地電圧」との混同に注意。条文冒頭は使用電圧で区分',
+      distractors: ['対地電圧', '公称電圧', '定格電圧'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'taichi-denatsu',
+      term: '対地電圧',
+      yomi: 'たいちでんあつ',
+      meaning: '電線と大地間の電圧。接地式では電線-大地間、非接地式では電線間の値となる',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '第58条の区分判定の核心。150V境界を正確に把握する',
+      distractors: ['使用電圧', '公称電圧', '線間電圧'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'zetsuen-teikou',
+      term: '絶縁抵抗',
+      yomi: 'ぜつえんていこう',
+      meaning: '電路の導体と大地（または他の導体）間の抵抗値',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: 'メガーで測定し、単位はMΩ',
+      distractors: ['接地抵抗', '導体抵抗', '漏電抵抗'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'kaiheiki',
+      term: '開閉器',
+      yomi: 'かいへいき',
+      meaning: '電路を手動で開閉する機器の総称（カバー付ナイフスイッチ・電磁開閉器等）。過電流を自動遮断する機能はない。条文では「開閉器又は過電流遮断器」のセットで使われ、両者を電路の区分単位として規定する',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '「自動遮断」の語が入ったら過電流遮断器のひっかけ。開閉器は手動のみ',
+      distractors: ['過電流遮断器', '断路器', '接触器'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'kadenryu-shadanki',
+      term: '過電流遮断器',
+      yomi: 'かでんりゅうしゃだんき',
+      meaning: '過電流（短絡・過負荷）を検出して自動遮断する機器の総称。代表例は配線用遮断器（MCCB／ブレーカー）・ヒューズ。高圧側では気中遮断器・真空遮断器が該当する。手動の開閉器や、地絡保護目的の漏電遮断器とは目的が異なる（混同に注意）',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '「開閉器又は過電流遮断器で区切ることのできる電路ごと」で頻出。漏電遮断器をひっかけ選択肢として混ぜる出題に注意',
+      distractors: ['漏電遮断器', '開閉器', '電磁開閉器'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'haisenyou-shadanki',
+      term: '配線用遮断器',
+      yomi: 'はいせんようしゃだんき',
+      meaning: '過電流遮断器の代表的な種類。MCCB、ブレーカーとも呼ぶ',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '過電流遮断器とほぼ同義で使われるが、条文の文言は「過電流遮断器」',
+      distractors: ['過電流遮断器', '漏電遮断器', '電磁開閉器'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'rouden-shadanki',
+      term: '漏電遮断器',
+      yomi: 'ろうでんしゃだんき',
+      meaning: '漏えい電流（地絡）を検出して自動遮断する機器。ELB／ELCB。過電流保護機能付きのタイプ（過電流遮断器の役割も持つ）もあるが、主目的は地絡保護で過電流遮断器とは区別される',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '第58条の条文には登場しない（条文は過電流遮断器のみ）。「漏電遮断器で電路を区切る」と書かれていたら誤りのひっかけ',
+      distractors: ['過電流遮断器', '配線用遮断器', '地絡継電器'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'megger',
+      term: 'メガー',
+      yomi: 'めがー',
+      meaning: '絶縁抵抗計（メガオーム計）。直流高電圧を印加して抵抗を測定する',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '低圧電路では直流500V印加が標準（JIS C 1302）',
+      distractors: ['テスター', 'クランプメーター', 'アーステスター'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'rouei-denryu',
+      term: '漏えい電流',
+      yomi: 'ろうえいでんりゅう',
+      meaning: '絶縁劣化により電路から大地へ流れる電流',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '解釈第14条で1mA以下が絶縁抵抗測定の同等基準',
+      distractors: ['地絡電流', '短絡電流', '充電電流'],
+      addedDate: '2026-05-06'
+    },
+    {
+      id: 'densen-sougokan',
+      term: '電線相互間',
+      yomi: 'でんせんそうごかん',
+      meaning: '電線と電線の間（相間）',
+      field: 'hoki',
+      articles: ['58'],
+      exam_note: '「対地間」とペアで出題。条文の「及び」に注意',
+      distractors: ['対地間', '電線地絡間', '中性点間'],
+      addedDate: '2026-05-06'
+    }
+  ]
+};
 
 
 // ============================================================
@@ -1433,6 +1560,12 @@ window.WIKI_DATA = { chapters: [
 // hoki-components.jsx
 // 法規Wikiコンポーネント定義ファイル（Babel CDN変換前提）
 // import文なし — React/ReactDOMはグローバル変数として利用
+//
+// localStorage 規約（落合陽一の指摘）:
+//   hoki_quiz_<cardType>_<suffix>
+//     例: hoki_quiz_glossary_progress, hoki_quiz_glossary_lastBackup
+//   将来: hoki_quiz_formula_progress, hoki_quiz_trap_progress, hoki_quiz_mistake_progress
+//   既存個別キー（hoki_lastSeen_*, hoki_sidebar_mode 等）はそのまま維持
 
 // ============================================================
 // 1. テンプレートコンポーネント
@@ -2324,6 +2457,1167 @@ root.render(<App />);
 
 
 // ============================================================
+// 用語クイズページ（ChokuzenYougoPage）
+// ============================================================
+/* hoki-glossary.jsx - 8.5 用語クイズ・SRS Page (React)
+ * 第58条等の用語を3モード（一覧 / 意味当て / 単語当て）で段階管理する。
+ * Vanilla glossary.js のロジックを React 化したもの。
+ * Data: window.GLOSSARY_TERMS_V1
+ * Storage: hoki_quiz_glossary_progress / hoki_quiz_glossary_lastBackup
+ */
+
+// ===== Constants =====
+const STORAGE_KEY = 'hoki_quiz_glossary_progress';
+const BACKUP_KEY = 'hoki_quiz_glossary_lastBackup';
+const STAGE_INTERVALS = [0, 7, 30, 90, 180];
+const SESSION_SIZE = 20;
+const MEMO_MAX = 500;
+
+const STAGE_BADGE = {
+  1: { label: '🥉短期', bg: '#f4ddc4', color: '#8a4a17', border: '#d9a37a' },
+  2: { label: '🥈中期', bg: '#e0e0e0', color: '#4a4a4a', border: '#b0b0b0' },
+  3: { label: '🥇長期', bg: '#fbe69c', color: '#7a5a00', border: '#d8b850' },
+  4: { label: '👑マスター', bg: '#d9c8f5', color: '#4a2780', border: '#a787da' },
+};
+const UNSURE_BADGE = { label: '🤔 曖昧', bg: '#fff4cc', color: '#8a6500', border: '#e8c660' };
+const WRONG_BADGE = { label: '❌ 不明', bg: '#ffe0e0', color: '#a00018', border: '#e89090' };
+const REVIEW_BADGE = { label: '要再チェック', bg: '#ffd5d5', color: '#b00020', border: '#e08080' };
+const MUTED_BADGE = { label: '未着手', bg: '#eeeeee', color: '#777777', border: '#cccccc' };
+
+// ===== Date helpers =====
+function todayStr() {
+  const d = new Date();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + m + '-' + day;
+}
+function parseDate(s) {
+  if (!s) return null;
+  const parts = String(s).split('-');
+  if (parts.length !== 3) return null;
+  const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+  return isNaN(d.getTime()) ? null : d;
+}
+function daysBetween(a, b) {
+  if (!a || !b) return 0;
+  return Math.round((b.getTime() - a.getTime()) / 86400000);
+}
+function addDaysStr(baseStr, days) {
+  const d = parseDate(baseStr) || new Date();
+  d.setDate(d.getDate() + days);
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + m + '-' + day;
+}
+
+// ===== useFlashcardDeck Hook =====
+function useFlashcardDeck(cards, storageKey) {
+  const [progress, setProgress] = React.useState({});
+  const [lastBackup, setLastBackup] = React.useState('');
+
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      setProgress(raw ? JSON.parse(raw) || {} : {});
+    } catch (e) { setProgress({}); }
+    try {
+      setLastBackup(localStorage.getItem(BACKUP_KEY) || '');
+    } catch (e) { setLastBackup(''); }
+  }, [storageKey]);
+
+  const persist = React.useCallback((next) => {
+    setProgress(next);
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch (e) {}
+  }, [storageKey]);
+
+  const getEntry = React.useCallback((id) => progress[id] || null, [progress]);
+  const getStage = React.useCallback((id) => {
+    const e = progress[id];
+    return e && typeof e.stage === 'number' ? e.stage : 0;
+  }, [progress]);
+  const getLastResult = React.useCallback((id) => {
+    const e = progress[id];
+    return e ? (e.lastResult || null) : null;
+  }, [progress]);
+  const isNeedsReview = React.useCallback((id) => {
+    const e = progress[id];
+    if (!e || !e.nextReview || !e.stage || e.stage <= 0) return false;
+    const today = parseDate(todayStr());
+    const nx = parseDate(e.nextReview);
+    if (!today || !nx) return false;
+    return today.getTime() >= nx.getTime();
+  }, [progress]);
+  const hasUnresolvedMemo = React.useCallback((id) => {
+    const e = progress[id];
+    if (!e || !Array.isArray(e.notes)) return false;
+    return e.notes.some(n => !n.resolved);
+  }, [progress]);
+
+  const recordResult = React.useCallback((id, result) => {
+    const cur = progress[id] || { stage: 0, wrongCount: 0, correctCount: 0, notes: [] };
+    const e = Object.assign({}, cur);
+    if (!Array.isArray(e.notes)) e.notes = cur.notes ? cur.notes.slice() : [];
+    if (typeof e.stage !== 'number') e.stage = 0;
+    if (typeof e.wrongCount !== 'number') e.wrongCount = 0;
+    if (typeof e.correctCount !== 'number') e.correctCount = 0;
+    const t = todayStr();
+    if (result === 'correct') {
+      e.stage = Math.min(4, e.stage + 1);
+      e.correctCount++;
+      e.lastReviewed = t;
+      e.nextReview = addDaysStr(t, STAGE_INTERVALS[e.stage] || 0);
+    } else if (result === 'unsure') {
+      e.lastReviewed = t;
+      e.nextReview = addDaysStr(t, 1);
+    } else if (result === 'wrong') {
+      e.stage = 0;
+      e.wrongCount++;
+      e.lastReviewed = t;
+      e.nextReview = addDaysStr(t, 1);
+    }
+    e.lastResult = result;
+    const next = Object.assign({}, progress, { [id]: e });
+    persist(next);
+  }, [progress, persist]);
+
+  const addMemo = React.useCallback((id, text) => {
+    text = String(text || '').slice(0, MEMO_MAX).trim();
+    if (!text) return;
+    const cur = progress[id] || { stage: 0, wrongCount: 0, correctCount: 0, notes: [] };
+    const e = Object.assign({}, cur);
+    e.notes = (Array.isArray(cur.notes) ? cur.notes.slice() : []);
+    e.notes.push({ date: todayStr(), text: text, resolved: false });
+    const next = Object.assign({}, progress, { [id]: e });
+    persist(next);
+  }, [progress, persist]);
+
+  const toggleMemoResolved = React.useCallback((id, idx) => {
+    const cur = progress[id];
+    if (!cur || !Array.isArray(cur.notes) || !cur.notes[idx]) return;
+    const e = Object.assign({}, cur);
+    e.notes = cur.notes.slice();
+    e.notes[idx] = Object.assign({}, e.notes[idx], { resolved: !e.notes[idx].resolved });
+    const next = Object.assign({}, progress, { [id]: e });
+    persist(next);
+  }, [progress, persist]);
+
+  const priorityScore = React.useCallback((card) => {
+    let p = 0;
+    const last = getLastResult(card.id);
+    if (last === 'wrong') p += 100;
+    if (last === 'unsure') p += 50;
+    if (isNeedsReview(card.id)) p += 30;
+    if (getStage(card.id) === 0) p += 80;
+    const added = parseDate(card.addedDate);
+    if (added) {
+      const days = Math.max(0, daysBetween(added, new Date()));
+      p += Math.max(0, 30 - days);
+    }
+    return p;
+  }, [getLastResult, isNeedsReview, getStage]);
+
+  const exportProgress = React.useCallback(() => {
+    const data = { schema_version: 1, exportedAt: todayStr(), progress: progress };
+    try {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'glossary-progress-' + todayStr() + '.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+      const t = todayStr();
+      try { localStorage.setItem(BACKUP_KEY, t); } catch (e) {}
+      setLastBackup(t);
+    } catch (e) {}
+  }, [progress]);
+
+  const importProgress = React.useCallback((file) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(reader.result);
+            const incoming = (parsed && parsed.progress) ? parsed.progress : parsed;
+            if (!incoming || typeof incoming !== 'object') throw new Error('形式が不正');
+            const keys = Object.keys(incoming);
+            for (let i = 0; i < keys.length; i++) {
+              const v = incoming[keys[i]];
+              if (!v || typeof v !== 'object') throw new Error('エントリ ' + keys[i] + ' が不正');
+            }
+            persist(incoming);
+            resolve(keys.length);
+          } catch (err) { reject(err); }
+        };
+        reader.onerror = () => reject(new Error('読み込み失敗'));
+        reader.readAsText(file);
+      } catch (e) { reject(e); }
+    });
+  }, [persist]);
+
+  const resetProgress = React.useCallback(() => {
+    try { localStorage.removeItem(storageKey); } catch (e) {}
+    setProgress({});
+  }, [storageKey]);
+
+  return {
+    progress, recordResult, getStage, getLastResult, isNeedsReview,
+    hasUnresolvedMemo, addMemo, toggleMemoResolved, priorityScore,
+    exportProgress, importProgress, resetProgress, lastBackup,
+  };
+}
+
+// ===== Stage Badge component =====
+function StageBadge({ stage, lastResult }) {
+  let conf;
+  if (stage > 0) conf = STAGE_BADGE[stage];
+  else if (lastResult === 'unsure') conf = UNSURE_BADGE;
+  else if (lastResult === 'wrong') conf = WRONG_BADGE;
+  else conf = MUTED_BADGE;
+  return (
+    <span style={{
+      display: 'inline-block',
+      padding: '2px 8px',
+      fontSize: 11,
+      fontWeight: 600,
+      background: conf.bg,
+      color: conf.color,
+      border: `1px solid ${conf.border}`,
+      borderRadius: 10,
+      lineHeight: 1.5,
+      whiteSpace: 'nowrap',
+    }}>{conf.label}</span>
+  );
+}
+
+function MiniBadge({ conf }) {
+  return (
+    <span style={{
+      display: 'inline-block',
+      padding: '2px 8px',
+      fontSize: 11,
+      fontWeight: 600,
+      background: conf.bg,
+      color: conf.color,
+      border: `1px solid ${conf.border}`,
+      borderRadius: 10,
+      lineHeight: 1.5,
+      marginLeft: 4,
+      whiteSpace: 'nowrap',
+    }}>{conf.label}</span>
+  );
+}
+
+// ===== Memo Modal =====
+function MemoModal({ term, deck, onClose }) {
+  const [text, setText] = React.useState('');
+  const taRef = React.useRef(null);
+  const entry = deck.progress[term.id];
+  const notes = (entry && Array.isArray(entry.notes)) ? entry.notes : [];
+
+  React.useEffect(() => {
+    if (taRef.current) taRef.current.focus();
+  }, []);
+
+  const handleSave = () => {
+    if (text.trim()) deck.addMemo(term.id, text);
+    onClose();
+  };
+
+  return (
+    <div
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: 16,
+      }}
+    >
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        padding: 20,
+        maxWidth: 500,
+        width: '100%',
+        maxHeight: '85vh',
+        overflowY: 'auto',
+      }}>
+        <h3 style={{ margin: '0 0 12px', fontSize: 16 }}>📝 メモ追加: {term.term}</h3>
+        <textarea
+          ref={taRef}
+          value={text}
+          onChange={(e) => setText(e.target.value.slice(0, MEMO_MAX))}
+          maxLength={MEMO_MAX}
+          rows={5}
+          placeholder={`混同しやすい点・覚え方など (${MEMO_MAX}文字以内)`}
+          style={{
+            width: '100%',
+            boxSizing: 'border-box',
+            padding: 8,
+            fontSize: 13,
+            border: '1px solid var(--border)',
+            borderRadius: 6,
+            fontFamily: 'inherit',
+            resize: 'vertical',
+          }}
+        />
+        <div style={{ fontSize: 11, color: 'var(--ink-3)', textAlign: 'right', marginTop: 4 }}>
+          {text.length} / {MEMO_MAX}
+        </div>
+
+        {notes.length > 0 && (
+          <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8 }}>既存のメモ</div>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {notes.map((n, i) => (
+                <li key={i} style={{
+                  fontSize: 12,
+                  padding: 8,
+                  border: '1px solid var(--border)',
+                  borderRadius: 4,
+                  opacity: n.resolved ? 0.55 : 1,
+                  textDecoration: n.resolved ? 'line-through' : 'none',
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={!!n.resolved}
+                      onChange={() => deck.toggleMemoResolved(term.id, i)}
+                    />
+                    <span style={{ fontSize: 11, color: 'var(--ink-3)' }}>{n.date}</span>
+                    <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--ink-3)' }}>✓ 解決済</span>
+                  </label>
+                  <div style={{ marginTop: 4, whiteSpace: 'pre-wrap' }}>{n.text}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
+          <button className="btn secondary" onClick={onClose}>キャンセル</button>
+          <button className="btn primary" onClick={handleSave}>保存</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===== Mode 1: List =====
+function ListMode({ terms, deck, onOpenMemo }) {
+  const [filters, setFilters] = React.useState({
+    unlearned: false, unsure: false, needsReview: false, hasMemo: false, article: '',
+  });
+  const [expanded, setExpanded] = React.useState({});
+  const [flashId, setFlashId] = React.useState(null);
+
+  const articles = React.useMemo(() => {
+    const set = {};
+    terms.forEach(t => (t.articles || []).forEach(a => { set[a] = true; }));
+    return Object.keys(set).sort((a, b) => {
+      const na = parseInt(a, 10), nb = parseInt(b, 10);
+      if (!isNaN(na) && !isNaN(nb)) return na - nb;
+      return a.localeCompare(b);
+    });
+  }, [terms]);
+
+  const stats = React.useMemo(() => {
+    let total = terms.length, untouched = 0, unsure = 0, review = 0, memo = 0;
+    terms.forEach(t => {
+      const stage = deck.getStage(t.id);
+      const last = deck.getLastResult(t.id);
+      if (stage === 0 && !last) untouched++;
+      if (stage === 0 && last === 'unsure') unsure++;
+      if (deck.isNeedsReview(t.id)) review++;
+      if (deck.hasUnresolvedMemo(t.id)) memo++;
+    });
+    return { total, untouched, unsure, review, memo };
+  }, [terms, deck]);
+
+  const visible = React.useMemo(() => {
+    let arr = terms.filter(t => {
+      if (filters.unlearned && (deck.getStage(t.id) !== 0 || deck.getLastResult(t.id))) return false;
+      if (filters.unsure && !(deck.getStage(t.id) === 0 && deck.getLastResult(t.id) === 'unsure')) return false;
+      if (filters.needsReview && !deck.isNeedsReview(t.id)) return false;
+      if (filters.hasMemo && !deck.hasUnresolvedMemo(t.id)) return false;
+      if (filters.article) {
+        const arts = t.articles || [];
+        if (arts.indexOf(filters.article) === -1) return false;
+      }
+      return true;
+    });
+    arr.sort((a, b) => {
+      const pa = deck.priorityScore(a), pb = deck.priorityScore(b);
+      if (pa !== pb) return pb - pa;
+      return String(a.term).localeCompare(String(b.term), 'ja');
+    });
+    return arr;
+  }, [terms, filters, deck]);
+
+  const handleResult = (id, result) => {
+    deck.recordResult(id, result);
+    setFlashId(id);
+    setTimeout(() => setFlashId(null), 600);
+  };
+
+  const statBoxStyle = {
+    flex: '1 1 auto',
+    minWidth: 90,
+    padding: '8px 12px',
+    background: 'var(--bg-elev)',
+    border: '1px solid var(--border)',
+    borderRadius: 'var(--radius)',
+    fontSize: 12,
+    color: 'var(--ink-2)',
+    textAlign: 'center',
+  };
+
+  return (
+    <div>
+      {/* Stats */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+        <div style={statBoxStyle}>登録 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.total}</strong></div>
+        <div style={statBoxStyle}>未着手 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.untouched}</strong></div>
+        <div style={Object.assign({}, statBoxStyle, { borderColor: UNSURE_BADGE.border, background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color })}>🤔 曖昧 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.unsure}</strong></div>
+        <div style={Object.assign({}, statBoxStyle, { borderColor: REVIEW_BADGE.border, background: REVIEW_BADGE.bg, color: REVIEW_BADGE.color })}>要再チェック <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.review}</strong></div>
+        <div style={statBoxStyle}>メモあり <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.memo}</strong></div>
+      </div>
+
+      {/* Filters */}
+      <div style={{
+        display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center',
+        padding: '10px 12px', marginBottom: 12,
+        background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)',
+        fontSize: 12,
+      }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+          <input type="checkbox" checked={filters.unlearned} onChange={(e) => setFilters({ ...filters, unlearned: e.target.checked })} />
+          未着手のみ
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+          <input type="checkbox" checked={filters.unsure} onChange={(e) => setFilters({ ...filters, unsure: e.target.checked })} />
+          🤔 曖昧のみ
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+          <input type="checkbox" checked={filters.needsReview} onChange={(e) => setFilters({ ...filters, needsReview: e.target.checked })} />
+          要再チェックのみ
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+          <input type="checkbox" checked={filters.hasMemo} onChange={(e) => setFilters({ ...filters, hasMemo: e.target.checked })} />
+          メモあり のみ
+        </label>
+        <select
+          value={filters.article}
+          onChange={(e) => setFilters({ ...filters, article: e.target.value })}
+          style={{ padding: '4px 8px', border: '1px solid var(--border)', borderRadius: 4, fontSize: 12 }}
+        >
+          <option value="">条文すべて</option>
+          {articles.map(a => <option key={a} value={a}>第{a}条</option>)}
+        </select>
+      </div>
+
+      {/* Table */}
+      <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <thead>
+            <tr style={{ background: 'var(--bg-elev)' }}>
+              <th style={thStyle}>用語</th>
+              <th style={thStyle}>読み</th>
+              <th style={thStyle}>意味</th>
+              <th style={thStyle}>試験での注意点</th>
+              <th style={thStyle}>段階</th>
+              <th style={Object.assign({}, thStyle, { textAlign: 'center' })}>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visible.length === 0 && (
+              <tr>
+                <td colSpan={6} style={{ padding: 24, textAlign: 'center', color: 'var(--ink-3)' }}>
+                  該当する用語がありません。
+                </td>
+              </tr>
+            )}
+            {visible.map(t => {
+              const stage = deck.getStage(t.id);
+              const lastRes = deck.getLastResult(t.id);
+              const nr = deck.isNeedsReview(t.id);
+              const memo = deck.hasUnresolvedMemo(t.id);
+              const isFlash = flashId === t.id;
+              const isOpen = !!expanded[t.id];
+              const entry = deck.progress[t.id];
+              const notes = (entry && Array.isArray(entry.notes)) ? entry.notes : [];
+              return (
+                <React.Fragment key={t.id}>
+                  <tr
+                    onClick={() => setExpanded({ ...expanded, [t.id]: !isOpen })}
+                    style={{
+                      borderTop: '1px solid var(--border)',
+                      cursor: 'pointer',
+                      background: isFlash ? '#d8f4d8' : 'transparent',
+                      transition: 'background 0.6s ease',
+                    }}
+                  >
+                    <td style={tdStyle}>
+                      <strong>{t.term}</strong>
+                      {memo && <span title="未解決メモあり" style={{ color: '#d95454', marginLeft: 6 }}>●</span>}
+                    </td>
+                    <td style={Object.assign({}, tdStyle, { color: 'var(--ink-3)', fontSize: 12 })}>{t.yomi || ''}</td>
+                    <td style={tdStyle}>{t.meaning || ''}</td>
+                    <td style={Object.assign({}, tdStyle, { fontSize: 12, color: 'var(--ink-2)' })}>
+                      {t.exam_note ? t.exam_note : <span style={{ color: 'var(--ink-3)' }}>—</span>}
+                    </td>
+                    <td style={tdStyle}>
+                      <StageBadge stage={stage} lastResult={lastRes} />
+                      {nr && <MiniBadge conf={REVIEW_BADGE} />}
+                    </td>
+                    <td style={Object.assign({}, tdStyle, { textAlign: 'center', whiteSpace: 'nowrap' })}>
+                      <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={iconBtnStyle} title="❌ 不明">❌</button>
+                      <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={iconBtnStyle} title="🤔 曖昧">🤔</button>
+                      <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'correct'); }} style={iconBtnStyle} title="✅ 理解">✅</button>
+                      <button onClick={(e) => { e.stopPropagation(); onOpenMemo(t.id); }} style={iconBtnStyle} title="メモ">📝</button>
+                    </td>
+                  </tr>
+                  {isOpen && (
+                    <tr style={{ background: 'var(--bg-elev)' }}>
+                      <td colSpan={6} style={{ padding: '10px 12px', borderTop: '1px solid var(--border)' }}>
+                        {notes.length === 0 ? (
+                          <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>メモはまだありません。</span>
+                        ) : (
+                          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                            {notes.map((n, i) => (
+                              <li key={i} style={{
+                                fontSize: 12,
+                                padding: 6,
+                                border: '1px solid var(--border)',
+                                borderRadius: 4,
+                                background: 'var(--bg)',
+                                opacity: n.resolved ? 0.5 : 1,
+                                textDecoration: n.resolved ? 'line-through' : 'none',
+                              }}>
+                                <label style={{ display: 'inline-flex', gap: 6, alignItems: 'center', cursor: 'pointer', marginRight: 8 }}>
+                                  <input
+                                    type="checkbox"
+                                    checked={!!n.resolved}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onChange={() => deck.toggleMemoResolved(t.id, i)}
+                                  />
+                                  解決済
+                                </label>
+                                <span style={{ color: 'var(--ink-3)' }}>{n.date}</span>
+                                <div style={{ marginTop: 4, whiteSpace: 'pre-wrap' }}>{n.text}</div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+const thStyle = {
+  textAlign: 'left',
+  padding: '8px 10px',
+  fontSize: 12,
+  fontWeight: 600,
+  color: 'var(--ink-2)',
+  borderBottom: '1px solid var(--border)',
+};
+const tdStyle = {
+  padding: '8px 10px',
+  verticalAlign: 'top',
+};
+const iconBtnStyle = {
+  background: 'transparent',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
+  padding: '4px 6px',
+  margin: '0 2px',
+  fontSize: 14,
+  cursor: 'pointer',
+  lineHeight: 1,
+};
+
+// ===== Mode 2: Quiz Meaning =====
+function QuizMeaningMode({ session, setSession, deck, onOpenMemo, onRestart, onEndToList }) {
+  const handleAction = React.useCallback((result) => {
+    const t = session.items[session.index];
+    deck.recordResult(t.id, result);
+    setSession({
+      ...session,
+      results: [...session.results, { id: t.id, result }],
+      index: session.index + 1,
+      revealed: false,
+    });
+  }, [session, setSession, deck]);
+
+  const handleReveal = React.useCallback(() => {
+    setSession({ ...session, revealed: true });
+  }, [session, setSession]);
+
+  React.useEffect(() => {
+    const handler = (ev) => {
+      const tag = ev.target && ev.target.tagName;
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT') return;
+      if (!session || session.index >= session.items.length) return;
+      if (ev.key === ' ' || ev.code === 'Space') {
+        ev.preventDefault();
+        if (!session.revealed) handleReveal();
+        return;
+      }
+      if (!session.revealed) return;
+      if (ev.key === '1') { ev.preventDefault(); handleAction('wrong'); }
+      else if (ev.key === '2') { ev.preventDefault(); handleAction('unsure'); }
+      else if (ev.key === '3') { ev.preventDefault(); handleAction('correct'); }
+      else if (ev.key === 'n' || ev.key === 'N') {
+        ev.preventDefault();
+        onOpenMemo(session.items[session.index].id);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [session, handleAction, handleReveal, onOpenMemo]);
+
+  if (!session.items.length) {
+    return <div style={emptyStyle}>用語が登録されていません。</div>;
+  }
+  if (session.index >= session.items.length) {
+    return <SessionEnd results={session.results} onRestart={onRestart} onEnd={onEndToList} />;
+  }
+  const t = session.items[session.index];
+  return (
+    <div>
+      <div style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 12, fontWeight: 600 }}>
+        {session.index + 1} / {session.items.length}
+      </div>
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        padding: 24,
+        textAlign: 'center',
+        marginBottom: 16,
+      }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 6 }}>{t.yomi || ''}</div>
+        <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>{t.term}</div>
+        {!session.revealed ? (
+          <button className="btn primary" onClick={handleReveal} style={{ fontSize: 15, padding: '10px 28px' }}>
+            意味を表示 (Space)
+          </button>
+        ) : (
+          <>
+            <div style={{
+              fontSize: 15, lineHeight: 1.7, padding: '12px 16px',
+              background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6,
+              textAlign: 'left', marginBottom: 10,
+            }}>
+              {t.meaning || ''}
+            </div>
+            {t.exam_note && (
+              <div style={examNoteStyle}>⚠ {t.exam_note}</div>
+            )}
+          </>
+        )}
+      </div>
+      {session.revealed && (
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <button onClick={() => handleAction('wrong')} style={resBtnStyle('wrong')}>❌ 不明 (1)</button>
+          <button onClick={() => handleAction('unsure')} style={resBtnStyle('unsure')}>🤔 曖昧 (2)</button>
+          <button onClick={() => handleAction('correct')} style={resBtnStyle('correct')}>✅ 理解 (3)</button>
+          <button onClick={() => onOpenMemo(t.id)} style={resBtnStyle('memo')}>📝 メモ (N)</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function resBtnStyle(kind) {
+  const base = {
+    padding: '10px 16px',
+    fontSize: 14,
+    fontWeight: 600,
+    border: '1px solid var(--border)',
+    borderRadius: 6,
+    cursor: 'pointer',
+    background: 'var(--bg-elev)',
+    color: 'var(--ink-2)',
+  };
+  if (kind === 'wrong') return Object.assign({}, base, { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border });
+  if (kind === 'unsure') return Object.assign({}, base, { background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color, borderColor: UNSURE_BADGE.border });
+  if (kind === 'correct') return Object.assign({}, base, { background: '#d8f4d8', color: '#1a6e1a', borderColor: '#90c890' });
+  return base;
+}
+
+const examNoteStyle = {
+  fontSize: 12,
+  color: '#8a6500',
+  background: '#fff4cc',
+  border: '1px solid #e8c660',
+  borderRadius: 4,
+  padding: '6px 10px',
+  marginTop: 8,
+  textAlign: 'left',
+};
+
+const emptyStyle = {
+  padding: 32,
+  textAlign: 'center',
+  color: 'var(--ink-3)',
+  background: 'var(--bg-elev)',
+  border: '1px solid var(--border)',
+  borderRadius: 'var(--radius)',
+};
+
+// ===== Mode 3: Quiz Term (4-choice) =====
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+function buildChoices(t, allTerms) {
+  let distractors = (Array.isArray(t.distractors) ? t.distractors.slice() : [])
+    .filter(x => x && x !== t.term);
+  if (distractors.length < 3) {
+    let pool = allTerms.filter(x => x.id !== t.id && x.field === t.field).map(x => x.term);
+    if (pool.length < 3) {
+      pool = allTerms.filter(x => x.id !== t.id).map(x => x.term);
+    }
+    shuffle(pool);
+    for (let i = 0; i < pool.length && distractors.length < 3; i++) {
+      if (distractors.indexOf(pool[i]) === -1 && pool[i] !== t.term) distractors.push(pool[i]);
+    }
+  }
+  distractors = distractors.slice(0, 3);
+  const choices = distractors.concat([t.term]);
+  shuffle(choices);
+  return choices;
+}
+
+function QuizTermMode({ session, setSession, terms, deck, onRestart, onEndToList }) {
+  const t = session.items[session.index];
+
+  // Lazily build choices on first access
+  React.useEffect(() => {
+    if (!t) return;
+    if (!session.choices) {
+      setSession({ ...session, choices: buildChoices(t, terms) });
+    }
+  }, [t, session.choices]);
+
+  const handlePick = React.useCallback((picked) => {
+    if (session.locked) return;
+    const cur = session.items[session.index];
+    const correct = picked === cur.term;
+    deck.recordResult(cur.id, correct ? 'correct' : 'wrong');
+    setSession({
+      ...session,
+      locked: true,
+      picked: picked,
+      results: [...session.results, { id: cur.id, result: correct ? 'correct' : 'wrong' }],
+    });
+  }, [session, setSession, deck]);
+
+  React.useEffect(() => {
+    if (!session.locked) return;
+    const tm = setTimeout(() => {
+      setSession({
+        ...session,
+        index: session.index + 1,
+        locked: false,
+        picked: null,
+        choices: null,
+      });
+    }, 1500);
+    return () => clearTimeout(tm);
+  }, [session.locked]);
+
+  React.useEffect(() => {
+    const handler = (ev) => {
+      const tag = ev.target && ev.target.tagName;
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT') return;
+      if (!session || session.locked || session.index >= session.items.length) return;
+      const n = parseInt(ev.key, 10);
+      if (n >= 1 && n <= 4 && session.choices && session.choices[n - 1]) {
+        ev.preventDefault();
+        handlePick(session.choices[n - 1]);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [session, handlePick]);
+
+  if (!session.items.length) {
+    return <div style={emptyStyle}>用語が登録されていません。</div>;
+  }
+  if (session.index >= session.items.length) {
+    return <SessionEnd results={session.results} onRestart={onRestart} onEnd={onEndToList} />;
+  }
+  if (!t) return null;
+  const choices = session.choices || [];
+
+  return (
+    <div>
+      <div style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 12, fontWeight: 600 }}>
+        {session.index + 1} / {session.items.length}
+      </div>
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        padding: 20,
+        marginBottom: 12,
+      }}>
+        <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 6, fontWeight: 600, letterSpacing: '0.05em' }}>
+          次の意味に該当する用語は？
+        </div>
+        <div style={{ fontSize: 15, lineHeight: 1.7, marginBottom: 8 }}>{t.meaning || ''}</div>
+        {t.exam_note && (
+          <div style={examNoteStyle}>⚠ {t.exam_note}</div>
+        )}
+      </div>
+      <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+        {choices.map((c, i) => {
+          let extra = {};
+          if (session.locked) {
+            if (c === t.term) extra = { background: '#d8f4d8', color: '#1a6e1a', borderColor: '#90c890' };
+            else if (session.picked === c) extra = { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border };
+          }
+          return (
+            <button
+              key={i}
+              disabled={!!session.locked}
+              onClick={() => handlePick(c)}
+              style={Object.assign({
+                padding: '12px 14px',
+                fontSize: 14,
+                fontWeight: 600,
+                border: '1px solid var(--border)',
+                borderRadius: 6,
+                background: 'var(--bg-elev)',
+                color: 'var(--ink-2)',
+                cursor: session.locked ? 'default' : 'pointer',
+                textAlign: 'left',
+              }, extra)}
+            >
+              <span style={{ display: 'inline-block', width: 22, color: 'var(--ink-3)', fontWeight: 700 }}>{i + 1}.</span> {c}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ===== Session End =====
+function SessionEnd({ results, onRestart, onEnd }) {
+  const correct = results.filter(r => r.result === 'correct').length;
+  const wrong = results.filter(r => r.result === 'wrong').length;
+  const unsure = results.filter(r => r.result === 'unsure').length;
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--radius)',
+      padding: 24,
+      textAlign: 'center',
+    }}>
+      <h3 style={{ margin: '0 0 16px', fontSize: 18 }}>セッション完了！</h3>
+      <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
+        <div><span style={{ fontSize: 22, fontWeight: 700, color: '#1a6e1a' }}>✅ {correct}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>正解</div></div>
+        <div><span style={{ fontSize: 22, fontWeight: 700, color: WRONG_BADGE.color }}>❌ {wrong}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>不明</div></div>
+        <div><span style={{ fontSize: 22, fontWeight: 700, color: UNSURE_BADGE.color }}>🤔 {unsure}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>曖昧</div></div>
+      </div>
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <button className="btn primary" onClick={onRestart}>もう一周</button>
+        <button className="btn secondary" onClick={onEnd}>終了</button>
+      </div>
+    </div>
+  );
+}
+
+// ===== Backup Banner =====
+function BackupBanner({ lastBackup, onExport }) {
+  if (!lastBackup) {
+    return (
+      <div style={bannerStyle(true)}>
+        <span>⚠ 進捗のバックアップが未実施です。エクスポートして保存してください。</span>
+        <button onClick={onExport} style={bannerBtnStyle}>📋 今すぐエクスポート</button>
+      </div>
+    );
+  }
+  const d = parseDate(lastBackup);
+  if (!d) return null;
+  const diff = daysBetween(d, new Date());
+  if (diff < 7) return null;
+  const severe = diff >= 14;
+  return (
+    <div style={bannerStyle(true)}>
+      <span>⚠ 最終バックアップから {diff}日経過。エクスポートしてください。</span>
+      <button onClick={onExport} style={Object.assign({}, bannerBtnStyle, severe ? { background: '#fff', color: '#a00018', fontWeight: 700 } : {})}>
+        📋 今すぐエクスポート
+      </button>
+    </div>
+  );
+}
+
+function bannerStyle() {
+  return {
+    background: '#ffe0e0',
+    color: '#a00018',
+    border: '1px solid #e89090',
+    borderRadius: 'var(--radius)',
+    padding: '10px 14px',
+    marginBottom: 16,
+    fontSize: 13,
+    display: 'flex',
+    gap: 12,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  };
+}
+const bannerBtnStyle = {
+  background: '#a00018',
+  color: '#fff',
+  border: 'none',
+  borderRadius: 4,
+  padding: '6px 12px',
+  fontSize: 12,
+  fontWeight: 600,
+  cursor: 'pointer',
+};
+
+// ===== Main Page =====
+function ChokuzenYougoPage({ onNav }) {
+  const data = (typeof window !== 'undefined' && window.GLOSSARY_TERMS_V1) || null;
+  const terms = (data && Array.isArray(data.terms)) ? data.terms : [];
+
+  const deck = useFlashcardDeck(terms, STORAGE_KEY);
+  const [mode, setMode] = React.useState('list'); // 'list' | 'quiz-meaning' | 'quiz-term'
+  const [session, setSession] = React.useState(null);
+  const [memoTermId, setMemoTermId] = React.useState(null);
+  const fileInputRef = React.useRef(null);
+
+  const startSession = React.useCallback((m) => {
+    const pool = terms.slice().sort((a, b) => deck.priorityScore(b) - deck.priorityScore(a));
+    const size = Math.min(SESSION_SIZE, pool.length);
+    setSession({
+      mode: m,
+      items: pool.slice(0, size),
+      index: 0,
+      results: [],
+      revealed: false,
+      locked: false,
+      picked: null,
+      choices: null,
+    });
+  }, [terms, deck]);
+
+  const switchMode = (m) => {
+    if (m === mode) return;
+    setMode(m);
+    if (m === 'quiz-meaning' || m === 'quiz-term') startSession(m);
+    else setSession(null);
+  };
+
+  const handleRestart = () => startSession(mode);
+  const handleEndToList = () => { setMode('list'); setSession(null); };
+
+  const handleExport = () => deck.exportProgress();
+
+  const handleImportClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
+  };
+  const handleImportFile = (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) {
+      deck.importProgress(f).then(n => {
+        try { window.alert('進捗をインポートしました（' + n + '件）'); } catch (er) {}
+      }).catch(err => {
+        try { window.alert('インポート失敗: ' + (err && err.message || err)); } catch (er) {}
+      });
+    }
+    e.target.value = '';
+  };
+
+  const handleReset = () => {
+    try {
+      if (!window.confirm('全ての進捗を削除します。続行しますか？')) return;
+      if (!window.confirm('本当によろしいですか？この操作は取り消せません。')) return;
+    } catch (e) { return; }
+    deck.resetProgress();
+  };
+
+  const memoTerm = memoTermId ? terms.find(t => t.id === memoTermId) : null;
+
+  // No data state
+  if (!data || terms.length === 0) {
+    return (
+      <div>
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>EXAM MODE</div>
+          <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700 }}>用語クイズ・SRS</h1>
+          <p style={{ margin: 0, fontSize: 14, color: 'var(--ink-2)' }}>第58条で出題される用語の段階管理＋3モード演習。</p>
+        </div>
+        <div style={emptyStyle}>用語データが読み込まれていません。</div>
+        <div style={{ marginTop: 24 }}>
+          <button
+            style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, padding: 0 }}
+            onClick={() => onNav && onNav('top')}
+          >
+            ← トップに戻る
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>EXAM MODE</div>
+        <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700 }}>用語クイズ・SRS</h1>
+        <p style={{ margin: 0, fontSize: 14, color: 'var(--ink-2)' }}>第58条で出題される用語の段階管理＋3モード演習。</p>
+      </div>
+
+      <BackupBanner lastBackup={deck.lastBackup} onExport={handleExport} />
+
+      {/* Tabs */}
+      <div role="tablist" style={{
+        display: 'flex',
+        gap: 4,
+        marginBottom: 16,
+        borderBottom: '1px solid var(--border)',
+      }}>
+        {[
+          { id: 'list', label: '一覧' },
+          { id: 'quiz-meaning', label: '意味当てクイズ' },
+          { id: 'quiz-term', label: '単語当てクイズ' },
+        ].map(tab => {
+          const active = mode === tab.id;
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={active}
+              onClick={() => switchMode(tab.id)}
+              style={{
+                padding: '8px 14px',
+                fontSize: 13,
+                fontWeight: active ? 700 : 500,
+                background: active ? 'var(--bg-elev)' : 'transparent',
+                color: active ? 'var(--accent)' : 'var(--ink-2)',
+                border: '1px solid var(--border)',
+                borderBottom: active ? '1px solid var(--bg-elev)' : '1px solid var(--border)',
+                borderRadius: '6px 6px 0 0',
+                cursor: 'pointer',
+                marginBottom: -1,
+              }}
+            >{tab.label}</button>
+          );
+        })}
+      </div>
+
+      {/* Body */}
+      <div style={{ marginBottom: 24 }}>
+        {mode === 'list' && (
+          <ListMode terms={terms} deck={deck} onOpenMemo={setMemoTermId} />
+        )}
+        {mode === 'quiz-meaning' && session && (
+          <QuizMeaningMode
+            session={session}
+            setSession={setSession}
+            deck={deck}
+            onOpenMemo={setMemoTermId}
+            onRestart={handleRestart}
+            onEndToList={handleEndToList}
+          />
+        )}
+        {mode === 'quiz-term' && session && (
+          <QuizTermMode
+            session={session}
+            setSession={setSession}
+            terms={terms}
+            deck={deck}
+            onRestart={handleRestart}
+            onEndToList={handleEndToList}
+          />
+        )}
+      </div>
+
+      {/* Footer toolbar */}
+      <div style={{
+        marginTop: 24,
+        padding: '12px 14px',
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        display: 'flex',
+        gap: 8,
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        fontSize: 13,
+      }}>
+        <button onClick={handleExport} style={footerBtnStyle}>📥 進捗エクスポート(JSON)</button>
+        <button onClick={handleImportClick} style={footerBtnStyle}>📤 進捗インポート(JSON)</button>
+        <input ref={fileInputRef} type="file" accept="application/json" onChange={handleImportFile} style={{ display: 'none' }} />
+        <button onClick={handleReset} style={Object.assign({}, footerBtnStyle, { color: '#a00018', borderColor: '#e89090' })}>
+          ⚠️ 進捗リセット
+        </button>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: deck.lastBackup ? 'var(--ink-3)' : '#a00018' }}>
+          最終バックアップ: {deck.lastBackup || '未実施'}
+        </span>
+      </div>
+
+      <div style={{ marginTop: 24 }}>
+        <button
+          style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, padding: 0 }}
+          onClick={() => onNav && onNav('top')}
+        >
+          ← トップに戻る
+        </button>
+      </div>
+
+      {memoTerm && (
+        <MemoModal term={memoTerm} deck={deck} onClose={() => setMemoTermId(null)} />
+      )}
+    </div>
+  );
+}
+
+const footerBtnStyle = {
+  padding: '6px 12px',
+  fontSize: 12,
+  fontWeight: 600,
+  background: 'var(--bg)',
+  color: 'var(--ink-2)',
+  border: '1px solid var(--border)',
+  borderRadius: 4,
+  cursor: 'pointer',
+};
+
+// ===== Global registration =====
+window.ChokuzenYougoPage = ChokuzenYougoPage;
+
+
+// ============================================================
 // ページ定義
 // ============================================================
 // hoki-pages.jsx — 法規Wiki ページ定義ファイル
@@ -2389,6 +3683,7 @@ window.renderPage = function(page, navigate) {
     case 'chokuzen-formula':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-formula' });
     case 'chokuzen-hikkake':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-hikkake' });
     case 'chokuzen-machigai':      return React.createElement(StubPage, { ...props, pageId: 'chokuzen-machigai' });
+    case 'chokuzen-yougo':         return React.createElement(window.ChokuzenYougoPage, props);
     default:                       return React.createElement(StubPage, { ...props, pageId: page });
   }
 };

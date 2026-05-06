@@ -70,6 +70,7 @@ window.WIKI_DATA = { chapters: [
     { id:"chokuzen-suuchi",   num:"8.1", title:"数値だけ確認" },
     { id:"chokuzen-formula",  num:"8.2", title:"公式だけ確認" },
     { id:"chokuzen-hikkake",  num:"8.3", title:"ひっかけだけ確認" },
-    { id:"chokuzen-machigai", num:"8.4", title:"間違いノート" }
+    { id:"chokuzen-machigai", num:"8.4", title:"間違いノート" },
+    { id:"chokuzen-yougo",    num:"8.5", title:"用語クイズ" }
   ]}
 ]};
