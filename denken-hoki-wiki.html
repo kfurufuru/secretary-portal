@@ -3081,6 +3081,7 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <ConclusionBox>
         <ul>
+          <li><strong style={{color: 'var(--warn)'}}>⚠ 「非接地＝地絡電流ゼロ」は誤解</strong>。対地静電容量C経由で必ず流れる</li>
           <li>系統全体の地絡電流: <strong>I_g = 2√3 πfV(C₁+C₂)</strong></li>
           <li>ZCTが検出する電流: <strong>I₀ = 2√3 πfV·C₂</strong>（自設備分のみ）</li>
           <li>1線地絡で健全相の対地電圧は <strong>線間電圧V（=√3倍）</strong> に上昇</li>
@@ -3122,7 +3123,24 @@ function HichuseiJirakuPage({ onNav, data }) {
         note="ZCTは「気付く」、GRは「判断する」、CBは「行動する」。3つで1つの保護システム"
       />
 
-      <h2 id="explain1">5. 深掘り解説①: なぜ「線間電圧V」を「対地電圧V/√3」に変換するのか</h2>
+      <h2 id="setsuchi-compare">5. 中性点の接地方式 3種類の比較</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>本ページが扱うのは「中性点非接地方式」</strong>。他の方式と何が違うのか、地絡電流・対地電圧・遮断要否の3軸で比較する。</p>
+      </PlainExplain>
+      <MemTable
+        headers={["方式", "中性点の状態", "1線地絡時の地絡電流", "健全相の対地電圧", "保護・遮断", "主な適用先"]}
+        rows={[
+          [<strong>直接接地方式</strong>, "中性点を直接大地に接続", <span><strong>大電流</strong>（短絡電流レベル）</span>, "ほぼ変化なし（V/√3維持）", "瞬時遮断必須", "187kV以上の超高圧系統"],
+          [<strong>抵抗接地方式</strong>, "中性点を抵抗を介して接地", "中程度（数十〜数百A）", "若干上昇", "限時遮断", "66/77kV特別高圧系統"],
+          [<strong style={{color: 'var(--warn)'}}>非接地方式</strong>, "中性点を接地しない（浮かせる）", <span><strong>小電流</strong>（数A〜数百mA）<br/>※C経由で必ず流れる</span>, <strong>√3倍に上昇（=線間電圧V）</strong>, "GR・DGRで検出→CB遮断", <strong>6.6kV高圧配電系統</strong>],
+        ]}
+        note="高圧6.6kV配電は非接地方式。地絡電流が小さいため健全相の対地電圧が大きく上昇する点が試験頻出"
+      />
+      <PlainExplain>
+        <p style={{margin: 0, fontSize: 13}}>💡 <strong>非接地方式の3大特徴</strong>：① 地絡電流が小さい（C経由のみ）／② 健全相対地電圧が√3倍に上昇／③ それでも保護装置（ZCT+GR+CB）は必須</p>
+      </PlainExplain>
+
+      <h2 id="explain1">6. 深掘り解説①: なぜ「線間電圧V」を「対地電圧V/√3」に変換するのか</h2>
       <PlainExplain>
         <p style={{margin: '0 0 10px'}}><strong>問いの本質</strong>：問題文の電源は「線間電圧V」で与えられるのに、計算では「対地電圧」を使う。なぜ？</p>
         <ul style={{margin: 0, paddingLeft: 20}}>
@@ -3134,7 +3152,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 「中性点非接地 = 対地電圧不明」ではない。平常時は対称性により V/√3、地絡時に対称性が壊れて変化する</p>
       </PlainExplain>
 
-      <h2 id="explain2">6. 深掘り解説②: なぜ静電容量を「3相分」考慮するのか</h2>
+      <h2 id="explain2">7. 深掘り解説②: なぜ静電容量を「3相分」考慮するのか</h2>
       <PlainExplain>
         <p style={{margin: '0 0 10px'}}><strong>問いの本質</strong>：地絡しているのは1相だけ。なのに3相のCが式に入る。なぜ？</p>
         <p style={{margin: '0 0 8px'}}><strong>鍵：健全2相のCを経由した充電電流が地絡点に戻る</strong></p>
@@ -3167,7 +3185,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 覚え方：「1線地絡 = 健全2相が√3倍電圧で充電 → ベクトル和が√3倍 → 結局 √3×√3=3倍の電流が地絡点に集まる」と思うと、3相Cと√3の出処がスッキリ</p>
       </PlainExplain>
 
-      <h2 id="explain3">7. 深掘り解説③: 健全相√3倍の物理的意味</h2>
+      <h2 id="explain3">8. 深掘り解説③: 健全相√3倍の物理的意味（フェーザ図）</h2>
       <PlainExplain>
         <p style={{margin: '0 0 10px'}}><strong>「中性点（仮想）が a相導体の位置に移動した」と考えると分かりやすい</strong></p>
         <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
@@ -3175,10 +3193,62 @@ function HichuseiJirakuPage({ onNav, data }) {
           <li>b相 → a相からみた電位 = 線間電圧 V_ba</li>
           <li>c相 → a相からみた電位 = 線間電圧 V_ca</li>
         </ul>
-        <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 試験速攻判定：「1線地絡 → 健全相は線間電圧Vで充電される」→ I_g = √3 × ωC × V が秒で出る</p>
       </PlainExplain>
 
-      <h2 id="explain4">8. 深掘り解説④: なぜC₁とC₂で電流が分かれるのか（回路図）</h2>
+      <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="arrowVa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#d33"/>
+            </marker>
+            <marker id="arrowVb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+            </marker>
+            <marker id="arrowVc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+          </defs>
+          <rect x="10" y="20" width="395" height="350" fill="#f8fafc" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="207" y="42" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0e6b22">【平常時】対地電圧フェーザ</text>
+          <text x="207" y="60" textAnchor="middle" fontSize="11" fill="#666">中性点（仮想）= 大地電位 ／ 各相 V/√3</text>
+          <circle cx="207" cy="200" r="3" fill="#333"/>
+          <text x="217" y="218" fontSize="11" fill="#666">中性点</text>
+          <line x1="207" y1="200" x2="207" y2="120" stroke="#d33" strokeWidth="2.5" markerEnd="url(#arrowVa)"/>
+          <text x="217" y="120" fontSize="13" fill="#d33" fontWeight="700">V_a = V/√3</text>
+          <line x1="207" y1="200" x2="276" y2="240" stroke="#2a8" strokeWidth="2.5" markerEnd="url(#arrowVb)"/>
+          <text x="282" y="252" fontSize="13" fill="#2a8" fontWeight="700">V_b = V/√3</text>
+          <line x1="207" y1="200" x2="138" y2="240" stroke="#27c" strokeWidth="2.5" markerEnd="url(#arrowVc)"/>
+          <text x="65" y="252" fontSize="13" fill="#27c" fontWeight="700">V_c = V/√3</text>
+          <circle cx="207" cy="200" r="80" fill="none" stroke="#aaa" strokeWidth="1" strokeDasharray="3,3"/>
+          <text x="207" y="305" textAnchor="middle" fontSize="13" fill="#666">各ベクトル長 = V/√3、120°対称</text>
+          <text x="207" y="335" textAnchor="middle" fontSize="13" fill="#0e6b22" fontWeight="700">健全相の対地電圧 = V/√3</text>
+
+          <rect x="415" y="20" width="395" height="350" fill="#fff5f5" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="612" y="42" textAnchor="middle" fontSize="14" fontWeight="700" fill="#a11">【a相完全地絡時】中性点シフト</text>
+          <text x="612" y="60" textAnchor="middle" fontSize="11" fill="#666">中性点が a相導体位置にシフト → 健全相が線間電圧V</text>
+          <circle cx="612" cy="120" r="3" fill="#333"/>
+          <text x="622" y="115" fontSize="11" fill="#666">新中性点</text>
+          <text x="622" y="130" fontSize="11" fill="#666">（=a相位置）</text>
+          <line x1="606" y1="114" x2="618" y2="126" stroke="#d33" strokeWidth="2"/>
+          <line x1="618" y1="114" x2="606" y2="126" stroke="#d33" strokeWidth="2"/>
+          <text x="540" y="115" fontSize="11" fill="#d33">V_a = 0</text>
+          <line x1="612" y1="120" x2="700" y2="240" stroke="#2a8" strokeWidth="3" markerEnd="url(#arrowVb)"/>
+          <text x="710" y="245" fontSize="13" fill="#2a8" fontWeight="700">V_b' = V_ba</text>
+          <text x="710" y="262" fontSize="11" fill="#2a8">（線間電圧）</text>
+          <line x1="612" y1="120" x2="524" y2="240" stroke="#27c" strokeWidth="3" markerEnd="url(#arrowVc)"/>
+          <text x="465" y="245" fontSize="13" fill="#27c" fontWeight="700">V_c' = V_ca</text>
+          <text x="465" y="262" fontSize="11" fill="#27c">（線間電圧）</text>
+          <text x="612" y="305" textAnchor="middle" fontSize="13" fill="#666">健全相ベクトル長 = V（線間電圧）</text>
+          <text x="612" y="335" textAnchor="middle" fontSize="13" fill="#a11" fontWeight="700">健全相の対地電圧 = V（√3倍に上昇）</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 「中性点シフト」と呼ばれる現象。a相が完全地絡すると、仮想中性点が a相位置に移動し、健全相 b・c の対地電圧が線間電圧Vに昇圧する。これが√3倍上昇の幾何学的説明</div>
+      </div>
+
+      <PlainExplain>
+        <p style={{margin: 0, fontSize: 13, color: 'var(--ink-3)'}}>💡 試験速攻判定：「1線地絡 → 健全相は線間電圧Vで充電される」→ I_g = √3 × ωC × V が秒で出る</p>
+      </PlainExplain>
+
+      <h2 id="explain4">9. 深掘り解説④: なぜC₁とC₂で電流が分かれるのか（回路図）</h2>
       <PlainExplain>
         <p style={{margin: '0 0 8px'}}><strong>原則</strong>：ZCTが拾うのは「ZCTを貫通する正味電流（ベクトル和）」のみ。</p>
         <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
@@ -3258,7 +3328,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         </ul>
       </PlainExplain>
 
-      <h2 id="explain5">9. 深掘り解説⑤: 保護動作シーケンス（地絡発生→系統切離）</h2>
+      <h2 id="explain5">10. 深掘り解説⑤: 保護動作シーケンス（地絡発生→系統切離）</h2>
       <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
         <svg viewBox="0 0 820 540" style={{width: '100%', height: 'auto'}}>
           <defs>
@@ -3311,7 +3381,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: 0, fontSize: 13}}>💡 試験頻出ポイント：「<strong>GRは地絡を検出するだけ。実際に電流を切るのはCB</strong>」。GRとCBを混同すると正誤判定でひっかかる</p>
       </PlainExplain>
 
-      <h2 id="solve">10. 解き方・判断手順（5ステップ）</h2>
+      <h2 id="solve">11. 解き方・判断手順（5ステップ）</h2>
       <SolveFlow type="計算" steps={[
         "問題が「中性点非接地」と読み取れたら → 対地静電容量による地絡電流の問題と判定",
         "Ig 全体（系統）か I₀（ZCT検出）か → どちらを問われているかを問題文から確認",
@@ -3320,7 +3390,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         "数値代入時は単位（μF→F、kV→V）に注意。π=3.1416、√3=1.732 を覚えておく",
       ]} />
 
-      <h2 id="memorize">11. 暗記ポイント</h2>
+      <h2 id="memorize">12. 暗記ポイント</h2>
       <MemTable
         headers={["項目", "値・公式", "覚え方"]}
         rows={[
@@ -3334,8 +3404,11 @@ function HichuseiJirakuPage({ onNav, data }) {
         ]}
       />
 
-      <h2 id="traps">12. よくあるひっかけ</h2>
+      <h2 id="traps">13. よくあるひっかけ</h2>
       <TrapTable traps={[
+        { wrong: "中性点非接地方式なら地絡電流はゼロで安全",         correct: "対地静電容量C経由で地絡電流は必ず流れる（ゼロではない）" },
+        { wrong: "非接地系では地絡電流が流れないので保護装置不要",   correct: "ZCT+GR+CBの保護装置は必須。法的にも要求される" },
+        { wrong: "非接地方式は接地方式より安全",                     correct: "健全相の対地電圧が√3倍に上昇するため絶縁負担は大きい" },
         { wrong: "ZCTが検出するのは系統全体の地絡電流 I_g",         correct: "ZCTが検出するのは自設備内のC₂分のみ（I₀=2√3πfVC₂）" },
         { wrong: "C₁の方が大きいから検出電流もC₁基準で計算",         correct: "C₁はZCTを貫通せず検出されない（電源側で完結）" },
         { wrong: "地絡時の対地電圧は変化しない",                       correct: "健全相の対地電圧は √3倍（線間電圧V）に上昇" },
@@ -3344,7 +3417,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         { wrong: "中性点非接地なら対地電圧は不明",                    correct: "平常時はV/√3（対称性により）、地絡時のみ変化" },
       ]} />
 
-      <h2 id="exam-r05">13. 過去問: R05下 問11</h2>
+      <h2 id="exam-r05">14. 過去問: R05下 問11</h2>
       <ExamQuestion
         year="令和5年下期"
         qNum="11"
@@ -3361,7 +3434,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         ]}
       />
 
-      <h2 id="related-problems">14. 類題対応シナリオ</h2>
+      <h2 id="related-problems">15. 類題対応シナリオ</h2>
       <MemTable
         headers={["類題パターン", "何が変わるか", "解き方"]}
         rows={[
@@ -3374,7 +3447,46 @@ function HichuseiJirakuPage({ onNav, data }) {
         note="本質「対地電圧×3相C」は不変。条件変化→公式の入力値を置き換えるだけ"
       />
 
-      <h2 id="quick-review">15. 1分復習</h2>
+      <h2 id="practical">16. 実務メモ：絶縁監視・警報・継続運転</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>非接地系の特徴を活用した実務運用</strong></p>
+        <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li><strong>絶縁監視装置（IGR/ICR）</strong>：常時、対地絶縁抵抗を監視。劣化兆候を早期発見</li>
+          <li><strong>地絡警報</strong>：完全地絡前の「微地絡」段階で警報を発し、計画停電に持ち込める</li>
+          <li><strong>継続運転の可能性</strong>：地絡電流が小さいため、即時遮断せず警報のみで運転継続する設備もある（病院・データセンター等の重要負荷）</li>
+          <li><strong>対地静電容量の管理</strong>：ケーブル長増加で C₁・C₂ が増え、I_g 自体が増大 → 整定値見直しが必要</li>
+        </ul>
+      </PlainExplain>
+      <MemTable
+        headers={["装置/機能", "目的", "動作タイミング"]}
+        rows={[
+          ["絶縁監視装置(IGR/ICR)", "対地絶縁抵抗の常時監視", "完全地絡前（劣化段階）"],
+          ["地絡警報", "微地絡の早期検知", "完全地絡前 or 完全地絡時"],
+          ["GR + CB（一般）", "完全地絡時の自動遮断", "地絡発生後 0.1〜2秒"],
+          ["DGR + CB（推奨）", "方向判別付き選択遮断", "地絡発生後 0.1〜2秒"],
+          ["地絡継続運転(用途限定)", "重要負荷の運転継続", "警報のみ（遮断しない）"],
+        ]}
+        note="非接地方式は地絡電流が小さいので「即時遮断」と「警報→計画停電」の選択肢がある"
+      />
+
+      <h2 id="related-laws">17. 関連法規（条文との対応）</h2>
+      <MemTable
+        headers={["法規", "条文/規程", "本ページとの関係"]}
+        rows={[
+          ["電気事業法", "保安規程（第42条）", "地絡保護装置の設置・点検・整定が保安規程の必須事項"],
+          ["電気設備技術基準", "第15条（地絡遮断装置）", "高圧電路の地絡時に自動遮断する装置の設置義務"],
+          ["電技解釈", "第36条（地絡遮断装置の施設）", "GR動作整定値・遮断時間の具体規定"],
+          ["電技解釈", "第19条（保安上または機能上必要な場合における電路の接地）", "非接地方式の根拠条文"],
+          ["電技解釈", "第28条（混触防止）", "B種接地（1.7）と本ページの境界条文"],
+          ["電技解釈", "第17条（接地工事の種類）", "B種接地抵抗値の算定（1.7と関連）"],
+        ]}
+        note="法規B問題では条文番号と内容の組合せが問われる。整理しておくこと"
+      />
+      <PlainExplain>
+        <p style={{margin: 0, fontSize: 13}}>💡 <strong>本ページの位置づけ</strong>：技術基準第15条・解釈第36条が要求する「自動遮断」を、非接地系で実現する仕組みが ZCT+GR+CB。なぜ非接地でも保護が必要なのかは「非接地でも地絡電流は流れる」という本ページの結論が答え</p>
+      </PlainExplain>
+
+      <h2 id="quick-review">18. 1分復習</h2>
       <QuickReview items={[
         { q: "中性点非接地方式の高圧配電線路で1線完全地絡時の系統地絡電流の式は？", a: "I_g = 2√3 πfV(C₁+C₂)" },
         { q: "ZCTが検出する零相電流の式は？",                                    a: "I₀ = 2√3 πfV·C₂（自設備分のみ）" },
@@ -3383,7 +3495,7 @@ function HichuseiJirakuPage({ onNav, data }) {
         { q: "保護システムの三役 ZCT・GR・CB の役割を一言で？",                  a: "ZCT=検出、GR=判定、CB=遮断" },
       ]} />
 
-      <h2 id="cross-ref">16. 掛け算出題パターン</h2>
+      <h2 id="cross-ref">19. 掛け算出題パターン</h2>
       <CrossRef patterns={[
         { a: "中性点非接地（1.8）",  b: "B種接地抵抗値（1.7）",            result: "「接地系」と「非接地系」の地絡電流計算の違い" },
         { a: "対地静電容量",          b: "DGR vs GR の選択",                result: "貰い事故防止の保護協調設計問題" },
@@ -3391,7 +3503,10 @@ function HichuseiJirakuPage({ onNav, data }) {
       ]} />
 
       <NextAction nextPageId="bshu-setsuchi" nextPageTitle="B種接地抵抗値" onNav={onNav} />
-      <UpdateLog entries={[{ date: "2026-05-06", content: "初版作成（R05下問11対応）", reason: "R05下出題確認・容量性地絡電流の独立ページ化" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-06", content: "v1.1: 接地方式比較表・フェーザ図SVG・実務メモ・関連法規・ひっかけ3項目を追加", reason: "ChatGPT 10点アドバイス対応・法規ページとしての網羅性向上" },
+        { date: "2026-05-06", content: "v1.0: 初版作成（R05下問11対応）", reason: "R05下出題確認・容量性地絡電流の独立ページ化" },
+      ]} />
       <PageNav
         prevId="bshu-setsuchi"     prevTitle="B種接地抵抗値"
         nextId="setsuchi-ichiran"  nextTitle="接地工事一覧表"
