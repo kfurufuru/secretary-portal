@@ -464,7 +464,15 @@ function ListMode({ terms, deck, onOpenMemo }) {
 
       {/* Table */}
       <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+        <table style={{ width: '100%', minWidth: 720, borderCollapse: 'collapse', fontSize: 13, tableLayout: 'fixed' }}>
+          <colgroup>
+            <col style={{ width: 92 }} />
+            <col style={{ width: 92 }} />
+            <col style={{ width: 'auto' }} />
+            <col style={{ width: 'auto' }} />
+            <col style={{ width: 76 }} />
+            <col style={{ width: 132 }} />
+          </colgroup>
           <thead>
             <tr style={{ background: 'var(--bg-elev)' }}>
               <th style={thStyle}>用語</th>
@@ -503,11 +511,11 @@ function ListMode({ terms, deck, onOpenMemo }) {
                       transition: 'background 0.6s ease',
                     }}
                   >
-                    <td style={tdStyle}>
+                    <td style={Object.assign({}, tdStyle, { wordBreak: 'keep-all', overflowWrap: 'break-word' })}>
                       <strong>{t.term}</strong>
                       {memo && <span title="未解決メモあり" style={{ color: '#d95454', marginLeft: 6 }}>●</span>}
                     </td>
-                    <td style={Object.assign({}, tdStyle, { color: 'var(--ink-3)', fontSize: 12 })}>{t.yomi || ''}</td>
+                    <td style={Object.assign({}, tdStyle, { color: 'var(--ink-3)', fontSize: 12, wordBreak: 'keep-all', overflowWrap: 'break-word' })}>{t.yomi || ''}</td>
                     <td style={tdStyle}>{t.meaning || ''}</td>
                     <td style={Object.assign({}, tdStyle, { fontSize: 12, color: 'var(--ink-2)' })}>
                       {t.exam_note ? t.exam_note : <span style={{ color: 'var(--ink-3)' }}>—</span>}
@@ -584,9 +592,9 @@ const iconBtnStyle = {
   background: 'transparent',
   border: '1px solid var(--border)',
   borderRadius: 6,
-  padding: '4px 6px',
-  margin: '0 2px',
-  fontSize: 14,
+  padding: '3px 5px',
+  margin: '0 1px',
+  fontSize: 13,
   cursor: 'pointer',
   lineHeight: 1,
 };
