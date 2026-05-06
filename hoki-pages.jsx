@@ -911,6 +911,72 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: 系統合計対地静電容量 (C₁+C₂) と 線間電圧V／成立条件: 完全地絡（Rg=0）かつ系統対称性</p>
       </PlainExplain>
 
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 ベクトル和の図解（I_b と I_c が60°差で√3倍になる理由）</div>
+        <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto', background: '#fff'}}>
+          <defs>
+            <marker id="vbArrIb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+            </marker>
+            <marker id="vbArrIc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+            <marker id="vbArrSum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
+            </marker>
+          </defs>
+
+          <text x="20" y="30" fontSize="13" fontWeight="700" fill="#222">【手順1】 I_b と I_c を原点から描く</text>
+          <text x="20" y="48" fontSize="11" fill="#666">大きさは同じ ωCV、間の角度は60°（線間電圧の位相差）</text>
+
+          <circle cx="200" cy="200" r="3.5" fill="#333"/>
+          <text x="170" y="218" fontSize="11" fill="#666">原点（中性点）</text>
+
+          <line x1="200" y1="200" x2="313" y2="135" stroke="#2a8" strokeWidth="2.5" markerEnd="url(#vbArrIb)"/>
+          <text x="265" y="125" fontSize="13" fill="#2a8" fontWeight="700">I_b</text>
+          <text x="240" y="158" fontSize="11" fill="#2a8">|I_b| = ωCV</text>
+
+          <line x1="200" y1="200" x2="313" y2="265" stroke="#27c" strokeWidth="2.5" markerEnd="url(#vbArrIc)"/>
+          <text x="265" y="285" fontSize="13" fill="#27c" fontWeight="700">I_c</text>
+          <text x="240" y="258" fontSize="11" fill="#27c">|I_c| = ωCV</text>
+
+          <path d="M 230 182.5 A 35 35 0 0 1 230 217.5" fill="none" stroke="#a06" strokeWidth="1.5"/>
+          <text x="248" y="204" fontSize="12" fill="#a06" fontWeight="700">60°</text>
+
+          <line x1="313" y1="135" x2="425" y2="200" stroke="#888" strokeWidth="1.2" strokeDasharray="4,3"/>
+          <line x1="313" y1="265" x2="425" y2="200" stroke="#888" strokeWidth="1.2" strokeDasharray="4,3"/>
+          <text x="348" y="158" fontSize="10" fill="#888">平行移動</text>
+
+          <line x1="200" y1="200" x2="425" y2="200" stroke="#a06" strokeWidth="3" markerEnd="url(#vbArrSum)"/>
+          <text x="295" y="195" fontSize="14" fill="#a06" fontWeight="700">I_b + I_c</text>
+          <text x="295" y="223" fontSize="12" fill="#a06" fontWeight="600">√3 · ωCV</text>
+
+          <line x1="200" y1="320" x2="200" y2="335" stroke="#999" strokeWidth="1"/>
+          <line x1="425" y1="320" x2="425" y2="335" stroke="#999" strokeWidth="1"/>
+          <line x1="200" y1="328" x2="425" y2="328" stroke="#999" strokeWidth="1"/>
+          <text x="312" y="350" textAnchor="middle" fontSize="11" fill="#666">合成ベクトルの長さ = √3 × ωCV ≈ 1.732 × ωCV</text>
+
+          <g fontSize="12" fill="#222">
+            <text x="490" y="58" fontSize="13" fontWeight="700" fill="#0e3a6e">📐 平行四辺形の法則</text>
+            <text x="490" y="82">2つのベクトル I_b・I_c の和は、</text>
+            <text x="490" y="100">それらを2辺とする平行四辺形の対角線。</text>
+
+            <text x="490" y="135" fontSize="13" fontWeight="700" fill="#0e3a6e">🧮 大きさの公式</text>
+            <text x="490" y="158">同じ大きさ |I| のベクトルが角度 θ で合成されると：</text>
+            <text x="490" y="180" fontFamily="serif" fontSize="14" fill="#a06" fontWeight="700">|I_b + I_c| = 2|I|·cos(θ/2)</text>
+
+            <text x="490" y="215" fontSize="13" fontWeight="700" fill="#0e3a6e">🔢 θ=60° を代入</text>
+            <text x="490" y="238" fontFamily="serif" fontSize="13">2|I| · cos(30°) = 2|I| · (√3/2)</text>
+            <text x="490" y="260" fontFamily="serif" fontSize="14" fill="#a06" fontWeight="700">= √3 · |I| = √3 · ωCV</text>
+
+            <text x="490" y="298" fontSize="13" fontWeight="700" fill="#0e3a6e">💡 Cを系統合計に</text>
+            <text x="490" y="320">C = C₁ + C₂ を代入し、ω = 2πf より</text>
+            <text x="490" y="342" fontFamily="serif" fontSize="14" fill="#a06" fontWeight="700">I_g = 2√3·πfV(C₁ + C₂)</text>
+          </g>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 「60°差で√3倍」は2|I|cos(30°)の幾何学的帰結。三角関数の暗記ではなく、平行四辺形の対角線として直感的に理解できる</div>
+      </div>
+
       <h2 id="explain3">8. 深掘り解説③: 健全相√3倍の物理的意味（フェーザ図）</h2>
       <PlainExplain>
         <p style={{margin: '0 0 10px'}}><strong>「中性点（仮想）が a相導体の位置に移動した」と考えると分かりやすい</strong></p>
