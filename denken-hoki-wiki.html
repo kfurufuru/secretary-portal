@@ -2472,6 +2472,10 @@ function StubPage({ pageId, data, onNav }) {
 // 3. HomePage（トップページ）
 // ─────────────────────────────────────────────
 
+// 試験日（電験3種 上期 2026・暫定）
+// TODO: localStorage 'hoki_exam_date' で上書き対応
+const HOKI_EXAM_DATE = '2026-08-30';
+
 // 教材CH対応表データ
 const CH_TABLE = [
   { ch: 'CH04 計算',      content: 'B問題対策',           rank: 'S', order: 1, wiki: '01 B問題' },
@@ -2534,6 +2538,38 @@ function HomePage({ onNav, data }) {
 
   return (
     <div>
+      {/* ====== 試験日カウントダウン（最上段固定） ====== */}
+      {(() => {
+        const examDate = new Date(HOKI_EXAM_DATE + 'T00:00:00+09:00');
+        const today = new Date();
+        const daysLeft = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
+        if (daysLeft <= 0) {
+          return (
+            <div style={{ marginBottom: 24, padding: '10px 14px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13 }}>
+              📅 電験3種法規 試験日（{HOKI_EXAM_DATE}）終了
+            </div>
+          );
+        }
+        const color = daysLeft <= 14 ? '#d95454' : daysLeft <= 30 ? '#e68b17' : daysLeft <= 60 ? '#e6a817' : 'var(--accent)';
+        const phase = daysLeft <= 7 ? '最終週（弱点だけ・新規禁止）'
+          : daysLeft <= 14 ? '直前期B（表暗記・過去問総ざらい）'
+          : daysLeft <= 30 ? '直前期A（弱点補強＋通し演習）'
+          : daysLeft <= 60 ? '仕上げ期（B問題反復＋頻出論点）'
+          : daysLeft <= 90 ? '実力養成期（B問題集中＋表暗記）'
+          : '基礎固め期（章立て学習＋用語整理）';
+        return (
+          <div style={{ marginBottom: 24, padding: '12px 16px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: `4px solid ${color}`, borderRadius: 'var(--radius)' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em' }}>📅 試験まで</span>
+              <span style={{ fontSize: 28, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{daysLeft}</span>
+              <span style={{ fontSize: 13, color: 'var(--ink-2)' }}>日</span>
+              <span style={{ fontSize: 11, color: 'var(--ink-3)', marginLeft: 'auto' }}>{HOKI_EXAM_DATE}（暫定）</span>
+            </div>
+            <div style={{ fontSize: 12, color: 'var(--ink-3)' }}>{phase}</div>
+          </div>
+        );
+      })()}
+
       {/* ====== Hero ====== */}
       <section style={{ marginBottom: 40 }}>
         <div style={{ marginBottom: 20 }}>
@@ -2569,26 +2605,55 @@ function HomePage({ onNav, data }) {
           </div>
         </div>
 
-        {/* 前回のつづきカード */}
-        <div style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 20px' }}>
-          <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 4 }}>前回のつづき</div>
-          <div style={{ fontWeight: 600, marginBottom: 6 }}>B種接地抵抗値の計算</div>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, fontSize: 13 }}>
-            <span className="rank rank-S">S</span>
-            <span style={{ color: 'var(--ink-2)' }}>B問題対策</span>
-            <span style={{ color: 'var(--ink-3)' }}>· 3分前</span>
-          </div>
-          <div style={{ height: 6, background: 'var(--border)', borderRadius: 3, marginBottom: 6, overflow: 'hidden' }}>
-            <div style={{ width: '62%', height: '100%', background: 'var(--accent)', borderRadius: 3 }} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--ink-3)', marginBottom: 12 }}>
-            <span>全体進捗</span>
-            <span>62% / 78ページ</span>
-          </div>
-          <button className="btn primary" style={{ width: '100%' }} onClick={() => onNav('bshu-setsuchi')}>
-            続きから学習する →
-          </button>
-        </div>
+        {/* 前回のつづきカード（localStorage hoki_lastSeen_* から動的生成） */}
+        {(() => {
+          const allPages = (data?.chapters || []).flatMap(ch =>
+            (ch.pages || []).filter(p => p.id !== 'top').map(p => ({ ...p, chTitle: ch.title }))
+          );
+          let lastPage = null;
+          let lastTime = 0;
+          allPages.forEach(p => {
+            const t = parseInt(localStorage.getItem(`hoki_lastSeen_${p.id}`) || '0', 10);
+            if (t > lastTime) { lastTime = t; lastPage = p; }
+          });
+          // フォールバック: B種接地抵抗値（B問題定番）
+          const target = lastPage || allPages.find(p => p.id === 'bshu-setsuchi') || allPages[0];
+          if (!target) return null;
+          // 進捗（lastSeen が記録されているページ数 / 全ページ数）
+          const seenCount = allPages.filter(p => localStorage.getItem(`hoki_lastSeen_${p.id}`)).length;
+          const totalCount = allPages.length;
+          const rate = totalCount > 0 ? Math.round(seenCount / totalCount * 100) : 0;
+          const elapsedLabel = lastTime > 0
+            ? `· ${(() => {
+                const min = Math.round((Date.now() - lastTime) / 60000);
+                if (min < 60) return `${min}分前`;
+                const h = Math.round(min / 60);
+                if (h < 48) return `${h}時間前`;
+                return `${Math.round(h / 24)}日前`;
+              })()}`
+            : '· 未学習';
+          return (
+            <div style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 20px' }}>
+              <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 4 }}>{lastTime > 0 ? '前回のつづき' : '最初の一歩'}</div>
+              <div style={{ fontWeight: 600, marginBottom: 6 }}>{target.title}</div>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, fontSize: 13, flexWrap: 'wrap' }}>
+                {target.priority === 'required' && <span className="rank rank-S">S</span>}
+                <span style={{ color: 'var(--ink-2)' }}>{target.chTitle}</span>
+                <span style={{ color: 'var(--ink-3)' }}>{elapsedLabel}</span>
+              </div>
+              <div style={{ height: 6, background: 'var(--border)', borderRadius: 3, marginBottom: 6, overflow: 'hidden' }}>
+                <div style={{ width: `${rate}%`, height: '100%', background: 'var(--accent)', borderRadius: 3 }} />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--ink-3)', marginBottom: 12 }}>
+                <span>閲覧済</span>
+                <span>{rate}% / {totalCount}ページ中{seenCount}</span>
+              </div>
+              <button className="btn primary" style={{ width: '100%' }} onClick={() => onNav(target.id)}>
+                {lastTime > 0 ? '続きから学習する →' : '学習を始める →'}
+              </button>
+            </div>
+          );
+        })()}
       </section>
 
       {/* ====== 教材CH対応表 ====== */}
@@ -2686,6 +2751,58 @@ function HomePage({ onNav, data }) {
         </div>
       </section>
 
+      {/* ====== 弱点Top3（未着手・必須・S/A 優先） ====== */}
+      {(() => {
+        const allPages = (data?.chapters || []).flatMap(ch =>
+          (ch.pages || []).filter(p => p.id !== 'top').map(p => ({ ...p, chTitle: ch.title }))
+        );
+        // 未閲覧 (lastSeen 無し) で priority='required' or freq='max' のページから上位3件
+        const SCORE = { required: 4, max: 3, high: 2, mid: 1 };
+        const candidates = allPages
+          .filter(p => !localStorage.getItem(`hoki_lastSeen_${p.id}`))
+          .map(p => ({
+            ...p,
+            score: (p.priority === 'required' ? SCORE.required : 0) + (SCORE[p.freq] || 0),
+          }))
+          .filter(p => p.score >= 3)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3);
+        if (candidates.length === 0) return null;
+        return (
+          <section style={{ marginBottom: 40 }}>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>WEAK SPOTS</div>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>今週やるべき未着手3ページ</h2>
+              <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>必須(★)・最頻出(毎回)を優先抽出。一度開けば一覧から外れます。</p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+              {candidates.map((p, i) => (
+                <div
+                  key={p.id}
+                  onClick={() => onNav(p.id)}
+                  style={{
+                    background: 'var(--bg-elev)',
+                    border: '1px solid var(--border)',
+                    borderLeft: `3px solid ${i === 0 ? '#d95454' : i === 1 ? '#e6a817' : 'var(--accent)'}`,
+                    borderRadius: 'var(--radius)',
+                    padding: '12px 16px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 4 }}>{p.chTitle}</div>
+                  <div style={{ fontWeight: 600, marginBottom: 6, fontSize: 14 }}>{p.title}</div>
+                  <div style={{ display: 'flex', gap: 6, fontSize: 11, flexWrap: 'wrap' }}>
+                    {p.priority === 'required' && <span className="priority-label">★必須</span>}
+                    {p.freq === 'max' && <span className="freq-max">毎回</span>}
+                    {p.freq === 'high' && <span className="freq-high">頻出</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
+
       {/* ====== 学習ロードマップ ====== */}
       <section style={{ marginBottom: 40 }} id="hp-roadmap">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
@@ -2778,15 +2895,15 @@ function HomePage({ onNav, data }) {
         )}
       </section>
 
-      {/* ====== 過去問フィルター ====== */}
+      {/* ====== 過去問フィルター（折りたたみ・既定:閉じ） ====== */}
       <section style={{ marginBottom: 40 }} id="hp-past">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
-          <div>
-            <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>PAST EXAMS</div>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>過去問をテーマで探す</h2>
-            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>年度順ではなく、論点とタグで横断検索できます。</p>
-          </div>
-        </div>
+        <details style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '8px 16px' }}>
+          <summary style={{ cursor: 'pointer', padding: '6px 0', fontSize: 14, fontWeight: 600, listStyle: 'revert' }}>
+            <span style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em' }}>PAST EXAMS</span>
+            <span style={{ marginLeft: 12 }}>過去問をテーマで探す</span>
+            <span style={{ marginLeft: 8, fontSize: 12, color: 'var(--ink-3)' }}>（4軸フィルタ + タグ検索）</span>
+          </summary>
+          <p style={{ margin: '8px 0 12px', fontSize: 13, color: 'var(--ink-2)' }}>年度順ではなく、論点とタグで横断検索できます。</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 10, marginBottom: 14 }}>
           {[
@@ -2831,6 +2948,7 @@ function HomePage({ onNav, data }) {
             この条件で演習を始める →
           </button>
         </div>
+        </details>
       </section>
     </div>
   );
