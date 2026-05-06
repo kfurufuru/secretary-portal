@@ -1362,7 +1362,8 @@ window.WIKI_DATA = { chapters: [
     { id:"henshatsuki-koritu", num:"1.4", title:"変圧器の全日効率",               freq:"high", ch:"CH04" },
     { id:"ryokuritsu-kaizen",  num:"1.5", title:"力率改善",                       freq:"mid",  ch:"CH04" },
     { id:"juyoritsu-keisan",   num:"1.6", title:"需要率・負荷率・不等率（計算）", freq:"max",  ch:"CH04", twin:"juyoritsu-gainen" },
-    { id:"bshu-setsuchi",      num:"1.7", title:"B種接地抵抗値",                  freq:"max",  ch:"CH04" }
+    { id:"bshu-setsuchi",      num:"1.7", title:"B種接地抵抗値",                  freq:"max",  ch:"CH04" },
+    { id:"hichusei-jiraku",    num:"1.8", title:"中性点非接地系の地絡電流",       freq:"high", ch:"CH04" }
   ]},
   { id:"sec02", num:"02", title:"頻出数値・表暗記", ch:"CH03/04", pages:[
     { id:"setsuchi-ichiran",    num:"2.1", title:"接地工事一覧表",       freq:"max",  ch:"CH03" },
@@ -2341,6 +2342,7 @@ window.renderPage = function(page, navigate) {
     case 'ryokuritsu-kaizen':      return React.createElement(StubPage, { ...props, pageId: 'ryokuritsu-kaizen' });
     case 'juyoritsu-keisan':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-keisan' });
     case 'bshu-setsuchi':          return React.createElement(StubPage, { ...props, pageId: 'bshu-setsuchi' });
+    case 'hichusei-jiraku':        return React.createElement(HichuseiJirakuPage, props);
     case 'setsuchi-ichiran':       return React.createElement(SetsuchiIchiranPage, props);
     case 'zetsuen-ichiran':        return React.createElement(ZetsuenIchiranPage, props);
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
@@ -2918,6 +2920,346 @@ function KojiShiHoPage({ onNav, data }) {
       <PageNav
         prevId="denki-yohin-anzen" prevTitle="電気用品安全法"
         nextId="koji-gyoho"        nextTitle="電気工事業法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-2. HichuseiJirakuPage（中性点非接地系の地絡電流・1.8）
+// ─────────────────────────────────────────────
+function HichuseiJirakuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="中性点非接地方式の三相3線式高圧配電線路（線間電圧6,600V・60Hz）で、配電線路一相の対地静電容量C₁=2.3μF、需要設備一相の対地静電容量C₂=0.02μFのとき、需要設備内のZCTが検出する地絡電流は何mAか。"
+        choices={[
+          "62 mA",
+          "86 mA",
+          "150 mA",
+          "9,925 mA",
+        ]}
+        year="R05下 問11(b)"
+        note="読み終えたら戻って解こう。ヒント：ZCTが検出するのは需要設備側のC₂分のみ"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>系統全体の地絡電流: <strong>I_g = 2√3 πfV(C₁+C₂)</strong></li>
+          <li>ZCTが検出する電流: <strong>I₀ = 2√3 πfV·C₂</strong>（自設備分のみ）</li>
+          <li>1線地絡で健全相の対地電圧は <strong>線間電圧V（=√3倍）</strong> に上昇</li>
+          <li>保護動作: <strong>ZCT検出 → GR判定 → CB遮断</strong>（合計 0.1〜2秒）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題・計算問題対策"
+        importance="A"
+        freq="high"
+        examType="B問題"
+        targets="R05下"
+        tags={["地絡電流", "対地静電容量", "ZCT", "GR", "保護協調"]}
+        lastChecked="2026-05-06"
+      />
+
+      <h2 id="exam-focus">3. 試験で問われること</h2>
+      <ExamFocus items={[
+        { label: "主体",   value: "中性点非接地方式 三相3線式 高圧配電線路" },
+        { label: "対象",   value: "1線完全地絡時の地絡電流 I_g とZCT検出電流 I₀" },
+        { label: "公式",   value: "I_g = 2√3 πfV(C₁+C₂) ／ I₀ = 2√3 πfV·C₂" },
+        { label: "条件",   value: "完全地絡（地絡抵抗Rg=0）／対称回路前提" },
+        { label: "応用",   value: "GR動作電流整定／DGRとGRの選択／保護協調" },
+      ]} />
+
+      <h2 id="abbrev">4. 略号と役割（保護システムの三役）</h2>
+      <MemTable
+        headers={["略号", "正式名称・日本語", "役割"]}
+        rows={[
+          [<strong>ZCT</strong>, <span>Zero-phase Current Transformer<br/>零相変流器</span>, <span>3線を一括貫通しベクトル和を測る。<br/>平常時=0、地絡時のみ出力。<strong>「気付く」装置</strong></span>],
+          [<strong>GR</strong>, <span>Ground Relay<br/>地絡継電器</span>, <span>ZCT出力が整定値超過で動作信号を出す。<br/>動作電流200〜600mA、瞬時/限時設定。<strong>「判断する」装置</strong></span>],
+          [<strong>CB</strong>, <span>Circuit Breaker<br/>遮断器</span>, <span>GRからのトリップ信号で機械的に「閉→開」。<br/>アーク消弧で電流を切る。<strong>「行動する」装置</strong></span>],
+          [<strong>I_g</strong>, <span>Ground fault current<br/>地絡電流</span>, "系統全体で発生 = 2√3 πfV(C₁+C₂)"],
+          [<strong>I₀</strong>, <span>Zero-sequence current<br/>零相電流（ZCT検出）</span>, "ZCTが検出 = 2√3 πfV·C₂（自設備C₂分のみ）"],
+          [<strong>C₁ / C₂</strong>, <span>Line-to-ground capacitance<br/>対地静電容量</span>, "C₁=配電線路一相、C₂=需要設備一相"],
+        ]}
+        note="ZCTは「気付く」、GRは「判断する」、CBは「行動する」。3つで1つの保護システム"
+      />
+
+      <h2 id="explain1">5. 深掘り解説①: なぜ「線間電圧V」を「対地電圧V/√3」に変換するのか</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 10px'}}><strong>問いの本質</strong>：問題文の電源は「線間電圧V」で与えられるのに、計算では「対地電圧」を使う。なぜ？</p>
+        <ul style={{margin: 0, paddingLeft: 20}}>
+          <li><strong>対地静電容量Cは「相導体↔大地」の容量</strong>。線間電圧は2つの相導体間の電圧で、Cには直接かからない。Cにかかるのは <strong>対地電圧（相導体の対地電位）</strong></li>
+          <li>Y結線中性点接地なら、各相の対地電圧 = 相電圧 = <strong>V/√3</strong></li>
+          <li><strong>中性点非接地でも平常時は対称性によりV/√3</strong>（中性点が浮いているだけで対称性は維持）</li>
+          <li>だから式の基本量は「V」ではなく「V/√3 × ωC」。最終的に √3 が公式に現れるのはこの変換が原因</li>
+        </ul>
+        <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 「中性点非接地 = 対地電圧不明」ではない。平常時は対称性により V/√3、地絡時に対称性が壊れて変化する</p>
+      </PlainExplain>
+
+      <h2 id="explain2">6. 深掘り解説②: なぜ静電容量を「3相分」考慮するのか</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 10px'}}><strong>問いの本質</strong>：地絡しているのは1相だけ。なのに3相のCが式に入る。なぜ？</p>
+        <p style={{margin: '0 0 8px'}}><strong>鍵：健全2相のCを経由した充電電流が地絡点に戻る</strong></p>
+        <p style={{margin: '0 0 6px', fontSize: 13}}>1線完全地絡時（a相が地絡）の電流経路：</p>
+        <ol style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li>電源(b相) → b相導体 → 健全相bの対地容量Cb → 大地</li>
+          <li>電源(c相) → c相導体 → 健全相cの対地容量Cc → 大地</li>
+          <li>大地経由で地絡点（a相と大地が短絡）に集合 → a相経由で電源へ戻る</li>
+        </ol>
+        <p style={{margin: '10px 0 6px'}}>各相の対地電圧の変化：</p>
+      </PlainExplain>
+      <MemTable
+        headers={["相", "平常時の対地電圧", "1線地絡時（a相地絡）の対地電圧"]}
+        rows={[
+          ["a相（地絡相）", "V/√3", <strong>0</strong>],
+          ["b相（健全相）", "V/√3", <strong>V（線間電圧）</strong>],
+          ["c相（健全相）", "V/√3", <strong>V（線間電圧）</strong>],
+        ]}
+        note="健全相は √3倍に昇圧される。これが地絡電流増加の本質"
+      />
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>計算フロー</strong></p>
+        <ol style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li>健全相b: I_b = ωCb × V（V=線間電圧）</li>
+          <li>健全相c: I_c = ωCc × V</li>
+          <li>b相とc相の電圧は60°位相差 → ベクトル和 |I_b+I_c| = √3 × ωC × V</li>
+          <li>1相あたり対地容量 C = C₁+C₂（系統合計）として代入</li>
+          <li>∴ I_g = √3 · ω · (C₁+C₂) · V = <strong>2√3 πfV(C₁+C₂)</strong></li>
+        </ol>
+        <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 覚え方：「1線地絡 = 健全2相が√3倍電圧で充電 → ベクトル和が√3倍 → 結局 √3×√3=3倍の電流が地絡点に集まる」と思うと、3相Cと√3の出処がスッキリ</p>
+      </PlainExplain>
+
+      <h2 id="explain3">7. 深掘り解説③: 健全相√3倍の物理的意味</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 10px'}}><strong>「中性点（仮想）が a相導体の位置に移動した」と考えると分かりやすい</strong></p>
+        <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li>a相 → 大地電位（中性点位置と一致）</li>
+          <li>b相 → a相からみた電位 = 線間電圧 V_ba</li>
+          <li>c相 → a相からみた電位 = 線間電圧 V_ca</li>
+        </ul>
+        <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 試験速攻判定：「1線地絡 → 健全相は線間電圧Vで充電される」→ I_g = √3 × ωC × V が秒で出る</p>
+      </PlainExplain>
+
+      <h2 id="explain4">8. 深掘り解説④: なぜC₁とC₂で電流が分かれるのか（回路図）</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>原則</strong>：ZCTが拾うのは「ZCTを貫通する正味電流（ベクトル和）」のみ。</p>
+        <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li><strong style={{color: '#d33'}}>C₁ループ（赤）</strong>: 電源側で完結。ZCTより電源側で大地へ戻るのでZCTを貫通せず → <strong>検出されない</strong></li>
+          <li><strong style={{color: '#27c'}}>C₂ループ（青）</strong>: 需要設備内（ZCTより負荷側）。ZCTを貫通する正味電流がある → <strong>検出される</strong></li>
+        </ul>
+      </PlainExplain>
+
+      <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <svg viewBox="0 0 820 460" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#d33"/>
+            </marker>
+            <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+          </defs>
+          <rect x="395" y="30" width="395" height="370" fill="none" stroke="#888" strokeWidth="1" strokeDasharray="6,4"/>
+          <text x="592" y="22" textAnchor="middle" fontSize="13" fill="#555">需要設備</text>
+          <line x1="40" y1="100" x2="780" y2="100" stroke="#333" strokeWidth="2"/>
+          <text x="42" y="92" fontSize="13" fill="#333">高圧配電線路</text>
+          <circle cx="300" cy="100" r="3.5" fill="#333"/>
+          <text x="245" y="92" fontSize="13" fill="#333">地絡事故点</text>
+          <line x1="300" y1="100" x2="300" y2="180" stroke="#333" strokeWidth="2"/>
+          <line x1="285" y1="180" x2="315" y2="180" stroke="#333" strokeWidth="2"/>
+          <line x1="290" y1="186" x2="310" y2="186" stroke="#333" strokeWidth="1.5"/>
+          <line x1="295" y1="192" x2="305" y2="192" stroke="#333" strokeWidth="1.2"/>
+          <text x="310" y="170" fontSize="13" fill="#333">地絡電流 I_g</text>
+          <circle cx="410" cy="100" r="5" fill="#fff" stroke="#333" strokeWidth="1.8"/>
+          <text x="415" y="92" fontSize="12" fill="#555">受電点</text>
+          <circle cx="490" cy="100" r="18" fill="#fff" stroke="#333" strokeWidth="2"/>
+          <text x="490" y="105" textAnchor="middle" fontSize="11" fill="#333">I₀</text>
+          <text x="490" y="74" textAnchor="middle" fontSize="12" fill="#333">零相変流器</text>
+          <line x1="508" y1="100" x2="560" y2="100" stroke="#333" strokeWidth="1.5"/>
+          <line x1="555" y1="94" x2="565" y2="94" stroke="#333" strokeWidth="1.2"/>
+          <line x1="555" y1="106" x2="565" y2="106" stroke="#333" strokeWidth="1.2"/>
+          <rect x="580" y="80" width="60" height="40" fill="#fff" stroke="#333" strokeWidth="2"/>
+          <text x="610" y="105" textAnchor="middle" fontSize="12" fill="#333">I →</text>
+          <text x="660" y="105" fontSize="12" fill="#333">地絡継電器</text>
+          <line x1="450" y1="100" x2="450" y2="220" stroke="#333" strokeWidth="2"/>
+          <line x1="438" y1="218" x2="462" y2="242" stroke="#333" strokeWidth="2"/>
+          <line x1="462" y1="218" x2="438" y2="242" stroke="#333" strokeWidth="2"/>
+          <text x="475" y="238" fontSize="13" fill="#333">遮断器</text>
+          <line x1="450" y1="242" x2="450" y2="280" stroke="#333" strokeWidth="2"/>
+          <line x1="450" y1="280" x2="730" y2="280" stroke="#333" strokeWidth="2"/>
+          <line x1="180" y1="100" x2="180" y2="200" stroke="#333" strokeWidth="2"/>
+          <line x1="160" y1="200" x2="200" y2="200" stroke="#333" strokeWidth="2.5"/>
+          <line x1="160" y1="208" x2="200" y2="208" stroke="#333" strokeWidth="2.5"/>
+          <text x="145" y="208" fontSize="14" fill="#333">C₁</text>
+          <line x1="180" y1="208" x2="180" y2="240" stroke="#333" strokeWidth="2"/>
+          <line x1="160" y1="240" x2="200" y2="240" stroke="#333" strokeWidth="2"/>
+          <line x1="166" y1="246" x2="194" y2="246" stroke="#333" strokeWidth="1.5"/>
+          <line x1="172" y1="252" x2="188" y2="252" stroke="#333" strokeWidth="1.2"/>
+          <line x1="730" y1="280" x2="730" y2="320" stroke="#333" strokeWidth="2"/>
+          <line x1="710" y1="320" x2="750" y2="320" stroke="#333" strokeWidth="2.5"/>
+          <line x1="710" y1="328" x2="750" y2="328" stroke="#333" strokeWidth="2.5"/>
+          <text x="755" y="328" fontSize="14" fill="#333">C₂</text>
+          <line x1="730" y1="328" x2="730" y2="360" stroke="#333" strokeWidth="2"/>
+          <line x1="710" y1="360" x2="750" y2="360" stroke="#333" strokeWidth="2"/>
+          <line x1="716" y1="366" x2="744" y2="366" stroke="#333" strokeWidth="1.5"/>
+          <line x1="722" y1="372" x2="738" y2="372" stroke="#333" strokeWidth="1.2"/>
+          <path d="M 180 252 Q 180 410 290 410 Q 300 410 300 200" fill="none" stroke="#d33" strokeWidth="2" strokeDasharray="6,4" markerEnd="url(#arrowR)"/>
+          <text x="195" y="425" fontSize="12" fill="#d33" fontWeight="600">C₁ループ：電源側で完結／ZCT貫通せず</text>
+          <path d="M 730 372 Q 730 440 500 440 Q 305 440 300 200" fill="none" stroke="#27c" strokeWidth="2" strokeDasharray="6,4" markerEnd="url(#arrowB)"/>
+          <text x="510" y="455" fontSize="12" fill="#27c" fontWeight="600">C₂ループ：需要設備側→ZCT貫通＝検出</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 簡略化のため、ZCT〜配電線路間の接続は1線で表示（実機は3相一括貫通）</div>
+      </div>
+
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>選択遮断（DGR）の原理</strong></p>
+        <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li><strong>自設備内地絡</strong>: C₁分（系統の他需要家）が ZCT を流れる、向きは「外向き」</li>
+          <li><strong>配電線路（他所）の地絡</strong>: C₂分が ZCT を流れる、向きは「内向き」</li>
+          <li><strong>DGR（地絡方向継電器）</strong>はこの位相で判別。<strong>GR（無方向）</strong>は向き無視で誤動作（貰い事故）リスクあり</li>
+        </ul>
+      </PlainExplain>
+
+      <h2 id="explain5">9. 深掘り解説⑤: 保護動作シーケンス（地絡発生→系統切離）</h2>
+      <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <svg viewBox="0 0 820 540" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="arrowSeq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+            </marker>
+          </defs>
+          <line x1="640" y1="40" x2="640" y2="510" stroke="#aaa" strokeWidth="1" strokeDasharray="3,3"/>
+          <text x="730" y="30" textAnchor="middle" fontSize="12" fill="#666">経過時間</text>
+          <rect x="60" y="40" width="540" height="56" rx="8" fill="#fde2e2" stroke="#d33" strokeWidth="2"/>
+          <text x="80" y="65" fontSize="14" fontWeight="700" fill="#a11">STEP 1</text>
+          <text x="80" y="86" fontSize="13" fill="#222">1線完全地絡発生 → I_g = 2√3 πfV(C₁+C₂) が流れ始める</text>
+          <rect x="670" y="55" width="120" height="26" rx="13" fill="#fff" stroke="#aaa" strokeWidth="1"/>
+          <text x="730" y="72" textAnchor="middle" fontSize="12" fill="#444" fontWeight="600">0 ms</text>
+          <line x1="330" y1="96" x2="330" y2="120" stroke="#444" strokeWidth="2" markerEnd="url(#arrowSeq)"/>
+          <rect x="60" y="120" width="540" height="56" rx="8" fill="#ffe9cc" stroke="#e87a00" strokeWidth="2"/>
+          <text x="80" y="145" fontSize="14" fontWeight="700" fill="#a55400">STEP 2</text>
+          <text x="80" y="166" fontSize="13" fill="#222">ZCTが零相電流を検出 → I₀ = 2√3 πfV·C₂ ≈ 86 mA</text>
+          <rect x="670" y="135" width="120" height="26" rx="13" fill="#fff" stroke="#aaa" strokeWidth="1"/>
+          <text x="730" y="152" textAnchor="middle" fontSize="12" fill="#444" fontWeight="600">+数 ms</text>
+          <line x1="330" y1="176" x2="330" y2="200" stroke="#444" strokeWidth="2" markerEnd="url(#arrowSeq)"/>
+          <rect x="60" y="200" width="540" height="56" rx="8" fill="#fff5b8" stroke="#c8a000" strokeWidth="2"/>
+          <text x="80" y="225" fontSize="14" fontWeight="700" fill="#806600">STEP 3</text>
+          <text x="80" y="246" fontSize="13" fill="#222">GRが整定値超過を判定 → 動作（200〜600 mA に整定するのが標準）</text>
+          <rect x="670" y="215" width="120" height="26" rx="13" fill="#fff" stroke="#aaa" strokeWidth="1"/>
+          <text x="730" y="232" textAnchor="middle" fontSize="12" fill="#444" fontWeight="600">+10〜30 ms</text>
+          <line x1="330" y1="256" x2="330" y2="280" stroke="#444" strokeWidth="2" markerEnd="url(#arrowSeq)"/>
+          <rect x="60" y="280" width="540" height="56" rx="8" fill="#dcecff" stroke="#27c" strokeWidth="2"/>
+          <text x="80" y="305" fontSize="14" fontWeight="700" fill="#15518f">STEP 4</text>
+          <text x="80" y="326" fontSize="13" fill="#222">GR → CBへトリップ信号送出（トリップコイル励磁）</text>
+          <rect x="670" y="295" width="120" height="26" rx="13" fill="#fff" stroke="#aaa" strokeWidth="1"/>
+          <text x="730" y="312" textAnchor="middle" fontSize="12" fill="#444" fontWeight="600">+30〜50 ms</text>
+          <line x1="330" y1="336" x2="330" y2="360" stroke="#444" strokeWidth="2" markerEnd="url(#arrowSeq)"/>
+          <rect x="60" y="360" width="540" height="56" rx="8" fill="#d5f0f7" stroke="#1899b7" strokeWidth="2"/>
+          <text x="80" y="385" fontSize="14" fontWeight="700" fill="#0e6b85">STEP 5</text>
+          <text x="80" y="406" fontSize="13" fill="#222">CB機械動作（接点開離）→ アーク発生 → 電流ゼロ点で消弧</text>
+          <rect x="670" y="375" width="120" height="26" rx="13" fill="#fff" stroke="#aaa" strokeWidth="1"/>
+          <text x="730" y="392" textAnchor="middle" fontSize="12" fill="#444" fontWeight="600">+50〜100 ms</text>
+          <line x1="330" y1="416" x2="330" y2="440" stroke="#444" strokeWidth="2" markerEnd="url(#arrowSeq)"/>
+          <rect x="60" y="440" width="540" height="56" rx="8" fill="#d6f5dc" stroke="#1c9a3a" strokeWidth="2"/>
+          <text x="80" y="465" fontSize="14" fontWeight="700" fill="#0e6b22">STEP 6</text>
+          <text x="80" y="486" fontSize="13" fill="#222">需要設備が系統から切離 → I_g 停止・事故区間隔離完了</text>
+          <rect x="670" y="455" width="120" height="26" rx="13" fill="#fff" stroke="#aaa" strokeWidth="1"/>
+          <text x="730" y="472" textAnchor="middle" fontSize="12" fill="#444" fontWeight="600">+0.1〜2 秒</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ STEP 3 を限時整定にすると合計0.5〜2秒、瞬時なら0.1〜0.2秒。上位系統との保護協調で決まる</div>
+      </div>
+
+      <PlainExplain>
+        <p style={{margin: 0, fontSize: 13}}>💡 試験頻出ポイント：「<strong>GRは地絡を検出するだけ。実際に電流を切るのはCB</strong>」。GRとCBを混同すると正誤判定でひっかかる</p>
+      </PlainExplain>
+
+      <h2 id="solve">10. 解き方・判断手順（5ステップ）</h2>
+      <SolveFlow type="計算" steps={[
+        "問題が「中性点非接地」と読み取れたら → 対地静電容量による地絡電流の問題と判定",
+        "Ig 全体（系統）か I₀（ZCT検出）か → どちらを問われているかを問題文から確認",
+        "1線地絡 → 健全相の対地電圧は √3倍（線間電圧V）に上昇すると思い出す",
+        "公式適用: I_g = 2√3 πfV(C₁+C₂)、ZCT検出は I₀ = 2√3 πfV·C₂",
+        "数値代入時は単位（μF→F、kV→V）に注意。π=3.1416、√3=1.732 を覚えておく",
+      ]} />
+
+      <h2 id="memorize">11. 暗記ポイント</h2>
+      <MemTable
+        headers={["項目", "値・公式", "覚え方"]}
+        rows={[
+          ["系統地絡電流 I_g", "2√3 πfV(C₁+C₂)", "√3·2πf·C·V の4要素を並べる"],
+          ["ZCT検出電流 I₀", "2√3 πfV·C₂", "I_gのCを「自設備分C₂」だけに置換"],
+          ["健全相の対地電圧", "V（線間電圧 = 平常時の√3倍）", "中性点が地絡相位置に移動したと考える"],
+          ["GR動作整定", "200〜600 mA", "平常時不平衡分以上、地絡時I₀未満"],
+          ["保護動作合計時間", "0.1〜2秒", "瞬時0.1秒、限時2秒"],
+          ["√3 の暗記値", "1.732", "「人並み（ヒトナミ）におごれや」"],
+          ["π の暗記値", "3.1416", "公式計算では3.14でも可（誤差<0.1%）"],
+        ]}
+      />
+
+      <h2 id="traps">12. よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "ZCTが検出するのは系統全体の地絡電流 I_g",         correct: "ZCTが検出するのは自設備内のC₂分のみ（I₀=2√3πfVC₂）" },
+        { wrong: "C₁の方が大きいから検出電流もC₁基準で計算",         correct: "C₁はZCTを貫通せず検出されない（電源側で完結）" },
+        { wrong: "地絡時の対地電圧は変化しない",                       correct: "健全相の対地電圧は √3倍（線間電圧V）に上昇" },
+        { wrong: "GRが電流を遮断する",                                 correct: "GRは検出・判定のみ。実際に切るのはCB（遮断器）" },
+        { wrong: "GRさえあれば全ての地絡を確実に切れる",              correct: "GR（無方向）は他所の地絡で誤動作リスク → DGR（方向）が確実" },
+        { wrong: "中性点非接地なら対地電圧は不明",                    correct: "平常時はV/√3（対称性により）、地絡時のみ変化" },
+      ]} />
+
+      <h2 id="exam-r05">13. 過去問: R05下 問11</h2>
+      <ExamQuestion
+        year="令和5年下期"
+        qNum="11"
+        question="図のように、中性点非接地方式の三相3線式高圧配電線路に接続された需要設備において、需要設備付近で1線地絡事故が発生した。線間電圧V[V]、周波数f[Hz]、高圧配電線路一相の全対地静電容量C₁[F]、需要設備一相の全対地静電容量C₂[F]、地絡抵抗Rg=0[Ω]（完全地絡）とする。"
+        note="(a) 地絡電流 I_g [A] の式を求めよ ／ (b) V=6,600V, f=60Hz, C₁=2.3μF, C₂=0.02μF のとき、需要設備内のZCTが検出する電流[mA]を求めよ"
+      />
+      <ExamAnswer
+        correct="(a) I_g = 2√3 πfV(C₁+C₂) ／ (b) 86 mA"
+        explanations={[
+          { choice: "(a)", mark: "○", reason: "1線完全地絡時、健全2相の対地電圧が線間電圧Vに上昇。各健全相の充電電流をベクトル合成して I_g = √3·ωV·(C₁+C₂) = 2√3 πfV(C₁+C₂)" },
+          { choice: "(b)", mark: "○", reason: "I₀ = 2√3 πfV·C₂ = 2×1.732×3.1416×60×6,600×0.02×10⁻⁶ ≈ 0.0862 A = 86 mA。C₂分のみがZCTを貫通する" },
+          { choice: "誤答62", mark: "×", reason: "√3を√2と勘違いした場合の値" },
+          { choice: "誤答9925", mark: "×", reason: "C₂をC₁と取り違えた場合の値（系統全体のC₁分=I_C1）" },
+        ]}
+      />
+
+      <h2 id="related-problems">14. 類題対応シナリオ</h2>
+      <MemTable
+        headers={["類題パターン", "何が変わるか", "解き方"]}
+        rows={[
+          ["① 地絡相が指定（a相→b相）", "健全相が変わるだけ", "√3倍の関係は不変、公式そのまま適用"],
+          ["② 不完全地絡（Rg≠0）",       "地絡電流にRgの影響",       "等価回路にRg追加し位相考慮（応用）"],
+          ["③ DGR整定値設計",            "動作電流をI_g未満に",       "I_設定 < I_C₂ で需要側のみ動作"],
+          ["④ 高調波込み",               "fが複数",                  "各周波数で計算して合成（合成2乗和）"],
+          ["⑤ 並行2回線・系統拡大",     "C₁が2倍など",             "系統C合計を再計算してから公式適用"],
+        ]}
+        note="本質「対地電圧×3相C」は不変。条件変化→公式の入力値を置き換えるだけ"
+      />
+
+      <h2 id="quick-review">15. 1分復習</h2>
+      <QuickReview items={[
+        { q: "中性点非接地方式の高圧配電線路で1線完全地絡時の系統地絡電流の式は？", a: "I_g = 2√3 πfV(C₁+C₂)" },
+        { q: "ZCTが検出する零相電流の式は？",                                    a: "I₀ = 2√3 πfV·C₂（自設備分のみ）" },
+        { q: "1線地絡時、健全相の対地電圧はどう変化するか？",                    a: "平常時V/√3 → 線間電圧V（√3倍に上昇）" },
+        { q: "C₁分の電流がZCTで検出されない理由は？",                            a: "ZCTより電源側で完結し、ZCTを貫通しないから" },
+        { q: "保護システムの三役 ZCT・GR・CB の役割を一言で？",                  a: "ZCT=検出、GR=判定、CB=遮断" },
+      ]} />
+
+      <h2 id="cross-ref">16. 掛け算出題パターン</h2>
+      <CrossRef patterns={[
+        { a: "中性点非接地（1.8）",  b: "B種接地抵抗値（1.7）",            result: "「接地系」と「非接地系」の地絡電流計算の違い" },
+        { a: "対地静電容量",          b: "DGR vs GR の選択",                result: "貰い事故防止の保護協調設計問題" },
+        { a: "1線地絡",               b: "高調波・基本波の合成",            result: "実効値計算問題（応用）" },
+      ]} />
+
+      <NextAction nextPageId="bshu-setsuchi" nextPageTitle="B種接地抵抗値" onNav={onNav} />
+      <UpdateLog entries={[{ date: "2026-05-06", content: "初版作成（R05下問11対応）", reason: "R05下出題確認・容量性地絡電流の独立ページ化" }]} />
+      <PageNav
+        prevId="bshu-setsuchi"     prevTitle="B種接地抵抗値"
+        nextId="setsuchi-ichiran"  nextTitle="接地工事一覧表"
         onNav={onNav}
       />
     </div>
