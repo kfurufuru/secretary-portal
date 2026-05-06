@@ -1896,6 +1896,16 @@ function Sidebar({ data, page, onNav }) {
     try { localStorage.setItem('hoki_sidebar_mode', sidebarMode); } catch (e) {}
   }, [sidebarMode]);
 
+  const [yearWindow, setYearWindow] = React.useState(() => {
+    try {
+      const v = localStorage.getItem('hoki_sidebar_window');
+      return (v === '5y' || v === '10y' || v === '15y') ? v : '10y';
+    } catch (e) { return '10y'; }
+  });
+  React.useEffect(() => {
+    try { localStorage.setItem('hoki_sidebar_window', yearWindow); } catch (e) {}
+  }, [yearWindow]);
+
   const [openChapters, setOpenChapters] = React.useState(() => {
     if (!data || !data.chapters) return {};
     const initial = {};
@@ -1930,7 +1940,7 @@ function Sidebar({ data, page, onNav }) {
   }, [data]);
 
   const ranking = (typeof window !== 'undefined' && window.HOKI_RANKING) || null;
-  const themes = ranking && ranking.windows ? (ranking.windows['10y'] || []) : [];
+  const themes = ranking && ranking.windows ? (ranking.windows[yearWindow] || []) : [];
 
   if (!data || !data.chapters) {
     return (
@@ -1974,8 +1984,29 @@ function Sidebar({ data, page, onNav }) {
 
       {sidebarMode === 'theme' ? (
         <div style={{ padding: '4px 0 8px' }}>
-          <div style={{ padding: '4px 16px 8px', fontSize: 10, color: 'var(--ink-3)', letterSpacing: '0.05em' }}>
-            出題頻度（過去10年・S/A/B/C順）
+          <div style={{ padding: '4px 16px 6px', fontSize: 10, color: 'var(--ink-3)', letterSpacing: '0.05em' }}>
+            出題頻度（{yearWindow === '5y' ? '過去5年' : yearWindow === '15y' ? '過去15年' : '過去10年'}・S/A/B/C順）
+          </div>
+          <div style={{ display: 'flex', gap: 4, padding: '0 12px 8px' }}>
+            {['5y', '10y', '15y'].map(y => (
+              <button
+                key={y}
+                onClick={() => setYearWindow(y)}
+                style={{
+                  flex: 1,
+                  padding: '4px 0',
+                  fontSize: 11,
+                  cursor: 'pointer',
+                  border: yearWindow === y ? '1px solid var(--accent)' : '1px solid var(--line)',
+                  background: yearWindow === y ? 'var(--accent-soft)' : 'transparent',
+                  color: yearWindow === y ? 'var(--accent)' : 'var(--ink-2)',
+                  fontWeight: yearWindow === y ? 700 : 500,
+                  borderRadius: 4,
+                }}
+              >
+                {y === '5y' ? '5年' : y === '10y' ? '10年' : '15年'}
+              </button>
+            ))}
           </div>
           {/* TOP行 */}
           <div
