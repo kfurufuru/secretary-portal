@@ -1952,7 +1952,7 @@ function Sidebar({ data, page, onNav }) {
     );
   }
 
-  const tabs = [{ id: 'theme', label: 'テーマ別' }, { id: 'chapter', label: 'チャプター別' }];
+  const tabs = [{ id: 'theme', label: '分野で探す' }, { id: 'chapter', label: '教科書順' }];
 
   return (
     <aside className="sidebar" style={{ height: '100vh', overflowY: 'auto', borderRight: '1px solid var(--line)', padding: '12px 0' }}>
@@ -2474,9 +2474,74 @@ function StubPage({ pageId, data, onNav }) {
 // 3. HomePage（トップページ）
 // ─────────────────────────────────────────────
 
-// 試験日（電験3種 上期 2026・暫定）
-// TODO: localStorage 'hoki_exam_date' で上書き対応
-const HOKI_EXAM_DATE = '2026-08-30';
+// 試験日（電験3種 上期 2026・既定値）
+// localStorage 'hoki_exam_date' (YYYY-MM-DD) で上書き可能
+const HOKI_EXAM_DATE_DEFAULT = '2026-08-30';
+
+function ExamCountdownBanner() {
+  const [examDateStr, setExamDateStr] = React.useState(() => {
+    try {
+      const v = localStorage.getItem('hoki_exam_date');
+      return (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) ? v : HOKI_EXAM_DATE_DEFAULT;
+    } catch (e) { return HOKI_EXAM_DATE_DEFAULT; }
+  });
+  const isCustom = examDateStr !== HOKI_EXAM_DATE_DEFAULT;
+  const handleEdit = () => {
+    const cur = examDateStr;
+    const next = window.prompt('試験日を YYYY-MM-DD 形式で入力（空白でリセット）', cur);
+    if (next === null) return;
+    const trimmed = next.trim();
+    if (trimmed === '') {
+      try { localStorage.removeItem('hoki_exam_date'); } catch (e) {}
+      setExamDateStr(HOKI_EXAM_DATE_DEFAULT);
+      return;
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      alert('形式が違います。例: 2026-08-30');
+      return;
+    }
+    try { localStorage.setItem('hoki_exam_date', trimmed); } catch (e) {}
+    setExamDateStr(trimmed);
+  };
+  const examDate = new Date(examDateStr + 'T00:00:00+09:00');
+  const today = new Date();
+  const daysLeft = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
+  if (daysLeft <= 0) {
+    return (
+      <div style={{ marginBottom: 24, padding: '10px 14px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span>📅 電験3種法規 試験日（{examDateStr}）終了</span>
+        <button onClick={handleEdit} style={{ marginLeft: 'auto', background: 'none', border: '1px solid var(--border)', borderRadius: 4, padding: '2px 8px', fontSize: 11, color: 'var(--ink-3)', cursor: 'pointer' }}>⚙ 試験日変更</button>
+      </div>
+    );
+  }
+  const color = daysLeft <= 14 ? '#d95454' : daysLeft <= 30 ? '#e68b17' : daysLeft <= 60 ? '#e6a817' : 'var(--accent)';
+  const phase = daysLeft <= 7 ? '最終週（弱点だけ・新規禁止）'
+    : daysLeft <= 14 ? '直前期B（表暗記・過去問総ざらい）'
+    : daysLeft <= 30 ? '直前期A（弱点補強＋通し演習）'
+    : daysLeft <= 60 ? '仕上げ期（B問題反復＋頻出論点）'
+    : daysLeft <= 90 ? '実力養成期（B問題集中＋表暗記）'
+    : '基礎固め期（章立て学習＋用語整理）';
+  return (
+    <div style={{ marginBottom: 24, padding: '12px 16px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: `4px solid ${color}`, borderRadius: 'var(--radius)' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em' }}>📅 試験まで</span>
+        <span style={{ fontSize: 28, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{daysLeft}</span>
+        <span style={{ fontSize: 13, color: 'var(--ink-2)' }}>日</span>
+        <span style={{ fontSize: 11, color: 'var(--ink-3)', marginLeft: 'auto' }}>
+          {examDateStr}{isCustom ? '' : '（既定）'}
+        </span>
+        <button
+          onClick={handleEdit}
+          title="試験日を変更"
+          style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4, padding: '2px 8px', fontSize: 11, color: 'var(--ink-3)', cursor: 'pointer' }}
+        >
+          ⚙ 変更
+        </button>
+      </div>
+      <div style={{ fontSize: 12, color: 'var(--ink-3)' }}>{phase}</div>
+    </div>
+  );
+}
 
 // 教材CH対応表データ
 const CH_TABLE = [
@@ -2541,36 +2606,8 @@ function HomePage({ onNav, data }) {
   return (
     <div>
       {/* ====== 試験日カウントダウン（最上段固定） ====== */}
-      {(() => {
-        const examDate = new Date(HOKI_EXAM_DATE + 'T00:00:00+09:00');
-        const today = new Date();
-        const daysLeft = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
-        if (daysLeft <= 0) {
-          return (
-            <div style={{ marginBottom: 24, padding: '10px 14px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13 }}>
-              📅 電験3種法規 試験日（{HOKI_EXAM_DATE}）終了
-            </div>
-          );
-        }
-        const color = daysLeft <= 14 ? '#d95454' : daysLeft <= 30 ? '#e68b17' : daysLeft <= 60 ? '#e6a817' : 'var(--accent)';
-        const phase = daysLeft <= 7 ? '最終週（弱点だけ・新規禁止）'
-          : daysLeft <= 14 ? '直前期B（表暗記・過去問総ざらい）'
-          : daysLeft <= 30 ? '直前期A（弱点補強＋通し演習）'
-          : daysLeft <= 60 ? '仕上げ期（B問題反復＋頻出論点）'
-          : daysLeft <= 90 ? '実力養成期（B問題集中＋表暗記）'
-          : '基礎固め期（章立て学習＋用語整理）';
-        return (
-          <div style={{ marginBottom: 24, padding: '12px 16px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: `4px solid ${color}`, borderRadius: 'var(--radius)' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em' }}>📅 試験まで</span>
-              <span style={{ fontSize: 28, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{daysLeft}</span>
-              <span style={{ fontSize: 13, color: 'var(--ink-2)' }}>日</span>
-              <span style={{ fontSize: 11, color: 'var(--ink-3)', marginLeft: 'auto' }}>{HOKI_EXAM_DATE}（暫定）</span>
-            </div>
-            <div style={{ fontSize: 12, color: 'var(--ink-3)' }}>{phase}</div>
-          </div>
-        );
-      })()}
+      <ExamCountdownBanner />
+
 
       {/* ====== Hero ====== */}
       <section style={{ marginBottom: 40 }}>
@@ -2658,13 +2695,15 @@ function HomePage({ onNav, data }) {
         })()}
       </section>
 
-      {/* ====== 教材CH対応表 ====== */}
+      {/* ====== 教材CH対応表（折りたたみ・参照資料） ====== */}
       <section style={{ marginBottom: 40 }}>
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>TEXTBOOK MAP</div>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>教材CH↔得点優先度 対応表</h2>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>どのCHを先に読むかで合否が変わる。S→A→Bの順で攻める。</p>
-        </div>
+        <details style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '8px 16px' }}>
+          <summary style={{ cursor: 'pointer', padding: '6px 0', fontSize: 14, fontWeight: 600, listStyle: 'revert' }}>
+            <span style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em' }}>教材対応表</span>
+            <span style={{ marginLeft: 12 }}>市販テキストCH ↔ Wikiカテゴリ</span>
+            <span style={{ marginLeft: 8, fontSize: 12, color: 'var(--ink-3)' }}>（S→A→Bの順で攻める）</span>
+          </summary>
+          <p style={{ margin: '8px 0 12px', fontSize: 13, color: 'var(--ink-2)' }}>どのCHを先に読むかで合否が変わる。下の優先度順に。</p>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
@@ -2691,6 +2730,7 @@ function HomePage({ onNav, data }) {
             </tbody>
           </table>
         </div>
+        </details>
       </section>
 
       {/* ====== 今日の一問 ====== */}
@@ -2810,7 +2850,7 @@ function HomePage({ onNav, data }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>LEARNING ROADMAP</div>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>6ステップで合格まで</h2>
+            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>{ROADMAP.length}ステップで合格まで</h2>
             <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>CH04→CH03→CH01→CH06→CH02→CH05の順が最短ルートです。</p>
           </div>
         </div>
@@ -2826,7 +2866,7 @@ function HomePage({ onNav, data }) {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-3)', letterSpacing: '0.06em' }}>STEP {s.step}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-3)', letterSpacing: '0.06em' }}>STEP {s.step} / {ROADMAP.length}</span>
                 <span style={{
                   fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99,
                   background: s.status === 'done' ? '#d4f0d4' : s.status === 'current' ? 'var(--accent)' : 'var(--border)',
@@ -2855,7 +2895,7 @@ function HomePage({ onNav, data }) {
           <div>
             <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>HOT TOPICS</div>
             <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Sランク頻出テーマ</h2>
-            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年（H28-R07）kakomon.yml 集計の上位S群。詳細はサイドバー「テーマ別」で5/10/15年切替。</p>
+            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年（H28-R07）kakomon.yml 集計の上位S群。詳細はサイドバー「分野で探す」で5/10/15年切替。</p>
           </div>
         </div>
         {hotTopics.length === 0 ? (

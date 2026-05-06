@@ -520,7 +520,7 @@ function Sidebar({ data, page, onNav }) {
     );
   }
 
-  const tabs = [{ id: 'theme', label: 'テーマ別' }, { id: 'chapter', label: 'チャプター別' }];
+  const tabs = [{ id: 'theme', label: '分野で探す' }, { id: 'chapter', label: '教科書順' }];
 
   return (
     <aside className="sidebar" style={{ height: '100vh', overflowY: 'auto', borderRight: '1px solid var(--line)', padding: '12px 0' }}>
