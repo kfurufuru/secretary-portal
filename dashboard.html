@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Secretary Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128;
+  --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.04);
+  --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
+  --cyan: #38bdf8; --green: #3fb950; --yellow: #d29922; --purple: #a78bfa;
+  --orange: #f97316; --red: #f85149;
+  --font: 'Inter','Noto Sans JP',sans-serif;
+  --radius: 10px; --transition: 0.2s ease;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.6; min-height: 100vh; padding: 24px 16px; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.header h1 { font-size: 1.4rem; font-weight: 700; color: var(--cyan); }
+.header .meta { font-size: 12px; color: var(--text3); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text2); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.card-title::before { content: ''; display: inline-block; width: 3px; height: 12px; border-radius: 2px; background: var(--cyan); }
+.card-title.green::before { background: var(--green); }
+.card-title.yellow::before { background: var(--yellow); }
+.card-title.purple::before { background: var(--purple); }
+.card-title.orange::before { background: var(--orange); }
+
+/* Stats */
+.stats-row { display: flex; gap: 12px; margin-bottom: 16px; }
+.stat { flex: 1; background: var(--bg3); border-radius: 8px; padding: 12px; text-align: center; border: 1px solid var(--border2); }
+.stat-val { font-size: 2rem; font-weight: 700; line-height: 1; }
+.stat-lbl { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.stat.draft .stat-val { color: var(--yellow); }
+.stat.review .stat-val { color: var(--cyan); }
+.stat.published .stat-val { color: var(--green); }
+.stat.total .stat-val { color: var(--text); }
+
+/* Items */
+.kb-item, .todo-item, .recent-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border2); font-size: 12px; gap: 8px; }
+.kb-item:last-child, .todo-item:last-child, .recent-item:last-child { border-bottom: none; }
+.kb-name, .todo-text, .recent-name { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.kb-date, .recent-date { color: var(--text3); flex-shrink: 0; font-size: 11px; }
+.todo-dot { color: var(--yellow); flex-shrink: 0; margin-right: 4px; }
+.empty { color: var(--text3); font-size: 12px; padding: 8px 0; }
+
+/* Progress bar */
+.progress-wrap { margin-top: 12px; }
+.progress-bar { background: var(--bg3); border-radius: 4px; height: 6px; overflow: hidden; display: flex; }
+.progress-seg { height: 100%; transition: width var(--transition); }
+.progress-seg.draft { background: var(--yellow); }
+.progress-seg.review { background: var(--cyan); }
+.progress-seg.published { background: var(--green); }
+.progress-legend { display: flex; gap: 12px; margin-top: 8px; }
+.legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text2); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.refresh-link { display: block; text-align: center; margin-top: 24px; font-size: 12px; color: var(--text3); }
+.refresh-link a { color: var(--cyan); text-decoration: none; }
+
+@media (max-width: 768px) {
+  body { padding: 16px 12px; }
+  .header { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .header h1 { font-size: 1.15rem; }
+  .grid { grid-template-columns: 1fr; gap: 12px; }
+}
+@media (max-width: 480px) {
+  .stats-row { gap: 8px; }
+  .stat { padding: 10px 6px; }
+  .stat-val { font-size: 1.5rem; }
+  .card { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📊 Secretary Dashboard</h1>
+  <div class="meta">生成: 2026-04-21 22:29 | <a href="portal.html" style="color:var(--cyan);text-decoration:none;">← Portal</a></div>
+</div>
+
+<div class="grid">
+
+  <!-- 知識昇格状況 -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="card-title">Knowledge Base 昇格状況</div>
+    <div class="stats-row">
+      <div class="stat draft"><div class="stat-val">2</div><div class="stat-lbl">draft</div></div>
+      <div class="stat review"><div class="stat-val">0</div><div class="stat-lbl">review</div></div>
+      <div class="stat published"><div class="stat-val">0</div><div class="stat-lbl">published</div></div>
+      <div class="stat total"><div class="stat-val">2</div><div class="stat-lbl">total</div></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar">
+        <div class="progress-seg draft" style="width:100.0%"></div>
+        <div class="progress-seg review" style="width:0.0%"></div>
+        <div class="progress-seg published" style="width:0.0%"></div>
+      </div>
+      <div class="progress-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>draft 100%</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div>review 0%</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>published 0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- draft一覧 -->
+  <div class="card">
+    <div class="card-title yellow">昇格待ち Draft (2件)</div>
+    <div class="kb-item"><span class="kb-name">2026-04-21</span><span class="kb-date">04-21</span></div><div class="kb-item"><span class="kb-name">2026-04-20</span><span class="kb-date">04-20</span></div>
+  </div>
+
+  <!-- review一覧 -->
+  <div class="card">
+    <div class="card-title">レビュー中 Review (0件)</div>
+    <div class="empty">なし</div>
+  </div>
+
+  <!-- CC知識昇格 -->
+  <div class="card" style="grid-column: 1 / -1; border-color: rgba(248,209,81,0.3); background: linear-gradient(135deg, var(--bg2), #1a1a0a);">
+    <div class="card-title yellow">CC 知識昇格タスク</div>
+    <div class="stats-row">
+      <div class="stat" style="background:var(--bg3);">
+        <div class="stat-val" style="color:var(--yellow); font-size:2.4rem;">149</div>
+        <div class="stat-lbl">候補件数</div>
+      </div>
+      <div class="stat" style="background:var(--bg3);">
+        <div class="stat-val" style="color:var(--cyan); font-size:1.4rem;">2026-04-10</div>
+        <div class="stat-lbl">最終スキャン</div>
+      </div>
+      <div class="stat" style="background:var(--bg3);">
+        <div class="stat-val" style="color:var(--text2); font-size:1.2rem;">未処理</div>
+        <div class="stat-lbl">ステータス</div>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+      <div style="font-size:12px; color:var(--text2); margin-bottom:4px;">
+        163セッション（2026-03-21〜）から抽出。★昇格コメントを付けて「AI週次整理」で knowledge/ に格納する。
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:12px;">
+          <div style="color:var(--text3); font-size:11px; margin-bottom:2px;">① ファイルを開く</div>
+          <code style="color:var(--cyan); font-size:11px;">code ai-exports/processed/claude_code_knowledge_2026-04-10.md</code>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:12px;">
+          <div style="color:var(--text3); font-size:11px; margin-bottom:2px;">② 昇格コメントを付ける</div>
+          <code style="color:var(--yellow); font-size:11px;">&lt;!-- ★昇格 knowledge/ --&gt;</code>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:12px;">
+          <div style="color:var(--text3); font-size:11px; margin-bottom:2px;">③ 昇格を実行</div>
+          <code style="color:var(--green); font-size:11px;">「AI週次整理」と入力</code>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:12px;">
+          <div style="color:var(--text3); font-size:11px; margin-bottom:2px;">④ 再スキャン（随時）</div>
+          <code style="color:var(--purple); font-size:11px;">「CC知識スキャン」と入力</code>
+        </div>
+      </div>
+      <div style="font-size:11px; color:var(--text3); margin-top:4px;">
+        カテゴリ内訳: 電験3種 106件 / AI活用 31件 / 電気計装 11件 / 組織・マネジメント 1件
+      </div>
+    </div>
+  </div>
+
+  <!-- TODO -->
+  <div class="card">
+    <div class="card-title orange">未完了 TODO</div>
+    <div class="empty">タスクなし</div>
+  </div>
+
+  <!-- 電験学習 -->
+  <div class="card">
+    <div class="card-title green">電験学習 最近のログ</div>
+    <div class="empty">なし</div>
+  </div>
+
+  <!-- アイデア -->
+  <div class="card">
+    <div class="card-title purple">最近のアイデア</div>
+    <div class="empty">なし</div>
+  </div>
+
+</div>
+
+<p class="refresh-link">更新: <a href="javascript:location.reload()">リロード</a> | 再生成: <code>py generate_dashboard.py</code></p>
+</body>
+</html>

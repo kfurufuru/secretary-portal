@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Memory Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2128;
+  --border: #30363d;
+  --accent: #2dd4bf;
+  --accent2: #0891b2;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #6e7681;
+  --user: #a78bfa;
+  --user-bg: #1e1433;
+  --feedback: #f59e0b;
+  --feedback-bg: #1c1500;
+  --project: #38bdf8;
+  --project-bg: #001825;
+  --reference: #34d399;
+  --reference-bg: #001a0f;
+  --radius: 10px;
+  --transition: 0.2s ease;
+  font-size: 15px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-break: strict;
+  overflow-wrap: break-word;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.logo {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.02em; }
+.header-sub { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+.updated-badge {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  color: var(--text2);
+}
+
+/* Stats bar */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stat {
+  background: var(--bg2);
+  padding: 16px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.stat:hover, .stat.active { background: var(--bg3); }
+.stat.active .stat-count { color: var(--accent); }
+.stat-count {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+  color: var(--text);
+  transition: color var(--transition);
+}
+.stat-label { font-size: 0.75rem; color: var(--text2); }
+.stat-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block; margin-right: 6px; vertical-align: middle;
+}
+
+/* Search */
+.search-bar {
+  padding: 16px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.search-input {
+  flex: 1;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text3); }
+.filter-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: var(--text2);
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0d1117; font-weight: 600; }
+.filter-btn.archived-btn { border-color: #4b5563; color: #6b7280; }
+.filter-btn.archived-btn:hover { border-color: #9ca3af; color: #9ca3af; }
+.filter-btn.archived-btn.active { background: #374151; border-color: #6b7280; color: #d1d5db; }
+
+/* Cards grid */
+.main { padding: 24px 32px; }
+.section-title {
+  font-size: 0.75rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+.card[data-type="user"]::before { background: var(--user); }
+.card[data-type="feedback"]::before { background: var(--feedback); }
+.card[data-type="project"]::before { background: var(--project); }
+.card[data-type="reference"]::before { background: var(--reference); }
+.card:hover { border-color: var(--text3); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.card-name { font-size: 0.9rem; font-weight: 600; line-height: 1.4; flex: 1; }
+.type-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-user { background: var(--user-bg); color: var(--user); border: 1px solid var(--user); }
+.badge-feedback { background: var(--feedback-bg); color: var(--feedback); border: 1px solid var(--feedback); }
+.badge-project { background: var(--project-bg); color: var(--project); border: 1px solid var(--project); }
+.badge-reference { background: var(--reference-bg); color: var(--reference); border: 1px solid var(--reference); }
+.card-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.5; margin-bottom: 8px; }
+.card-preview {
+  font-size: 0.75rem;
+  color: var(--text3);
+  line-height: 1.5;
+  background: var(--bg3);
+  border-radius: 6px;
+  padding: 8px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  white-space: pre-wrap;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.card.expanded .card-preview { max-height: 200px; opacity: 1; padding: 8px; }
+.card-filename {
+  font-size: 0.65rem;
+  color: var(--text3);
+  margin-top: 8px;
+  font-family: 'Courier New', monospace;
+}
+.hidden { display: none !important; }
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+  font-size: 0.9rem;
+}
+.empty-state .icon { font-size: 2rem; margin-bottom: 8px; }
+.expiry-badge {
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 6px;
+  display: inline-block;
+}
+.expiry-ok { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid #34d399; }
+.expiry-warn { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid #f59e0b; }
+.expiry-expired { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
+
+/* Archived cards */
+.card.archived {
+  opacity: 0.4;
+  border-style: dashed;
+  border-color: #374151;
+}
+.card.archived:hover { opacity: 0.7; }
+.card.archived .card-name { text-decoration: line-through; color: var(--text3); }
+.card.archived::before { background: #4b5563 !important; }
+.archived-badge {
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 6px;
+  display: inline-block;
+  background: rgba(75,85,99,0.25);
+  color: #6b7280;
+  border: 1px solid #4b5563;
+}
+.restore-btn {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: all var(--transition);
+  display: inline-block;
+}
+.restore-btn:hover { border-color: var(--accent); color: var(--accent); }
+.toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #1c2128;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  transition: transform 0.3s ease;
+  z-index: 999;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header { padding: 16px; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .stats-bar { grid-template-columns: repeat(3, 1fr); }
+  .search-bar { padding: 12px 16px; flex-wrap: wrap; }
+  .main { padding: 16px; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🧠</div>
+    <div>
+      <h1>Claude Memory Dashboard</h1>
+      <div class="header-sub">persistent memory · C:\Users\kfuru\.claude\projects\</div>
+    </div>
+  </div>
+  <a href="portal.html" style="color:#8b949e;text-decoration:none;font-size:0.78rem;display:flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #30363d;border-radius:8px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#2dd4bf'" onmouseout="this.style.borderColor='#30363d'">← ポータル</a>
+  <div class="updated-badge" id="updatedBadge">2026-04-25 更新</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat active" onclick="filterType('all')" id="stat-all">
+    <div class="stat-count" id="count-all">0</div>
+    <div class="stat-label">全エントリ</div>
+  </div>
+  <div class="stat" onclick="filterType('user')" id="stat-user">
+    <div class="stat-count" id="count-user">0</div>
+    <div class="stat-label"><span class="stat-dot" style="background:var(--user)"></span>User</div>
+  </div>
+  <div class="stat" onclick="filterType('feedback')" id="stat-feedback">
+    <div class="stat-count" id="count-feedback">0</div>
+    <div class="stat-label"><span class="stat-dot" style="background:var(--feedback)"></span>Feedback</div>
+  </div>
+  <div class="stat" onclick="filterType('project')" id="stat-project">
+    <div class="stat-count" id="count-project">0</div>
+    <div class="stat-label"><span class="stat-dot" style="background:var(--project)"></span>Project</div>
+  </div>
+  <div class="stat" onclick="filterType('reference')" id="stat-reference">
+    <div class="stat-count" id="count-reference">0</div>
+    <div class="stat-label"><span class="stat-dot" style="background:var(--reference)"></span>Reference</div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <input type="text" class="search-input" placeholder="メモリを検索..." id="searchInput" oninput="applyFilters()">
+  <button class="filter-btn active" onclick="filterType('all')" id="btn-all">すべて</button>
+  <button class="filter-btn" onclick="filterType('user')" id="btn-user">👤 User</button>
+  <button class="filter-btn" onclick="filterType('feedback')" id="btn-feedback">💬 Feedback</button>
+  <button class="filter-btn" onclick="filterType('project')" id="btn-project">🏗 Project</button>
+  <button class="filter-btn" onclick="filterType('reference')" id="btn-reference">🔗 Reference</button>
+  <button class="filter-btn archived-btn" onclick="toggleArchive()" id="btn-archive">🗄 アーカイブ (7)</button>
+</div>
+<div id="toast" class="toast"></div>
+
+<div class="main" id="main"></div>
+
+<script>
+const MEMORIES = [
+  // ── User ──────────────────────────────────────────────────────────
+  {
+    filename: "user_profile.md",
+    type: "user",
+    name: "ユーザープロファイル",
+    description: "古舘さんの詳細プロファイル（属性・思考スタイル・価値観・趣味）",
+    preview: "名前: 古舘（ふるたち）さん / 年齢: 36歳\n所属: 三菱ケミカル 設備技術部（電気・計装）\n思考: 合理主義・実務重視・結論先・根拠必須・抽象論嫌い"
+  },
+  {
+    filename: "user_marriage_strategy.md",
+    type: "user",
+    name: "結婚戦略",
+    description: "古舘さんの結婚観・理想の相手像・NGタイプ・生活設計をDB化",
+    preview: "結婚戦略の核: 「自由 × 責任 × 支える」\nゴール: 相手が結婚してよかったと思える状態"
+  },
+  {
+    filename: "user_preferences_ui.md",
+    type: "user",
+    name: "UI・成果物の好みプロファイル",
+    description: "好みのUIテーマ・成果物スタイル・承認済みパターン記録（Midnight Mint/cyber/カードグリッド）",
+    preview: "テーマ: Midnight Mint / cyber系をデフォルト選択\nスタイル: 1ファイルHTML・stats-bar+cards-grid構成\n承認済み: portal.html・skill-dashboard.html・memory-dashboard.html"
+  },
+  {
+    filename: "user_workflow_preferences.md",
+    type: "user",
+    name: "作業フロー・コミュニケーション好みプロファイル",
+    description: "好みの作業フロー・コミュニケーションスタイル記録（短サイクル承認・並列実行優先）",
+    preview: "好みのキーワード: 「並列エージェントで効率よく」「やろう」「追加」\n承認サイクル: 提案→短い返答→即実行を好む\n避けること: 長い確認フロー・逐次実行"
+  },
+  {
+    filename: "user_intellectual_interests.md",
+    type: "user",
+    name: "知的関心・学習スタイルプロファイル",
+    description: "知的関心領域・学習スタイル・説明好みの記録（因果理解・実務直結・ツール化）",
+    preview: "関心: 生成AI活用・電験3種・システム設計・Fカンパニー\n学習: 因果理解優先（語呂・丸暗記拒否）・実務直結・知識横展\n好む説明: BLUF→根拠→数値 / 世界事例 / 構造化"
+  },
+  // ── Feedback ──────────────────────────────────────────────────────
+  {
+    filename: "feedback_completion_rules.md",
+    type: "feedback",
+    name: "完了宣言・確認URL提示ルール",
+    description: "タスク完了は公開反映まで含む。ローカル編集だけで完了と言わない。HTML編集後は確認URLを必ず提示する",
+    preview: "Why: ローカル編集だけでは公開されていない。pushまでがセット。\nHow: 「完了」と明記＋確認URL（http://localhost:8092/...）を一緒に記載"
+  },
+  {
+    filename: "feedback_implementation_discipline.md",
+    type: "feedback",
+    name: "実装規律（設計確定・API検証・変更管理）",
+    description: "実装前に設計全体を確定する。外部APIは公式docで検証。依頼なき変更は行わない",
+    preview: "Why: 「たぶんこうだろう」実装・でっち上げAPI・無断変更で手戻りが発生した。\nHow: 設計確定→API検証→承認後のみ実装。確信度<70%は質問する"
+  },
+  {
+    filename: "feedback_denken_content_rules.md",
+    type: "feedback",
+    name: "電験コンテンツルール（語呂・計算式禁止）",
+    description: "電験コンテンツは計算式の羅列・語呂合わせ禁止。因果理解ベース・スマホ通勤前提で作る",
+    preview: "Why: 古舘さんは合理主義。バス通勤スマホで読む前提。\nHow: 語呂・計算式禁止。「なぜこの値か」の理由→公式の導出理由から説明"
+  },
+  {
+    filename: "feedback_world_examples.md",
+    type: "feedback",
+    name: "設計・方向性議論には世界の事例を必ず組み込む",
+    description: "設計判断・ツール選定・方向性決定では世界の良い事例/失敗事例をWebSearchで調査してから議論する",
+    preview: "Why: 訓練データだけで議論すると偏る。\nHow: 判断系の質問が来たらWebSearchで先に世界事例を調査する"
+  },
+  {
+    filename: "feedback_persona_parallel.md",
+    type: "feedback",
+    name: "ペルソナ並列指揮パターン",
+    description: "複数タスク時はひろゆき・落合陽一がSonnet並列運転を指揮。レビュー時は岡田斗司夫・成田悠輔も加えて多角検証",
+    preview: "Why: テーマ別コンテンツの大量生成で有効。\nHow: 複数タスクが来たらひろゆき・落合が指揮して並列実行"
+  },
+  {
+    filename: "feedback_knowledge_yokoten.md",
+    type: "feedback",
+    name: "知識共有は思考プロセス込みで（横展スタイル）",
+    description: "情報収集・ナレッジ化では「何が起きたか」だけでなく「なぜそうなったか」の思考プロセスも記録する",
+    preview: "Why: トヨタの横展（Yokoten）スタイル。情報同士の接続・つながり発見を重視。\nHow: 事実＋なぜ重要か＋自分ならどう使うかを必ず含める"
+  },
+  {
+    filename: "feedback_proactive_suggestions.md",
+    type: "feedback",
+    name: "プロアクティブな機能提案と実装前の計画確認",
+    description: "実装依頼時にPlanMode提案。会話中に有益スキルを都度提案する",
+    preview: "Why: 素人ユーザーが知らない機能を教える必要がある。\nHow: 非自明タスクはPlanModeで方針整理を先に提案する"
+  },
+  {
+    filename: "feedback_report_on_better_approach.md",
+    type: "feedback",
+    name: "作業中に最適解に気づいたら即報告",
+    description: "実行中のアプローチより良い方法に気づいた瞬間、作業を止めずに即座に報告・提案する",
+    preview: "Why: 完了まで待つと手戻りコストが大きい。\nHow: 気づいた瞬間に報告し切り替えを提案する"
+  },
+  {
+    filename: "feedback_figma_workflow.md",
+    type: "feedback",
+    name: "Figma経由の修正提案タイミング",
+    description: "上司・役員・他部署向けビジュアル成果物を作った際にhtml.to.designでFigma微調整を促す",
+    preview: "Why: 見た目の説得力が承認に直結する場面がある。\nHow: 対外向けHTML完成後にhtml.to.designを提案する"
+  },
+  {
+    filename: "feedback_cli_explanation.md",
+    type: "feedback",
+    name: "CLI操作の説明は初心者向けに丁寧に",
+    description: "ターミナル・コマンド操作の手順説明は、どこから開くかから丁寧に書く",
+    preview: "Why: 古舘さんはCLIの基本操作に不慣れな場合がある。\nHow: 「どのアプリを開くか」から順に説明する"
+  },
+  {
+    filename: "feedback_admonition_visibility.md",
+    type: "feedback",
+    name: "admonition の表示制御ルール（denken-wiki）",
+    description: "MkDocs の !!! vs ??? の使い分け。説明コンテンツは常時表示、quiz解答のみ折りたたみ",
+    preview: "Why: 「読ませるために書いたものを隠す意味がない」（2026-04-15）。\nHow: 説明は!!!（常時表示）、quiz解答のみ???（折りたたみ）"
+  },
+  {
+    filename: "feedback_problem_benefit_set.md",
+    type: "feedback",
+    name: "問題点とメリットをセットで記載する",
+    description: "変更・改善提案を提示するとき、現状の問題点と変更後のメリットを必ずセットで記載する",
+    preview: "Why: 問題だけ言われても動きにくい。メリットがあるから判断できる。\nHow: 「現状の問題→変更後のメリット」の順で記載する"
+  },
+  {
+    filename: "feedback_session_switch.md",
+    type: "feedback",
+    name: "セッション切り替えの積極的提案",
+    description: "コンテキスト上限・タスク切り替わり時は新セッションを先回りして推奨する",
+    preview: "Why: ユーザーが「必要な時は切り替え推奨と連絡しろ」と明示的に指示。\nHow: 15往復超や重コマンド後は積極的に提案する"
+  },
+  {
+    filename: "feedback_text_vs_image_tokens.md",
+    type: "feedback",
+    name: "テキスト vs 画像のトークン消費",
+    description: "長文情報の入力形式による効率性（テキスト記載がテキスト形式の約4〜10倍効率）",
+    preview: "Why: Haiku 4.5の画像処理コストは1,085トークン基本+ピクセル追加で、テキストの4〜10倍消費する。\nHow: 記事・ナレッジ・データは必ずテキストで入力する"
+  },
+  {
+    filename: "feedback_decision_blind_spots.md",
+    type: "feedback",
+    name: "判断時の3盲点セルフチェック",
+    description: "意思決定時に3つの構造的盲点（軽量化の罠・手動運用累積・属人化バイアス）をセルフチェックする",
+    preview: "Why: NotebookLM横断分析で古舘さんの判断パターンに3つの構造的盲点が判明。\nHow: 判断支援・レビュー時は該当盲点を明示し、判断ログに盲点タグを記入する"
+  },
+  {
+    filename: "feedback_handoff_instruction.md",
+    type: "feedback",
+    name: "引き継ぎ時は1行のみ",
+    description: "引き継ぎ時にユーザーへ伝えるコマンドは1行のみ。余計な説明不要",
+    preview: "inbox/handoff-YYYY-MM-DD-[タスク名].md を読んで実装続行して\n（この1行のみ。長い説明は不要）"
+  },
+  {
+    filename: "feedback_design_rationale.md",
+    type: "feedback",
+    name: "設計思想の確認は必須",
+    description: "PlanMode提案時は設計思想（why・前提・トレードオフ）の説明を省かない",
+    preview: "Why: 表面的な実装手順だけでは判断できない。\nHow: PlanMode提案に必ずwhy・前提・トレードオフを含める"
+  },
+  {
+    filename: "project_denken_mailer.md",
+    type: "project",
+    expires: "2026-07-25",
+    name: "電験メーラーシステム現況 (v4)",
+    description: "denken-mailer v4の構成・設計判断・未完了タスク。法規科目拡張の引継ぎ情報を含む",
+    preview: "daily-review-mailer.pyで電験3種の復習メールを自動送信。理論＋法規の2科目対応。\n稼働開始: 理論2026-03-28、法規追加済み"
+  },
+  {
+    filename: "project_computer_use.md",
+    type: "project",
+    expires: "2026-10-25",
+    name: "Claude Computer Use Windows対応",
+    description: "Claude Computer UseがWindows版Cowork/Code Desktopで利用可能に（2026-04-06）",
+    preview: "Windows版Claude Cowork / Claude Code Desktopで利用可能。\nAPI無いGUI操作に有効。MCP連携済みのものはMCP優先"
+  },
+  {
+    filename: "project_obsidian_setup.md",
+    type: "project",
+    expires: "2026-10-25",
+    name: "Obsidian導入・運用設計",
+    description: "Obsidian/Notion/Claude Code 3ツール役割分担の設計決定と運用ルール（2026-04-16）",
+    preview: "原本=Obsidian、共有=Notion、処理=Claude Code。\n.secretary/ = Obsidian Vault。双方向自動同期は導入しない"
+  },
+  {
+    filename: "project_denken_schedule.md",
+    type: "project",
+    expires: "2026-12-31",
+    name: "電験学習スケジュール制約",
+    description: "電験3種の過去問は土日・祝日のみ。平日は過去問不可。メーラー設定に影響する",
+    preview: "平日: バス通勤でメーラー確認（軽めの閲覧のみ）\n土日・祝日: 過去問実施可能"
+  },
+  {
+    filename: "project_promote_system.md",
+    type: "project",
+    expires: "2026-12-31",
+    name: "L1→L2自動昇格システム",
+    description: "promote.pyの設計・運用サイクル・週次スケジュール（アクセスログ自動昇格対応済み）",
+    preview: "C:\\Users\\kfuru\\.secretary\\promote.py\n月曜08:00自動昇格 → --list-drafts でdraft確認 → level更新"
+  },
+  {
+    filename: "project_denken_wiki.md",
+    type: "project",
+    expires: "2026-07-25",
+    name: "denken-wiki・ei-wiki進捗と設計判断",
+    description: "電験3種Wiki（法規/理論/電力）とei-wiki（電気計装実務）の進捗・アーキテクチャ・未完了タスク",
+    preview: "MkDocs Material on GitHub Pages。全19テーマv1.0達成。\nby-field.md R04-R07追加済み。法規・電力科目が続く"
+  },
+  {
+    filename: "reference_tools.md",
+    type: "reference",
+    name: "Claude Code便利ツール参照",
+    description: "Claude Code関連の有益ツール・リソースの参照先まとめ",
+    preview: "Awesome Claude Code: github.com/hesreallyhim/awesome-claude-code (2.8万⭐)\nGSD: 高度なGit & Software Development framework\nUI UX Pro Max: 67スタイルのUI生成スキル"
+  },
+  {
+    filename: "reference_f_company_portal.md",
+    type: "reference",
+    name: "Fカンパニーポータルサイト",
+    description: "「Fカンパニーのサイト」「ポータル」と言ったらここ。各種HTMLへのリンク集",
+    preview: "C:\\Users\\kfuru\\.secretary\\portal.html\nFカンパニーのメインポータルHTML。各種ダッシュボードへのリンクが集約"
+  },
+  {
+    filename: "reference_denken_importance_rule.md",
+    type: "reference",
+    name: "電験三種 重要度ランク設定ルール",
+    description: "理論科目の重要度ランクを「出題頻度×難易度」2軸マトリクスで判定するルール",
+    preview: "ローカル: knowledge/denken-riron-importance-rule.md\n2軸マトリクス: 出題頻度（H/M/L）× 難易度（H/M/L）で重要度ランクを決定"
+  },
+  {
+    filename: "reference_awesome_design_md_jp.md",
+    type: "reference",
+    name: "awesome-design-md-jp",
+    description: "葛原健太氏のOSS。日本語対応DESIGN.md集（24社分）。web-ui-style.mdとの統合候補",
+    preview: "Apple・MUJI・LINE・Mercari・note等24社の日本語デザインルール集。\nweb-ui-style.mdへの統合候補として管理中"
+  }
+];
+
+const ARCHIVED = [
+  {
+    filename: "feedback_mailer_style.md",
+    type: "feedback",
+    mergedInto: "feedback_denken_content_rules.md",
+    name: "メーラー解説スタイル",
+    description: "denken-mailerの解説は計算式禁止。概念・意味・落とし穴に特化。バス通勤スマホ前提",
+    preview: "Why: ユーザーはバス通勤中にスマホで読む。計算式の羅列は禁止。\nHow: 概念・公式の意味・よくある落とし穴を中心に構成する"
+  },
+  {
+    filename: "feedback_denken_no_mnemonics.md",
+    type: "feedback",
+    mergedInto: "feedback_denken_content_rules.md",
+    name: "電験学習コンテンツ方針（丸暗記否定）",
+    description: "電験3種の学習コンテンツで語呂合わせ・丸暗記テクニックは不要。因果理解ベース",
+    preview: "Why: 古舘さんは合理主義。数値の「なぜこの値か」の理由から理解するアプローチを好む。\nHow: 語呂合わせは使わない。公式の導出理由から説明する"
+  },
+  {
+    filename: "feedback_completion_declaration.md",
+    type: "feedback",
+    mergedInto: "feedback_completion_rules.md",
+    name: "タスク完了時の宣言ルール",
+    description: "タスク完了は成果物の公開反映まで含む。ローカル編集だけで完了と言わない",
+    preview: "Why: ローカル編集だけでは公開されていない。\nHow: 完了と言うときは必ず「完了」と明記＋URLリンクも一緒に記載"
+  },
+  {
+    filename: "feedback_verification_url.md",
+    type: "feedback",
+    mergedInto: "feedback_completion_rules.md",
+    name: "編集後の確認URL提示",
+    description: "HTML編集後は必ずユーザーに確認URLを提示してから完了と言う",
+    preview: "Why: ローカルファイルの編集はGitHub Pages等の外部URLには反映されない。\nHow: 完了前に「http://localhost:8092/... で確認してください」と提示する"
+  },
+  {
+    filename: "feedback_design_first_verify.md",
+    type: "feedback",
+    mergedInto: "feedback_implementation_discipline.md",
+    name: "設計を最初に正しく検証してから実装する",
+    description: "コードを書く前に「何を表示したいか」「データ構造」「計算式」を調査・確定してから実装する",
+    preview: "Why: 「たぶんこうだろう」で実装を始めた手戻りが発生した。\nHow: APIのデータ構造・フィールドを事前調査してからコードを書く"
+  },
+  {
+    filename: "feedback_verify_api_before_claim.md",
+    type: "feedback",
+    mergedInto: "feedback_implementation_discipline.md",
+    name: "外部APIは公式ドキュメントで検証してから使う",
+    description: "Scriptable/ライブラリ/SDK等の外部APIを使う前にWebFetch等で公式docsを参照する",
+    preview: "Why: 存在しないメソッド名をでっち上げて実装した誤方向作業が発生した。\nHow: メソッド名・プロパティを使う前に必ず公式ドキュメントを確認する"
+  },
+  {
+    filename: "feedback_no_unasked_changes.md",
+    type: "feedback",
+    mergedInto: "feedback_implementation_discipline.md",
+    name: "依頼なき変更禁止・設計確認先行",
+    description: "依頼していない変更を勝手にしない。設計は正しい宣言後も変更は承認後のみ",
+    preview: "Why: Scriptableウィジェット開発での重複ミスが発生した。\nHow: 確信度<70%は質問する。選択肢提示→ユーザー承認後のみ変更する"
+  }
+];
+
+let currentType = 'all';
+let searchText = '';
+let showArchive = false;
+
+function filterType(type) {
+  currentType = type;
+  document.querySelectorAll('.stat').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.filter-btn:not(.archived-btn)').forEach(b => b.classList.remove('active'));
+  document.getElementById('stat-' + type).classList.add('active');
+  document.getElementById('btn-' + type).classList.add('active');
+  applyFilters();
+}
+
+function toggleArchive() {
+  showArchive = !showArchive;
+  const btn = document.getElementById('btn-archive');
+  btn.classList.toggle('active', showArchive);
+  applyFilters();
+}
+
+function applyFilters() {
+  searchText = document.getElementById('searchInput').value.toLowerCase();
+  renderCards();
+}
+
+function renderCards() {
+  const main = document.getElementById('main');
+  const types = currentType === 'all'
+    ? ['user', 'feedback', 'project', 'reference']
+    : [currentType];
+
+  const typeLabels = {
+    user: '👤 User — ユーザー情報',
+    feedback: '💬 Feedback — 行動ルール・指示',
+    project: '🏗 Project — 進行中プロジェクト',
+    reference: '🔗 Reference — 参照先・ツール'
+  };
+
+  let html = '';
+  let anyVisible = false;
+
+  for (const type of types) {
+    const filtered = MEMORIES.filter(m => {
+      if (m.type !== type) return false;
+      if (!searchText) return true;
+      return m.name.toLowerCase().includes(searchText) ||
+             m.description.toLowerCase().includes(searchText) ||
+             m.preview.toLowerCase().includes(searchText) ||
+             m.filename.toLowerCase().includes(searchText);
+    });
+
+    if (filtered.length === 0) continue;
+    anyVisible = true;
+
+    html += `<div class="section-title">${typeLabels[type]} (${filtered.length})</div>`;
+    html += '<div class="cards-grid">';
+    for (const m of filtered) {
+      html += `
+        <div class="card" data-type="${m.type}" onclick="toggleCard(this)">
+          <div class="card-header">
+            <div class="card-name">${m.name}</div>
+            <span class="type-badge badge-${m.type}">${m.type}</span>
+          </div>
+          <div class="card-desc">${m.description}</div>
+          <div class="card-preview">${escHtml(m.preview)}</div>
+          ${m.expires ? getExpiryBadge(m.expires) : ''}
+          <div class="card-filename">${m.filename}</div>
+        </div>`;
+    }
+    html += '</div>';
+  }
+
+  if (showArchive) {
+    const filteredArchived = ARCHIVED.filter(m => {
+      if (currentType !== 'all' && m.type !== currentType) return false;
+      if (!searchText) return true;
+      return m.name.toLowerCase().includes(searchText) ||
+             m.description.toLowerCase().includes(searchText) ||
+             m.filename.toLowerCase().includes(searchText);
+    });
+    if (filteredArchived.length > 0) {
+      anyVisible = true;
+      html += `<div class="section-title">🗄 アーカイブ済み — 統合削除 (${filteredArchived.length})</div>`;
+      html += '<div class="cards-grid">';
+      for (const m of filteredArchived) {
+        html += `
+          <div class="card archived" data-type="${m.type}" onclick="toggleCard(this)">
+            <div class="card-header">
+              <div class="card-name">${m.name}</div>
+              <span class="type-badge badge-${m.type}">${m.type}</span>
+            </div>
+            <div class="card-desc">${m.description}</div>
+            <div class="card-preview">${escHtml(m.preview)}</div>
+            <span class="archived-badge">→ ${m.mergedInto}</span>
+            <button class="restore-btn" onclick="event.stopPropagation();restoreFile('${m.filename}')">↩ 復活させる</button>
+            <div class="card-filename">${m.filename}</div>
+          </div>`;
+      }
+      html += '</div>';
+    }
+  }
+
+  if (!anyVisible) {
+    html = `<div class="empty-state"><div class="icon">🔍</div>「${searchText || 'アーカイブ'}」に一致するメモリが見つかりません</div>`;
+  }
+
+  main.innerHTML = html;
+}
+
+function restoreFile(filename) {
+  const path = `C:\\Users\\kfuru\\.claude\\projects\\C--Users-kfuru--secretary\\memory\\${filename}`;
+  navigator.clipboard.writeText(filename).catch(() => {});
+  showToast(`復活対象: ${filename} — メモリフォルダに再作成してください`);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function getExpiryBadge(expires) {
+  if (!expires) return '';
+  const today = new Date();
+  const expDate = new Date(expires);
+  const diffDays = Math.floor((expDate - today) / 86400000);
+  if (diffDays < 0) return `<span class="expiry-badge expiry-expired">期限切れ: ${expires}</span>`;
+  if (diffDays <= 30) return `<span class="expiry-badge expiry-warn">期限: ${expires}（残${diffDays}日）</span>`;
+  return `<span class="expiry-badge expiry-ok">有効: ${expires}まで</span>`;
+}
+
+function toggleCard(card) {
+  card.classList.toggle('expanded');
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function updateStats() {
+  const counts = { all: MEMORIES.length, user: 0, feedback: 0, project: 0, reference: 0 };
+  MEMORIES.forEach(m => counts[m.type]++);
+  Object.keys(counts).forEach(k => {
+    document.getElementById('count-' + k).textContent = counts[k];
+  });
+}
+
+updateStats();
+renderCards();
+</script>
+</body>
+</html>
