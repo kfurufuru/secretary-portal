@@ -2500,17 +2500,22 @@ function HomePage({ onNav, data }) {
     rank: 'S', tags: ['#高圧', '#頻出S'], avgRate: '71%',
   };
 
-  const HOT_TOPICS = [
-    { name: 'B問題',    rank: 'S', pages: 9,  count: 20, tags: ['#B問題対策', '#頻出S'] },
-    { name: '接地',     rank: 'S', pages: 6,  count: 17, tags: ['#高圧', '#表暗記', '#ひっかけ注意'] },
-    { name: '絶縁',     rank: 'S', pages: 5,  count: 15, tags: ['#低圧', '#高圧', '#表暗記'] },
-    { name: '主任技術者',rank: 'A', pages: 4,  count: 12, tags: ['#頻出A', '#ひっかけ注意'] },
-    { name: '保安規程', rank: 'A', pages: 3,  count: 11, tags: ['#頻出A', '#直前確認'] },
-    { name: '事故報告', rank: 'A', pages: 2,  count: 10, tags: ['#表暗記', '#ひっかけ注意'] },
-    { name: '電線路',   rank: 'A', pages: 5,  count:  9, tags: ['#特別高圧', '#高圧'] },
-    { name: '分散型電源',rank: 'B', pages: 3,  count:  5, tags: ['#法改正注意'] },
-    { name: '電気工事士法',rank:'B',pages: 1,  count: 0, tags: ['#法令', '#ひっかけ注意', '#免状'], note: 'R06下・H20 出題' },
-  ];
+  // HOT TOPICS は data/hoki-theme-ranking.json (10年) の S ランクのみ採用。
+  // ハードコードを廃止し、サイドバー「テーマ別」と同じ一次データから生成して
+  // 「過去10年で20回」等の数値乖離を防ぐ（受験指導レビュー指摘の信頼性問題）。
+  const ranking = (typeof window !== 'undefined' && window.HOKI_RANKING) || null;
+  const validPageIds = React.useMemo(() => {
+    const set = new Set();
+    if (data && data.chapters) {
+      data.chapters.forEach(ch => (ch.pages || []).forEach(p => set.add(p.id)));
+    }
+    return set;
+  }, [data]);
+  const hotTopics = React.useMemo(() => {
+    if (!ranking || !ranking.windows || !ranking.windows['10y']) return [];
+    return ranking.windows['10y'].filter(t => t.rank === 'S');
+  }, [ranking]);
+  const MKDOCS_BASE_HOT = 'https://kfurufuru.github.io/denken-wiki/';
 
   const ROADMAP = [
     { step: '01', status: 'done',    label: '完了',   title: 'B問題・計算問題',           desc: '配点が大きく、パターンも限られている。最優先で固める。',              prog: 100, cur: 9,  total: 9,  unit: 'ページ' },
@@ -2561,10 +2566,6 @@ function HomePage({ onNav, data }) {
               </a>
               {' '}へ。
             </div>
-          </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="btn primary" onClick={() => onNav('top')}>B問題から始める →</button>
-            <button className="btn secondary" onClick={() => document.getElementById('hp-topics')?.scrollIntoView({ behavior: 'smooth' })}>頻出Sランクを見る</button>
           </div>
         </div>
 
@@ -2729,36 +2730,52 @@ function HomePage({ onNav, data }) {
         </div>
       </section>
 
-      {/* ====== 頻出テーマ ====== */}
+      {/* ====== 頻出テーマ（Sランクのみ・kakomon.yml実データ） ====== */}
       <section style={{ marginBottom: 40 }} id="hp-topics">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>HOT TOPICS</div>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>頻出テーマ</h2>
-            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年の出題回数が多い順。Sランクから手を付ける。</p>
+            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Sランク頻出テーマ</h2>
+            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年（H28-R07）kakomon.yml 集計の上位S群。詳細はサイドバー「テーマ別」で5/10/15年切替。</p>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
-          {HOT_TOPICS.map((t) => (
-            <div
-              key={t.name}
-              style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', cursor: 'pointer' }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                <span style={{ fontWeight: 600, fontSize: 14 }}>{t.name}</span>
-                <span className={`rank rank-${t.rank}`}>{t.rank}</span>
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8 }}>
-                {t.pages}ページ · {t.note || `過去10年で${t.count}回出題`}
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                {t.tags.map(tag => (
-                  <span key={tag} className={`tag${tag === '#ひっかけ注意' || tag === '#法改正注意' ? ' warn' : tag === '#B問題対策' || tag === '#表暗記' ? ' hot' : ''}`}>{tag}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        {hotTopics.length === 0 ? (
+          <div style={{ fontSize: 13, color: 'var(--ink-3)' }}>ランキングデータ未ロード</div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+            {hotTopics.map((t) => {
+              const isInternal = t.pageId && validPageIds.has(t.pageId);
+              const isClickable = isInternal || !!t.mkdocs;
+              const handleClick = () => {
+                if (isInternal) onNav && onNav(t.pageId);
+                else if (t.mkdocs) window.open(MKDOCS_BASE_HOT + 'themes/' + t.mkdocs + '/', '_blank', 'noopener');
+              };
+              return (
+                <div
+                  key={t.slug}
+                  onClick={isClickable ? handleClick : undefined}
+                  style={{
+                    background: 'var(--bg-elev)', border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius)', padding: '14px 16px',
+                    cursor: isClickable ? 'pointer' : 'default',
+                    opacity: isClickable ? 1 : 0.6,
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                    <span style={{ fontWeight: 600, fontSize: 14 }}>{t.label}</span>
+                    <span className={`rank rank-${t.rank}`}>{t.rank}</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--ink-3)' }}>
+                    過去10年で<strong style={{ color: 'var(--ink-1)' }}>{t.count}</strong>回出題
+                    {!isInternal && t.mkdocs && (
+                      <span style={{ marginLeft: 6, color: 'var(--ink-3)' }} title="denken-wiki テーマページへ">↗ 外部Wiki</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* ====== 過去問フィルター ====== */}
