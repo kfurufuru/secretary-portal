@@ -854,6 +854,17 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: 0, fontSize: 13}}>💡 <strong>非接地方式の3大特徴</strong>：① 地絡電流が小さい（C経由のみ）／② 健全相対地電圧が√3倍に上昇／③ それでも保護装置（ZCT+GR+CB）は必須</p>
       </PlainExplain>
 
+      <h3 style={{marginTop: 20, marginBottom: 12, fontSize: 15, color: 'var(--ink-2)'}}>📜 接地方式の歴史的変遷（過去→現在→未来）</h3>
+      <MemTable
+        headers={["時代", "主流方式", "理由・背景", "支配的要因"]}
+        rows={[
+          ["過去（〜1960年代）", "抵抗接地・直接接地が混在", "通信線への誘導障害が大きく、地絡電流抑制重視", "通信線・電力線の併設"],
+          ["現在（1970年代〜）", "6.6kV配電は非接地方式が標準", "通信線分離・需要家設備での選択遮断（DGR）整備", "保護協調・メンテナンス性"],
+          ["未来（2030年代〜）", "分散電源連系で再検討の動き", "PV・蓄電池の双方向潮流／フェランチ効果／系統安定化", "再エネ普及率・系統慣性低下"],
+        ]}
+        note="技術選択は「物理的最適解」ではなく「時代の支配因子」で決まる。古舘さんが現役のあいだに非接地→接地への回帰議論が起きる可能性大"
+      />
+
       <h2 id="explain1">6. 深掘り解説①: なぜ「線間電圧V」を「対地電圧V/√3」に変換するのか</h2>
       <PlainExplain>
         <p style={{margin: '0 0 10px'}}><strong>問いの本質</strong>：問題文の電源は「線間電圧V」で与えられるのに、計算では「対地電圧」を使う。なぜ？</p>
@@ -897,6 +908,7 @@ function HichuseiJirakuPage({ onNav, data }) {
           <li>∴ I_g = √3 · ω · (C₁+C₂) · V = <strong>2√3 πfV(C₁+C₂)</strong></li>
         </ol>
         <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 覚え方：「1線地絡 = 健全2相が√3倍電圧で充電 → ベクトル和が√3倍 → 結局 √3×√3=3倍の電流が地絡点に集まる」と思うと、3相Cと√3の出処がスッキリ</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: 系統合計対地静電容量 (C₁+C₂) と 線間電圧V／成立条件: 完全地絡（Rg=0）かつ系統対称性</p>
       </PlainExplain>
 
       <h2 id="explain3">8. 深掘り解説③: 健全相√3倍の物理的意味（フェーザ図）</h2>
@@ -1040,6 +1052,7 @@ function HichuseiJirakuPage({ onNav, data }) {
           <li><strong>配電線路（他所）の地絡</strong>: C₂分が ZCT を流れる、向きは「内向き」</li>
           <li><strong>DGR（地絡方向継電器）</strong>はこの位相で判別。<strong>GR（無方向）</strong>は向き無視で誤動作（貰い事故）リスクあり</li>
         </ul>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: ZCT設置位置 と 需要設備内 C₂／成立条件: ZCTより負荷側に C₂ が存在</p>
       </PlainExplain>
 
       <h2 id="explain5">10. 深掘り解説⑤: 保護動作シーケンス（地絡発生→系統切離）</h2>
@@ -1093,6 +1106,7 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <PlainExplain>
         <p style={{margin: 0, fontSize: 13}}>💡 試験頻出ポイント：「<strong>GRは地絡を検出するだけ。実際に電流を切るのはCB</strong>」。GRとCBを混同すると正誤判定でひっかかる</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: GR動作整定値 と CB機械動作時間／成立条件: 上位系統との保護協調が確立</p>
       </PlainExplain>
 
       <h2 id="solve">11. 解き方・判断手順（5ステップ）</h2>
@@ -1184,18 +1198,47 @@ function HichuseiJirakuPage({ onNav, data }) {
       />
 
       <h2 id="related-laws">17. 関連法規（条文との対応）</h2>
+      <PlainExplain>
+        <p style={{margin: 0, fontSize: 13}}>📚 <strong>法規ピラミッド構造</strong>：上位（法律）から下位（解釈・規格）へ要求が具体化される。色分けで階層を視認</p>
+      </PlainExplain>
       <MemTable
-        headers={["法規", "条文/規程", "本ページとの関係"]}
+        headers={["階層", "法規/規程", "条文番号", "本ページとの関係"]}
         rows={[
-          ["電気事業法", "保安規程（第42条）", "地絡保護装置の設置・点検・整定が保安規程の必須事項"],
-          ["電気設備技術基準", "第15条（地絡遮断装置）", "高圧電路の地絡時に自動遮断する装置の設置義務"],
-          ["電技解釈", "第36条（地絡遮断装置の施設）", "GR動作整定値・遮断時間の具体規定"],
-          ["電技解釈", "第19条（保安上または機能上必要な場合における電路の接地）", "非接地方式の根拠条文"],
-          ["電技解釈", "第28条（混触防止）", "B種接地（1.7）と本ページの境界条文"],
-          ["電技解釈", "第17条（接地工事の種類）", "B種接地抵抗値の算定（1.7と関連）"],
+          [<span>🟥 法律</span>, "電気事業法", "第42条 保安規程", "事業用電気工作物設置者は保安規程の届出義務（地絡保護装置の設置・点検・整定が必須事項）"],
+          [<span>🟨 省令</span>, "電気設備技術基準", "第15条 地絡遮断装置", "高圧電路の地絡時に自動遮断する装置の設置義務"],
+          [<span>🟩 解釈</span>, "電技解釈", "第36条 地絡遮断装置の施設", "GR動作整定値・遮断時間の具体規定"],
+          [<span>🟩 解釈</span>, "電技解釈", "第19条 保安上または機能上必要な場合における電路の接地", "非接地方式の根拠条文"],
+          [<span>🟩 解釈</span>, "電技解釈", "第28条 混触防止措置", "B種接地（1.7）と本ページの境界条文"],
+          [<span>🟩 解釈</span>, "電技解釈", "第17条 接地工事の種類", "B種接地抵抗値の算定（1.7と関連）"],
         ]}
         note="法規B問題では条文番号と内容の組合せが問われる。整理しておくこと"
       />
+
+      <details style={{border: '1px solid var(--line)', borderRadius: 'var(--radius)', marginTop: 12, marginBottom: 24}}>
+        <summary style={{padding: '10px 14px', cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', background: 'var(--bg-2)'}}>
+          📄 主要条文の要点（クリックで展開）
+        </summary>
+        <div style={{padding: '14px 18px', fontSize: 13, lineHeight: 1.8, background: 'var(--bg-2)', borderTop: '1px solid var(--line)'}}>
+          <p style={{margin: '0 0 12px'}}><strong>🟨 電気設備に関する技術基準を定める省令 第15条（地絡に対する保護対策）</strong></p>
+          <p style={{margin: '0 0 4px', paddingLeft: 12, fontStyle: 'italic', borderLeft: '3px solid var(--accent)'}}>
+            [要点引用] 「電路には、地絡を生じた場合に電線若しくは電気機械器具の損傷、感電又は火災のおそれがないよう、地絡遮断器の施設その他の適切な措置を講じなければならない。ただし、電気機械器具を乾燥した場所に施設する等地絡による危険のおそれがない場合は、この限りでない。」
+          </p>
+          <p style={{margin: '12px 0 4px', fontSize: 12, color: 'var(--ink-3)'}}>※条文番号と要点を引用。完全な原文・最新改正は経済産業省令本文を参照</p>
+
+          <p style={{margin: '20px 0 12px'}}><strong>🟩 電気設備の技術基準の解釈 第19条（保安上又は機能上必要な場合における電路の接地）</strong></p>
+          <p style={{margin: '0 0 4px', paddingLeft: 12, fontStyle: 'italic', borderLeft: '3px solid var(--accent)'}}>
+            [要点引用] 高圧電路においては、中性点を接地する場合の規定及び、中性点を接地しない方式（非接地方式）も許容される旨の規定が含まれる。本ページが扱う6.6kV配電系統が非接地方式である根拠条文
+          </p>
+          <p style={{margin: '12px 0 4px', fontSize: 12, color: 'var(--ink-3)'}}>※条文番号のみ記載。完全な原文は経済産業省告示「電気設備の技術基準の解釈」最新版を参照</p>
+
+          <p style={{margin: '20px 0 12px'}}><strong>🟥 電気事業法 第42条（保安規程）</strong></p>
+          <p style={{margin: '0 0 4px', paddingLeft: 12, fontStyle: 'italic', borderLeft: '3px solid var(--accent)'}}>
+            [要点引用] 事業用電気工作物を設置する者は、当該事業用電気工作物の工事、維持及び運用に関する保安を確保するため、保安規程を定め、主務大臣に届け出なければならない
+          </p>
+          <p style={{margin: '12px 0 4px', fontSize: 12, color: 'var(--ink-3)'}}>※地絡保護装置の点検・整定値見直しは保安規程の実施事項として位置づけられる</p>
+        </div>
+      </details>
+
       <PlainExplain>
         <p style={{margin: 0, fontSize: 13}}>💡 <strong>本ページの位置づけ</strong>：技術基準第15条・解釈第36条が要求する「自動遮断」を、非接地系で実現する仕組みが ZCT+GR+CB。なぜ非接地でも保護が必要なのかは「非接地でも地絡電流は流れる」という本ページの結論が答え</p>
       </PlainExplain>
@@ -1218,6 +1261,7 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <NextAction nextPageId="zerosou-henryuki" nextPageTitle="零相変流器（ZCT）の仕組み" onNav={onNav} />
       <UpdateLog entries={[
+        { date: "2026-05-06", content: "v1.2: 条文要点引用＋法規ピラミッド色分け＋接地方式の歴史的変遷＋各深掘り解説に支配因子・成立条件明示", reason: "Gemini Gemプロンプト指針対応・第一原理思考の構造化" },
         { date: "2026-05-06", content: "v1.1: 接地方式比較表・フェーザ図SVG・実務メモ・関連法規・ひっかけ3項目を追加", reason: "ChatGPT 10点アドバイス対応・法規ページとしての網羅性向上" },
         { date: "2026-05-06", content: "v1.0: 初版作成（R05下問11対応）", reason: "R05下出題確認・容量性地絡電流の独立ページ化" },
       ]} />
@@ -1359,6 +1403,9 @@ function ZeroSouHenryukiPage({ onNav, data }) {
         "平常時: ベクトル和=0 → 磁束Φ=0 → 二次側に出力なし／地絡時: 和=3I₀ ≠ 0 → 磁束変化発生",
         "二次巻線: 電磁誘導（ファラデーの法則）でI₀に比例した電流を誘起 → GRへ入力",
       ]} />
+      <PlainExplain>
+        <p style={{margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: 鉄心内の磁束ベクトル和（i_a+i_b+i_c）／成立条件: 3線が同一鉄心を貫通／鉄心が磁気飽和域に入っていない</p>
+      </PlainExplain>
 
       <h2 id="flux-compare">7. 平常時 vs 地絡時の電流ベクトル比較</h2>
       <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
@@ -1423,6 +1470,7 @@ function ZeroSouHenryukiPage({ onNav, data }) {
           <li><strong>方式B: ZCT一括貫通</strong> — 鉄心内で磁束が物理的に合成・キャンセルされるため、平常時磁束はゼロ近傍。地絡時のみ磁束変化が発生し、二次に明瞭な信号が出る</li>
         </ul>
         <p style={{margin: '8px 0 0'}}><strong>結果</strong>：方式Bは方式Aの100〜1000倍の感度差。これがZCTが「零相変流器」と呼ばれる所以</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: 一括貫通による磁束物理合成／成立条件: 3線が同一鉄心の貫通孔を通る・鉄心が高透磁率材</p>
       </PlainExplain>
 
       <h2 id="design-notes">9. 設計上の肝（実務メモ）</h2>
