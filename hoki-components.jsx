@@ -107,16 +107,16 @@ function LawSource({ title, text, source, confirmedAt }) {
 function PlainExplain({ children }) {
   return (
     <div style={{
-      background: 'var(--accent-soft)',
-      border: '1px solid var(--accent)',
-      borderLeft: '4px solid var(--accent)',
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--line)',
+      borderLeft: '3px solid var(--ink-3)',
       borderRadius: 'var(--radius)',
       padding: '14px 18px',
       marginBottom: '24px',
       fontSize: '14px',
       lineHeight: '1.8',
     }}>
-      <div style={{ fontWeight: '700', fontSize: '12px', color: 'var(--accent)', marginBottom: '6px' }}>かみ砕き解説</div>
+      <div style={{ fontWeight: '600', fontSize: '12px', color: 'var(--ink-3)', marginBottom: '6px', letterSpacing: '0.05em' }}>かみ砕き解説</div>
       {children}
     </div>
   );
@@ -124,13 +124,13 @@ function PlainExplain({ children }) {
 
 function MemTable({ headers, rows, note }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <table className="mini-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <div style={{ marginBottom: '24px', overflowX: 'auto' }}>
+      <table className="mini-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', tableLayout: 'auto' }}>
         {headers && (
           <thead>
             <tr>
               {headers.map((h, i) => (
-                <th key={i} style={{ padding: '8px 12px', background: 'var(--bg-2)', borderBottom: '2px solid var(--line)', textAlign: 'left', fontSize: '12px', color: 'var(--ink-2)' }}>
+                <th key={i} style={{ padding: '8px 12px', background: 'var(--bg-2)', borderBottom: '2px solid var(--line)', textAlign: 'left', fontSize: '12px', color: 'var(--ink-2)', wordBreak: 'break-word' }}>
                   {h}
                 </th>
               ))}
@@ -141,7 +141,7 @@ function MemTable({ headers, rows, note }) {
           {rows.map((row, ri) => (
             <tr key={ri}>
               {(Array.isArray(row) ? row : [row]).map((cell, ci) => (
-                <td key={ci} style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)', verticalAlign: 'top' }}>
+                <td key={ci} style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)', verticalAlign: 'top', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                   {cell}
                 </td>
               ))}

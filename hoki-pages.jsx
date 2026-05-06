@@ -908,7 +908,7 @@ function HichuseiJirakuPage({ onNav, data }) {
           <li>∴ I_g = √3 · ω · (C₁+C₂) · V = <strong>2√3 πfV(C₁+C₂)</strong></li>
         </ol>
         <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 覚え方：「1線地絡 = 健全2相が√3倍電圧で充電 → ベクトル和が√3倍 → 結局 √3×√3=3倍の電流が地絡点に集まる」と思うと、3相Cと√3の出処がスッキリ</p>
-        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: 系統合計対地静電容量 (C₁+C₂) と 線間電圧V／成立条件: 完全地絡（Rg=0）かつ系統対称性</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: 系統合計対地静電容量 (C₁+C₂) と 線間電圧V／成立条件: 完全地絡（Rg=0）かつ系統対称性</p>
       </PlainExplain>
 
       <h2 id="explain3">8. 深掘り解説③: 健全相√3倍の物理的意味（フェーザ図）</h2>
@@ -1052,7 +1052,7 @@ function HichuseiJirakuPage({ onNav, data }) {
           <li><strong>配電線路（他所）の地絡</strong>: C₂分が ZCT を流れる、向きは「内向き」</li>
           <li><strong>DGR（地絡方向継電器）</strong>はこの位相で判別。<strong>GR（無方向）</strong>は向き無視で誤動作（貰い事故）リスクあり</li>
         </ul>
-        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: ZCT設置位置 と 需要設備内 C₂／成立条件: ZCTより負荷側に C₂ が存在</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: ZCT設置位置 と 需要設備内 C₂／成立条件: ZCTより負荷側に C₂ が存在</p>
       </PlainExplain>
 
       <h2 id="explain5">10. 深掘り解説⑤: 保護動作シーケンス（地絡発生→系統切離）</h2>
@@ -1106,7 +1106,7 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <PlainExplain>
         <p style={{margin: 0, fontSize: 13}}>💡 試験頻出ポイント：「<strong>GRは地絡を検出するだけ。実際に電流を切るのはCB</strong>」。GRとCBを混同すると正誤判定でひっかかる</p>
-        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: GR動作整定値 と CB機械動作時間／成立条件: 上位系統との保護協調が確立</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: GR動作整定値 と CB機械動作時間／成立条件: 上位系統との保護協調が確立</p>
       </PlainExplain>
 
       <h2 id="solve">11. 解き方・判断手順（5ステップ）</h2>
@@ -1202,14 +1202,14 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: 0, fontSize: 13}}>📚 <strong>法規ピラミッド構造</strong>：上位（法律）から下位（解釈・規格）へ要求が具体化される。色分けで階層を視認</p>
       </PlainExplain>
       <MemTable
-        headers={["階層", "法規/規程", "条文番号", "本ページとの関係"]}
+        headers={["階層", "法規・条文", "本ページとの関係"]}
         rows={[
-          [<span>🟥 法律</span>, "電気事業法", "第42条 保安規程", "事業用電気工作物設置者は保安規程の届出義務（地絡保護装置の設置・点検・整定が必須事項）"],
-          [<span>🟨 省令</span>, "電気設備技術基準", "第15条 地絡遮断装置", "高圧電路の地絡時に自動遮断する装置の設置義務"],
-          [<span>🟩 解釈</span>, "電技解釈", "第36条 地絡遮断装置の施設", "GR動作整定値・遮断時間の具体規定"],
-          [<span>🟩 解釈</span>, "電技解釈", "第19条 保安上または機能上必要な場合における電路の接地", "非接地方式の根拠条文"],
-          [<span>🟩 解釈</span>, "電技解釈", "第28条 混触防止措置", "B種接地（1.7）と本ページの境界条文"],
-          [<span>🟩 解釈</span>, "電技解釈", "第17条 接地工事の種類", "B種接地抵抗値の算定（1.7と関連）"],
+          [<span>🟥 法律</span>, <span><strong>電気事業法</strong><br/>第42条 保安規程</span>, "事業用電気工作物設置者は保安規程の届出義務（地絡保護装置の設置・点検・整定が必須事項）"],
+          [<span>🟨 省令</span>, <span><strong>電気設備技術基準</strong><br/>第15条 地絡遮断装置</span>, "高圧電路の地絡時に自動遮断する装置の設置義務"],
+          [<span>🟩 解釈</span>, <span><strong>電技解釈</strong><br/>第36条 地絡遮断装置の施設</span>, "GR動作整定値・遮断時間の具体規定"],
+          [<span>🟩 解釈</span>, <span><strong>電技解釈</strong><br/>第19条 電路の接地</span>, "非接地方式の根拠条文"],
+          [<span>🟩 解釈</span>, <span><strong>電技解釈</strong><br/>第28条 混触防止措置</span>, "B種接地（1.7）と本ページの境界条文"],
+          [<span>🟩 解釈</span>, <span><strong>電技解釈</strong><br/>第17条 接地工事の種類</span>, "B種接地抵抗値の算定（1.7と関連）"],
         ]}
         note="法規B問題では条文番号と内容の組合せが問われる。整理しておくこと"
       />
@@ -1404,7 +1404,7 @@ function ZeroSouHenryukiPage({ onNav, data }) {
         "二次巻線: 電磁誘導（ファラデーの法則）でI₀に比例した電流を誘起 → GRへ入力",
       ]} />
       <PlainExplain>
-        <p style={{margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: 鉄心内の磁束ベクトル和（i_a+i_b+i_c）／成立条件: 3線が同一鉄心を貫通／鉄心が磁気飽和域に入っていない</p>
+        <p style={{margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: 鉄心内の磁束ベクトル和（i_a+i_b+i_c）／成立条件: 3線が同一鉄心を貫通／鉄心が磁気飽和域に入っていない</p>
       </PlainExplain>
 
       <h2 id="flux-compare">7. 平常時 vs 地絡時の電流ベクトル比較</h2>
@@ -1470,7 +1470,7 @@ function ZeroSouHenryukiPage({ onNav, data }) {
           <li><strong>方式B: ZCT一括貫通</strong> — 鉄心内で磁束が物理的に合成・キャンセルされるため、平常時磁束はゼロ近傍。地絡時のみ磁束変化が発生し、二次に明瞭な信号が出る</li>
         </ul>
         <p style={{margin: '8px 0 0'}}><strong>結果</strong>：方式Bは方式Aの100〜1000倍の感度差。これがZCTが「零相変流器」と呼ばれる所以</p>
-        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 700, color: 'var(--accent)'}}>🎯 支配因子: 一括貫通による磁束物理合成／成立条件: 3線が同一鉄心の貫通孔を通る・鉄心が高透磁率材</p>
+        <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: 一括貫通による磁束物理合成／成立条件: 3線が同一鉄心の貫通孔を通る・鉄心が高透磁率材</p>
       </PlainExplain>
 
       <h2 id="design-notes">9. 設計上の肝（実務メモ）</h2>
