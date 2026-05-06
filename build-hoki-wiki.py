@@ -60,6 +60,15 @@ data_js   = read('hoki-data.js')
 comps_jsx = read('hoki-components.jsx')
 pages_jsx = read('hoki-pages.jsx')
 
+# 出題頻度ランキング JSON（サイドバー「テーマ別」タブで参照）
+ranking_json = read('data/hoki-theme-ranking.json')
+ranking_block = f"""
+<!-- 出題頻度ランキング（kakomon.yml H23-R07 自動集計） -->
+<script>
+window.HOKI_RANKING = {ranking_json};
+</script>
+"""
+
 # Babelスクリプトブロック
 script_block = f"""
 <script type="text/babel">
@@ -84,7 +93,7 @@ script_block = f"""
 
 # 組み立て（</head>を差し替え）
 output = css_head.replace('</head>', extra_css + '\n' + cdn)
-output += body_open + script_block
+output += body_open + ranking_block + script_block
 
 # 書き出し
 out_path = f'{BASE}/denken-hoki-wiki.html'

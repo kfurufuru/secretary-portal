@@ -453,10 +453,21 @@ function PageNav({ prevId, prevTitle, nextId, nextTitle, onNav }) {
 // 2. レイアウトコンポーネント
 // ============================================================
 
+// 出題頻度ランクの配色（commit 6519f1e より復活）
+const RANK_COLORS = { S: '#ef4444', A: '#f97316', B: '#3b82f6', C: '#22c55e' };
+const MKDOCS_BASE = 'https://kfurufuru.github.io/denken-wiki/';
+
 function Sidebar({ data, page, onNav }) {
+  const [sidebarMode, setSidebarMode] = React.useState(() => {
+    try { return localStorage.getItem('hoki_sidebar_mode') || 'theme'; }
+    catch (e) { return 'theme'; }
+  });
+  React.useEffect(() => {
+    try { localStorage.setItem('hoki_sidebar_mode', sidebarMode); } catch (e) {}
+  }, [sidebarMode]);
+
   const [openChapters, setOpenChapters] = React.useState(() => {
     if (!data || !data.chapters) return {};
-    // 現在のページを含むチャプターをデフォルトで開く
     const initial = {};
     data.chapters.forEach((ch, idx) => {
       if (ch.pages && ch.pages.some(p => p.id === page)) {
@@ -479,6 +490,18 @@ function Sidebar({ data, page, onNav }) {
     return null;
   };
 
+  // 内部ページIDが実在するか（WIKI_DATA から導出）
+  const validPageIds = React.useMemo(() => {
+    const set = new Set();
+    if (data && data.chapters) {
+      data.chapters.forEach(ch => (ch.pages || []).forEach(p => set.add(p.id)));
+    }
+    return set;
+  }, [data]);
+
+  const ranking = (typeof window !== 'undefined' && window.HOKI_RANKING) || null;
+  const themes = ranking && ranking.windows ? (ranking.windows['10y'] || []) : [];
+
   if (!data || !data.chapters) {
     return (
       <aside className="sidebar" style={{ padding: '16px', fontSize: '13px', color: 'var(--ink-3)' }}>
@@ -487,76 +510,162 @@ function Sidebar({ data, page, onNav }) {
     );
   }
 
+  const tabs = [{ id: 'theme', label: 'テーマ別' }, { id: 'chapter', label: 'チャプター別' }];
+
   return (
     <aside className="sidebar" style={{ height: '100vh', overflowY: 'auto', borderRight: '1px solid var(--line)', padding: '12px 0' }}>
       {data.title && (
-        <div style={{ padding: '10px 16px 16px', fontWeight: '700', fontSize: '14px', borderBottom: '1px solid var(--line)', marginBottom: '8px' }}>
+        <div style={{ padding: '10px 16px 12px', fontWeight: '700', fontSize: '14px' }}>
           {data.title}
         </div>
       )}
-      {data.chapters.map((ch, idx) => (
-        <div key={idx}>
-          <div
-            onClick={() => toggleChapter(idx)}
+      {/* タブ切替 */}
+      <div style={{ display: 'flex', padding: '0 12px', marginBottom: 8, gap: 4, borderBottom: '1px solid var(--line)' }}>
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setSidebarMode(tab.id)}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
+              padding: '7px 10px',
+              fontSize: 12,
+              background: 'transparent',
+              border: 'none',
               cursor: 'pointer',
-              fontSize: '12px',
-              fontWeight: '700',
-              color: 'var(--ink-2)',
-              background: openChapters[idx] ? 'var(--bg-2)' : 'transparent',
-              userSelect: 'none',
+              color: sidebarMode === tab.id ? 'var(--accent)' : 'var(--ink-3)',
+              fontWeight: 700,
+              borderBottom: sidebarMode === tab.id ? '2px solid var(--accent)' : '2px solid transparent',
+              marginBottom: -1,
             }}
           >
-            <span style={{ color: 'var(--ink-3)', fontSize: '10px' }}>{openChapters[idx] ? '▼' : '▶'}</span>
-            {ch.ch && <span style={{ fontSize: '10px', color: 'var(--ink-3)' }}>{ch.ch}</span>}
-            <span style={{ flex: 1 }}>{ch.title}</span>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {sidebarMode === 'theme' ? (
+        <div style={{ padding: '4px 0 8px' }}>
+          <div style={{ padding: '4px 16px 8px', fontSize: 10, color: 'var(--ink-3)', letterSpacing: '0.05em' }}>
+            出題頻度（過去10年・S/A/B/C順）
           </div>
-          {openChapters[idx] && ch.pages && ch.pages.map((p, pi) => {
-            const isActive = p.id === page;
+          {/* TOP行 */}
+          <div
+            onClick={() => onNav && onNav('top')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '7px 16px', fontSize: 12, cursor: 'pointer',
+              background: page === 'top' ? 'var(--accent-soft)' : 'transparent',
+              borderLeft: page === 'top' ? '3px solid var(--accent)' : '3px solid transparent',
+              color: page === 'top' ? 'var(--accent)' : 'var(--ink-2)',
+            }}
+          >
+            <span style={{ flex: 1 }}>🏠 すべてのテーマ（TOP）</span>
+          </div>
+          {themes.length === 0 && (
+            <div style={{ padding: '8px 16px', fontSize: 11, color: 'var(--ink-3)' }}>ランキングデータ未ロード</div>
+          )}
+          {themes.map((t, i) => {
+            const isInternal = t.pageId && validPageIds.has(t.pageId);
+            const isActive = isInternal && t.pageId === page;
+            const isClickable = isInternal || !!t.mkdocs;
+            const handleClick = () => {
+              if (isInternal) onNav && onNav(t.pageId);
+              else if (t.mkdocs) window.open(MKDOCS_BASE + 'themes/' + t.mkdocs + '/', '_blank', 'noopener');
+            };
             return (
               <div
-                key={pi}
-                onClick={() => onNav && onNav(p.id)}
+                key={t.slug || i}
+                onClick={isClickable ? handleClick : undefined}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '7px 16px 7px 28px',
-                  cursor: 'pointer',
-                  fontSize: '12px',
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '6px 16px', fontSize: 12,
+                  cursor: isClickable ? 'pointer' : 'default',
+                  opacity: isClickable ? 1 : 0.5,
                   background: isActive ? 'var(--accent-soft)' : 'transparent',
                   borderLeft: isActive ? '3px solid var(--accent)' : '3px solid transparent',
                   color: isActive ? 'var(--accent)' : 'var(--ink-2)',
-                  transition: 'background 0.1s',
                 }}
-                onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'var(--bg-2)'; }}
+                onMouseEnter={e => { if (isClickable && !isActive) e.currentTarget.style.background = 'var(--bg-2)'; }}
                 onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
               >
-                <span style={{ flex: 1, lineHeight: '1.4' }}>{p.title}</span>
-                {p.priority === 'required' && (
-                  <span className="priority-label">★必須</span>
+                <span style={{
+                  background: RANK_COLORS[t.rank] || 'var(--ink-3)',
+                  color: '#fff', fontSize: 9, fontWeight: 700,
+                  padding: '1px 5px', borderRadius: 3, minWidth: 14, textAlign: 'center',
+                }}>{t.rank}</span>
+                {!isInternal && t.mkdocs && (
+                  <span style={{ fontSize: 9, color: 'var(--ink-3)' }} title="外部Wiki（denken-wiki/themes）へ">↗</span>
                 )}
-                {p.freq === 'max' && <span className="freq-max">毎回</span>}
-                {p.freq === 'high' && <span className="freq-high">頻出</span>}
-                {p.twin && (
-                  <span
-                    title={`対となるページ: ${p.twin}`}
-                    onClick={e => { e.stopPropagation(); onNav && onNav(p.twin); }}
-                    style={{ cursor: 'pointer', color: 'var(--accent)', fontSize: '11px' }}
-                  >
-                    ↔
-                  </span>
-                )}
-                {getLastSeenBadge(p.id)}
+                <span style={{ flex: 1, lineHeight: 1.4 }}>{t.label}</span>
+                <span style={{ fontSize: 10, color: 'var(--ink-3)', fontVariantNumeric: 'tabular-nums' }}>{t.count}</span>
               </div>
             );
           })}
         </div>
-      ))}
+      ) : (
+        data.chapters.map((ch, idx) => (
+          <div key={idx}>
+            <div
+              onClick={() => toggleChapter(idx)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 16px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: '700',
+                color: 'var(--ink-2)',
+                background: openChapters[idx] ? 'var(--bg-2)' : 'transparent',
+                userSelect: 'none',
+              }}
+            >
+              <span style={{ color: 'var(--ink-3)', fontSize: '10px' }}>{openChapters[idx] ? '▼' : '▶'}</span>
+              {ch.ch && <span style={{ fontSize: '10px', color: 'var(--ink-3)' }}>{ch.ch}</span>}
+              <span style={{ flex: 1 }}>{ch.title}</span>
+            </div>
+            {openChapters[idx] && ch.pages && ch.pages.map((p, pi) => {
+              const isActive = p.id === page;
+              return (
+                <div
+                  key={pi}
+                  onClick={() => onNav && onNav(p.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '7px 16px 7px 28px',
+                    cursor: 'pointer',
+                    fontSize: '12px',
+                    background: isActive ? 'var(--accent-soft)' : 'transparent',
+                    borderLeft: isActive ? '3px solid var(--accent)' : '3px solid transparent',
+                    color: isActive ? 'var(--accent)' : 'var(--ink-2)',
+                    transition: 'background 0.1s',
+                  }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'var(--bg-2)'; }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+                >
+                  <span style={{ flex: 1, lineHeight: '1.4' }}>{p.title}</span>
+                  {p.priority === 'required' && (
+                    <span className="priority-label">★必須</span>
+                  )}
+                  {p.freq === 'max' && <span className="freq-max">毎回</span>}
+                  {p.freq === 'high' && <span className="freq-high">頻出</span>}
+                  {p.twin && (
+                    <span
+                      title={`対となるページ: ${p.twin}`}
+                      onClick={e => { e.stopPropagation(); onNav && onNav(p.twin); }}
+                      style={{ cursor: 'pointer', color: 'var(--accent)', fontSize: '11px' }}
+                    >
+                      ↔
+                    </span>
+                  )}
+                  {getLastSeenBadge(p.id)}
+                </div>
+              );
+            })}
+          </div>
+        ))
+      )}
       <div style={{ marginTop: '16px', padding: '12px 16px', borderTop: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
         <a href="https://kfurufuru.github.io/denken-wiki/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ink-3)', textDecoration: 'none', fontSize: '12px' }}>→ 理論Wiki（denken-wiki）</a>
         <a href="https://kfurufuru.github.io/secretary-portal/" style={{ color: 'var(--ink-3)', textDecoration: 'none', fontSize: '12px' }}>← ポータルに戻る</a>
