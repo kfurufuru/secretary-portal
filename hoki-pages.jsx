@@ -796,12 +796,33 @@ function HichuseiJirakuPage({ onNav, data }) {
       <ConclusionBox>
         <ul>
           <li><strong style={{color: 'var(--warn)'}}>⚠ 「非接地＝地絡電流ゼロ」は誤解</strong>。対地静電容量C経由で必ず流れる</li>
-          <li>系統全体の地絡電流: <strong>I_g = 2√3 πfV(C₁+C₂)</strong></li>
-          <li>ZCTが検出する電流: <strong>I₀ = 2√3 πfV·C₂</strong>（自設備分のみ）</li>
+          <li>地絡事故点の地絡電流: <strong>I_g = 2√3 πfV(C₁+C₂)</strong>（V=線間電圧、C₁=配電線路一相、C₂=需要設備一相）</li>
           <li>1線地絡で健全相の対地電圧は <strong>線間電圧V（=√3倍）</strong> に上昇</li>
-          <li>保護動作: <strong>ZCT検出 → GR判定 → CB遮断</strong>（合計 0.1〜2秒）</li>
+          <li>保護動作: <strong>ZCT検出 → GR/DGR判定 → CB遮断</strong></li>
+          <li>ZCTが検出する電流の式は<strong>事故点とZCT位置に依存</strong>（後述§4-2の注意ボックス参照）</li>
         </ul>
       </ConclusionBox>
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--line)',
+        borderLeft: '3px solid #a06',
+        borderRadius: 'var(--radius)',
+        padding: '14px 18px',
+        marginBottom: 24,
+      }}>
+        <div style={{fontWeight: 700, fontSize: 13, color: 'var(--ink-2)', marginBottom: 8, letterSpacing: '0.05em'}}>📋 試験用 最短解法カード（本番で式を選ぶ思考順序）</div>
+        <ol style={{margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9}}>
+          <li><strong>条件確認</strong>：「中性点非接地方式・三相3線式・1線完全地絡」を読み取る</li>
+          <li><strong>電圧の置換</strong>：与えられた V は<strong>線間電圧</strong>。対地電圧として扱う場合は <strong>V/√3</strong> に変換</li>
+          <li><strong>3相分の容量</strong>：1相あたり対地容量Cの3相分なので <strong>3·(C₁+C₂)</strong> が現れる</li>
+          <li><strong>公式適用</strong>：地絡電流 <strong>I_g = 2√3·πfV·(C₁+C₂)</strong> を即座に書く</li>
+          <li><strong>非接地でもゼロでない</strong>：C経由で必ず流れることを心に留める</li>
+        </ol>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)'}}>
+          💡 <strong>R5下期問11(a)はこの公式そのまま</strong>。対地電圧 V/√3 と 3相分C の組合せで、結局 <strong>√3 が公式に立つ</strong>のを覚える
+        </div>
+      </div>
 
       <MetaStrip
         ch="CH04"
@@ -816,26 +837,46 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <h2 id="exam-focus">3. 試験で問われること</h2>
       <ExamFocus items={[
-        { label: "主体",   value: "中性点非接地方式 三相3線式 高圧配電線路" },
-        { label: "対象",   value: "1線完全地絡時の地絡電流 I_g とZCT検出電流 I₀" },
-        { label: "公式",   value: "I_g = 2√3 πfV(C₁+C₂) ／ I₀ = 2√3 πfV·C₂" },
+        { label: "主体",   value: "中性点非接地方式 三相3線式 高圧配電線路（6.6kV配電が代表例）" },
+        { label: "電圧",   value: "Vは線間電圧として与えられる（対地電圧として使う時は V/√3）" },
+        { label: "容量",   value: "対地静電容量は1相あたり、3相分なので 3(C₁+C₂) が現れる" },
+        { label: "公式",   value: "I_g = 2√3 πfV(C₁+C₂) を即答できること（√3 は対地電圧変換とベクトル和合成の組合せ）" },
+        { label: "ゼロでない", value: "「非接地でも地絡電流はゼロではない」— C経由で必ず流れる" },
         { label: "条件",   value: "完全地絡（地絡抵抗Rg=0）／対称回路前提" },
-        { label: "応用",   value: "GR動作電流整定／DGRとGRの選択／保護協調" },
+        { label: "応用",   value: "ZCT検出電流の前提依存／DGRとGRの選択／保護協調" },
       ]} />
 
       <h2 id="abbrev">4. 略号と役割（保護システムの三役）</h2>
       <MemTable
         headers={["略号", "正式名称・日本語", "役割"]}
         rows={[
-          [<strong>ZCT</strong>, <span>Zero-phase Current Transformer<br/>零相変流器</span>, <span>3線を一括貫通しベクトル和を測る。<br/>平常時=0、地絡時のみ出力。<strong>「気付く」装置</strong></span>],
-          [<strong>GR</strong>, <span>Ground Relay<br/>地絡継電器</span>, <span>ZCT出力が整定値超過で動作信号を出す。<br/>動作電流200〜600mA、瞬時/限時設定。<strong>「判断する」装置</strong></span>],
-          [<strong>CB</strong>, <span>Circuit Breaker<br/>遮断器</span>, <span>GRからのトリップ信号で機械的に「閉→開」。<br/>アーク消弧で電流を切る。<strong>「行動する」装置</strong></span>],
-          [<strong>I_g</strong>, <span>Ground fault current<br/>地絡電流</span>, "系統全体で発生 = 2√3 πfV(C₁+C₂)"],
-          [<strong>I₀</strong>, <span>Zero-sequence current<br/>零相電流（ZCT検出）</span>, "ZCTが検出 = 2√3 πfV·C₂（自設備C₂分のみ）"],
+          [<strong>ZCT</strong>, <span>Zero-phase Current Transformer<br/>零相変流器</span>, <span>3線を一括貫通しベクトル和（零相電流）を検出。<br/>平常時=0、地絡時のみ出力。<strong>「気付く」装置</strong></span>],
+          [<strong>GR / DGR</strong>, <span>Ground Relay / Directional<br/>地絡継電器（無方向／方向）</span>, <span>ZCT出力が整定値超過で動作信号を出す。<br/>整定値・時限は<strong>設備条件・継電器種類・保護協調により異なる</strong>。<strong>「判断する」装置</strong></span>],
+          [<strong>CB</strong>, <span>Circuit Breaker<br/>遮断器</span>, <span>GR/DGRからのトリップ信号で機械的に「閉→開」。<br/>アーク消弧で電流を切る。<strong>「行動する」装置</strong></span>],
+          [<strong>I_g</strong>, <span>Ground fault current<br/>地絡電流</span>, "事故点の地絡電流 = 2√3 πfV(C₁+C₂)"],
+          [<strong>I_zct</strong>, <span>ZCT検出電流（零相電流）</span>, <span>ZCTを貫通する正味電流。<strong>事故点・ZCT位置・C₁/C₂の定義に依存</strong>（次の注意ボックス参照）</span>],
           [<strong>C₁ / C₂</strong>, <span>Line-to-ground capacitance<br/>対地静電容量</span>, "C₁=配電線路一相、C₂=需要設備一相"],
         ]}
-        note="ZCTは「気付く」、GRは「判断する」、CBは「行動する」。3つで1つの保護システム"
+        note="ZCTは「気付く」、GR/DGRは「判断する」、CBは「行動する」。3つで1つの保護システム"
       />
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--line)',
+        borderLeft: '3px solid var(--warn)',
+        borderRadius: 'var(--radius)',
+        padding: '14px 18px',
+        marginBottom: 24,
+      }}>
+        <div style={{fontWeight: 700, fontSize: 13, color: 'var(--ink-2)', marginBottom: 8}}>⚠ ZCT検出電流の式は前提に依存</div>
+        <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.9}}>
+          <li>ZCTは<strong>3線を一括して通し、零相電流（i_a+i_b+i_c）を検出</strong>する装置（構造原理は<a href="#" onClick={(e)=>{e.preventDefault();onNav('zerosou-henryuki');}} style={{color:'var(--accent)'}}>1.9 ZCTの仕組み</a>参照）</li>
+          <li><strong>検出電流の式は事故点・ZCT位置・回路構成で変わる</strong></li>
+          <li>R5下期問11(a) の問題図では <strong>I_zct = I_g</strong> として扱う（系統全体の Ig = 2√3πfV(C₁+C₂)）</li>
+          <li>R5下期問11(b) のように「需要設備内ZCT・需要設備内地絡」が問われる場合、<strong>需要設備のC₂分のみ</strong>がZCTを貫通（86mAなど）</li>
+          <li><strong>DGR（方向性）の電流方向判別</strong>は別論点。配電線路側 vs 需要設備側 の地絡で位相が逆転することを利用する保護</li>
+        </ul>
+      </div>
 
       <h2 id="setsuchi-compare">5. 中性点の接地方式 3種類の比較</h2>
       <PlainExplain>
@@ -964,139 +1005,124 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
         <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 1線地絡時の電流ループ（番号順に追えます／電験テキスト慣例の向き）</div>
-        <svg viewBox="0 0 820 480" style={{width: '100%', height: 'auto', background: '#fff'}}>
+        <svg viewBox="0 0 820 500" style={{width: '100%', height: 'auto', background: '#fff'}}>
           <defs>
-            <marker id="loopArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+            <marker id="loopArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
               <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
             </marker>
           </defs>
 
-          <text x="20" y="26" fontSize="13" fontWeight="700" fill="#222">a相地絡時のIg ループ（V_a → a相導体 → 地絡点 → 大地 → C_b → b相導体 → V_b → 内部還流）</text>
+          <text x="410" y="28" textAnchor="middle" fontSize="14" fontWeight="700" fill="#222">a相地絡時のIgループ（V_a → a相導体 → 地絡点 → 大地 → C_b → b相導体 → V_b → 内部還流）</text>
 
-          <line x1="70" y1="100" x2="70" y2="320" stroke="#888" strokeWidth="2"/>
-          <text x="55" y="365" fontSize="10" fill="#888">仮想</text>
-          <text x="55" y="378" fontSize="10" fill="#888">中性点</text>
+          <line x1="80" y1="120" x2="80" y2="360" stroke="#888" strokeWidth="2"/>
+          <text x="48" y="245" fontSize="11" fill="#888" transform="rotate(-90 48 245)">仮想中性点</text>
 
-          <circle cx="100" cy="100" r="14" fill="#fff" stroke="#d33" strokeWidth="2"/>
-          <text x="100" y="105" textAnchor="middle" fontSize="11" fill="#d33" fontWeight="700">V_a</text>
-          <line x1="70" y1="100" x2="86" y2="100" stroke="#888" strokeWidth="2"/>
+          <circle cx="120" cy="120" r="16" fill="#fff" stroke="#d33" strokeWidth="2"/>
+          <text x="120" y="125" textAnchor="middle" fontSize="12" fill="#d33" fontWeight="700">V_a</text>
+          <line x1="80" y1="120" x2="104" y2="120" stroke="#888" strokeWidth="2"/>
 
-          <circle cx="100" cy="210" r="14" fill="#fff" stroke="#2a8" strokeWidth="2"/>
-          <text x="100" y="215" textAnchor="middle" fontSize="11" fill="#2a8" fontWeight="700">V_b</text>
-          <line x1="70" y1="210" x2="86" y2="210" stroke="#888" strokeWidth="2"/>
+          <circle cx="120" cy="240" r="16" fill="#fff" stroke="#2a8" strokeWidth="2"/>
+          <text x="120" y="245" textAnchor="middle" fontSize="12" fill="#2a8" fontWeight="700">V_b</text>
+          <line x1="80" y1="240" x2="104" y2="240" stroke="#888" strokeWidth="2"/>
 
-          <circle cx="100" cy="320" r="14" fill="#fff" stroke="#27c" strokeWidth="2"/>
-          <text x="100" y="325" textAnchor="middle" fontSize="11" fill="#27c" fontWeight="700">V_c</text>
-          <line x1="70" y1="320" x2="86" y2="320" stroke="#888" strokeWidth="2"/>
+          <circle cx="120" cy="360" r="16" fill="#fff" stroke="#27c" strokeWidth="2"/>
+          <text x="120" y="365" textAnchor="middle" fontSize="12" fill="#27c" fontWeight="700">V_c</text>
+          <line x1="80" y1="360" x2="104" y2="360" stroke="#888" strokeWidth="2"/>
 
-          <line x1="114" y1="100" x2="450" y2="100" stroke="#d33" strokeWidth="2.5"/>
-          <line x1="114" y1="210" x2="450" y2="210" stroke="#2a8" strokeWidth="2.5"/>
-          <line x1="114" y1="320" x2="450" y2="320" stroke="#bbb" strokeWidth="2"/>
+          <line x1="136" y1="120" x2="640" y2="120" stroke="#d33" strokeWidth="2.5"/>
+          <text x="155" y="112" fontSize="11" fill="#d33">a相導体</text>
+          <line x1="136" y1="240" x2="640" y2="240" stroke="#2a8" strokeWidth="2.5"/>
+          <text x="155" y="232" fontSize="11" fill="#2a8">b相導体</text>
+          <line x1="136" y1="360" x2="640" y2="360" stroke="#bbb" strokeWidth="2"/>
+          <text x="155" y="352" fontSize="11" fill="#bbb">c相導体</text>
 
-          <line x1="180" y1="100" x2="180" y2="135" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
-          <line x1="170" y1="135" x2="190" y2="135" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
-          <line x1="170" y1="142" x2="190" y2="142" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
-          <line x1="180" y1="142" x2="180" y2="395" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
-          <text x="195" y="145" fontSize="11" fill="#bbb">C_a（地絡で短絡 → 電流0）</text>
+          <line x1="240" y1="120" x2="240" y2="160" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <line x1="225" y1="160" x2="255" y2="160" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="225" y1="168" x2="255" y2="168" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="240" y1="168" x2="240" y2="430" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="262" y="167" fontSize="11" fill="#bbb">C_a（地絡で短絡 → 電流0）</text>
 
-          <line x1="280" y1="210" x2="280" y2="245" stroke="#2a8" strokeWidth="2.5"/>
-          <line x1="265" y1="245" x2="295" y2="245" stroke="#2a8" strokeWidth="3"/>
-          <line x1="265" y1="253" x2="295" y2="253" stroke="#2a8" strokeWidth="3"/>
-          <text x="302" y="253" fontSize="13" fill="#2a8" fontWeight="700">C_b</text>
-          <line x1="280" y1="253" x2="280" y2="395" stroke="#2a8" strokeWidth="2.5"/>
+          <line x1="380" y1="240" x2="380" y2="285" stroke="#2a8" strokeWidth="2.5"/>
+          <line x1="362" y1="285" x2="398" y2="285" stroke="#2a8" strokeWidth="3"/>
+          <line x1="362" y1="295" x2="398" y2="295" stroke="#2a8" strokeWidth="3"/>
+          <text x="406" y="295" fontSize="14" fill="#2a8" fontWeight="700">C_b</text>
+          <line x1="380" y1="295" x2="380" y2="430" stroke="#2a8" strokeWidth="2.5"/>
 
-          <line x1="380" y1="320" x2="380" y2="355" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
-          <line x1="370" y1="355" x2="390" y2="355" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
-          <line x1="370" y1="363" x2="390" y2="363" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
-          <line x1="380" y1="363" x2="380" y2="395" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
-          <text x="395" y="370" fontSize="11" fill="#bbb">C_c（c相は同様の経路あり）</text>
+          <line x1="510" y1="360" x2="510" y2="390" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <line x1="495" y1="390" x2="525" y2="390" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="495" y1="398" x2="525" y2="398" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="510" y1="398" x2="510" y2="430" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="532" y="397" fontSize="11" fill="#bbb">C_c（c相は同様の経路）</text>
 
-          <line x1="450" y1="100" x2="450" y2="395" stroke="#a06" strokeWidth="3"/>
-          <line x1="442" y1="92" x2="458" y2="108" stroke="#a06" strokeWidth="2.5"/>
-          <line x1="458" y1="92" x2="442" y2="108" stroke="#a06" strokeWidth="2.5"/>
-          <text x="465" y="100" fontSize="11" fill="#a06" fontWeight="700">地絡点</text>
-          <text x="465" y="113" fontSize="10" fill="#a06">(Rg=0)</text>
+          <line x1="640" y1="120" x2="640" y2="430" stroke="#a06" strokeWidth="3"/>
+          <line x1="630" y1="110" x2="650" y2="130" stroke="#a06" strokeWidth="3"/>
+          <line x1="650" y1="110" x2="630" y2="130" stroke="#a06" strokeWidth="3"/>
+          <text x="660" y="120" fontSize="12" fill="#a06" fontWeight="700">地絡点</text>
+          <text x="660" y="135" fontSize="11" fill="#a06">(Rg=0)</text>
 
-          <line x1="120" y1="395" x2="455" y2="395" stroke="#666" strokeWidth="2.5"/>
-          <line x1="120" y1="403" x2="130" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="145" y1="403" x2="155" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="170" y1="403" x2="180" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="195" y1="403" x2="205" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="220" y1="403" x2="230" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="245" y1="403" x2="255" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="270" y1="403" x2="280" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="295" y1="403" x2="305" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="320" y1="403" x2="330" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="345" y1="403" x2="355" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="370" y1="403" x2="380" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="395" y1="403" x2="405" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="420" y1="403" x2="430" y2="395" stroke="#666" strokeWidth="1"/>
-          <line x1="445" y1="403" x2="455" y2="395" stroke="#666" strokeWidth="1"/>
-          <text x="120" y="425" fontSize="11" fill="#666">大地</text>
+          <line x1="160" y1="430" x2="650" y2="430" stroke="#666" strokeWidth="2.5"/>
+          <line x1="170" y1="438" x2="180" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="200" y1="438" x2="210" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="230" y1="438" x2="240" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="260" y1="438" x2="270" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="290" y1="438" x2="300" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="320" y1="438" x2="330" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="350" y1="438" x2="360" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="380" y1="438" x2="390" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="410" y1="438" x2="420" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="440" y1="438" x2="450" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="470" y1="438" x2="480" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="500" y1="438" x2="510" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="530" y1="438" x2="540" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="560" y1="438" x2="570" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="590" y1="438" x2="600" y2="430" stroke="#666" strokeWidth="1"/>
+          <line x1="620" y1="438" x2="630" y2="430" stroke="#666" strokeWidth="1"/>
+          <text x="668" y="435" fontSize="11" fill="#666">大地</text>
 
-          <line x1="160" y1="100" x2="430" y2="100" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="280" cy="85" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="280" y="90" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">1</text>
+          <line x1="180" y1="120" x2="610" y2="120" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="395" cy="100" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="395" y="105" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">1</text>
 
-          <line x1="450" y1="125" x2="450" y2="380" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="465" cy="240" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="465" y="245" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">2</text>
+          <line x1="640" y1="150" x2="640" y2="410" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="660" cy="280" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="660" y="285" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">2</text>
 
-          <line x1="440" y1="395" x2="290" y2="395" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="370" cy="382" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="370" y="387" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">3</text>
+          <line x1="620" y1="430" x2="395" y2="430" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="510" cy="448" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="510" y="453" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">3</text>
 
-          <line x1="280" y1="390" x2="280" y2="370" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="265" cy="380" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="265" y="385" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">4</text>
+          <line x1="380" y1="425" x2="380" y2="305" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="358" cy="370" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="358" y="375" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">4</text>
 
-          <line x1="280" y1="240" x2="280" y2="220" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="265" cy="225" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="265" y="230" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">5</text>
+          <line x1="380" y1="280" x2="380" y2="255" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="358" cy="265" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="358" y="270" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">5</text>
 
-          <line x1="160" y1="210" x2="125" y2="210" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="135" cy="195" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="135" y="200" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">6</text>
+          <line x1="360" y1="240" x2="142" y2="240" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="245" cy="222" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="245" y="227" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">6</text>
 
-          <path d="M 86 210 Q 50 210 50 86 Q 50 86 100 86" fill="none" stroke="#a06" strokeWidth="3" strokeDasharray="5,3" markerEnd="url(#loopArr)"/>
-          <circle cx="38" cy="155" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
-          <text x="38" y="160" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">7</text>
-
-          <g fontSize="12" fill="#222">
-            <text x="540" y="50" fontSize="13" fontWeight="700" fill="#0e3a6e">Igループのトレース（テキスト慣例）</text>
-
-            <text x="540" y="78" fill="#a06" fontWeight="700">①</text>
-            <text x="558" y="78">V_a → a相導体を右へ（地絡点へ）</text>
-
-            <text x="540" y="105" fill="#a06" fontWeight="700">②</text>
-            <text x="558" y="105">a相導体 → 地絡点 → 大地へ降下（=Ig）</text>
-
-            <text x="540" y="132" fill="#a06" fontWeight="700">③</text>
-            <text x="558" y="132">大地を経由して左へ（C_b の足元へ）</text>
-
-            <text x="540" y="159" fill="#a06" fontWeight="700">④</text>
-            <text x="558" y="159">C_b の下端から上昇</text>
-
-            <text x="540" y="186" fill="#a06" fontWeight="700">⑤</text>
-            <text x="558" y="186">C_b の上端 → b相導体へ抜ける</text>
-
-            <text x="540" y="213" fill="#a06" fontWeight="700">⑥</text>
-            <text x="558" y="213">b相導体を左へ → V_b へ還流</text>
-
-            <text x="540" y="240" fill="#a06" fontWeight="700">⑦</text>
-            <text x="558" y="240">V_b → 仮想中性点 → V_a に戻り 1ループ完了</text>
-
-            <text x="540" y="280" fontSize="13" fontWeight="700" fill="#0e3a6e">同時並行ループ</text>
-            <text x="540" y="302">c相も <strong>地絡点 → 大地 → C_c → c相導体 → V_c</strong></text>
-            <text x="540" y="322">の経路で同型ループを並行して流れる</text>
-
-            <text x="540" y="358" fontSize="13" fontWeight="700" fill="#a11">なぜ「3相分のC」が式に入るか</text>
-            <text x="540" y="380">→ Ig の還流路は健全2相のC（C_b と C_c）の <strong>両方</strong></text>
-            <text x="540" y="400">を経由する。地絡電流 I_g は</text>
-            <text x="540" y="420" fontFamily="serif" fontSize="14" fill="#a06" fontWeight="700">I_b + I_c の合成 = √3 · ωC · V</text>
-          </g>
+          <path d="M 104 240 Q 60 240 60 120 Q 60 120 104 120" fill="none" stroke="#a06" strokeWidth="3" strokeDasharray="5,3" markerEnd="url(#loopArr)"/>
+          <circle cx="38" cy="180" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="38" y="185" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">7</text>
         </svg>
-        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ <strong>電験テキスト慣例の方向</strong>（V_a 駆動・地絡点で大地へ降下する Ig 視点）。AC電流のため向きは50/60Hzで反転を繰り返す。<strong>①〜⑦の番号順に追えば1ループ完結</strong>。c相も同形のループを並行して流れる。C_a は地絡点で短絡されているため電流ゼロ（描画は薄く）</div>
+
+        <ol style={{margin: '12px 0 0', paddingLeft: 0, listStyle: 'none', fontSize: 13, lineHeight: 1.9}}>
+          <li style={{padding: '4px 0', borderBottom: '1px solid var(--line)'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>①</span><strong>V_a → a相導体を右へ</strong>（地絡点に向かう）</li>
+          <li style={{padding: '4px 0', borderBottom: '1px solid var(--line)'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>②</span><strong>地絡点 → 大地へ降下</strong>（これが Ig）</li>
+          <li style={{padding: '4px 0', borderBottom: '1px solid var(--line)'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>③</span><strong>大地を経由して左へ</strong>（C_b の足元へ向かう）</li>
+          <li style={{padding: '4px 0', borderBottom: '1px solid var(--line)'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>④</span><strong>C_b の下端から上昇</strong>（健全相のCを通過）</li>
+          <li style={{padding: '4px 0', borderBottom: '1px solid var(--line)'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>⑤</span><strong>C_b の上端 → b相導体へ抜ける</strong></li>
+          <li style={{padding: '4px 0', borderBottom: '1px solid var(--line)'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>⑥</span><strong>b相導体を左へ → V_b へ還流</strong></li>
+          <li style={{padding: '4px 0'}}><span style={{display: 'inline-block', width: 28, height: 22, lineHeight: '22px', textAlign: 'center', background: '#a06', color: '#fff', fontWeight: 700, borderRadius: 11, marginRight: 8, fontSize: 12}}>⑦</span><strong>V_b → 仮想中性点 → V_a に戻り 1ループ完了</strong></li>
+        </ol>
+
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 12, padding: '10px 14px', background: 'var(--bg-2)', borderRadius: 'var(--radius)', borderLeft: '3px solid var(--ink-3)'}}>
+          <strong>同時並行ループ</strong>：c相も <strong>地絡点 → 大地 → C_c → c相導体 → V_c</strong> の経路で同型ループを並行して流れる。<br/>
+          <strong>「3相分のC」が式に入る理由</strong>：Ig の還流路は健全2相のC（C_b と C_c）の<strong>両方</strong>を経由する。地絡電流 I_g = I_b + I_c の合成 = √3·ωC·V
+        </div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ <strong>電験テキスト慣例の方向</strong>（V_a 駆動・地絡点で大地へ降下する Ig 視点）。AC電流のため向きは50/60Hzで反転。C_a は地絡点で短絡されているため電流ゼロ（点線で薄く描画）</div>
       </div>
       <MemTable
         headers={["相", "平常時の対地電圧", "1線地絡時（a相地絡）の対地電圧"]}
@@ -1410,32 +1436,86 @@ function HichuseiJirakuPage({ onNav, data }) {
       <h2 id="traps">13. よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "中性点非接地方式なら地絡電流はゼロで安全",         correct: "対地静電容量C経由で地絡電流は必ず流れる（ゼロではない）" },
+        { wrong: "Vをそのまま相電圧（対地電圧）として使って計算",   correct: "Vは線間電圧。対地電圧として使うときは V/√3 に変換する" },
+        { wrong: "C₁またはC₂のどちらか片方だけで Ig を計算",         correct: "Ig = 2√3πfV·(C₁+C₂)。両方の和を使う" },
+        { wrong: "健全相の対地電圧は地絡時も V/√3 のまま",          correct: "1線地絡時、健全相の対地電圧は線間電圧V（=√3倍）に上昇" },
+        { wrong: "ZCT・GR・CB の役割を混同（どれが切るか）",         correct: "ZCT=検出、GR/DGR=判定、CB=遮断 の役割分担" },
         { wrong: "非接地系では地絡電流が流れないので保護装置不要",   correct: "ZCT+GR+CBの保護装置は必須。法的にも要求される" },
         { wrong: "非接地方式は接地方式より安全",                     correct: "健全相の対地電圧が√3倍に上昇するため絶縁負担は大きい" },
-        { wrong: "ZCTが検出するのは系統全体の地絡電流 I_g",         correct: "ZCTが検出するのは自設備内のC₂分のみ（I₀=2√3πfVC₂）" },
-        { wrong: "C₁の方が大きいから検出電流もC₁基準で計算",         correct: "C₁はZCTを貫通せず検出されない（電源側で完結）" },
-        { wrong: "地絡時の対地電圧は変化しない",                       correct: "健全相の対地電圧は √3倍（線間電圧V）に上昇" },
+        { wrong: "ZCTが検出する電流の式は常に I₀=2√3πfV·C₂",        correct: "ZCT検出式は事故点・ZCT位置・回路構成に依存。R5下問11(a)では I_zct = I_g" },
         { wrong: "GRが電流を遮断する",                                 correct: "GRは検出・判定のみ。実際に切るのはCB（遮断器）" },
         { wrong: "GRさえあれば全ての地絡を確実に切れる",              correct: "GR（無方向）は他所の地絡で誤動作リスク → DGR（方向）が確実" },
         { wrong: "中性点非接地なら対地電圧は不明",                    correct: "平常時はV/√3（対称性により）、地絡時のみ変化" },
       ]} />
 
-      <h2 id="exam-r05">14. 過去問: R05下 問11</h2>
+      <h2 id="exam-r05">14. 過去問: R05下 問11（完成版・(a)(b)解法フロー）</h2>
       <ExamQuestion
         year="令和5年下期"
-        qNum="11"
-        question="図のように、中性点非接地方式の三相3線式高圧配電線路に接続された需要設備において、需要設備付近で1線地絡事故が発生した。線間電圧V[V]、周波数f[Hz]、高圧配電線路一相の全対地静電容量C₁[F]、需要設備一相の全対地静電容量C₂[F]、地絡抵抗Rg=0[Ω]（完全地絡）とする。"
-        note="(a) 地絡電流 I_g [A] の式を求めよ ／ (b) V=6,600V, f=60Hz, C₁=2.3μF, C₂=0.02μF のとき、需要設備内のZCTが検出する電流[mA]を求めよ"
+        qNum="11(a)"
+        question="図のように、中性点非接地方式の三相3線式高圧配電線路に接続された需要設備において、需要設備付近で1線地絡事故が発生した。地絡電流 I_g [A] を求める式として正しいものはどれか。"
+        choices={[
+          "I_g = 2π fV(C₁+C₂)",
+          "I_g = √3 π fV(C₁+C₂)",
+          "I_g = 2√3 π fV·C₁",
+          "I_g = 2√3 π fV(C₁+C₂)",
+        ]}
+        note="V=線間電圧[V]、f=周波数[Hz]、C₁=高圧配電線路一相の全対地静電容量[F]、C₂=需要設備一相の全対地静電容量[F]、地絡抵抗Rg=0Ω"
       />
+
+      <SolveFlow type="解法 (a)" steps={[
+        "条件確認：中性点非接地・1線完全地絡・対称回路",
+        "対地電圧の置換：地絡時、健全相の対地電圧は V/√3 → V（線間電圧）に上昇",
+        "1相あたりの充電電流：I = ωC × V（V=線間電圧、ωC=2πfC）",
+        "ベクトル合成：健全2相のCを流れる充電電流（60°位相差）の和 = √3·ωC·V",
+        "系統合計C適用：C = C₁+C₂（線路+需要設備）として代入",
+        "結果：I_g = √3 · 2πf · (C₁+C₂) · V = 2√3·πfV·(C₁+C₂) → 選択肢④",
+      ]} />
+
       <ExamAnswer
-        correct="(a) I_g = 2√3 πfV(C₁+C₂) ／ (b) 86 mA"
+        correct="(a) ④ I_g = 2√3 π fV(C₁+C₂)"
         explanations={[
-          { choice: "(a)", mark: "○", reason: "1線完全地絡時、健全2相の対地電圧が線間電圧Vに上昇。各健全相の充電電流をベクトル合成して I_g = √3·ωV·(C₁+C₂) = 2√3 πfV(C₁+C₂)" },
-          { choice: "(b)", mark: "○", reason: "I₀ = 2√3 πfV·C₂ = 2×1.732×3.1416×60×6,600×0.02×10⁻⁶ ≈ 0.0862 A = 86 mA。C₂分のみがZCTを貫通する" },
-          { choice: "誤答62", mark: "×", reason: "√3を√2と勘違いした場合の値" },
-          { choice: "誤答9925", mark: "×", reason: "C₂をC₁と取り違えた場合の値（系統全体のC₁分=I_C1）" },
+          { choice: "①", mark: "×", reason: "√3 が抜けている。対地電圧変換（V/√3）と健全相昇圧（√3倍）の組合せで √3 が必須" },
+          { choice: "②", mark: "×", reason: "係数が 2 ではなく 1。ω=2πf を忘れた場合の値" },
+          { choice: "③", mark: "×", reason: "C₂を忘れている。系統全体のCは C₁+C₂ の和" },
+          { choice: "④", mark: "○", reason: "正解。√3 は対地電圧変換とベクトル和合成の両方が効く。ωC = 2πfC を展開した形" },
         ]}
       />
+
+      <ExamQuestion
+        year="令和5年下期"
+        qNum="11(b)"
+        question="(a)に加えて、V=6,600V、f=60Hz、C₁=2.3μF、C₂=0.02μF のとき、需要設備内のZCTが検出する電流[mA]として最も近い値はどれか（需要設備内ZCT・需要設備側地絡の前提）。"
+        choices={["62 mA", "86 mA", "150 mA", "9,925 mA"]}
+        note="ZCTが検出するのは ZCTを貫通する正味電流。需要設備内地絡では C₂分のみ"
+      />
+
+      <SolveFlow type="解法 (b)" steps={[
+        "前提整理：需要設備内ZCT＋需要設備内地絡 → 配電線路側C₁分はZCTを貫通せず",
+        "検出式：I_zct = 2√3·πfV·C₂（C₁分は外側で完結するため）",
+        "数値代入：2 × 1.732 × 3.1416 × 60 × 6,600 × 0.02×10⁻⁶",
+        "計算：≈ 0.0862 A = 86 mA → 選択肢②",
+      ]} />
+
+      <ExamAnswer
+        correct="(b) ② 86 mA"
+        explanations={[
+          { choice: "①", mark: "×", reason: "62 mA。√3 を √2 で計算したケース（1.414倍を1.732倍と勘違い回避できず）" },
+          { choice: "②", mark: "○", reason: "正解。2√3·πfV·C₂ = 2×1.732×3.14×60×6600×2×10⁻⁸ ≈ 0.086 A = 86mA" },
+          { choice: "③", mark: "×", reason: "150 mA。係数の取り違えや計算ミスで生じうる値" },
+          { choice: "④", mark: "×", reason: "9,925 mA。C₂をC₁(=2.3μF) で計算してしまった場合の値" },
+        ]}
+      />
+
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>R5下問11 のひっかけポイント</strong></p>
+        <ol style={{margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9}}>
+          <li><strong>(a)で「2π」と書いて √3 を忘れる</strong> — 健全相√3倍昇圧の効果を忘れる典型ミス</li>
+          <li><strong>(a)で C₁ だけで計算</strong> — 「需要設備一相C₂は無視できる」と誤認</li>
+          <li><strong>(b)で C₁+C₂ で計算（=9,925mA）</strong> — (a)の式をそのまま使ってしまう（前提が違う）</li>
+          <li><strong>(b)で C₁ で計算</strong> — C₁分はZCT外で完結するので検出されない</li>
+          <li><strong>単位ミス</strong>：μF → F、kV → V、結果を A → mA</li>
+        </ol>
+      </PlainExplain>
 
       <h2 id="related-problems">15. 類題対応シナリオ</h2>
       <MemTable
@@ -1536,6 +1616,7 @@ function HichuseiJirakuPage({ onNav, data }) {
 
       <NextAction nextPageId="zerosou-henryuki" nextPageTitle="零相変流器（ZCT）の仕組み" onNav={onNav} />
       <UpdateLog entries={[
+        { date: "2026-05-06", content: "v1.3: 試験用最短解法カード追加・ZCT検出電流の前提依存を独立ボックス化・R05下問11(a)(b)解法フロー完成・§7 SVG上下分割・GR整定値の断定削除", reason: "ChatGPT 7点アドバイス対応（断定回避・最短解法導線・前提明示）" },
         { date: "2026-05-06", content: "v1.2: 条文要点引用＋法規ピラミッド色分け＋接地方式の歴史的変遷＋各深掘り解説に支配因子・成立条件明示", reason: "Gemini Gemプロンプト指針対応・第一原理思考の構造化" },
         { date: "2026-05-06", content: "v1.1: 接地方式比較表・フェーザ図SVG・実務メモ・関連法規・ひっかけ3項目を追加", reason: "ChatGPT 10点アドバイス対応・法規ページとしての網羅性向上" },
         { date: "2026-05-06", content: "v1.0: 初版作成（R05下問11対応）", reason: "R05下出題確認・容量性地絡電流の独立ページ化" },
