@@ -963,15 +963,15 @@ function HichuseiJirakuPage({ onNav, data }) {
       </PlainExplain>
 
       <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
-        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 b相経由の電流ループ（番号順に追えます）</div>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 1線地絡時の電流ループ（番号順に追えます／電験テキスト慣例の向き）</div>
         <svg viewBox="0 0 820 480" style={{width: '100%', height: 'auto', background: '#fff'}}>
           <defs>
             <marker id="loopArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
-              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
             </marker>
           </defs>
 
-          <text x="20" y="26" fontSize="13" fontWeight="700" fill="#222">b相充電電流の流れ（V_b → C_b → 大地 → 地絡点 → a相導体 → V_a → 内部還流）</text>
+          <text x="20" y="26" fontSize="13" fontWeight="700" fill="#222">a相地絡時のIg ループ（V_a → a相導体 → 地絡点 → 大地 → C_b → b相導体 → V_b → 内部還流）</text>
 
           <line x1="70" y1="100" x2="70" y2="320" stroke="#888" strokeWidth="2"/>
           <text x="55" y="365" fontSize="10" fill="#888">仮想</text>
@@ -1034,69 +1034,69 @@ function HichuseiJirakuPage({ onNav, data }) {
           <line x1="445" y1="403" x2="455" y2="395" stroke="#666" strokeWidth="1"/>
           <text x="120" y="425" fontSize="11" fill="#666">大地</text>
 
-          <line x1="125" y1="210" x2="160" y2="210" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="135" cy="195" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
-          <text x="135" y="200" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">1</text>
+          <line x1="160" y1="100" x2="430" y2="100" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="280" cy="85" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="280" y="90" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">1</text>
 
-          <line x1="280" y1="220" x2="280" y2="240" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="265" cy="225" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
-          <text x="265" y="230" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">2</text>
+          <line x1="450" y1="125" x2="450" y2="380" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="465" cy="240" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="465" y="245" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">2</text>
 
-          <line x1="280" y1="370" x2="280" y2="390" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="265" cy="380" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
-          <text x="265" y="385" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">3</text>
+          <line x1="440" y1="395" x2="290" y2="395" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="370" cy="382" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="370" y="387" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">3</text>
 
-          <line x1="290" y1="395" x2="440" y2="395" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="370" cy="382" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
-          <text x="370" y="387" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">4</text>
+          <line x1="280" y1="390" x2="280" y2="370" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="265" cy="380" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="265" y="385" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">4</text>
 
-          <line x1="450" y1="380" x2="450" y2="125" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="465" cy="240" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
-          <text x="465" y="245" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">5</text>
+          <line x1="280" y1="240" x2="280" y2="220" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="265" cy="225" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="265" y="230" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">5</text>
 
-          <line x1="430" y1="100" x2="125" y2="100" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
-          <circle cx="280" cy="85" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
-          <text x="280" y="90" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">6</text>
+          <line x1="160" y1="210" x2="125" y2="210" stroke="#a06" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="135" cy="195" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="135" y="200" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">6</text>
 
-          <path d="M 100 86 Q 50 86 50 210 Q 50 250 86 210" fill="none" stroke="#2a8" strokeWidth="3" strokeDasharray="5,3" markerEnd="url(#loopArr)"/>
-          <circle cx="38" cy="155" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <path d="M 86 210 Q 50 210 50 86 Q 50 86 100 86" fill="none" stroke="#a06" strokeWidth="3" strokeDasharray="5,3" markerEnd="url(#loopArr)"/>
+          <circle cx="38" cy="155" r="11" fill="#a06" stroke="#fff" strokeWidth="2"/>
           <text x="38" y="160" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">7</text>
 
           <g fontSize="12" fill="#222">
-            <text x="540" y="50" fontSize="13" fontWeight="700" fill="#0e3a6e">電流ループのトレース</text>
+            <text x="540" y="50" fontSize="13" fontWeight="700" fill="#0e3a6e">Igループのトレース（テキスト慣例）</text>
 
-            <text x="540" y="78" fill="#2a8" fontWeight="700">①</text>
-            <text x="558" y="78">V_b 出 → b相導体を右へ</text>
+            <text x="540" y="78" fill="#a06" fontWeight="700">①</text>
+            <text x="558" y="78">V_a → a相導体を右へ（地絡点へ）</text>
 
-            <text x="540" y="105" fill="#2a8" fontWeight="700">②</text>
-            <text x="558" y="105">b相導体 → C_b の上端へ降下</text>
+            <text x="540" y="105" fill="#a06" fontWeight="700">②</text>
+            <text x="558" y="105">a相導体 → 地絡点 → 大地へ降下（=Ig）</text>
 
-            <text x="540" y="132" fill="#2a8" fontWeight="700">③</text>
-            <text x="558" y="132">C_b を抜けて 大地 へ</text>
+            <text x="540" y="132" fill="#a06" fontWeight="700">③</text>
+            <text x="558" y="132">大地を経由して左へ（C_b の足元へ）</text>
 
-            <text x="540" y="159" fill="#2a8" fontWeight="700">④</text>
-            <text x="558" y="159">大地 を経由して右へ（地絡点へ集合）</text>
+            <text x="540" y="159" fill="#a06" fontWeight="700">④</text>
+            <text x="558" y="159">C_b の下端から上昇</text>
 
-            <text x="540" y="186" fill="#2a8" fontWeight="700">⑤</text>
-            <text x="558" y="186">地絡点 → a相導体へ上昇</text>
+            <text x="540" y="186" fill="#a06" fontWeight="700">⑤</text>
+            <text x="558" y="186">C_b の上端 → b相導体へ抜ける</text>
 
-            <text x="540" y="213" fill="#2a8" fontWeight="700">⑥</text>
-            <text x="558" y="213">a相導体を左へ → V_a へ還流</text>
+            <text x="540" y="213" fill="#a06" fontWeight="700">⑥</text>
+            <text x="558" y="213">b相導体を左へ → V_b へ還流</text>
 
-            <text x="540" y="240" fill="#2a8" fontWeight="700">⑦</text>
-            <text x="558" y="240">V_a → 仮想中性点 → V_b に戻り 1ループ完了</text>
+            <text x="540" y="240" fill="#a06" fontWeight="700">⑦</text>
+            <text x="558" y="240">V_b → 仮想中性点 → V_a に戻り 1ループ完了</text>
 
             <text x="540" y="280" fontSize="13" fontWeight="700" fill="#0e3a6e">同時並行ループ</text>
-            <text x="540" y="302">c相も <strong>V_c → c相導体 → C_c → 大地</strong> の経路で</text>
-            <text x="540" y="322">地絡点に集合 → a相経由で還流（同型のループ）</text>
+            <text x="540" y="302">c相も <strong>地絡点 → 大地 → C_c → c相導体 → V_c</strong></text>
+            <text x="540" y="322">の経路で同型ループを並行して流れる</text>
 
             <text x="540" y="358" fontSize="13" fontWeight="700" fill="#a11">なぜ「3相分のC」が式に入るか</text>
-            <text x="540" y="380">→ 健全2相のC（C_b と C_c）の <strong>両方</strong>を</text>
-            <text x="540" y="400">充電電流が流れるため。地絡電流 I_g は</text>
+            <text x="540" y="380">→ Ig の還流路は健全2相のC（C_b と C_c）の <strong>両方</strong></text>
+            <text x="540" y="400">を経由する。地絡電流 I_g は</text>
             <text x="540" y="420" fontFamily="serif" fontSize="14" fill="#a06" fontWeight="700">I_b + I_c の合成 = √3 · ωC · V</text>
           </g>
         </svg>
-        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ <strong>①〜⑦の番号順に追えば1ループ完結</strong>。c相も同形のループを並行して流れる。C_a は地絡点で短絡されているため電流ゼロ（描画は薄く）。グレーで描いた C_c は経路同型のため明示省略</div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ <strong>電験テキスト慣例の方向</strong>（V_a 駆動・地絡点で大地へ降下する Ig 視点）。AC電流のため向きは50/60Hzで反転を繰り返す。<strong>①〜⑦の番号順に追えば1ループ完結</strong>。c相も同形のループを並行して流れる。C_a は地絡点で短絡されているため電流ゼロ（描画は薄く）</div>
       </div>
       <MemTable
         headers={["相", "平常時の対地電圧", "1線地絡時（a相地絡）の対地電圧"]}
