@@ -557,6 +557,10 @@ function Sidebar({ data, page, onNav }) {
           })}
         </div>
       ))}
+      <div style={{ marginTop: '16px', padding: '12px 16px', borderTop: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <a href="https://kfurufuru.github.io/denken-wiki/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ink-3)', textDecoration: 'none', fontSize: '12px' }}>→ 理論Wiki（denken-wiki）</a>
+        <a href="https://kfurufuru.github.io/secretary-portal/" style={{ color: 'var(--ink-3)', textDecoration: 'none', fontSize: '12px' }}>← ポータルに戻る</a>
+      </div>
     </aside>
   );
 }

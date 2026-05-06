@@ -10,7 +10,7 @@ build-hoki-wiki.py — 電験3種 法規Wiki HTML組み立てスクリプト
 """
 import os, shutil
 
-BASE = 'C:/Users/kfuru/.secretary'
+BASE = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
 
 def read(name):
     with open(f'{BASE}/{name}', encoding='utf-8') as f:
