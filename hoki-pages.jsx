@@ -877,6 +877,78 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: '10px 0 0', fontSize: 13, color: 'var(--ink-3)'}}>💡 「中性点非接地 = 対地電圧不明」ではない。平常時は対称性により V/√3、地絡時に対称性が壊れて変化する</p>
       </PlainExplain>
 
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 線間電圧 vs 対地電圧（Cにかかるのはどっち？）</div>
+        <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto', background: '#fff'}}>
+          <defs>
+            <marker id="vArrV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
+            </marker>
+            <marker id="vArrV2" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M10,0 L0,5 L10,10 z" fill="#a06"/>
+            </marker>
+            <marker id="vArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#0e6b22"/>
+            </marker>
+            <marker id="vArrG2" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M10,0 L0,5 L10,10 z" fill="#0e6b22"/>
+            </marker>
+          </defs>
+
+          <rect x="10" y="20" width="395" height="340" fill="#fafbfc" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="207" y="42" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0e3a6e">【左】線間電圧 V</text>
+          <text x="207" y="60" textAnchor="middle" fontSize="11" fill="#666">2つの相導体の間の電圧（Cには直接かからない）</text>
+
+          <line x1="60" y1="120" x2="360" y2="120" stroke="#d33" strokeWidth="3"/>
+          <text x="40" y="124" textAnchor="end" fontSize="13" fill="#d33" fontWeight="700">a相</text>
+          <line x1="60" y1="240" x2="360" y2="240" stroke="#2a8" strokeWidth="3"/>
+          <text x="40" y="244" textAnchor="end" fontSize="13" fill="#2a8" fontWeight="700">b相</text>
+
+          <line x1="210" y1="125" x2="210" y2="235" stroke="#a06" strokeWidth="2.5" markerStart="url(#vArrV2)" markerEnd="url(#vArrV)"/>
+          <rect x="180" y="170" width="60" height="30" fill="#fff" stroke="#a06" strokeWidth="1.5" rx="4"/>
+          <text x="210" y="190" textAnchor="middle" fontSize="14" fill="#a06" fontWeight="700">V</text>
+
+          <text x="207" y="285" textAnchor="middle" fontSize="12" fill="#222">線間電圧 V_ab = 6,600V</text>
+          <text x="207" y="305" textAnchor="middle" fontSize="11" fill="#666">⚠ 大地は登場しない</text>
+          <text x="207" y="335" textAnchor="middle" fontSize="11" fill="#a11" fontWeight="600">→ 対地静電容量Cにこの電圧はかからない</text>
+
+          <rect x="415" y="20" width="395" height="340" fill="#fafbfc" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="612" y="42" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0e3a6e">【右】対地電圧 V/√3</text>
+          <text x="612" y="60" textAnchor="middle" fontSize="11" fill="#666">相導体↔大地の電圧（Cにかかるのはこちら）</text>
+
+          <line x1="465" y1="120" x2="765" y2="120" stroke="#d33" strokeWidth="3"/>
+          <text x="445" y="124" textAnchor="end" fontSize="13" fill="#d33" fontWeight="700">a相</text>
+
+          <line x1="615" y1="120" x2="615" y2="180" stroke="#333" strokeWidth="2"/>
+          <line x1="595" y1="180" x2="635" y2="180" stroke="#333" strokeWidth="2.5"/>
+          <line x1="595" y1="188" x2="635" y2="188" stroke="#333" strokeWidth="2.5"/>
+          <text x="640" y="187" fontSize="14" fill="#333">C_a</text>
+          <line x1="615" y1="188" x2="615" y2="240" stroke="#333" strokeWidth="2"/>
+
+          <line x1="525" y1="240" x2="725" y2="240" stroke="#666" strokeWidth="2.5"/>
+          <line x1="525" y1="248" x2="535" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="545" y1="248" x2="555" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="565" y1="248" x2="575" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="585" y1="248" x2="595" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="605" y1="248" x2="615" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="625" y1="248" x2="635" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="645" y1="248" x2="655" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="665" y1="248" x2="675" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="685" y1="248" x2="695" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <line x1="705" y1="248" x2="715" y2="240" stroke="#666" strokeWidth="1.5"/>
+          <text x="475" y="237" fontSize="11" fill="#666">大地</text>
+
+          <line x1="500" y1="125" x2="500" y2="235" stroke="#0e6b22" strokeWidth="2.5" markerStart="url(#vArrG2)" markerEnd="url(#vArrG)"/>
+          <rect x="460" y="170" width="80" height="30" fill="#fff" stroke="#0e6b22" strokeWidth="1.5" rx="4"/>
+          <text x="500" y="190" textAnchor="middle" fontSize="13" fill="#0e6b22" fontWeight="700">V/√3</text>
+
+          <text x="612" y="290" textAnchor="middle" fontSize="12" fill="#222">対地電圧 V_a = 6,600/√3 ≈ 3,810V</text>
+          <text x="612" y="310" textAnchor="middle" fontSize="11" fill="#666">⚠ 大地が基準</text>
+          <text x="612" y="335" textAnchor="middle" fontSize="11" fill="#0e6b22" fontWeight="600">→ Cにかかるのはこの V/√3。だから √3 が公式に現れる</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 対地静電容量Cは「相導体と大地の間」のコンデンサ。線間電圧（A相⇔B相）はC無関係。Y結線中性点接地でも非接地でも、平常時は対称性により対地電圧 = V/√3</div>
+      </div>
+
       <h2 id="explain2">7. 深掘り解説②: なぜ静電容量を「3相分」考慮するのか</h2>
       <PlainExplain>
         <p style={{margin: '0 0 10px'}}><strong>問いの本質</strong>：地絡しているのは1相だけ。なのに3相のCが式に入る。なぜ？</p>
@@ -889,6 +961,120 @@ function HichuseiJirakuPage({ onNav, data }) {
         </ol>
         <p style={{margin: '10px 0 6px'}}>各相の対地電圧の変化：</p>
       </PlainExplain>
+
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 1線地絡時の電流経路（C_b・C_c の両方を流れて地絡点に集合）</div>
+        <svg viewBox="0 0 820 480" style={{width: '100%', height: 'auto', background: '#fff'}}>
+          <defs>
+            <marker id="iPathB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+            </marker>
+            <marker id="iPathC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+            <marker id="iPathA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
+            </marker>
+          </defs>
+
+          <text x="20" y="28" fontSize="13" fontWeight="700" fill="#222">a相完全地絡時の充電電流ループ（電源左・地絡点右・大地経由で還流）</text>
+
+          <line x1="60" y1="100" x2="60" y2="300" stroke="#666" strokeWidth="2"/>
+          <text x="35" y="200" fontSize="11" fill="#666" transform="rotate(-90 35 200)">仮想中性点</text>
+
+          <circle cx="100" cy="100" r="18" fill="#fde2e2" stroke="#d33" strokeWidth="2"/>
+          <text x="100" y="105" textAnchor="middle" fontSize="13" fill="#d33" fontWeight="700">V_a</text>
+          <line x1="60" y1="100" x2="82" y2="100" stroke="#666" strokeWidth="2"/>
+          <line x1="118" y1="100" x2="140" y2="100" stroke="#d33" strokeWidth="3"/>
+
+          <circle cx="100" cy="200" r="18" fill="#dff5e5" stroke="#2a8" strokeWidth="2"/>
+          <text x="100" y="205" textAnchor="middle" fontSize="13" fill="#2a8" fontWeight="700">V_b</text>
+          <line x1="60" y1="200" x2="82" y2="200" stroke="#666" strokeWidth="2"/>
+          <line x1="118" y1="200" x2="140" y2="200" stroke="#2a8" strokeWidth="3"/>
+
+          <circle cx="100" cy="300" r="18" fill="#dcecff" stroke="#27c" strokeWidth="2"/>
+          <text x="100" y="305" textAnchor="middle" fontSize="13" fill="#27c" fontWeight="700">V_c</text>
+          <line x1="60" y1="300" x2="82" y2="300" stroke="#666" strokeWidth="2"/>
+          <line x1="118" y1="300" x2="140" y2="300" stroke="#27c" strokeWidth="3"/>
+
+          <line x1="140" y1="100" x2="600" y2="100" stroke="#d33" strokeWidth="3"/>
+          <text x="155" y="92" fontSize="11" fill="#d33">a相導体</text>
+          <line x1="140" y1="200" x2="600" y2="200" stroke="#2a8" strokeWidth="3"/>
+          <text x="155" y="192" fontSize="11" fill="#2a8">b相導体</text>
+          <line x1="140" y1="300" x2="600" y2="300" stroke="#27c" strokeWidth="3"/>
+          <text x="155" y="292" fontSize="11" fill="#27c">c相導体</text>
+
+          <line x1="270" y1="100" x2="270" y2="135" stroke="#999" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <line x1="255" y1="135" x2="285" y2="135" stroke="#999" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="255" y1="143" x2="285" y2="143" stroke="#999" strokeWidth="2" strokeDasharray="3,2"/>
+          <text x="290" y="143" fontSize="13" fill="#999">C_a</text>
+          <line x1="270" y1="143" x2="270" y2="400" stroke="#999" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="225" y="180" fontSize="10" fill="#a11" fontWeight="600">⚠ 地絡で短絡</text>
+          <text x="225" y="194" fontSize="10" fill="#a11">→ 電流ゼロ</text>
+
+          <line x1="380" y1="200" x2="380" y2="235" stroke="#2a8" strokeWidth="2"/>
+          <line x1="365" y1="235" x2="395" y2="235" stroke="#2a8" strokeWidth="2.5"/>
+          <line x1="365" y1="243" x2="395" y2="243" stroke="#2a8" strokeWidth="2.5"/>
+          <text x="400" y="243" fontSize="13" fill="#2a8" fontWeight="700">C_b</text>
+          <line x1="380" y1="243" x2="380" y2="400" stroke="#2a8" strokeWidth="2"/>
+
+          <line x1="490" y1="300" x2="490" y2="335" stroke="#27c" strokeWidth="2"/>
+          <line x1="475" y1="335" x2="505" y2="335" stroke="#27c" strokeWidth="2.5"/>
+          <line x1="475" y1="343" x2="505" y2="343" stroke="#27c" strokeWidth="2.5"/>
+          <text x="510" y="343" fontSize="13" fill="#27c" fontWeight="700">C_c</text>
+          <line x1="490" y1="343" x2="490" y2="400" stroke="#27c" strokeWidth="2"/>
+
+          <line x1="600" y1="100" x2="600" y2="395" stroke="#a06" strokeWidth="3"/>
+          <line x1="585" y1="395" x2="615" y2="395" stroke="#a06" strokeWidth="3"/>
+          <line x1="589" y1="402" x2="611" y2="402" stroke="#a06" strokeWidth="2"/>
+          <line x1="593" y1="409" x2="607" y2="409" stroke="#a06" strokeWidth="1.5"/>
+          <line x1="592" y1="92" x2="608" y2="108" stroke="#a06" strokeWidth="2.5"/>
+          <line x1="608" y1="92" x2="592" y2="108" stroke="#a06" strokeWidth="2.5"/>
+          <text x="625" y="100" fontSize="12" fill="#a06" fontWeight="700">地絡事故点</text>
+          <text x="625" y="115" fontSize="11" fill="#a06">Rg = 0</text>
+
+          <line x1="160" y1="420" x2="720" y2="420" stroke="#666" strokeWidth="2.5"/>
+          <line x1="160" y1="428" x2="170" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="180" y1="428" x2="190" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="200" y1="428" x2="210" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="220" y1="428" x2="230" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="240" y1="428" x2="250" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="260" y1="428" x2="270" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="280" y1="428" x2="290" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="300" y1="428" x2="310" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="320" y1="428" x2="330" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="340" y1="428" x2="350" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="360" y1="428" x2="370" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="380" y1="428" x2="390" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="400" y1="428" x2="410" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="420" y1="428" x2="430" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="440" y1="428" x2="450" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="460" y1="428" x2="470" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="480" y1="428" x2="490" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="500" y1="428" x2="510" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="520" y1="428" x2="530" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="540" y1="428" x2="550" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="560" y1="428" x2="570" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="580" y1="428" x2="590" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="600" y1="428" x2="610" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="620" y1="428" x2="630" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="640" y1="428" x2="650" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="660" y1="428" x2="670" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="680" y1="428" x2="690" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <line x1="700" y1="428" x2="710" y2="420" stroke="#666" strokeWidth="1.5"/>
+          <text x="730" y="425" fontSize="11" fill="#666">大地</text>
+
+          <path d="M 380 410 Q 480 440 580 415" fill="none" stroke="#2a8" strokeWidth="2.5" markerEnd="url(#iPathB)"/>
+          <text x="450" y="465" fontSize="12" fill="#2a8" fontWeight="700">I_b（C_b経由）</text>
+
+          <path d="M 490 415 Q 540 432 580 418" fill="none" stroke="#27c" strokeWidth="2.5" markerEnd="url(#iPathC)"/>
+          <text x="490" y="392" fontSize="12" fill="#27c" fontWeight="700">I_c（C_c経由）</text>
+
+          <path d="M 580 95 Q 380 60 140 100" fill="none" stroke="#a06" strokeWidth="2.5" strokeDasharray="6,4" markerEnd="url(#iPathA)"/>
+          <text x="290" y="60" fontSize="11" fill="#a06" fontWeight="700">a相導体経由で電源へ還流</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ a相が地絡 → C_aは短絡されてゼロ／b・c相は健全 → C_b・C_c が線間電圧Vで充電される → 大地経由で地絡点に集合 → a相導体を通って電源に戻る。<strong>これが「3相分のC」が式に入る理由</strong></div>
+      </div>
       <MemTable
         headers={["相", "平常時の対地電圧", "1線地絡時（a相地絡）の対地電圧"]}
         rows={[
