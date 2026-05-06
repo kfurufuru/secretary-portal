@@ -11,7 +11,8 @@ window.WIKI_DATA = { chapters: [
     { id:"ryokuritsu-kaizen",  num:"1.5", title:"力率改善",                       freq:"mid",  ch:"CH04" },
     { id:"juyoritsu-keisan",   num:"1.6", title:"需要率・負荷率・不等率（計算）", freq:"max",  ch:"CH04", twin:"juyoritsu-gainen" },
     { id:"bshu-setsuchi",      num:"1.7", title:"B種接地抵抗値",                  freq:"max",  ch:"CH04" },
-    { id:"hichusei-jiraku",    num:"1.8", title:"中性点非接地系の地絡電流",       freq:"high", ch:"CH04" }
+    { id:"hichusei-jiraku",    num:"1.8", title:"中性点非接地系の地絡電流",       freq:"high", ch:"CH04" },
+    { id:"zerosou-henryuki",   num:"1.9", title:"零相変流器（ZCT）の仕組み",       freq:"mid",  ch:"CH04" }
   ]},
   { id:"sec02", num:"02", title:"頻出数値・表暗記", ch:"CH03/04", pages:[
     { id:"setsuchi-ichiran",    num:"2.1", title:"接地工事一覧表",       freq:"max",  ch:"CH03" },

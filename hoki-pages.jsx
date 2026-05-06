@@ -16,6 +16,7 @@ window.renderPage = function(page, navigate) {
     case 'juyoritsu-keisan':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-keisan' });
     case 'bshu-setsuchi':          return React.createElement(StubPage, { ...props, pageId: 'bshu-setsuchi' });
     case 'hichusei-jiraku':        return React.createElement(HichuseiJirakuPage, props);
+    case 'zerosou-henryuki':       return React.createElement(ZeroSouHenryukiPage, props);
     case 'setsuchi-ichiran':       return React.createElement(SetsuchiIchiranPage, props);
     case 'zetsuen-ichiran':        return React.createElement(ZetsuenIchiranPage, props);
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
@@ -1175,13 +1176,268 @@ function HichuseiJirakuPage({ onNav, data }) {
         { a: "1線地絡",               b: "高調波・基本波の合成",            result: "実効値計算問題（応用）" },
       ]} />
 
-      <NextAction nextPageId="bshu-setsuchi" nextPageTitle="B種接地抵抗値" onNav={onNav} />
+      <NextAction nextPageId="zerosou-henryuki" nextPageTitle="零相変流器（ZCT）の仕組み" onNav={onNav} />
       <UpdateLog entries={[
         { date: "2026-05-06", content: "v1.1: 接地方式比較表・フェーザ図SVG・実務メモ・関連法規・ひっかけ3項目を追加", reason: "ChatGPT 10点アドバイス対応・法規ページとしての網羅性向上" },
         { date: "2026-05-06", content: "v1.0: 初版作成（R05下問11対応）", reason: "R05下出題確認・容量性地絡電流の独立ページ化" },
       ]} />
       <PageNav
         prevId="bshu-setsuchi"     prevTitle="B種接地抵抗値"
+        nextId="zerosou-henryuki"  nextTitle="零相変流器（ZCT）の仕組み"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-3. ZeroSouHenryukiPage（零相変流器の仕組み・1.9）
+// ─────────────────────────────────────────────
+function ZeroSouHenryukiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="零相変流器（ZCT）が地絡電流のみを検出できる理由として最も適切なものはどれか。"
+        choices={[
+          "鉄心が地絡時にのみ磁化されるため",
+          "3線一括貫通により電流のベクトル和（i_a+i_b+i_c）を物理的に取得し、平常時はゼロ・地絡時のみ非ゼロとなるため",
+          "二次巻線が地絡継電器と直結しているため",
+          "高圧側の電流変動を直接検知できるため",
+        ]}
+        year="頻出"
+        note="ヒント：構造（一括貫通）と平常時のベクトル和に着目"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>構造</strong>: 環状鉄心 + 3線一括貫通 + 二次巻線</li>
+          <li><strong>原理</strong>: 鉄心内で物理的にベクトル和「i_a+i_b+i_c」を計算</li>
+          <li><strong>平常時</strong>: ベクトル和=0 → 磁束Φ=0 → 二次出力なし</li>
+          <li><strong>地絡時</strong>: ベクトル和=3I₀ ≠ 0 → 磁束発生 → 二次にI₀誘起 → GR入力</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題・計算問題対策"
+        importance="B"
+        freq="mid"
+        examType="A問題/B問題前提"
+        targets="地絡保護全般"
+        tags={["ZCT", "零相電流", "電磁誘導", "保護装置"]}
+        lastChecked="2026-05-06"
+      />
+
+      <h2 id="exam-focus">3. 試験で問われること</h2>
+      <ExamFocus items={[
+        { label: "主体",   value: "高圧電路の地絡保護に用いる零相変流器（ZCT）" },
+        { label: "対象",   value: "ZCTの構造・動作原理・検出電流" },
+        { label: "公式",   value: "二次出力 ∝ 3I₀（零相電流の3倍）" },
+        { label: "条件",   value: "電磁誘導の法則／鉄心の磁気合成" },
+        { label: "応用",   value: "GR/DGRとの組合せ／一括貫通設計の理由" },
+      ]} />
+
+      <h2 id="abbrev">4. 略号と前提知識</h2>
+      <MemTable
+        headers={["用語", "説明"]}
+        rows={[
+          ["ZCT（零相変流器）", "Zero-phase Current Transformer。3相電流のベクトル和を1つの鉄心で測る変流器"],
+          ["I₀（零相電流）", "(i_a+i_b+i_c)/3。平常時=0、地絡時のみ発生"],
+          ["3I₀", "ZCT二次に現れる電流の元になる量（鉄心内ベクトル和そのもの）"],
+          ["環状鉄心", "ドーナツ状の磁性体。3線をまとめて中央の貫通孔に通す"],
+          ["二次巻線", "鉄心の周りに巻かれたコイル（数百回巻）。磁束変化を電流に変換"],
+        ]}
+        note="「3相のベクトル和を物理レベルで取る装置」がZCTの本質"
+      />
+
+      <h2 id="structure">5. 物理構造（断面図）</h2>
+      <PlainExplain>
+        <p style={{margin: 0}}>ZCTの3要素：① 環状鉄心（磁束を閉路で通す磁性体）／② 3線一括貫通する一次（これがZCT最大の特徴）／③ 二次巻線（磁束変化→誘導電流）</p>
+      </PlainExplain>
+
+      <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="zarrFlux" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
+            </marker>
+            <marker id="zarrOut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+            </marker>
+          </defs>
+          <text x="410" y="28" textAnchor="middle" fontSize="14" fontWeight="700" fill="#222">ZCT断面図（線路に垂直に切った視点）</text>
+          <circle cx="280" cy="200" r="130" fill="none" stroke="#666" strokeWidth="3"/>
+          <circle cx="280" cy="200" r="60" fill="#fff" stroke="#666" strokeWidth="3"/>
+          <path d="M 280 70 A 130 130 0 1 0 280 330 A 130 130 0 1 0 280 70 Z M 280 140 A 60 60 0 1 1 280 260 A 60 60 0 1 1 280 140 Z" fill="#cfd8e0" fillRule="evenodd" opacity="0.5"/>
+          <text x="280" y="55" textAnchor="middle" fontSize="13" fill="#333" fontWeight="600">環状鉄心</text>
+          <text x="280" y="345" textAnchor="middle" fontSize="11" fill="#666">（円環状の磁性体・3線を一括貫通）</text>
+          <circle cx="262" cy="180" r="11" fill="#fde2e2" stroke="#d33" strokeWidth="2"/>
+          <text x="262" y="184" textAnchor="middle" fontSize="13" fill="#d33" fontWeight="700">a</text>
+          <circle cx="298" cy="180" r="11" fill="#dff5e5" stroke="#2a8" strokeWidth="2"/>
+          <text x="298" y="184" textAnchor="middle" fontSize="13" fill="#2a8" fontWeight="700">b</text>
+          <circle cx="280" cy="218" r="11" fill="#dcecff" stroke="#27c" strokeWidth="2"/>
+          <text x="280" y="222" textAnchor="middle" fontSize="13" fill="#27c" fontWeight="700">c</text>
+          <line x1="280" y1="240" x2="280" y2="270" stroke="#444" strokeWidth="1" strokeDasharray="3,3"/>
+          <text x="280" y="285" textAnchor="middle" fontSize="12" fill="#444">3線一括で貫通孔を通す</text>
+          <path d="M 200 130 A 100 100 0 0 1 360 130" fill="none" stroke="#a06" strokeWidth="2.5" markerEnd="url(#zarrFlux)"/>
+          <text x="280" y="105" textAnchor="middle" fontSize="13" fill="#a06" fontWeight="700">磁束 Φ（鉄心内を周回）</text>
+          <g stroke="#666" strokeWidth="2" fill="none">
+            <path d="M 388 225 Q 395 215 405 220 Q 415 225 422 215"/>
+            <path d="M 388 240 Q 395 230 405 235 Q 415 240 422 230"/>
+            <path d="M 388 255 Q 395 245 405 250 Q 415 255 422 245"/>
+            <path d="M 388 270 Q 395 260 405 265 Q 415 270 422 260"/>
+          </g>
+          <text x="438" y="225" fontSize="13" fill="#333">二次巻線（N回巻）</text>
+          <text x="438" y="245" fontSize="11" fill="#666">磁束変化を電流に変換</text>
+          <line x1="425" y1="265" x2="540" y2="265" stroke="#444" strokeWidth="2"/>
+          <line x1="425" y1="280" x2="540" y2="280" stroke="#444" strokeWidth="2" markerEnd="url(#zarrOut)"/>
+          <rect x="540" y="245" width="80" height="50" fill="#fff" stroke="#333" strokeWidth="2"/>
+          <text x="580" y="270" textAnchor="middle" fontSize="13" fill="#333">GR</text>
+          <text x="580" y="288" textAnchor="middle" fontSize="11" fill="#666">地絡継電器</text>
+          <text x="475" y="258" textAnchor="middle" fontSize="11" fill="#444">二次出力 I₀</text>
+          <g fontSize="12" fill="#333">
+            <text x="640" y="80" fontWeight="700" fill="#2a4d8f">構造の3要素</text>
+            <text x="640" y="105">① 環状鉄心</text>
+            <text x="650" y="122" fontSize="11" fill="#666">磁束を閉路で通す磁性体</text>
+            <text x="640" y="145">② 一次（3線一括貫通）</text>
+            <text x="650" y="162" fontSize="11" fill="#666">これがZCT最大の特徴</text>
+            <text x="640" y="185">③ 二次巻線</text>
+            <text x="650" y="202" fontSize="11" fill="#666">磁束変化→誘導電流</text>
+            <text x="640" y="235" fontWeight="700" fill="#2a4d8f">なぜ一括貫通？</text>
+            <text x="640" y="252" fontSize="11" fill="#666">磁束レベルで物理的に</text>
+            <text x="640" y="266" fontSize="11" fill="#666">「i_a+i_b+i_c」を合成</text>
+            <text x="640" y="280" fontSize="11" fill="#666">→ 別CT合成より高精度</text>
+          </g>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 実機は3線（高圧電路）またはケーブル全体を一括して環状鉄心の貫通孔に通す。鉄心の右側に巻かれた二次巻線がGRへ電流を送る</div>
+      </div>
+
+      <h2 id="principle">6. 動作原理（4ステップ）</h2>
+      <SolveFlow type="物理プロセス" steps={[
+        "一次側: 3線が鉄心を貫通 → 各線の電流が個別に磁束を作る（アンペールの法則）",
+        "鉄心内: 3つの磁束がベクトル合成 = 物理レベルで「i_a+i_b+i_c」を計算",
+        "平常時: ベクトル和=0 → 磁束Φ=0 → 二次側に出力なし／地絡時: 和=3I₀ ≠ 0 → 磁束変化発生",
+        "二次巻線: 電磁誘導（ファラデーの法則）でI₀に比例した電流を誘起 → GRへ入力",
+      ]} />
+
+      <h2 id="flux-compare">7. 平常時 vs 地絡時の電流ベクトル比較</h2>
+      <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="zarrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#d33"/>
+            </marker>
+            <marker id="zarrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+            </marker>
+            <marker id="zarrC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+            <marker id="zarrSum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
+            </marker>
+          </defs>
+          <rect x="10" y="20" width="395" height="350" fill="#f8fafc" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="207" y="42" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0e6b22">【平常時】3相平衡</text>
+          <text x="207" y="60" textAnchor="middle" fontSize="11" fill="#666">3相のベクトル和 = 0 → 磁束ゼロ → 二次出力なし</text>
+          <circle cx="207" cy="200" r="3" fill="#333"/>
+          <text x="215" y="218" fontSize="11" fill="#666">原点</text>
+          <line x1="207" y1="200" x2="207" y2="120" stroke="#d33" strokeWidth="2.5" markerEnd="url(#zarrA)"/>
+          <text x="217" y="120" fontSize="13" fill="#d33" fontWeight="700">i_a</text>
+          <line x1="207" y1="200" x2="276" y2="240" stroke="#2a8" strokeWidth="2.5" markerEnd="url(#zarrB)"/>
+          <text x="282" y="252" fontSize="13" fill="#2a8" fontWeight="700">i_b</text>
+          <line x1="207" y1="200" x2="138" y2="240" stroke="#27c" strokeWidth="2.5" markerEnd="url(#zarrC)"/>
+          <text x="115" y="252" fontSize="13" fill="#27c" fontWeight="700">i_c</text>
+          <circle cx="207" cy="200" r="14" fill="none" stroke="#a06" strokeWidth="2" strokeDasharray="3,3"/>
+          <text x="207" y="295" textAnchor="middle" fontSize="14" fill="#a06" fontWeight="700">i_a + i_b + i_c = 0</text>
+          <text x="207" y="330" textAnchor="middle" fontSize="13" fill="#0e6b22" fontWeight="700">磁束 Φ = 0 ／ 二次出力 0</text>
+          <text x="207" y="350" textAnchor="middle" fontSize="11" fill="#666">→ GRは動作しない</text>
+          <rect x="415" y="20" width="395" height="350" fill="#fff5f5" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="612" y="42" textAnchor="middle" fontSize="14" fontWeight="700" fill="#a11">【地絡時】a相完全地絡</text>
+          <text x="612" y="60" textAnchor="middle" fontSize="11" fill="#666">a相消失・健全相√3倍 → ベクトル和≠0 → 磁束発生</text>
+          <circle cx="612" cy="200" r="3" fill="#333"/>
+          <line x1="606" y1="194" x2="618" y2="206" stroke="#d33" strokeWidth="2"/>
+          <line x1="618" y1="194" x2="606" y2="206" stroke="#d33" strokeWidth="2"/>
+          <text x="595" y="230" fontSize="11" fill="#d33">i_a = 0（消失）</text>
+          <line x1="612" y1="200" x2="700" y2="120" stroke="#2a8" strokeWidth="3" markerEnd="url(#zarrB)"/>
+          <text x="710" y="115" fontSize="13" fill="#2a8" fontWeight="700">i_b'</text>
+          <text x="710" y="130" fontSize="10" fill="#2a8">（√3倍）</text>
+          <line x1="612" y1="200" x2="524" y2="120" stroke="#27c" strokeWidth="3" markerEnd="url(#zarrC)"/>
+          <text x="490" y="115" fontSize="13" fill="#27c" fontWeight="700">i_c'</text>
+          <text x="490" y="130" fontSize="10" fill="#27c">（√3倍）</text>
+          <line x1="612" y1="200" x2="612" y2="100" stroke="#a06" strokeWidth="3.5" strokeDasharray="6,3" markerEnd="url(#zarrSum)"/>
+          <text x="625" y="105" fontSize="14" fill="#a06" fontWeight="700">3I₀</text>
+          <text x="612" y="295" textAnchor="middle" fontSize="14" fill="#a06" fontWeight="700">i_a + i_b' + i_c' = 3I₀ ≠ 0</text>
+          <text x="612" y="330" textAnchor="middle" fontSize="13" fill="#a11" fontWeight="700">磁束 Φ ≠ 0 ／ 二次に I₀ 誘起</text>
+          <text x="612" y="350" textAnchor="middle" fontSize="11" fill="#666">→ GRが整定値超過で動作</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 平常時は3相のベクトル和が物理的にゼロ → 鉄心内で磁束が打ち消し合う。地絡時は対称性が崩れて鉄心内に正味磁束が発生し、二次巻線に電磁誘導で電流（I₀）が流れる</div>
+      </div>
+
+      <h2 id="why-bundle">8. なぜ「3線一括貫通」設計なのか</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>結論</strong>：磁束レベルで物理的にベクトル和を取れるため、別CT合成より精度が桁違いに高い。</p>
+        <p style={{margin: '0 0 8px'}}><strong>比較すると分かる</strong>：</p>
+        <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li><strong>方式A: 3つの個別CTで各相を測りデジタル合成</strong> — 各CTの誤差・温度ドリフト・位相ずれが累積。地絡電流（数百mA）を平常時電流（数百A）の差分として検出するため、SNR（信号雑音比）が極めて低い</li>
+          <li><strong>方式B: ZCT一括貫通</strong> — 鉄心内で磁束が物理的に合成・キャンセルされるため、平常時磁束はゼロ近傍。地絡時のみ磁束変化が発生し、二次に明瞭な信号が出る</li>
+        </ul>
+        <p style={{margin: '8px 0 0'}}><strong>結果</strong>：方式Bは方式Aの100〜1000倍の感度差。これがZCTが「零相変流器」と呼ばれる所以</p>
+      </PlainExplain>
+
+      <h2 id="design-notes">9. 設計上の肝（実務メモ）</h2>
+      <MemTable
+        headers={["項目", "内容", "注意点"]}
+        rows={[
+          ["二次負担インピーダンス", "GRの入力インピーダンス（数Ω〜数十Ω）", "大きすぎると二次電圧が上がり鉄心飽和"],
+          ["鉄心の磁気飽和", "過大な零相電流で磁束密度が飽和域に入る", "貫通CT短絡電流時に飽和→出力歪み"],
+          ["高調波の影響", "実機では高調波分の零相電流が混入", "DGRは基本波のみ判別する整定が標準"],
+          ["設置位置", "受電点直後・遮断器の電源側", "遮断器より負荷側だと自設備の地絡が検出できない"],
+        ]}
+        note="試験範囲外の実務知識。実務メモとして参考まで"
+      />
+
+      <h2 id="memorize">10. 暗記ポイント</h2>
+      <MemTable
+        headers={["項目", "値・公式", "覚え方"]}
+        rows={[
+          ["ZCTの構造3要素", "環状鉄心 + 3線一括貫通 + 二次巻線", "鉄心・貫通・巻線"],
+          ["平常時のベクトル和", "i_a + i_b + i_c = 0", "3相平衡なら必ずゼロ"],
+          ["地絡時のベクトル和", "3I₀（零相電流の3倍）", "ZCT二次に現れる電流の元"],
+          ["なぜ「零相」変流器か", "零相成分（I₀）を選択的に検出するため", "対称座標法の「零相」が語源"],
+          ["なぜ一括貫通か", "磁束レベルで物理合成し高精度を実現", "別CT合成より100〜1000倍精度"],
+        ]}
+      />
+
+      <h2 id="traps">11. よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "ZCTは普通のCTと同じで1相だけ通す",                    correct: "ZCTは3線一括貫通。普通のCTは1相だけ" },
+        { wrong: "ZCTの二次出力 = I_g（系統地絡電流）",                  correct: "ZCT二次出力 ∝ 3I₀（自設備内の零相電流のみ）" },
+        { wrong: "ZCTが地絡を遮断する",                                  correct: "ZCTは検出のみ。GRが判定し、CBが遮断する" },
+        { wrong: "平常時もZCTから常に電流が出ている",                    correct: "平常時はベクトル和ゼロ → 二次出力なし。地絡時のみ出力" },
+        { wrong: "鉄心は鉄ならOK、磁性は問わない",                       correct: "高透磁率の磁性体（ケイ素鋼板など）が必須。普通の鉄では飽和する" },
+      ]} />
+
+      <h2 id="quick-review">12. 1分復習</h2>
+      <QuickReview items={[
+        { q: "ZCTの構造を3要素で答えよ",                                  a: "環状鉄心・3線一括貫通・二次巻線" },
+        { q: "平常時にZCT二次出力がゼロになる理由は？",                  a: "3相のベクトル和が物理的にゼロ → 鉄心内磁束ゼロ" },
+        { q: "地絡時のZCT二次出力は何に比例するか？",                    a: "零相電流 I₀（鉄心内ベクトル和=3I₀）" },
+        { q: "なぜ別CTでベクトル合成しないのか？",                        a: "誤差累積でSNR低下。一括貫通は磁束レベルで物理合成し高精度" },
+        { q: "ZCT・GR・CBそれぞれの役割は？",                            a: "ZCT=検出、GR=判定、CB=遮断" },
+      ]} />
+
+      <h2 id="cross-ref">13. 関連ページ</h2>
+      <CrossRef patterns={[
+        { a: "ZCTの仕組み（1.9）", b: "中性点非接地系の地絡電流（1.8）", result: "ZCTで検出する I₀ = 2√3 πfV·C₂ の物理的根拠" },
+        { a: "ZCT（1.9）",         b: "GR vs DGR の選択",                  result: "DGRは方向判別を加えた高度版（貰い事故防止）" },
+        { a: "ZCT（1.9）",         b: "B種接地（1.7）",                    result: "接地系/非接地系どちらでもZCTは地絡保護の主役" },
+      ]} />
+
+      <NextAction nextPageId="setsuchi-ichiran" nextPageTitle="接地工事一覧表" onNav={onNav} />
+      <UpdateLog entries={[{ date: "2026-05-06", content: "初版作成", reason: "1.8地絡電流ページの ZCT 検出機構を独立解説するため新設" }]} />
+      <PageNav
+        prevId="hichusei-jiraku"   prevTitle="中性点非接地系の地絡電流"
         nextId="setsuchi-ichiran"  nextTitle="接地工事一覧表"
         onNav={onNav}
       />
