@@ -963,117 +963,140 @@ function HichuseiJirakuPage({ onNav, data }) {
       </PlainExplain>
 
       <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
-        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 1線地絡時の電流経路（C_b・C_c の両方を流れて地絡点に集合）</div>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 b相経由の電流ループ（番号順に追えます）</div>
         <svg viewBox="0 0 820 480" style={{width: '100%', height: 'auto', background: '#fff'}}>
           <defs>
-            <marker id="iPathB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <marker id="loopArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
               <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
-            </marker>
-            <marker id="iPathC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
-            </marker>
-            <marker id="iPathA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
             </marker>
           </defs>
 
-          <text x="20" y="28" fontSize="13" fontWeight="700" fill="#222">a相完全地絡時の充電電流ループ（電源左・地絡点右・大地経由で還流）</text>
+          <text x="20" y="26" fontSize="13" fontWeight="700" fill="#222">b相充電電流の流れ（V_b → C_b → 大地 → 地絡点 → a相導体 → V_a → 内部還流）</text>
 
-          <line x1="60" y1="100" x2="60" y2="300" stroke="#666" strokeWidth="2"/>
-          <text x="35" y="200" fontSize="11" fill="#666" transform="rotate(-90 35 200)">仮想中性点</text>
+          <line x1="70" y1="100" x2="70" y2="320" stroke="#888" strokeWidth="2"/>
+          <text x="55" y="365" fontSize="10" fill="#888">仮想</text>
+          <text x="55" y="378" fontSize="10" fill="#888">中性点</text>
 
-          <circle cx="100" cy="100" r="18" fill="#fde2e2" stroke="#d33" strokeWidth="2"/>
-          <text x="100" y="105" textAnchor="middle" fontSize="13" fill="#d33" fontWeight="700">V_a</text>
-          <line x1="60" y1="100" x2="82" y2="100" stroke="#666" strokeWidth="2"/>
-          <line x1="118" y1="100" x2="140" y2="100" stroke="#d33" strokeWidth="3"/>
+          <circle cx="100" cy="100" r="14" fill="#fff" stroke="#d33" strokeWidth="2"/>
+          <text x="100" y="105" textAnchor="middle" fontSize="11" fill="#d33" fontWeight="700">V_a</text>
+          <line x1="70" y1="100" x2="86" y2="100" stroke="#888" strokeWidth="2"/>
 
-          <circle cx="100" cy="200" r="18" fill="#dff5e5" stroke="#2a8" strokeWidth="2"/>
-          <text x="100" y="205" textAnchor="middle" fontSize="13" fill="#2a8" fontWeight="700">V_b</text>
-          <line x1="60" y1="200" x2="82" y2="200" stroke="#666" strokeWidth="2"/>
-          <line x1="118" y1="200" x2="140" y2="200" stroke="#2a8" strokeWidth="3"/>
+          <circle cx="100" cy="210" r="14" fill="#fff" stroke="#2a8" strokeWidth="2"/>
+          <text x="100" y="215" textAnchor="middle" fontSize="11" fill="#2a8" fontWeight="700">V_b</text>
+          <line x1="70" y1="210" x2="86" y2="210" stroke="#888" strokeWidth="2"/>
 
-          <circle cx="100" cy="300" r="18" fill="#dcecff" stroke="#27c" strokeWidth="2"/>
-          <text x="100" y="305" textAnchor="middle" fontSize="13" fill="#27c" fontWeight="700">V_c</text>
-          <line x1="60" y1="300" x2="82" y2="300" stroke="#666" strokeWidth="2"/>
-          <line x1="118" y1="300" x2="140" y2="300" stroke="#27c" strokeWidth="3"/>
+          <circle cx="100" cy="320" r="14" fill="#fff" stroke="#27c" strokeWidth="2"/>
+          <text x="100" y="325" textAnchor="middle" fontSize="11" fill="#27c" fontWeight="700">V_c</text>
+          <line x1="70" y1="320" x2="86" y2="320" stroke="#888" strokeWidth="2"/>
 
-          <line x1="140" y1="100" x2="600" y2="100" stroke="#d33" strokeWidth="3"/>
-          <text x="155" y="92" fontSize="11" fill="#d33">a相導体</text>
-          <line x1="140" y1="200" x2="600" y2="200" stroke="#2a8" strokeWidth="3"/>
-          <text x="155" y="192" fontSize="11" fill="#2a8">b相導体</text>
-          <line x1="140" y1="300" x2="600" y2="300" stroke="#27c" strokeWidth="3"/>
-          <text x="155" y="292" fontSize="11" fill="#27c">c相導体</text>
+          <line x1="114" y1="100" x2="450" y2="100" stroke="#d33" strokeWidth="2.5"/>
+          <line x1="114" y1="210" x2="450" y2="210" stroke="#2a8" strokeWidth="2.5"/>
+          <line x1="114" y1="320" x2="450" y2="320" stroke="#bbb" strokeWidth="2"/>
 
-          <line x1="270" y1="100" x2="270" y2="135" stroke="#999" strokeWidth="1.5" strokeDasharray="3,2"/>
-          <line x1="255" y1="135" x2="285" y2="135" stroke="#999" strokeWidth="2" strokeDasharray="3,2"/>
-          <line x1="255" y1="143" x2="285" y2="143" stroke="#999" strokeWidth="2" strokeDasharray="3,2"/>
-          <text x="290" y="143" fontSize="13" fill="#999">C_a</text>
-          <line x1="270" y1="143" x2="270" y2="400" stroke="#999" strokeWidth="1.5" strokeDasharray="3,2"/>
-          <text x="225" y="180" fontSize="10" fill="#a11" fontWeight="600">⚠ 地絡で短絡</text>
-          <text x="225" y="194" fontSize="10" fill="#a11">→ 電流ゼロ</text>
+          <line x1="180" y1="100" x2="180" y2="135" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <line x1="170" y1="135" x2="190" y2="135" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="170" y1="142" x2="190" y2="142" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="180" y1="142" x2="180" y2="395" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="195" y="145" fontSize="11" fill="#bbb">C_a（地絡で短絡 → 電流0）</text>
 
-          <line x1="380" y1="200" x2="380" y2="235" stroke="#2a8" strokeWidth="2"/>
-          <line x1="365" y1="235" x2="395" y2="235" stroke="#2a8" strokeWidth="2.5"/>
-          <line x1="365" y1="243" x2="395" y2="243" stroke="#2a8" strokeWidth="2.5"/>
-          <text x="400" y="243" fontSize="13" fill="#2a8" fontWeight="700">C_b</text>
-          <line x1="380" y1="243" x2="380" y2="400" stroke="#2a8" strokeWidth="2"/>
+          <line x1="280" y1="210" x2="280" y2="245" stroke="#2a8" strokeWidth="2.5"/>
+          <line x1="265" y1="245" x2="295" y2="245" stroke="#2a8" strokeWidth="3"/>
+          <line x1="265" y1="253" x2="295" y2="253" stroke="#2a8" strokeWidth="3"/>
+          <text x="302" y="253" fontSize="13" fill="#2a8" fontWeight="700">C_b</text>
+          <line x1="280" y1="253" x2="280" y2="395" stroke="#2a8" strokeWidth="2.5"/>
 
-          <line x1="490" y1="300" x2="490" y2="335" stroke="#27c" strokeWidth="2"/>
-          <line x1="475" y1="335" x2="505" y2="335" stroke="#27c" strokeWidth="2.5"/>
-          <line x1="475" y1="343" x2="505" y2="343" stroke="#27c" strokeWidth="2.5"/>
-          <text x="510" y="343" fontSize="13" fill="#27c" fontWeight="700">C_c</text>
-          <line x1="490" y1="343" x2="490" y2="400" stroke="#27c" strokeWidth="2"/>
+          <line x1="380" y1="320" x2="380" y2="355" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <line x1="370" y1="355" x2="390" y2="355" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="370" y1="363" x2="390" y2="363" stroke="#bbb" strokeWidth="2" strokeDasharray="3,2"/>
+          <line x1="380" y1="363" x2="380" y2="395" stroke="#bbb" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="395" y="370" fontSize="11" fill="#bbb">C_c（c相は同様の経路あり）</text>
 
-          <line x1="600" y1="100" x2="600" y2="395" stroke="#a06" strokeWidth="3"/>
-          <line x1="585" y1="395" x2="615" y2="395" stroke="#a06" strokeWidth="3"/>
-          <line x1="589" y1="402" x2="611" y2="402" stroke="#a06" strokeWidth="2"/>
-          <line x1="593" y1="409" x2="607" y2="409" stroke="#a06" strokeWidth="1.5"/>
-          <line x1="592" y1="92" x2="608" y2="108" stroke="#a06" strokeWidth="2.5"/>
-          <line x1="608" y1="92" x2="592" y2="108" stroke="#a06" strokeWidth="2.5"/>
-          <text x="625" y="100" fontSize="12" fill="#a06" fontWeight="700">地絡事故点</text>
-          <text x="625" y="115" fontSize="11" fill="#a06">Rg = 0</text>
+          <line x1="450" y1="100" x2="450" y2="395" stroke="#a06" strokeWidth="3"/>
+          <line x1="442" y1="92" x2="458" y2="108" stroke="#a06" strokeWidth="2.5"/>
+          <line x1="458" y1="92" x2="442" y2="108" stroke="#a06" strokeWidth="2.5"/>
+          <text x="465" y="100" fontSize="11" fill="#a06" fontWeight="700">地絡点</text>
+          <text x="465" y="113" fontSize="10" fill="#a06">(Rg=0)</text>
 
-          <line x1="160" y1="420" x2="720" y2="420" stroke="#666" strokeWidth="2.5"/>
-          <line x1="160" y1="428" x2="170" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="180" y1="428" x2="190" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="200" y1="428" x2="210" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="220" y1="428" x2="230" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="240" y1="428" x2="250" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="260" y1="428" x2="270" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="280" y1="428" x2="290" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="300" y1="428" x2="310" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="320" y1="428" x2="330" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="340" y1="428" x2="350" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="360" y1="428" x2="370" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="380" y1="428" x2="390" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="400" y1="428" x2="410" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="420" y1="428" x2="430" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="440" y1="428" x2="450" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="460" y1="428" x2="470" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="480" y1="428" x2="490" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="500" y1="428" x2="510" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="520" y1="428" x2="530" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="540" y1="428" x2="550" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="560" y1="428" x2="570" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="580" y1="428" x2="590" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="600" y1="428" x2="610" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="620" y1="428" x2="630" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="640" y1="428" x2="650" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="660" y1="428" x2="670" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="680" y1="428" x2="690" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <line x1="700" y1="428" x2="710" y2="420" stroke="#666" strokeWidth="1.5"/>
-          <text x="730" y="425" fontSize="11" fill="#666">大地</text>
+          <line x1="120" y1="395" x2="455" y2="395" stroke="#666" strokeWidth="2.5"/>
+          <line x1="120" y1="403" x2="130" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="145" y1="403" x2="155" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="170" y1="403" x2="180" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="195" y1="403" x2="205" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="220" y1="403" x2="230" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="245" y1="403" x2="255" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="270" y1="403" x2="280" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="295" y1="403" x2="305" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="320" y1="403" x2="330" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="345" y1="403" x2="355" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="370" y1="403" x2="380" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="395" y1="403" x2="405" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="420" y1="403" x2="430" y2="395" stroke="#666" strokeWidth="1"/>
+          <line x1="445" y1="403" x2="455" y2="395" stroke="#666" strokeWidth="1"/>
+          <text x="120" y="425" fontSize="11" fill="#666">大地</text>
 
-          <path d="M 380 410 Q 480 440 580 415" fill="none" stroke="#2a8" strokeWidth="2.5" markerEnd="url(#iPathB)"/>
-          <text x="450" y="465" fontSize="12" fill="#2a8" fontWeight="700">I_b（C_b経由）</text>
+          <line x1="125" y1="210" x2="160" y2="210" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="135" cy="195" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="135" y="200" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">1</text>
 
-          <path d="M 490 415 Q 540 432 580 418" fill="none" stroke="#27c" strokeWidth="2.5" markerEnd="url(#iPathC)"/>
-          <text x="490" y="392" fontSize="12" fill="#27c" fontWeight="700">I_c（C_c経由）</text>
+          <line x1="280" y1="220" x2="280" y2="240" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="265" cy="225" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="265" y="230" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">2</text>
 
-          <path d="M 580 95 Q 380 60 140 100" fill="none" stroke="#a06" strokeWidth="2.5" strokeDasharray="6,4" markerEnd="url(#iPathA)"/>
-          <text x="290" y="60" fontSize="11" fill="#a06" fontWeight="700">a相導体経由で電源へ還流</text>
+          <line x1="280" y1="370" x2="280" y2="390" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="265" cy="380" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="265" y="385" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">3</text>
+
+          <line x1="290" y1="395" x2="440" y2="395" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="370" cy="382" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="370" y="387" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">4</text>
+
+          <line x1="450" y1="380" x2="450" y2="125" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="465" cy="240" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="465" y="245" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">5</text>
+
+          <line x1="430" y1="100" x2="125" y2="100" stroke="#2a8" strokeWidth="3" markerEnd="url(#loopArr)"/>
+          <circle cx="280" cy="85" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="280" y="90" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">6</text>
+
+          <path d="M 100 86 Q 50 86 50 210 Q 50 250 86 210" fill="none" stroke="#2a8" strokeWidth="3" strokeDasharray="5,3" markerEnd="url(#loopArr)"/>
+          <circle cx="38" cy="155" r="11" fill="#2a8" stroke="#fff" strokeWidth="2"/>
+          <text x="38" y="160" textAnchor="middle" fontSize="11" fill="#fff" fontWeight="700">7</text>
+
+          <g fontSize="12" fill="#222">
+            <text x="540" y="50" fontSize="13" fontWeight="700" fill="#0e3a6e">電流ループのトレース</text>
+
+            <text x="540" y="78" fill="#2a8" fontWeight="700">①</text>
+            <text x="558" y="78">V_b 出 → b相導体を右へ</text>
+
+            <text x="540" y="105" fill="#2a8" fontWeight="700">②</text>
+            <text x="558" y="105">b相導体 → C_b の上端へ降下</text>
+
+            <text x="540" y="132" fill="#2a8" fontWeight="700">③</text>
+            <text x="558" y="132">C_b を抜けて 大地 へ</text>
+
+            <text x="540" y="159" fill="#2a8" fontWeight="700">④</text>
+            <text x="558" y="159">大地 を経由して右へ（地絡点へ集合）</text>
+
+            <text x="540" y="186" fill="#2a8" fontWeight="700">⑤</text>
+            <text x="558" y="186">地絡点 → a相導体へ上昇</text>
+
+            <text x="540" y="213" fill="#2a8" fontWeight="700">⑥</text>
+            <text x="558" y="213">a相導体を左へ → V_a へ還流</text>
+
+            <text x="540" y="240" fill="#2a8" fontWeight="700">⑦</text>
+            <text x="558" y="240">V_a → 仮想中性点 → V_b に戻り 1ループ完了</text>
+
+            <text x="540" y="280" fontSize="13" fontWeight="700" fill="#0e3a6e">同時並行ループ</text>
+            <text x="540" y="302">c相も <strong>V_c → c相導体 → C_c → 大地</strong> の経路で</text>
+            <text x="540" y="322">地絡点に集合 → a相経由で還流（同型のループ）</text>
+
+            <text x="540" y="358" fontSize="13" fontWeight="700" fill="#a11">なぜ「3相分のC」が式に入るか</text>
+            <text x="540" y="380">→ 健全2相のC（C_b と C_c）の <strong>両方</strong>を</text>
+            <text x="540" y="400">充電電流が流れるため。地絡電流 I_g は</text>
+            <text x="540" y="420" fontFamily="serif" fontSize="14" fill="#a06" fontWeight="700">I_b + I_c の合成 = √3 · ωC · V</text>
+          </g>
         </svg>
-        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ a相が地絡 → C_aは短絡されてゼロ／b・c相は健全 → C_b・C_c が線間電圧Vで充電される → 大地経由で地絡点に集合 → a相導体を通って電源に戻る。<strong>これが「3相分のC」が式に入る理由</strong></div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ <strong>①〜⑦の番号順に追えば1ループ完結</strong>。c相も同形のループを並行して流れる。C_a は地絡点で短絡されているため電流ゼロ（描画は薄く）。グレーで描いた C_c は経路同型のため明示省略</div>
       </div>
       <MemTable
         headers={["相", "平常時の対地電圧", "1線地絡時（a相地絡）の対地電圧"]}
