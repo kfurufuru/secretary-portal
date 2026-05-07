@@ -1661,6 +1661,36 @@ function HichuseiJirakuPage({ onNav, data }) {
         <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 簡略化のため、ZCT〜配電線路間の接続は1線で表示（実機は3相一括貫通）</div>
       </div>
 
+      {/* コンデンサの分流則による I_C₂ の導出 */}
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--line)',
+        borderLeft: '3px solid #27c',
+        borderRadius: 'var(--radius)',
+        padding: '14px 18px',
+        marginBottom: 20,
+      }}>
+        <div style={{fontSize: 12, color: '#27c', fontWeight: 700, letterSpacing: '0.05em', marginBottom: 8}}>📐 コンデンサの分流則で需要設備側電流を求める</div>
+        <p style={{margin: '0 0 8px', fontSize: 13, lineHeight: 1.8}}>
+          C₁ と C₂ は零相回路において<strong>並列</strong>に接続されている。
+          並列コンデンサでは<strong>容量に比例して電流が分配</strong>される（容量が大きいほど多く流れる）。
+        </p>
+        <div style={{fontSize: 16, fontWeight: 700, color: '#27c', fontFamily: 'serif', textAlign: 'center', padding: '10px 0'}}>
+          I_C₂ = I_g × C₂ / (C₁ + C₂)
+        </div>
+        <p style={{margin: '10px 0 6px', fontSize: 13, lineHeight: 1.8}}>
+          ここに I_g = 2√3·πfV·(C₁+C₂) を代入すると：
+        </p>
+        <div style={{fontSize: 16, fontWeight: 700, color: '#27c', fontFamily: 'serif', textAlign: 'center', padding: '6px 0', marginBottom: 10}}>
+          I_C₂ = 2√3·πfV·(C₁+C₂) × C₂/(C₁+C₂) = 2√3·πfV·C₂
+        </div>
+        <ul style={{margin: '0 0 0', paddingLeft: 20, fontSize: 13, lineHeight: 1.85}}>
+          <li>(C₁+C₂) が約分されて消えるのがポイント — I_C₂ は C₂ だけで決まる</li>
+          <li>ZCT が検出する電流 = この I_C₂（事故点が ZCT より負荷側＝自設備内のとき）</li>
+          <li>R05下問11(b) の「86 mA」はこの式そのもの：2×1.732×3.14×60×6600×0.02×10⁻⁶ ≈ 86 mA</li>
+        </ul>
+      </div>
+
       <PlainExplain>
         <p style={{margin: '0 0 8px'}}><strong>選択遮断（DGR）の原理</strong></p>
         <ul style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
