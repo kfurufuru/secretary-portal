@@ -4010,7 +4010,7 @@ window.renderPage = function(page, navigate) {
     case 'zetsuen-ichiran':        return React.createElement(ZetsuenIchiranPage, props);
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
     case 'den-atsu-kubun':         return React.createElement(DenAtsuKubunPage, props);
-    case 'densen-size':            return React.createElement(StubPage, { ...props, pageId: 'densen-size' });
+    case 'densen-size':            return React.createElement(DensenSizePage, props);
     case 'hokoku-todoke-kigen':    return React.createElement(HokokuTodokeKigenPage, props);
     case 'denro-zetsuen':          return React.createElement(StubPage, { ...props, pageId: 'denro-zetsuen' });
     case 'setsuchi-koji':          return React.createElement(StubPage, { ...props, pageId: 'setsuchi-koji' });
@@ -4020,11 +4020,11 @@ window.renderPage = function(page, navigate) {
     case 'chichuu-densenro':       return React.createElement(StubPage, { ...props, pageId: 'chichuu-densenro' });
     case 'bunsangata-dengen':      return React.createElement(StubPage, { ...props, pageId: 'bunsangata-dengen' });
     case 'gijutsu-kijun-gaiyou':   return React.createElement(StubPage, { ...props, pageId: 'gijutsu-kijun-gaiyou' });
-    case 'kosakubutsu-bunrui':     return React.createElement(StubPage, { ...props, pageId: 'kosakubutsu-bunrui' });
-    case 'shunin-gijutsusya':      return React.createElement(StubPage, { ...props, pageId: 'shunin-gijutsusya' });
-    case 'hoan-kitei':             return React.createElement(StubPage, { ...props, pageId: 'hoan-kitei' });
+    case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
+    case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
+    case 'hoan-kitei':             return React.createElement(HoanKiteiPage, props);
     case 'shiyo-jishu-kensa':      return React.createElement(StubPage, { ...props, pageId: 'shiyo-jishu-kensa' });
-    case 'jiko-hokoku':            return React.createElement(StubPage, { ...props, pageId: 'jiko-hokoku' });
+    case 'jiko-hokoku':            return React.createElement(JikoHokokuPage, props);
     case 'denki-yohin-anzen':      return React.createElement(StubPage, { ...props, pageId: 'denki-yohin-anzen' });
     case 'koji-shi-ho':            return React.createElement(KojiShiHoPage, props);
     case 'koji-gyoho':             return React.createElement(StubPage, { ...props, pageId: 'koji-gyoho' });
@@ -6831,6 +6831,442 @@ function HokokuTodokeKigenPage({ onNav, data }) {
       <PageNav
         prevId="densen-size"       prevTitle="電線サイズ一覧"
         nextId="denro-zetsuen"     nextTitle="電路の絶縁"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-6. DenkenWikiCTA（denken-wiki 誘導カード・共通）
+// ─────────────────────────────────────────────
+function DenkenWikiCTA({ url, label, note }) {
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--border)',
+      borderLeft: '4px solid var(--accent)',
+      borderRadius: 'var(--radius)',
+      padding: '14px 18px',
+      margin: '20px 0',
+    }}>
+      <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 700, marginBottom: 6 }}>
+        📚 条文・解説・"なぜ"は denken-wiki
+      </div>
+      <a href={url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
+        {label} →
+      </a>
+      {note && <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 6 }}>{note}</div>}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-7. KosakubutsuBunruiPage（電気工作物の区分・S・必須）
+// ─────────────────────────────────────────────
+function KosakubutsuBunruiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="直流1,000Vの電路は低圧・高圧・特別高圧のどれか"
+        choices={["低圧","高圧","特別高圧","区分外"]}
+        year="頻出"
+        note="読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>低圧</strong>: 交流 600V以下 / 直流 750V以下</li>
+          <li><strong>高圧</strong>: 交流 600V超〜<strong>7,000V以下</strong> / 直流 750V超〜7,000V以下</li>
+          <li><strong>特別高圧</strong>: 交流・直流とも <strong>7,000V超</strong></li>
+          <li>一般用電気工作物は主任技術者・保安規程・届出すべて<strong>不要</strong>（電力会社の調査義務あり）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="04 法令・制度"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R06・H29・H25"
+        tags={["法令","電気工作物","電圧区分","頻出S"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">電圧区分一覧表</h2>
+      <MemTable
+        headers={["区分","交流","直流"]}
+        rows={[
+          ["低圧",     "600 V 以下",          "750 V 以下"],
+          ["高圧",     "600 V 超〜7,000 V 以下","750 V 超〜7,000 V 以下"],
+          ["特別高圧", "7,000 V 超",          "7,000 V 超"],
+        ]}
+        note="低圧上限は交流600V／直流750V（直流の方が高い）。特別高圧は交直共通で7,000V超"
+      />
+
+      <h2 id="kosakubutsu">工作物の区分（小出力発電設備の閾値）</h2>
+      <MemTable
+        headers={["発電方式","小出力閾値（一般用判定）"]}
+        rows={[
+          ["太陽光",  "50 kW 未満（低圧連系のみ）"],
+          ["風力",    "20 kW 未満"],
+          ["水力",    "20 kW 未満（ダム不要）"],
+          ["内燃力",  "10 kW 未満"],
+          ["燃料電池","10 kW 未満（出力10kW未満）"],
+        ]}
+        note="高圧連系の場合は出力に関係なく自家用扱い。閾値は条件次第で変わるため一次資料で要確認"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "直流も低圧の上限は600V",                correct: "直流の低圧は750V以下（交流600Vより高い）" },
+        { wrong: "出力50kW未満の太陽光なら必ず一般用",     correct: "高圧連系（6,600V等）の場合は自家用（出力無関係）" },
+        { wrong: "高圧の上限は10,000V",                   correct: "高圧は7,000V以下／7,000V超は特別高圧" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "交流600V・直流750Vは低圧？",        a: "両方とも低圧の上限値（含む）" },
+        { q: "直流1,000Vの区分は？",              a: "高圧（750V超〜7,000V以下）" },
+        { q: "高圧と特別高圧の境界は？",          a: "7,000V（7,000V超は特別高圧、交直共通）" },
+        { q: "太陽光50kW・低圧連系の区分は？",    a: "一般用電気工作物（小出力発電設備）" },
+        { q: "一般用は主任技術者の選任が必要？",  a: "不要（電力会社の調査義務でカバー）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/kosakubutsu-bunrui/"
+        label="denken-wiki「電気工作物の区分」を開く"
+        note="条文構造・調査義務・小出力発電設備の正確な定義は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。数値暗記を hoki-wiki に集約" }]} />
+      <PageNav
+        prevId="hokoku-todoke-kigen" prevTitle="報告・届出期限"
+        nextId="shunin-gijutsusya"   nextTitle="主任技術者"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-8. ShuninGijutsusyaPage（主任技術者・S・必須）
+// ─────────────────────────────────────────────
+function ShuninGijutsusyaPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="第三種電気主任技術者が監督できる電圧の上限は？"
+        choices={["50,000 V 以下","50,000 V 未満","100,000 V 未満","170,000 V 未満"]}
+        year="頻出"
+        note="「以下」と「未満」の違いに注意。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>第三種</strong>: <strong>50,000 V 未満</strong>（かつ 5,000 kW 未満の事業用電気工作物）</li>
+          <li><strong>第二種</strong>: <strong>170,000 V 未満</strong></li>
+          <li><strong>第一種</strong>: <strong>すべて（電圧無制限）</strong></li>
+          <li>選任義務（法43条）と届出義務（法42条）は<strong>別個の手続</strong></li>
+          <li>外部委託承認制度: <strong>7,000 V 以下</strong>の需要設備のみ可</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="04 法令・制度"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R07・R05・R03・H30"
+        tags={["法令","主任技術者","頻出S","電圧区分"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">主任技術者の監督範囲</h2>
+      <MemTable
+        headers={["種別","電圧上限","発電所制限","主な選任形態"]}
+        rows={[
+          ["第三種","50,000 V 未満","5,000 kW 未満","通常 / 許可 / 外部委託"],
+          ["第二種","170,000 V 未満","制限なし",   "通常 / 許可 / 兼任"],
+          ["第一種","制限なし",     "制限なし",   "通常 / 許可 / 兼任"],
+        ]}
+        note="第三種は「電圧」と「発電所出力」の2軸で範囲を判定する点に注意"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "第三種は50,000V以下まで監督できる",        correct: "正しくは50,000V未満（ちょうど50,000Vは不可）" },
+        { wrong: "第三種なら出力に関係なく監督できる",        correct: "発電所5,000kW以上は不可（電圧と出力の2軸判定）" },
+        { wrong: "外部委託は低圧需要設備に限る",              correct: "7,000V以下の需要設備（高圧6,600Vも対象）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "第三種の電圧上限は？",            a: "50,000V未満（「以下」ではない）" },
+        { q: "第三種で監督できない発電所は？",  a: "出力5,000kW以上の発電所" },
+        { q: "第二種の電圧上限は？",            a: "170,000V未満" },
+        { q: "外部委託の対象範囲は？",          a: "7,000V以下の需要設備のみ" },
+        { q: "選任と届出はワンセット？",        a: "別個の手続（法43条 vs 法42条）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/shunin-gijutsusha/"
+        label="denken-wiki「電気主任技術者」を開く"
+        note="許可選任・兼任・外部委託の手続詳細と条文根拠は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。監督範囲の暗記を hoki-wiki に集約" }]} />
+      <PageNav
+        prevId="kosakubutsu-bunrui" prevTitle="電気工作物の区分"
+        nextId="hoan-kitei"          nextTitle="保安規程"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-9. HoanKiteiPage（保安規程・S・必須）
+// ─────────────────────────────────────────────
+function HoanKiteiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="保安規程に必ず定めなければならない事項として、誤っているものはどれか"
+        choices={["保安業務を管理する者の職務及び組織","保安教育","保守及び点検","電気料金の算定方法"]}
+        year="頻出"
+        note="保安規程は『安全確保のための社内ルール』。料金は対象外。"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>対象</strong>: 自家用電気工作物の設置者（一般用は不要）</li>
+          <li><strong>届出時期</strong>: 使用の開始<strong>前</strong>に届出</li>
+          <li><strong>変更時</strong>: <strong>遅滞なく</strong>届出（事前届出ではない）</li>
+          <li><strong>必要記載</strong>: 保安組織・保安教育・巡視点検・運転操作・災害対策など</li>
+          <li><strong>保安原則</strong>（電技省令 第1〜4条）: 人体・物件・電気機械器具・他工作物/植物 を守る</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="04 法令・制度"
+        importance="S"
+        freq="毎年"
+        examType="A問題"
+        targets="R07・R04・H29"
+        tags={["法令","保安規程","保安原則","頻出S"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">保安原則（電気事業法施行規則 / 電技省令 第1〜4条）</h2>
+      <MemTable
+        headers={["条文","保護対象","キーワード"]}
+        rows={[
+          ["第1条","人体・物件",      "危害防止"],
+          ["第2条","電路",            "大地から絶縁（構造上やむを得ない場合は例外）"],
+          ["第3条","電気機械器具",    "熱・爆発・火災防止"],
+          ["第4条","他の電気工作物・植物・電線路","損傷防止"],
+        ]}
+        note="第4条の保護対象に『植物』が入っている点が頻出ひっかけ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "保安規程の変更は事前届出",            correct: "変更は『遅滞なく』届出（事後届出も含む）" },
+        { wrong: "電路は必ず大地から絶縁する",          correct: "『構造上やむを得ない場合』は例外あり（第2条但書）" },
+        { wrong: "第4条が守るのは他の電線路のみ",       correct: "他の電気工作物・植物・電線路の3点セット" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "保安規程の届出時期は？",              a: "使用開始前（事前届出）" },
+        { q: "保安規程の変更時の届出は？",          a: "遅滞なく（事後でも可）" },
+        { q: "第3条で防止すべき3つの危険は？",      a: "熱・爆発・火災" },
+        { q: "保安規程は一般用電気工作物にも必要？",a: "不要（自家用のみ）" },
+        { q: "第2条の例外規定は？",                 a: "『構造上やむを得ない場合はこの限りでない』" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/hoan-gensoku/"
+        label="denken-wiki「保安原則・保安規程」を開く"
+        note="条文の正確な記載事項・電技省令の階層構造は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。保安原則4条の暗記表を整備" }]} />
+      <PageNav
+        prevId="shunin-gijutsusya" prevTitle="主任技術者"
+        nextId="shiyo-jishu-kensa" nextTitle="使用前自主検査"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-10. JikoHokokuPage（事故報告・A・高頻度）
+// ─────────────────────────────────────────────
+function JikoHokokuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電気関係報告規則における速報の報告期限として正しいものはどれか"
+        choices={["事故発生から12時間以内","事故発生を知った時から24時間以内","事故発生から48時間以内","事故発生を知った日から30日以内"]}
+        year="頻出"
+        note="起算点が『発生時』ではなく『知った時/日』である点に注意"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>速報</strong>: 事故発生を<strong>知った時</strong>から<strong>24時間以内</strong>（電話等）</li>
+          <li><strong>詳報</strong>: 事故発生を<strong>知った日</strong>から<strong>30日以内</strong>（様式第13）</li>
+          <li><strong>報告先</strong>: 所轄<strong>産業保安監督部長</strong>（原則）</li>
+          <li><strong>感電要件</strong>: 死亡 OR <strong>入院を要する</strong>負傷（軽傷は対象外）</li>
+          <li>速報・詳報は<strong>別個の義務</strong>（速報を出しても詳報は必要）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="04 法令・制度"
+        importance="A"
+        freq="頻出"
+        examType="A問題"
+        targets="R06・R03・H30"
+        tags={["法令","事故報告","数値暗記","期限"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">速報 vs 詳報 比較</h2>
+      <MemTable
+        headers={["項目","速報","詳報"]}
+        rows={[
+          ["期限",   "24時間以内",     "30日以内"],
+          ["起算点", "知った『時』",   "知った『日』"],
+          ["方法",   "電話等",         "様式第13"],
+          ["目的",   "緊急対応",       "原因究明"],
+        ]}
+        note="期限と起算点の組み合わせ（時 vs 日）が混乱ポイント。表でセットで覚える"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "速報は事故発生時から24時間",      correct: "事故発生を『知った時』から24時間（夜間等は発見・通報時点）" },
+        { wrong: "感電は軽傷でも全件報告",          correct: "死亡または『入院を要する』負傷が条件" },
+        { wrong: "速報を出せば詳報は省略可能",      correct: "速報・詳報は別個の義務（両方必要）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "速報の期限と起算点は？",          a: "知った時から24時間以内" },
+        { q: "詳報の期限と起算点は？",          a: "知った日から30日以内" },
+        { q: "事故報告の原則の報告先は？",      a: "所轄産業保安監督部長" },
+        { q: "感電報告の閾値は？",              a: "死亡または入院を要する負傷" },
+        { q: "波及事故の方向は？",              a: "自家用 → 一般送配電事業者等への供給支障" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/articles/other/jiko-3/"
+        label="denken-wiki「事故報告（電気関係報告規則 第3条）」を開く"
+        note="報告対象事故の全リスト・PCB漏洩等の詳細は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "速報24h・詳報30dの混同防止用に暗記表を整備" }]} />
+      <PageNav
+        prevId="shiyo-jishu-kensa" prevTitle="使用前自主検査"
+        nextId="denki-yohin-anzen" nextTitle="電気用品安全法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-11. DensenSizePage（電線サイズ一覧・B・中頻度）
+// ─────────────────────────────────────────────
+function DensenSizePage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="IV電線（1.6mm）を同一管内に4本収めた場合の許容電流は概ねいくらか"
+        choices={["19 A","12 A","24 A","33 A"]}
+        year="頻出"
+        note="ベース許容電流に低減率を掛ける。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>IV（600Vビニル絶縁電線）</strong>: 耐熱 60℃・管内配線</li>
+          <li><strong>CV（架橋ポリエチレン絶縁ケーブル）</strong>: 耐熱 90℃・幹線</li>
+          <li><strong>許容電流（IV単線・周囲30℃）</strong>: 1.6mm <strong>19A</strong> / 2.0mm <strong>24A</strong> / 2.6mm <strong>33A</strong></li>
+          <li><strong>管内本数低減率</strong>: 〜3本 <strong>0.70</strong> / 4本 <strong>0.63</strong> / 5〜6本 <strong>0.56</strong></li>
+          <li><strong>ビニルコード</strong>: 固定配線禁止（移動電線専用）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="02 表暗記"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R02・H29"
+        tags={["電線","ケーブル","表暗記","許容電流"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">許容電流（周囲温度30℃・単線基準）</h2>
+      <MemTable
+        headers={["太さ","IV（管内）","ベース","用途"]}
+        rows={[
+          ["1.6 mm",   "19 A",  "—",   "屋内配線・15A/20A分岐"],
+          ["2.0 mm",   "24 A",  "—",   "屋内配線・20A分岐"],
+          ["2.6 mm",   "33 A",  "—",   "屋内配線・30A分岐"],
+          ["5.5 mm²",  "39 A",  "—",   "幹線（小規模）"],
+          ["22 mm²",   "75 A",  "115 A（CV）","幹線（中規模）・分岐回路50A幹線"],
+        ]}
+        note="数値は主要なもののみ。施設条件で変わるため正確な値は内線規程・電技解釈で要確認"
+      />
+
+      <h2 id="reduce">管内本数による低減率</h2>
+      <MemTable
+        headers={["管内本数","低減率","1.6mm 実効値"]}
+        rows={[
+          ["3本以下","0.70","19 × 0.70 = 13.3 A"],
+          ["4本",    "0.63","19 × 0.63 = 12.0 A"],
+          ["5〜6本", "0.56","19 × 0.56 = 10.6 A"],
+        ]}
+        note="本数が増えるほど放熱が悪化するため許容電流が減る。低減率は『3本0.70 / 4本0.63 / 6本0.56』が頻出"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "カタログの許容電流をそのまま設計に使う",   correct: "管内本数で低減率を掛ける（1.6mm 4本→12A）" },
+        { wrong: "OW線を屋内に使ってよい",                   correct: "OW線は屋外専用。屋内は IV・VVF など" },
+        { wrong: "ビニルコードを天井固定配線に使ってよい",    correct: "ビニルコードは移動電線専用（固定配線禁止）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "IV 1.6mm の許容電流（30℃）は？",      a: "19 A" },
+        { q: "IV 1.6mm を 4本管内収納時の許容電流は？", a: "12 A（19×0.63）" },
+        { q: "管内3本以下の低減率は？",                a: "0.70" },
+        { q: "CVとIVの耐熱温度の差は？",               a: "CV 90℃ / IV 60℃（CVが高い）" },
+        { q: "ビニルコードの用途は？",                 a: "移動電線専用（固定配線禁止）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/densen-cable/"
+        label="denken-wiki「電線・ケーブルの選定」を開く"
+        note="絶縁電線とケーブルの構造差・施設条件別の選定基準は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "§02表暗記セクション完全制覇" }]} />
+      <PageNav
+        prevId="den-atsu-kubun"     prevTitle="電圧区分一覧"
+        nextId="hokoku-todoke-kigen" nextTitle="報告・届出期限"
         onNav={onNav}
       />
     </div>
