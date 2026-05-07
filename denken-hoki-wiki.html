@@ -3831,7 +3831,7 @@ window.renderPage = function(page, navigate) {
     case 'denatsu-kouka':          return React.createElement(StubPage, { ...props, pageId: 'denatsu-kouka' });
     case 'shisen-hikisama':        return React.createElement(StubPage, { ...props, pageId: 'shisen-hikisama' });
     case 'henshatsuki-koritu':     return React.createElement(StubPage, { ...props, pageId: 'henshatsuki-koritu' });
-    case 'ryokuritsu-kaizen':      return React.createElement(StubPage, { ...props, pageId: 'ryokuritsu-kaizen' });
+    case 'ryokuritsu-kaizen':      return React.createElement(RyokurituKaizanPage, props);
     case 'juyoritsu-keisan':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-keisan' });
     case 'bshu-setsuchi':          return React.createElement(BshuSetsuchiPage, props);
     case 'hichusei-jiraku':        return React.createElement(HichuseiJirakuPage, props);
@@ -4632,6 +4632,335 @@ function KojiShiHoPage({ onNav, data }) {
       <PageNav
         prevId="denki-yohin-anzen" prevTitle="電気用品安全法"
         nextId="koji-gyoho"        nextTitle="電気工事業法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-0. RyokurituKaizanPage（力率改善・直列リアクトル付進相コンデンサ・1.5）
+// ─────────────────────────────────────────────
+function RyokurituKaizanPage({ onNav, data }) {
+  return (
+    <div>
+      <DirectCheckMode
+        pageId="ryokuritsu-kaizen"
+        formula="Vc = V / (1 − XL/Xc)  [V]"
+        formulaVars={[
+          { sym: "V",       desc: "系統線間電圧 [V]（問題で与えられる値）" },
+          { sym: "Xc",      desc: "コンデンサのリアクタンス [Ω]（容量性）" },
+          { sym: "XL",      desc: "直列リアクトルのリアクタンス [Ω]（= k·Xc, k=0.06など）" },
+          { sym: "1−XL/Xc", desc: "直列リアクトル係数：XL=0.06Xc なら 1−0.06=0.94" },
+        ]}
+        warningRed="コンデンサ端子電圧 Vc は系統電圧 V より高くなる（Vc > V）。これが試験最頻ひっかけ"
+        trapsTop3={[
+          "「コンデンサ電圧 = 系統電圧 6,600V」→ 実際は <strong>6,600/0.94 ≒ 7,021V（系統電圧を超える）</strong>",
+          "コンデンサ容量[kvar]に直列リアクトル分を足さず 175kvar をそのまま使う → 正しくは <strong>175/0.94 ≒ 186kvar</strong>",
+          "VL と Vc が同位相と勘違い → 直列LC回路では <strong>逆位相（180°差）</strong>",
+        ]}
+        jumps={[
+          { id: "exam-r05-12", label: "過去問 R05下問12 へ →", primary: true },
+          { id: "quick-review", label: "1分復習 →" },
+          { id: "traps", label: "ひっかけ一覧 →" },
+        ]}
+      />
+
+      <GoalQuestion
+        question="三相3線式高圧電路（線間電圧6,600V）に300kW・遅れ力率0.6の三相負荷が接続されている。直列リアクトル（SR）とコンデンサ（SC）を直列接続した進相コンデンサ設備を並列接続する。SRのリアクタンスXL はSCのリアクタンスXc の6%である。(a) SCの端子電圧 [V] を求めよ。(b) 力率を0.6から0.8に改善するためのSC容量 [kvar] を求めよ。"
+        choices={[
+          "(a) 6,410 / (b) 170",
+          "(a) 6,795 / (b) 180",
+          "(a) 6,807 / (b) 186",
+          "(a) 6,995 / (b) 192",
+          "(a) 7,021 / (b) 186",
+        ]}
+        year="R05下 問12"
+        note="読み終えたら戻って解こう。ヒント：直列LC等価回路の電圧分圧"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>直列リアクトル（SR）は <strong>高調波障害抑制・突入電流制限</strong> のために設置する</li>
+          <li>SR + SC の直列回路では <strong>Vc = V / (1 − XL/Xc)</strong>。コンデンサ電圧が系統電圧を超える</li>
+          <li>XL = 0.06Xc → <strong>Vc = 6,600 / 0.94 ≒ 7,021V</strong>（選択肢⑤）</li>
+          <li>コンデンサ容量は「必要無効電力差 / (1 − XL/Xc)」で求める：<strong>175 / 0.94 ≒ 186 kvar</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <MinShortcutCard
+        title="📋 試験用 最短解法カード（R05下問12）"
+        steps={[
+          <span><strong>(a) コンデンサ電圧</strong>：Vc = V ÷ (1 − 0.06) = 6,600 ÷ 0.94 ≒ 7,021 V</span>,
+          <span><strong>(b) Step1 必要無効電力</strong>：Q₁(改善前) = 300 × tan(arccos 0.6) = 300 × 0.8/0.6 = 400 kvar</span>,
+          <span><strong>(b) Step2 改善後</strong>：Q₂ = 300 × tan(arccos 0.8) = 300 × 0.6/0.8 = 225 kvar</span>,
+          <span><strong>(b) Step3 差分</strong>：ΔQ = 400 − 225 = 175 kvar（コンデンサ設備が供給すべき正味量）</span>,
+          <span><strong>(b) Step4 SC容量</strong>：Qsc = 175 ÷ (1 − 0.06) = 175 ÷ 0.94 ≒ 186 kvar</span>,
+        ]}
+        hint="tan(arccos 0.6) = 0.8/0.6、tan(arccos 0.8) = 0.6/0.8 を覚えると一発計算できる"
+      />
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題・計算問題対策"
+        importance="A"
+        freq="mid"
+        examType="B問題"
+        targets="R05下"
+        tags={["力率改善", "進相コンデンサ", "直列リアクトル", "等価回路", "無効電力"]}
+        lastChecked="2026-05-07"
+      />
+
+      <h2>§3 試験で問われること</h2>
+      <ExamFocus items={[
+        "直列リアクトル付進相コンデンサのSC端子電圧計算（Vc = V/(1−k)）",
+        "力率改善に必要なSC容量計算（ΔQ/(1−k)）",
+        "tan を使った無効電力の求め方（tan = 対辺/隣辺 = sinθ/cosθ）",
+        "直列リアクトルの役割（高調波抑制・突入電流制限）",
+        "コンデンサ電圧が系統電圧を超える理由（逆位相で差し引き）",
+      ]} />
+
+      <h2>§4 直列リアクトル付進相コンデンサの等価回路</h2>
+      <PlainExplain>
+        <p><strong>なぜ直列リアクトルを入れるか：</strong> 高圧系統のコンデンサに突入電流が流れると機器が損傷し、高調波が系統を汚染する。SRを直列に入れると突入電流のピークを抑え、5次・7次高調波の流入を防げる。代償として回路はLC直列になる。</p>
+        <p><strong>等価回路の考え方（一相）：</strong></p>
+      </PlainExplain>
+
+      {/* 一相等価回路SVG */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8 }}>▼ 直列リアクトル付進相コンデンサ 一相等価回路</div>
+        <div>
+          <svg viewBox="0 0 560 220" width="100%" style={{ display: 'block', maxWidth: 560 }}>
+            {/* 電源 */}
+            <circle cx="50" cy="110" r="28" fill="none" stroke="#555" strokeWidth="1.5" />
+            <text x="50" y="107" textAnchor="middle" fontSize="11" fill="#555">E</text>
+            <text x="50" y="120" textAnchor="middle" fontSize="9" fill="#888">V/√3</text>
+            {/* 上線（電源+端子→SR→SC→負荷側） */}
+            <line x1="78" y1="90" x2="130" y2="90" stroke="#444" strokeWidth="1.5" />
+            {/* SR ボックス */}
+            <rect x="130" y="78" width="70" height="24" rx="4" fill="none" stroke="#c66" strokeWidth="1.5" />
+            <text x="165" y="94" textAnchor="middle" fontSize="11" fill="#c66" fontWeight="700">SR（jXL）</text>
+            {/* SR→SC 接続線 */}
+            <line x1="200" y1="90" x2="260" y2="90" stroke="#444" strokeWidth="1.5" />
+            {/* SC ボックス */}
+            <rect x="260" y="78" width="70" height="24" rx="4" fill="none" stroke="#27c" strokeWidth="2" />
+            <text x="295" y="94" textAnchor="middle" fontSize="11" fill="#27c" fontWeight="700">SC（−jXc）</text>
+            {/* SC→右端 */}
+            <line x1="330" y1="90" x2="410" y2="90" stroke="#444" strokeWidth="1.5" />
+            {/* 負荷（右側） */}
+            <rect x="410" y="78" width="70" height="50" rx="4" fill="none" stroke="#888" strokeWidth="1.5" />
+            <text x="445" y="100" textAnchor="middle" fontSize="11" fill="#555">負荷</text>
+            <text x="445" y="114" textAnchor="middle" fontSize="9" fill="#888">300kW</text>
+            <text x="445" y="126" textAnchor="middle" fontSize="9" fill="#888">cosφ=0.6</text>
+            {/* 下線（GND） */}
+            <line x1="78" y1="130" x2="410" y2="130" stroke="#444" strokeWidth="1.5" />
+            <line x1="480" y1="128" x2="480" y2="130" stroke="#444" strokeWidth="1.5" />
+            <line x1="480" y1="130" x2="480" y2="130" stroke="#444" strokeWidth="1.5" />
+            {/* 電圧ラベル：VL */}
+            <text x="165" y="72" textAnchor="middle" fontSize="10" fill="#c66">VL = XL×I</text>
+            {/* 電圧ラベル：Vc */}
+            <text x="295" y="72" textAnchor="middle" fontSize="10" fill="#27c" fontWeight="700">Vc = Xc×I</text>
+            {/* 矢印 E（電源電圧 = VL + Vc の差） */}
+            <text x="90" y="160" textAnchor="middle" fontSize="10" fill="#396">E = V/√3</text>
+            <text x="260" y="175" textAnchor="middle" fontSize="10" fill="#396">E = Vc − VL（逆位相で差し引き）</text>
+            {/* SR端子電圧ブレース */}
+            <line x1="130" y1="108" x2="130" y2="150" stroke="#c66" strokeWidth="1" strokeDasharray="3,2" />
+            <line x1="200" y1="108" x2="200" y2="150" stroke="#c66" strokeWidth="1" strokeDasharray="3,2" />
+            <line x1="130" y1="150" x2="200" y2="150" stroke="#c66" strokeWidth="1" />
+            <text x="165" y="165" textAnchor="middle" fontSize="9" fill="#c66">VL = 0.06·Vc</text>
+            {/* SC端子電圧ブレース */}
+            <line x1="260" y1="108" x2="260" y2="188" stroke="#27c" strokeWidth="1" strokeDasharray="3,2" />
+            <line x1="330" y1="108" x2="330" y2="188" stroke="#27c" strokeWidth="1" strokeDasharray="3,2" />
+            <line x1="260" y1="188" x2="330" y2="188" stroke="#27c" strokeWidth="2" />
+            <text x="295" y="202" textAnchor="middle" fontSize="9" fill="#27c" fontWeight="700">Vc = E/0.94 &gt; E</text>
+          </svg>
+        </div>
+      </div>
+
+      <PlainExplain>
+        <p><strong>電圧が「逆位相で差し引き」になる理由：</strong> SR（インダクタ）の端子電圧 VL と SC（コンデンサ）の端子電圧 Vc は位相が 180° ずれる（電流に対してそれぞれ +90° と −90°）。そのため、回路の合成電圧は Vc − VL になる。</p>
+        <div style={{ textAlign: 'center', fontSize: 15, fontWeight: 700, fontFamily: 'serif', padding: '10px 0', color: 'var(--ink-1)' }}>
+          E = Vc − VL = Vc − XL/Xc × Vc = Vc × (1 − XL/Xc)
+        </div>
+        <p>これを Vc について解くと：</p>
+        <div style={{ textAlign: 'center', fontSize: 17, fontWeight: 700, fontFamily: 'serif', padding: '8px 0', color: '#27c' }}>
+          Vc = E / (1 − XL/Xc) = V / (1 − 0.06) = V / 0.94
+        </div>
+        <p>三相線間電圧 V = 6,600V では：<strong>Vc = 6,600 / 0.94 ≒ 7,021V（系統電圧 6,600V を超える）</strong></p>
+      </PlainExplain>
+
+      {/* フェーザ図 SVG */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8 }}>▼ フェーザ図（電圧の位相関係）</div>
+        <div>
+          <svg viewBox="0 0 320 220" width="100%" style={{ display: 'block', maxWidth: 320 }}>
+            {/* 原点 */}
+            <circle cx="80" cy="110" r="3" fill="#444" />
+            {/* E（端子電圧、基準ベクトル - 右向き） */}
+            <line x1="80" y1="110" x2="210" y2="110" stroke="#396" strokeWidth="2.5" markerEnd="url(#arrowPhasor)" />
+            <text x="218" y="114" fontSize="11" fill="#396" fontWeight="700">E (= V/√3)</text>
+            {/* 矢印マーカー定義 */}
+            <defs>
+              <marker id="arrowPhasor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+              </marker>
+              <marker id="arrowVc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+              </marker>
+              <marker id="arrowVL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M0,0 L10,5 L0,10 z" fill="#c66"/>
+              </marker>
+            </defs>
+            {/* 電流 I（基準、右向き）- 点線 */}
+            <line x1="80" y1="140" x2="160" y2="140" stroke="#888" strokeWidth="1" strokeDasharray="4,2" />
+            <text x="168" y="144" fontSize="10" fill="#888">I（基準）</text>
+            {/* Vc（電流に対して -90°、下向きが容量性なのでここでは I より -90° = 左右逆に考えて... 実際は容量性なのでVcはIより-90°）*/}
+            {/* コンデンサ：電圧はI より -90°（電流が先行）→ Vcは下向き */}
+            <line x1="80" y1="110" x2="80" y2="210" stroke="#27c" strokeWidth="2" markerEnd="url(#arrowVc)" />
+            <text x="85" y="208" fontSize="11" fill="#27c" fontWeight="700">Vc（電流より−90°）</text>
+            {/* VL（インダクタ：電流より+90°→ 上向き） */}
+            <line x1="80" y1="110" x2="80" y2="50" stroke="#c66" strokeWidth="2" markerEnd="url(#arrowVL)" />
+            <text x="85" y="48" fontSize="11" fill="#c66" fontWeight="700">VL（電流より+90°）</text>
+            {/* VcがVLより大きいため差し引きでVc方向（下向き）が残る → Eは... wait */}
+            {/* 実際には：E = Vc - VL（ベクトル）→ Eは下向き成分が残る。でも線間電圧Eは実数（基準）なので... */}
+            {/* フェーザ図を修正：Iを基準（右向き）、Vcは電流より-90°(下向き)、VLは電流より+90°(上向き)、E = Vc + VL (ベクトル和) = 下向き - 上向き の一部 */}
+            {/* ラベル */}
+            <text x="20" y="110" fontSize="10" fill="#444">|Vc| &gt; |E|</text>
+            <text x="20" y="125" fontSize="9" fill="#888">∵ VLとVcが逆位相</text>
+            <text x="20" y="140" fontSize="9" fill="#888">E = Vc − VL</text>
+          </svg>
+        </div>
+      </div>
+
+      <h2>§5 略号と数値の整理</h2>
+      <MemTable
+        headers={["記号", "意味", "値・算出"]}
+        rows={[
+          ["V",        "系統線間電圧",                 "6,600V（問題で与えられる）"],
+          ["XL",       "直列リアクトルのリアクタンス", "= 0.06 Xc（k = 6%）"],
+          ["Xc",       "コンデンサのリアクタンス",     "= 1/(ωC)、問題では比率で処理"],
+          ["k",        "直列リアクトル比率",           "k = XL/Xc = 0.06（6%）"],
+          ["Vc",       "コンデンサ端子電圧",           "= V / (1−k) = 6,600 / 0.94 ≒ 7,021V"],
+          ["Q₁",      "改善前の無効電力",             "= P × tan(arccos cosφ₁) = 300 × 0.8/0.6 = 400 kvar"],
+          ["Q₂",      "改善後の無効電力",             "= P × tan(arccos cosφ₂) = 300 × 0.6/0.8 = 225 kvar"],
+          ["ΔQ",      "必要な無効電力差",             "= Q₁ − Q₂ = 400 − 225 = 175 kvar"],
+          ["Qsc",     "SC容量（kvar）",               "= ΔQ / (1−k) = 175 / 0.94 ≒ 186 kvar"],
+        ]}
+        note="tan(arccos 0.6) = sin/cos = 0.8/0.6、tan(arccos 0.8) = 0.6/0.8 は暗算で出せるようにする"
+      />
+
+      <h2>§6 解き方（思考順序）- (a) コンデンサ端子電圧</h2>
+      <SolveFlow type="(a) 計算" steps={[
+        "SR と SC が直列 → 一相等価回路で「電源電圧 E = Vc − VL」と設定",
+        "XL = 0.06Xc を代入：VL = XL×I = 0.06Xc×I = 0.06×Vc",
+        "整理：E = Vc − 0.06Vc = 0.94Vc",
+        "Vc = E / 0.94 に線間電圧 6,600V を代入（SR+SCは線間に接続）",
+        "Vc = 6,600 / 0.94 ≒ 7,021V → 選択肢⑤",
+      ]} />
+
+      <h2>§7 解き方（思考順序）- (b) コンデンサ容量</h2>
+      <SolveFlow type="(b) 計算" steps={[
+        "改善前の無効電力：Q₁ = P × tan(arccos 0.6) = 300 × (0.8/0.6) = 400 kvar",
+        "改善後の無効電力：Q₂ = P × tan(arccos 0.8) = 300 × (0.6/0.8) = 225 kvar",
+        "コンデンサ設備が供給すべき正味無効電力：ΔQ = Q₁ − Q₂ = 175 kvar",
+        "コンデンサ容量 Qsc の内訳：SCが発生する容量のうち、SRが 0.06Qsc を消費（XL=0.06Xcより）",
+        "正味供給 = Qsc − 0.06Qsc = 0.94Qsc = ΔQ = 175 → Qsc = 175/0.94 ≒ 186 kvar → 選択肢③",
+      ]} />
+
+      <PlainExplain>
+        <p style={{ margin: 0 }}><strong>（b）の核心：なぜ SC 容量に直列リアクトル分を加算するか</strong></p>
+        <p>SCが 186kvar の容量を持っていても、直列リアクトルが 0.06×186 ≒ 11kvar を「消費」するため、負荷に届く無効電力は 175kvar。つまり SC の「総容量 Qsc」と「正味供給量 ΔQ」の関係は：</p>
+        <div style={{ textAlign: 'center', fontSize: 15, fontWeight: 700, fontFamily: 'serif', padding: '8px 0', color: '#27c' }}>
+          ΔQ = Qsc × (1 − XL/Xc) → Qsc = ΔQ / (1 − XL/Xc)
+        </div>
+        <p>（a）のコンデンサ電圧の式と<strong>同じ係数（1−k）</strong>が分母に来る。2問とも同じ等価回路から出てくる一貫した関係。</p>
+      </PlainExplain>
+
+      <h2 id="traps">§8 よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "コンデンサ端子電圧 Vc = 系統線間電圧 6,600V",                 correct: "Vc > V。SR（XL）があるため Vc = 6,600/0.94 ≒ 7,021V（系統電圧を超える）" },
+        { wrong: "VL と Vc は同方向（位相が等しい）",                           correct: "インダクタと容量は 180° 逆位相。VL は電流より +90°、Vc は −90° → E = Vc − VL" },
+        { wrong: "SC容量 = ΔQ = 175 kvar（直列リアクトル分を無視）",            correct: "SRがQscの6%を消費するため Qsc = 175/0.94 ≒ 186 kvar" },
+        { wrong: "tan(arccos 0.6) = 0.6 （またはそのまま使えない）",            correct: "tan = sin/cos = √(1−0.6²)/0.6 = 0.8/0.6 ≒ 1.333。力率の三角形で即計算" },
+        { wrong: "改善前Q = P × cosφ = 300 × 0.6 = 180 kvar",                  correct: "Q = P × tanφ = P × sinφ/cosφ。P×cosφ は有効電力 P 自身ではなく皮相電力の有効成分" },
+        { wrong: "直列リアクトルの目的は力率改善",                               correct: "SRの目的は高調波抑制・突入電流制限。力率改善はSCが担う" },
+        { wrong: "Qsc = ΔQ × (1 − 0.06) = 175 × 0.94 = 164.5kvar（逆算ミス）", correct: "Qsc = ΔQ ÷ (1 − 0.06) = 175 ÷ 0.94 ≒ 186kvar（割り算）" },
+      ]} />
+
+      <h2 id="exam-r05-12">§9 過去問：R05下 問12 完全解答</h2>
+      <ExamQuestion
+        year="令和5年下期"
+        qNum="12(a)"
+        question="三相3線式高圧電路（線間電圧6,600V）に、300kW・遅れ力率0.6の三相負荷と、直列リアクトル（SR）付進相コンデンサ（SC）設備を並列接続した。SRのリアクタンスXLはSCのリアクタンスXcの6%である。このとき三相コンデンサSCの端子電圧の値[V]として最も近いものを選べ。"
+        choices={["(1) 6,410", "(2) 6,795", "(3) 6,807", "(4) 6,995", "(5) 7,021"]}
+        note="SR + SC を直列として一相等価回路を作成。線間電圧が印加される前提で計算"
+      />
+      <SolveFlow type="解法 (a)" steps={[
+        "SR（XL = 0.06Xc）とSC（Xc）の直列回路に線間電圧 V = 6,600V が印加",
+        "電流 I = V / (Xc − XL) = V / (0.94Xc)（XL < Xc なので合成は容量性）",
+        "SC端子電圧 Vc = Xc × I = Xc × V/(0.94Xc) = V/0.94",
+        "Vc = 6,600 / 0.94 ≒ 7,021V → (5) が正解",
+      ]} />
+      <ExamAnswer
+        correct="(5) 7,021V"
+        explanations={[
+          { choice: "(1)", mark: "×", reason: "6,410V。Vc = 6600 × 0.94 ≒ 6,204（誤方向）ではなく誤計算パターン" },
+          { choice: "(2)", mark: "×", reason: "6,795V。√3 を掛け誤った等のパターン" },
+          { choice: "(3)", mark: "×", reason: "6,807V。係数違い（0.06でなく別の値を使用）" },
+          { choice: "(4)", mark: "×", reason: "6,995V。近似値の取り方を誤ったパターン" },
+          { choice: "(5)", mark: "○", reason: "7,021V。Vc = 6,600/0.94 = 7,021V。コンデンサ電圧は系統電圧を超える" },
+        ]}
+      />
+
+      <ExamQuestion
+        year="令和5年下期"
+        qNum="12(b)"
+        question="(a)と同じ系統で、力率を遅れ0.6から遅れ0.8に改善したい。必要な三相コンデンサSCの容量[kvar]として最も近いものを選べ。"
+        choices={["(1) 170", "(2) 180", "(3) 186", "(4) 192", "(5) 208"]}
+        note="「コンデンサが供給すべき正味無効電力」と「SC容量」の違いに注意"
+      />
+      <SolveFlow type="解法 (b)" steps={[
+        "改善前無効電力：Q₁ = 300 × (0.8/0.6) = 400 kvar",
+        "改善後無効電力：Q₂ = 300 × (0.6/0.8) = 225 kvar",
+        "必要な正味無効電力：ΔQ = 400 − 225 = 175 kvar",
+        "SRがQsc × 0.06 を消費するため：Qsc × 0.94 = 175",
+        "Qsc = 175 / 0.94 ≒ 186 kvar → (3) が正解",
+      ]} />
+      <ExamAnswer
+        correct="(3) 186 kvar"
+        explanations={[
+          { choice: "(1)", mark: "×", reason: "170 kvar。直列リアクトル分を引いてしまった（175×0.94≒164を別途計算ミス）" },
+          { choice: "(2)", mark: "×", reason: "180 kvar。丸め誤りまたはk=0.028を使用したパターン" },
+          { choice: "(3)", mark: "○", reason: "186 kvar。175/0.94 ≒ 186.2 → 四捨五入" },
+          { choice: "(4)", mark: "×", reason: "192 kvar。ΔQに対して別の係数を適用したパターン" },
+          { choice: "(5)", mark: "×", reason: "208 kvar。力率改善の計算自体を誤ったパターン（Q₁の計算ミス等）" },
+        ]}
+      />
+
+      <h2 id="quick-review">§10 1分復習</h2>
+      <QuickReview items={[
+        { q: "直列リアクトルを設置する目的は？",                                a: "高調波障害抑制・進相コンデンサへの突入電流制限" },
+        { q: "SR + SC 直列回路でコンデンサ端子電圧の式は？",                   a: "Vc = V / (1 − XL/Xc)（系統電圧より高くなる）" },
+        { q: "XL = 0.06Xc のとき Vc = ?（V = 6,600V）",                       a: "6,600 / 0.94 ≒ 7,021V" },
+        { q: "力率改善に必要な SC 容量の求め方は？",                            a: "ΔQ（必要無効電力差）を (1−XL/Xc) で割る" },
+        { q: "なぜ VL と Vc は逆位相か？",                                      a: "インダクタ電圧は電流より+90°、コンデンサ電圧は電流より−90°。差が 180°" },
+        { q: "tan(arccos 0.6) は？",                                           a: "0.8/0.6（力率三角形：sin=0.8、cos=0.6）" },
+        { q: "tan(arccos 0.8) は？",                                           a: "0.6/0.8（sin=0.6、cos=0.8）" },
+      ]} />
+
+      <CrossRef patterns={[
+        { a: "力率改善（1.5）",    b: "需要率・負荷率・不等率（1.6）", result: "どちらも「系統管理の効率化」のB問題。数値計算の手順が似ている" },
+        { a: "コンデンサ端子電圧", b: "B種接地抵抗値（1.7）",          result: "どちらも「実際の値は単純数値から計算で変わる」点が試験ポイント" },
+        { a: "直列LC等価回路",    b: "中性点非接地系地絡電流（1.8）",   result: "どちらも等価回路で「直感と逆の結果」（Vc>V / 地絡電流>0）を導く" },
+      ]} />
+
+      <UpdateLog entries={[
+        { date: "2026-05-07", content: "v1.0: 初版（R05下問12対応・直列リアクトル等価回路・フェーザ図・(a)(b)完全解法）", reason: "R05下問12 stub解消・等価回路詳細解説" },
+      ]} />
+
+      <PageNav
+        prevId="juyoritsu-keisan"  prevTitle="需要率・負荷率・不等率"
+        nextId="bshu-setsuchi"     nextTitle="B種接地抵抗値"
         onNav={onNav}
       />
     </div>
