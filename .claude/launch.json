@@ -4,8 +4,8 @@
     {
       "name": "hoki",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8766"],
-      "port": 8769
+      "runtimeArgs": ["-m", "http.server", "8771"],
+      "port": 8771
     }
   ]
 }
