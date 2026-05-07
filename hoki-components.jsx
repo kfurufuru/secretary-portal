@@ -451,31 +451,101 @@ function ExamAnswer({ correct, explanations }) {
   );
 }
 
-function QuickReview({ items, showRating }) {
+function QuickReview({ items, pageId }) {
   const limited = items.slice(0, 5);
-  const [ratings, setRatings] = React.useState({});
-  const setRating = (i, r) => setRatings(prev => ({ ...prev, [i]: r }));
+  const key = pageId
+    || (typeof window !== 'undefined' ? (window.location.hash.replace(/^#/, '').split(':')[0] || 'unknown') : 'unknown');
+  const ratingStorage = `hoki_qr_${key}`;
+  const memoStorage   = `hoki_qrmemo_${key}`;
+
+  const loadJSON = (k) => {
+    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : {}; }
+    catch (e) { return {}; }
+  };
+  const saveJSON = (k, v) => {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  };
+
+  const [ratings, setRatings] = React.useState(() => loadJSON(ratingStorage));
+  const [memos, setMemos]     = React.useState(() => loadJSON(memoStorage));
+  const [memoOpen, setMemoOpen] = React.useState({});
+
+  const setRating = (i, r) => {
+    setRatings(prev => {
+      const next = { ...prev, [i]: prev[i] === r ? null : r }; // toggle off when same
+      saveJSON(ratingStorage, next);
+      return next;
+    });
+  };
+  const setMemo = (i, text) => {
+    setMemos(prev => {
+      const next = { ...prev, [i]: text };
+      saveJSON(memoStorage, next);
+      return next;
+    });
+  };
+  const toggleMemo = (i) => setMemoOpen(prev => ({ ...prev, [i]: !prev[i] }));
+
+  const RATE_BTN = (label, value, onColor) => (i) => (
+    <button
+      onClick={() => setRating(i, value)}
+      style={{
+        fontSize: 12, padding: '3px 10px', borderRadius: 4,
+        border: '1px solid var(--line)',
+        background: ratings[i] === value ? onColor : 'var(--bg-elev)',
+        fontWeight: ratings[i] === value ? 700 : 400,
+        cursor: 'pointer',
+      }}
+    >{label}</button>
+  );
+  const BtnOk    = RATE_BTN('〇 理解',     'ok',    '#d4f5d4');
+  const BtnAmari = RATE_BTN('△ 曖昧',     'amari', '#fff3cd');
+  const BtnNg    = RATE_BTN('✕ わからない','ng',    '#fde8e8');
+
   return (
     <div className="quick-review" style={{ marginBottom: '24px' }}>
       <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '10px', color: 'var(--ink-2)' }}>1分復習</div>
-      {limited.map((item, i) => (
-        <details key={i} className="quick-review">
-          <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
-          <div className="quick-review-answer">A: {item.a}</div>
-          {showRating && (
-            <div style={{ display: 'flex', gap: 8, marginTop: 6, paddingLeft: 12 }}>
+      {limited.map((item, i) => {
+        const hasMemo = !!(memos[i] && memos[i].trim());
+        return (
+          <details key={i} className="quick-review">
+            <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
+            <div className="quick-review-answer">A: {item.a}</div>
+            <div style={{ display: 'flex', gap: 8, marginTop: 8, paddingLeft: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+              {BtnOk(i)}
+              {BtnAmari(i)}
+              {BtnNg(i)}
               <button
-                onClick={() => setRating(i, 'ok')}
-                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ok' ? '#d4f5d4' : 'var(--bg-elev)', cursor: 'pointer' }}
-              >✓ 理解できた</button>
-              <button
-                onClick={() => setRating(i, 'ng')}
-                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ng' ? '#fde8e8' : 'var(--bg-elev)', cursor: 'pointer' }}
-              >△ もう一度</button>
+                onClick={() => toggleMemo(i)}
+                style={{
+                  fontSize: 12, padding: '3px 10px', borderRadius: 4,
+                  border: '1px solid var(--line)',
+                  background: hasMemo ? '#dbeafe' : 'var(--bg-elev)',
+                  fontWeight: hasMemo ? 700 : 400,
+                  cursor: 'pointer',
+                }}
+              >📝 メモ{hasMemo ? '●' : ''}</button>
             </div>
-          )}
-        </details>
-      ))}
+            {memoOpen[i] && (
+              <div style={{ marginTop: 8, paddingLeft: 12 }}>
+                <textarea
+                  value={memos[i] || ''}
+                  onChange={(e) => setMemo(i, e.target.value)}
+                  placeholder="メモ（誤解・気付き・次回チェックなど）"
+                  rows={3}
+                  style={{
+                    width: '100%', maxWidth: 560,
+                    fontSize: 12, padding: '6px 8px',
+                    border: '1px solid var(--line)', borderRadius: 4,
+                    background: 'var(--bg-elev)', color: 'var(--ink-1)',
+                    fontFamily: 'inherit', resize: 'vertical',
+                  }}
+                />
+              </div>
+            )}
+          </details>
+        );
+      })}
     </div>
   );
 }

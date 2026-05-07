@@ -2133,31 +2133,101 @@ function ExamAnswer({ correct, explanations }) {
   );
 }
 
-function QuickReview({ items, showRating }) {
+function QuickReview({ items, pageId }) {
   const limited = items.slice(0, 5);
-  const [ratings, setRatings] = React.useState({});
-  const setRating = (i, r) => setRatings(prev => ({ ...prev, [i]: r }));
+  const key = pageId
+    || (typeof window !== 'undefined' ? (window.location.hash.replace(/^#/, '').split(':')[0] || 'unknown') : 'unknown');
+  const ratingStorage = `hoki_qr_${key}`;
+  const memoStorage   = `hoki_qrmemo_${key}`;
+
+  const loadJSON = (k) => {
+    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : {}; }
+    catch (e) { return {}; }
+  };
+  const saveJSON = (k, v) => {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  };
+
+  const [ratings, setRatings] = React.useState(() => loadJSON(ratingStorage));
+  const [memos, setMemos]     = React.useState(() => loadJSON(memoStorage));
+  const [memoOpen, setMemoOpen] = React.useState({});
+
+  const setRating = (i, r) => {
+    setRatings(prev => {
+      const next = { ...prev, [i]: prev[i] === r ? null : r }; // toggle off when same
+      saveJSON(ratingStorage, next);
+      return next;
+    });
+  };
+  const setMemo = (i, text) => {
+    setMemos(prev => {
+      const next = { ...prev, [i]: text };
+      saveJSON(memoStorage, next);
+      return next;
+    });
+  };
+  const toggleMemo = (i) => setMemoOpen(prev => ({ ...prev, [i]: !prev[i] }));
+
+  const RATE_BTN = (label, value, onColor) => (i) => (
+    <button
+      onClick={() => setRating(i, value)}
+      style={{
+        fontSize: 12, padding: '3px 10px', borderRadius: 4,
+        border: '1px solid var(--line)',
+        background: ratings[i] === value ? onColor : 'var(--bg-elev)',
+        fontWeight: ratings[i] === value ? 700 : 400,
+        cursor: 'pointer',
+      }}
+    >{label}</button>
+  );
+  const BtnOk    = RATE_BTN('〇 理解',     'ok',    '#d4f5d4');
+  const BtnAmari = RATE_BTN('△ 曖昧',     'amari', '#fff3cd');
+  const BtnNg    = RATE_BTN('✕ わからない','ng',    '#fde8e8');
+
   return (
     <div className="quick-review" style={{ marginBottom: '24px' }}>
       <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '10px', color: 'var(--ink-2)' }}>1分復習</div>
-      {limited.map((item, i) => (
-        <details key={i} className="quick-review">
-          <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
-          <div className="quick-review-answer">A: {item.a}</div>
-          {showRating && (
-            <div style={{ display: 'flex', gap: 8, marginTop: 6, paddingLeft: 12 }}>
+      {limited.map((item, i) => {
+        const hasMemo = !!(memos[i] && memos[i].trim());
+        return (
+          <details key={i} className="quick-review">
+            <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
+            <div className="quick-review-answer">A: {item.a}</div>
+            <div style={{ display: 'flex', gap: 8, marginTop: 8, paddingLeft: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+              {BtnOk(i)}
+              {BtnAmari(i)}
+              {BtnNg(i)}
               <button
-                onClick={() => setRating(i, 'ok')}
-                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ok' ? '#d4f5d4' : 'var(--bg-elev)', cursor: 'pointer' }}
-              >✓ 理解できた</button>
-              <button
-                onClick={() => setRating(i, 'ng')}
-                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ng' ? '#fde8e8' : 'var(--bg-elev)', cursor: 'pointer' }}
-              >△ もう一度</button>
+                onClick={() => toggleMemo(i)}
+                style={{
+                  fontSize: 12, padding: '3px 10px', borderRadius: 4,
+                  border: '1px solid var(--line)',
+                  background: hasMemo ? '#dbeafe' : 'var(--bg-elev)',
+                  fontWeight: hasMemo ? 700 : 400,
+                  cursor: 'pointer',
+                }}
+              >📝 メモ{hasMemo ? '●' : ''}</button>
             </div>
-          )}
-        </details>
-      ))}
+            {memoOpen[i] && (
+              <div style={{ marginTop: 8, paddingLeft: 12 }}>
+                <textarea
+                  value={memos[i] || ''}
+                  onChange={(e) => setMemo(i, e.target.value)}
+                  placeholder="メモ（誤解・気付き・次回チェックなど）"
+                  rows={3}
+                  style={{
+                    width: '100%', maxWidth: 560,
+                    fontSize: 12, padding: '6px 8px',
+                    border: '1px solid var(--line)', borderRadius: 4,
+                    background: 'var(--bg-elev)', color: 'var(--ink-1)',
+                    fontFamily: 'inherit', resize: 'vertical',
+                  }}
+                />
+              </div>
+            )}
+          </details>
+        );
+      })}
     </div>
   );
 }
@@ -4023,11 +4093,11 @@ window.renderPage = function(page, navigate) {
     case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
     case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
     case 'hoan-kitei':             return React.createElement(HoanKiteiPage, props);
-    case 'shiyo-jishu-kensa':      return React.createElement(StubPage, { ...props, pageId: 'shiyo-jishu-kensa' });
+    case 'shiyo-jishu-kensa':      return React.createElement(ShiyoJishuKensaPage, props);
     case 'jiko-hokoku':            return React.createElement(JikoHokokuPage, props);
-    case 'denki-yohin-anzen':      return React.createElement(StubPage, { ...props, pageId: 'denki-yohin-anzen' });
+    case 'denki-yohin-anzen':      return React.createElement(DenkiYohinAnzenPage, props);
     case 'koji-shi-ho':            return React.createElement(KojiShiHoPage, props);
-    case 'koji-gyoho':             return React.createElement(StubPage, { ...props, pageId: 'koji-gyoho' });
+    case 'koji-gyoho':             return React.createElement(KojiGyohoPage, props);
     case 'furyoku-gijutsukijun':   return React.createElement(StubPage, { ...props, pageId: 'furyoku-gijutsukijun' });
     case 'taiyouchi-gijutsukijun': return React.createElement(StubPage, { ...props, pageId: 'taiyouchi-gijutsukijun' });
     case 'keito-renkei':           return React.createElement(StubPage, { ...props, pageId: 'keito-renkei' });
@@ -7267,6 +7337,274 @@ function DensenSizePage({ onNav, data }) {
       <PageNav
         prevId="den-atsu-kubun"     prevTitle="電圧区分一覧"
         nextId="hokoku-todoke-kigen" nextTitle="報告・届出期限"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-12. ShiyoJishuKensaPage（使用前自主検査・点検頻度・A）
+// ─────────────────────────────────────────────
+function ShiyoJishuKensaPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="事業用電気工作物の月次点検頻度として正しいものはどれか"
+        choices={["1回以上/週","1回以上/月","1回以上/3か月","1回以上/年"]}
+        year="頻出"
+        note="点検頻度は月次・年次が基本。外部委託で月次→隔月に緩和"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>月次点検</strong>: <strong>1回以上/月</strong>（事業用電気工作物の基本）</li>
+          <li><strong>年次点検</strong>: <strong>1回以上/年</strong></li>
+          <li><strong>外部委託</strong>時は月次→<strong>隔月</strong>に緩和（廃止ではない）</li>
+          <li><strong>一般用</strong>は<strong>4年に1回</strong>の定期調査（電力会社が実施）</li>
+          <li>根拠: 電気事業法 第39条「常時技術基準に適合させよ」</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH01"
+        category="04 法令・制度"
+        importance="A"
+        freq="頻出"
+        examType="A問題"
+        targets="R05・R02・H29"
+        tags={["法令","点検","施設管理","頻出"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">点検頻度一覧</h2>
+      <MemTable
+        headers={["点検内容","頻度","主体","根拠"]}
+        rows={[
+          ["月次点検",     "1回以上/月", "設置者またはメーカ", "施行規則 第94条"],
+          ["年次点検",     "1回以上/年", "同上",              "同上"],
+          ["月次（外部委託）","隔月OK",   "外部委託業者",       "外部委託承認制度"],
+          ["定期調査（一般用）","4年に1回","電力会社",          "施行規則 第96条"],
+        ]}
+        note="『隔月』は月次の緩和であって廃止ではない。義務自体は継続"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "月次点検は1回/3ヶ月でOK",                correct: "1回以上/月（毎月が最低基準）" },
+        { wrong: "外部委託すれば月次点検は廃止される",     correct: "隔月に緩和されるだけ（実施義務は継続）" },
+        { wrong: "一般用も設置者が4年に1回点検する",       correct: "一般用は電力会社が4年に1回調査" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "事業用の月次点検頻度は？",        a: "1回以上/月" },
+        { q: "外部委託時の月次点検頻度は？",    a: "隔月（2か月に1回）に緩和" },
+        { q: "一般用の定期調査頻度と主体は？",  a: "電力会社が4年に1回" },
+        { q: "年次点検の頻度は？",              a: "1回以上/年" },
+        { q: "点検義務の法的根拠は？",          a: "電気事業法 第39条（技術基準への常時適合義務）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/shisetsu-kanri/"
+        label="denken-wiki「施設管理・点検体制」を開く"
+        note="点検項目の詳細・記録保存期間・変圧器全日効率の計算は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "点検頻度の暗記表を整備" }]} />
+      <PageNav
+        prevId="hoan-kitei"  prevTitle="保安規程"
+        nextId="jiko-hokoku" nextTitle="事故報告"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-13. DenkiYohinAnzenPage（電気用品安全法・PSE・B）
+// ─────────────────────────────────────────────
+function DenkiYohinAnzenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="特定電気用品の PSE マーク形状として正しいものはどれか"
+        choices={["○ 丸形","◇ ひし形","△ 三角形","□ 四角形"]}
+        year="頻出"
+        note="ひし形=角多い=厳しい（特定品目）と覚える"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>特定電気用品（◇ひし形）</strong>: 116品目・登録検査機関による<strong>第三者検査必須</strong></li>
+          <li><strong>特定以外（○丸形）</strong>: 341品目・<strong>自己検査</strong>でOK</li>
+          <li>義務主体は<strong>製造事業者・輸入事業者のみ</strong>（販売業者は含まれない）</li>
+          <li>特定の代表: 電線・ヒューズ・配線器具・遮断器・電熱器具</li>
+          <li>特定以外の代表: 電灯器具・扇風機・テレビ・電子レンジ</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH02"
+        category="04 法令・制度"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R04・H30・H27"
+        tags={["法令","PSE","電気用品安全法","表暗記"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">PSE 区分比較</h2>
+      <MemTable
+        headers={["項目","特定電気用品（◇）","特定以外（○）"]}
+        rows={[
+          ["品目数",   "116品目",                "341品目"],
+          ["マーク",   "◇ ひし形",              "○ 丸形"],
+          ["検査",     "登録検査機関による第三者検査", "自己検査でOK"],
+          ["代表品目", "電線・ヒューズ・遮断器",   "電灯器具・扇風機・電子レンジ"],
+          ["危険度",   "高（感電・火災リスク大）",  "低〜中"],
+        ]}
+        note="ひし形（◇）は『角が多い＝厳しい』で特定品目と覚える"
+      />
+
+      <h2 id="duty">義務主体の整理</h2>
+      <MemTable
+        headers={["主体","表示義務","検査実施","記録保存"]}
+        rows={[
+          ["製造事業者","○","○","○"],
+          ["輸入事業者","○","○","○"],
+          ["販売事業者","×","×","×（『PSEなし品を売るな』が唯一）"],
+        ]}
+        note="販売業者は『直接の検査・表示義務はない』が、『PSEなし品の販売禁止』の規制を受ける"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "○丸形の方が◇ひし形より厳しい",       correct: "◇ひし形が特定（116品目）で最も厳しい" },
+        { wrong: "販売業者にもPSE表示義務がある",       correct: "義務は製造・輸入事業者のみ" },
+        { wrong: "特定以外は検査・記録が一切不要",      correct: "自己検査と基準適合確認・記録保存は必要" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "特定電気用品のマーク形状は？",        a: "◇ ひし形" },
+        { q: "特定電気用品の品目数は？",            a: "116品目" },
+        { q: "特定電気用品の検査方法は？",          a: "登録検査機関による第三者検査（必須）" },
+        { q: "PSE表示義務を負うのは誰か？",         a: "製造事業者と輸入事業者（販売業者は含まれない）" },
+        { q: "電線が特定電気用品である理由は？",    a: "隠蔽施工→点検困難→粗悪品が長期残留→発火リスク大" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/pse-anzen-ho/"
+        label="denken-wiki「電気用品安全法（PSE）」を開く"
+        note="特定品目リスト全体・販売業者の例外規定は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "PSE区分の暗記表を整備" }]} />
+      <PageNav
+        prevId="jiko-hokoku" prevTitle="事故報告"
+        nextId="koji-shi-ho" nextTitle="電気工事士法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-14. KojiGyohoPage（電気工事業法・登録・B）
+// ─────────────────────────────────────────────
+function KojiGyohoPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="電気工事業者の登録の有効期間として正しいものはどれか"
+        choices={["3年","5年","7年","10年"]}
+        year="頻出"
+        note="電気工事士免状の書換周期と同じ。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>登録先</strong>: 1都道府県内→<strong>都道府県知事</strong> / 2県以上→<strong>経済産業大臣</strong></li>
+          <li><strong>有効期間</strong>: <strong>5年</strong>（更新必要）</li>
+          <li><strong>主任電気工事士</strong>を営業所ごとに1名選任（必須）</li>
+          <li>第一種: 実務経験<strong>不要</strong> / 第二種: <strong>3年以上</strong>の実務経験が必要</li>
+          <li><strong>必須器具3点</strong>: 絶縁抵抗計・接地抵抗計・回路計（クランプメータは任意）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH02"
+        category="04 法令・制度"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R03・H29・H26"
+        tags={["法令","電気工事業法","登録","表暗記"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">登録区分</h2>
+      <MemTable
+        headers={["区分","登録先","条件","有効期間"]}
+        rows={[
+          ["登録（県知事）","都道府県知事",      "1都道府県内",   "5年（要更新）"],
+          ["登録（大臣）",  "経済産業大臣",      "2都道府県以上", "5年（要更新）"],
+          ["みなし登録",    "建設業許可で代替",  "建設業許可者",  "建設業許可に準ずる"],
+        ]}
+        note="2県以上は『各知事』ではなく『大臣に1回』。みなし登録でも主任工事士・器具備付けの規制は適用"
+      />
+
+      <h2 id="shunin">主任電気工事士の要件</h2>
+      <MemTable
+        headers={["資格","免状要件","実務経験"]}
+        rows={[
+          ["第一種電気工事士","免状取得のみで可", "不要（その日からなれる）"],
+          ["第二種電気工事士","免状取得後",       "3年以上必須"],
+        ]}
+        note="第二種で即主任電気工事士になれない点が頻出ひっかけ"
+      />
+
+      <h2 id="kigu">必須備付器具</h2>
+      <MemTable
+        headers={["器具","用途","法定要件"]}
+        rows={[
+          ["絶縁抵抗計（メガー）","配線・機器の絶縁抵抗測定","必須"],
+          ["接地抵抗計",         "接地工事の接地抵抗測定",   "必須"],
+          ["回路計（テスター）", "電圧・電流・抵抗測定",     "必須"],
+          ["クランプメータ",     "電流測定（簡便用）",       "任意"],
+        ]}
+        note="クランプメータが必須3点に含まれない点が頻出ひっかけ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "2県以上の場合は各県の知事に登録",   correct: "経産大臣に1回登録で足りる" },
+        { wrong: "登録の有効期間は3年",                 correct: "5年（電気工事士免状の書換周期と同じ）" },
+        { wrong: "第二種で即座に主任電気工事士になれる",correct: "免状取得後3年以上の実務経験が必須" },
+        { wrong: "クランプメータは法定3点に含まれる",   correct: "法定3点は『絶縁抵抗計・接地抵抗計・回路計』" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "1県内のみで営業する場合の登録先は？",        a: "都道府県知事" },
+        { q: "2県以上の場合の登録先は？",                  a: "経済産業大臣（1回登録で足りる）" },
+        { q: "登録の有効期間は？",                         a: "5年（要更新）" },
+        { q: "第二種が主任工事士になる実務経験要件は？",   a: "3年以上" },
+        { q: "営業所必須3点セットの器具は？",              a: "絶縁抵抗計・接地抵抗計・回路計（テスター）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/denki-koji-gyo/"
+        label="denken-wiki「電気工事業法」を開く"
+        note="みなし登録の要件・更新手続・様式は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "§04 法令制度セクション完全制覇" }]} />
+      <PageNav
+        prevId="koji-shi-ho" prevTitle="電気工事士法"
+        nextId="furyoku-gijutsukijun" nextTitle="風力発電の技術基準"
         onNav={onNav}
       />
     </div>
