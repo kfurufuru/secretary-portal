@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Style Comparison - 3 Design Philosophies</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: #050a14;
+  }
+  .font-mono { font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace; font-variant-numeric: tabular-nums; }
+  .font-display { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, system-ui, sans-serif; letter-spacing: -0.02em; }
+  .font-google { font-family: 'Roboto', 'Google Sans', sans-serif; }
+  .font-google-display { font-family: 'Google Sans Display', 'Roboto', sans-serif; letter-spacing: -0.01em; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Bloomberg Density: subtle grid lines */
+  .bloomberg-grid-bg {
+    background-image:
+      linear-gradient(rgba(148,163,184,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Apple Craft: subtle gradient + vignette */
+  .apple-bg {
+    background:
+      radial-gradient(ellipse at top, rgba(15,23,42,0.6), transparent 70%),
+      radial-gradient(ellipse at bottom, rgba(2,6,23,0.8), transparent 70%),
+      #050a14;
+  }
+  .apple-card {
+    background: rgba(255,255,255,0.025);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+  .apple-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .apple-card-hover:hover { transform: translateY(-2px); transition: transform 0.3s ease; }
+
+  /* Google Material 3 - Light Theme */
+  .google-bg {
+    background: #f8faff;
+  }
+  .google-surface {
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .google-surface-container {
+    background: #eef2fa;
+  }
+  .google-surface-variant {
+    background: #e7eef9;
+  }
+  .google-primary { color: #1a73e8; }
+  .google-on-primary { color: #ffffff; }
+  .google-on-surface { color: #1f1f1f; }
+  .google-on-surface-variant { color: #5f6368; }
+  .google-tertiary { color: #137333; }
+  .google-error { color: #b3261e; }
+  .google-warning { color: #ea8600; }
+  .google-card-hover:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+    transition: box-shadow 0.3s ease;
+  }
+</style>
+</head>
+<body class="text-slate-300 min-h-screen">
+
+<!-- Header -->
+<header class="px-8 py-6 border-b border-slate-800/50 bg-slate-950">
+  <div class="max-w-[2200px] mx-auto flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-100 font-display">Personal Control Center / Style Comparison</h1>
+      <p class="text-sm text-slate-500 mt-1">Same data · Three design philosophies · Pick your path</p>
+    </div>
+    <div class="text-right text-xs text-slate-500 font-mono">
+      <div>Modules: MARKETS · CALENDAR · WELLNESS</div>
+      <div class="mt-1">Identical data, different visual treatment</div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-[2200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-0 border-b border-slate-800/50">
+
+  <!-- ========== PATH A: BLOOMBERG DENSITY ========== -->
+  <section class="bloomberg-grid-bg p-6 border-r border-slate-800/50 bg-slate-950">
+
+    <div class="mb-4 pb-3 border-b border-slate-800">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-[10px] font-bold tracking-widest text-cyan-400 px-2 py-0.5 bg-cyan-400/10 border border-cyan-400/30 rounded">PATH A</span>
+        <h2 class="text-lg font-bold text-slate-100">BLOOMBERG DENSITY</h2>
+      </div>
+      <p class="text-xs text-slate-500">情報密度優先・3秒スキャン特化・ダーク</p>
+    </div>
+
+    <!-- MARKETS -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded p-4 mb-4 shadow-2xl">
+      <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+        <h3 class="text-xs font-bold tracking-widest text-slate-400 uppercase">Market Pulse</h3>
+        <span class="text-[10px] font-bold text-amber-400 bg-amber-400/10 border border-amber-400/40 px-2 py-0.5 rounded">DECIDE</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div class="bg-slate-950/60 border border-slate-800 rounded p-2">
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">USD/JPY</div>
+          <div class="font-mono text-base text-slate-200">154.32 <span class="text-cyan-400 text-xs">+0.3%</span></div>
+        </div>
+        <div class="bg-slate-950/60 border border-slate-800 rounded p-2">
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">WTI</div>
+          <div class="font-mono text-base text-slate-200">$78.45 <span class="text-rose-400 text-xs">-1.2%</span></div>
+        </div>
+        <div class="bg-slate-950/60 border border-slate-800 rounded p-2">
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Cu LME</div>
+          <div class="font-mono text-base text-slate-200">$9,820 <span class="text-cyan-400 text-xs">+0.8%</span></div>
+        </div>
+        <div class="bg-slate-950/60 border border-amber-900/40 rounded p-2">
+          <div class="text-[10px] text-amber-500 uppercase tracking-wider">US 10Y</div>
+          <div class="font-mono text-base text-amber-300">4.32% <span class="text-amber-400 text-xs">+0.15</span></div>
+        </div>
+      </div>
+      <div class="bg-slate-950/60 border border-slate-800 rounded p-2 mb-2">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="text-[10px] text-slate-500 uppercase tracking-wider">三菱ケミカル</div>
+            <div class="font-mono text-sm text-slate-200">¥853 <span class="text-rose-400">-1.2%</span></div>
+          </div>
+          <div class="text-[10px] text-slate-500 text-right">vs 業界<br><span class="text-slate-400">-0.4%</span></div>
+        </div>
+      </div>
+      <div class="bg-amber-950/30 border border-amber-900/50 rounded p-2 text-xs text-amber-200">
+        <strong>SO WHAT:</strong> 米10年金利2σ超 → 設備投資判断見直し
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded p-4 mb-4 shadow-2xl">
+      <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+        <h3 class="text-xs font-bold tracking-widest text-slate-400 uppercase">Decision Queue</h3>
+        <span class="text-[10px] text-slate-500 font-mono">3 meetings</span>
+      </div>
+      <div class="space-y-2 text-xs">
+        <div class="bg-slate-950/60 border-l-2 border-cyan-500 border-y border-r border-slate-800 rounded p-2">
+          <div class="flex justify-between mb-1">
+            <span class="font-mono text-cyan-400">09:00</span>
+            <span class="text-slate-500">準備度 70%</span>
+          </div>
+          <div class="text-slate-300">部門DX推進会議</div>
+          <div class="text-[10px] text-slate-500">GOAL: 来期予算配分確定</div>
+        </div>
+        <div class="bg-slate-950/60 border-l-2 border-amber-500 border-y border-r border-slate-800 rounded p-2">
+          <div class="flex justify-between mb-1">
+            <span class="font-mono text-amber-400">13:00</span>
+            <span class="text-amber-400">準備度 40% ⚠</span>
+          </div>
+          <div class="text-slate-300">検査室改修ステアリング</div>
+          <div class="text-[10px] text-slate-500">GOAL: 仕様凍結</div>
+        </div>
+        <div class="bg-slate-950/60 border-l-2 border-slate-700 border-y border-r border-slate-800 rounded p-2">
+          <div class="flex justify-between mb-1">
+            <span class="font-mono text-slate-400">16:00</span>
+            <span class="text-slate-500">1on1</span>
+          </div>
+          <div class="text-slate-300">Member A</div>
+          <div class="text-[10px] text-slate-500">GOAL: ボトルネック解除</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WELLNESS -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded p-4 shadow-2xl">
+      <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+        <h3 class="text-xs font-bold tracking-widest text-slate-400 uppercase">Human Capital</h3>
+        <span class="text-[10px] text-slate-500 font-mono">Apple Watch</span>
+      </div>
+      <div class="grid grid-cols-3 gap-2 mb-3">
+        <div class="bg-slate-950/60 border border-slate-800 rounded p-2 text-center">
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Sleep</div>
+          <div class="font-mono text-xl text-cyan-400">78</div>
+          <div class="text-[9px] text-slate-500">7h 12m</div>
+        </div>
+        <div class="bg-slate-950/60 border border-slate-800 rounded p-2 text-center">
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">HRV</div>
+          <div class="font-mono text-xl text-cyan-400">42</div>
+          <div class="text-[9px] text-slate-500">ms</div>
+        </div>
+        <div class="bg-slate-950/60 border border-slate-800 rounded p-2 text-center">
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">RHR</div>
+          <div class="font-mono text-xl text-slate-200">54</div>
+          <div class="text-[9px] text-slate-500">bpm</div>
+        </div>
+      </div>
+      <div class="bg-slate-950/60 border border-slate-800 rounded p-2 text-xs">
+        <div class="flex justify-between mb-1">
+          <span class="text-slate-500 text-[10px] uppercase tracking-wider">Decision Strength</span>
+          <span class="font-mono text-cyan-400">●●●●○</span>
+        </div>
+        <div class="text-slate-300 text-[11px]">09:00重要決定OK / 16:00以降は判断保留</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========== PATH B: APPLE CRAFT ========== -->
+  <section class="apple-bg p-6 border-r border-slate-800/50">
+
+    <div class="mb-6">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-[10px] font-medium tracking-widest text-cyan-400 px-2 py-0.5 bg-cyan-400/5 ring-1 ring-cyan-400/20 rounded-full">PATH B</span>
+        <h2 class="text-lg font-semibold text-slate-100 font-display">APPLE CRAFT</h2>
+      </div>
+      <p class="text-xs text-slate-500">階層・余白・タイポ精緻化・ダーク</p>
+    </div>
+
+    <!-- MARKETS -->
+    <div class="apple-card relative rounded-2xl p-6 mb-6 apple-card-hover">
+      <div class="flex items-start justify-between mb-5">
+        <div>
+          <div class="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">Markets</div>
+          <div class="text-xs text-slate-400 mt-1 font-display">2 indicators flagged</div>
+        </div>
+        <div class="text-[10px] font-medium text-cyan-400 px-2 py-1 bg-cyan-400/5 ring-1 ring-cyan-400/30 rounded-full">Decide</div>
+      </div>
+      <div class="mb-6">
+        <div class="text-[10px] font-medium text-slate-500 uppercase tracking-wider mb-1">US 10Y Treasury</div>
+        <div class="flex items-baseline gap-3">
+          <div class="font-mono text-5xl font-light text-slate-100 tracking-tight">4.32<span class="text-2xl text-slate-500">%</span></div>
+          <div class="text-cyan-400 text-sm font-mono">+0.15</div>
+        </div>
+        <div class="text-xs text-slate-500 mt-2 font-display">2σ above 30d · setup investment review</div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 pt-5 border-t border-white/5">
+        <div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">USD/JPY</div>
+          <div class="font-mono text-lg text-slate-200 mt-0.5">154.32</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">WTI</div>
+          <div class="font-mono text-lg text-slate-200 mt-0.5">78.45</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Cu</div>
+          <div class="font-mono text-lg text-slate-200 mt-0.5">9,820</div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between pt-4 mt-4 border-t border-white/5">
+        <div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">三菱ケミカル</div>
+          <div class="font-mono text-base text-slate-200 mt-0.5">¥853 <span class="text-slate-500 text-sm">-1.2%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="apple-card relative rounded-2xl p-6 mb-6 apple-card-hover">
+      <div class="mb-5">
+        <div class="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">Today</div>
+        <div class="text-xs text-slate-400 mt-1 font-display">3 meetings · 1 needs prep</div>
+      </div>
+      <div class="mb-6">
+        <div class="text-[10px] font-medium text-slate-500 uppercase tracking-wider mb-1">Up Next</div>
+        <div class="flex items-baseline gap-3">
+          <div class="font-mono text-5xl font-light text-slate-100 tracking-tight">09<span class="text-slate-500">:00</span></div>
+          <div class="text-xs text-slate-500 font-display">in 3h</div>
+        </div>
+        <div class="text-base text-slate-200 mt-2 font-display">部門DX推進会議</div>
+        <div class="text-xs text-slate-500 mt-1 font-display">予算配分確定 · 準備度 70%</div>
+      </div>
+      <div class="space-y-3 pt-5 border-t border-white/5">
+        <div class="flex items-baseline gap-3">
+          <span class="font-mono text-base text-amber-400">13:00</span>
+          <div>
+            <div class="text-sm text-slate-300 font-display">検査室改修ステアリング</div>
+            <div class="text-[11px] text-amber-400/80 mt-0.5">準備度 40%</div>
+          </div>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <span class="font-mono text-base text-slate-400">16:00</span>
+          <div>
+            <div class="text-sm text-slate-300 font-display">1on1 (Member A)</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">ボトルネック解除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WELLNESS -->
+    <div class="apple-card relative rounded-2xl p-6 apple-card-hover">
+      <div class="mb-5">
+        <div class="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">Recovery</div>
+        <div class="text-xs text-slate-400 mt-1 font-display">Apple Watch · 06:00 sync</div>
+      </div>
+      <div class="mb-6">
+        <div class="text-[10px] font-medium text-slate-500 uppercase tracking-wider mb-1">Sleep Score</div>
+        <div class="flex items-baseline gap-3">
+          <div class="font-mono text-5xl font-light text-slate-100 tracking-tight">78</div>
+          <div class="text-xs text-slate-500 font-display">7h 12m</div>
+        </div>
+        <div class="text-xs text-slate-500 mt-2 font-display">Decision: medium · safe until 16:00</div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 pt-5 border-t border-white/5">
+        <div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">HRV</div>
+          <div class="font-mono text-lg text-slate-200 mt-0.5">42<span class="text-slate-500 text-sm">ms</span></div>
+        </div>
+        <div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Resting HR</div>
+          <div class="font-mono text-lg text-slate-200 mt-0.5">54<span class="text-slate-500 text-sm">bpm</span></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========== PATH C: GOOGLE MATERIAL 3 (LIGHT) ========== -->
+  <section class="google-bg p-6 font-google">
+
+    <div class="mb-6">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-[10px] font-medium tracking-widest text-white px-2 py-1 rounded-full" style="background:#1a73e8">PATH C</span>
+        <h2 class="text-lg font-semibold font-google-display" style="color:#1f1f1f">GOOGLE MATERIAL 3</h2>
+      </div>
+      <p class="text-xs" style="color:#5f6368">Light theme · Google Calendar連動 · 毎日見やすい</p>
+    </div>
+
+    <!-- MARKETS -->
+    <div class="google-surface rounded-3xl p-6 mb-5 google-card-hover">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px]" style="color:#1a73e8">trending_up</span>
+          <h3 class="text-sm font-medium font-google-display" style="color:#1f1f1f">Markets</h3>
+        </div>
+        <span class="text-[11px] font-medium px-3 py-1 rounded-full" style="background:#fef7e0; color:#ea8600">注意 2件</span>
+      </div>
+      <div class="mb-5">
+        <div class="text-xs mb-1" style="color:#5f6368">米10年金利</div>
+        <div class="flex items-baseline gap-2">
+          <div class="text-5xl font-normal font-google-display" style="color:#1f1f1f">4.32<span class="text-xl" style="color:#5f6368">%</span></div>
+          <div class="text-sm font-medium" style="color:#ea8600">+0.15</div>
+        </div>
+        <div class="text-xs mt-2" style="color:#5f6368">30日σで2σ超 · 設備投資判断の見直し推奨</div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 pt-4" style="border-top:1px solid #e7eef9">
+        <div class="google-surface-container rounded-xl p-3">
+          <div class="text-[10px] mb-1" style="color:#5f6368">USD/JPY</div>
+          <div class="text-base font-medium" style="color:#1f1f1f">154.32</div>
+          <div class="text-[10px]" style="color:#137333">+0.3%</div>
+        </div>
+        <div class="google-surface-container rounded-xl p-3">
+          <div class="text-[10px] mb-1" style="color:#5f6368">WTI</div>
+          <div class="text-base font-medium" style="color:#1f1f1f">$78.45</div>
+          <div class="text-[10px]" style="color:#b3261e">-1.2%</div>
+        </div>
+        <div class="google-surface-container rounded-xl p-3">
+          <div class="text-[10px] mb-1" style="color:#5f6368">Cu</div>
+          <div class="text-base font-medium" style="color:#1f1f1f">$9,820</div>
+          <div class="text-[10px]" style="color:#137333">+0.8%</div>
+        </div>
+      </div>
+      <div class="mt-3 flex items-center justify-between">
+        <div>
+          <div class="text-xs" style="color:#5f6368">三菱ケミカル</div>
+          <div class="text-base font-medium" style="color:#1f1f1f">¥853 <span class="text-xs" style="color:#b3261e">-1.2%</span></div>
+        </div>
+        <div class="text-[11px]" style="color:#5f6368">vs 業界 -0.4%</div>
+      </div>
+    </div>
+
+    <!-- CALENDAR (Google Calendar連動の主役) -->
+    <div class="google-surface rounded-3xl p-6 mb-5 google-card-hover">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px]" style="color:#1a73e8">event</span>
+          <h3 class="text-sm font-medium font-google-display" style="color:#1f1f1f">Today's Schedule</h3>
+        </div>
+        <div class="flex items-center gap-1 text-[10px]" style="color:#5f6368">
+          <span class="material-symbols-outlined text-[14px]" style="color:#34a853">sync</span>
+          <span>Google Calendar 同期</span>
+        </div>
+      </div>
+      <div class="mb-5">
+        <div class="text-xs mb-1" style="color:#5f6368">次の会議</div>
+        <div class="flex items-baseline gap-3">
+          <div class="text-5xl font-normal font-google-display" style="color:#1f1f1f">09<span style="color:#5f6368">:00</span></div>
+          <div class="text-xs" style="color:#5f6368">あと3時間</div>
+        </div>
+        <div class="text-base font-medium mt-2" style="color:#1f1f1f">部門DX推進会議</div>
+        <div class="text-xs mt-1" style="color:#5f6368">予算配分確定 · 準備度 70%</div>
+        <button class="mt-3 px-4 py-2 rounded-full text-xs font-medium text-white" style="background:#1a73e8">
+          <span class="material-symbols-outlined text-[14px] align-middle mr-1">videocam</span>Meet で参加
+        </button>
+      </div>
+      <div class="space-y-3 pt-4" style="border-top:1px solid #e7eef9">
+        <div class="flex items-start gap-3">
+          <div class="w-1 h-10 rounded-full mt-1" style="background:#ea8600"></div>
+          <div class="flex-1">
+            <div class="flex justify-between items-baseline">
+              <div class="text-sm font-medium" style="color:#1f1f1f">検査室改修ステアリング</div>
+              <div class="text-xs font-medium" style="color:#1a73e8">13:00</div>
+            </div>
+            <div class="text-[11px]" style="color:#ea8600">準備度 40% · 要追加準備</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-1 h-10 rounded-full mt-1" style="background:#34a853"></div>
+          <div class="flex-1">
+            <div class="flex justify-between items-baseline">
+              <div class="text-sm font-medium" style="color:#1f1f1f">1on1 (Member A)</div>
+              <div class="text-xs font-medium" style="color:#1a73e8">16:00</div>
+            </div>
+            <div class="text-[11px]" style="color:#5f6368">ボトルネック解除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WELLNESS -->
+    <div class="google-surface rounded-3xl p-6 google-card-hover">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px]" style="color:#1a73e8">favorite</span>
+          <h3 class="text-sm font-medium font-google-display" style="color:#1f1f1f">Recovery</h3>
+        </div>
+        <div class="text-[10px]" style="color:#5f6368">Apple Watch · 06:00</div>
+      </div>
+      <div class="mb-5">
+        <div class="text-xs mb-1" style="color:#5f6368">睡眠スコア</div>
+        <div class="flex items-baseline gap-3">
+          <div class="text-5xl font-normal font-google-display" style="color:#1f1f1f">78</div>
+          <div class="text-xs" style="color:#5f6368">7h 12m · 深い睡眠 18%</div>
+        </div>
+        <div class="text-xs mt-2" style="color:#5f6368">意思決定強度: 中 · 16:00以降は判断保留推奨</div>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-4" style="border-top:1px solid #e7eef9">
+        <div class="google-surface-container rounded-xl p-3">
+          <div class="text-[10px] mb-1" style="color:#5f6368">HRV</div>
+          <div class="text-base font-medium" style="color:#1f1f1f">42<span class="text-xs" style="color:#5f6368">ms</span></div>
+          <div class="text-[10px]" style="color:#137333">↑ 回復傾向</div>
+        </div>
+        <div class="google-surface-container rounded-xl p-3">
+          <div class="text-[10px] mb-1" style="color:#5f6368">安静時心拍</div>
+          <div class="text-base font-medium" style="color:#1f1f1f">54<span class="text-xs" style="color:#5f6368">bpm</span></div>
+          <div class="text-[10px]" style="color:#5f6368">平常範囲</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- Comparison footnote -->
+<div class="max-w-[2200px] mx-auto px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-0 border-b border-slate-800/50">
+  <div class="pr-6 border-r border-slate-800/50">
+    <div class="text-xs font-bold tracking-widest text-cyan-400 mb-3">PATH A · BLOOMBERG DENSITY</div>
+    <ul class="text-xs text-slate-400 space-y-2 leading-relaxed">
+      <li><span class="text-slate-200">◇ 強み:</span> 全情報を一画面網羅・3秒スキャン特化</li>
+      <li><span class="text-slate-200">◇ 弱み:</span> 認知負荷高・装飾過多になりがち・ダーク疲れ</li>
+      <li><span class="text-slate-200">◇ 適合:</span> Bloomberg Terminal / 医療現場</li>
+      <li><span class="text-slate-200">◇ 明るさ:</span> ✗ ダーク基調</li>
+    </ul>
+  </div>
+  <div class="px-6 border-r border-slate-800/50">
+    <div class="text-xs font-medium tracking-widest text-cyan-400 mb-3">PATH B · APPLE CRAFT</div>
+    <ul class="text-xs text-slate-400 space-y-2 leading-relaxed">
+      <li><span class="text-slate-200">◇ 強み:</span> hero数値で瞬時focus・洗練度・所有満足度</li>
+      <li><span class="text-slate-200">◇ 弱み:</span> 1モジュール内の情報量減・ダーク</li>
+      <li><span class="text-slate-200">◇ 適合:</span> Linear / Vercel / Stripe</li>
+      <li><span class="text-slate-200">◇ 明るさ:</span> ✗ ダーク基調（明色化は要追加作業）</li>
+    </ul>
+  </div>
+  <div class="pl-6">
+    <div class="text-xs font-medium tracking-widest mb-3" style="color:#1a73e8">PATH C · GOOGLE MATERIAL 3</div>
+    <ul class="text-xs text-slate-400 space-y-2 leading-relaxed">
+      <li><span class="text-slate-200">◇ 強み:</span> Google Calendar直結・明色で目に優しい・親和性高</li>
+      <li><span class="text-slate-200">◇ 弱み:</span> やや教科書的・差別化不足・密度はApple並</li>
+      <li><span class="text-slate-200">◇ 適合:</span> Google Workspace / Notion / Linear（light）</li>
+      <li><span class="text-slate-200">◇ 明るさ:</span> ◎ 明色基調・毎日見ても疲れない</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Decision matrix -->
+<div class="max-w-[2200px] mx-auto px-8 py-8">
+  <h3 class="text-sm font-bold text-slate-200 mb-4 tracking-widest uppercase">3-Way Decision Matrix</h3>
+  <table class="w-full text-xs">
+    <thead>
+      <tr class="border-b border-slate-800">
+        <th class="text-left py-2 px-3 text-slate-500 font-medium">評価軸</th>
+        <th class="text-center py-2 px-3 text-cyan-400 font-medium">A: Bloomberg</th>
+        <th class="text-center py-2 px-3 text-cyan-400 font-medium">B: Apple</th>
+        <th class="text-center py-2 px-3 font-medium" style="color:#1a73e8">C: Google M3</th>
+      </tr>
+    </thead>
+    <tbody class="text-slate-300">
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">3秒で全体把握</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+        <td class="text-center py-2 px-3 text-slate-400">○</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">明るさ（毎日見ても疲れない）</td>
+        <td class="text-center py-2 px-3 text-rose-400">✗</td>
+        <td class="text-center py-2 px-3 text-rose-400">✗</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">Google Calendar連動</td>
+        <td class="text-center py-2 px-3 text-slate-400">△</td>
+        <td class="text-center py-2 px-3 text-slate-400">△</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎ ネイティブ</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">情報密度</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+        <td class="text-center py-2 px-3 text-slate-400">△</td>
+        <td class="text-center py-2 px-3 text-slate-400">○</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">毎朝開きたくなる質感</td>
+        <td class="text-center py-2 px-3 text-slate-400">○</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+        <td class="text-center py-2 px-3 text-cyan-400">○</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">タイポグラフィ精度</td>
+        <td class="text-center py-2 px-3 text-slate-400">○</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+        <td class="text-center py-2 px-3 text-cyan-400">○</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">認知負荷</td>
+        <td class="text-center py-2 px-3 text-amber-400">高</td>
+        <td class="text-center py-2 px-3 text-cyan-400">中</td>
+        <td class="text-center py-2 px-3 text-cyan-400">中</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">差別化（独自性）</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+        <td class="text-center py-2 px-3 text-cyan-400">◎</td>
+        <td class="text-center py-2 px-3 text-amber-400">△ 教科書的</td>
+      </tr>
+      <tr class="border-b border-slate-800/50">
+        <td class="py-2 px-3">実装コスト</td>
+        <td class="text-center py-2 px-3 text-cyan-400">低</td>
+        <td class="text-center py-2 px-3 text-amber-400">中</td>
+        <td class="text-center py-2 px-3 text-cyan-400">低（MUI/Tailwind既製）</td>
+      </tr>
+      <tr>
+        <td class="py-2 px-3 text-slate-200 font-medium">参照プロダクト</td>
+        <td class="text-center py-2 px-3 text-slate-400 text-[11px]">Bloomberg / Refinitiv</td>
+        <td class="text-center py-2 px-3 text-slate-400 text-[11px]">Linear / Vercel / Stripe</td>
+        <td class="text-center py-2 px-3 text-[11px]" style="color:#1a73e8">Google Workspace</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-8 p-5 rounded-xl" style="background:rgba(26,115,232,0.08); ring:1px solid rgba(26,115,232,0.3); box-shadow: inset 0 0 0 1px rgba(26,115,232,0.3)">
+    <div class="text-[10px] font-bold tracking-widest mb-2" style="color:#4285f4">RECOMMENDATION (UPDATED)</div>
+    <div class="text-sm text-slate-100 font-display leading-relaxed">
+      <span style="color:#4285f4" class="font-semibold">Path C (Google Material 3 / Light)</span> 推奨。<br>
+      <span class="text-slate-400 text-xs mt-2 block">
+        ・「明るい・毎日見ても疲れない」要件に唯一合致<br>
+        ・Google Calendar 連動が API レベルでネイティブ（OAuth 1回で完結）<br>
+        ・Material Symbols 6,000 種無料・タイポも整っている<br>
+        ・差別化は弱いが、毎朝の意思決定には「親しみ」が勝る<br>
+        ・Apple Craft の hero数値手法は Path C に部分流用可能
+      </span>
+    </div>
+  </div>
+
+  <div class="mt-4 p-4 rounded-xl border border-slate-800 bg-slate-900/40">
+    <div class="text-[10px] font-bold tracking-widest text-slate-400 mb-2">ハイブリッド提案 (Path C + B)</div>
+    <div class="text-xs text-slate-300 leading-relaxed">
+      Path C (Material 3 light + Google Calendar連動) を基盤にしつつ、
+      hero数値の見せ方は Apple Craft から借用する「<strong style="color:#4285f4">Material 3 + Apple Hierarchy</strong>」が最高解。<br>
+      <span class="text-slate-500">→ 明色 × Calendar連動 × hero数値による瞬時focus の3拍子揃う</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

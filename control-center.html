@@ -1,0 +1,2865 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Personal Control Center · 06:00</title>
+
+<meta name="description" content="Personal Control Center · 朝の戦略コックピット · Material 3 + AI Daily Brief" />
+<meta name="theme-color" content="#1a73e8" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Control Center" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Personal Control Center" />
+<meta property="og:description" content="朝の戦略コックピット - AI Daily Brief + Video Wall + 10モジュール" />
+<meta property="og:type" content="website" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a73e8'/%3E%3Cpath d='M8 12h16M8 16h16M8 20h10' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='22' cy='20' r='1.5' fill='white'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231a73e8'/%3E%3Cpath d='M40 70h100M40 90h100M40 110h60' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='130' cy='110' r='8' fill='white'/%3E%3C/svg%3E" />
+
+<link rel="manifest" href='data:application/manifest+json,{"name":"Personal Control Center","short_name":"Control Center","description":"Personal strategic dashboard","start_url":"/control-center.html","display":"standalone","background_color":"%23f8faff","theme_color":"%231a73e8","orientation":"any","scope":"/","icons":[{"src":"data:image/svg+xml,%253Csvg xmlns%253D%2522http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2522 viewBox%253D%25220 0 192 192%2522%253E%253Crect width%253D%2522192%2522 height%253D%2522192%2522 rx%253D%252243%2522 fill%253D%2522%25231a73e8%2522%252F%253E%253Cpath d%253D%2522M43 75h106M43 96h106M43 117h64%2522 stroke%253D%2522white%2522 stroke-width%253D%252210%2522 stroke-linecap%253D%2522round%2522%252F%253E%253Ccircle cx%253D%2522139%2522 cy%253D%2522117%2522 r%253D%25228%2522 fill%253D%2522white%2522%252F%253E%253C%252Fsvg%253E","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},{"src":"data:image/svg+xml,%253Csvg xmlns%253D%2522http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2522 viewBox%253D%25220 0 512 512%2522%253E%253Crect width%253D%2522512%2522 height%253D%2522512%2522 rx%253D%2522115%2522 fill%253D%2522%25231a73e8%2522%252F%253E%253Cpath d%253D%2522M115 200h282M115 256h282M115 312h170%2522 stroke%253D%2522white%2522 stroke-width%253D%252228%2522 stroke-linecap%253D%2522round%2522%252F%253E%253Ccircle cx%253D%2522370%2522 cy%253D%2522312%2522 r%253D%252221%2522 fill%253D%2522white%2522%252F%253E%253C%252Fsvg%253E","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}' />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Display:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0..1,-25..0" />
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+
+<style>
+  :root {
+    --bg: #f8faff;
+    --surface: #ffffff;
+    --surface-container: #eef2fa;
+    --surface-variant: #e7eef9;
+    --border: #e7eef9;
+    --primary: #1a73e8;
+    --on-primary: #ffffff;
+    --on-surface: #1f1f1f;
+    --on-surface-variant: #5f6368;
+    --success: #137333;
+    --warning: #ea8600;
+    --error: #b3261e;
+    --calendar: #34a853;
+  }
+  html[data-theme="dark"] {
+    --bg: #0e1014;
+    --surface: #181a20;
+    --surface-container: #20232a;
+    --surface-variant: #2a2d35;
+    --border: #2a2d35;
+    --primary: #4285f4;
+    --on-primary: #ffffff;
+    --on-surface: #e8eaed;
+    --on-surface-variant: #9aa0a6;
+    --success: #5bb974;
+    --warning: #fcc934;
+    --error: #ee675c;
+    --calendar: #5bb974;
+  }
+  html[data-theme="dark"] body { color: var(--on-surface); }
+  html[data-theme="dark"] .m3-card { background: var(--surface); }
+  html[data-theme="dark"] .m3-surface-container { background: var(--surface-container); }
+  html[data-theme="dark"] .m3-surface-variant { background: var(--surface-variant); }
+  html[data-theme="dark"] .chip-success { background: rgba(91,185,116,0.15); color: #5bb974; }
+  html[data-theme="dark"] .chip-warning { background: rgba(252,201,52,0.15); color: #fcc934; }
+  html[data-theme="dark"] .chip-error { background: rgba(238,103,92,0.15); color: #ee675c; }
+  html[data-theme="dark"] .chip-primary { background: rgba(66,133,244,0.18); color: #8ab4f8; }
+  html[data-theme="dark"] .chip-neutral { background: var(--surface-container); color: var(--on-surface-variant); }
+  @keyframes cc-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  html[data-theme="dark"] #cc-skeleton > div > div { background: #20232a !important; }
+  html, body {
+    background: var(--bg);
+    color: var(--on-surface);
+    font-family: 'Roboto', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .font-display { font-family: 'Google Sans Display', 'Roboto', sans-serif; }
+  .font-mono { font-family: 'Roboto Mono', monospace; }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    user-select: none;
+  }
+  .ms-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+
+  .m3-card {
+    background: var(--surface);
+    border-radius: 24px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+    transition: box-shadow .2s ease, transform .2s ease;
+  }
+  .m3-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .m3-surface-container {
+    background: var(--surface-container);
+    border-radius: 16px;
+  }
+  .m3-surface-variant {
+    background: var(--surface-variant);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .chip .material-symbols-outlined { font-size: 14px; }
+
+  .chip-success { background: #e6f4ea; color: #137333; }
+  .chip-warning { background: #fef7e0; color: #ea8600; }
+  .chip-error   { background: #fce8e6; color: #b3261e; }
+  .chip-primary { background: #e8f0fe; color: #1a73e8; }
+  .chip-neutral { background: #eef2fa; color: #5f6368; }
+  .chip-calendar { background: #e6f4ea; color: #34a853; }
+
+  .dot { width: 10px; height: 10px; border-radius: 999px; flex: none; }
+  .dot-green  { background: #34a853; }
+  .dot-orange { background: #ea8600; }
+  .dot-red    { background: #b3261e; }
+  .dot-blue   { background: #1a73e8; }
+  .dot-grey   { background: #9aa0a6; }
+
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 999px;
+    color: var(--on-surface-variant);
+    transition: background .15s ease;
+  }
+  .icon-btn:hover { background: var(--surface-container); }
+  .icon-btn-refreshing svg,
+  .icon-btn-refreshing .material-symbols-outlined {
+    animation: refresh-spin 0.8s ease-in-out;
+  }
+  @keyframes refresh-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Video grid fullscreen — fill entire screen + remove aspect ratio limit */
+  #cc-video-fs-target:fullscreen {
+    width: 100vw; height: 100vh; padding: 12px; background: #000;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #cc-video-fs-target:fullscreen > div {
+    width: 100%; height: 100%; aspect-ratio: auto !important;
+  }
+  #cc-video-fs-target:-webkit-full-screen { /* legacy webkit */
+    width: 100vw; height: 100vh; padding: 12px; background: #000;
+  }
+  #cc-video-fs-target:-webkit-full-screen > div { aspect-ratio: auto !important; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary);
+    color: var(--on-primary);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: 0 1px 2px rgba(26,115,232,.25);
+    transition: box-shadow .15s ease, filter .15s ease;
+  }
+  .btn-primary:hover { box-shadow: 0 4px 12px rgba(26,115,232,.3); filter: brightness(1.03); }
+
+  .btn-tonal {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #e8f0fe; color: #1a73e8;
+    padding: 8px 16px; border-radius: 999px;
+    font-weight: 500; font-size: 13px;
+    transition: background .15s ease;
+  }
+  .btn-tonal:hover { background: #d6e4fb; }
+
+  .progress-track { background: var(--surface-variant); border-radius: 999px; height: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 999px; }
+
+  /* Action card pill */
+  .action-pill {
+    border-radius: 28px;
+    background: var(--surface);
+    padding: 20px 24px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+    transition: all .2s ease;
+    border: 1px solid transparent;
+  }
+  .action-pill:hover {
+    box-shadow: 0 4px 14px rgba(26,115,232,.12), 0 2px 6px rgba(0,0,0,0.04);
+    transform: translateY(-1px);
+  }
+
+  .badge-letter {
+    width: 28px; height: 28px;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Google Sans Display', sans-serif;
+    font-weight: 500; font-size: 13px;
+  }
+
+  /* meter dots */
+  .meter-dot { width: 10px; height: 10px; border-radius: 999px; }
+  .meter-on { background: #1a73e8; }
+  .meter-off { background: #dadce0; }
+
+  /* notification dot */
+  .notif-dot {
+    width: 8px; height: 8px; border-radius: 999px; background: #b3261e;
+    display: inline-block;
+  }
+
+  /* subtle divider */
+  .divider { height: 1px; background: var(--surface-variant); }
+
+  /* hide scrollbar in horizontal scrollers */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* live pulse */
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .35; }
+  }
+  .pulse { animation: pulse-soft 2.4s ease-in-out infinite; }
+
+  /* live red dot inside chip */
+  @keyframes live-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(0.85); }
+  }
+  .chip-error .material-symbols-outlined,
+  .chip-live  .material-symbols-outlined {
+    animation: live-pulse 1.2s ease-in-out infinite;
+  }
+  .chip-live { background: #fce8e6; color: #b3261e; }
+
+  /* line clamp util */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* number flash on tick */
+  @keyframes tick-flash {
+    0% { background: rgba(26,115,232,.0); }
+    10% { background: rgba(26,115,232,.18); }
+    100% { background: rgba(26,115,232,.0); }
+  }
+
+  /* sparkline container */
+  .recharts-wrapper { cursor: default !important; }
+
+  /* ---------- Mobile-friendly tweaks (<=767px) ---------- */
+  @media (max-width: 767px) {
+    body { font-size: 14px; }
+    .m3-card { border-radius: 16px; }
+    .icon-btn { width: 32px; height: 32px; }
+    .action-pill { padding: 16px 18px; border-radius: 22px; }
+    main { overflow-x: hidden; }
+  }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div style="padding:32px 16px;max-width:1440px;margin:0 auto" id="cc-skeleton">
+      <div style="height:60px;background:#eef2fa;border-radius:24px;margin-bottom:20px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+        <div style="height:100px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+        <div style="height:100px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+        <div style="height:100px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+      </div>
+      <div style="height:480px;background:#eef2fa;border-radius:24px;margin-bottom:20px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div style="height:340px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+        <div style="height:340px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
+      </div>
+      <div style="text-align:center;margin-top:32px;color:#9aa0a6;font-family:'Roboto',sans-serif;font-size:12px">Loading dashboard...</div>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="env,react">
+  const { useState, useEffect, useMemo } = React;
+  const {
+    LineChart, Line, BarChart, Bar, XAxis, YAxis,
+    ResponsiveContainer, Tooltip, ReferenceLine, Cell
+  } = Recharts;
+
+  // ---------- LIVE ENGINE ----------
+  // Global ticking clock + market simulation. All cards subscribe via hooks.
+  const LiveCtx = React.createContext(null);
+
+  const makeSeries = (start, n, vol) => {
+    let v = start;
+    const out = [];
+    for (let i=0;i<n;i++){
+      v += (Math.sin(i*0.5) + (Math.random()-0.5)) * vol;
+      out.push({ i, v: +v.toFixed(3) });
+    }
+    return out;
+  };
+
+  // Random-walk step bounded around a target drift
+  const step = (last, vol, drift=0) => +(last + drift + (Math.random()-0.5)*vol).toFixed(3);
+
+  const LiveProvider = ({ children }) => {
+    const baseDate = new Date();
+    const [now, setNow] = useState(baseDate);
+
+    const [markets, setMarkets] = useState(() => ({
+      us10y:   { value: 4.32,    series: makeSeries(4.10, 60, 0.04), prev: 4.32 },
+      mcc:     { value: 853,     series: makeSeries(870,  60, 2.5),  prev: 853  },
+      usdjpy:  { value: 154.32,  series: makeSeries(153.8,60, 0.12), prev: 154.32 },
+      wti:     { value: 78.45,   series: makeSeries(79.3, 60, 0.35), prev: 78.45 },
+      culme:   { value: 9820,    series: makeSeries(9750, 60, 22),   prev: 9820  },
+    }));
+
+    const [inbox, setInbox] = useState({ unread: 8, mentions: 2, drafts: 2, last: '今' });
+    const [pulseId, setPulseId] = useState(0); // increments on each tick for sync animations
+
+    useEffect(() => {
+      const t = setInterval(() => {
+        setNow(d => new Date(d.getTime() + 1000));
+      }, 1000);
+      return () => clearInterval(t);
+    }, []);
+
+    // Market tick — every 1.5s push a new point
+    useEffect(() => {
+      const t = setInterval(() => {
+        setMarkets(m => {
+          const next = (key, vol, drift=0, decimals=3) => {
+            const cur = m[key];
+            const v = +(step(cur.value, vol, drift)).toFixed(decimals);
+            const series = [...cur.series.slice(1), { i: cur.series[cur.series.length-1].i + 1, v }];
+            return { value: v, series, prev: cur.value };
+          };
+          return {
+            us10y:  next('us10y',  0.012, 0.001, 3),
+            mcc:    next('mcc',    1.2,   -0.05, 0),
+            usdjpy: next('usdjpy', 0.06,  0,     2),
+            wti:    next('wti',    0.18,  -0.01, 2),
+            culme:  next('culme',  10,    1,     0),
+          };
+        });
+        setPulseId(p => p + 1);
+      }, 1500);
+      return () => clearInterval(t);
+    }, []);
+
+    // Inbox occasionally jitters
+    useEffect(() => {
+      const t = setInterval(() => {
+        setInbox(b => {
+          const r = Math.random();
+          if (r < 0.25) return { ...b, unread: Math.max(0, b.unread + (Math.random()<0.5?1:-1)), last: '今' };
+          if (r < 0.4) return { ...b, mentions: Math.max(0, b.mentions + (Math.random()<0.5?1:0)), last: '今' };
+          return { ...b, last: Math.floor(Math.random()*5)+1+'分前' };
+        });
+      }, 6000);
+      return () => clearInterval(t);
+    }, []);
+
+    return (
+      <LiveCtx.Provider value={{ now, markets, inbox, pulseId }}>
+        {children}
+      </LiveCtx.Provider>
+    );
+  };
+  const useLive = () => React.useContext(LiveCtx);
+
+  // ---------- helpers ----------
+  const Icon = ({ name, size = 20, className = "", fill = false, style = {} }) => (
+    <span
+      className={`material-symbols-outlined ${fill ? 'ms-fill' : ''} ${className}`}
+      style={{ fontSize: size, ...style }}
+    >{name}</span>
+  );
+
+  const Chip = ({ tone = 'neutral', icon, children }) => (
+    <span className={`chip chip-${tone}`}>
+      {icon && <Icon name={icon} size={14} />}
+      {children}
+    </span>
+  );
+
+  const CardHeader = ({ icon, title, status, statusTone = 'neutral', statusIcon, lastUpdate = '06:00' }) => (
+    <div className="flex items-start justify-between mb-4">
+      <div className="flex items-center gap-2">
+        <Icon name={icon} size={20} style={{ color: '#5f6368' }} />
+        <h3 className="font-display text-[15px] font-medium tracking-tight" style={{color:'#1f1f1f'}}>{title}</h3>
+        {status && <Chip tone={statusTone} icon={statusIcon}>{status}</Chip>}
+      </div>
+      <div className="flex items-center gap-1">
+        <span className="text-[11px] tnum" style={{color:'#9aa0a6'}}>{lastUpdate}</span>
+        <button
+          className="icon-btn"
+          aria-label="refresh"
+          onClick={(e) => {
+            const btn = e.currentTarget;
+            btn.classList.add('icon-btn-refreshing');
+            setTimeout(() => btn.classList.remove('icon-btn-refreshing'), 800);
+          }}
+        >
+          <Icon name="refresh" size={18} />
+        </button>
+      </div>
+    </div>
+  );
+
+  // ---------- Command Bar ----------
+  const CommandBar = ({ openSettings }) => {
+    const { now, pulseId } = useLive();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+
+    const [stakeholderText, setStakeholderText] = useState(() =>
+      localStorage.getItem('cc-stakeholder') ||
+      'AI活用全社展開を経営会議で発表 → 自部署活用事例の準備指示'
+    );
+    useEffect(() => { localStorage.setItem('cc-stakeholder', stakeholderText); }, [stakeholderText]);
+
+    return (
+      <div className="m3-card px-4 md:px-7 py-4 md:py-5 flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+        {/* time */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <Icon name="schedule" size={22} style={{color:'#1a73e8'}} />
+          <div>
+            <div className="font-display tnum text-[28px] leading-none" style={{fontWeight:400}}>
+              {hh}:{mm}<span className="text-[18px]" style={{color:'#9aa0a6'}}>:{ss}</span>
+              <span className="ml-2 text-[12px] font-mono" style={{color:'#5f6368'}}>JST</span>
+            </div>
+            <div className="text-[12px] mt-1" style={{color:'#5f6368'}}>{now.getFullYear()}年{now.getMonth()+1}月{now.getDate()}日 {['日','月','火','水','木','金','土'][now.getDay()]}曜</div>
+          </div>
+        </div>
+
+        <div className="hidden md:block w-px h-10" style={{background:'#e7eef9'}}></div>
+
+        {/* weather */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <Icon name="partly_cloudy_day" size={22} style={{color:'#ea8600'}} />
+          <div>
+            <div className="text-[14px] font-medium tnum">晴れ &nbsp;12°C</div>
+            <div className="text-[11px]" style={{color:'#5f6368'}}>東京 · 湿度 48%</div>
+          </div>
+        </div>
+
+        <div className="hidden md:block w-px h-10" style={{background:'#e7eef9'}}></div>
+
+        {/* anomaly */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="relative">
+            <Icon name="warning" size={22} style={{color:'#b3261e'}} />
+            <span className="notif-dot pulse absolute -top-0.5 -right-0.5"></span>
+          </span>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[14px] font-medium" style={{color:'#b3261e'}}>異常検知</span>
+              <Chip tone="error">2件</Chip>
+            </div>
+            <div
+              className="text-[11px] cursor-text outline-none"
+              style={{color:'#5f6368'}}
+              contentEditable
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent.trim();
+                if (v) localStorage.setItem('cc-anomaly', v);
+              }}
+            >{localStorage.getItem('cc-anomaly') || 'Antigravity 判断超過 / Member B 介入要'}</div>
+          </div>
+        </div>
+
+        <div className="hidden md:block w-px h-10" style={{background:'#e7eef9'}}></div>
+
+        {/* stakeholder */}
+        <div className="flex items-start gap-2 flex-1 min-w-0">
+          <Icon name="person" size={22} style={{color:'#5f6368'}} />
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider" style={{color:'#9aa0a6', letterSpacing:'.08em'}}>
+              本部長 · 昨日
+            </div>
+            <div
+              className="text-[13px] mt-0.5 cursor-text outline-none"
+              style={{color:'#1f1f1f'}}
+              contentEditable
+              suppressContentEditableWarning
+              onBlur={(e) => setStakeholderText(e.currentTarget.textContent.trim() || stakeholderText)}
+            >
+              {stakeholderText}
+            </div>
+          </div>
+        </div>
+
+        <button className="btn-tonal flex-shrink-0 self-start md:self-auto" onClick={openSettings}>
+          <Icon name="tune" size={16} />
+          カスタマイズ
+        </button>
+      </div>
+    );
+  };
+
+  // ---------- Top 3 Actions ----------
+  const ActionCard = ({ letter, time, title, sub, icon, accent = '#1a73e8' }) => (
+    <div className="action-pill flex-1 min-w-0">
+      <div className="flex items-start gap-4">
+        <span className="badge-letter flex-none" style={{ background: accent + '14', color: accent }}>
+          {letter}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-mono text-[13px] tnum font-medium" style={{ color: accent }}>{time}</span>
+            <Icon name={icon} size={16} style={{ color: accent }} />
+          </div>
+          <div className="font-display text-[15px] leading-snug" style={{ color: '#1f1f1f', fontWeight: 500 }}>
+            {title}
+          </div>
+          {sub && <div className="text-[12px] mt-1" style={{ color: '#5f6368' }}>{sub}</div>}
+        </div>
+        <button className="icon-btn flex-none">
+          <Icon name="arrow_forward" size={18} />
+        </button>
+      </div>
+    </div>
+  );
+
+  // (Old TopActions placeholder removed — see line ~1756 for active definition with localStorage)
+
+  // ---------- A. Markets ----------
+  const sparkData = (start, n=24, vol=0.6) => {
+    let v = start;
+    return Array.from({length:n}, (_,i) => {
+      v += (Math.sin(i*0.7)+ (Math.random()-0.5)*0.6) * vol;
+      return { i, v: +v.toFixed(2) };
+    });
+  };
+
+  const Sparkline = ({ data, stroke='#1a73e8', height=28, dataKey='v' }) => (
+    <ResponsiveContainer width="100%" height={height}>
+      <LineChart data={data} margin={{top:2,right:0,left:0,bottom:2}}>
+        <Line type="monotone" dataKey={dataKey} stroke={stroke} strokeWidth={1.5} dot={false} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+
+  const KPIRow = ({ label, value, delta, deltaTone='neutral', spark, sparkColor }) => (
+    <div className="flex items-center justify-between gap-3 py-2.5">
+      <div className="flex-none w-20">
+        <div className="text-[11px]" style={{color:'#5f6368'}}>{label}</div>
+        <div className="text-[14px] font-medium tnum mt-0.5">{value}</div>
+      </div>
+      <div className="flex-1 max-w-[120px]">
+        <Sparkline data={spark} stroke={sparkColor} />
+      </div>
+      <div className="flex-none w-16 text-right">
+        <span className={`text-[12px] font-medium tnum`} style={{
+          color: deltaTone === 'success' ? '#137333' : deltaTone === 'error' ? '#b3261e' : '#5f6368'
+        }}>{delta}</span>
+      </div>
+    </div>
+  );
+
+  const flashColor = (cur, prev, up='#137333', down='#b3261e') =>
+    cur > prev ? up : cur < prev ? down : '#5f6368';
+
+  const LiveKPI = ({ label, mkt, format, baseline }) => {
+    const delta = mkt.value - baseline;
+    const pct = (delta / baseline) * 100;
+    const tone = pct >= 0 ? 'success' : 'error';
+    const sparkColor = pct >= 0 ? '#137333' : '#b3261e';
+    const flash = flashColor(mkt.value, mkt.prev);
+    return (
+      <div className="flex items-center justify-between gap-3 py-2.5">
+        <div className="flex-none w-20">
+          <div className="text-[11px]" style={{color:'#5f6368'}}>{label}</div>
+          <div className="text-[14px] font-medium tnum mt-0.5" style={{color: flash, transition:'color .4s'}}>
+            {format(mkt.value)}
+          </div>
+        </div>
+        <div className="flex-1 max-w-[120px]">
+          <Sparkline data={mkt.series} stroke={sparkColor} />
+        </div>
+        <div className="flex-none w-16 text-right">
+          <span className="text-[12px] font-medium tnum" style={{
+            color: tone === 'success' ? '#137333' : '#b3261e'
+          }}>{pct >= 0 ? '+' : ''}{pct.toFixed(1)}%</span>
+        </div>
+      </div>
+    );
+  };
+
+  const Markets = () => {
+    const { markets, pulseId } = useLive();
+    const hero = markets.us10y;
+    const heroDelta = hero.value - 4.10;
+    const flash = flashColor(hero.value, hero.prev, '#ea8600', '#1a73e8');
+
+    return (
+      <div className="m3-card p-6 flex flex-col">
+        <CardHeader icon="trending_up" title="Markets" status="DEMO data" statusTone="warning" statusIcon="science" lastUpdate={`tick ${pulseId}`} />
+
+        {/* hero */}
+        <div className="flex items-end justify-between gap-4 mb-3">
+          <div>
+            <div className="text-[11px]" style={{color:'#5f6368'}}>米10年金利</div>
+            <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400, color: flash, transition:'color .4s'}}>
+              {hero.value.toFixed(2)}<span className="text-[20px] ml-0.5" style={{color:'#5f6368'}}>%</span>
+            </div>
+            <div className="flex items-center gap-2 mt-2">
+              <Chip tone="warning" icon={heroDelta>=0?'north':'south'}>
+                {heroDelta>=0?'+':''}{heroDelta.toFixed(2)}  ·  2σ超
+              </Chip>
+            </div>
+          </div>
+          <div className="flex-1 max-w-[200px] h-16">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={hero.series} margin={{top:4,right:0,left:0,bottom:4}}>
+                <ReferenceLine y={4.10} stroke="#dadce0" strokeDasharray="2 2" />
+                <Line type="monotone" dataKey="v" stroke="#ea8600" strokeWidth={2} dot={false} isAnimationActive={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* secondary stock */}
+        <div className="flex items-center justify-between py-3" style={{borderTop:'1px solid #e7eef9', borderBottom:'1px solid #e7eef9'}}>
+          <div>
+            <div className="text-[11px]" style={{color:'#5f6368'}}>三菱ケミカル (4188.T)</div>
+            <div className="text-[18px] font-medium tnum mt-0.5" style={{color: flashColor(markets.mcc.value, markets.mcc.prev), transition:'color .4s'}}>
+              ¥{Math.round(markets.mcc.value).toLocaleString()}
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-[13px] font-medium tnum" style={{color:'#b3261e'}}>
+              {(((markets.mcc.value - 863)/863)*100).toFixed(1)}%
+            </div>
+            <div className="text-[11px] tnum" style={{color:'#5f6368'}}>業界 −0.4%</div>
+          </div>
+        </div>
+
+        {/* 3 KPIs */}
+        <div className="m3-surface-container p-3 mt-3 mb-3">
+          <LiveKPI label="USD/JPY" mkt={markets.usdjpy} baseline={153.8} format={v=>v.toFixed(2)} />
+          <div className="divider"></div>
+          <LiveKPI label="WTI"     mkt={markets.wti}    baseline={79.4}  format={v=>'$'+v.toFixed(2)} />
+          <div className="divider"></div>
+          <LiveKPI label="Cu (LME)" mkt={markets.culme} baseline={9740}  format={v=>'$'+Math.round(v).toLocaleString()} />
+        </div>
+
+        {/* So what */}
+        <div className="flex items-start gap-2 mt-auto">
+          <Chip tone="warning" icon="lightbulb">SO WHAT</Chip>
+          <div className="text-[12.5px] leading-relaxed flex-1" style={{color:'#1f1f1f'}}>
+            米10年金利 <span className="font-medium">2σ超</span> → 設備投資判断見直し推奨
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- B. Today's Schedule ----------
+  // MEETINGS migrated to localStorage (cc-meetings) — Schedule reads as state.
+
+  const Schedule = () => {
+    const { now } = useLive();
+    const [meetings, setMeetings] = useState(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem('cc-meetings'));
+        if (Array.isArray(stored) && stored.length > 0) return stored;
+      } catch {}
+      return [
+        { time: '09:00', title: '部門DX推進会議', goal: '来期予算配分確定 · 出席 6名', prep: 70 },
+        { time: '13:00', title: '検査室改修ステアリング', goal: '仕様凍結', prep: 40, status: 'warning' },
+        { time: '16:00', title: '1on1 (Member A)', goal: 'ボトルネック解除', prep: 100, status: 'success' },
+        { time: '18:30', title: '本部定例（任意参加）', goal: 'AI活用事例ヨコ展開', status: 'neutral' },
+      ];
+    });
+
+    // Resolve each meeting's HH:MM to a full Date on "today"
+    const meetingsToday = meetings.map(m => {
+      const [h, mm] = m.time.split(':').map(Number);
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, mm, 0);
+      return { ...m, dt: d };
+    });
+
+    const upcoming = meetingsToday.filter(m => m.dt.getTime() > now.getTime());
+    const hero = upcoming[0] || null;
+    const secondary = hero ? upcoming.slice(1) : [];
+
+    let countdown = '';
+    if (hero) {
+      const diffMs = Math.max(0, hero.dt.getTime() - now.getTime());
+      const hrs = Math.floor(diffMs / 3600000);
+      const mins = Math.floor((diffMs % 3600000) / 60000);
+      const secs = Math.floor((diffMs % 60000) / 1000);
+      countdown = `${hrs}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+    }
+
+    const heroPrepColor = hero && hero.status === 'warning' ? '#ea8600'
+                       : hero && hero.status === 'success' ? '#137333'
+                       : '#1a73e8';
+
+    const dotClass = (status) => status === 'warning' ? 'dot-orange'
+                              : status === 'success' ? 'dot-green'
+                              : 'dot-blue';
+    const chipLabel = (status) => status === 'warning' ? '要準備'
+                              : status === 'success' ? '準備OK'
+                              : '任意';
+
+    return (
+    <div className="m3-card p-6 flex flex-col">
+      <CardHeader
+        icon="event"
+        title="Today's Schedule"
+        status="Calendar 同期"
+        statusTone="calendar"
+        statusIcon="sync"
+        lastUpdate="06:00"
+      />
+
+      {/* Hero meeting */}
+      {hero ? (
+        <div className="flex items-start gap-5 mb-4">
+          <div className="flex-none">
+            <div className="font-display tnum leading-none" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400}}>{hero.time}</div>
+            <div className="text-[11px] mt-1 tnum" style={{color:'#5f6368'}}>あと <span className="font-medium" style={{color:'#1a73e8'}}>{countdown}</span></div>
+          </div>
+          <div className="flex-1 min-w-0 pt-2">
+            <div className="font-display text-[16px] font-medium leading-snug">{hero.title}</div>
+            <div className="text-[12px] mt-1" style={{color:'#5f6368'}}>
+              GOAL: {hero.goal}
+            </div>
+            {typeof hero.prep === 'number' && (
+              <div className="flex items-center gap-2 mt-3">
+                <span className="text-[11px]" style={{color:'#5f6368'}}>準備度</span>
+                <div className="progress-track flex-1 max-w-[140px]">
+                  <div className="progress-fill" style={{width: hero.prep + '%', background: heroPrepColor}}></div>
+                </div>
+                <span className="text-[11px] font-medium tnum" style={{color: heroPrepColor}}>{hero.prep}%</span>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-start gap-5 mb-4">
+          <div className="flex-none">
+            <div className="font-display tnum leading-none" style={{fontSize:'40px', fontWeight:400, color:'#5f6368'}}>—</div>
+            <div className="text-[11px] mt-1 tnum" style={{color:'#5f6368'}}>明日 09:00 まで</div>
+          </div>
+          <div className="flex-1 min-w-0 pt-2">
+            <div className="font-display text-[16px] font-medium leading-snug">No more meetings today</div>
+            <div className="text-[12px] mt-1" style={{color:'#5f6368'}}>本日の予定はすべて終了しました</div>
+          </div>
+        </div>
+      )}
+
+      {hero && (
+        <div className="flex items-center gap-2 mb-4">
+          <button className="btn-primary">
+            <Icon name="videocam" size={18} />
+            ビデオ会議で参加
+          </button>
+          <button className="btn-tonal">
+            <Icon name="description" size={16} />
+            資料を開く
+          </button>
+        </div>
+      )}
+
+      {/* Secondary events */}
+      {secondary.length > 0 && (
+        <div className="m3-surface-container p-3 space-y-2 mt-auto">
+          {secondary.map((m, i) => (
+            <div key={i} className="flex items-center gap-3 px-2 py-2">
+              <span className={`dot ${dotClass(m.status)}`}></span>
+              <span className="font-mono text-[12px] tnum w-12" style={{color:'#5f6368'}}>{m.time}</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-[13px] truncate">{m.title}</div>
+                <div className="text-[11px]" style={{color:'#5f6368'}}>
+                  {typeof m.prep === 'number' ? `準備度 ${m.prep}% · ` : ''}{m.goal}
+                </div>
+              </div>
+              <Chip tone={m.status || 'neutral'}>{chipLabel(m.status)}</Chip>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+    );
+  };
+
+  // ---------- F. Project Portfolio ----------
+  const portfolio = [
+    { rag: 'green', name: '検査室改修 P1',         pct: 85, status: 'on-track',  who: 'Member A', tone:'success' },
+    { rag: 'amber', name: '計装更新 Phase2',       pct: 60, status: '3日遅延',    who: 'Member B', tone:'warning' },
+    { rag: 'green', name: 'Wikiインフラ整備',       pct: 40, status: 'on-track',  who: 'Member C', tone:'success' },
+    { rag: 'red',   name: 'Antigravity 導入判断',  pct:  0, status: '要判断',     who: '自分',     tone:'error' },
+  ];
+
+  const ragColor = (r) => ({green:'#137333', amber:'#ea8600', red:'#b3261e'}[r]);
+
+  const Portfolio = () => (
+    <div className="m3-card p-6 flex flex-col">
+      <CardHeader icon="dashboard" title="Project Portfolio" status="4 案件" statusTone="neutral" lastUpdate="05:58" />
+
+      <div className="space-y-3 flex-1">
+        {portfolio.map((p,i) => (
+          <div key={i} className="grid grid-cols-12 items-center gap-3 px-2 py-2">
+            <div className="col-span-1 flex justify-center">
+              <span className="dot" style={{background: ragColor(p.rag)}}></span>
+            </div>
+            <div className="col-span-4 min-w-0">
+              <div className="text-[13.5px] font-medium truncate" style={{color:'#1f1f1f'}}>{p.name}</div>
+              <div className="text-[11px]" style={{color:'#5f6368'}}>{p.who}</div>
+            </div>
+            <div className="col-span-4">
+              <div className="progress-track">
+                <div className="progress-fill" style={{ width: `${p.pct}%`, background: ragColor(p.rag) }}></div>
+              </div>
+              <div className="text-[11px] tnum mt-1" style={{color:'#5f6368'}}>{p.pct}%</div>
+            </div>
+            <div className="col-span-3 flex justify-end">
+              <Chip tone={p.tone}>{p.status}</Chip>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* action chip row */}
+      <div className="mt-4 m3-surface-container p-4 flex items-center gap-3">
+        <Icon name="priority_high" size={20} style={{color:'#b3261e'}} />
+        <div className="flex-1 text-[12.5px]" style={{color:'#1f1f1f'}}>
+          <span className="font-medium">Member B 介入要</span>
+          <span style={{color:'#5f6368'}}> · </span>
+          <span className="font-medium" style={{color:'#b3261e'}}>Antigravity 11:00 まで判断</span>
+        </div>
+        <button className="btn-tonal">
+          対処
+          <Icon name="arrow_forward" size={14} />
+        </button>
+      </div>
+    </div>
+  );
+
+  // ---------- G. Communication Health ----------
+  const InboxStat = ({ label, value, tone='neutral', sub }) => {
+    const color = tone === 'warning' ? '#ea8600' : tone === 'error' ? '#b3261e' : '#1f1f1f';
+    return (
+      <div className="m3-surface-container p-4">
+        <div className="text-[11px]" style={{color:'#5f6368'}}>{label}</div>
+        <div className="font-display tnum mt-1" style={{ fontSize:'28px', fontWeight:400, color }}>{value}</div>
+        {sub && <div className="text-[11px] mt-0.5" style={{color:'#5f6368'}}>{sub}</div>}
+      </div>
+    );
+  };
+
+  const Inbox = () => {
+    const { inbox } = useLive();
+    return (
+    <div className="m3-card p-6 flex flex-col">
+      <CardHeader icon="inbox" title="Inbox Triage" status="LIVE" statusTone="error" statusIcon="fiber_manual_record" lastUpdate={inbox.last} />
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch">
+        {/* hero */}
+        <div className="md:col-span-2 flex flex-col justify-center pl-1">
+          <div className="text-[11px]" style={{color:'#5f6368'}}>24h 未返信</div>
+          <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(48px, 14vw, 72px)', fontWeight:400, color:'#b3261e'}}>3</div>
+          <div className="text-[11px] mt-2 tnum" style={{color:'#5f6368'}}>うち本部長: <span className="font-medium" style={{color:'#1f1f1f'}}>1</span></div>
+        </div>
+        {/* 2x2 grid */}
+        <div className="md:col-span-3 grid grid-cols-2 gap-3">
+          <InboxStat label="期限 今日中"  value="5" tone="warning" sub="メール 3 / Slack 2" />
+          <InboxStat label="DM 未読"      value={String(inbox.unread)} sub={`mention ${inbox.mentions} 件含む`} />
+          <InboxStat label="ドラフト保留" value={String(inbox.drafts)} />
+          <InboxStat label="平均レス"     value="4.2h" sub="目標 < 6h ✓" />
+        </div>
+      </div>
+
+      {/* top action */}
+      <div className="mt-4 flex items-center gap-3 px-3 py-3 rounded-2xl" style={{background:'#fef7e0', border:'1px solid #fce8a3'}}>
+        <Icon name="priority_high" size={20} style={{color:'#ea8600'}} />
+        <div className="flex-1 text-[13px]">
+          <span className="font-medium">本部長メール</span> · 「AI活用事例の準備状況」
+          <span style={{color:'#5f6368'}}> — </span>
+          <span className="font-medium" style={{color:'#ea8600'}}>09:00 までに返信</span>
+        </div>
+        <button className="btn-tonal">
+          <Icon name="reply" size={14} />
+          下書き
+        </button>
+      </div>
+    </div>
+    );
+  };
+
+  // ---------- D. Recovery / Human Capital ----------
+  const Recovery = () => {
+    const defaults = {
+      sleepScore: 78, sleepDuration: '7h 12m', deepSleepPct: 18, remPct: 22, lightPct: 54, awakePct: 6,
+      hrv: 42, hrvAvg: 38, rhr: 54, kcal: 420, stand: 11,
+      decisionStrength: 4, advice: '09:00 重要決定OK · 16:00 以降は判断保留'
+    };
+    const [recovery, setRecovery] = useState(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem('cc-recovery'));
+        if (stored && typeof stored === 'object') return { ...defaults, ...stored };
+      } catch {}
+      return defaults;
+    });
+    const sleepStages = [
+      { name:'深い',  pct: recovery.deepSleepPct,  color: '#1a73e8' },
+      { name:'レム',  pct: recovery.remPct,        color: '#34a853' },
+      { name:'浅い',  pct: recovery.lightPct,      color: '#aecbfa' },
+      { name:'覚醒',  pct: recovery.awakePct,      color: '#dadce0' },
+    ];
+    const ds = Math.max(0, Math.min(5, Number(recovery.decisionStrength) || 0));
+    const dsLabel = ds >= 5 ? 'high' : ds >= 3 ? 'medium' : 'low';
+    // Split advice into 2 chunks at " · " for the two-color display
+    const adviceParts = (recovery.advice || '').split(' · ');
+    return (
+      <div className="m3-card p-6 flex flex-col">
+        <CardHeader
+          icon="favorite"
+          title="Recovery"
+          status="Watch · 06:00 sync"
+          statusTone="success"
+          statusIcon="watch"
+          lastUpdate="06:00"
+        />
+
+        {/* hero sleep */}
+        <div className="flex items-end justify-between gap-3 mb-3">
+          <div>
+            <div className="text-[11px]" style={{color:'#5f6368'}}>睡眠スコア</div>
+            <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400}}>{recovery.sleepScore}</div>
+            <div className="text-[12px] mt-2 tnum" style={{color:'#5f6368'}}>{recovery.sleepDuration}</div>
+          </div>
+          <div className="flex-1 max-w-[110px]">
+            <div className="text-[10px] mb-1" style={{color:'#5f6368'}}>睡眠構成</div>
+            <div className="flex h-3 rounded-full overflow-hidden">
+              {sleepStages.map((s,i)=>(
+                <div key={i} title={`${s.name} ${s.pct}%`} style={{ width: `${s.pct}%`, background: s.color }}></div>
+              ))}
+            </div>
+            <div className="flex justify-between mt-1.5 text-[10px] tnum" style={{color:'#5f6368'}}>
+              <span>深い {recovery.deepSleepPct}%</span>
+              <span>レム {recovery.remPct}%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 2x2 stats */}
+        <div className="grid grid-cols-2 gap-2.5 mb-4">
+          <div className="m3-surface-container p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px]" style={{color:'#5f6368'}}>HRV</span>
+              <Chip tone="success" icon="north">回復</Chip>
+            </div>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.hrv}<span className="text-[11px] ml-0.5" style={{color:'#5f6368'}}>ms</span></div>
+            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>7d avg {recovery.hrvAvg} ms</div>
+          </div>
+          <div className="m3-surface-container p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px]" style={{color:'#5f6368'}}>安静時心拍</span>
+              <Chip tone="neutral">平常</Chip>
+            </div>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.rhr}<span className="text-[11px] ml-0.5" style={{color:'#5f6368'}}>bpm</span></div>
+            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>範囲 50–62</div>
+          </div>
+          <div className="m3-surface-container p-3">
+            <span className="text-[11px]" style={{color:'#5f6368'}}>アクティブ kcal</span>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.kcal}</div>
+            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>週 2,840</div>
+          </div>
+          <div className="m3-surface-container p-3">
+            <span className="text-[11px]" style={{color:'#5f6368'}}>スタンド</span>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.stand}<span className="text-[11px] ml-0.5" style={{color:'#5f6368'}}>h</span></div>
+            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>目標 12h</div>
+          </div>
+        </div>
+
+        {/* decision strength */}
+        <div className="mt-auto pt-3" style={{borderTop:'1px solid #e7eef9'}}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px]" style={{color:'#5f6368'}}>意思決定強度</span>
+            <div className="flex items-center gap-1.5">
+              {[0,1,2,3,4].map((i)=>(
+                <span key={i} className={`meter-dot ${i < ds ? 'meter-on' : 'meter-off'}`}></span>
+              ))}
+              <span className="text-[11px] ml-1.5 font-medium">{dsLabel}</span>
+            </div>
+          </div>
+          <div className="text-[12px] leading-relaxed" style={{color:'#1f1f1f'}}>
+            {adviceParts.length >= 2 ? (
+              <>
+                <span className="font-medium" style={{color:'#137333'}}>{adviceParts[0]}</span>
+                <span style={{color:'#5f6368'}}> · </span>
+                <span style={{color:'#ea8600'}} className="font-medium">{adviceParts.slice(1).join(' · ')}</span>
+              </>
+            ) : (
+              <span>{recovery.advice}</span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- C. Capability + Time Audit ----------
+  const Growth = () => {
+    const timeData = [
+      { cat: '戦略', h: 3.5, target: 4.0, color: '#ea8600' },
+      { cat: '運用', h: 4.2, target: 3.5, color: '#1a73e8' },
+      { cat: '学習', h: 1.0, target: 1.0, color: '#137333' },
+      { cat: '1on1', h: 1.0, target: 1.0, color: '#aecbfa' },
+    ];
+    return (
+      <div className="m3-card p-6 flex flex-col">
+        <CardHeader icon="school" title="Growth Today" lastUpdate="昨日 23:59" />
+
+        {/* 30-min investment */}
+        <div className="m3-surface-container p-4 mb-3">
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-[11px]" style={{color:'#5f6368'}}>本日の30分投資先</div>
+              <div className="font-display text-[15px] font-medium mt-1 leading-snug">電験3種『機械』<br/>直流機 電機子反作用</div>
+            </div>
+            <Chip tone="primary" icon="schedule">22:00</Chip>
+          </div>
+          <div className="flex items-center gap-3 mt-3 text-[11px] tnum" style={{color:'#5f6368'}}>
+            <span>残 <span className="font-medium" style={{color:'#1f1f1f'}}>168日</span></span>
+            <span>·</span>
+            <span>直近模試 <span className="font-medium" style={{color:'#ea8600'}}>42%</span></span>
+            <span>·</span>
+            <span>目標 60%</span>
+          </div>
+        </div>
+
+        {/* required reading */}
+        <div className="flex items-start gap-3 mb-3 px-1">
+          <Icon name="menu_book" size={18} style={{color:'#5f6368'}} />
+          <div className="flex-1">
+            <div className="text-[11px]" style={{color:'#5f6368'}}>今週の必読 1本</div>
+            <div className="text-[13px] mt-0.5">経産省「次世代計装ガイドライン改訂版」</div>
+          </div>
+          <Chip tone="warning">期限 金</Chip>
+        </div>
+
+        <div className="divider mb-3"></div>
+
+        {/* time audit */}
+        <div className="flex-1 flex flex-col">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-medium" style={{color:'#1f1f1f'}}>YESTERDAY · TIME AUDIT</span>
+            <span className="text-[11px] tnum" style={{color:'#5f6368'}}>9.7h</span>
+          </div>
+          <div style={{height: 140}}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={timeData} layout="vertical" margin={{top:0,right:30,left:10,bottom:0}}>
+                <XAxis type="number" hide domain={[0, 5]} />
+                <YAxis type="category" dataKey="cat" axisLine={false} tickLine={false}
+                  tick={{ fontSize: 11, fill: '#5f6368', fontFamily:'Roboto' }} width={36} />
+                <Bar dataKey="h" radius={[0,4,4,0]} barSize={14}>
+                  {timeData.map((d,i)=>(<Cell key={i} fill={d.color} />))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex items-center justify-between mt-1 text-[11px] tnum" style={{color:'#5f6368'}}>
+            <span>中断 <span className="font-medium" style={{color:'#ea8600'}}>12 回</span></span>
+            <span>集中ブロック平均 <span className="font-medium" style={{color:'#1f1f1f'}}>38 分</span></span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- E. Conversation Intelligence ----------
+  const ammo = [
+    { icon:'live_tv',         tag:'STREAM',      title:"スパイ・スリラー S3 完結",            use:'顧客対話用 — 駐在大使の舞台裏' },
+    { icon:'menu_book',       tag:'BOOK',        title:'入山章栄『AIエージェント時代の経営』', use:'論点 — 組織能力としてのAI活用' },
+    { icon:'account_balance', tag:'MACRO',       title:'G7 財務相会合 為替政策声明',          use:'円安局面の先行指標' },
+    { icon:'sports_baseball', tag:'SPORTS',      title:'大谷翔平 開幕戦サヨナラ本塁打',        use:'朝の場の温度上げ用' },
+    { icon:'theater_comedy',  tag:'DRAMA',       title:'宮廷シェフもの 完結',                  use:'特定顧客対話用 — Kドラマ好き' },
+  ];
+
+  const Ammo = () => (
+    <div className="m3-card p-6 flex flex-col">
+      <CardHeader icon="chat_bubble" title="Conversation Ammo" status="日次更新" statusTone="primary" lastUpdate="05:30" />
+
+      <div className="flex-1 space-y-1 -mx-2">
+        {ammo.map((a,i)=>(
+          <a
+            key={i}
+            href={`https://www.google.com/search?q=${encodeURIComponent(a.title)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-[#eef2fa] transition cursor-pointer no-underline"
+            style={{textDecoration:'none', color:'inherit'}}
+          >
+            <div className="flex-none w-9 h-9 rounded-full m3-surface-container flex items-center justify-center">
+              <Icon name={a.icon} size={18} style={{color:'#1a73e8'}} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="text-[10px] font-medium tracking-wider" style={{color:'#9aa0a6', letterSpacing:'.08em'}}>{a.tag}</span>
+              </div>
+              <div className="text-[13px] font-medium leading-snug truncate" style={{color:'#1f1f1f'}}>{a.title}</div>
+              <div className="text-[11.5px] mt-0.5" style={{color:'#5f6368'}}>→ {a.use}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div className="divider my-3"></div>
+      <div className="flex items-center justify-between text-[11px]" style={{color:'#5f6368'}}>
+        <span>5 件 · 直近24h で更新</span>
+        <button className="btn-tonal" style={{padding:'6px 12px', fontSize:'12px'}}>
+          <Icon name="add" size={14} />
+          ソース追加
+        </button>
+      </div>
+    </div>
+  );
+
+  // ---------- News Pulse (LIVE feeds) ----------
+  // World: Hacker News top stories (CORS-open)
+  // Japan: Reddit r/japan top (CORS-open)
+  // Industry: GDELT 2.0 docs API (chemical/utility keywords, CORS-open)
+  const NEWS_TABS = [
+    { id: 'world',         label: '世界',     icon: 'public' },
+    { id: 'japan',         label: '日本',     icon: 'flag' },
+    { id: 'industry',      label: '業界',     icon: 'precision_manufacturing' },
+    { id: 'quake',         label: '地震',     icon: 'public_off' },
+    { id: 'entertainment', label: '芸能',     icon: 'theater_comedy' },
+  ];
+
+  const timeAgo = (ts) => {
+    const s = Math.max(1, Math.floor((Date.now() - ts) / 1000));
+    if (s < 60) return s + '秒前';
+    if (s < 3600) return Math.floor(s/60) + '分前';
+    if (s < 86400) return Math.floor(s/3600) + '時間前';
+    return Math.floor(s/86400) + '日前';
+  };
+
+  const fetchWorld = async () => {
+    const ids = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json').then(r=>r.json());
+    const top = ids.slice(0, 8);
+    const items = await Promise.all(top.map(id =>
+      fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r=>r.json())
+    ));
+    return items.filter(Boolean).map(it => ({
+      title: it.title,
+      url: it.url || `https://news.ycombinator.com/item?id=${it.id}`,
+      source: 'Hacker News',
+      ts: (it.time || 0) * 1000,
+      score: it.score,
+      tag: 'TECH',
+    }));
+  };
+
+  const fetchJapan = async () => {
+    const r = await fetch('https://www.reddit.com/r/japan/top.json?t=day&limit=10');
+    const j = await r.json();
+    return (j.data?.children || []).map(c => ({
+      title: c.data.title,
+      url: 'https://reddit.com' + c.data.permalink,
+      source: 'r/japan',
+      ts: (c.data.created_utc || 0) * 1000,
+      score: c.data.score,
+      tag: 'JP',
+    }));
+  };
+
+  const fetchIndustry = async () => {
+    const q = '("chemical industry" OR "petrochemical" OR "utilities" OR "DX" OR "industrial AI") sourcelang:eng';
+    const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(q)}&mode=ArtList&maxrecords=10&format=json&sort=DateDesc`;
+    const j = await fetch(url).then(r=>r.json()).catch(()=>({}));
+    return (j.articles || []).slice(0, 10).map(a => ({
+      title: a.title,
+      url: a.url,
+      source: a.domain,
+      ts: a.seendate ? Date.parse(a.seendate.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/, '$1-$2-$3T$4:$5:$6Z')) : Date.now(),
+      tag: 'INDUSTRY',
+    }));
+  };
+
+  // Earthquake — P2P地震情報 (JP) — CORS-open, near-realtime
+  const SHINDO_LABEL = { '1':'1', '2':'2', '3':'3', '4':'4', '5-':'5弱', '5+':'5強', '6-':'6弱', '6+':'6強', '7':'7' };
+  const SHINDO_COLOR = (s) => {
+    const n = parseInt(s, 10);
+    if (s === '7' || s === '6+' || s === '6-') return '#7b1fa2';
+    if (s === '5+' || s === '5-') return '#b3261e';
+    if (n >= 4) return '#ea8600';
+    if (n >= 3) return '#f9ab00';
+    return '#5f6368';
+  };
+
+  const fetchQuake = async () => {
+    const r = await fetch('https://api.p2pquake.net/v2/history?codes=551&limit=10');
+    const j = await r.json();
+    return j.map(q => {
+      const e = q.earthquake || {};
+      const h = e.hypocenter || {};
+      const ts = q.time ? Date.parse(q.time.replace(' ', 'T') + '+09:00') : Date.now();
+      const shindo = e.maxScale != null ? ({ 10:'1', 20:'2', 30:'3', 40:'4', 45:'5-', 50:'5+', 55:'6-', 60:'6+', 70:'7' })[e.maxScale] : '?';
+      return {
+        title: `${h.name || '震源不明'} で最大震度${SHINDO_LABEL[shindo] || '?'}`,
+        url: 'https://www.jma.go.jp/bosai/map.html',
+        source: '気象庁経由 P2PQuake',
+        ts,
+        tag: shindo || 'EQ',
+        shindo,
+        magnitude: h.magnitude,
+        depth: h.depth,
+      };
+    });
+  };
+
+  const fetchEntertainment = async () => {
+    // Reddit r/JapaneseEntertainment + r/anime
+    const sources = [
+      'https://www.reddit.com/r/JapaneseEntertainment/top.json?t=day&limit=6',
+      'https://www.reddit.com/r/anime/top.json?t=day&limit=6',
+    ];
+    const all = await Promise.all(sources.map(u => fetch(u).then(r=>r.json()).catch(()=>({}))));
+    const items = all.flatMap(j => (j.data?.children || []).map(c => ({
+      title: c.data.title,
+      url: 'https://reddit.com' + c.data.permalink,
+      source: 'r/' + c.data.subreddit,
+      ts: (c.data.created_utc || 0) * 1000,
+      score: c.data.score,
+      tag: 'JP-ENT',
+    })));
+    return items.sort((a,b) => b.ts - a.ts);
+  };
+
+  const NEWS_FETCHERS = { world: fetchWorld, japan: fetchJapan, industry: fetchIndustry, quake: fetchQuake, entertainment: fetchEntertainment };
+
+  const NewsPulse = () => {
+    const [tab, setTab] = useState('world');
+    const [data, setData] = useState({ world: [], japan: [], industry: [], quake: [], entertainment: [] });
+    const [loading, setLoading] = useState({ world: true, japan: true, industry: true, quake: true, entertainment: true });
+    const [error, setError] = useState({});
+    const [lastFetch, setLastFetch] = useState({ world: 0, japan: 0, industry: 0, quake: 0, entertainment: 0 });
+    const [, force] = useState(0);
+
+    const load = async (which) => {
+      setLoading(s => ({ ...s, [which]: true }));
+      try {
+        const items = await NEWS_FETCHERS[which]();
+        setData(s => ({ ...s, [which]: items }));
+        setError(e => ({ ...e, [which]: null }));
+        setLastFetch(s => ({ ...s, [which]: Date.now() }));
+      } catch (e) {
+        setError(er => ({ ...er, [which]: e.message || 'fetch failed' }));
+      } finally {
+        setLoading(s => ({ ...s, [which]: false }));
+      }
+    };
+
+    useEffect(() => { load('world'); load('japan'); load('industry'); load('quake'); load('entertainment'); }, []);
+
+    // refresh active tab every 5 min
+    useEffect(() => {
+      const t = setInterval(() => load(tab), 5 * 60 * 1000);
+      return () => clearInterval(t);
+    }, [tab]);
+
+    // refresh quake every 30s — emergency bar always fresh
+    useEffect(() => {
+      const t = setInterval(() => load('quake'), 30 * 1000);
+      return () => clearInterval(t);
+    }, []);
+
+    // re-render every 30s so timeAgo stays fresh
+    useEffect(() => {
+      const t = setInterval(() => force(x => x + 1), 30000);
+      return () => clearInterval(t);
+    }, []);
+
+    const items = data[tab] || [];
+    const isLoading = loading[tab];
+    const err = error[tab];
+    const last = lastFetch[tab];
+
+    // Emergency bar — show only if a quake within last 6h with shindo >= 3
+    const recentQuake = (data.quake || []).find(q => {
+      if (!q.shindo) return false;
+      const ageH = (Date.now() - q.ts) / 3600000;
+      const n = parseInt(q.shindo, 10);
+      const big = q.shindo === '7' || q.shindo === '6+' || q.shindo === '6-' || q.shindo === '5+' || q.shindo === '5-' || n >= 3;
+      return big && ageH < 6;
+    });
+
+    return (
+      <div className="m3-card p-6">
+        {/* Emergency bar */}
+        {recentQuake && (
+          <a href={recentQuake.url} target="_blank" rel="noreferrer noopener"
+             className="flex items-center gap-3 mb-4 px-4 py-3 rounded-2xl"
+             style={{ background:'#fce8e6', border:`1px solid ${SHINDO_COLOR(recentQuake.shindo)}33` }}>
+            <span className="flex-none w-10 h-10 rounded-full flex items-center justify-center font-display text-[15px] font-medium"
+                  style={{ background: SHINDO_COLOR(recentQuake.shindo), color:'white' }}>
+              {SHINDO_LABEL[recentQuake.shindo] || '?'}
+            </span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-medium tracking-wider px-1.5 py-0.5 rounded"
+                      style={{ background:'#b3261e', color:'white', letterSpacing:'.08em' }}>緊急</span>
+                <span className="text-[13px] font-medium" style={{color:'#1f1f1f'}}>{recentQuake.title}</span>
+              </div>
+              <div className="text-[11px] mt-0.5 tnum" style={{color:'#5f6368'}}>
+                {recentQuake.magnitude != null && `M${recentQuake.magnitude} · `}
+                {recentQuake.depth != null && recentQuake.depth >= 0 && `深さ${recentQuake.depth}km · `}
+                {timeAgo(recentQuake.ts)}
+              </div>
+            </div>
+            <Icon name="open_in_new" size={16} style={{color:'#5f6368'}} />
+          </a>
+        )}
+
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+          <div className="flex items-center gap-2">
+            <Icon name="newspaper" size={20} style={{color:'#5f6368'}} />
+            <h3 className="font-display text-[15px] font-medium tracking-tight">News Pulse</h3>
+            <Chip tone="error" icon="fiber_manual_record">LIVE</Chip>
+            <span className="text-[11px]" style={{color:'#9aa0a6'}}>
+              {last ? `更新 ${timeAgo(last)}` : '取得中...'}
+            </span>
+          </div>
+
+          {/* tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-full m3-surface-container">
+            {NEWS_TABS.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition"
+                style={{
+                  background: tab === t.id ? '#1a73e8' : 'transparent',
+                  color: tab === t.id ? 'white' : '#5f6368'
+                }}
+              >
+                <Icon name={t.icon} size={14} />
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={(e) => {
+              const btn = e.currentTarget;
+              btn.classList.add('icon-btn-refreshing');
+              setTimeout(() => btn.classList.remove('icon-btn-refreshing'), 800);
+              load(tab);
+            }}
+            className="icon-btn"
+            aria-label="refresh"
+          >
+            <Icon name="refresh" size={18} className={isLoading ? 'pulse' : ''} />
+          </button>
+        </div>
+
+        {/* content */}
+        {err && (
+          <div className="m3-surface-container p-4 text-[12px]" style={{color:'#b3261e'}}>
+            <Icon name="cloud_off" size={14} /> 取得失敗: {err}
+          </div>
+        )}
+
+        {isLoading && items.length === 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[...Array(6)].map((_,i)=>(
+              <div key={i} className="m3-surface-container p-4 h-20 pulse"></div>
+            ))}
+          </div>
+        )}
+
+        {items.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {items.slice(0, 6).map((it, i) => {
+              const isQuake = tab === 'quake';
+              const tagBg = isQuake ? SHINDO_COLOR(it.shindo) : '#fce8e6';
+              const tagFg = isQuake ? 'white' : '#b3261e';
+              const tagLabel = isQuake ? `震度${SHINDO_LABEL[it.shindo] || '?'}` : it.tag;
+              return (
+                <a
+                  key={i}
+                  href={it.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="m3-surface-container p-4 flex flex-col gap-2 hover:bg-[#e7eef9] transition"
+                  style={{ minHeight: 92 }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-medium tracking-wider px-1.5 py-0.5 rounded"
+                          style={{ background: tagBg, color: tagFg, letterSpacing:'.08em' }}>
+                      {tagLabel}
+                    </span>
+                    <span className="text-[11px] tnum" style={{color:'#5f6368'}}>
+                      {timeAgo(it.ts)}
+                    </span>
+                    <span className="text-[11px] truncate" style={{color:'#9aa0a6'}}>· {it.source}</span>
+                  </div>
+                  <div className="text-[13px] leading-snug font-medium line-clamp-3" style={{color:'#1f1f1f'}}>
+                    {it.title}
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] tnum mt-auto" style={{color:'#5f6368'}}>
+                    {isQuake && it.magnitude != null && <span>M{it.magnitude}</span>}
+                    {isQuake && it.depth != null && it.depth >= 0 && <span>深さ{it.depth}km</span>}
+                    {!isQuake && it.score != null && (
+                      <span className="flex items-center gap-1"><Icon name="trending_up" size={12} /> {it.score}</span>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="mt-3 flex items-center justify-between text-[11px]" style={{color:'#9aa0a6'}}>
+          <span>
+            {tab === 'world' && 'Hacker News · 世界テック・経済'}
+            {tab === 'japan' && 'r/japan · 日本トレンド（英語要約）'}
+            {tab === 'industry' && 'GDELT · 化学/電力/DX 関連報道（英語）'}
+            {tab === 'quake' && 'P2P地震情報 · 気象庁発表ベース · 30秒毎'}
+            {tab === 'entertainment' && 'r/JapaneseEntertainment + r/anime · 芸能・エンタメ'}
+          </span>
+          <span>{tab === 'quake' ? '30秒毎' : '5分毎'}に自動更新 · CORSダイレクト取得</span>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- Video Embed ----------
+  // YouTube live streams + replaceable URL via tweaks panel.
+  // Verified 2026-05-06: dead/restricted streams removed, expanded with 7 verified live news streams.
+  const VIDEO_PRESETS = [
+    // 国内ニュース (4) - Japan 24/7 live news
+    { id: 'ann',      group: 'news_jp', label: 'ANN News (テレ朝24)', yt: 'coYw-eVU0Ks', tag: '日本 · ニュース' },
+    { id: 'ntv',      group: 'news_jp', label: '日テレNEWS 24H',       yt: 't9kwjZBLI-A', tag: '日本 · ニュース' },
+    { id: 'tbs',      group: 'news_jp', label: 'TBS NEWS DIG 24h',    yt: 'Anr15FA9OCI', tag: '日本 · ニュース' },
+    { id: 'wni',      group: 'news_jp', label: 'WeatherNews 地震Live', yt: 'G1souS7inLE', tag: '日本 · 防災/地震' },
+
+    // 世界ニュース (7) - World live news
+    { id: 'bloom',     group: 'news_world', label: 'Bloomberg TV',          yt: 'iEpJwprxDdk', tag: '世界 · 金融' },
+    { id: 'sky',       group: 'news_world', label: 'Sky News',              yt: 'YDvsBbKfLPA', tag: '英 · ニュース' },
+    { id: 'france24',  group: 'news_world', label: 'France 24 English',     yt: 'Ap-UM1O9RBU', tag: '仏 · 国際' },
+    { id: 'dw',        group: 'news_world', label: 'DW News',               yt: 'LuKwFajn37U', tag: '独 · 国際' },
+    { id: 'aljazeera', group: 'news_world', label: 'Al Jazeera English',    yt: 'gCNeDWCI0vo', tag: '中東 · 国際' },
+    { id: 'nhk_world', group: 'news_world', label: 'NHK World-Japan',       yt: 'f0lYkdA-Gtw', tag: '日本発 · 英語' },
+    { id: 'nasa',      group: 'news_world', label: 'NASA Live',             yt: '21X5lGlDOfg', tag: 'スペース' },
+
+    // World live cams (3)
+    { id: 'ny_times', group: 'cam', label: 'NY Times Sq (4K)',  yt: 'rnXIjl_Rzy4', tag: 'ニューヨーク' },
+    { id: 'africa',   group: 'cam', label: 'African Safari',     yt: 'KyQAB-TKOVA', tag: 'サバンナ' },
+
+    // Ambient / BGM (5)
+    { id: 'lofi_study', group: 'ambient', label: 'Lofi 作業用',         yt: 'jfKfPfyJRdk', tag: '集中BGM' },
+    { id: 'lofi_sleep', group: 'ambient', label: 'Lofi 睡眠/リラックス', yt: 'rPjez8z61rI', tag: 'リラックス' },
+    { id: 'synthwave',  group: 'ambient', label: 'Synthwave Radio',    yt: '4xDzrJKXOOY', tag: 'シンセウェイブ' },
+    { id: 'space',      group: 'ambient', label: 'Space Ambient 24/7', yt: 'tNkZsRW7h2c', tag: '宇宙 · 環境音' },
+    { id: 'nature',     group: 'ambient', label: 'Nature Calm Sounds', yt: 'eKFTSSKCzWA', tag: '自然音' },
+  ];
+
+  const PRESET_GROUPS = [
+    { id: 'news_jp',    label: '国内ニュース',           icon: 'flag' },
+    { id: 'news_world', label: '世界ニュース',           icon: 'public' },
+    { id: 'cam',        label: 'ワールド・ライブカメラ', icon: 'travel_explore' },
+    { id: 'ambient',    label: 'BGM · リラックス',       icon: 'spa' },
+  ];
+
+  const VideoEmbed = () => {
+    const [slots, setSlots] = useState(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem('cc-slots'));
+        if (!Array.isArray(stored)) return ['ann', 'bloom', 'ny_times', 'africa'];
+        // Migrate any deprecated/missing IDs to defaults to avoid '?' labels
+        const validIds = new Set(['ann','ntv','tbs','bloom','sky','france24','dw','aljazeera','nhk_world','nasa','ny_times','africa','lofi_study','lofi_sleep','synthwave','space','nature']);
+        const fallbacks = ['ann', 'bloom', 'ny_times', 'africa'];
+        return stored.map((s, i) => (typeof s === 'object' && s.custom) ? s : (validIds.has(s) ? s : fallbacks[i]));
+      }
+      catch { return ['ann', 'bloom', 'ny_times', 'africa']; }
+    });
+    const [activeSlot, setActiveSlot] = useState(0);
+    const [muted, setMuted] = useState(() => {
+      try { return JSON.parse(localStorage.getItem('cc-muted')) || [true, true, true, true]; }
+      catch { return [true, true, true, true]; }
+    });
+    const [layout, setLayout] = useState(() => localStorage.getItem('cc-layout') || 'quad'); // quad | focus | single
+    const [customUrl, setCustomUrl] = useState('');
+    const [pausedAll, setPausedAll] = useState(() => localStorage.getItem('cc-paused') === '1');
+    const [urlHistory, setUrlHistory] = useState(() => {
+      try { return JSON.parse(localStorage.getItem('cc-url-history')) || []; }
+      catch { return []; }
+    });
+
+    useEffect(() => { localStorage.setItem('cc-slots', JSON.stringify(slots)); }, [slots]);
+    useEffect(() => { localStorage.setItem('cc-muted', JSON.stringify(muted)); }, [muted]);
+    useEffect(() => { localStorage.setItem('cc-layout', layout); }, [layout]);
+    useEffect(() => { localStorage.setItem('cc-paused', pausedAll ? '1' : '0'); }, [pausedAll]);
+    useEffect(() => { localStorage.setItem('cc-url-history', JSON.stringify(urlHistory)); }, [urlHistory]);
+
+    // Keyboard shortcuts: 1-4 slot, M mute, P pause, Q/F/S layout
+    useEffect(() => {
+      const onKey = (e) => {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        const k = e.key.toLowerCase();
+        if (k === '1' || k === '2' || k === '3' || k === '4') {
+          setActiveSlot(parseInt(k, 10) - 1);
+        } else if (k === 'm') {
+          setMuted(m => {
+            const allMuted = m.every(x => x);
+            const next = allMuted ? false : true;
+            return [next, next, next, next];
+          });
+        } else if (k === 'p') {
+          setPausedAll(v => !v);
+        } else if (k === 'q') {
+          setLayout('quad');
+        } else if (k === 'f') {
+          setLayout('focus');
+        } else if (k === 's') {
+          setLayout('single');
+        }
+      };
+      document.addEventListener('keydown', onKey);
+      return () => document.removeEventListener('keydown', onKey);
+    }, []);
+
+    const parseYT = (url) => {
+      if (!url) return null;
+      const m = url.match(/(?:v=|youtu\.be\/|embed\/|live\/)([a-zA-Z0-9_-]{11})/);
+      return m ? m[1] : null;
+    };
+
+    const slotYT = (s) => {
+      if (typeof s === 'object' && s.custom) return s.id;
+      const p = VIDEO_PRESETS.find(p => p.id === s);
+      return p ? p.yt : VIDEO_PRESETS[0].yt;
+    };
+    const slotLabel = (s) => {
+      if (typeof s === 'object' && s.custom) return 'カスタム';
+      const p = VIDEO_PRESETS.find(p => p.id === s);
+      return p ? p.label : '?';
+    };
+
+    const setSlot = (idx, presetId) => {
+      setSlots(s => s.map((v,i) => i === idx ? presetId : v));
+    };
+    const applyCustomToActive = () => {
+      const id = parseYT(customUrl);
+      if (!id) return;
+      // Dedup: reject if same YT id is already in another slot (preset or custom)
+      const usedIds = slots.map((s, i) => {
+        if (i === activeSlot) return null;
+        if (typeof s === 'object' && s.custom) return s.id;
+        const p = VIDEO_PRESETS.find(p => p.id === s);
+        return p ? p.yt : null;
+      }).filter(Boolean);
+      if (usedIds.includes(id)) {
+        alert(`この動画は既に他のスロットで再生中です（重複不可）`);
+        return;
+      }
+      setSlot(activeSlot, { custom: true, id });
+      setCustomUrl('');
+      setUrlHistory(h => {
+        const next = [{ id, url: customUrl, ts: Date.now() }, ...h.filter(x => x.id !== id)];
+        return next.slice(0, 5);
+      });
+    };
+    const toggleMute = (idx) => {
+      setMuted(m => m.map((v,i) => i === idx ? !v : v));
+    };
+
+    const buildSrc = (slot, isMuted) => {
+      const yt = slotYT(slot);
+      return `https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&mute=${isMuted ? 1 : 0}&controls=1&rel=0&modestbranding=1&playsinline=1`;
+    };
+
+    const VideoTile = ({ idx, big = false }) => {
+      const slot = slots[idx];
+      const isActive = idx === activeSlot;
+      return (
+        <div
+          onClick={() => setActiveSlot(idx)}
+          className="relative overflow-hidden rounded-xl cursor-pointer group"
+          style={{
+            background: '#000',
+            border: isActive ? '2px solid #1a73e8' : '2px solid transparent',
+            boxShadow: isActive ? '0 0 0 4px rgba(26,115,232,.15)' : 'none',
+            transition: 'border-color .15s, box-shadow .15s',
+          }}
+        >
+          {pausedAll ? (
+            <div
+              style={{
+                width:'100%', height:'100%',
+                background:'#000',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                color:'rgba(255,255,255,.55)',
+              }}
+            >
+              <Icon name="pause" size={48} />
+            </div>
+          ) : (
+            <iframe
+              src={buildSrc(slot, muted[idx])}
+              title={slotLabel(slot)}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+              style={{ width:'100%', height:'100%', border:0, display:'block' }}
+            />
+          )}
+          {/* overlay */}
+          <div className="absolute top-2 left-2 right-2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition" style={{ pointerEvents:'none' }}>
+            <span className="text-[10px] font-medium px-2 py-1 rounded-full" style={{ background:'rgba(0,0,0,.65)', color:'white' }}>
+              {idx+1}. {slotLabel(slot)}
+            </span>
+          </div>
+          <button
+            onClick={(e) => { e.stopPropagation(); toggleMute(idx); }}
+            className="absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center"
+            style={{ background:'rgba(0,0,0,.65)', color:'white' }}
+            aria-label="mute"
+          >
+            <Icon name={muted[idx] ? 'volume_off' : 'volume_up'} size={16} />
+          </button>
+          {isActive && (
+            <span className="absolute top-2 right-2 text-[9px] font-medium px-1.5 py-0.5 rounded" style={{ background:'#1a73e8', color:'white', letterSpacing:'.05em' }}>
+              ACTIVE
+            </span>
+          )}
+        </div>
+      );
+    };
+
+    return (
+      <div className="m3-card p-6">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+          <div className="flex items-center gap-2">
+            <Icon name="grid_view" size={20} style={{color:'#5f6368'}} />
+            <h3 className="font-display text-[15px] font-medium tracking-tight">Video Wall</h3>
+            <Chip tone="error" icon="fiber_manual_record">LIVE × 4</Chip>
+            <span className="text-[11px]" style={{color:'#9aa0a6'}}>
+              スロット {activeSlot+1} 操作中: {slotLabel(slots[activeSlot])}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1 p-1 rounded-full m3-surface-container">
+              {[
+                { id:'quad',   icon:'grid_view',     label:'4分割' },
+                { id:'focus',  icon:'view_sidebar',  label:'1+3' },
+                { id:'single', icon:'crop_landscape',label:'単一' },
+              ].map(l => (
+                <button
+                  key={l.id}
+                  onClick={() => setLayout(l.id)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition"
+                  style={{
+                    background: layout === l.id ? '#1a73e8' : 'transparent',
+                    color:      layout === l.id ? 'white' : '#5f6368'
+                  }}
+                >
+                  <Icon name={l.icon} size={14} />
+                  {l.label}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setPausedAll(v => !v)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors"
+              style={{
+                background: pausedAll ? '#ea8600' : '#eef2fa',
+                color: pausedAll ? 'white' : '#5f6368'
+              }}
+              title="全動画を停止/再開 (P)"
+            >
+              <Icon name={pausedAll ? 'play_arrow' : 'pause'} size={14} />
+              {pausedAll ? 'Resume All' : 'Pause All'}
+            </button>
+            <button
+              onClick={() => {
+                const el = document.getElementById('cc-video-fs-target');
+                if (!el) return;
+                if (document.fullscreenElement) {
+                  document.exitFullscreen?.();
+                } else {
+                  (el.requestFullscreen?.() || el.webkitRequestFullscreen?.() || el.msRequestFullscreen?.());
+                }
+              }}
+              className="action-pill flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-medium"
+              style={{ background:'#1a73e8', color:'white' }}
+              title="動画グリッドを全画面 (Esc で解除)"
+            >
+              <Icon name="fullscreen" size={14} />
+              全画面
+            </button>
+          </div>
+        </div>
+
+        {/* Video grid (fullscreen target) */}
+        <div id="cc-video-fs-target" style={{background:'#000'}}>
+          {layout === 'quad' && (
+            <div className="grid grid-cols-2 gap-3" style={{ aspectRatio:'16/9' }}>
+              {[0,1,2,3].map(i => <VideoTile key={i} idx={i} />)}
+            </div>
+          )}
+          {layout === 'focus' && (
+            <div className="grid gap-3" style={{ gridTemplateColumns:'2fr 1fr', aspectRatio:'16/9' }}>
+              <VideoTile idx={activeSlot} big />
+              <div className="grid grid-rows-3 gap-3">
+                {[0,1,2,3].filter(i => i !== activeSlot).map(i => <VideoTile key={i} idx={i} />)}
+              </div>
+            </div>
+          )}
+          {layout === 'single' && (
+            <div style={{ aspectRatio:'16/9' }}>
+              <VideoTile idx={activeSlot} big />
+            </div>
+          )}
+        </div>
+
+        {/* Slot assigners — one selector per slot */}
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          {[0,1,2,3].map(idx => {
+            const slot = slots[idx];
+            const isCustom = typeof slot === 'object' && slot.custom;
+            const currentLabel = slotLabel(slot);
+            const currentValue = isCustom ? '__custom__' : slot;
+            return (
+              <div key={idx} className="m3-surface-container p-3 rounded-2xl"
+                   style={{ border: idx === activeSlot ? '2px solid #1a73e8' : '2px solid transparent' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-medium"
+                          style={{ background:'#1a73e8', color:'white' }}>{idx+1}</span>
+                    <span className="text-[11px] font-medium" style={{color:'#5f6368'}}>スロット {idx+1}</span>
+                  </div>
+                  <button onClick={() => setActiveSlot(idx)} className="text-[10px] px-2 py-0.5 rounded-full"
+                          style={{ background: idx === activeSlot ? '#1a73e8' : '#e7eef9',
+                                   color: idx === activeSlot ? 'white' : '#5f6368' }}>
+                    {idx === activeSlot ? 'ACTIVE' : '選択'}
+                  </button>
+                </div>
+                <select
+                  value={currentValue}
+                  onChange={(e) => { if (e.target.value !== '__custom__') setSlot(idx, e.target.value); }}
+                  className="w-full text-[12px] px-3 py-2 rounded-full"
+                  style={{ background:'white', border:'1px solid #e7eef9', outline:'none', color:'#1f1f1f' }}
+                >
+                  {isCustom && <option value="__custom__">カスタム ({slot.id})</option>}
+                  {PRESET_GROUPS.map(g => {
+                    // Dedup: hide presets currently used by OTHER slots
+                    const usedByOthers = slots
+                      .map((s, sIdx) => sIdx !== idx && typeof s === 'string' ? s : null)
+                      .filter(Boolean);
+                    const groupItems = VIDEO_PRESETS
+                      .filter(p => p.group === g.id)
+                      .filter(p => p.id === slot || !usedByOthers.includes(p.id));
+                    if (groupItems.length === 0) return null;
+                    return (
+                      <optgroup key={g.id} label={g.label}>
+                        {groupItems.map(p => (
+                          <option key={p.id} value={p.id}>{p.label} — {p.tag}</option>
+                        ))}
+                      </optgroup>
+                    );
+                  })}
+                </select>
+                <div className="text-[10px] mt-1.5 truncate" style={{color:'#9aa0a6'}}>
+                  再生中: {currentLabel}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* custom URL */}
+        <div className="mt-3 flex flex-col md:flex-row md:items-center gap-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <Icon name="link" size={16} style={{color:'#9aa0a6'}} />
+            <input
+              type="text"
+              value={customUrl}
+              onChange={(e) => setCustomUrl(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') applyCustomToActive(); }}
+              placeholder={`スロット${activeSlot+1}にカスタムYouTube URL`}
+              className="flex-1 min-w-0 text-[12px] tnum px-3 py-2 rounded-full"
+              style={{ background:'#eef2fa', border:'1px solid #e7eef9', outline:'none' }}
+            />
+          </div>
+          <button onClick={applyCustomToActive} className="btn-tonal flex-shrink-0 self-start md:self-auto" disabled={!parseYT(customUrl)}
+                  style={{ opacity: parseYT(customUrl) ? 1 : 0.5 }}>
+            <Icon name="check" size={14} /> 適用
+          </button>
+        </div>
+
+        {urlHistory.length > 0 && (
+          <div className="mt-2 flex items-center gap-2 flex-wrap">
+            <span className="text-[10px]" style={{color:'#9aa0a6'}}>履歴:</span>
+            {urlHistory.map(h => (
+              <button
+                key={h.id}
+                onClick={() => setCustomUrl(`https://youtu.be/${h.id}`)}
+                className="text-[11px] px-2 py-1 rounded-full hover:bg-blue-50 transition-colors"
+                style={{background:'#eef2fa', color:'#5f6368'}}
+                title={h.url}
+              >
+                {h.id}
+              </button>
+            ))}
+            <button
+              onClick={() => setUrlHistory([])}
+              className="text-[10px] ml-1"
+              style={{color:'#b3261e'}}
+              title="履歴クリア"
+            >
+              クリア
+            </button>
+          </div>
+        )}
+
+        <div className="mt-3 text-[11px] flex flex-wrap gap-x-3 gap-y-1" style={{color:'#9aa0a6'}}>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>1-4</kbd> スロット切替</span>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>M</kbd> 全ミュート</span>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>P</kbd> 全停止</span>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>Q/F/S</kbd> レイアウト</span>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- External Viewers ----------
+  const EXTERNAL_VIEWERS = [
+    { name: 'YouTube',     url: 'https://www.youtube.com',                          bg: '#ff0000', fg: '#fff' },
+    { name: 'TVer',        url: 'https://tver.jp',                                  bg: '#00bcd4', fg: '#fff' },
+    { name: 'ABEMA',       url: 'https://abema.tv',                                 bg: '#1bc4a3', fg: '#fff' },
+    { name: 'Netflix',     url: 'https://www.netflix.com',                          bg: '#e50914', fg: '#fff' },
+    { name: 'NHK Plus',    url: 'https://plus.nhk.jp',                              bg: '#0066cc', fg: '#fff' },
+    { name: 'Prime Video', url: 'https://www.amazon.co.jp/gp/video/storefront',     bg: '#00a8e1', fg: '#fff' },
+    { name: 'Disney+',     url: 'https://www.disneyplus.com/ja-jp',                 bg: '#113ccf', fg: '#fff' },
+    { name: 'U-NEXT',      url: 'https://video.unext.jp',                           bg: '#000000', fg: '#fff' },
+    { name: 'Hulu',        url: 'https://www.hulu.jp',                              bg: '#1ce783', fg: '#000' },
+    { name: 'Spotify',     url: 'https://open.spotify.com',                         bg: '#1db954', fg: '#fff' },
+    { name: '日経電子版',   url: 'https://www.nikkei.com',                            bg: '#003c7a', fg: '#fff' },
+    { name: 'NewsPicks',   url: 'https://newspicks.com',                            bg: '#181818', fg: '#fff' },
+  ];
+
+  const ExternalViewers = () => (
+    <div className="m3-card p-5">
+      <div className="flex items-center gap-2 mb-3">
+        <Icon name="open_in_new" size={20} style={{color:'#1a73e8'}} />
+        <h3 className="font-display text-[15px]" style={{fontWeight:500, color:'#1f1f1f'}}>External Viewers</h3>
+        <Chip tone="neutral">{EXTERNAL_VIEWERS.length} services</Chip>
+        <span className="ml-auto text-[11px]" style={{color:'#9aa0a6'}}>新規タブで開く</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {EXTERNAL_VIEWERS.map(v => (
+          <a key={v.name} href={v.url} target="_blank" rel="noopener noreferrer"
+             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-medium hover:opacity-85 transition-opacity"
+             style={{ background: v.bg, color: v.fg, textDecoration:'none' }}>
+            <Icon name="open_in_new" size={12} />
+            {v.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+
+  // ---------- Top 3 Actions ----------
+  const DEFAULT_TOP_ACTIONS = [
+    { id: 'a', text: 'ステアリング前に予算根拠データ作成', time: '11:00' },
+    { id: 'b', text: 'Member B ブロッカー解除1on1（15分）', time: '11:00' },
+    { id: 'c', text: '電験『機械』直流機 30分', time: '22:00' },
+  ];
+
+  const TopActions = () => {
+    const [actions, setActions] = useState(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem('cc-top-actions'));
+        if (Array.isArray(stored) && stored.length === 3) return stored;
+      } catch {}
+      return DEFAULT_TOP_ACTIONS;
+    });
+    useEffect(() => { localStorage.setItem('cc-top-actions', JSON.stringify(actions)); }, [actions]);
+
+    // Listen for AI Brief → TOP 3 sync events
+    useEffect(() => {
+      const onSync = (e) => {
+        if (e?.detail && Array.isArray(e.detail) && e.detail.length === 3) {
+          setActions(e.detail);
+          // Reset completion state on new actions
+          localStorage.setItem('cc-actions-done', '{}');
+          setDone({});
+        }
+      };
+      window.addEventListener('cc-top-actions-sync', onSync);
+      return () => window.removeEventListener('cc-top-actions-sync', onSync);
+    }, []);
+
+    const [done, setDone] = useState(() => {
+      try { return JSON.parse(localStorage.getItem('cc-actions-done')) || {}; }
+      catch { return {}; }
+    });
+    useEffect(() => { localStorage.setItem('cc-actions-done', JSON.stringify(done)); }, [done]);
+    const completedCount = actions.filter(a => done[a.id]).length;
+    const toggle = (id) => setDone(d => ({...d, [id]: !d[id]}));
+    return (
+      <div className="m3-card p-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Icon name="priority_high" size={20} style={{color:'#1a73e8'}} />
+          <h3 className="font-display text-[15px]" style={{fontWeight:500, color:'#1f1f1f'}}>TOP 3 ACTIONS TODAY</h3>
+          <Chip tone={completedCount === 3 ? 'success' : 'primary'}>{completedCount} / 3 完了</Chip>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {actions.map(a => {
+            const isDone = !!done[a.id];
+            return (
+              <div key={a.id} className="m3-surface-container p-3 rounded-2xl">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-medium uppercase"
+                        style={{ background: isDone ? '#9aa0a6' : '#1a73e8', color:'white' }}>{a.id}</span>
+                  <Chip tone="neutral">{a.time}</Chip>
+                </div>
+                <div className="text-[13px] leading-relaxed mb-2"
+                     style={{ color:'#1f1f1f', textDecoration: isDone ? 'line-through' : 'none', opacity: isDone ? 0.5 : 1 }}>
+                  {a.text}
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer text-[11px]" style={{color:'#5f6368'}}>
+                  <input type="checkbox" checked={isDone} onChange={() => toggle(a.id)} style={{accentColor:'#1a73e8'}} />
+                  完了
+                </label>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- ErrorBoundary ----------
+  class ErrorBoundary extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false, err: null };
+    }
+    static getDerivedStateFromError(err) { return { hasError: true, err }; }
+    componentDidCatch(err, info) { console.error('Module error:', err, info); }
+    render() {
+      if (this.state.hasError) {
+        return (
+          <div className="m3-card p-5" style={{borderLeft:'4px solid #b3261e'}}>
+            <div className="flex items-center gap-2 mb-2">
+              <Icon name="error" size={20} style={{color:'#b3261e'}} />
+              <div className="font-display text-[14px] font-medium" style={{color:'#1f1f1f'}}>モジュールエラー</div>
+            </div>
+            <div className="text-[12px]" style={{color:'#5f6368'}}>このカードの読込に失敗しました。リロードで復旧する可能性があります。</div>
+            <button className="btn-tonal mt-3" onClick={() => this.setState({ hasError: false, err: null })}>
+              <Icon name="refresh" size={14} /> 再試行
+            </button>
+          </div>
+        );
+      }
+      return this.props.children;
+    }
+  }
+
+  // ---------- HelpModal ----------
+  const HelpModal = ({ open, onClose }) => {
+    if (!open) return null;
+    const SHORTCUTS = [
+      { keys: ['1','2','3','4'], desc: 'Video Wall スロット切替' },
+      { keys: ['M'],            desc: '全動画ミュート切替' },
+      { keys: ['P'],            desc: '全動画 一時停止/再開' },
+      { keys: ['Q','F','S'],    desc: 'Video Wall レイアウト (Quad/Focus/Single)' },
+      { keys: ['?'],            desc: 'このヘルプを表示' },
+      { keys: ['Esc'],          desc: '編集モード解除・モーダル閉じる' },
+    ];
+    return (
+      <div onClick={onClose}
+           style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:9999,
+                   display:'flex',alignItems:'center',justifyContent:'center',padding:'20px'}}>
+        <div onClick={(e) => e.stopPropagation()}
+             className="m3-card p-7"
+             style={{maxWidth:'520px',width:'100%',background:'var(--surface)'}}>
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <Icon name="keyboard" size={22} style={{color:'#1a73e8'}} />
+              <h3 className="font-display text-[18px]" style={{fontWeight:500,color:'var(--on-surface,#1f1f1f)'}}>キーボードショートカット</h3>
+            </div>
+            <button className="icon-btn" onClick={onClose}><Icon name="close" size={20} /></button>
+          </div>
+          <div className="space-y-3">
+            {SHORTCUTS.map((s,i) => (
+              <div key={i} className="flex items-center justify-between gap-4 py-2"
+                   style={{borderBottom: i < SHORTCUTS.length-1 ? '1px solid var(--border,#e7eef9)' : 'none'}}>
+                <div className="flex gap-1.5">
+                  {s.keys.map(k => (
+                    <kbd key={k} className="px-2 py-1 rounded text-[11px] font-medium font-mono"
+                         style={{background:'var(--surface-container,#eef2fa)',color:'var(--on-surface-variant,#5f6368)'}}>{k}</kbd>
+                  ))}
+                </div>
+                <div className="text-[12px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- SettingsModal ----------
+  const SettingsModal = ({ open, onClose, onReset }) => {
+    const [apiKey, setApiKey] = useState(() => localStorage.getItem('cc-anthropic-key') || '');
+    const [briefContext, setBriefContext] = useState(() => localStorage.getItem('cc-brief-context') || '');
+    const [showKey, setShowKey] = useState(false);
+    const [meetingsText, setMeetingsText] = useState(() =>
+      localStorage.getItem('cc-meetings') ||
+      JSON.stringify([
+        { time: '09:00', title: '部門DX推進会議', goal: '来期予算配分確定 · 出席 6名', prep: 70 },
+        { time: '13:00', title: '検査室改修ステアリング', goal: '仕様凍結', prep: 40, status: 'warning' },
+        { time: '16:00', title: '1on1 (Member A)', goal: 'ボトルネック解除', prep: 100, status: 'success' },
+        { time: '18:30', title: '本部定例（任意参加）', goal: 'AI活用事例ヨコ展開', status: 'neutral' },
+      ], null, 2)
+    );
+    const [recoveryText, setRecoveryText] = useState(() =>
+      localStorage.getItem('cc-recovery') ||
+      JSON.stringify({
+        sleepScore: 78, sleepDuration: '7h 12m', deepSleepPct: 18, remPct: 22, lightPct: 54, awakePct: 6,
+        hrv: 42, hrvAvg: 38, rhr: 54, kcal: 420, stand: 11,
+        decisionStrength: 4, advice: '09:00 重要決定OK · 16:00 以降は判断保留'
+      }, null, 2)
+    );
+    // ─── Google Calendar OAuth state（hooks は早期returnの前に配置必須・React #310 対策）───
+    const [gcalClientId, setGcalClientId] = useState(() => localStorage.getItem('cc-google-client-id') || '');
+    const [gcalToken, setGcalToken] = useState(() => localStorage.getItem('cc-google-token') || '');
+    const [gcalExpiry, setGcalExpiry] = useState(() => Number(localStorage.getItem('cc-google-token-expiry')) || 0);
+    const [gcalLastSync, setGcalLastSync] = useState(() => Number(localStorage.getItem('cc-google-last-sync')) || 0);
+    const [gcalStatus, setGcalStatus] = useState('');
+    if (!open) return null;
+    const gcalTokenValid = gcalToken && Date.now() < gcalExpiry;
+    const saveAI = () => {
+      if (apiKey.trim()) localStorage.setItem('cc-anthropic-key', apiKey.trim());
+      else localStorage.removeItem('cc-anthropic-key');
+      localStorage.setItem('cc-brief-context', briefContext);
+      // Clear cached brief so next render regenerates with new context
+      localStorage.removeItem('cc-ai-brief');
+      alert('AI設定を保存しました。再読込して反映します。');
+      location.reload();
+    };
+    const saveMeetings = () => {
+      try {
+        const arr = JSON.parse(meetingsText);
+        if (!Array.isArray(arr)) throw new Error('Array required');
+        localStorage.setItem('cc-meetings', JSON.stringify(arr));
+        alert('Schedule を保存しました。再読込して反映します。');
+        location.reload();
+      } catch (e) {
+        alert('JSON エラー: ' + e.message);
+      }
+    };
+    const saveRecovery = () => {
+      try {
+        const obj = JSON.parse(recoveryText);
+        if (!obj || typeof obj !== 'object') throw new Error('Object required');
+        localStorage.setItem('cc-recovery', JSON.stringify(obj));
+        alert('Recovery を保存しました。再読込して反映します。');
+        location.reload();
+      } catch (e) {
+        alert('JSON エラー: ' + e.message);
+      }
+    };
+
+    // ─── Google Calendar OAuth handlers ───
+    const fetchGcalEvents = async (overrideToken) => {
+      const t = overrideToken || gcalToken;
+      if (!t) { setGcalStatus('まず接続してください'); return; }
+      setGcalStatus('同期中...');
+      try {
+        const today = new Date();
+        const start = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0).toISOString();
+        const end = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59).toISOString();
+        const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?` +
+          `timeMin=${encodeURIComponent(start)}&timeMax=${encodeURIComponent(end)}` +
+          `&singleEvents=true&orderBy=startTime&maxResults=20`;
+        const r = await fetch(url, { headers: { Authorization: `Bearer ${t}` } });
+        if (!r.ok) {
+          if (r.status === 401) {
+            // Token expired
+            localStorage.removeItem('cc-google-token');
+            localStorage.removeItem('cc-google-token-expiry');
+            setGcalToken('');
+            setGcalExpiry(0);
+            throw new Error('トークン期限切れ。再接続してください');
+          }
+          const txt = await r.text();
+          throw new Error(`HTTP ${r.status}: ${txt.slice(0, 100)}`);
+        }
+        const data = await r.json();
+        const meetings = (data.items || [])
+          .filter(e => e.start)
+          .map(e => {
+            const startDt = e.start.dateTime || e.start.date;
+            const dt = new Date(startDt);
+            const time = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+            return {
+              time,
+              title: e.summary || '(無題)',
+              goal: (e.description || '').replace(/\n/g, ' ').slice(0, 60),
+              prep: 50,
+              status: 'neutral',
+              htmlLink: e.htmlLink
+            };
+          });
+        if (meetings.length === 0) {
+          setGcalStatus('本日のイベントなし（cc-meetings は未変更）');
+          const ts = Date.now();
+          localStorage.setItem('cc-google-last-sync', String(ts));
+          setGcalLastSync(ts);
+          return;
+        }
+        localStorage.setItem('cc-meetings', JSON.stringify(meetings));
+        const ts = Date.now();
+        localStorage.setItem('cc-google-last-sync', String(ts));
+        setGcalLastSync(ts);
+        setGcalStatus(`${meetings.length}件 同期完了。再読込でScheduleに反映`);
+      } catch (e) {
+        setGcalStatus('エラー: ' + e.message);
+      }
+    };
+
+    const saveGcalClientId = () => {
+      localStorage.setItem('cc-google-client-id', gcalClientId.trim());
+      setGcalStatus('Client ID 保存済');
+    };
+
+    const connectGcal = () => {
+      if (!window.google?.accounts?.oauth2) {
+        setGcalStatus('Google Identity Services 読込中...再試行してください');
+        return;
+      }
+      if (!gcalClientId.trim()) {
+        setGcalStatus('まず Client ID を保存してください');
+        return;
+      }
+      try {
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: gcalClientId.trim(),
+          scope: 'https://www.googleapis.com/auth/calendar.readonly',
+          callback: (resp) => {
+            if (resp.error) {
+              setGcalStatus('OAuth エラー: ' + resp.error);
+              return;
+            }
+            const t = resp.access_token;
+            const exp = Date.now() + (resp.expires_in || 3600) * 1000;
+            localStorage.setItem('cc-google-token', t);
+            localStorage.setItem('cc-google-token-expiry', String(exp));
+            setGcalToken(t);
+            setGcalExpiry(exp);
+            setGcalStatus('接続成功。同期中...');
+            fetchGcalEvents(t);
+          }
+        });
+        tokenClient.requestAccessToken();
+      } catch (e) {
+        setGcalStatus('初期化エラー: ' + e.message);
+      }
+    };
+
+    const disconnectGcal = () => {
+      localStorage.removeItem('cc-google-token');
+      localStorage.removeItem('cc-google-token-expiry');
+      setGcalToken('');
+      setGcalExpiry(0);
+      setGcalStatus('切断しました');
+    };
+    const exportData = () => {
+      const data = {};
+      Object.keys(localStorage).filter(k => k.startsWith('cc-')).forEach(k => { data[k] = localStorage.getItem(k); });
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `control-center-settings-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+    const importData = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            Object.entries(data).forEach(([k,v]) => { if (k.startsWith('cc-')) localStorage.setItem(k, v); });
+            alert('設定をインポートしました。再読込します。');
+            location.reload();
+          } catch(err) { alert('JSON の読込に失敗: ' + err.message); }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    };
+    return (
+      <div onClick={onClose}
+           style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:9999,
+                   display:'flex',alignItems:'center',justifyContent:'center',padding:'20px'}}>
+        <div onClick={(e) => e.stopPropagation()}
+             className="m3-card p-7"
+             style={{maxWidth:'520px',width:'100%',background:'var(--surface)'}}>
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <Icon name="settings" size={22} style={{color:'#1a73e8'}} />
+              <h3 className="font-display text-[18px]" style={{fontWeight:500,color:'var(--on-surface,#1f1f1f)'}}>設定</h3>
+            </div>
+            <button className="icon-btn" onClick={onClose}><Icon name="close" size={20} /></button>
+          </div>
+          <div className="space-y-4 text-[13px]" style={{color:'var(--on-surface,#1f1f1f)'}}>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #1a73e8'}}>
+              <div className="font-medium mb-1 flex items-center gap-1.5">
+                <Icon name="auto_awesome" size={16} style={{color:'#1a73e8'}} />
+                AI Daily Brief（Claude API）
+              </div>
+              <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                朝のブリーフィングを Claude が自動生成。APIキーは <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style={{color:'#1a73e8',textDecoration:'underline'}}>console.anthropic.com</a> から取得（sk-ant-...形式）。ブラウザのlocalStorageに保存されます（Anthropic以外には送信されません）。
+              </div>
+              <div className="flex gap-2 mb-3">
+                <input
+                  type={showKey ? 'text' : 'password'}
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="sk-ant-..."
+                  className="flex-1 text-[12px] tnum px-3 py-2 rounded-full font-mono"
+                  style={{background:'var(--surface,#fff)',border:'1px solid var(--border,#e7eef9)',outline:'none'}}
+                />
+                <button onClick={() => setShowKey(s => !s)} className="icon-btn" title={showKey ? '隠す' : '表示'}>
+                  <Icon name={showKey ? 'visibility_off' : 'visibility'} size={16} />
+                </button>
+              </div>
+              <div className="text-[11px] mb-1.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>追加コンテキスト（任意・ブリーフィング生成に使われる）</div>
+              <textarea
+                value={briefContext}
+                onChange={(e) => setBriefContext(e.target.value)}
+                placeholder={'例:\n本日の予定: 09:00 部門会議, 13:00 ステアリング, 16:00 1on1\n睡眠スコア: 78\n直近の懸念: 検査室改修の予算確定が遅延\n'}
+                rows={5}
+                className="w-full text-[12px] px-3 py-2 rounded-2xl"
+                style={{background:'var(--surface,#fff)',border:'1px solid var(--border,#e7eef9)',outline:'none',resize:'vertical',fontFamily:'inherit'}}
+              />
+              <button className="btn-tonal mt-3" onClick={saveAI}>
+                <Icon name="check" size={14} /> AI設定を保存
+              </button>
+            </div>
+
+            {/* ─── Google Calendar OAuth Section ─── */}
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #34a853'}}>
+              <div className="font-medium mb-1 flex items-center gap-1.5">
+                <Icon name="calendar_month" size={16} style={{color:'#34a853'}} />
+                Google Calendar 連携（オプション）
+              </div>
+              <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                本日の予定を Google Calendar から自動取得。<strong>事前準備</strong>:
+                <br/>1. <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener" style={{color:'#1a73e8',textDecoration:'underline'}}>Google Cloud Console</a> でプロジェクト作成→ Calendar API 有効化
+                <br/>2. OAuth 2.0 Client ID 作成（種別: <strong>Web application</strong>）
+                <br/>3. 承認済JavaScript生成元に <code style={{background:'var(--surface,#fff)',padding:'1px 4px',borderRadius:'4px'}}>http://localhost:8765</code> 追加
+                <br/>4. Client ID をコピー → 下にペースト
+              </div>
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={gcalClientId}
+                  onChange={(e) => setGcalClientId(e.target.value)}
+                  placeholder="123456789-xxx.apps.googleusercontent.com"
+                  className="flex-1 text-[11px] tnum px-3 py-2 rounded-full font-mono"
+                  style={{background:'var(--surface,#fff)',border:'1px solid var(--border,#e7eef9)',outline:'none'}}
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap mb-2">
+                <button className="btn-tonal" onClick={saveGcalClientId} disabled={!gcalClientId.trim()}>
+                  <Icon name="save" size={14} /> Client ID 保存
+                </button>
+                {!gcalTokenValid && (
+                  <button className="btn-tonal" onClick={connectGcal} disabled={!gcalClientId.trim()}>
+                    <Icon name="link" size={14} /> Googleで接続
+                  </button>
+                )}
+                {gcalTokenValid && (
+                  <>
+                    <button className="btn-tonal" onClick={() => fetchGcalEvents()}>
+                      <Icon name="refresh" size={14} /> 今すぐ同期
+                    </button>
+                    <button className="btn-tonal" onClick={disconnectGcal} style={{borderColor:'#b3261e',color:'#b3261e'}}>
+                      <Icon name="logout" size={14} /> 切断
+                    </button>
+                  </>
+                )}
+              </div>
+              <div className="text-[11px]" style={{color: gcalTokenValid ? '#137333' : 'var(--on-surface-variant,#9aa0a6)'}}>
+                {gcalTokenValid
+                  ? `✓ 接続中（残${Math.max(0, Math.round((gcalExpiry - Date.now())/60000))}分）`
+                  : (gcalToken ? 'トークン期限切れ・再接続が必要' : '未接続')}
+                {gcalLastSync ? ` · 最終同期: ${new Date(gcalLastSync).toLocaleTimeString('ja-JP', {hour:'2-digit',minute:'2-digit'})}` : ''}
+              </div>
+              {gcalStatus && (
+                <div className="text-[11px] mt-1" style={{
+                  color: /エラー|期限切れ/.test(gcalStatus) ? '#b3261e' : (/成功|完了|保存済/.test(gcalStatus) ? '#137333' : 'var(--on-surface-variant,#5f6368)')
+                }}>
+                  {gcalStatus}
+                </div>
+              )}
+              <div className="text-[10px] mt-2" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
+                ※ 同期するとScheduleの手動JSONが上書きされます。トークンは1時間有効・毎朝再接続が必要です。
+              </div>
+            </div>
+
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #ea8600'}}>
+              <div className="font-medium mb-1 flex items-center gap-1.5">
+                <Icon name="event" size={16} style={{color:'#ea8600'}} />
+                Today's Schedule（手動編集）
+              </div>
+              <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                各会議の time / title / goal / prep% / status を JSON 形式で編集。time は "HH:MM" 形式。status は "warning"/"success"/"neutral" のいずれか。prep は 0-100 数値。
+              </div>
+              <textarea
+                value={meetingsText}
+                onChange={(e) => setMeetingsText(e.target.value)}
+                placeholder='[{"time":"09:00","title":"...","goal":"...","prep":70}]'
+                rows={8}
+                className="w-full text-[11px] px-3 py-2 rounded-2xl font-mono"
+                style={{background:'var(--surface,#fff)',border:'1px solid var(--border,#e7eef9)',outline:'none',resize:'vertical'}}
+              />
+              <button className="btn-tonal mt-3" onClick={saveMeetings}>
+                <Icon name="check" size={14} /> Schedule 保存
+              </button>
+            </div>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #34a853'}}>
+              <div className="font-medium mb-1 flex items-center gap-1.5">
+                <Icon name="favorite" size={16} style={{color:'#34a853'}} />
+                Recovery（Apple Watch 値）
+              </div>
+              <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                sleepScore / sleepDuration / hrv / rhr / kcal / stand / decisionStrength（0-5）/ advice を JSON で編集。Health Auto Export 連携前は手動入力。
+              </div>
+              <textarea
+                value={recoveryText}
+                onChange={(e) => setRecoveryText(e.target.value)}
+                rows={8}
+                className="w-full text-[11px] px-3 py-2 rounded-2xl font-mono"
+                style={{background:'var(--surface,#fff)',border:'1px solid var(--border,#e7eef9)',outline:'none',resize:'vertical'}}
+              />
+              <button className="btn-tonal mt-3" onClick={saveRecovery}>
+                <Icon name="check" size={14} /> Recovery 保存
+              </button>
+            </div>
+            <div className="m3-surface-container p-4 rounded-2xl">
+              <div className="font-medium mb-1">データ管理</div>
+              <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                ローカル保存された全設定（プロファイル・スロット・完了状態など）。
+              </div>
+              <div className="flex gap-2">
+                <button className="btn-tonal" onClick={exportData}>
+                  <Icon name="download" size={14} /> エクスポート
+                </button>
+                <button className="btn-tonal" onClick={importData}>
+                  <Icon name="upload" size={14} /> インポート
+                </button>
+              </div>
+            </div>
+            <div className="m3-surface-container p-4 rounded-2xl">
+              <div className="font-medium mb-1">編集ヒント</div>
+              <ul className="text-[12px] space-y-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                <li>· ヘッダーのユーザー名・タイトル・アバターをクリックで編集</li>
+                <li>· Stakeholder本文をクリックで編集</li>
+                <li>· TOP 3 ACTIONS のチェックで完了管理</li>
+                <li>· `?`キーでショートカット一覧</li>
+              </ul>
+            </div>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #b3261e'}}>
+              <div className="font-medium mb-1" style={{color:'#b3261e'}}>危険な操作</div>
+              <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+                すべての設定を初期化します（取り消し不可）。
+              </div>
+              <button className="btn-tonal" onClick={onReset} style={{borderColor:'#b3261e',color:'#b3261e'}}>
+                <Icon name="restart_alt" size={14} /> 全リセット
+              </button>
+            </div>
+            <div className="text-center text-[11px] pt-2" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
+              Personal Control Center · v1.3 · localStorage は本ブラウザのみに保存
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ---------- AI Daily Brief ----------
+  const AIDailyBrief = () => {
+    // 時間帯セグメント定義: 朝(04-11) / 昼(12-16) / 夕(17-翌03)
+    const segmentOf = (d) => {
+      const h = d.getHours();
+      if (h >= 4 && h < 12) return 'morning';
+      if (h >= 12 && h < 17) return 'noon';
+      return 'evening';
+    };
+    const cacheKey = (d) => {
+      // evening は 0-3 時に翌日扱いせず、当日の evening キーで継続させる
+      const h = d.getHours();
+      const base = new Date(d);
+      if (h >= 0 && h < 4) base.setDate(base.getDate() - 1);
+      return `${base.toISOString().slice(0,10)}-${segmentOf(d)}`;
+    };
+    const segmentLabel = (d) => ({ morning: '朝のブリーフィング', noon: '午後のフォーカス', evening: '夜のクロージング' }[segmentOf(d)]);
+
+    const [brief, setBrief] = useState(() => {
+      try {
+        const cached = JSON.parse(localStorage.getItem('cc-ai-brief'));
+        if (cached && cached.cacheKey === cacheKey(new Date())) return cached.text;
+      } catch {}
+      return null;
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [genTime, setGenTime] = useState(() => {
+      try { return JSON.parse(localStorage.getItem('cc-ai-brief'))?.timestamp || null; }
+      catch { return null; }
+    });
+
+    const generate = async () => {
+      const apiKey = localStorage.getItem('cc-anthropic-key');
+      if (!apiKey) {
+        setError('APIキーが未設定です。⚙設定 → AI Daily Brief セクションで Anthropic APIキーを登録してください。');
+        return;
+      }
+      setError(null);
+      setLoading(true);
+      const userName = localStorage.getItem('cc-user-name') || 'Furudate';
+      const userTitle = localStorage.getItem('cc-user-title') || '';
+      const stakeholder = localStorage.getItem('cc-stakeholder') || '';
+      const customContext = localStorage.getItem('cc-brief-context') || '';
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日(${['日','月','火','水','木','金','土'][now.getDay()]})`;
+      const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      const segment = segmentOf(now);
+      const segmentInstructions = {
+        morning: '本日の最重要意思決定3行を生成してください。各行は午前中の実行アクション。',
+        noon: '本日の進捗を踏まえ、午後の優先順位3行を生成してください。すでに完了したことは「振り返らない」。',
+        evening: '本日のクロージング・明日の準備に向けた3行を生成してください。明日の最重要事項に言及。',
+      };
+      // Settings で設定された Schedule と Recovery を context に取り込む
+      let scheduleStr = '';
+      try {
+        const meetings = JSON.parse(localStorage.getItem('cc-meetings'));
+        if (Array.isArray(meetings) && meetings.length > 0) {
+          scheduleStr = '本日の予定:\n' + meetings.map(m =>
+            `  · ${m.time} ${m.title}${m.goal ? '（'+m.goal+'）' : ''}${m.prep != null ? ` 準備度${m.prep}%` : ''}`
+          ).join('\n');
+        }
+      } catch {}
+      let recoveryStr = '';
+      try {
+        const r = JSON.parse(localStorage.getItem('cc-recovery'));
+        if (r && typeof r === 'object') {
+          const parts = [];
+          if (r.sleepScore != null) parts.push(`睡眠スコア${r.sleepScore}`);
+          if (r.sleepDuration) parts.push(`睡眠${r.sleepDuration}`);
+          if (r.hrv != null) parts.push(`HRV${r.hrv}ms${r.hrvAvg != null ? `（7日平均${r.hrvAvg}）` : ''}`);
+          if (r.rhr != null) parts.push(`安静時心拍${r.rhr}bpm`);
+          if (r.decisionStrength != null) parts.push(`意思決定強度${r.decisionStrength}/5`);
+          if (parts.length) recoveryStr = '本日のコンディション: ' + parts.join(' / ');
+        }
+      } catch {}
+      // 完了済アクション（前回 brief で取り込み済の TOP 3 の done 状態）
+      let completedStr = '';
+      try {
+        const top3 = JSON.parse(localStorage.getItem('cc-top-actions'));
+        const done = JSON.parse(localStorage.getItem('cc-actions-done')) || {};
+        if (Array.isArray(top3)) {
+          const completed = top3.filter(a => done[a.id]).map(a => `${a.time} ${a.text}`);
+          if (completed.length) completedStr = `既に完了したアクション:\n  · ${completed.join('\n  · ')}`;
+        }
+      } catch {}
+      const context = [
+        `日時: ${dateStr} ${timeStr}`,
+        `時間帯: ${segmentLabel(now)}`,
+        `ユーザー: ${userName} - ${userTitle}`,
+        stakeholder ? `本部長動向: ${stakeholder}` : '',
+        scheduleStr,
+        recoveryStr,
+        completedStr,
+        customContext ? `追加コンテキスト:\n${customContext}` : ''
+      ].filter(Boolean).join('\n');
+      try {
+        const r = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-5-20250929',
+            max_tokens: 400,
+            messages: [{
+              role: 'user',
+              content: `あなたは戦略コンサルタント兼パーソナル秘書です。以下の文脈から、${segmentInstructions[segment]}\n\n文脈:\n${context}\n\n出力ルール（厳守・パーサーで解析されます）:\n- 必ず3行のみ出力\n- 各行は \`HH:MM 内容\` 形式（時刻＋半角空白＋内容、HHは00-23）\n- 時刻は本日の予定時刻（過去時刻禁止・現在時刻以降）\n- 各行は1つの即実行アクション or 戦略判断（命令形・25-50文字）\n- 一般論禁止・具体的な対象を含める\n- 行頭の番号「1.」「-」「*」「・」など禁止\n- Markdown・絵文字・前置き・コードブロック禁止\n\n例:\n11:00 ステアリング前の予算根拠データを作成\n13:30 Member B のブロッカーを解除する1on1（15分）\n22:00 電験『機械』直流機の30分学習`
+            }]
+          })
+        });
+        if (!r.ok) {
+          const errBody = await r.text();
+          throw new Error(`HTTP ${r.status}: ${errBody.slice(0, 300)}`);
+        }
+        const j = await r.json();
+        const text = j.content?.[0]?.text || '';
+        setBrief(text);
+        const ts = Date.now();
+        setGenTime(ts);
+        localStorage.setItem('cc-ai-brief', JSON.stringify({ text, timestamp: ts, cacheKey: cacheKey(new Date()) }));
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const formatTime = (ts) => {
+      if (!ts) return '';
+      const t = new Date(ts);
+      return `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')} 生成`;
+    };
+
+    // Brief を 3 アクションに parse する
+    // 期待フォーマット: "HH:MM 内容" の3行
+    const parseToActions = (text) => {
+      if (!text) return null;
+      const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+      const ids = ['a', 'b', 'c'];
+      const result = [];
+      for (let i = 0; i < lines.length && result.length < 3; i++) {
+        // 先頭の bullets/番号付き区切りのみ除去（HH:MM の "11" を誤食しないようセパレータ必須）
+        const cleaned = lines[i]
+          .replace(/^[\s\-*・]+/, '')
+          .replace(/^\d+[.\)）]\s+/, '')
+          .trim();
+        const m = cleaned.match(/^(\d{1,2}:\d{2})\s+(.+)$/);
+        if (m) {
+          result.push({ id: ids[result.length], time: m[1], text: m[2].trim() });
+        }
+      }
+      return result.length === 3 ? result : null;
+    };
+
+    const parsedActions = parseToActions(brief);
+    const applyToTop3 = () => {
+      if (!parsedActions) return;
+      window.dispatchEvent(new CustomEvent('cc-top-actions-sync', { detail: parsedActions }));
+      localStorage.setItem('cc-top-actions', JSON.stringify(parsedActions));
+      // 視覚フィードバック（短いトースト）
+      setApplied(true);
+      setTimeout(() => setApplied(false), 2500);
+    };
+    const [applied, setApplied] = useState(false);
+
+    // セグメント切替の自動再生成（毎分チェック）
+    useEffect(() => {
+      const interval = setInterval(() => {
+        try {
+          const cached = JSON.parse(localStorage.getItem('cc-ai-brief') || '{}');
+          if (cached.cacheKey && cached.cacheKey !== cacheKey(new Date())) {
+            // APIキー未設定なら generate() がエラーを出して終了するだけなので無害
+            if (localStorage.getItem('cc-anthropic-key')) generate();
+          }
+        } catch {}
+      }, 60000);
+      return () => clearInterval(interval);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+      <div className="m3-card p-6" style={{borderTop:'4px solid #1a73e8'}}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Icon name="auto_awesome" size={22} style={{color:'#1a73e8'}} />
+            <h3 className="font-display text-[16px]" style={{fontWeight:500, color:'var(--on-surface,#1f1f1f)'}}>AI Daily Brief</h3>
+            <Chip tone="primary">Claude Sonnet 4.5</Chip>
+            <Chip tone="neutral">{segmentLabel(new Date())}</Chip>
+            {genTime && <span className="text-[10px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>{formatTime(genTime)}</span>}
+          </div>
+          <button className="icon-btn" onClick={generate} disabled={loading} aria-label="Regenerate brief" title="再生成">
+            <Icon name={loading ? 'hourglass_empty' : 'refresh'} size={18} />
+          </button>
+        </div>
+        {loading && (
+          <div className="m3-surface-container p-4 rounded-2xl text-[13px] flex items-center gap-2" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+            <Icon name="auto_awesome" size={16} />
+            Claude が今日のブリーフィングを生成中...
+          </div>
+        )}
+        {error && (
+          <div className="m3-surface-container p-4 rounded-2xl text-[12px]" style={{color:'#b3261e', borderLeft:'3px solid #b3261e'}}>
+            <strong>エラー:</strong> {error}
+          </div>
+        )}
+        {brief && !loading && !error && (
+          <>
+            <div className="text-[15px] leading-relaxed whitespace-pre-wrap font-display" style={{color:'var(--on-surface,#1f1f1f)', fontWeight:400}}>
+              {brief}
+            </div>
+            {parsedActions && (
+              <div className="mt-4 flex items-center gap-2 flex-wrap">
+                <button className="btn-tonal" onClick={applyToTop3}>
+                  <Icon name="checklist" size={14} /> TOP 3 ACTIONS に取り込む
+                </button>
+                {applied && (
+                  <span className="text-[11px] flex items-center gap-1" style={{color:'#137333'}}>
+                    <Icon name="check_circle" size={14} /> 取り込み済み（チェック状態リセット）
+                  </span>
+                )}
+              </div>
+            )}
+            {!parsedActions && (
+              <div className="mt-3 text-[10px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
+                ※ HH:MM 形式で3行が揃った時のみ「TOP 3 ACTIONS に取り込む」ボタンが表示されます
+              </div>
+            )}
+          </>
+        )}
+        {!brief && !loading && !error && (
+          <button className="btn-tonal" onClick={generate}>
+            <Icon name="auto_awesome" size={14} /> 本日のブリーフィングを生成
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  // ---------- App ----------
+  const App = () => {
+    const [userName, setUserName] = useState(() => localStorage.getItem('cc-user-name') || 'Furudate');
+    const [userTitle, setUserTitle] = useState(() => localStorage.getItem('cc-user-title') || 'Electrical Eng. & DX Lead — Mitsubishi Chemical');
+    const [userAvatar, setUserAvatar] = useState(() => localStorage.getItem('cc-user-avatar') || 'F');
+    useEffect(() => { localStorage.setItem('cc-user-name', userName); }, [userName]);
+    useEffect(() => { localStorage.setItem('cc-user-title', userTitle); }, [userTitle]);
+    useEffect(() => { localStorage.setItem('cc-user-avatar', userAvatar); }, [userAvatar]);
+
+    const [theme, setTheme] = useState(() => localStorage.getItem('cc-theme') || 'light');
+    useEffect(() => {
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem('cc-theme', theme);
+    }, [theme]);
+
+    const [helpOpen, setHelpOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+
+    // ESC で contentEditable を blur（保存）する
+    useEffect(() => {
+      const onKey = (e) => {
+        if (e.key === 'Escape' && document.activeElement?.isContentEditable) {
+          document.activeElement.blur();
+        }
+      };
+      document.addEventListener('keydown', onKey);
+      return () => document.removeEventListener('keydown', onKey);
+    }, []);
+
+    // ? キーでヘルプ表示・Esc で閉じる
+    useEffect(() => {
+      const onKey = (e) => {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+        if (e.target.isContentEditable) return;
+        if (e.key === '?') { e.preventDefault(); setHelpOpen(true); }
+        if (e.key === 'Escape' && helpOpen) setHelpOpen(false);
+      };
+      document.addEventListener('keydown', onKey);
+      return () => document.removeEventListener('keydown', onKey);
+    }, [helpOpen]);
+
+    const handleReset = () => {
+      if (confirm('全設定をリセットしますか？\nこの操作は取り消せません。')) {
+        Object.keys(localStorage).filter(k => k.startsWith('cc-')).forEach(k => localStorage.removeItem(k));
+        location.reload();
+      }
+    };
+
+    const openSettings = () => setSettingsOpen(true);
+
+    // Tier folding (Ambient / Reference are collapsible to reduce cognitive load)
+    const [ambientOpen, setAmbientOpen] = useState(() => localStorage.getItem('cc-ambient-open') === '1');
+    const [referenceOpen, setReferenceOpen] = useState(() => localStorage.getItem('cc-reference-open') === '1');
+    useEffect(() => { localStorage.setItem('cc-ambient-open', ambientOpen ? '1' : '0'); }, [ambientOpen]);
+    useEffect(() => { localStorage.setItem('cc-reference-open', referenceOpen ? '1' : '0'); }, [referenceOpen]);
+
+    return (
+    <div className="min-h-screen w-full" style={{background:'var(--bg)'}}>
+      {/* top app bar */}
+      <header className="px-4 md:px-8 pt-4 md:pt-6 pb-2 flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{background:'#e8f0fe'}}>
+            <Icon name="hub" size={22} style={{color:'#1a73e8'}} />
+          </div>
+          <div>
+            <div className="font-display text-[18px] leading-none" style={{fontWeight:500}}>Personal Control Center</div>
+            <div
+              className="text-[11px] mt-1 cursor-text outline-none"
+              style={{color:'#5f6368'}}
+              contentEditable
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const txt = e.currentTarget.textContent.trim();
+                const parts = txt.split('·').map(s => s.trim());
+                if (parts.length >= 2) {
+                  setUserName(parts[0] || 'Anonymous');
+                  setUserTitle(parts.slice(1).join(' · ') || '...');
+                } else {
+                  setUserName(txt || 'Anonymous');
+                }
+              }}
+            >
+              {userName} · {userTitle}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 md:gap-2 flex-wrap">
+          <Chip tone="success" icon="cloud_done"><span className="hidden md:inline">All sources synced</span><span className="md:hidden">Synced</span></Chip>
+          <button className="icon-btn" onClick={() => alert('検索機能は未実装です。Phase 2 で対応予定。')}><Icon name="search" size={20} /></button>
+          <button className="icon-btn" onClick={() => alert('通知機能は未実装です。Phase 2 で対応予定。')}><Icon name="notifications" size={20} /></button>
+          <button className="icon-btn" aria-label="Toggle theme" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}>
+            <Icon name={theme === 'dark' ? 'light_mode' : 'dark_mode'} size={20} />
+          </button>
+          <button className="icon-btn" aria-label="Help" onClick={() => setHelpOpen(true)}><Icon name="help_outline" size={20} /></button>
+          <button className="icon-btn" onClick={openSettings}><Icon name="settings" size={20} /></button>
+          <div
+            className="w-9 h-9 rounded-full ml-1 flex items-center justify-center font-display text-[13px] cursor-text outline-none"
+            style={{background:'#1a73e8', color:'white', fontWeight:500}}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = (e.currentTarget.textContent.trim().slice(0, 2).toUpperCase()) || 'F';
+              setUserAvatar(v);
+              e.currentTarget.textContent = v;
+            }}
+          >{userAvatar}</div>
+        </div>
+      </header>
+
+      <main className="px-4 md:px-8 pb-10 max-w-[1440px] mx-auto">
+        {/* ═══ Core Tier (常時表示) ═══ */}
+        <div className="mt-3 mb-5">
+          <ErrorBoundary><CommandBar openSettings={openSettings} /></ErrorBoundary>
+        </div>
+        <div className="mb-5">
+          <ErrorBoundary><AIDailyBrief /></ErrorBoundary>
+        </div>
+        <div className="mb-5">
+          <ErrorBoundary><TopActions /></ErrorBoundary>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+          <ErrorBoundary><Schedule /></ErrorBoundary>
+          <ErrorBoundary><Recovery /></ErrorBoundary>
+        </div>
+
+        {/* ═══ Ambient Tier (折りたたみ可・背景再生用) ═══ */}
+        <button
+          onClick={() => setAmbientOpen(o => !o)}
+          className="w-full mb-3 flex items-center justify-between px-4 py-2.5 rounded-full transition-colors"
+          style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}
+          aria-expanded={ambientOpen}
+        >
+          <span className="flex items-center gap-2 text-[12px] font-medium">
+            <Icon name={ambientOpen ? 'expand_less' : 'expand_more'} size={18} />
+            Ambient · 背景再生（Video Wall · News Pulse）
+          </span>
+          <span className="text-[10px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>{ambientOpen ? '折りたたむ' : '展開'}</span>
+        </button>
+        {ambientOpen && (
+          <>
+            <div className="mb-5">
+              <ErrorBoundary><VideoEmbed /></ErrorBoundary>
+            </div>
+            <div className="mb-5">
+              <ErrorBoundary><NewsPulse /></ErrorBoundary>
+            </div>
+          </>
+        )}
+
+        {/* ═══ Reference Tier (折りたたみ可・参照系) ═══ */}
+        <button
+          onClick={() => setReferenceOpen(o => !o)}
+          className="w-full mb-3 flex items-center justify-between px-4 py-2.5 rounded-full transition-colors"
+          style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}
+          aria-expanded={referenceOpen}
+        >
+          <span className="flex items-center gap-2 text-[12px] font-medium">
+            <Icon name={referenceOpen ? 'expand_less' : 'expand_more'} size={18} />
+            Reference · 参照系（External Viewers · Growth · Ammo）
+          </span>
+          <span className="text-[10px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>{referenceOpen ? '折りたたむ' : '展開'}</span>
+        </button>
+        {referenceOpen && (
+          <>
+            <div className="mb-5">
+              <ErrorBoundary><ExternalViewers /></ErrorBoundary>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <ErrorBoundary><Growth /></ErrorBoundary>
+              <ErrorBoundary><Ammo /></ErrorBoundary>
+            </div>
+          </>
+        )}
+
+        <footer className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-[11px]" style={{color:'#9aa0a6'}}>
+          <div className="flex items-center gap-2">
+            <Icon name="lock" size={14} />
+            ローカル保管 · 健康・社内データは GitHub Pages 非公開
+          </div>
+          <div>v1.3 · M3 Light/Dark · 06:00 JST refresh</div>
+        </footer>
+      </main>
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} onReset={handleReset} />
+    </div>
+    );
+  };
+
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <LiveProvider><App /></LiveProvider>
+  );
+  </script>
+</body>
+</html>
