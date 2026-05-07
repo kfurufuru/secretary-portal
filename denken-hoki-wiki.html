@@ -5275,6 +5275,42 @@ function HichuseiJirakuPage({ onNav, data }) {
         </ul>
       </PlainExplain>
 
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 16}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 6}}>📊 何が、何に対して、何倍になるのか — 一目で確認</div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 10}}>
+          対象は<strong>「健全相 b・c の対地電圧」</strong>。比較は<strong>「平常時 → a相地絡時」</strong>。電源電圧そのものではない点に注意。
+        </div>
+        <table style={{width:'100%', fontSize:13, borderCollapse:'collapse', background:'#fff'}}>
+          <thead>
+            <tr style={{background:'#f0f4f8'}}>
+              <th style={{padding:'8px 10px', textAlign:'left', border:'1px solid var(--line)'}}>状態</th>
+              <th style={{padding:'8px 10px', textAlign:'center', border:'1px solid var(--line)'}}>健全相b・cの対地電圧</th>
+              <th style={{padding:'8px 10px', textAlign:'center', border:'1px solid var(--line)'}}>6600V系統での実値</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', color:'#0e6b22', fontWeight:600}}>平常時</td>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', textAlign:'center', fontFamily:'serif'}}>V/√3<br/><span style={{fontSize:11, color:'var(--ink-3)'}}>（相電圧）</span></td>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', textAlign:'center'}}>6600/√3 ≈ <strong>3,810 V</strong></td>
+            </tr>
+            <tr>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', color:'#a11', fontWeight:600}}>a相地絡時</td>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', textAlign:'center', fontFamily:'serif'}}>V<br/><span style={{fontSize:11, color:'var(--ink-3)'}}>（線間電圧）</span></td>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', textAlign:'center'}}><strong>6,600 V</strong></td>
+            </tr>
+            <tr style={{background:'#fffaf0'}}>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', fontWeight:700, color:'#a11'}}>倍率</td>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', textAlign:'center', fontFamily:'serif', fontWeight:700, color:'#a11'}}>V ÷ (V/√3) = <strong>√3倍</strong></td>
+              <td style={{padding:'8px 10px', border:'1px solid var(--line)', textAlign:'center', fontWeight:700, color:'#a11'}}>6600 ÷ 3810 ≈ <strong>1.732倍</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style={{fontSize:12, color:'var(--ink-2)', marginTop:10, padding:'10px 12px', background:'var(--bg-2)', borderLeft:'3px solid #c33', borderRadius:4}}>
+          💡 <strong>誤解注意</strong>：「線間電圧Vに上昇」と言われると「6600V系統が何か外的要因で上がった」と誤解しがち。実際は<strong>大地基準が「中性点」→「a相端」に移動</strong>しただけで、b・c相が大地と感じる電圧が「相電圧 V/√3 → 線間電圧 V」に切り替わった現象。<strong>電源電圧そのものは変わっていない。</strong>
+        </div>
+      </div>
+
       <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
         <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto'}}>
           <defs>
