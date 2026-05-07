@@ -3549,7 +3549,7 @@ function DemandKanriPage({ onNav, data }) {
       </div>
 
       {/* 2. ConclusionBox */}
-      <h2 id="conclusion-box">2. 結論ボックス</h2>
+      <h2 id="conclusion-box">2. 結論</h2>
       <ConclusionBox>
         <p style={{margin: '0 0 6px'}}><strong>デマンド制御の核心</strong>：30分区間の平均電力を目標値未満に保つ</p>
         <p style={{margin: '0 0 4px'}}>① 後半電力の上限Pを逆算：(310×20 + P×10)/30 &lt; 300 → P &lt; 280kW</p>
@@ -3563,7 +3563,7 @@ function DemandKanriPage({ onNav, data }) {
         <span className="tag hot" style={{fontSize:12}}>電気施設管理の頻出計算</span>
       </div>
       <div className="topic" style={{marginBottom:20, fontSize:14}}>
-        <strong>重要前提</strong>：最大需要電力は<strong>瞬間値ではなく30分平均</strong>で判断する。瞬時に310kWを超えていても、30分間の平均が300kW未満であれば目標達成。
+        <p style={{margin:0}}><strong>重要前提</strong>：最大需要電力は<strong>瞬間値ではなく30分平均</strong>で判断する。瞬時に310kWを超えていても、30分間の平均が300kW未満であれば目標達成。</p>
       </div>
 
       {/* 3. MinShortcutCard */}
@@ -3638,7 +3638,7 @@ function DemandKanriPage({ onNav, data }) {
       />
 
       {/* 用語確認テスト */}
-      <h3 id="vocab-test" style={{marginTop:20, marginBottom:8, fontSize:15, color:'var(--ink-2)', fontWeight:700}}>▶ 用語確認テスト（クリックで答えを表示）</h3>
+      <h3 id="vocab-test" style={{marginTop:20, marginBottom:8, fontSize:15, color:'var(--ink-2)', fontWeight:700}}>▶ 用語確認テスト</h3>
       <QuickReview
         items={[
           { q: "「最大需要電力」の正確な定義は？", a: "30分区間の平均使用電力の最大値[kW]（瞬時値ではない）" },
@@ -3877,7 +3877,7 @@ function DemandKanriPage({ onNav, data }) {
       {/* §13 ひっかけ表 */}
       <h2 id="traps">13. よくあるひっかけ（10項目）</h2>
       <TrapTable traps={[
-        { wrong: "「300kW以下」と読み違えて P=280 もOKとする", correct: "「300kW未満」なのでP=280はNG（平均ちょうど300kWになり条件不成立）" },
+        { wrong: "「未満」を「以下」と読み間違え、後半P=300kWでも目標達成と考える", correct: "後半P=300の場合：平均=(310×20+300×10)/30=306.7kW>300で条件未達。「以下」でも「未満」でもP<280（または≤280）が必要" },
         { wrong: "X=3.64 → 切り捨てで3台と答える", correct: "3台ではP=283.5kW>280で条件未達。整数台しかないので切り上げ→4台" },
         { wrong: "その他停止負荷10kWを忘れる", correct: "停止電力 = 5.5X + 10。10kWを引いてからXを求める（必要ファン停止は20kW分）" },
         { wrong: "後半10分の計算を30分で割らない", correct: "P×10 が後半エネルギー。P×30 は誤り（10分しかない）" },
