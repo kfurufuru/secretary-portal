@@ -277,10 +277,20 @@
   /* ---------- Mobile-friendly tweaks (<=767px) ---------- */
   @media (max-width: 767px) {
     body { font-size: 14px; }
+    html, main { overflow-x: hidden; }
     .m3-card { border-radius: 16px; }
     .icon-btn { width: 32px; height: 32px; }
     .action-pill { padding: 16px 18px; border-radius: 22px; }
-    main { overflow-x: hidden; }
+    /* スケルトン 3列 → 1列 */
+    #cc-skeleton-3col { grid-template-columns: 1fr 1fr !important; }
+    /* Video Wall フォーカスレイアウト: モバイルは単画面 */
+    .cc-focus-grid { grid-template-columns: 1fr !important; aspect-ratio: 16/9 !important; }
+    .cc-focus-sidebar { display: none !important; }
+    /* ヘッダータイトル: 長文切り捨て */
+    .cc-header-title { font-size: 15px !important; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Recovery 2×2 グリッド: 小画面でも維持（40px以上あれば問題なし）*/
+    /* CommandBar: 縦積み時の余白調整 */
+    .m3-card.px-4 { padding-left: 14px; padding-right: 14px; }
   }
 </style>
 </head>
@@ -288,7 +298,7 @@
   <div id="root">
     <div style="padding:32px 16px;max-width:1440px;margin:0 auto" id="cc-skeleton">
       <div style="height:60px;background:#eef2fa;border-radius:24px;margin-bottom:20px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+      <div id="cc-skeleton-3col" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
         <div style="height:100px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
         <div style="height:100px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
         <div style="height:100px;background:#eef2fa;border-radius:24px;animation:cc-pulse 1.4s ease-in-out infinite"></div>
@@ -1635,7 +1645,7 @@
           className="relative overflow-hidden rounded-xl cursor-pointer group"
           style={{
             background: '#000',
-            border: isActive ? '2px solid #1a73e8' : '2px solid transparent',
+            border: isActive ? '2px solid var(--primary,#1a73e8)' : '2px solid transparent',
             boxShadow: isActive ? '0 0 0 4px rgba(26,115,232,.15)' : 'none',
             transition: 'border-color .15s, box-shadow .15s',
           }}
@@ -1756,9 +1766,9 @@
             </div>
           )}
           {layout === 'focus' && (
-            <div className="grid gap-3" style={{ gridTemplateColumns:'2fr 1fr', aspectRatio:'16/9' }}>
+            <div className="cc-focus-grid grid gap-3" style={{ gridTemplateColumns:'2fr 1fr', aspectRatio:'16/9' }}>
               <VideoTile idx={activeSlot} big />
-              <div className="grid grid-rows-3 gap-3">
+              <div className="cc-focus-sidebar grid grid-rows-3 gap-3">
                 {[0,1,2,3].filter(i => i !== activeSlot).map(i => <VideoTile key={i} idx={i} />)}
               </div>
             </div>
@@ -1779,7 +1789,7 @@
             const currentValue = isCustom ? '__custom__' : slot;
             return (
               <div key={idx} className="m3-surface-container p-3 rounded-2xl"
-                   style={{ border: idx === activeSlot ? '2px solid #1a73e8' : '2px solid transparent' }}>
+                   style={{ border: idx === activeSlot ? '2px solid var(--primary,#1a73e8)' : '2px solid transparent' }}>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-medium"
@@ -1999,7 +2009,7 @@
     render() {
       if (this.state.hasError) {
         return (
-          <div className="m3-card p-5" style={{borderLeft:'4px solid #b3261e'}}>
+          <div className="m3-card p-5" style={{borderLeft:'4px solid var(--error,#b3261e)'}}>
             <div className="flex items-center gap-2 mb-2">
               <Icon name="error" size={20} style={{color:'var(--error,#b3261e)'}} />
               <div className="font-display text-[14px] font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>モジュールエラー</div>
@@ -2271,7 +2281,7 @@
             <button className="icon-btn" onClick={onClose}><Icon name="close" size={20} /></button>
           </div>
           <div className="space-y-4 text-[13px]" style={{color:'var(--on-surface,#1f1f1f)'}}>
-            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #1a73e8'}}>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid var(--primary,#1a73e8)'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
                 <Icon name="auto_awesome" size={16} style={{color:'var(--primary,#1a73e8)'}} />
                 AI Daily Brief（Claude API）
@@ -2307,7 +2317,7 @@
             </div>
 
             {/* ─── Google Calendar OAuth Section ─── */}
-            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #34a853'}}>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid var(--calendar,#34a853)'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
                 <Icon name="calendar_month" size={16} style={{color:'var(--calendar,#34a853)'}} />
                 Google Calendar 連携（オプション）
@@ -2387,7 +2397,7 @@
                 <Icon name="check" size={14} /> Schedule 保存
               </button>
             </div>
-            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #34a853'}}>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid var(--calendar,#34a853)'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
                 <Icon name="favorite" size={16} style={{color:'var(--calendar,#34a853)'}} />
                 Recovery（Apple Watch 値）
@@ -2429,7 +2439,7 @@
                 <li>· `?`キーでショートカット一覧</li>
               </ul>
             </div>
-            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #b3261e'}}>
+            <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid var(--error,#b3261e)'}}>
               <div className="font-medium mb-1" style={{color:'var(--error,#b3261e)'}}>危険な操作</div>
               <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                 すべての設定を初期化します（取り消し不可）。
@@ -2653,7 +2663,7 @@
     }, []);
 
     return (
-      <div className="m3-card p-6" style={{borderTop:'4px solid #1a73e8'}}>
+      <div className="m3-card p-6" style={{borderTop:'4px solid var(--primary,#1a73e8)'}}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 flex-wrap">
             <Icon name="auto_awesome" size={22} style={{color:'var(--primary,#1a73e8)'}} />
@@ -2686,7 +2696,7 @@
           </div>
         )}
         {error && (
-          <div className="m3-surface-container p-4 rounded-2xl text-[12px]" style={{color:'var(--error,#b3261e)', borderLeft:'3px solid #b3261e'}}>
+          <div className="m3-surface-container p-4 rounded-2xl text-[12px]" style={{color:'var(--error,#b3261e)', borderLeft:'3px solid var(--error,#b3261e)'}}>
             <strong>エラー:</strong> {error}
           </div>
         )}
@@ -2789,7 +2799,7 @@
             <Icon name="hub" size={22} style={{color:'var(--primary,#1a73e8)'}} />
           </div>
           <div>
-            <div className="font-display text-[18px] leading-none" style={{fontWeight:500}}>Personal Control Center</div>
+            <div className="cc-header-title font-display text-[18px] leading-none" style={{fontWeight:500}}>Personal Control Center</div>
             <div
               className="text-[11px] mt-1 cursor-text outline-none"
               style={{color:'var(--on-surface-variant,#5f6368)'}}
