@@ -7362,6 +7362,13 @@ function DemandKanriPage({ onNav, data }) {
         note="最大需要電力 = 30分間の平均使用電力[kW]。このページを読み終えたら戻って解いてみよう。"
       />
 
+      {/* 問題文の読み替えポイント */}
+      <div className="topic" style={{marginBottom:16, fontSize:14}}>
+        <strong>問題文の読み替え</strong>：「9:00〜9:30の<strong>最大需要電力</strong>を300kW未満」
+        ＝「その30分区間の<strong>平均電力を300kW未満に抑える</strong>（30分デマンドを300kW未満に制御する）」。
+        最大需要電力はデマンド周期内の<em>平均電力</em>なので、瞬時値ではなく区間全体の平均で判断する。
+      </div>
+
       {/* 2. ConclusionBox */}
       <ConclusionBox>
         <p style={{margin: '0 0 6px'}}><strong>デマンド制御の核心</strong>：30分区間の平均電力を目標値未満に保つ</p>
@@ -7441,6 +7448,18 @@ function DemandKanriPage({ onNav, data }) {
         note="「最大需要電力」は日常の「ピーク電力（瞬時値）」とは異なり、30分間の平均値である点に注意"
       />
 
+      {/* 用語確認テスト */}
+      <h3 id="vocab-test" style={{marginTop:20, marginBottom:8, fontSize:15, color:'var(--ink-2)', fontWeight:700}}>▶ 用語確認テスト（クリックで答えを表示）</h3>
+      <QuickReview
+        items={[
+          { q: "「最大需要電力」の正確な定義は？", a: "30分区間の平均使用電力の最大値[kW]（瞬時値ではない）" },
+          { q: "デマンド周期は何分？", a: "30分（正時：00分・30分を起点とする区間）" },
+          { q: "デマンド目標値を超えると何が起きる？", a: "翌月以降の基本料金（需要料金）が上昇する" },
+          { q: "需要率の計算式は？", a: "需要率 = 最大需要電力 ÷ 設備容量 × 100%" },
+          { q: "デマンドコントローラの役割は？", a: "30分積算電力を常時監視し、目標値超過時に警報を発する装置" },
+        ]}
+      />
+
       <div style={{borderLeft: '3px solid var(--warn)', paddingLeft: 14, marginBottom: 24, fontSize: 13, color: 'var(--ink-2)'}}>
         <strong>前提条件</strong>：以下の解説は「正時（00分・30分）から30分間」をデマンド周期とする一般的な高圧受電設備を対象としています。契約形態や計測方式により周期が異なる場合があります。
       </div>
@@ -7487,9 +7506,9 @@ function DemandKanriPage({ onNav, data }) {
           <text x="242" y="52" fontSize="12" fill="#d33" fontWeight="700" textAnchor="middle">第1区間 380kW（目標超過）</text>
           <rect x="414" y="196" width="345" height="84" fill="#e8f5e9" opacity="0.5"/>
           <line x1="414" y1="196" x2="759" y2="196" stroke="#2a8" strokeWidth="2.5"/>
-          <text x="587" y="188" fontSize="12" fill="#2a8" fontWeight="700" textAnchor="middle">第2区間 260kW（目標内）</text>
-          <line x1="414" y1="60" x2="414" y2="280" stroke="#999" strokeWidth="1.5" strokeDasharray="4,3"/>
-          <text x="414" y="310" fontSize="11" fill="#999" textAnchor="middle">30分区切り</text>
+          <text x="587" y="240" fontSize="12" fill="#2a8" fontWeight="700" textAnchor="middle">第2区間 260kW（目標内）</text>
+          <line x1="414" y1="40" x2="414" y2="280" stroke="#999" strokeWidth="1.5" strokeDasharray="4,3"/>
+          <text x="414" y="33" fontSize="11" fill="#999" textAnchor="middle">30分区切り</text>
           <rect x="160" y="72" width="162" height="24" rx="4" fill="#c33" opacity="0.12"/>
           <text x="241" y="88" fontSize="12" fill="#c33" fontWeight="700" textAnchor="middle">← 最大需要電力</text>
           <defs>
