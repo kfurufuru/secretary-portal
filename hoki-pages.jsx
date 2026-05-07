@@ -17,6 +17,7 @@ window.renderPage = function(page, navigate) {
     case 'bshu-setsuchi':          return React.createElement(BshuSetsuchiPage, props);
     case 'hichusei-jiraku':        return React.createElement(HichuseiJirakuPage, props);
     case 'zerosou-henryuki':       return React.createElement(ZeroSouHenryukiPage, props);
+    case 'hogokyo-dgr':            return React.createElement(HogoKyochoDgrPage, props);
     case 'setsuchi-ichiran':       return React.createElement(SetsuchiIchiranPage, props);
     case 'zetsuen-ichiran':        return React.createElement(ZetsuenIchiranPage, props);
     case 'rikkaku-ichiran':        return React.createElement(RikkakuIchiranPage, props);
@@ -2971,6 +2972,530 @@ function RandomModePage({ onNav }) {
         >
           ← トップに戻る
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-4. HogoKyochoDgrPage（保護協調・地絡方向継電器・1.10）
+// ─────────────────────────────────────────────
+function HogoKyochoDgrPage({ onNav, data }) {
+  return (
+    <div>
+      <DirectCheckMode
+        pageId="hogokyo-dgr"
+        formula="t主 ≥ t下位 + Δt（協調マージン ≥ 0.3s）"
+        formulaVars={[
+          { sym: "t主", desc: "主保護（上位CB）の動作時間 [s]" },
+          { sym: "t下位", desc: "フィーダー保護の動作時間 [s]" },
+          { sym: "Δt", desc: "協調マージン（通常 ≥ 0.3s）" },
+          { sym: "DGR", desc: "地絡方向継電器（大きさ＋方向で判定）" },
+          { sym: "GR", desc: "地絡継電器（大きさのみ判定）" },
+        ]}
+        warningRed="GRとDGRの違い：GRは「大きさのみ」→全フィーダー動作、DGRは「方向＋大きさ」→故障フィーダーのみ選択遮断できる！"
+        trapsTop3={[
+          "GRとDGRの混同（選択遮断にはDGR必須、GRでは不可）",
+          "協調マージンの方向：主（上位）の動作時間 ＞ フィーダー（下位）＋ Δt",
+          "グラフY軸は動作時間（s）、X軸は電流倍数 — 上側の曲線が上位保護（主）",
+        ]}
+        jumps={[
+          { id: "exam-r05", label: "過去問へ →", primary: true },
+          { id: "quick-review", label: "1分復習 →" },
+          { id: "traps", label: "ひっかけ全項目 →" },
+        ]}
+      />
+
+      <GoalQuestion
+        question="6.6kV高圧配電系統で複数フィーダーを持つ受電設備において、フィーダーに地絡故障が発生した際に「故障フィーダーのみ選択遮断する」ために各フィーダー遮断器に設置すべき継電器として最も適切なものはどれか。"
+        choices={[
+          "OCR（過電流継電器）：大電流を検出して動作する",
+          "GR（地絡継電器）：零相電流の大きさで地絡を検出する",
+          "DGR（地絡方向継電器）：零相電流の大きさと方向を組み合わせて地絡を検出する",
+          "UVR（不足電圧継電器）：電圧低下を検出して動作する",
+        ]}
+        year="R5下期 問13類題"
+        note="ヒント：「選択遮断」がキーワード。どの継電器が地絡フィーダーを他と区別できるか？"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>保護協調の目的</strong>：故障箇所に最も近い遮断器のみを動作させ、健全部分への影響を最小化する（選択遮断）</li>
+          <li><strong>GR vs DGR</strong>：GRは零相電流の「大きさ」のみ→全フィーダー同時動作。DGRは「大きさ＋方向」→故障フィーダーのみ動作</li>
+          <li><strong>OCR協調</strong>：フィーダーOCR動作時間 ＋ 協調マージン（≥0.3s）≤ 主OCR動作時間を確認</li>
+          <li><strong>グラフ読取</strong>：特性曲線上でt_主 − t_フィーダー ≥ 協調マージン かどうかを計算する</li>
+        </ul>
+      </ConclusionBox>
+
+      <MinShortcutCard
+        steps={[
+          <span><strong>系統図確認</strong>：主CB（上位）とフィーダーCB（下位）の関係、地絡点の場所を把握する</span>,
+          <span><strong>継電器選択</strong>：フィーダーが複数 → 方向を識別できるDGRが必要（GRでは全フィーダーが動作）</span>,
+          <span><strong>グラフ読取</strong>：X軸の電流値から各曲線の動作時間を読み取る（対数スケールに注意）</span>,
+          <span><strong>協調確認</strong>：t_主 − t_フィーダー ≥ 協調マージン（問題指定値、なければ0.3s）</span>,
+          <span><strong>ひっかけ警戒</strong>：GRで選択遮断は不可 / グラフ上側の曲線が上位保護（主・動作が遅い）</span>,
+        ]}
+        hint="R5下問13(a)はフィーダー継電器の選択、(b)は特性グラフから協調マージンを確認"
+      />
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題・計算問題対策"
+        importance="A"
+        freq="high"
+        examType="B問題"
+        targets="R5下期 問13"
+        tags={["保護協調", "DGR", "地絡方向継電器", "OCR", "過電流継電器", "GR", "選択遮断", "協調マージン"]}
+        lastChecked="2026-05-07"
+      />
+
+      <h2 id="exam-focus">3. 試験で問われること</h2>
+      <ExamFocus items={[
+        { label: "主体",   value: "6.6kV高圧配電系統の地絡保護・過電流保護の協調（複数フィーダー構成）" },
+        { label: "対象",   value: "GR / DGR の使い分け、OCR特性曲線の読み取りと協調マージン確認" },
+        { label: "条件",   value: "フィーダー保護が上位保護より先に動作（t_フィーダー ＋ Δt ≤ t_主）" },
+        { label: "読取",   value: "特性曲線（Y: 動作時間、X: 電流倍数または零相電流）からtを読み取り差を計算" },
+        { label: "応用",   value: "DGRが選択遮断できる理由 / GRでは選択遮断できない理由" },
+        { label: "出典",   value: "R5下 問13：過電流・地絡の2種類の特性グラフが登場するB問題" },
+      ]} />
+
+      <h2 id="abbrev">4. 略号と役割</h2>
+      <MemTable
+        headers={["略号", "正式名称", "検出対象", "方向性"]}
+        rows={[
+          ["OCR", "過電流継電器 (Over Current Relay)", "過電流（短絡・過負荷による大電流）", "なし"],
+          ["GR", "地絡継電器 (Ground Relay)", "地絡電流の大きさ（零相電流I₀）", "なし"],
+          ["DGR", "地絡方向継電器 (Directional Ground Relay)", "地絡電流の大きさ＋方向（I₀とV₀の位相）", <strong style={{color:'var(--accent)'}}>あり</strong>],
+          ["ZCT", "零相変流器 (Zero-phase Current Transformer)", "零相電流3I₀の検出器（継電器ではない）", "—"],
+          ["ZPD", "零相電圧検出装置 (Zero-phase voltage detector)", "零相電圧V₀の検出器（DGRの方向判定に使用）", "—"],
+          ["CB", "遮断器 (Circuit Breaker)", "異常時に回路を遮断する開閉装置", "—"],
+        ]}
+        note="DGRはZCT（電流）とZPD（電圧）の両方を使って「方向」まで判定できる"
+      />
+
+      <div style={{borderLeft: '3px solid var(--warn)', paddingLeft: 14, marginBottom: 24, fontSize: 13, color: 'var(--ink-2)'}}>
+        <strong>前提条件</strong>：以下の解説は「中性点非接地方式（6.6kV高圧配電）」を前提としています。接地方式が異なると地絡電流の大きさや方向の意味が変わります（→ 1.8 中性点非接地系の地絡電流 参照）。
+      </div>
+
+      <h2 id="comparison">5. GR と DGR の比較</h2>
+      <MemTable
+        headers={["比較項目", "GR（地絡継電器）", "DGR（地絡方向継電器）"]}
+        rows={[
+          ["検出量", "零相電流I₀の大きさのみ", "I₀の大きさ ＋ V₀との位相角（方向）"],
+          ["動作条件", "I₀ ≥ 整定値", "I₀ ≥ 整定値 かつ 方向が整定範囲内"],
+          ["使用場所", "主受電点・単一フィーダー系統", "フィーダーが複数ある系統の各フィーダー"],
+          ["選択遮断", <span style={{color:'#c33',fontWeight:700}}>不可（全フィーダーのGRが動作）</span>, <span style={{color:'var(--accent)',fontWeight:700}}>可（自フィーダー方向の地絡のみ動作）</span>],
+          ["必要センサ", "ZCTのみ", "ZCT（電流）＋ ZPD（電圧）"],
+          ["コスト", "低", "高（追加センサ必要）"],
+          ["誤動作リスク", "高（隣フィーダー地絡でも動作）", "低（方向フィルタあり）"],
+        ]}
+        note="R5下問13は「フィーダーが複数 → 選択遮断が必要 → DGRを使う」という論理構造"
+      />
+
+      <h2 id="hogo-concept">6. 保護協調の全体像（系統図）</h2>
+      <PlainExplain>
+        <p>保護協調とは、系統のどこで故障が発生しても<strong>故障箇所に最も近い保護装置だけが動作して、健全部分への影響を最小化する</strong>仕組みです。電気的には「上位保護（主CB）は下位保護（フィーダーCB）よりも必ず遅く動作するよう設定する」ことで実現します。</p>
+      </PlainExplain>
+
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 8}}>
+        <svg viewBox="0 0 820 430" style={{width: '100%', height: 'auto'}}>
+          <rect x="335" y="18" width="150" height="38" rx="6" fill="none" stroke="#555" strokeWidth="2"/>
+          <text x="410" y="42" textAnchor="middle" fontSize="13" fontWeight="700" fill="#333">6.6kV 電源系統</text>
+          <line x1="410" y1="56" x2="410" y2="86" stroke="#555" strokeWidth="2"/>
+          <rect x="355" y="86" width="110" height="50" rx="4" fill="none" stroke="#d33" strokeWidth="2.5"/>
+          <text x="410" y="107" textAnchor="middle" fontSize="12" fontWeight="700" fill="#d33">主CB（上位）</text>
+          <text x="410" y="124" textAnchor="middle" fontSize="10" fill="#555">OCR ＋ GR</text>
+          <line x1="410" y1="136" x2="410" y2="168" stroke="#555" strokeWidth="2"/>
+          <rect x="120" y="168" width="580" height="10" rx="3" fill="#666"/>
+          <text x="410" y="196" textAnchor="middle" fontSize="11" fill="#666">母線（6.6kV）</text>
+          <line x1="220" y1="178" x2="220" y2="218" stroke="#555" strokeWidth="2"/>
+          <rect x="170" y="218" width="100" height="48" rx="4" fill="none" stroke="#a06" strokeWidth="2.5"/>
+          <text x="220" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#a06">F1 フィーダーCB</text>
+          <text x="220" y="254" textAnchor="middle" fontSize="10" fill="#a06">OCR＋DGR ✓動作</text>
+          <line x1="220" y1="266" x2="220" y2="308" stroke="#a06" strokeWidth="2" strokeDasharray="5,3"/>
+          <circle cx="220" cy="320" r="15" fill="none" stroke="#c33" strokeWidth="2.5"/>
+          <text x="220" y="325" textAnchor="middle" fontSize="11" fill="#c33" fontWeight="700">地絡</text>
+          <line x1="220" y1="335" x2="220" y2="365" stroke="#c33" strokeWidth="2"/>
+          <line x1="203" y1="368" x2="237" y2="368" stroke="#666" strokeWidth="2"/>
+          <line x1="207" y1="374" x2="233" y2="374" stroke="#666" strokeWidth="1.5"/>
+          <line x1="211" y1="380" x2="229" y2="380" stroke="#666" strokeWidth="1"/>
+          <text x="220" y="400" textAnchor="middle" fontSize="10" fill="#666">大地</text>
+          <text x="110" y="340" fontSize="11" fill="#c33" textAnchor="end">地絡電流I₀が</text>
+          <text x="110" y="355" fontSize="11" fill="#c33" textAnchor="end">F1方向へ流入↓</text>
+          <line x1="410" y1="178" x2="410" y2="218" stroke="#555" strokeWidth="2"/>
+          <rect x="360" y="218" width="100" height="48" rx="4" fill="none" stroke="#2a8" strokeWidth="2"/>
+          <text x="410" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#2a8">F2 フィーダーCB</text>
+          <text x="410" y="254" textAnchor="middle" fontSize="10" fill="#2a8">OCR＋DGR ✗不動作</text>
+          <line x1="410" y1="266" x2="410" y2="308" stroke="#555" strokeWidth="2"/>
+          <rect x="376" y="308" width="68" height="28" rx="3" fill="none" stroke="#2a8" strokeWidth="1.5"/>
+          <text x="410" y="327" textAnchor="middle" fontSize="11" fill="#2a8">負荷（継続）</text>
+          <line x1="600" y1="178" x2="600" y2="218" stroke="#555" strokeWidth="2"/>
+          <rect x="550" y="218" width="100" height="48" rx="4" fill="none" stroke="#2a8" strokeWidth="2"/>
+          <text x="600" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#2a8">F3 フィーダーCB</text>
+          <text x="600" y="254" textAnchor="middle" fontSize="10" fill="#2a8">OCR＋DGR ✗不動作</text>
+          <line x1="600" y1="266" x2="600" y2="308" stroke="#555" strokeWidth="2"/>
+          <rect x="566" y="308" width="68" height="28" rx="3" fill="none" stroke="#2a8" strokeWidth="1.5"/>
+          <text x="600" y="327" textAnchor="middle" fontSize="11" fill="#2a8">負荷（継続）</text>
+          <rect x="640" y="360" width="14" height="14" fill="none" stroke="#a06" strokeWidth="2.5"/>
+          <text x="660" y="372" fontSize="11" fill="#a06">地絡フィーダー（動作・遮断）</text>
+          <rect x="640" y="385" width="14" height="14" fill="none" stroke="#2a8" strokeWidth="2"/>
+          <text x="660" y="397" fontSize="11" fill="#2a8">健全フィーダー（継続）</text>
+          <text x="410" y="425" textAnchor="middle" fontSize="12" fontWeight="700" fill="#222">図1：DGRによる選択遮断（F1のみ遮断、F2・F3は継続）</text>
+        </svg>
+      </div>
+      <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 24}}>
+        ※ DGRは地絡電流の「方向」を検出するため、地絡フィーダー(F1)のみを選択遮断できる。GRでは方向判定ができないため全フィーダーのGRが動作してしまう。
+      </div>
+
+      <h2 id="ocr-graph">7. 過電流特性−連動遮断特性グラフ（OCR協調）</h2>
+      <PlainExplain>
+        <p><strong>反限時特性（inverse time characteristic）</strong>：電流が大きいほど動作時間が短くなる特性。特性グラフはY軸（動作時間[s]）・X軸（電流倍数 I/In）ともに対数スケールで表示されることが多い。</p>
+        <p>協調確認の手順：グラフ上で特定の電流値における「主OCR動作時間 − フィーダーOCR動作時間」を求め、協調マージン（≥0.3s）を確保しているか確認する。</p>
+      </PlainExplain>
+
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 8}}>
+        <svg viewBox="0 0 820 490" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="ocAxArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+            </marker>
+          </defs>
+          <line x1="90" y1="430" x2="710" y2="430" stroke="#444" strokeWidth="2" markerEnd="url(#ocAxArr)"/>
+          <line x1="90" y1="430" x2="90" y2="30" stroke="#444" strokeWidth="2" markerEnd="url(#ocAxArr)"/>
+          <text x="716" y="434" fontSize="12" fill="#444">電流倍数 I/In →</text>
+          <text x="18" y="235" fontSize="12" fill="#444" transform="rotate(-90 18 235)">動作時間 [s] →</text>
+          {[{x:276,label:"2"},{x:524,label:"5"},{x:710,label:"10"}].map(function(d){return(
+            <g key={d.label}>
+              <line x1={d.x} y1="430" x2={d.x} y2="425" stroke="#444" strokeWidth="1.5"/>
+              <text x={d.x} y="448" textAnchor="middle" fontSize="11" fill="#444">{d.label}</text>
+              <line x1={d.x} y1="40" x2={d.x} y2="430" stroke="#e5e5e5" strokeWidth="1" strokeDasharray="3,3"/>
+            </g>
+          );})}
+          <text x="90" y="448" textAnchor="middle" fontSize="11" fill="#444">1</text>
+          {[{y:339,label:"0.3"},{y:240,label:"1"},{y:149,label:"3"},{y:50,label:"10"}].map(function(d){return(
+            <g key={d.label}>
+              <line x1="85" y1={d.y} x2="90" y2={d.y} stroke="#444" strokeWidth="1.5"/>
+              <text x="82" y={d.y+4} textAnchor="end" fontSize="10" fill="#444">{d.label}</text>
+              <line x1="90" y1={d.y} x2="705" y2={d.y} stroke="#e5e5e5" strokeWidth="1" strokeDasharray="3,3"/>
+            </g>
+          );})}
+          <path d="M 90 428 C 150 350 210 130 276 80 C 380 60 460 180 524 207 C 600 235 660 260 710 270"
+                fill="none" stroke="#d33" strokeWidth="3"/>
+          <text x="155" y="290" fontSize="13" fill="#d33" fontWeight="700">主OCR</text>
+          <text x="155" y="307" fontSize="11" fill="#d33">（TMS大・動作が遅い）</text>
+          <path d="M 90 428 C 160 425 220 360 276 212 C 380 300 460 330 524 339 C 600 360 660 385 710 402"
+                fill="none" stroke="#27c" strokeWidth="3"/>
+          <text x="560" y="312" fontSize="13" fill="#27c" fontWeight="700">フィーダーOCR</text>
+          <text x="560" y="329" fontSize="11" fill="#27c">（TMS小・動作が速い）</text>
+          <circle cx="524" cy="207" r="5" fill="#d33"/>
+          <circle cx="524" cy="339" r="5" fill="#27c"/>
+          <line x1="524" y1="207" x2="524" y2="339" stroke="#2a8" strokeWidth="2" strokeDasharray="6,3"/>
+          <line x1="509" y1="207" x2="539" y2="207" stroke="#2a8" strokeWidth="1.5"/>
+          <line x1="509" y1="339" x2="539" y2="339" stroke="#2a8" strokeWidth="1.5"/>
+          <text x="545" y="255" fontSize="13" fill="#2a8" fontWeight="700">協調マージン</text>
+          <text x="545" y="271" fontSize="11" fill="#2a8">t主 − t下位 ≥ 0.3s</text>
+          <text x="545" y="287" fontSize="11" fill="#2a8">（ここでは約1.2s OK）</text>
+          <line x1="524" y1="430" x2="524" y2="200" stroke="#aaa" strokeWidth="1" strokeDasharray="3,3"/>
+          <text x="524" y="468" textAnchor="middle" fontSize="11" fill="#666">I/In=5</text>
+          <text x="410" y="484" textAnchor="middle" fontSize="12" fontWeight="700" fill="#222">図2：OCR協調曲線（主OCRはフィーダーOCRより常に上側＝動作が遅い）</text>
+        </svg>
+      </div>
+      <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 24}}>
+        ※ 概念図（対数スケール近似）。試験では実際の特性曲線から時間を読み取り、「主 − フィーダー ≥ 0.3s」を確認する。TMS（Time Multiplier Setting）が大きいほど動作時間が長くなる。
+      </div>
+
+      <h2 id="dgr-direction">8. DGR 方向検出の原理（ベクトル図）</h2>
+      <PlainExplain>
+        <p>DGRは零相電流I₀（ZCTで検出）と零相電圧V₀（ZPDで検出）の位相角を比較して、地絡が「自フィーダー方向か」「系統（他フィーダー）方向か」を判定します。自フィーダー方向の地絡電流が流れる場合のみ動作します。</p>
+      </PlainExplain>
+
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 8}}>
+        <svg viewBox="0 0 820 410" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="dgVecPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a06"/>
+            </marker>
+            <marker id="dgVecBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+          </defs>
+          <text x="205" y="22" textAnchor="middle" fontSize="13" fontWeight="700" fill="#c33">【自フィーダー地絡】→ DGR 動作</text>
+          <text x="615" y="22" textAnchor="middle" fontSize="13" fontWeight="700" fill="#2a8">【他フィーダー地絡】→ DGR 不動作</text>
+          <circle cx="205" cy="200" r="130" fill="none" stroke="#ccc" strokeWidth="1" strokeDasharray="4,3"/>
+          <line x1="75" y1="200" x2="335" y2="200" stroke="#ddd" strokeWidth="1"/>
+          <line x1="205" y1="70" x2="205" y2="330" stroke="#ddd" strokeWidth="1"/>
+          <line x1="205" y1="200" x2="205" y2="78" stroke="#27c" strokeWidth="3" markerEnd="url(#dgVecBlue)"/>
+          <text x="216" y="108" fontSize="13" fill="#27c" fontWeight="700">V₀</text>
+          <text x="216" y="123" fontSize="11" fill="#27c">零相電圧</text>
+          <line x1="205" y1="200" x2="313" y2="290" stroke="#a06" strokeWidth="3" markerEnd="url(#dgVecPurple)"/>
+          <text x="300" y="278" fontSize="13" fill="#a06" fontWeight="700">I₀</text>
+          <text x="285" y="293" fontSize="11" fill="#a06">零相電流</text>
+          <path d="M 205 200 L 255 78 A 130 130 0 0 1 335 200 Z" fill="#c33" fillOpacity="0.08" stroke="#c33" strokeWidth="1" strokeDasharray="3,2"/>
+          <text x="292" y="148" fontSize="11" fill="#c33">動作</text>
+          <text x="292" y="162" fontSize="11" fill="#c33">範囲</text>
+          <circle cx="205" cy="358" r="22" fill="#c33"/>
+          <text x="205" y="365" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">動作</text>
+          <circle cx="615" cy="200" r="130" fill="none" stroke="#ccc" strokeWidth="1" strokeDasharray="4,3"/>
+          <line x1="485" y1="200" x2="745" y2="200" stroke="#ddd" strokeWidth="1"/>
+          <line x1="615" y1="70" x2="615" y2="330" stroke="#ddd" strokeWidth="1"/>
+          <line x1="615" y1="200" x2="615" y2="78" stroke="#27c" strokeWidth="3" markerEnd="url(#dgVecBlue)"/>
+          <text x="626" y="108" fontSize="13" fill="#27c" fontWeight="700">V₀</text>
+          <line x1="615" y1="200" x2="507" y2="110" stroke="#a06" strokeWidth="3" markerEnd="url(#dgVecPurple)"/>
+          <text x="475" y="100" fontSize="13" fill="#a06" fontWeight="700">I₀</text>
+          <text x="462" y="115" fontSize="11" fill="#a06">（逆方向）</text>
+          <path d="M 615 200 L 665 78 A 130 130 0 0 1 745 200 Z" fill="#c33" fillOpacity="0.08" stroke="#c33" strokeWidth="1" strokeDasharray="3,2"/>
+          <text x="700" y="148" fontSize="11" fill="#c33">動作</text>
+          <text x="700" y="162" fontSize="11" fill="#c33">範囲</text>
+          <circle cx="615" cy="358" r="22" fill="#2a8"/>
+          <text x="615" y="365" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">不動作</text>
+          <text x="410" y="400" textAnchor="middle" fontSize="12" fontWeight="700" fill="#222">図3：DGR方向判定（V₀とI₀の位相角で自フィーダー地絡のみ検出）</text>
+        </svg>
+      </div>
+      <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 24}}>
+        ※ DGRの動作条件：① I₀ ≥ 整定電流値 かつ ② I₀とV₀の位相差が整定角度範囲内（自フィーダー方向）の両条件を同時に満たす場合のみ動作。
+      </div>
+
+      <h2 id="gr-graph">9. 地絡継電器−連動遮断特性グラフ（GR/DGR協調）</h2>
+      <PlainExplain>
+        <p>地絡継電器の協調も過電流と同様に「下位（フィーダーDGR）が先に動作、上位（主GR）は後に動作」するよう設定します。X軸は零相電流[mA]または整定値の倍数で表されます。整定電流（最小動作電流）以下では継電器は動作しません。</p>
+      </PlainExplain>
+
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 8}}>
+        <svg viewBox="0 0 820 470" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="grAxArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+            </marker>
+          </defs>
+          <line x1="90" y1="410" x2="710" y2="410" stroke="#444" strokeWidth="2" markerEnd="url(#grAxArr)"/>
+          <line x1="90" y1="410" x2="90" y2="30" stroke="#444" strokeWidth="2" markerEnd="url(#grAxArr)"/>
+          <text x="714" y="414" fontSize="12" fill="#444">零相電流 I₀ [mA] →</text>
+          <text x="18" y="225" fontSize="12" fill="#444" transform="rotate(-90 18 225)">動作時間 [s] →</text>
+          {[{x:210,v:"100"},{x:330,v:"200"},{x:510,v:"400"},{x:650,v:"600"}].map(function(d){return(
+            <g key={d.v}>
+              <line x1={d.x} y1="410" x2={d.x} y2="405" stroke="#444" strokeWidth="1.5"/>
+              <text x={d.x} y="425" textAnchor="middle" fontSize="10" fill="#444">{d.v}</text>
+              <line x1={d.x} y1="40" x2={d.x} y2="410" stroke="#e5e5e5" strokeWidth="1" strokeDasharray="3,3"/>
+            </g>
+          );})}
+          <text x="90" y="425" textAnchor="middle" fontSize="10" fill="#444">0</text>
+          {[{y:390,v:"0.1"},{y:340,v:"0.2"},{y:230,v:"0.5"},{y:140,v:"1.0"},{y:60,v:"2.0"}].map(function(d){return(
+            <g key={d.v}>
+              <line x1="85" y1={d.y} x2="90" y2={d.y} stroke="#444" strokeWidth="1.5"/>
+              <text x="82" y={d.y+4} textAnchor="end" fontSize="10" fill="#444">{d.v}</text>
+              <line x1="90" y1={d.y} x2="705" y2={d.y} stroke="#e5e5e5" strokeWidth="1" strokeDasharray="3,3"/>
+            </g>
+          );})}
+          <line x1="90" y1="140" x2="330" y2="140" stroke="#d33" strokeWidth="2" strokeDasharray="6,3"/>
+          <circle cx="330" cy="140" r="5" fill="#d33"/>
+          <line x1="330" y1="140" x2="710" y2="140" stroke="#d33" strokeWidth="3"/>
+          <text x="400" y="127" fontSize="13" fill="#d33" fontWeight="700">主GR（定限時1.0s）</text>
+          <text x="400" y="142" fontSize="11" fill="#d33">整定200mA 以上で動作</text>
+          <line x1="90" y1="340" x2="210" y2="340" stroke="#a06" strokeWidth="2" strokeDasharray="6,3"/>
+          <circle cx="210" cy="340" r="5" fill="#a06"/>
+          <line x1="210" y1="340" x2="710" y2="340" stroke="#a06" strokeWidth="3"/>
+          <text x="420" y="327" fontSize="13" fill="#a06" fontWeight="700">フィーダーDGR（定限時0.2s）</text>
+          <text x="420" y="343" fontSize="11" fill="#a06">整定100mA 以上で動作</text>
+          <line x1="510" y1="140" x2="510" y2="340" stroke="#2a8" strokeWidth="2" strokeDasharray="5,3"/>
+          <line x1="496" y1="140" x2="524" y2="140" stroke="#2a8" strokeWidth="1.5"/>
+          <line x1="496" y1="340" x2="524" y2="340" stroke="#2a8" strokeWidth="1.5"/>
+          <text x="530" y="220" fontSize="13" fill="#2a8" fontWeight="700">協調</text>
+          <text x="528" y="236" fontSize="12" fill="#2a8">マージン</text>
+          <text x="528" y="252" fontSize="11" fill="#2a8">0.8s ≥ 0.3s</text>
+          <text x="528" y="266" fontSize="10" fill="#2a8">（十分確保）</text>
+          <text x="210" y="360" textAnchor="middle" fontSize="10" fill="#a06">最小動作電流</text>
+          <text x="330" y="120" textAnchor="middle" fontSize="10" fill="#d33">最小動作電流</text>
+          <text x="410" y="460" textAnchor="middle" fontSize="12" fontWeight="700" fill="#222">図4：GR/DGR協調曲線（主GRはフィーダーDGRより動作時間が長く設定）</text>
+        </svg>
+      </div>
+      <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 24}}>
+        ※ 破線区間は最小動作電流以下（不動作）。主GRの整定電流をフィーダーDGRより大きくすることで、微小地絡は主GRが不動作となり、フィーダーDGRのみが動作する。
+      </div>
+
+      <h2 id="setting">10. 整定値の考え方</h2>
+      <PlainExplain>
+        <p><strong>時間整定</strong>：フィーダーDGR動作時間を基準に、主GRはそれ＋協調マージン（≥0.3s）となるよう設定する。</p>
+        <p><strong>電流整定（感度整定）</strong>：主GRの整定電流 ＞ フィーダーDGRの最大動作電流 × 安全係数（1.2〜1.5）程度に設定することで、健全フィーダーへの誤動作を防ぐ。</p>
+        <p><strong>注意</strong>：整定値は設備条件・系統の対地静電容量・使用する継電器の種類によって大きく異なる。試験では「与えられた条件のみ」で判断すること。</p>
+      </PlainExplain>
+
+      <h2 id="solve-flow">11. 解き方・判断手順</h2>
+      <SolveFlow
+        type="保護協調・DGR問題の解法手順"
+        steps={[
+          "① 系統図を確認：主CB（上位）とフィーダーCB（下位）の関係、地絡点の位置を把握する",
+          "② 継電器の種類を判断：OCR（過電流）vs GR/DGR（地絡）の区別、フィーダーにDGRが必要な理由を確認",
+          "③ 特性グラフを読む：X軸の電流値または電流倍数から各継電器の動作時間を読み取る（対数スケールに注意）",
+          "④ 協調マージンを計算：t_主 − t_フィーダー ≥ 0.3s（または問題指定の値）か確認",
+          "⑤ 選択遮断の可否を判断：GRでは全フィーダー動作→不可、DGRなら方向検出→故障フィーダーのみ選択遮断可",
+        ]}
+      />
+
+      <h2 id="memory-table">12. 暗記ポイント</h2>
+      <MemTable
+        headers={["暗記項目", "内容"]}
+        rows={[
+          ["協調マージン", "≥ 0.3s（問題によっては0.4s・0.5s）/ 主 > フィーダー"],
+          ["GRとDGRの差", "GR＝大きさのみ・DGR＝大きさ＋方向。選択遮断にはDGR"],
+          ["DGRの入力", "ZCT（I₀）＋ ZPD（V₀）の2系統が必要"],
+          ["OCR反限時特性", "電流大→動作時間短、電流小→動作時間長。グラフは対数スケール"],
+          ["整定電流（pickup）", "整定電流以下では不動作（グラフの破線区間）"],
+          ["上位/下位の関係", "フィーダーCB（下位）が先に動作→主CB（上位）は後"],
+          ["グラフの上下", "グラフ上位の曲線＝動作が遅い＝上位保護（主）"],
+        ]}
+        note="「フィーダー（下位）が先、主（上位）は後」が保護協調の本質"
+      />
+
+      <h2 id="traps">13. よくあるひっかけ（11項目）</h2>
+      <TrapTable
+        traps={[
+          { wrong: "GRをフィーダー全てに設置すれば選択遮断できる", correct: "GRは方向なし→全フィーダーが動作。選択遮断にはDGRが必要" },
+          { wrong: "DGRは過電流（短絡）保護にも使える", correct: "DGRは地絡専用。過電流保護はOCRが担当する" },
+          { wrong: "協調マージンは「フィーダー動作時間 − 主動作時間」で計算する", correct: "逆。「主 − フィーダー ≥ 0.3s」が正しい（主が遅い）" },
+          { wrong: "ZCTだけあればDGRが動作できる", correct: "DGRにはZCT（電流）とZPD（電圧）の両方が必要" },
+          { wrong: "グラフのX軸で電流が大きいほど動作時間も長い", correct: "反限時特性は逆（電流大→動作時間短）" },
+          { wrong: "整定電流以上なら必ずDGRが動作する", correct: "DGRは整定電流以上＋方向条件の両方を満たさないと動作しない" },
+          { wrong: "中性点接地方式では地絡電流が小さい", correct: "非接地方式で地絡電流が小さい。接地（抵抗接地など）は相対的に大きい" },
+          { wrong: "主GRはフィーダーDGRより整定電流を小さくして感度を高くする", correct: "整定電流は主GR > フィーダーDGRが原則。主を過感度にすると選択遮断が崩れる" },
+          { wrong: "グラフの下側の曲線が上位保護（主）", correct: "グラフ上側の曲線が上位保護（動作が遅い）。下側が下位保護（フィーダー）" },
+          { wrong: "DGRを主受電点にだけ設置すれば選択遮断できる", correct: "主受電点のDGRは全体保護。フィーダーごとにDGRを設置しないと選択遮断不可" },
+          { wrong: "保護協調は「速く動く継電器」が高性能で望ましい", correct: "速すぎると協調が崩れる。上位は必ず下位より遅く動作させる適切な時限設定が重要" },
+        ]}
+      />
+
+      <h2 id="exam-r05">14. 過去問: R5下期 問13（保護協調・DGR）</h2>
+
+      <ExamQuestion
+        year="令和5年下期"
+        qNum="13(a)"
+        question="6.6kV高圧需要家の受電設備において、受電点の主遮断器（OCR・GR付き）と各分岐フィーダーに分岐遮断器を設置している。フィーダーに地絡が発生した際に地絡フィーダーのみを選択遮断するため、各分岐遮断器に設置する地絡保護継電器として最も適切なものを選べ。"
+        choices={[
+          "(1) GR（地絡継電器）：ZCTのみを用いて零相電流の大きさで判定する",
+          "(2) OCR（過電流継電器）：過電流のみ検出する",
+          "(3) DGR（地絡方向継電器）：ZCTとZPDを用いて零相電流の方向も判定する",
+          "(4) ZCT（零相変流器）：検出器であり継電器ではない",
+          "(5) UVR（不足電圧継電器）：電圧低下を検出して動作する",
+        ]}
+        note="「フィーダー選択遮断」＝方向を識別できる継電器が必要というキーワード"
+      />
+      <SolveFlow
+        type="解法 (a)"
+        steps={[
+          "フィーダーが複数 → 地絡した「方向」を識別できる継電器が必要",
+          "GRは大きさのみ → 全フィーダーのGRが動作 → 選択遮断不可",
+          "DGRはZCT（電流）＋ZPD（電圧）で方向まで判定 → 自フィーダーへの地絡のみ動作",
+          "答え：(3) DGR（地絡方向継電器）",
+        ]}
+      />
+      <ExamAnswer
+        correct="(a) (3) DGR（地絡方向継電器）"
+        explanations={[
+          { choice: "(1)", mark: "×", reason: "GRは方向なし→全フィーダーのGRが動作してしまい選択遮断不可" },
+          { choice: "(2)", mark: "×", reason: "OCRは過電流用。地絡の選択遮断には使えない" },
+          { choice: "(3)", mark: "○", reason: "DGRはZCT（I₀の大きさ）＋ZPD（V₀で方向判定）→自フィーダーへの地絡のみ選択動作" },
+          { choice: "(4)", mark: "×", reason: "ZCTは検出器。継電器でも遮断器でもないので単独では遮断動作しない" },
+          { choice: "(5)", mark: "×", reason: "UVRは電圧低下保護用。地絡の選択遮断とは無関係" },
+        ]}
+      />
+
+      <ExamQuestion
+        year="令和5年下期"
+        qNum="13(b)"
+        question="上記系統において、主遮断器OCR（TMS=1.0）とフィーダーOCR（TMS=0.2）の反限時特性曲線が与えられている。整定電流の5倍の電流が流れたとき、主OCRの動作時間は1.5s、フィーダーOCRの動作時間は0.3sであった。このときの協調マージンを求め、一般的な最小協調マージンの観点から協調が成立しているか判定せよ。"
+        choices={[]}
+        note="グラフ読取型。差を計算して最小協調マージン（0.3s）と比較する"
+      />
+      <SolveFlow
+        type="解法 (b)"
+        steps={[
+          "協調マージン = t_主 − t_フィーダー = 1.5s − 0.3s = 1.2s",
+          "一般的な最小協調マージン：0.3s（問題によって0.4〜0.5sの場合もある）",
+          "1.2s ≥ 0.3s → 協調は成立している（十分なマージンあり）",
+          "答え：協調マージン = 1.2s　協調成立（最小値0.3sを大きく上回る）",
+        ]}
+      />
+      <ExamAnswer
+        correct="(b) 協調マージン = 1.2s　協調成立"
+        explanations={[
+          { choice: "計算", mark: "○", reason: "t_主 − t_フィーダー = 1.5 − 0.3 = 1.2s" },
+          { choice: "判定", mark: "○", reason: "1.2s ≥ 0.3s（最小協調マージン）→ 協調成立。十分な余裕がある" },
+        ]}
+      />
+
+      <PlainExplain>
+        <p><strong>R5下期 問13 のひっかけポイント</strong></p>
+        <ol style={{margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.8}}>
+          <li>「GRでも整定値を変えれば選択遮断できる」→ 方向性がない限り全フィーダーが動作するため不可</li>
+          <li>「TMS値が小さい方が動作時間が長い（遅い）」→ 逆。TMS小→動作時間短（速い）。フィーダーOCRはTMS=0.2（小）で先に動作する正しい設定</li>
+          <li>「グラフの下側が主（上位）保護」→ 逆。グラフ上側（Y値大）の曲線が動作が遅い上位保護（主）</li>
+          <li>「協調マージンはフィーダー − 主で計算する」→ 主−フィーダーが正。マイナスになったら協調崩壊</li>
+          <li>「DGRは地絡保護と過電流保護の両方をカバーする」→ DGRは地絡専用。過電流はOCRが担当</li>
+        </ol>
+      </PlainExplain>
+
+      <h2 id="scenarios">15. 類題対応シナリオ</h2>
+      <MemTable
+        headers={["シナリオ", "判断ポイント", "答え方"]}
+        rows={[
+          ["「選択遮断できる継電器は？」", "フィーダーが複数→方向識別が必要", "DGRと答える"],
+          ["「GRとDGRどちらが適切？」", "フィーダー個別選択→DGR、全体保護→GR", "系統条件で切り替え"],
+          ["「協調が取れているか確認せよ」", "t主 − tフィーダー ≥ 0.3s?", "グラフ読取→引き算→0.3s比較"],
+          ["「DGRに必要なセンサは？」", "電流(ZCT)＋電圧(ZPD)の2種", "ZCTとZPDの両方と答える"],
+          ["「TMS値を下げると協調はどうなる？」", "動作時間が短くなる→マージン縮小→協調崩壊リスク", "TMS設定は協調確認後に決める"],
+          ["「グラフ上側の曲線はどちらか？」", "動作時間が長い（遅い）のが上位保護（主）", "上側の曲線＝主OCR（TMS大）"],
+        ]}
+        note="R5〜R6の保護協調問題はほぼこの6パターンで対処できる"
+      />
+
+      <h2 id="jitsumu">16. 実務メモ</h2>
+      <PlainExplain>
+        <p>実際の受電設備では保護協調の設計にあたって電力会社との協議が必要です。また系統連系設備（太陽光・蓄電池等）を持つ場合、逆潮流時の保護協調が追加で検討されます。電験3種では基礎的な「主 ＞ フィーダー（動作時間）」の概念とDGR/GRの使い分けが問われます。</p>
+      </PlainExplain>
+
+      <h2 id="law">17. 関連法規（条文との対応）</h2>
+      <MemTable
+        headers={["階層", "法規・条文", "本ページとの関係"]}
+        rows={[
+          [<span>🟥 法律</span>, <span><strong>電気事業法</strong><br/>第39条 技術基準適合維持義務</span>, "受電設備が保安基準を維持する義務の根拠"],
+          [<span>🟨 省令</span>, <span><strong>電気設備技術基準</strong><br/>第14条 地絡に対する保護措置</span>, "地絡が発生した場合に電路を自動遮断することを規定"],
+          [<span>🟩 解釈</span>, <span><strong>電技解釈</strong><br/>第36条 地絡遮断装置の施設</span>, "自動遮断装置（GR・DGR等）の施設要件を規定"],
+          [<span>🟦 規格</span>, <span><strong>JEAC 8011</strong>（高圧受電設備規程）</span>, "需要家側の受電設備設計・保護協調の実践的指針"],
+        ]}
+        note="法規B問題では条文番号より「地絡保護＝自動遮断が義務」という知識が主に問われる"
+      />
+
+      <h2 id="quick-review">18. 1分復習</h2>
+      <QuickReview
+        items={[
+          { q: "選択遮断にはGRとDGRのどちらが必要？", a: "DGR（地絡方向継電器）。GRは方向なしで全フィーダーが動作してしまう" },
+          { q: "DGRに必要なセンサを2つ答えよ", a: "ZCT（零相電流I₀）とZPD（零相電圧V₀）" },
+          { q: "協調マージンの計算式は？", a: "t_主 − t_フィーダー ≥ 0.3s（主の動作時間 − フィーダーの動作時間）" },
+          { q: "OCR反限時特性でX軸電流が大きくなると動作時間は？", a: "短くなる（電流大→時間短の反比例型）" },
+          { q: "グラフ上側の曲線は上位保護か下位保護か？", a: "上位保護（主）。動作時間が長い（遅い）" },
+        ]}
+      />
+
+      <h2 id="crossref">19. 掛け算出題パターン</h2>
+      <CrossRef
+        patterns={[
+          { a: "保護協調", b: "地絡電流計算（1.8）", result: "地絡電流の大きさから整定値の適否を判断する問題" },
+          { a: "保護協調", b: "ZCT原理（1.9）", result: "DGRにZCTが必要な理由を問う組合せ" },
+          { a: "DGR", b: "系統連系（3.7）", result: "逆潮流時の保護協調崩壊リスクを問う問題" },
+          { a: "地絡保護", b: "接地工事（3.2）", result: "C種接地がDGRのZPDに使われる場合の関連を問う問題" },
+        ]}
+      />
+
+      <PageNav
+        prevId="zerosou-henryuki"
+        prevTitle="1.9 零相変流器（ZCT）"
+        nextId="setsuchi-ichiran"
+        nextTitle="2.1 接地工事一覧表"
+        onNav={onNav}
+      />
+
+      <div style={{ marginTop: 16, fontSize: 11, color: 'var(--ink-3)', lineHeight: 1.8 }}>
+        <strong>UpdateLog</strong><br/>
+        v1.0 (2026-05-07) 初版作成 — 19セクション構成・SVG4枚・R5下13 (a)(b)解法フロー完成
       </div>
     </div>
   );
