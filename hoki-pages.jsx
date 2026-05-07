@@ -825,98 +825,27 @@ function KojiShiHoPage({ onNav, data }) {
 function HichuseiJirakuPage({ onNav, data }) {
   return (
     <div>
-      {/* ⚡ 直前確認モード（30秒で確認）*/}
-      <div style={{
-        background: 'var(--bg-elev)',
-        border: '2px solid var(--ink-2)',
-        borderRadius: 'var(--radius)',
-        padding: '18px 20px',
-        marginBottom: 24,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
-          <div>
-            <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink-1)', marginRight: 10 }}>⚡ 直前確認モード</span>
-            <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>30秒で確認 / 試験直前用</span>
-          </div>
-          <MasteredToggle pageId="hichusei-jiraku" label="このページ" />
-        </div>
-
-        {/* 公式カード（強調） */}
-        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px 16px', marginBottom: 12 }}>
-          <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em', marginBottom: 6 }}>覚える公式</div>
-          <div style={{ fontSize: 22, fontWeight: 700, color: '#a06', fontFamily: 'serif', textAlign: 'center', padding: '10px 0', marginBottom: 10 }}>
-            I_g = 2√3·πfV·(C₁+C₂)
-          </div>
-          <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.85 }}>
-            <li><strong>V</strong>：線間電圧[V]</li>
-            <li><strong>C₁</strong>：高圧配電線路一相の対地静電容量[F]</li>
-            <li><strong>C₂</strong>：需要設備一相の対地静電容量[F]</li>
-            <li><strong>f</strong>：周波数[Hz]</li>
-          </ul>
-          <div style={{ marginTop: 10, padding: '8px 12px', borderLeft: '3px solid #c33', background: 'var(--bg-elev)', fontSize: 12, color: '#c33', fontWeight: 700 }}>
-            ⚠ <span style={{ color: '#c33' }}>ZCT検出電流（I_zct）は常に I_g とは限らない</span>（事故点・ZCT位置に依存）
-          </div>
-        </div>
-
-        {/* 間違えやすい条件 TOP3 */}
-        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 12 }}>
-          <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em', marginBottom: 8 }}>⚠ 間違えやすい条件 TOP3</div>
-          <ol style={{ margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9 }}>
-            <li>V を相電圧として使う（実際は <strong>線間電圧</strong>。対地電圧は V/√3）</li>
-            <li>C₁ または C₂ <strong>どちらか片方</strong>だけで計算する（実際は <strong>和 C₁+C₂</strong>）</li>
-            <li>1線地絡時、健全相の対地電圧が <strong>√3倍</strong>（V/√3 → V）になることを忘れる</li>
-          </ol>
-        </div>
-
-        {/* アクション */}
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-          <button
-            onClick={() => document.getElementById('exam-r05')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            style={{
-              padding: '8px 16px',
-              background: '#a06',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 'var(--radius)',
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            過去問 R05下問11 へ →
-          </button>
-          <button
-            onClick={() => document.getElementById('quick-review')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            style={{
-              padding: '8px 16px',
-              background: 'var(--bg-elev)',
-              color: 'var(--ink-2)',
-              border: '1px solid var(--line)',
-              borderRadius: 'var(--radius)',
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            1分復習 へ →
-          </button>
-          <button
-            onClick={() => document.getElementById('traps')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            style={{
-              padding: '8px 16px',
-              background: 'var(--bg-elev)',
-              color: 'var(--ink-2)',
-              border: '1px solid var(--line)',
-              borderRadius: 'var(--radius)',
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            ひっかけ全11項目 →
-          </button>
-        </div>
-      </div>
+      <DirectCheckMode
+        pageId="hichusei-jiraku"
+        formula="I_g = 2√3·πfV·(C₁+C₂)"
+        formulaVars={[
+          { sym: "V", desc: "線間電圧[V]" },
+          { sym: "C₁", desc: "高圧配電線路一相の対地静電容量[F]" },
+          { sym: "C₂", desc: "需要設備一相の対地静電容量[F]" },
+          { sym: "f", desc: "周波数[Hz]" },
+        ]}
+        warningRed="ZCT検出電流（I_zct）は常に I_g とは限らない（事故点・ZCT位置に依存）"
+        trapsTop3={[
+          "V を相電圧として使う（実際は <strong>線間電圧</strong>。対地電圧は V/√3）",
+          "C₁ または C₂ <strong>どちらか片方</strong>だけで計算する（実際は <strong>和 C₁+C₂</strong>）",
+          "1線地絡時、健全相の対地電圧が <strong>√3倍</strong>（V/√3 → V）になることを忘れる",
+        ]}
+        jumps={[
+          { id: "exam-r05", label: "過去問 R05下問11 へ →", primary: true },
+          { id: "quick-review", label: "1分復習 へ →" },
+          { id: "traps", label: "ひっかけ全11項目 →" },
+        ]}
+      />
 
       <GoalQuestion
         question="中性点非接地方式の三相3線式高圧配電線路（線間電圧6,600V・60Hz）で、配電線路一相の対地静電容量C₁=2.3μF、需要設備一相の対地静電容量C₂=0.02μFのとき、需要設備内のZCTが検出する地絡電流は何mAか。"
@@ -940,26 +869,16 @@ function HichuseiJirakuPage({ onNav, data }) {
         </ul>
       </ConclusionBox>
 
-      <div style={{
-        background: 'var(--bg-elev)',
-        border: '1px solid var(--line)',
-        borderLeft: '3px solid #a06',
-        borderRadius: 'var(--radius)',
-        padding: '14px 18px',
-        marginBottom: 24,
-      }}>
-        <div style={{fontWeight: 700, fontSize: 13, color: 'var(--ink-2)', marginBottom: 8, letterSpacing: '0.05em'}}>📋 試験用 最短解法カード（本番で式を選ぶ思考順序）</div>
-        <ol style={{margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9}}>
-          <li><strong>条件確認</strong>：「中性点非接地方式・三相3線式・1線完全地絡」を読み取る</li>
-          <li><strong>電圧の置換</strong>：与えられた V は<strong>線間電圧</strong>。対地電圧として扱う場合は <strong>V/√3</strong> に変換</li>
-          <li><strong>3相分の容量</strong>：1相あたり対地容量Cの3相分なので <strong>3·(C₁+C₂)</strong> が現れる</li>
-          <li><strong>公式適用</strong>：地絡電流 <strong>I_g = 2√3·πfV·(C₁+C₂)</strong> を即座に書く</li>
-          <li><strong>非接地でもゼロでない</strong>：C経由で必ず流れることを心に留める</li>
-        </ol>
-        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)'}}>
-          💡 <strong>R5下期問11(a)はこの公式そのまま</strong>。対地電圧 V/√3 と 3相分C の組合せで、結局 <strong>√3 が公式に立つ</strong>のを覚える
-        </div>
-      </div>
+      <MinShortcutCard
+        steps={[
+          <span><strong>条件確認</strong>：「中性点非接地方式・三相3線式・1線完全地絡」を読み取る</span>,
+          <span><strong>電圧の置換</strong>：与えられた V は<strong>線間電圧</strong>。対地電圧として扱う場合は <strong>V/√3</strong> に変換</span>,
+          <span><strong>3相分の容量</strong>：1相あたり対地容量Cの3相分なので <strong>3·(C₁+C₂)</strong> が現れる</span>,
+          <span><strong>公式適用</strong>：地絡電流 <strong>I_g = 2√3·πfV·(C₁+C₂)</strong> を即座に書く</span>,
+          <span><strong>非接地でもゼロでない</strong>：C経由で必ず流れることを心に留める</span>,
+        ]}
+        hint={<span><strong>R5下期問11(a)はこの公式そのまま</strong>。対地電圧 V/√3 と 3相分C の組合せで、結局 <strong>√3 が公式に立つ</strong>のを覚える</span>}
+      />
 
       <MetaStrip
         ch="CH04"

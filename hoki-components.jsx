@@ -110,6 +110,147 @@ function LawSource({ title, text, source, confirmedAt }) {
   );
 }
 
+/**
+ * DirectCheckMode — ⚡ 直前確認モード（30秒UI）
+ *
+ * 使用例:
+ *   <DirectCheckMode
+ *     pageId="hichusei-jiraku"
+ *     formula="I_g = 2√3·πfV·(C₁+C₂)"
+ *     formulaVars={[
+ *       { sym: "V", desc: "線間電圧[V]" },
+ *       { sym: "C₁", desc: "高圧配電線路一相の対地静電容量[F]" },
+ *       { sym: "C₂", desc: "需要設備一相の対地静電容量[F]" },
+ *       { sym: "f", desc: "周波数[Hz]" },
+ *     ]}
+ *     warningRed="ZCT検出電流（I_zct）は常に I_g とは限らない（事故点・ZCT位置に依存）"
+ *     trapsTop3={[
+ *       "V を相電圧として使う（実際は線間電圧。対地電圧は V/√3）",
+ *       "C₁ または C₂ どちらか片方だけで計算する（実際は和 C₁+C₂）",
+ *       "1線地絡時、健全相の対地電圧が √3倍 になることを忘れる",
+ *     ]}
+ *     jumps={[
+ *       { id: "exam-r05", label: "過去問へ →", primary: true },
+ *       { id: "quick-review", label: "1分復習 →" },
+ *       { id: "traps", label: "ひっかけ全項目 →" },
+ *     ]}
+ *   />
+ */
+function DirectCheckMode({ pageId, formula, formulaVars = [], warningRed, trapsTop3 = [], jumps = [] }) {
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '2px solid var(--ink-2)',
+      borderRadius: 'var(--radius)',
+      padding: '18px 20px',
+      marginBottom: 24,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+        <div>
+          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink-1)', marginRight: 10 }}>⚡ 直前確認モード</span>
+          <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>30秒で確認 / 試験直前用</span>
+        </div>
+        <MasteredToggle pageId={pageId} label="このページ" />
+      </div>
+
+      {formula && (
+        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px 16px', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em', marginBottom: 6 }}>覚える公式</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: '#a06', fontFamily: 'serif', textAlign: 'center', padding: '10px 0', marginBottom: 10 }}>
+            {formula}
+          </div>
+          {formulaVars.length > 0 && (
+            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.85 }}>
+              {formulaVars.map((v, i) => (
+                <li key={i}><strong>{v.sym}</strong>：{v.desc}</li>
+              ))}
+            </ul>
+          )}
+          {warningRed && (
+            <div style={{ marginTop: 10, padding: '8px 12px', borderLeft: '3px solid #c33', background: 'var(--bg-elev)', fontSize: 12, color: '#c33', fontWeight: 700 }}>
+              ⚠ <span style={{ color: '#c33' }}>{warningRed}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {trapsTop3.length > 0 && (
+        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em', marginBottom: 8 }}>⚠ 間違えやすい条件 TOP3</div>
+          <ol style={{ margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9 }}>
+            {trapsTop3.map((t, i) => (
+              <li key={i} dangerouslySetInnerHTML={{ __html: t }} />
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {jumps.length > 0 && (
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+          {jumps.map((j, i) => (
+            <button
+              key={i}
+              onClick={() => document.getElementById(j.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              style={{
+                padding: '8px 16px',
+                background: j.primary ? '#a06' : 'var(--bg-elev)',
+                color: j.primary ? '#fff' : 'var(--ink-2)',
+                border: j.primary ? 'none' : '1px solid var(--line)',
+                borderRadius: 'var(--radius)',
+                fontSize: 13,
+                fontWeight: j.primary ? 700 : 600,
+                cursor: 'pointer',
+              }}
+            >
+              {j.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * MinShortcutCard — 📋 試験用 最短解法カード（5ステップ思考順序）
+ *
+ * 使用例:
+ *   <MinShortcutCard
+ *     steps={[
+ *       <span><strong>条件確認</strong>：「中性点非接地方式・1線完全地絡」を読み取る</span>,
+ *       <span><strong>電圧の置換</strong>：V は線間電圧。対地電圧は V/√3</span>,
+ *       <span><strong>3相分の容量</strong>：3·(C₁+C₂)</span>,
+ *       <span><strong>公式適用</strong>：I_g = 2√3·πfV·(C₁+C₂)</span>,
+ *       <span><strong>非接地でもゼロでない</strong>：C経由で必ず流れる</span>,
+ *     ]}
+ *     hint="R5下期問11(a)はこの公式そのまま"
+ *   />
+ */
+function MinShortcutCard({ steps = [], hint, title = "📋 試験用 最短解法カード（本番で式を選ぶ思考順序）" }) {
+  return (
+    <div style={{
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--line)',
+      borderLeft: '3px solid #a06',
+      borderRadius: 'var(--radius)',
+      padding: '14px 18px',
+      marginBottom: 24,
+    }}>
+      <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--ink-2)', marginBottom: 8, letterSpacing: '0.05em' }}>{title}</div>
+      <ol style={{ margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9 }}>
+        {steps.map((s, i) => (
+          <li key={i}>{s}</li>
+        ))}
+      </ol>
+      {hint && (
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)' }}>
+          💡 {hint}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function MasteredToggle({ pageId, label = "" }) {
   const key = `hoki-mastered-${pageId}`;
   const [mastered, setMastered] = React.useState(() => {
