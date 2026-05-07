@@ -1217,13 +1217,94 @@ function RyokurituKaizanPage({ onNav, data }) {
       ]} />
 
       <PlainExplain>
-        <p><strong>（b）の核心：SC容量 ≠ ΔQ の理由</strong></p>
-        <p>SCが 186kvar の容量を持っていても、直列リアクトルが 0.06×186 ≒ 11kvar を「消費」するため、負荷に届く無効電力は 175kvar。</p>
-        <div style={{textAlign: 'center', fontSize: 15, fontWeight: 700, fontFamily: 'serif', padding: '8px 0', color: '#27c'}}>
-          ΔQ = Qsc × (1 − XL/Xc) → Qsc = ΔQ / (1 − XL/Xc)
-        </div>
-        <p>（a）と<strong>同じ係数（1−k）</strong>が分母に来る。2問とも同じ等価回路から出てくる一貫した関係。</p>
+        <p><strong>「SRがQsc × 0.06 を消費する」の導出</strong></p>
+        <p>ここで間違えやすいのは <em>「なぜ SR の消費無効電力が Qsc × 0.06 になるのか」</em> という点。根拠は <strong>直列接続なので同じ電流 I が流れる</strong> という一点に尽きる。</p>
+        <table style={{width:'100%', borderCollapse:'collapse', fontSize:13, marginTop:8, marginBottom:8}}>
+          <thead>
+            <tr style={{background:'var(--bg-3)'}}>
+              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>素子</th>
+              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>無効電力の式</th>
+              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>値</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#27c', fontWeight:700}}>SC（コンデンサ）</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>Qsc = I² × Xc</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>← これが「SC容量 Qsc」の定義</td>
+            </tr>
+            <tr style={{background:'var(--bg-2)'}}>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#c66', fontWeight:700}}>SR（リアクトル）</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>QSR = I² × XL = I² × 0.06Xc</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>= 0.06 × (I² × Xc) = <strong>0.06 × Qsc</strong></td>
+            </tr>
+            <tr>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#396', fontWeight:700}}>系統への正味供給</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>ΔQ = Qsc − QSR</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>= Qsc − 0.06Qsc = <strong>0.94 × Qsc</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>つまり「直列なので I が同じ → Q の比 = X の比」という論理。XL が Xc の 6% だから、SR の消費も SC 容量の 6%。</p>
+        <p>あとは <strong>0.94 × Qsc = 175</strong> を解いて <strong>Qsc = 175 ÷ 0.94 ≒ 186 kvar</strong>。</p>
       </PlainExplain>
+
+      {/* SVG6: 無効電力フロー図 */}
+      <div style={{background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 10}}>▼ 図6：無効電力フロー（SC が出す → SR が一部消費 → 系統に届く）</div>
+        <svg viewBox="0 0 820 220" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="arrQ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+            <marker id="arrQr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#c66"/>
+            </marker>
+            <marker id="arrQg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#396"/>
+            </marker>
+          </defs>
+
+          {/* SC ボックス */}
+          <rect x="30" y="70" width="160" height="80" rx="8" fill="#e0eeff" stroke="#27c" strokeWidth="2.5"/>
+          <text x="110" y="103" textAnchor="middle" fontSize="14" fontWeight="700" fill="#27c">SC（コンデンサ）</text>
+          <text x="110" y="122" textAnchor="middle" fontSize="13" fontWeight="700" fill="#27c">Qsc = 186 kvar 供給</text>
+          <text x="110" y="138" textAnchor="middle" fontSize="10" fill="#555">I² × Xc</text>
+
+          {/* SC → 分岐点への矢印 */}
+          <line x1="190" y1="110" x2="360" y2="110" stroke="#27c" strokeWidth="3" markerEnd="url(#arrQ)"/>
+          <text x="275" y="100" textAnchor="middle" fontSize="12" fontWeight="700" fill="#27c">186 kvar →</text>
+          <text x="275" y="125" textAnchor="middle" fontSize="10" fill="#555">（同じ電流 I が流れる）</text>
+
+          {/* 分岐点 */}
+          <circle cx="370" cy="110" r="6" fill="#555"/>
+
+          {/* SR ボックス（上に分岐） */}
+          <line x1="370" y1="104" x2="370" y2="40" stroke="#c66" strokeWidth="2.5" markerEnd="url(#arrQr)"/>
+          <rect x="310" y="10" width="240" height="50" rx="6" fill="#fde" stroke="#c66" strokeWidth="2"/>
+          <text x="430" y="33" textAnchor="middle" fontSize="13" fontWeight="700" fill="#c66">SR（リアクトル）が消費</text>
+          <text x="430" y="52" textAnchor="middle" fontSize="13" fontWeight="700" fill="#c66">0.06 × 186 ≒ 11 kvar</text>
+          <text x="560" y="33" fontSize="10" fill="#c66">I² × XL</text>
+          <text x="560" y="48" fontSize="10" fill="#c66">= I² × 0.06Xc</text>
+          <text x="560" y="62" fontSize="10" fill="#c66">= 0.06 × Qsc</text>
+
+          {/* 系統への正味供給（右矢印） */}
+          <line x1="370" y1="110" x2="540" y2="110" stroke="#396" strokeWidth="4" markerEnd="url(#arrQg)"/>
+          <text x="455" y="100" textAnchor="middle" fontSize="13" fontWeight="700" fill="#396">175 kvar →</text>
+          <text x="455" y="128" textAnchor="middle" fontSize="10" fill="#396">= 186 − 11 = 0.94 × 186</text>
+
+          {/* 負荷ボックス */}
+          <rect x="550" y="70" width="160" height="80" rx="8" fill="#f0fff4" stroke="#396" strokeWidth="2.5"/>
+          <text x="630" y="103" textAnchor="middle" fontSize="14" fontWeight="700" fill="#396">系統（負荷側）</text>
+          <text x="630" y="122" textAnchor="middle" fontSize="13" fontWeight="700" fill="#396">ΔQ = 175 kvar 受取</text>
+          <text x="630" y="138" textAnchor="middle" fontSize="10" fill="#555">力率改善に必要な量</text>
+
+          {/* 収支式 */}
+          <rect x="200" y="165" width="420" height="44" rx="8" fill="#fafbfc" stroke="#ccc" strokeWidth="1.5"/>
+          <text x="410" y="183" textAnchor="middle" fontSize="12" fill="#333">Qsc（SC容量）= ΔQ ÷ (1 − XL/Xc)</text>
+          <text x="410" y="201" textAnchor="middle" fontSize="14" fontWeight="700" fill="#27c">186 kvar = 175 ÷ 0.94</text>
+        </svg>
+      </div>
 
       <h2 id="traps">9. よくあるひっかけ</h2>
       <TrapTable traps={[
