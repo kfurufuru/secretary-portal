@@ -2595,6 +2595,27 @@
     };
     const [applied, setApplied] = useState(false);
 
+    // 音声読み上げ (Web Speech API)
+    const [speaking, setSpeaking] = useState(false);
+    const speak = () => {
+      if (!window.speechSynthesis) return;
+      if (speaking) {
+        window.speechSynthesis.cancel();
+        setSpeaking(false);
+        return;
+      }
+      if (!brief) return;
+      const utt = new SpeechSynthesisUtterance(brief);
+      utt.lang = 'ja-JP';
+      utt.rate = 0.88;
+      utt.pitch = 1.0;
+      utt.onend = () => setSpeaking(false);
+      utt.onerror = () => setSpeaking(false);
+      setSpeaking(true);
+      window.speechSynthesis.speak(utt);
+    };
+    useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
+
     // セグメント切替の自動再生成（毎分チェック）
     useEffect(() => {
       const interval = setInterval(() => {
@@ -2620,9 +2641,22 @@
             <Chip tone="neutral">{segmentLabel(new Date())}</Chip>
             {genTime && <span className="text-[10px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>{formatTime(genTime)}</span>}
           </div>
-          <button className="icon-btn" onClick={generate} disabled={loading} aria-label="Regenerate brief" title="再生成">
-            <Icon name={loading ? 'hourglass_empty' : 'refresh'} size={18} />
-          </button>
+          <div className="flex items-center gap-1">
+            {brief && !loading && (
+              <button
+                className="icon-btn"
+                onClick={speak}
+                aria-label={speaking ? '読み上げ停止' : '読み上げ'}
+                title={speaking ? '停止 (クリックで停止)' : '音声で読み上げ'}
+                style={speaking ? {color:'var(--primary,#1a73e8)'} : {}}
+              >
+                <Icon name={speaking ? 'stop_circle' : 'volume_up'} size={18} />
+              </button>
+            )}
+            <button className="icon-btn" onClick={generate} disabled={loading} aria-label="Regenerate brief" title="再生成">
+              <Icon name={loading ? 'hourglass_empty' : 'refresh'} size={18} />
+            </button>
+          </div>
         </div>
         {loading && (
           <div className="m3-surface-container p-4 rounded-2xl text-[13px] flex items-center gap-2" style={{color:'var(--on-surface-variant,#5f6368)'}}>
