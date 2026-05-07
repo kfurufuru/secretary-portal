@@ -521,9 +521,9 @@ function ListMode({ terms, deck, onOpenMemo }) {
                     </td>
                     <td style={Object.assign({}, tdStyle, { padding: '6px 8px' })} onClick={(e) => e.stopPropagation()}>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
-                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={Object.assign({}, actionBtnStyle, { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border })}>❌ 不明</button>
-                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={Object.assign({}, actionBtnStyle, { background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color, borderColor: UNSURE_BADGE.border })}>🤔 曖昧</button>
                         <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'correct'); }} style={Object.assign({}, actionBtnStyle, { background: '#d8f4d8', color: '#1a6e1a', borderColor: '#90c890' })}>✅ 理解</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={Object.assign({}, actionBtnStyle, { background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color, borderColor: UNSURE_BADGE.border })}>🤔 曖昧</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={Object.assign({}, actionBtnStyle, { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border })}>❌ 不明</button>
                         <button onClick={(e) => { e.stopPropagation(); onOpenMemo(t.id); }} style={actionBtnStyle}>📝 メモ</button>
                       </div>
                     </td>
@@ -641,9 +641,9 @@ function QuizMeaningMode({ session, setSession, deck, onOpenMemo, onRestart, onE
         return;
       }
       if (!session.revealed) return;
-      if (ev.key === '1') { ev.preventDefault(); handleAction('wrong'); }
+      if (ev.key === '1') { ev.preventDefault(); handleAction('correct'); }
       else if (ev.key === '2') { ev.preventDefault(); handleAction('unsure'); }
-      else if (ev.key === '3') { ev.preventDefault(); handleAction('correct'); }
+      else if (ev.key === '3') { ev.preventDefault(); handleAction('wrong'); }
       else if (ev.key === 'n' || ev.key === 'N') {
         ev.preventDefault();
         onOpenMemo(session.items[session.index].id);
@@ -696,9 +696,9 @@ function QuizMeaningMode({ session, setSession, deck, onOpenMemo, onRestart, onE
       </div>
       {session.revealed && (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button onClick={() => handleAction('wrong')} style={resBtnStyle('wrong')}>❌ 不明 (1)</button>
+          <button onClick={() => handleAction('correct')} style={resBtnStyle('correct')}>✅ 理解 (1)</button>
           <button onClick={() => handleAction('unsure')} style={resBtnStyle('unsure')}>🤔 曖昧 (2)</button>
-          <button onClick={() => handleAction('correct')} style={resBtnStyle('correct')}>✅ 理解 (3)</button>
+          <button onClick={() => handleAction('wrong')} style={resBtnStyle('wrong')}>❌ 不明 (3)</button>
           <button onClick={() => onOpenMemo(t.id)} style={resBtnStyle('memo')}>📝 メモ (N)</button>
         </div>
       )}
