@@ -3833,7 +3833,7 @@ window.renderPage = function(page, navigate) {
     case 'henshatsuki-koritu':     return React.createElement(StubPage, { ...props, pageId: 'henshatsuki-koritu' });
     case 'ryokuritsu-kaizen':      return React.createElement(StubPage, { ...props, pageId: 'ryokuritsu-kaizen' });
     case 'juyoritsu-keisan':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-keisan' });
-    case 'bshu-setsuchi':          return React.createElement(StubPage, { ...props, pageId: 'bshu-setsuchi' });
+    case 'bshu-setsuchi':          return React.createElement(BshuSetsuchiPage, props);
     case 'hichusei-jiraku':        return React.createElement(HichuseiJirakuPage, props);
     case 'zerosou-henryuki':       return React.createElement(ZeroSouHenryukiPage, props);
     case 'setsuchi-ichiran':       return React.createElement(SetsuchiIchiranPage, props);
@@ -4632,6 +4632,318 @@ function KojiShiHoPage({ onNav, data }) {
       <PageNav
         prevId="denki-yohin-anzen" prevTitle="電気用品安全法"
         nextId="koji-gyoho"        nextTitle="電気工事業法"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4-1. BshuSetsuchiPage（B種接地抵抗値・1.7）
+// ─────────────────────────────────────────────
+function BshuSetsuchiPage({ onNav, data }) {
+  return (
+    <div>
+      {/* ⚡ 直前確認モード */}
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '2px solid var(--ink-2)',
+        borderRadius: 'var(--radius)',
+        padding: '18px 20px',
+        marginBottom: 24,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+          <div>
+            <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink-1)', marginRight: 10 }}>⚡ 直前確認モード</span>
+            <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>30秒で確認 / 試験直前用</span>
+          </div>
+          <MasteredToggle pageId="bshu-setsuchi" label="このページ" />
+        </div>
+
+        {/* 公式カード */}
+        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px 16px', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em', marginBottom: 6 }}>覚える公式（解釈17条）</div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: '#a06', fontFamily: 'serif', textAlign: 'center', padding: '10px 0', marginBottom: 10 }}>
+            R_B ≤ 150 / Ig  [Ω]
+          </div>
+          <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, lineHeight: 1.85 }}>
+            <li><strong>Ig</strong>：高圧電路の1線地絡電流 [A]（配電会社が提供または計算値）</li>
+            <li>高圧電路が<strong>1秒以内</strong>に自動遮断される場合：<strong>300/Ig</strong> [Ω]</li>
+            <li>高圧電路が<strong>0.5秒以内</strong>に自動遮断される場合：<strong>600/Ig</strong> [Ω]</li>
+          </ul>
+          <div style={{ marginTop: 10, padding: '8px 12px', borderLeft: '3px solid #c33', background: 'var(--bg-elev)', fontSize: 12, color: '#c33', fontWeight: 700 }}>
+            ⚠ 遮断時間が<span style={{ color: '#c33' }}>短いほど許容抵抗値が大きくなる</span>（緩和方向）
+          </div>
+        </div>
+
+        {/* 間違えやすい条件 TOP3 */}
+        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em', marginBottom: 8 }}>⚠ 間違えやすい条件 TOP3</div>
+          <ol style={{ margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9 }}>
+            <li>「B種の抵抗値は固定値」→ 実際は <strong>Igによって変わる計算値</strong></li>
+            <li>「遮断が速いほど抵抗値が小さくなる」→ 逆。速いほど <strong>上限値が大きく（緩和）</strong>なる</li>
+            <li>「B種は低圧機器の保護」→ 実際は <strong>変圧器の高低圧混触防止</strong>（低圧側中性点に施設）</li>
+          </ol>
+        </div>
+
+        {/* アクション */}
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+          <button
+            onClick={() => document.getElementById('exam-past')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            style={{ padding: '8px 16px', background: '#a06', color: '#fff', border: 'none', borderRadius: 'var(--radius)', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+          >
+            過去問形式へ →
+          </button>
+          <button
+            onClick={() => document.getElementById('quick-review')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            style={{ padding: '8px 16px', background: 'var(--bg-elev)', color: 'var(--ink-2)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+          >
+            1分復習 へ →
+          </button>
+          <button
+            onClick={() => document.getElementById('traps')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            style={{ padding: '8px 16px', background: 'var(--bg-elev)', color: 'var(--ink-2)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+          >
+            ひっかけ一覧 →
+          </button>
+        </div>
+      </div>
+
+      <GoalQuestion
+        question="高圧電路と低圧電路を結合する変圧器に施すB種接地工事について。変圧器の高圧側電路の1線地絡電流が5Aの場合、B種接地抵抗の最大値として正しいものはどれか（高圧電路は1秒を超えて自動的に遮断されないものとする）。"
+        choices={["10 Ω", "30 Ω", "60 Ω", "150 Ω"]}
+        year="頻出パターン（解釈17条型）"
+        note="読み終えたら戻って解こう。ヒント：R_B = 150/Ig"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>B種接地工事は <strong>変圧器低圧側中性点（または一端）</strong> に施設する（混触時の低圧側電圧上昇を抑制）</li>
+          <li>接地抵抗上限: <strong>R_B ≤ 150/Ig</strong>（Ig: 高圧電路の1線地絡電流）</li>
+          <li>自動遮断が速いほど上限が緩和：1秒以内→<strong>300/Ig</strong>、0.5秒以内→<strong>600/Ig</strong></li>
+          <li>接地線の太さ: <strong>4.0 mm 以上</strong>（A/C/D種より太い・B種だけ別格）</li>
+        </ul>
+      </ConclusionBox>
+
+      {/* 試験用最短解法カード */}
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--line)',
+        borderLeft: '3px solid #a06',
+        borderRadius: 'var(--radius)',
+        padding: '14px 18px',
+        marginBottom: 24,
+      }}>
+        <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--ink-2)', marginBottom: 8, letterSpacing: '0.05em' }}>📋 試験用 最短解法カード（B問題対策）</div>
+        <ol style={{ margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9 }}>
+          <li><strong>遮断時間を確認</strong>：問題文で「1秒超」「1秒以内」「0.5秒以内」のどれかを読み取る</li>
+          <li><strong>係数を選択</strong>：1秒超→150、1秒以内→300、0.5秒以内→600</li>
+          <li><strong>Ig で割る</strong>：R_B(max) = 係数 / Ig</li>
+          <li><strong>単位確認</strong>：IgはA（アンペア）、R_BはΩ</li>
+        </ol>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)' }}>
+          💡 ゴール問題の正解：R_B = 150/5 = <strong>30 Ω</strong>（1秒超→係数150）
+        </div>
+      </div>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題・計算問題対策"
+        importance="S"
+        freq="max"
+        examType="B問題"
+        targets="H29・R02・R04"
+        tags={["B種接地", "1線地絡電流", "混触防止", "変圧器", "解釈17条"]}
+        lastChecked="2026-05-07"
+      />
+
+      <h2>§3 試験で問われること</h2>
+      <ExamFocus items={[
+        "B種接地抵抗の最大値計算：R_B = 150/Ig（数値代入）",
+        "遮断時間による係数の使い分け：150・300・600の3パターン",
+        "B種接地の施設場所：変圧器低圧側中性点（または一端）",
+        "B種接地線の太さ：4.0 mm 以上（他種との差）",
+        "B種接地の目的：高低圧混触時の低圧側電圧上昇抑制",
+      ]} />
+
+      <h2>§4 略号と役割</h2>
+      <MemTable
+        headers={["記号", "名称", "意味・用途"]}
+        rows={[
+          ["R_B",  "B種接地抵抗値",        "変圧器低圧側中性点に施す接地の抵抗値 [Ω]"],
+          ["Ig",   "1線地絡電流",           "高圧電路で1線が完全地絡したときに流れる電流 [A]"],
+          ["150",  "基準係数",              "1秒超or遮断なし→ 150/Ig [Ω] が上限"],
+          ["300",  "緩和係数（1秒以内）",   "高圧電路が1秒以内に自動遮断される場合→ 300/Ig"],
+          ["600",  "緩和係数（0.5秒以内）", "高圧電路が0.5秒以内に自動遮断される場合→ 600/Ig"],
+        ]}
+        note="Igは配電事業者から提供される値を使用するか、電路の条件から算定する"
+      />
+
+      <h2>§5 B種接地の意義（電技解釈17条）</h2>
+      <PlainExplain>
+        <p><strong>なぜB種接地が必要か：</strong> 高圧と低圧の電路を結合する変圧器では、絶縁が劣化すると高圧側と低圧側が電気的に接触（混触）する事故が起きる。このとき、接地なしでは低圧側の対地電圧が高圧側の電圧まで跳ね上がり、感電・火災のリスクが生じる。</p>
+        <p><strong>B種接地による保護原理：</strong> 低圧側中性点をB種接地すると、混触時に流れる地絡電流は「高圧側Ig → 変圧器 → 低圧中性点 → B種接地線 → 大地 → 高圧側電源」という経路をたどる。このとき低圧側の対地電圧は：</p>
+        <div style={{ textAlign: 'center', fontSize: 16, fontWeight: 700, color: '#a06', fontFamily: 'serif', padding: '10px 0' }}>
+          V_低圧対地 = Ig × R_B ≤ 150V
+        </div>
+        <p>と制限される（150/Ig × Ig = 150V）。つまり係数「150」は <strong>混触時の低圧側対地電圧を150V以下に抑える</strong> という設計思想から来ている。</p>
+      </PlainExplain>
+
+      <h2>§6 接地抵抗値の算定式（遮断時間別）</h2>
+
+      {/* 混触保護SVG図 */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8 }}>▼ B種接地の混触保護回路（概念図）</div>
+        <div>
+          <svg viewBox="0 0 480 200" width="100%" style={{ display: 'block', maxWidth: 480 }}>
+            {/* 高圧側 */}
+            <rect x="10" y="30" width="100" height="50" rx="6" fill="none" stroke="#888" strokeWidth="1.5" />
+            <text x="60" y="52" textAnchor="middle" fontSize="11" fill="#555">高圧電路</text>
+            <text x="60" y="68" textAnchor="middle" fontSize="10" fill="#888">6.6 kV系</text>
+            {/* 変圧器 */}
+            <rect x="170" y="20" width="80" height="90" rx="6" fill="none" stroke="#a06" strokeWidth="2" />
+            <text x="210" y="55" textAnchor="middle" fontSize="11" fill="#a06" fontWeight="700">変圧器</text>
+            <text x="210" y="72" textAnchor="middle" fontSize="10" fill="#a06">高→低</text>
+            <text x="210" y="88" textAnchor="middle" fontSize="10" fill="#888">混触リスク↑</text>
+            {/* 低圧側 */}
+            <rect x="310" y="30" width="100" height="50" rx="6" fill="none" stroke="#888" strokeWidth="1.5" />
+            <text x="360" y="52" textAnchor="middle" fontSize="11" fill="#555">低圧電路</text>
+            <text x="360" y="68" textAnchor="middle" fontSize="10" fill="#888">200/100 V系</text>
+            {/* 接続線 */}
+            <line x1="110" y1="55" x2="170" y2="55" stroke="#555" strokeWidth="1.5" />
+            <line x1="250" y1="55" x2="310" y2="55" stroke="#555" strokeWidth="1.5" />
+            {/* 中性点 */}
+            <circle cx="360" cy="110" r="5" fill="#a06" />
+            <text x="375" y="114" fontSize="11" fill="#a06">中性点</text>
+            <line x1="360" y1="80" x2="360" y2="110" stroke="#a06" strokeWidth="1.5" />
+            {/* B種接地線 */}
+            <line x1="360" y1="110" x2="360" y2="160" stroke="#396" strokeWidth="2" strokeDasharray="4,2" />
+            {/* 大地 */}
+            <line x1="330" y1="160" x2="390" y2="160" stroke="#396" strokeWidth="2" />
+            <line x1="338" y1="167" x2="382" y2="167" stroke="#396" strokeWidth="1.5" />
+            <line x1="346" y1="174" x2="374" y2="174" stroke="#396" strokeWidth="1" />
+            {/* R_B */}
+            <rect x="350" y="125" width="20" height="28" rx="3" fill="none" stroke="#396" strokeWidth="1.5" />
+            <text x="378" y="142" fontSize="10" fill="#396" fontWeight="700">R_B</text>
+            {/* ラベル */}
+            <text x="240" y="185" textAnchor="middle" fontSize="11" fill="#396" fontWeight="700">B種接地（大地へ）</text>
+            <text x="210" y="155" textAnchor="middle" fontSize="10" fill="#888">V_対地 = Ig × R_B ≤ 150V</text>
+            {/* 混触矢印 */}
+            <line x1="210" y1="50" x2="210" y2="30" stroke="#c33" strokeWidth="1.5" strokeDasharray="3,2" />
+            <text x="218" y="28" fontSize="9" fill="#c33">混触事故</text>
+          </svg>
+        </div>
+      </div>
+
+      <MemTable
+        headers={["高圧電路の自動遮断", "R_B 上限", "係数の根拠"]}
+        rows={[
+          ["1秒を超えて遮断 / 遮断なし", "150 / Ig  [Ω]", "低圧側対地電圧 ≤ 150V"],
+          ["1秒以内に自動遮断",           "300 / Ig  [Ω]", "遮断が早いため緩和（実害が小さい）"],
+          ["0.5秒以内に自動遮断",         "600 / Ig  [Ω]", "さらに緩和（瞬時遮断）"],
+        ]}
+        note="Igが小さいほど R_B の上限が大きくなる（地絡電流が少ない = 被害が小さい = 接地抵抗を大きくしても許される）"
+      />
+
+      <h2>§7 1線地絡電流 Ig の実態</h2>
+      <PlainExplain>
+        <p>Igは高圧電路で1線が完全地絡（短絡）したときに流れる電流値。電験試験では<strong>問題文に与えられる</strong>ことがほとんど。</p>
+        <p>実務では、配電事業者（電力会社）が「供給電圧・系統インピーダンス・線路長」から算定して需要家に提供する値を使用する。系統によって数A〜数十Aの幅がある。</p>
+        <p>試験で注意：Igを<strong>自分で仮定・計算しない</strong>。必ず問題文から読み取ること。</p>
+      </PlainExplain>
+
+      <h2>§8 接地工事4種の位置づけ（B種の特殊性）</h2>
+      <MemTable
+        headers={["種別", "施設場所", "接地抵抗", "接地線太さ", "備考"]}
+        rows={[
+          ["A種", "高圧・特高機器の外箱", "10 Ω 以下",   "2.6 mm 以上", "固定値"],
+          ["B種", "変圧器低圧側中性点",   "150/Ig [Ω]", "4.0 mm 以上", "計算値・最も太い"],
+          ["C種", "300V超 低圧機器外箱",  "10 Ω 以下",   "1.6 mm 以上", "固定値"],
+          ["D種", "300V以下 低圧機器外箱","100 Ω 以下",  "1.6 mm 以上", "固定値"],
+        ]}
+        note="B種は唯一の「計算値」かつ「接地線が最も太い（4.0mm）」。この2点でA/C/D種と区別する"
+      />
+
+      <h2>§9 1.8（中性点非接地系）との対比</h2>
+      <CrossRef patterns={[
+        { a: "B種接地（1.7）",       b: "中性点非接地（1.8）",        result: "「接地系変圧器の混触防止」vs「非接地系の静電容量経由地絡」：どちらも地絡保護だが電流の発生原理がまったく異なる" },
+        { a: "Ig（B種）",             b: "I_g = 2√3πfVC（1.8）",       result: "B種のIgは系統インピーダンスで決まる / 1.8のI_gは対地静電容量Cで決まる" },
+        { a: "R_B ≤ 150/Ig",          b: "ZCT→GR→CB（1.8）",          result: "B種は抵抗値設計で対地電圧を制限 / 1.8はZCT検出→継電器動作で保護" },
+      ]} />
+
+      <h2>§10 解き方（思考順序）</h2>
+      <SolveFlow type="numbered" steps={[
+        "問題文から「Ig」の数値を読み取る（単位A確認）",
+        "「高圧電路の遮断時間」を確認 → 係数（150/300/600）を選ぶ",
+        "R_B(max) = 係数 / Ig を計算",
+        "選択肢と照合（単位はΩ）",
+        "B種の目的（混触防止）・場所（低圧中性点）が問われるA問題にも対応",
+      ]} />
+
+      <h2 id="traps">§11 ひっかけポイント</h2>
+      <TrapTable traps={[
+        { wrong: "B種の接地抵抗値は固定値（例：10Ω以下）",         correct: "計算値：150/Ig（Igによって変わる）" },
+        { wrong: "遮断が速いほど接地抵抗の上限値が小さくなる",       correct: "逆。遮断が速いほど上限が大きくなる（緩和）" },
+        { wrong: "B種は低圧機器（モーター・照明）の保護",            correct: "変圧器の高低圧混触防止（施設場所は低圧側中性点）" },
+        { wrong: "B種の接地線は1.6mm以上",                           correct: "4.0mm以上（B種だけ最も太い）" },
+        { wrong: "混触事故では常に高圧電流が低圧機器に流れる",        correct: "B種接地があれば低圧側対地電圧をIg×R_B≤150Vに抑制できる" },
+        { wrong: "係数150は任意に決めた値",                           correct: "「混触時の低圧側対地電圧≤150V」という保護目標から導かれる設計値" },
+        { wrong: "Ig = 5Aのとき R_B = 150/5 = 30Ω以上にしなければならない", correct: "上限30Ω以下（30Ω「以下」が正しい。以上は誤り）" },
+      ]} />
+
+      <h2 id="exam-past">§12 過去問形式演習</h2>
+
+      <ExamQuestion
+        year="頻出パターンA"
+        qNum="B種接地抵抗の最大値"
+        question="高圧電路と低圧電路を結合する変圧器において、高圧電路の1線地絡電流Igが5Aである。B種接地工事の接地抵抗の最大値は何Ωか。なお、高圧電路は1秒を超えて自動的に遮断されないものとする。"
+        choices={["10 Ω", "30 Ω", "60 Ω", "150 Ω"]}
+        note="遮断時間1秒超→係数150を使用"
+      />
+      <ExamAnswer
+        correct="② 30 Ω"
+        explanations={[
+          "遮断時間1秒超（または遮断なし）→ 係数は 150",
+          "R_B(max) = 150 / Ig = 150 / 5 = 30 [Ω]",
+          "選択肢②「30Ω」が正解",
+          "注意：「30Ω以下」であって「30Ω以上」ではない",
+        ]}
+      />
+
+      <ExamQuestion
+        year="頻出パターンB（緩和条件）"
+        qNum="遮断時間1秒以内"
+        question="同条件で、高圧電路が1秒以内に自動的に遮断される場合、B種接地抵抗の最大値は何Ωか。Ig = 5A"
+        choices={["30 Ω", "60 Ω", "90 Ω", "120 Ω"]}
+        note="遮断時間1秒以内→係数300"
+      />
+      <ExamAnswer
+        correct="② 60 Ω"
+        explanations={[
+          "遮断時間1秒以内 → 係数は 300",
+          "R_B(max) = 300 / 5 = 60 [Ω]",
+          "パターンAの2倍（緩和されているため大きくなる）",
+        ]}
+      />
+
+      <h2 id="quick-review">§13 1分復習</h2>
+      <QuickReview items={[
+        { q: "B種接地工事の目的は？",                          a: "変圧器の高低圧混触事故時に低圧側対地電圧を抑制（150V以下に制限）" },
+        { q: "B種接地の施設場所は？",                          a: "変圧器低圧側の中性点（または一端）" },
+        { q: "B種接地抵抗の基本式は？",                        a: "R_B ≤ 150/Ig [Ω]（Ig: 1線地絡電流[A]）" },
+        { q: "1秒以内遮断の場合の係数は？",                    a: "300（R_B ≤ 300/Ig）" },
+        { q: "0.5秒以内遮断の場合の係数は？",                  a: "600（R_B ≤ 600/Ig）" },
+        { q: "B種の接地線太さは？",                            a: "4.0 mm 以上（A/C/D種より太い）" },
+        { q: "係数「150」の物理的意味は？",                    a: "混触時の低圧側対地電圧をIg×R_B = 150V以下に制限するという設計目標" },
+      ]} />
+
+      <UpdateLog entries={[
+        { date: "2026-05-07", content: "v1.0: 初版作成（直前確認モード・最短解法・深掘り解説・ひっかけ7項目・過去問2パターン）", reason: "stub解消・freq:max最優先タスク" },
+      ]} />
+
+      <PageNav
+        prevId="juyoritsu-keisan"  prevTitle="需要率・負荷率・不等率"
+        nextId="hichusei-jiraku"   nextTitle="中性点非接地系の地絡電流"
         onNav={onNav}
       />
     </div>
