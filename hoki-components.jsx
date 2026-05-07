@@ -994,17 +994,47 @@ function TopBar({ page, onNav }) {
 // ============================================================
 
 function App() {
-  const [page, setPage] = React.useState(() => location.hash.slice(1) || 'top');
+  // ハッシュ解析: #pageid または #pageid:anchor 形式に対応
+  // 例: #hichusei-jiraku → ページのみ
+  // 例: #hichusei-jiraku:explain2 → ページ＋ページ内アンカー（h2 id="explain2" へスクロール）
+  const parseHash = () => {
+    const raw = location.hash.slice(1) || 'top';
+    const colonIdx = raw.indexOf(':');
+    if (colonIdx === -1) return { pageId: raw, anchor: null };
+    return { pageId: raw.slice(0, colonIdx), anchor: raw.slice(colonIdx + 1) };
+  };
+
+  const [page, setPage] = React.useState(() => parseHash().pageId);
+
+  // アンカースクロール（ページがレンダー完了するまで待機してから実行）
+  const scrollToAnchor = (anchor) => {
+    if (!anchor) return;
+    // 連続attemptで最大3秒間追跡（重いSVGページ対応）
+    let attempts = 0;
+    const tryScroll = () => {
+      const el = document.getElementById(anchor);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (attempts < 30) {
+        attempts++;
+        setTimeout(tryScroll, 100);
+      }
+    };
+    tryScroll();
+  };
 
   React.useEffect(() => {
     const handler = () => {
-      const id = location.hash.slice(1) || 'top';
-      setPage(id);
-      localStorage.setItem(`hoki_lastSeen_${id}`, Date.now().toString());
+      const { pageId, anchor } = parseHash();
+      setPage(pageId);
+      localStorage.setItem(`hoki_lastSeen_${pageId}`, Date.now().toString());
+      if (anchor) scrollToAnchor(anchor);
     };
     window.addEventListener('hashchange', handler);
-    // 初回lastSeen記録
+    // 初回lastSeen記録 + 初回アンカースクロール
     localStorage.setItem(`hoki_lastSeen_${page}`, Date.now().toString());
+    const { anchor } = parseHash();
+    if (anchor) scrollToAnchor(anchor);
     return () => window.removeEventListener('hashchange', handler);
   }, []);
 
