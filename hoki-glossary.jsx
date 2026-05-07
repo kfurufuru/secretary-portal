@@ -18,8 +18,8 @@ const STAGE_BADGE = {
   3: { label: '🥇長期', bg: '#fbe69c', color: '#7a5a00', border: '#d8b850' },
   4: { label: '👑マスター', bg: '#d9c8f5', color: '#4a2780', border: '#a787da' },
 };
-const UNSURE_BADGE = { label: '🤔 曖昧', bg: '#fff4cc', color: '#8a6500', border: '#e8c660' };
-const WRONG_BADGE = { label: '❌ 不明', bg: '#ffe0e0', color: '#a00018', border: '#e89090' };
+const UNSURE_BADGE = { label: '△ 曖昧', bg: '#fff4cc', color: '#8a6500', border: '#e8c660' };
+const WRONG_BADGE = { label: '✕ 不明', bg: '#ffe0e0', color: '#a00018', border: '#e89090' };
 const REVIEW_BADGE = { label: '要再チェック', bg: '#ffd5d5', color: '#b00020', border: '#e08080' };
 const MUTED_BADGE = { label: '未着手', bg: '#eeeeee', color: '#777777', border: '#cccccc' };
 
@@ -356,6 +356,7 @@ function ListMode({ terms, deck, onOpenMemo }) {
   });
   const [expanded, setExpanded] = React.useState({});
   const [flashId, setFlashId] = React.useState(null);
+  const [flashType, setFlashType] = React.useState(null);
 
   const articles = React.useMemo(() => {
     const set = {};
@@ -403,7 +404,8 @@ function ListMode({ terms, deck, onOpenMemo }) {
   const handleResult = (id, result) => {
     deck.recordResult(id, result);
     setFlashId(id);
-    setTimeout(() => setFlashId(null), 600);
+    setFlashType(result);
+    setTimeout(() => { setFlashId(null); setFlashType(null); }, 600);
   };
 
   const statBoxStyle = {
@@ -424,7 +426,7 @@ function ListMode({ terms, deck, onOpenMemo }) {
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
         <div style={statBoxStyle}>登録 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.total}</strong></div>
         <div style={statBoxStyle}>未着手 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.untouched}</strong></div>
-        <div style={Object.assign({}, statBoxStyle, { borderColor: UNSURE_BADGE.border, background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color })}>🤔 曖昧 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.unsure}</strong></div>
+        <div style={Object.assign({}, statBoxStyle, { borderColor: UNSURE_BADGE.border, background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color })}>△ 曖昧 <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.unsure}</strong></div>
         <div style={Object.assign({}, statBoxStyle, { borderColor: REVIEW_BADGE.border, background: REVIEW_BADGE.bg, color: REVIEW_BADGE.color })}>要再チェック <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.review}</strong></div>
         <div style={statBoxStyle}>メモあり <strong style={{ fontSize: 16, marginLeft: 4 }}>{stats.memo}</strong></div>
       </div>
@@ -442,7 +444,7 @@ function ListMode({ terms, deck, onOpenMemo }) {
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
           <input type="checkbox" checked={filters.unsure} onChange={(e) => setFilters({ ...filters, unsure: e.target.checked })} />
-          🤔 曖昧のみ
+          △ 曖昧のみ
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
           <input type="checkbox" checked={filters.needsReview} onChange={(e) => setFilters({ ...filters, needsReview: e.target.checked })} />
@@ -505,7 +507,7 @@ function ListMode({ terms, deck, onOpenMemo }) {
                     style={{
                       borderTop: '1px solid var(--border)',
                       cursor: 'pointer',
-                      background: isFlash ? '#d8f4d8' : 'transparent',
+                      background: isFlash ? (flashType === 'correct' ? '#d8f4d8' : flashType === 'unsure' ? '#fff4cc' : '#ffe0e0') : 'transparent',
                       transition: 'background 0.6s ease',
                     }}
                   >
@@ -521,9 +523,9 @@ function ListMode({ terms, deck, onOpenMemo }) {
                     </td>
                     <td style={Object.assign({}, tdStyle, { padding: '6px 8px' })} onClick={(e) => e.stopPropagation()}>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
-                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'correct'); }} style={Object.assign({}, actionBtnStyle, { background: '#d8f4d8', color: '#1a6e1a', borderColor: '#90c890' })}>✅ 理解</button>
-                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={Object.assign({}, actionBtnStyle, { background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color, borderColor: UNSURE_BADGE.border })}>🤔 曖昧</button>
-                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={Object.assign({}, actionBtnStyle, { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border })}>❌ 不明</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'correct'); }} style={Object.assign({}, actionBtnStyle, { background: '#d8f4d8', color: '#1a6e1a', borderColor: '#90c890' })}>〇 理解</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={Object.assign({}, actionBtnStyle, { background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color, borderColor: UNSURE_BADGE.border })}>△ 曖昧</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={Object.assign({}, actionBtnStyle, { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border })}>✕ 不明</button>
                         <button onClick={(e) => { e.stopPropagation(); onOpenMemo(t.id); }} style={actionBtnStyle}>📝 メモ</button>
                       </div>
                     </td>
@@ -696,9 +698,9 @@ function QuizMeaningMode({ session, setSession, deck, onOpenMemo, onRestart, onE
       </div>
       {session.revealed && (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button onClick={() => handleAction('correct')} style={resBtnStyle('correct')}>✅ 理解 (1)</button>
-          <button onClick={() => handleAction('unsure')} style={resBtnStyle('unsure')}>🤔 曖昧 (2)</button>
-          <button onClick={() => handleAction('wrong')} style={resBtnStyle('wrong')}>❌ 不明 (3)</button>
+          <button onClick={() => handleAction('correct')} style={resBtnStyle('correct')}>〇 理解 (1)</button>
+          <button onClick={() => handleAction('unsure')} style={resBtnStyle('unsure')}>△ 曖昧 (2)</button>
+          <button onClick={() => handleAction('wrong')} style={resBtnStyle('wrong')}>✕ 不明 (3)</button>
           <button onClick={() => onOpenMemo(t.id)} style={resBtnStyle('memo')}>📝 メモ (N)</button>
         </div>
       )}
@@ -900,9 +902,9 @@ function SessionEnd({ results, onRestart, onEnd }) {
     }}>
       <h3 style={{ margin: '0 0 16px', fontSize: 18 }}>セッション完了！</h3>
       <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
-        <div><span style={{ fontSize: 22, fontWeight: 700, color: '#1a6e1a' }}>✅ {correct}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>正解</div></div>
-        <div><span style={{ fontSize: 22, fontWeight: 700, color: WRONG_BADGE.color }}>❌ {wrong}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>不明</div></div>
-        <div><span style={{ fontSize: 22, fontWeight: 700, color: UNSURE_BADGE.color }}>🤔 {unsure}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>曖昧</div></div>
+        <div><span style={{ fontSize: 22, fontWeight: 700, color: '#1a6e1a' }}>〇 {correct}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>理解</div></div>
+        <div><span style={{ fontSize: 22, fontWeight: 700, color: UNSURE_BADGE.color }}>△ {unsure}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>曖昧</div></div>
+        <div><span style={{ fontSize: 22, fontWeight: 700, color: WRONG_BADGE.color }}>✕ {wrong}</span><div style={{ fontSize: 11, color: 'var(--ink-3)' }}>不明</div></div>
       </div>
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="btn primary" onClick={onRestart}>もう一周</button>
