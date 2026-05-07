@@ -1407,7 +1407,7 @@ window.WIKI_DATA = { chapters: [
     { id:"hensyatsuki-yoryo",  num:"6.4", title:"変圧器容量",       freq:"high", ch:"CH06" },
     { id:"haiden-kanri",       num:"6.5", title:"配電管理",         freq:"mid",  ch:"CH06" },
     { id:"juden-setsubi-kanri",num:"6.6", title:"受電設備管理",     freq:"mid",  ch:"CH06" },
-    { id:"demand-kanri",       num:"6.7", title:"デマンド制御・最大需要電力管理", freq:"high", ch:"CH06" }
+    { id:"demand-kanri",       num:"6.7", title:"デマンド制御・最大需要電力管理", freq:"max",  ch:"CH06" }
   ]},
   { id:"sec07", num:"07", title:"過去問テーマ別演習", pages:[
     { id:"kakomon-b",        num:"7.1", title:"B問題だけ" },
@@ -7328,7 +7328,7 @@ function HogoKyochoDgrPage({ onNav, data }) {
 // ─────────────────────────────────────────────
 function DemandKanriPage({ onNav, data }) {
   return (
-    <div>
+    <div id="demand-kanri">
 
       {/* 0. DirectCheckMode */}
       <DirectCheckMode
@@ -7370,6 +7370,16 @@ function DemandKanriPage({ onNav, data }) {
         <p style={{margin: 0, color: '#c33', fontWeight: 700}}>答え：4台（3.64を切り上げ。3台では P=283.5kW で条件未達）</p>
       </ConclusionBox>
 
+      {/* freq-S badge + 30分平均の重要前提 */}
+      <div style={{display:'flex', gap:8, alignItems:'center', marginBottom:10, flexWrap:'wrap'}}>
+        <span className="rank-S" style={{padding:'2px 10px', borderRadius:4, fontSize:13, fontWeight:700}}>S</span>
+        <span className="tag hot" style={{fontSize:12}}>電気施設管理の頻出計算</span>
+      </div>
+      <div className="topic" style={{marginBottom:20, fontSize:14}}>
+        <strong>重要前提</strong>：最大需要電力は<strong>瞬間値ではなく30分平均</strong>で判断する。
+        瞬時に310kWを超えていても、30分間の平均が300kW未満であれば目標達成。
+      </div>
+
       {/* 3. MinShortcutCard */}
       <MinShortcutCard
         steps={[
@@ -7382,12 +7392,23 @@ function DemandKanriPage({ onNav, data }) {
         hint="R5上 問10 はこの5ステップそのまま。特に「未満」と「切り上げ」が最重要"
       />
 
+      {/* 解法テンプレート（4ステップ） */}
+      <div className="topic" style={{marginBottom:20}}>
+        <p style={{margin:'0 0 10px', fontWeight:700, fontSize:14}}>解法テンプレート（4ステップ）</p>
+        <ol style={{margin:0, paddingLeft:22, lineHeight:1.9, fontSize:13}}>
+          <li><strong>時間帯分割</strong>：デマンド区間（30分）を前半・後半に分け、各時間を確認する</li>
+          <li><strong>kW×分 合計</strong>：各時間帯の（電力[kW] × 時間[分]）を合計してエネルギーを求める</li>
+          <li><strong>条件作成</strong>：合計エネルギー ÷ 30 &lt; 目標値 → 後半電力Pの上限を逆算する</li>
+          <li><strong>台数変換</strong>：必要停止電力 ÷ 単位電力 = 台数（小数は必ず切り上げ）</li>
+        </ol>
+      </div>
+
       {/* 4. MetaStrip */}
       <MetaStrip
         ch="CH06 電気施設管理"
         category="デマンド制御・最大需要電力管理"
-        importance="A"
-        freq="high"
+        importance="S"
+        freq="max"
         examType="B問題・計算"
         targets={["電気施設管理の計算問題", "30分デマンド管理の実践"]}
         tags={["デマンド", "最大需要電力", "負荷管理", "ファン停止", "30分平均", "デマンドコントローラ"]}
@@ -7485,6 +7506,17 @@ function DemandKanriPage({ onNav, data }) {
       <PlainExplain>
         <p>9:00〜9:30の1デマンド区間内で、9:20以降に負荷を遮断する場面。前半（310kW）が目標を超えているため、後半で十分に下げなければならない。</p>
       </PlainExplain>
+
+      {/* R5上問10型 構造表 */}
+      <MemTable
+        headers={["時間帯", "電力", "時間", "エネルギー"]}
+        rows={[
+          ["前半（9:00〜9:20）", "310kW（実測値）", "20分", "310×20 = 6,200 kW·分"],
+          ["後半（9:20〜9:30）", "P kW（制御後）", "10分", "P×10 kW·分"],
+          ["合計（9:00〜9:30）", <span style={{color:'#c33', fontWeight:700}}>平均 &lt; 300kW が目標</span>, "30分", <span style={{color:'#c33', fontWeight:700}}>&lt; 9,000 kW·分</span>],
+        ]}
+        note="後半電力P の上限：(6,200 + P×10) < 9,000 → P < 280kW"
+      />
       <div style={{background:'var(--bg-elev)', border:'1px solid var(--line)', borderRadius:'var(--radius)', padding:16}}>
         <svg viewBox="0 0 820 300" style={{width:'100%', height:'auto', display:'block'}}>
           <rect x="0" y="0" width="820" height="300" fill="#fff"/>
