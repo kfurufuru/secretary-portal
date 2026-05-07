@@ -712,17 +712,35 @@
     const secondary = hero ? upcoming.slice(1) : [];
 
     let countdown = '';
+    let countdownColor = 'var(--primary,#1a73e8)';
+    let urgencyChip = null;
     if (hero) {
       const diffMs = Math.max(0, hero.dt.getTime() - now.getTime());
+      const totalMins = Math.floor(diffMs / 60000);
       const hrs = Math.floor(diffMs / 3600000);
       const mins = Math.floor((diffMs % 3600000) / 60000);
       const secs = Math.floor((diffMs % 60000) / 1000);
-      countdown = `${hrs}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+      // 5分以内のみ秒表示
+      if (totalMins < 5) {
+        countdown = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      } else if (hrs > 0) {
+        countdown = `${hrs}h ${String(mins).padStart(2,'0')}m`;
+      } else {
+        countdown = `${mins}m`;
+      }
+      // 緊急度カラー
+      if (totalMins < 15) {
+        countdownColor = 'var(--error,#b3261e)';
+        urgencyChip = { label: '直前', tone: 'error' };
+      } else if (totalMins < 30) {
+        countdownColor = 'var(--warning,#ea8600)';
+        urgencyChip = { label: '間もなく', tone: 'warning' };
+      }
     }
 
-    const heroPrepColor = hero && hero.status === 'warning' ? '#ea8600'
-                       : hero && hero.status === 'success' ? '#137333'
-                       : '#1a73e8';
+    const heroPrepColor = hero && hero.status === 'warning' ? 'var(--warning,#ea8600)'
+                       : hero && hero.status === 'success' ? 'var(--success,#137333)'
+                       : 'var(--primary,#1a73e8)';
 
     const dotClass = (status) => status === 'warning' ? 'dot-orange'
                               : status === 'success' ? 'dot-green'
@@ -747,7 +765,10 @@
         <div className="flex items-start gap-5 mb-4">
           <div className="flex-none">
             <div className="font-display tnum leading-none" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400}}>{hero.time}</div>
-            <div className="text-[11px] mt-1 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>あと <span className="font-medium" style={{color:'var(--primary,#1a73e8)'}}>{countdown}</span></div>
+            <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+              <span className="text-[13px] font-medium tnum" style={{color: countdownColor, fontVariantNumeric:'tabular-nums', letterSpacing:'.01em'}}>{countdown}</span>
+              {urgencyChip && <Chip tone={urgencyChip.tone}>{urgencyChip.label}</Chip>}
+            </div>
           </div>
           <div className="flex-1 min-w-0 pt-2">
             <div className="font-display text-[16px] font-medium leading-snug">{hero.title}</div>
