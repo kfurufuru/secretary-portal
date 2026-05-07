@@ -468,11 +468,11 @@ function ListMode({ terms, deck, onOpenMemo }) {
       <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
         <table style={{ width: '100%', minWidth: 620, borderCollapse: 'collapse', fontSize: 13, tableLayout: 'fixed' }}>
           <colgroup>
-            <col style={{ width: 104 }} />
-            <col style={{ width: 80 }} />
+            <col style={{ width: 148 }} />
+            <col style={{ width: 72 }} />
             <col style={{ width: 'auto' }} />
             <col style={{ width: 88 }} />
-            <col style={{ width: 164 }} />
+            <col style={{ width: 152 }} />
           </colgroup>
           <thead>
             <tr style={{ background: 'var(--bg-elev)' }}>
