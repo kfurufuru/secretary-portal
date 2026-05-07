@@ -54,7 +54,8 @@ window.WIKI_DATA = { chapters: [
     { id:"futorito",           num:"6.3", title:"不等率",           freq:"mid",  ch:"CH06" },
     { id:"hensyatsuki-yoryo",  num:"6.4", title:"変圧器容量",       freq:"high", ch:"CH06" },
     { id:"haiden-kanri",       num:"6.5", title:"配電管理",         freq:"mid",  ch:"CH06" },
-    { id:"juden-setsubi-kanri",num:"6.6", title:"受電設備管理",     freq:"mid",  ch:"CH06" }
+    { id:"juden-setsubi-kanri",num:"6.6", title:"受電設備管理",     freq:"mid",  ch:"CH06" },
+    { id:"demand-kanri",       num:"6.7", title:"デマンド制御・最大需要電力管理", freq:"high", ch:"CH06" }
   ]},
   { id:"sec07", num:"07", title:"過去問テーマ別演習", pages:[
     { id:"kakomon-b",        num:"7.1", title:"B問題だけ" },

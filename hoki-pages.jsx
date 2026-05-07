@@ -49,6 +49,7 @@ window.renderPage = function(page, navigate) {
     case 'hensyatsuki-yoryo':      return React.createElement(StubPage, { ...props, pageId: 'hensyatsuki-yoryo' });
     case 'haiden-kanri':           return React.createElement(StubPage, { ...props, pageId: 'haiden-kanri' });
     case 'juden-setsubi-kanri':    return React.createElement(StubPage, { ...props, pageId: 'juden-setsubi-kanri' });
+    case 'demand-kanri':           return React.createElement(DemandKanriPage, props);
     case 'kakomon-b':              return React.createElement(StubPage, { ...props, pageId: 'kakomon-b' });
     case 'kakomon-setsuchi':       return React.createElement(StubPage, { ...props, pageId: 'kakomon-setsuchi' });
     case 'kakomon-zetsuen':        return React.createElement(StubPage, { ...props, pageId: 'kakomon-zetsuen' });
@@ -3497,6 +3498,457 @@ function HogoKyochoDgrPage({ onNav, data }) {
         <strong>UpdateLog</strong><br/>
         v1.0 (2026-05-07) 初版作成 — 19セクション構成・SVG4枚・R5下13 (a)(b)解法フロー完成
       </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 7. DemandKanriPage（デマンド制御・最大需要電力管理）
+// ─────────────────────────────────────────────
+function DemandKanriPage({ onNav, data }) {
+  return (
+    <div>
+
+      {/* 0. DirectCheckMode */}
+      <DirectCheckMode
+        pageId="demand-kanri"
+        formula="平均電力 = (P₁t₁ + P₂t₂) / T ＜ 目標値"
+        formulaVars={[
+          { sym: "P₁", desc: "前半電力[kW]" },
+          { sym: "t₁", desc: "前半時間[分]" },
+          { sym: "P₂", desc: "後半電力[kW]" },
+          { sym: "t₂", desc: "後半時間[分]" },
+          { sym: "T",  desc: "デマンド周期[分]（通常30）" },
+        ]}
+        warningRed="「300kW未満」→ 境界値NG・停止台数は必ず切り上げ（小数点以下は1台追加）"
+        trapsTop3={[
+          "「300kW未満」= 300kWはNG。P=280kWも平均ちょうど300になるので不可",
+          "X = 3.64… → 3台では不足（P=283.5>280）。必ず切り上げて4台",
+          "ファン以外の停止負荷（10kW）を忘れると台数を過大計算してしまう",
+        ]}
+        jumps={[
+          { id: "exam-r05u", label: "過去問へ →", primary: true },
+          { id: "quick-review", label: "1分復習 →" },
+          { id: "traps", label: "ひっかけ全項目 →" },
+        ]}
+      />
+
+      {/* 1. GoalQuestion */}
+      <GoalQuestion
+        year="令和5年上期 法規 問10"
+        question="ある工場では、換気用ファン（定格出力5.5kW）を最大8台まで停止できる。9:00〜9:20の平均使用電力は310kWであった。9:20〜9:30の間にファンを何台か停止させるとともに、その他の負荷10kW分を停止した。9:00〜9:30の最大需要電力を300kW未満に抑えるためには、ファンを最低何台停止させる必要があるか。"
+        choices={["0台", "2台", "4台", "6台", "8台"]}
+        note="最大需要電力 = 30分間の平均使用電力[kW]。このページを読み終えたら戻って解いてみよう。"
+      />
+
+      {/* 2. ConclusionBox */}
+      <ConclusionBox>
+        <p style={{margin: '0 0 6px'}}><strong>デマンド制御の核心</strong>：30分区間の平均電力を目標値未満に保つ</p>
+        <p style={{margin: '0 0 4px'}}>① 後半電力の上限Pを逆算：(310×20 + P×10)/30 &lt; 300 → P &lt; 280kW</p>
+        <p style={{margin: '0 0 4px'}}>② 停止電力の方程式：5.5X + 10 &gt; 30 → X &gt; 3.64</p>
+        <p style={{margin: 0, color: '#c33', fontWeight: 700}}>答え：4台（3.64を切り上げ。3台では P=283.5kW で条件未達）</p>
+      </ConclusionBox>
+
+      {/* 3. MinShortcutCard */}
+      <MinShortcutCard
+        steps={[
+          <span><strong>目標エネルギー上限</strong>：300×30 = 9,000 kW·分（ただし未満なので9,000は含まない）</span>,
+          <span><strong>前半確定</strong>：310×20 = 6,200 kW·分</span>,
+          <span><strong>後半上限逆算</strong>：(9,000 − 6,200) ÷ 10 = 280 → P &lt; 280kW</span>,
+          <span><strong>台数方程式</strong>：5.5X + 10 &gt; 30 → X &gt; 3.64 → <strong>4台</strong></span>,
+          <span><strong>切り上げ確認</strong>：3台ならP=283.5 &gt; 280でNG → 4台が最小（検算：278kW &lt; 280 ✓）</span>,
+        ]}
+        hint="R5上 問10 はこの5ステップそのまま。特に「未満」と「切り上げ」が最重要"
+      />
+
+      {/* 4. MetaStrip */}
+      <MetaStrip
+        ch="CH06 電気施設管理"
+        category="デマンド制御・最大需要電力管理"
+        importance="A"
+        freq="high"
+        examType="B問題・計算"
+        targets={["電気施設管理の計算問題", "30分デマンド管理の実践"]}
+        tags={["デマンド", "最大需要電力", "負荷管理", "ファン停止", "30分平均", "デマンドコントローラ"]}
+        lastChecked="2026-05-07"
+      />
+
+      {/* 5. §3 試験で問われること */}
+      <h2 id="exam-focus">3. 試験で問われること</h2>
+      <ExamFocus items={[
+        { label: "主体",   value: "30分デマンド管理：30分区間の平均電力を指定値未満に抑える計算" },
+        { label: "手法",   value: "（前半電力×前半時間 + 後半電力×後半時間）÷ 30 ＜ 目標値 から後半電力上限を逆算" },
+        { label: "条件",   value: "「未満」（boundary excluded）なので境界値はNG。計算結果に小数が出たら必ず切り上げ" },
+        { label: "単位",   value: "電力[kW]×時間[分]でエネルギーを統一。kWh と kW·分を混在させない" },
+        { label: "応用",   value: "ファン以外の固定停止負荷（○kW分）が与えられた場合の差し引き処理" },
+        { label: "出典",   value: "R5上 問10：換気ファン5.5kW×台数 + 他10kW 停止で300kW未満（答え4台）" },
+      ]} />
+
+      {/* 6. §4 用語と定義 */}
+      <h2 id="abbrev">4. 用語と定義</h2>
+      <MemTable
+        headers={["用語", "定義・意味", "電験での扱い"]}
+        rows={[
+          ["最大需要電力", "30分間の平均使用電力の最大値[kW]", "需要率の分子に登場。電力契約の基本量"],
+          ["デマンド周期", "最大需要電力の計測区間（通常30分）", "9:00〜9:30, 9:30〜10:00 … のように区切る"],
+          ["デマンド目標値", "30分平均電力を超えてはいけない上限値", "超えると翌月の基本料金（需要料金）が上がる"],
+          ["負荷遮断", "デマンド警報発生時にファンや設備を停止する操作", "自動（EMS）または手動で実施"],
+          ["需要率", "需要率 = 最大需要電力 ÷ 設備容量 × 100%", "最大需要電力が大きいほど需要率は高くなる"],
+          ["デマンドコントローラ", "30分積算電力を監視し警報を発する装置", "工場の受電盤に設置される省エネ設備"],
+        ]}
+        note="「最大需要電力」は日常の「ピーク電力（瞬時値）」とは異なり、30分間の平均値である点に注意"
+      />
+
+      <div style={{borderLeft: '3px solid var(--warn)', paddingLeft: 14, marginBottom: 24, fontSize: 13, color: 'var(--ink-2)'}}>
+        <strong>前提条件</strong>：以下の解説は「正時（00分・30分）から30分間」をデマンド周期とする一般的な高圧受電設備を対象としています。契約形態や計測方式により周期が異なる場合があります。
+      </div>
+
+      {/* §5 デマンド vs 瞬時値 */}
+      <h2 id="comparison">5. 最大需要電力 vs 瞬時値の違い</h2>
+      <MemTable
+        headers={["概念", "定義", "計測方法", "契約・料金との関係"]}
+        rows={[
+          ["最大需要電力（デマンド）", "30分区間の平均電力の最大値[kW]", "積算電力計で30分ごとに集計", "需要料金の計算基準（翌月基本料金に影響）"],
+          ["ピーク電力（瞬時）", "ある瞬間の電力使用量[kW]", "電力計で瞬時値を読む", "設備容量の設計に使う。契約の直接根拠ではない"],
+          ["平均電力", "一定時間の平均使用電力[kW]", "エネルギー÷時間", "負荷率の計算に使用"],
+        ]}
+        note="デマンド制御は「30分平均を下げる」管理。瞬時に高くても30分平均が目標内ならOK"
+      />
+
+      {/* §6 30分デマンド区間の概念図 SVG */}
+      <h2 id="demand-concept">6. 30分デマンド区間の仕組み</h2>
+      <PlainExplain>
+        <p>電力会社は正時（00分・30分）を起点に30分ごとに使用電力を積算し、その区間の平均電力を「需要電力」として記録します。この値が月間最高になった時間帯の値が「最大需要電力」として翌月の基本料金を決定します。</p>
+      </PlainExplain>
+      <div style={{background:'var(--bg-elev)', border:'1px solid var(--line)', borderRadius:'var(--radius)', padding:16}}>
+        <svg viewBox="0 0 820 320" style={{width:'100%', height:'auto', display:'block'}}>
+          <rect x="0" y="0" width="820" height="320" fill="#fff"/>
+          {[100,140,180,220,260].map(y => (
+            <line key={y} x1="70" y1={y} x2="760" y2={y} stroke="#eee" strokeWidth="1"/>
+          ))}
+          <line x1="70" y1="180" x2="760" y2="180" stroke="#d33" strokeWidth="2" strokeDasharray="8,4"/>
+          <text x="764" y="184" fontSize="11" fill="#d33" fontWeight="700">目標300kW</text>
+          <line x1="70" y1="40" x2="70" y2="280" stroke="#666" strokeWidth="1.5"/>
+          <line x1="70" y1="280" x2="760" y2="280" stroke="#666" strokeWidth="1.5"/>
+          {[["0分", 70], ["30分", 415], ["60分", 760]].map(([label, x]) => (
+            <g key={label}>
+              <line x1={x} y1="280" x2={x} y2="286" stroke="#666" strokeWidth="1.5"/>
+              <text x={x} y="300" fontSize="11" fill="#666" textAnchor="middle">{label}</text>
+            </g>
+          ))}
+          {[[400,60],[350,100],[300,180],[250,220],[200,260]].map(([label,y]) => (
+            <text key={label} x="62" y={y+4} fontSize="11" fill="#666" textAnchor="end">{label}</text>
+          ))}
+          <text x="18" y="180" fontSize="12" fill="#666" transform="rotate(-90,18,180)">電力 [kW]</text>
+          <rect x="71" y="60" width="343" height="220" fill="#fde8e8" opacity="0.5"/>
+          <line x1="71" y1="60" x2="413" y2="60" stroke="#d33" strokeWidth="2.5"/>
+          <text x="242" y="52" fontSize="12" fill="#d33" fontWeight="700" textAnchor="middle">第1区間 380kW（目標超過）</text>
+          <rect x="414" y="196" width="345" height="84" fill="#e8f5e9" opacity="0.5"/>
+          <line x1="414" y1="196" x2="759" y2="196" stroke="#2a8" strokeWidth="2.5"/>
+          <text x="587" y="188" fontSize="12" fill="#2a8" fontWeight="700" textAnchor="middle">第2区間 260kW（目標内）</text>
+          <line x1="414" y1="60" x2="414" y2="280" stroke="#999" strokeWidth="1.5" strokeDasharray="4,3"/>
+          <text x="414" y="310" fontSize="11" fill="#999" textAnchor="middle">30分区切り</text>
+          <rect x="160" y="72" width="162" height="24" rx="4" fill="#c33" opacity="0.12"/>
+          <text x="241" y="88" fontSize="12" fill="#c33" fontWeight="700" textAnchor="middle">← 最大需要電力</text>
+          <defs>
+            <marker id="arr-d1" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#c33"/>
+            </marker>
+          </defs>
+        </svg>
+        <div style={{fontSize:12, color:'var(--ink-3)', marginTop:8}}>※ 月間で最も高かった区間（第1区間・380kW）が「最大需要電力」として基本料金を決定する。</div>
+      </div>
+
+      {/* §7 R5上 問10 電力推移グラフ SVG */}
+      <h2 id="r5u-graph">7. R5上 問10 の電力推移グラフ</h2>
+      <PlainExplain>
+        <p>9:00〜9:30の1デマンド区間内で、9:20以降に負荷を遮断する場面。前半（310kW）が目標を超えているため、後半で十分に下げなければならない。</p>
+      </PlainExplain>
+      <div style={{background:'var(--bg-elev)', border:'1px solid var(--line)', borderRadius:'var(--radius)', padding:16}}>
+        <svg viewBox="0 0 820 300" style={{width:'100%', height:'auto', display:'block'}}>
+          <rect x="0" y="0" width="820" height="300" fill="#fff"/>
+          {[80,120,160,200,240].map(y => (
+            <line key={y} x1="70" y1={y} x2="750" y2={y} stroke="#eee" strokeWidth="1"/>
+          ))}
+          <line x1="70" y1="160" x2="750" y2="160" stroke="#d33" strokeWidth="2" strokeDasharray="8,4"/>
+          <text x="754" y="164" fontSize="11" fill="#d33" fontWeight="700">300kW</text>
+          <line x1="70" y1="200" x2="750" y2="200" stroke="#e6a817" strokeWidth="1.5" strokeDasharray="5,3"/>
+          <text x="754" y="204" fontSize="11" fill="#e6a817">280kW</text>
+          <line x1="70" y1="40" x2="70" y2="262" stroke="#666" strokeWidth="1.5"/>
+          <line x1="70" y1="262" x2="750" y2="262" stroke="#666" strokeWidth="1.5"/>
+          {[["9:00",70],["9:10",297],["9:20",524],["9:30",750]].map(([label,x]) => (
+            <g key={label}>
+              <line x1={x} y1="262" x2={x} y2="268" stroke="#666" strokeWidth="1.5"/>
+              <text x={x} y="282" fontSize="11" fill="#444" textAnchor="middle">{label}</text>
+            </g>
+          ))}
+          {[[350,64],[320,92],[310,112],[300,160],[280,200],[260,240]].map(([label,y]) => (
+            <text key={label} x="62" y={y+4} fontSize="11" fill="#666" textAnchor="end">{label}</text>
+          ))}
+          <rect x="71" y="112" width="452" height="150" fill="#fde8e8" opacity="0.4"/>
+          <line x1="71" y1="112" x2="523" y2="112" stroke="#d33" strokeWidth="3"/>
+          <text x="297" y="100" fontSize="13" fill="#d33" fontWeight="700" textAnchor="middle">310kW（前半20分）</text>
+          <rect x="524" y="128" width="225" height="134" fill="#e8f5e9" opacity="0.5"/>
+          <line x1="524" y1="128" x2="749" y2="128" stroke="#2a8" strokeWidth="3"/>
+          <text x="637" y="118" fontSize="13" fill="#2a8" fontWeight="700" textAnchor="middle">278kW（後半10分）</text>
+          <line x1="524" y1="60" x2="524" y2="262" stroke="#a06" strokeWidth="2" strokeDasharray="4,3"/>
+          <circle cx="524" cy="60" r="13" fill="#a06" stroke="#fff" strokeWidth="2"/>
+          <text x="524" y="64" fontSize="10" fill="#fff" fontWeight="700" textAnchor="middle">遮断</text>
+          <text x="524" y="44" fontSize="11" fill="#a06" textAnchor="middle">9:20</text>
+          <rect x="71" y="234" width="452" height="22" fill="#fde8e8" opacity="0.6"/>
+          <text x="297" y="249" fontSize="12" fill="#c33" fontWeight="700" textAnchor="middle">310×20 = 6,200 kW·分</text>
+          <rect x="525" y="234" width="224" height="22" fill="#e8f5e9" opacity="0.6"/>
+          <text x="637" y="249" fontSize="12" fill="#2a8" fontWeight="700" textAnchor="middle">278×10 = 2,780 kW·分</text>
+          <text x="410" y="272" fontSize="12" fill="#333" textAnchor="middle">合計 8,980 kW·分 ÷ 30 = 299.3kW &lt; 300 ✓</text>
+        </svg>
+        <div style={{fontSize:12, color:'var(--ink-3)', marginTop:8}}>※ ファン4台(22kW) + 他10kW = 32kW停止 → 310−32 = 278kW。278 &lt; 280 ✓ 条件達成。</div>
+      </div>
+
+      {/* §8 面積モデルSVG */}
+      <h2 id="calc-visual">8. 計算の構造（面積モデル）</h2>
+      <PlainExplain>
+        <p>「30分の平均電力 = 電力×時間の合計 ÷ 30分」は、グラフ上では<strong>面積 ÷ 時間</strong>です。前半の面積が固定されているので、後半の面積（幅10分×高さP）がどこまで許されるかが問題の核心です。</p>
+      </PlainExplain>
+      <div style={{background:'var(--bg-elev)', border:'1px solid var(--line)', borderRadius:'var(--radius)', padding:16}}>
+        <svg viewBox="0 0 820 240" style={{width:'100%', height:'auto', display:'block'}}>
+          <rect x="0" y="0" width="820" height="240" fill="#fff"/>
+          <line x1="60" y1="200" x2="750" y2="200" stroke="#666" strokeWidth="1.5"/>
+          <line x1="60" y1="40" x2="60" y2="200" stroke="#666" strokeWidth="1.5"/>
+          <rect x="61" y="50" width="689" height="150" fill="#f7f7f7" stroke="#ccc" strokeWidth="1"/>
+          <rect x="61" y="50" width="459" height="150" fill="#fde8e8" stroke="#d33" strokeWidth="1.5"/>
+          <text x="290" y="128" fontSize="15" fill="#d33" fontWeight="800" textAnchor="middle">310 × 20 = 6,200 kW·分</text>
+          <text x="290" y="150" fontSize="13" fill="#d33" textAnchor="middle">（前半・確定値）</text>
+          <rect x="521" y="80" width="229" height="120" fill="#e8f5e9" stroke="#2a8" strokeWidth="1.5"/>
+          <text x="636" y="148" fontSize="14" fill="#2a8" fontWeight="800" textAnchor="middle">P × 10 kW·分</text>
+          <text x="636" y="168" fontSize="12" fill="#2a8" textAnchor="middle">P &lt; 280kW が条件</text>
+          <rect x="521" y="50" width="229" height="30" fill="#fff8e1"/>
+          <text x="636" y="70" fontSize="12" fill="#e6a817" fontWeight="700" textAnchor="middle">残り許容枠: &lt;2,800 kW·分</text>
+          <line x1="61" y1="50" x2="749" y2="50" stroke="#a06" strokeWidth="2" strokeDasharray="8,4"/>
+          <text x="610" y="44" fontSize="12" fill="#a06" fontWeight="700">上限 9,000 kW·分（30×300）</text>
+          <text x="290" y="216" fontSize="12" fill="#666" textAnchor="middle">← 20分 →</text>
+          <text x="636" y="216" fontSize="12" fill="#666" textAnchor="middle">← 10分 →</text>
+          <line x1="520" y1="50" x2="520" y2="200" stroke="#999" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="520" y="232" fontSize="11" fill="#555" textAnchor="middle">9:20</text>
+        </svg>
+        <div style={{fontSize:12, color:'var(--ink-3)', marginTop:8}}>※ 前半面積(6,200) + 後半面積(10P) &lt; 上限(9,000) → P &lt; 280kW が条件。</div>
+      </div>
+
+      {/* §9 計算ステップ詳解 */}
+      <h2 id="calc-detail">9. R5上 問10 の計算ステップ詳解</h2>
+      <PlainExplain>
+        <p style={{margin:'0 0 10px'}}><strong>STEP 1：全体エネルギーの上限を設定</strong></p>
+        <p style={{marginLeft:14, marginBottom:10, fontFamily:'monospace', fontSize:13}}>
+          30分平均 &lt; 300kW<br/>
+          → 合計エネルギー &lt; 300 × 30 = 9,000 kW·分
+        </p>
+        <p style={{margin:'0 0 10px'}}><strong>STEP 2：前半エネルギーを確定</strong></p>
+        <p style={{marginLeft:14, marginBottom:10, fontFamily:'monospace', fontSize:13}}>
+          前半（9:00〜9:20）: 310kW × 20分 = 6,200 kW·分
+        </p>
+        <p style={{margin:'0 0 10px'}}><strong>STEP 3：後半電力の上限を逆算</strong></p>
+        <p style={{marginLeft:14, marginBottom:10, fontFamily:'monospace', fontSize:13}}>
+          6,200 + P × 10 &lt; 9,000<br/>
+          P × 10 &lt; 2,800<br/>
+          P &lt; 280kW
+        </p>
+        <p style={{margin:'0 0 10px'}}><strong>STEP 4：必要な停止電力を算出</strong></p>
+        <p style={{marginLeft:14, marginBottom:10, fontFamily:'monospace', fontSize:13}}>
+          現在値310kWをP=280未満にする → 停止電力 &gt; 310 − 280 = 30kW
+        </p>
+        <p style={{margin:'0 0 10px'}}><strong>STEP 5：ファン停止台数を求める</strong></p>
+        <p style={{marginLeft:14, marginBottom:10, fontFamily:'monospace', fontSize:13}}>
+          停止電力 = 5.5X + 10 &gt; 30<br/>
+          5.5X &gt; 20<br/>
+          X &gt; 3.636…<br/>
+          → 整数なので X = 4台（切り上げ）
+        </p>
+        <p style={{margin:'0 0 10px'}}><strong>検算</strong></p>
+        <p style={{marginLeft:14, fontFamily:'monospace', fontSize:13}}>
+          P = 310 − 5.5×4 − 10 = 310 − 32 = 278kW ✓（278 &lt; 280）<br/>
+          平均 = (310×20 + 278×10) / 30 = 8,980 / 30 = 299.3kW ✓（299.3 &lt; 300）
+        </p>
+      </PlainExplain>
+
+      {/* §10 デマンド制御の実務フロー */}
+      <h2 id="control-flow">10. デマンド制御の実務フロー</h2>
+      <PlainExplain>
+        <p>工場のデマンドコントローラは30分区間の積算電力を常時監視します。目標値の80〜90%到達時点で警報を発し、ファン・空調等の非重要負荷を段階的に停止することで超過を防ぎます。</p>
+      </PlainExplain>
+      <MemTable
+        headers={["フェーズ", "デマンドコントローラの動作", "現場対応"]}
+        rows={[
+          ["監視中（〜80%）", "30分積算電力を常時計測", "通常運転、特別な対応なし"],
+          ["第1警報（80〜90%）", "目標値の80〜90%で予告警報", "優先度低の設備（換気ファン等）を停止準備"],
+          ["第2警報（90〜100%）", "目標値の90%超で強警報", "換気ファン・付帯設備を実際に停止"],
+          ["超過直前（100%近傍）", "目標値超過が確実な場合に最終警報", "空調・加熱設備等を追加停止"],
+          ["区間終了（30分経過）", "積算値をリセット、最大値を記録", "停止した設備を順次復帰"],
+        ]}
+        note="自動制御（EMS連携）の場合は警報と負荷遮断が自動的に実行される"
+      />
+
+      {/* §11 解き方・判断手順 */}
+      <h2 id="solve-flow">11. 解き方・判断手順（汎用版）</h2>
+      <SolveFlow type="デマンド制御計算の汎用解法" steps={[
+        "周期確認：「30分間の平均電力」が対象。時間の単位を[分]に統一",
+        "目標エネルギー上限：目標値[kW] × 30分（「未満」か「以下」かに注意）",
+        "前半エネルギー確定：前半電力[kW] × 前半時間[分] を計算",
+        "後半電力上限を逆算：（上限エネルギー − 前半エネルギー）÷ 後半時間[分]",
+        "停止電力必要量：現在電力 − 後半電力上限（不等号の向きに注意）",
+        "台数計算：（必要停止電力 − 固定停止分）÷ 単位電力、小数点は切り上げ",
+        "検算：後半電力P = 現在電力 − 全停止電力 を求め、上限と比較して確認",
+      ]} />
+
+      {/* §12 暗記ポイント */}
+      <h2 id="memory">12. 暗記ポイント</h2>
+      <MemTable
+        headers={["暗記項目", "内容", "注意点"]}
+        rows={[
+          ["デマンド周期", "30分（正時：00分・30分起点）", "15分・60分も存在するが電験3種では30分が標準"],
+          ["最大需要電力の単位", "[kW]（電力の単位）", "[kWh]（エネルギー）と混同しない"],
+          ["デマンド計算の基本式", "(P₁t₁ + P₂t₂) / 30 &lt; 目標値", "時間[分]で統一すること"],
+          ["切り上げの理由", "台数は整数。小数以下切り捨てでは条件未達になる", "「4台」で条件達成できても「3.64→3台」は不足"],
+          ["「未満」の境界値", "P &lt; 280 → P=280はNG、平均=300kWになり「未満」不成立", "「以下」と「未満」は別物"],
+          ["需要率との関係", "需要率 = 最大需要電力 ÷ 設備容量 × 100%", "最大需要電力を下げると需要率も下がる"],
+        ]}
+        note="デマンド制御は「最大需要電力を下げて毎月の基本料金を削減する」経営的意義もある"
+      />
+
+      {/* §13 ひっかけ表 */}
+      <h2 id="traps">13. よくあるひっかけ（10項目）</h2>
+      <TrapTable traps={[
+        { trap: "「300kW以下」と読み違えて P=280 もOKとする", correct: "「300kW未満」なのでP=280はNG（平均ちょうど300kWになり条件不成立）" },
+        { trap: "X=3.64 → 切り捨てで3台と答える", correct: "3台ではP=283.5kW>280で条件未達。整数台しかないので切り上げ→4台" },
+        { trap: "その他停止負荷10kWを忘れる", correct: "停止電力 = 5.5X + 10。10kWを引いてからXを求める（必要ファン停止は20kW分）" },
+        { trap: "後半10分の計算を30分で割らない", correct: "P×10 が後半エネルギー。P×30 は誤り（10分しかない）" },
+        { trap: "平均を (310+P)/2 で計算（単純平均）", correct: "時間加重平均が正しい。(310×20 + P×10)/30。区間が20:10で非均等" },
+        { trap: "最大8台を「答え=8台」と混同", correct: "8台は上限（停止可能最大数）。問いは「最低何台か」なので4台" },
+        { trap: "目標エネルギーを 300×30=9,000 以下と設定（境界値OK扱い）", correct: "「未満」なので 9,000 kW·分は含まない。9,000 未満（=8,999 以下）" },
+        { trap: "デマンド周期を1時間として計算", correct: "デマンド周期は30分。9:00〜9:30の30分で1区間" },
+        { trap: "ファンの電力を kW·h 扱いして計算する", correct: "5.5kW は電力。停止電力は5.5X kW であり時間をかける前の値" },
+        { trap: "停止後P=278kWなのに「280kWを下回ったから十分」と3台で答える", correct: "3台はX=3で3.64未満。3台停止ではP=300-16.5=283.5kW>280でNG" },
+      ]} />
+
+      {/* §14 過去問 */}
+      <h2 id="exam-r05u">14. 過去問：令和5年上期 問10（完成版）</h2>
+
+      <ExamQuestion
+        year="令和5年上期"
+        qNum="10"
+        question="ある工場では、換気用ファン（定格出力5.5kWのものが複数台設置されており、最大8台まで停止できる）を9時00分から10台運転している。この日の9時00分から9時20分の間の平均使用電力は310kWであった。9時20分から9時30分の間に、ファンを何台か停止させるとともに、その他の負荷を10kW分停止させた。9時00分から9時30分の最大需要電力を300kW未満に抑えるためには、ファンを最低何台停止させる必要があるか。"
+        choices={["0台", "2台", "4台", "6台", "8台"]}
+        note="最大需要電力 = 30分間の平均使用電力[kW]。時間帯に注意（前半20分・後半10分）。"
+      />
+
+      <SolveFlow type="解法" steps={[
+        "目標条件：9:00〜9:30の30分間平均 < 300kW → 合計エネルギー < 9,000 kW·分",
+        "前半確定：310kW × 20分 = 6,200 kW·分",
+        "後半上限逆算：6,200 + P×10 < 9,000 → P×10 < 2,800 → P < 280kW",
+        "停止電力必要量：310 − P > 30 → 5.5X + 10 > 30 → 5.5X > 20",
+        "台数計算：X > 3.636… → 整数に切り上げ → X = 4台",
+        "検算：P = 310 − 22 − 10 = 278kW < 280 ✓ → 平均 = (6,200+2,780)/30 = 299.3kW < 300 ✓",
+      ]} />
+
+      <ExamAnswer
+        correct="(3) 4台"
+        explanations={[
+          { choice: "(1) 0台", mark: "×", reason: "停止なし → P=310kW → 平均=(310×30)/30=310kW > 300 NG" },
+          { choice: "(2) 2台", mark: "×", reason: "P=310−11−10=289kW → 平均=(6,200+2,890)/30=303kW > 300 NG" },
+          { choice: "(3) 4台", mark: "○", reason: "P=310−22−10=278kW → 平均=(6,200+2,780)/30=299.3kW < 300 ✓ 最小台数" },
+          { choice: "(4) 6台", mark: "△", reason: "P=310−33−10=267kW → 条件は満たすが最小台数ではない（過剰停止）" },
+          { choice: "(5) 8台", mark: "△", reason: "P=310−44−10=256kW → 条件は満たすが最小台数ではない（最大停止台数）" },
+        ]}
+      />
+
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}><strong>R5上 問10 のひっかけポイント</strong></p>
+        <ol style={{margin: 0, paddingLeft: 22, fontSize: 13, lineHeight: 1.9}}>
+          <li><strong>3台と答えてしまう</strong>：X=3.64の小数を切り捨てると3台。しかし3台ではP=283.5kW>280で条件不達</li>
+          <li><strong>10kW停止分を忘れる</strong>：停止電力=ファン分+10kW。ファンだけで30kW要と誤解しやすい（実際は20kW以上）</li>
+          <li><strong>「未満」と「以下」の混同</strong>：境界値P=280kWは不可（平均がちょうど300kWになり「未満」不成立）</li>
+          <li><strong>前後の時間比を無視</strong>：前半20分・後半10分の非均等。(310+P)/2=300の単純平均で解こうとする</li>
+          <li><strong>8台が答えと勘違い</strong>：「最大8台まで停止できる」は条件の一部。「最低何台か」を問われている</li>
+        </ol>
+      </PlainExplain>
+
+      {/* §15 類題対応シナリオ */}
+      <h2 id="related-problems">15. 類題対応シナリオ</h2>
+      <MemTable
+        headers={["類題パターン", "何が変わるか", "解き方のポイント"]}
+        rows={[
+          ["① 目標値が異なる（例：280kW未満）", "上限エネルギーが変わる", "280×30=8,400 kW·分を上限に同じ手順"],
+          ["② ファンの定格が異なる（例：3.7kW）", "1台あたりの停止電力が変わる", "停止必要電力÷3.7で台数計算（切り上げ同様）"],
+          ["③ 前半が均一でなく段階的に変化", "エネルギーを区間ごとに分けて積算", "各段階の電力×時間を合計してから逆算"],
+          ["④ 停止できる台数が限られる場合", "上限台数が制約になる", "最大台数で停止してもP>目標なら別の手段を検討"],
+          ["⑤ 電流[A]や負荷量[kVA]で問われる場合", "電力換算が追加で必要", "P=√3·V·I·cosφ または P=S·cosφ から kW に変換してから計算"],
+        ]}
+        note="問題の本質「前半固定→後半で調整→台数切り上げ」は変わらない。入力値の変化だけに対応"
+      />
+
+      {/* §16 実務メモ */}
+      <h2 id="practical">16. 実務メモ：デマンド管理システム</h2>
+      <PlainExplain>
+        <p>工場のEMS（エネルギー管理システム）はデマンドコントローラと連携し、30分区間の積算電力をリアルタイム監視します。デマンドを下げることで翌月以降の基本料金（需要料金）を削減できます。</p>
+      </PlainExplain>
+      <MemTable
+        headers={["装置/機能", "目的", "動作タイミング"]}
+        rows={[
+          ["デマンドコントローラ", "30分積算電力の監視・警報・記録", "区間開始から常時計測"],
+          ["第1警報（予告）", "目標値の80〜90%で警告を発報", "超過予測時（区間の中盤以降）"],
+          ["負荷遮断（段階1）", "換気ファン・付帯設備を停止", "第1警報後・自動または手動"],
+          ["負荷遮断（段階2）", "空調・加熱設備等を追加停止", "第2警報後・より大きな超過予測時"],
+          ["デマンドリセット", "次の30分区間開始とともに積算リセット", "毎時00分・30分に自動実行"],
+          ["月次デマンド記録", "当月の最大需要電力値を確定", "月末に確定し翌月基本料金計算に使用"],
+        ]}
+        note="デマンドが上がった月は翌月以降の基本料金が継続して上昇するため、管理が特に重要"
+      />
+
+      {/* §17 関連法規 */}
+      <h2 id="related-laws">17. 関連法規（条文との対応）</h2>
+      <MemTable
+        headers={["階層", "法規・条文", "本ページとの関係"]}
+        rows={[
+          [<span>🟥 法律</span>, <span><strong>電気事業法</strong><br/>第39条 事業用電気工作物の維持</span>, "事業用電気工作物を技術基準に適合するよう維持する義務。施設管理の法的根拠"],
+          [<span>🟥 法律</span>, <span><strong>エネルギーの使用の合理化等に関する法律（省エネ法）</strong><br/>第3条・第5条</span>, "特定事業者のエネルギー管理義務。デマンド制御による省エネの法的背景"],
+          [<span>🟨 省令</span>, <span><strong>電気設備技術基準</strong><br/>第1条 定義</span>, "最大需要電力の定義が使われる文脈（施設管理全般）"],
+          [<span>🟩 解釈</span>, <span><strong>電技解釈</strong><br/>第220条 電気施設管理</span>, "需要率・負荷率・不等率の概念（デマンド制御の基礎数値）"],
+        ]}
+        note="法規B問題（電気施設管理）は計算が中心。条文番号より概念と計算手順の理解が重要"
+      />
+
+      {/* §18 1分復習 */}
+      <h2 id="quick-review">18. 1分復習</h2>
+      <QuickReview
+        items={[
+          { q: "最大需要電力の定義は？", a: "30分間の平均使用電力の最大値[kW]" },
+          { q: "R5上問10の後半電力上限の計算は？", a: "(310×20 + P×10)/30 < 300 → P < 280kW" },
+          { q: "なぜ4台が最小か？（3台ではダメな理由）", a: "3台停止ではP=283.5kW > 280kW で条件未達。X=3.64を切り上げて4台" },
+          { q: "ファン以外の10kW停止の扱いは？", a: "停止電力 = 5.5X + 10。方程式は 5.5X + 10 > 30 → X > 3.64" },
+          { q: "「300kW未満」の境界値P=280kWはOKか？", a: "NG。P=280だと平均=300kWでちょうど等しくなり「未満」不成立" },
+        ]}
+      />
+
+      {/* §19 掛け算出題パターン */}
+      <h2 id="crossref">19. 掛け算出題パターン</h2>
+      <CrossRef
+        patterns={[
+          { a: "デマンド制御", b: "需要率・負荷率・不等率（1.6/6.1）", result: "最大需要電力を使った需要率の算出問題と組み合わさる" },
+          { a: "デマンド計算", b: "変圧器容量（6.4）", result: "最大需要電力から受電変圧器容量を逆算する設計問題" },
+          { a: "ファン停止", b: "力率改善（1.5）", result: "負荷停止時の力率変化とデマンド変化を組み合わせた問題" },
+          { a: "デマンドレスポンス", b: "分散型電源連系（3.7）", result: "太陽光自家消費によるデマンド低減と余剰電力逆潮流の問題" },
+        ]}
+      />
+
+      <PageNav
+        prevId="juden-setsubi-kanri"
+        prevTitle="6.6 受電設備管理"
+        nextId="kakomon-b"
+        nextTitle="7.1 B問題だけ"
+        onNav={onNav}
+      />
+
+      <UpdateLog entries={[
+        { date: "2026-05-07", content: "初版作成 — R5上 問10（デマンド制御・最大需要電力管理）解説ページ。19セクション・SVG3枚・過去問完成版", reason: "R5上 問10 の専用解説ページ新設" }
+      ]} />
     </div>
   );
 }
