@@ -759,6 +759,12 @@
                               : status === 'success' ? '準備OK'
                               : '任意';
 
+    const gcalExpired = (() => {
+      const clientId = localStorage.getItem('cc-google-client-id');
+      const expiry = Number(localStorage.getItem('cc-google-token-expiry')) || 0;
+      return clientId && expiry > 0 && Date.now() > expiry;
+    })();
+
     return (
     <div className="m3-card p-6 flex flex-col">
       <CardHeader
@@ -769,6 +775,14 @@
         statusIcon="sync"
         lastUpdate="06:00"
       />
+
+      {gcalExpired && (
+        <div className="flex items-center gap-2 px-3 py-2 mb-3 rounded-lg text-[12px]"
+             style={{background:'rgba(234,134,0,0.12)', color:'var(--warning,#ea8600)', border:'1px solid rgba(234,134,0,0.25)'}}>
+          <Icon name="sync_problem" size={16} />
+          <span>Google Calendar トークン期限切れ — ⚙ → <strong>Googleで接続</strong> で再接続</span>
+        </div>
+      )}
 
       {/* Hero meeting */}
       {hero ? (
@@ -962,6 +976,23 @@
       } catch {}
       return defaults;
     });
+    const [healthFetched, setHealthFetched] = useState(false);
+
+    useEffect(() => {
+      const HEALTH_URL = 'https://raw.githubusercontent.com/kfurufuru/secretary-portal/main/data/health-today.json';
+      fetch(HEALTH_URL + '?t=' + Date.now())
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(data => {
+          if (data && typeof data === 'object') {
+            const merged = { ...defaults, ...data };
+            localStorage.setItem('cc-recovery', JSON.stringify(merged));
+            setRecovery(merged);
+            setHealthFetched(true);
+          }
+        })
+        .catch(() => {});
+    }, []);
+
     const sleepStages = [
       { name:'深い',  pct: recovery.deepSleepPct,  color: 'var(--primary,#1a73e8)' },
       { name:'レム',  pct: recovery.remPct,        color: '#34a853' },

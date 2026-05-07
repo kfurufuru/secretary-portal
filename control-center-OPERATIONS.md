@@ -262,7 +262,123 @@
 | v1.3 | 2026-05-06 | Markets削除・AI Daily Brief・Tier化・AI→TOP 3連携 |
 | v1.4 | 2026-05-06 | Google Calendar OAuth連携（GIS Token Client）|
 | v1.4.1 | 2026-05-07 | OPERATIONS.md 最新化（全画面・WeatherNews一覧・News Pulseソース・GH Pages OAuth注意）|
+| v1.5 | 2026-05-07 | Google Calendar トークン期限切れ警告・Apple Watch 自動フェッチパイプライン |
 
 ---
 
-**運用開始可能。明朝06:00から朝の戦略コックピットとして稼働できます。**
+## Apple Watch データパイプライン
+
+Recovery カードは起動時に `data/health-today.json` を GitHub raw から自動フェッチします。  
+iOS ショートカットで毎朝自動更新することで、Apple Watch の実測値が反映されます。
+
+### データスキーマ（`data/health-today.json`）
+
+```json
+{
+  "_updated": "2026-05-07T06:00:00+09:00",
+  "_source": "ios-shortcut",
+  "sleepScore": 82,
+  "sleepDuration": "7h 34m",
+  "deepSleepPct": 20,
+  "remPct": 24,
+  "lightPct": 50,
+  "awakePct": 6,
+  "hrv": 48,
+  "hrvAvg": 41,
+  "rhr": 52,
+  "kcal": 380,
+  "stand": 0,
+  "decisionStrength": 4,
+  "advice": "09:00 重要決定OK · 16:00 以降は判断保留"
+}
+```
+
+### iOS ショートカット構築手順
+
+#### 前提
+- iPhone に「ショートカット」アプリがインストール済み
+- GitHub Personal Access Token（PAT）を取得済み
+  - <https://github.com/settings/tokens> → "Generate new token (classic)"
+  - スコープ: `repo`（Contents の read/write）
+  - 生成したトークンをメモ帳等に控える
+
+#### HealthKit データ取得 + GitHub PUT の流れ
+
+1. **「ショートカット」アプリ** → 右上 `+` → 新規ショートカット
+2. 以下のアクションを順に追加：
+
+| ステップ | アクション | 設定値 |
+|---|---|---|
+| 1 | **ヘルスケア** → 「睡眠分析を取得」 | 種類: すべて / 範囲: 昨夜 |
+| 2 | **ヘルスケア** → 「心拍変動を取得」 | 範囲: 今日 / 集計: 平均 |
+| 3 | **ヘルスケア** → 「安静時心拍数を取得」 | 範囲: 今日 / 集計: 平均 |
+| 4 | **ヘルスケア** → 「アクティブエネルギーを取得」 | 範囲: 今日 / 集計: 合計 |
+| 5 | **テキスト** | 下記 JSON テンプレートを貼り付け |
+| 6 | **URL** → 「コンテンツを取得」| Method: PUT / URL: GitHub API / Headers: Authorization |
+
+#### JSON テンプレート（ステップ5のテキストアクション）
+
+```
+{
+  "_updated": "[現在の日付と時刻]",
+  "_source": "ios-shortcut",
+  "sleepScore": [睡眠スコア],
+  "sleepDuration": "[睡眠時間]",
+  "hrv": [心拍変動],
+  "rhr": [安静時心拍数],
+  "kcal": [アクティブエネルギー],
+  "deepSleepPct": 20,
+  "remPct": 22,
+  "lightPct": 52,
+  "awakePct": 6,
+  "hrvAvg": 40,
+  "stand": 0,
+  "decisionStrength": 4,
+  "advice": "09:00 重要決定OK · 16:00 以降は判断保留"
+}
+```
+
+> `[]` 内の値はショートカットの変数で差し替える。`deepSleepPct` 等はApple HealthKit では直接取れないため固定値でOK。
+
+#### GitHub API PUT 設定（ステップ6）
+
+- **URL**: `https://api.github.com/repos/kfurufuru/secretary-portal/contents/data/health-today.json`
+- **Method**: `PUT`
+- **Headers**:
+  - `Authorization`: `Bearer <YOUR_PAT>`
+  - `Content-Type`: `application/json`
+- **Body** (JSON):
+  ```json
+  {
+    "message": "health update",
+    "content": "<Base64エンコードされたJSON>",
+    "sha": "<現在のファイルのSHA>"
+  }
+  ```
+
+> `sha` は PUT 前に GET で取得が必要。ショートカットの「URLのコンテンツを取得」→ `sha` フィールドを変数に格納 → PUT の body に埋め込む。
+
+#### 自動実行設定
+
+1. ショートカットを保存（名前例: "Watch → Dashboard"）
+2. **オートメーション** タブ → `+` → **個人用オートメーション**
+3. トリガー: **時刻** → 06:00 毎日
+4. アクション: 上記ショートカットを実行
+5. 「実行前に確認」をオフ → 完了
+
+---
+
+## Google Calendar トークン期限切れ
+
+スケジュールカードにトークン期限切れバナーが表示されたら：
+
+1. ヘッダー右上 `⚙` をクリック
+2. **Google Calendar セクション** → 「Googleで接続」をクリック
+3. Google アカウント選択 → 権限承認
+4. バナーが消えて同期が再開される
+
+**有効期間**: 接続から **1時間**。長時間離席後はバナーが再表示される。
+
+---
+
+## バージョン履歴
