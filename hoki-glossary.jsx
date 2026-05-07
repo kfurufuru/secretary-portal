@@ -464,21 +464,19 @@ function ListMode({ terms, deck, onOpenMemo }) {
 
       {/* Table */}
       <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-        <table style={{ width: '100%', minWidth: 720, borderCollapse: 'collapse', fontSize: 13, tableLayout: 'fixed' }}>
+        <table style={{ width: '100%', minWidth: 620, borderCollapse: 'collapse', fontSize: 13, tableLayout: 'fixed' }}>
           <colgroup>
-            <col style={{ width: 92 }} />
-            <col style={{ width: 92 }} />
+            <col style={{ width: 104 }} />
+            <col style={{ width: 80 }} />
             <col style={{ width: 'auto' }} />
-            <col style={{ width: 'auto' }} />
-            <col style={{ width: 76 }} />
-            <col style={{ width: 132 }} />
+            <col style={{ width: 88 }} />
+            <col style={{ width: 164 }} />
           </colgroup>
           <thead>
             <tr style={{ background: 'var(--bg-elev)' }}>
               <th style={thStyle}>用語</th>
               <th style={thStyle}>読み</th>
               <th style={thStyle}>意味</th>
-              <th style={thStyle}>試験での注意点</th>
               <th style={thStyle}>段階</th>
               <th style={Object.assign({}, thStyle, { textAlign: 'center' })}>操作</th>
             </tr>
@@ -486,7 +484,7 @@ function ListMode({ terms, deck, onOpenMemo }) {
           <tbody>
             {visible.length === 0 && (
               <tr>
-                <td colSpan={6} style={{ padding: 24, textAlign: 'center', color: 'var(--ink-3)' }}>
+                <td colSpan={5} style={{ padding: 24, textAlign: 'center', color: 'var(--ink-3)' }}>
                   該当する用語がありません。
                 </td>
               </tr>
@@ -517,25 +515,29 @@ function ListMode({ terms, deck, onOpenMemo }) {
                     </td>
                     <td style={Object.assign({}, tdStyle, { color: 'var(--ink-3)', fontSize: 12, wordBreak: 'keep-all', overflowWrap: 'break-word' })}>{t.yomi || ''}</td>
                     <td style={tdStyle}>{t.meaning || ''}</td>
-                    <td style={Object.assign({}, tdStyle, { fontSize: 12, color: 'var(--ink-2)' })}>
-                      {t.exam_note ? t.exam_note : <span style={{ color: 'var(--ink-3)' }}>—</span>}
-                    </td>
                     <td style={tdStyle}>
                       <StageBadge stage={stage} lastResult={lastRes} />
                       {nr && <MiniBadge conf={REVIEW_BADGE} />}
                     </td>
-                    <td style={Object.assign({}, tdStyle, { textAlign: 'center', whiteSpace: 'nowrap' })}>
-                      <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={iconBtnStyle} title="❌ 不明">❌</button>
-                      <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={iconBtnStyle} title="🤔 曖昧">🤔</button>
-                      <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'correct'); }} style={iconBtnStyle} title="✅ 理解">✅</button>
-                      <button onClick={(e) => { e.stopPropagation(); onOpenMemo(t.id); }} style={iconBtnStyle} title="メモ">📝</button>
+                    <td style={Object.assign({}, tdStyle, { padding: '6px 8px' })} onClick={(e) => e.stopPropagation()}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'wrong'); }} style={Object.assign({}, actionBtnStyle, { background: WRONG_BADGE.bg, color: WRONG_BADGE.color, borderColor: WRONG_BADGE.border })}>❌ 不明</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'unsure'); }} style={Object.assign({}, actionBtnStyle, { background: UNSURE_BADGE.bg, color: UNSURE_BADGE.color, borderColor: UNSURE_BADGE.border })}>🤔 曖昧</button>
+                        <button onClick={(e) => { e.stopPropagation(); handleResult(t.id, 'correct'); }} style={Object.assign({}, actionBtnStyle, { background: '#d8f4d8', color: '#1a6e1a', borderColor: '#90c890' })}>✅ 理解</button>
+                        <button onClick={(e) => { e.stopPropagation(); onOpenMemo(t.id); }} style={actionBtnStyle}>📝 メモ</button>
+                      </div>
                     </td>
                   </tr>
                   {isOpen && (
                     <tr style={{ background: 'var(--bg-elev)' }}>
-                      <td colSpan={6} style={{ padding: '10px 12px', borderTop: '1px solid var(--border)' }}>
+                      <td colSpan={5} style={{ padding: '10px 12px', borderTop: '1px solid var(--border)' }}>
+                        {t.exam_note && (
+                          <div style={{ marginBottom: 8, padding: '6px 10px', background: '#fff4cc', border: '1px solid #e8c660', borderRadius: 4, fontSize: 12, color: '#8a6500' }}>
+                            ⚠ 試験での注意点: {t.exam_note}
+                          </div>
+                        )}
                         {notes.length === 0 ? (
-                          <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>メモはまだありません。</span>
+                          <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>メモはまだありません。クリックして追加できます。</span>
                         ) : (
                           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
                             {notes.map((n, i) => (
@@ -597,6 +599,18 @@ const iconBtnStyle = {
   fontSize: 13,
   cursor: 'pointer',
   lineHeight: 1,
+};
+const actionBtnStyle = {
+  background: 'var(--bg-elev)',
+  border: '1px solid var(--border)',
+  borderRadius: 5,
+  padding: '5px 4px',
+  fontSize: 11,
+  fontWeight: 600,
+  cursor: 'pointer',
+  lineHeight: 1.3,
+  whiteSpace: 'nowrap',
+  textAlign: 'center',
 };
 
 // ===== Mode 2: Quiz Meaning =====
