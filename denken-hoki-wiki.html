@@ -2482,6 +2482,9 @@ function TOC({ page }) {
 
 function TopBar({ page, onNav }) {
   const data = window.WIKI_DATA;
+  const [query, setQuery] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+
   let pageTitle = page;
   if (data && data.chapters) {
     data.chapters.forEach(ch => {
@@ -2490,6 +2493,31 @@ function TopBar({ page, onNav }) {
       });
     });
   }
+
+  const allPages = React.useMemo(() => {
+    if (!data || !data.chapters) return [];
+    const pages = [];
+    data.chapters.forEach(ch => {
+      (ch.pages || []).forEach(p => {
+        pages.push({ ...p, chapterTitle: ch.title });
+      });
+    });
+    return pages;
+  }, []);
+
+  const results = React.useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase();
+    return allPages.filter(p =>
+      p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)
+    ).slice(0, 8);
+  }, [query, allPages]);
+
+  const handleSelect = (id) => {
+    onNav && onNav(id);
+    setQuery('');
+    setOpen(false);
+  };
 
   return (
     <div className="topbar" style={{
@@ -2517,20 +2545,62 @@ function TopBar({ page, onNav }) {
         </>
       )}
       <div style={{ flex: 1 }} />
-      <input
-        type="text"
-        placeholder="検索（準備中）"
-        disabled
-        style={{
-          padding: '5px 12px',
-          borderRadius: 'var(--radius)',
-          border: '1px solid var(--line)',
-          fontSize: '12px',
-          background: 'var(--bg-2)',
-          color: 'var(--ink-3)',
-          width: '160px',
-        }}
-      />
+      <div style={{ position: 'relative' }}>
+        <input
+          type="text"
+          placeholder="ページを検索..."
+          value={query}
+          onChange={e => { setQuery(e.target.value); setOpen(true); }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          style={{
+            padding: '5px 12px',
+            borderRadius: 'var(--radius)',
+            border: '1px solid var(--line)',
+            fontSize: '12px',
+            background: 'var(--bg-2)',
+            color: 'var(--ink-1)',
+            width: '180px',
+            outline: 'none',
+          }}
+        />
+        {open && results.length > 0 && (
+          <div style={{
+            position: 'absolute',
+            top: 'calc(100% + 4px)',
+            right: 0,
+            background: 'var(--bg)',
+            border: '1px solid var(--line)',
+            borderRadius: 'var(--radius)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.14)',
+            zIndex: 200,
+            width: '280px',
+            maxHeight: '320px',
+            overflowY: 'auto',
+          }}>
+            {results.map((p, i) => (
+              <div
+                key={p.id}
+                onMouseDown={() => handleSelect(p.id)}
+                style={{
+                  padding: '9px 14px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  borderBottom: i < results.length - 1 ? '1px solid var(--line)' : 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2px',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-2)'}
+                onMouseLeave={e => e.currentTarget.style.background = ''}
+              >
+                <span style={{ color: 'var(--ink-1)', fontWeight: 500 }}>{p.title}</span>
+                <span style={{ color: 'var(--ink-3)', fontSize: '11px' }}>{p.num} · {p.chapterTitle}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
