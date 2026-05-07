@@ -232,6 +232,28 @@ function HomePage({ onNav, data }) {
   // 過去問フィルター状態
   const [activeChip, setActiveChip] = React.useState('#B問題対策');
 
+  // 用語クイズ進捗サマリー（localStorage から直接集計）
+  const yqStats = React.useMemo(function() {
+    let mastered = 0, learning = 0, untouched = 0, total = 0;
+    try {
+      const raw = localStorage.getItem('hoki_quiz_glossary_progress');
+      const prog = raw ? JSON.parse(raw) || {} : {};
+      const gdata = window.GLOSSARY_TERMS_V1;
+      const terms = (gdata && Array.isArray(gdata.terms)) ? gdata.terms : [];
+      total = terms.length;
+      for (let i = 0; i < terms.length; i++) {
+        const t = terms[i];
+        const e = prog[t.id];
+        const stage = (e && typeof e.stage === 'number') ? e.stage : 0;
+        const last = e ? e.lastResult : null;
+        if (stage >= 3) mastered++;
+        else if (stage > 0 || last) learning++;
+        else untouched++;
+      }
+    } catch(err) {}
+    return { mastered: mastered, learning: learning, untouched: untouched, total: total };
+  }, []);
+
   const DAILY_Q = {
     date: '2026年5月1日 · R5上期 改',
     q: '高圧電路に施設する変圧器の低圧側の中性点に施す接地工事は、原則として何種接地工事か。',
@@ -366,6 +388,27 @@ function HomePage({ onNav, data }) {
             </div>
           );
         })()}
+
+        {/* ====== 用語クイズ クイックアクセスカード ====== */}
+        <div style={{ marginTop: 12, padding: '14px 18px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: '4px solid #c8a830', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, minWidth: 160 }}>
+            <div style={{ fontSize: 11, color: '#8a6500', fontWeight: 700, letterSpacing: '0.06em', marginBottom: 4 }}>直前チェック · 用語SRS</div>
+            <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>
+              📝 用語クイズ <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--ink-3)' }}>第58条 {yqStats.total || 10}語</span>
+            </div>
+            <div style={{ height: 5, background: 'var(--border)', borderRadius: 3, marginBottom: 8, overflow: 'hidden' }}>
+              <div style={{ width: (yqStats.total > 0 ? Math.round((yqStats.mastered + yqStats.learning) / yqStats.total * 100) : 0) + '%', height: '100%', background: '#c8a830', borderRadius: 3 }} />
+            </div>
+            <div style={{ display: 'flex', gap: 12, fontSize: 12, flexWrap: 'wrap' }}>
+              <span style={{ color: '#1a6e1a', fontWeight: 600 }}>✅ {yqStats.mastered}語 マスター</span>
+              <span style={{ color: '#8a6500', fontWeight: 600 }}>🤔 {yqStats.learning}語 学習中</span>
+              <span style={{ color: 'var(--ink-3)' }}>⬜ {yqStats.untouched || (yqStats.total || 10) - yqStats.mastered - yqStats.learning}語 未着手</span>
+            </div>
+          </div>
+          <button className="btn primary" onClick={() => onNav('chokuzen-yougo')} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+            クイズを始める →
+          </button>
+        </div>
       </section>
 
       {/* ====== 教材CH対応表（折りたたみ・参照資料） ====== */}
