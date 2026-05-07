@@ -5380,6 +5380,87 @@ function HichuseiJirakuPage({ onNav, data }) {
         <p style={{margin: '10px 0 0', fontSize: 13, fontWeight: 600, color: 'var(--ink-2)'}}>🎯 支配因子: 系統合計対地静電容量 (C₁+C₂) と 線間電圧V／成立条件: 完全地絡（Rg=0）かつ系統対称性</p>
       </PlainExplain>
 
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 16}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 6}}>❓ なぜ I_b と I_c は <strong>120°差ではなく60°差</strong>なのか — 正三角形フェーザで見る基準点シフト</div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 10}}>
+          平常時 V_b と V_c は中性点 O から見て <strong>120°差</strong>。
+          しかし a相地絡後、C_b・C_c を駆動する電圧は<strong>相電圧ではなく線間電圧 V_ba・V_ca</strong>（a相が大地電位になるため基準がシフト）。
+          3相フェーザの先端は<strong>正三角形</strong>を形成しており、V_a 頂点から B・C 頂点への2辺 = 内角 = <strong>60°差</strong>。
+        </div>
+        <svg viewBox="0 0 820 370" style={{width:'100%',height:'auto',background:'#fff'}}>
+          <defs>
+            <marker id="ph60Red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#d33"/>
+            </marker>
+            <marker id="ph60Grn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+            </marker>
+            <marker id="ph60Blu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+          </defs>
+
+          <rect x="10" y="20" width="395" height="340" fill="#f8fafc" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="207" y="42" textAnchor="middle" fontSize="13" fontWeight="700" fill="#0e3a6e">【平常時】V_b と V_c の位相差 = 120°</text>
+          <text x="207" y="58" textAnchor="middle" fontSize="11" fill="#666">中性点 O を基準。3相電圧は等間隔（120°ずつ）</text>
+
+          <circle cx="207" cy="215" r="100" fill="none" stroke="#ddd" strokeWidth="1" strokeDasharray="4,3"/>
+          <polygon points="207,115 294,265 120,265" fill="none" stroke="#bbb" strokeWidth="1.5" strokeDasharray="5,3"/>
+          <text x="207" y="290" textAnchor="middle" fontSize="10" fill="#aaa">正三角形（3相フェーザ先端）</text>
+
+          <circle cx="207" cy="215" r="4" fill="#444"/>
+          <text x="218" y="230" fontSize="11" fill="#555">O（中性点）</text>
+
+          <line x1="207" y1="215" x2="207" y2="122" stroke="#d33" strokeWidth="2.5" markerEnd="url(#ph60Red)"/>
+          <text x="218" y="118" fontSize="13" fill="#d33" fontWeight="700">V_a</text>
+
+          <line x1="207" y1="215" x2="291" y2="263" stroke="#2a8" strokeWidth="2.5" markerEnd="url(#ph60Grn)"/>
+          <text x="298" y="272" fontSize="13" fill="#2a8" fontWeight="700">V_b</text>
+
+          <line x1="207" y1="215" x2="123" y2="263" stroke="#27c" strokeWidth="2.5" markerEnd="url(#ph60Blu)"/>
+          <text x="60" y="272" fontSize="13" fill="#27c" fontWeight="700">V_c</text>
+
+          <path d="M 207 175 A 40 40 0 0 1 241 235" fill="none" stroke="#888" strokeWidth="1.3"/>
+          <text x="231" y="202" fontSize="12" fill="#888" fontWeight="600">120°</text>
+
+          <path d="M 207 175 A 40 40 0 0 0 173 235" fill="none" stroke="#888" strokeWidth="1.3"/>
+          <text x="160" y="202" fontSize="12" fill="#888" fontWeight="600">120°</text>
+
+          <rect x="415" y="20" width="395" height="340" fill="#fff9f0" stroke="#bbb" strokeWidth="1" rx="6"/>
+          <text x="612" y="42" textAnchor="middle" fontSize="13" fontWeight="700" fill="#a11">【a相完全地絡後】駆動電圧の位相差 = 60°</text>
+          <text x="612" y="58" textAnchor="middle" fontSize="11" fill="#666">a相 = 大地 = 新基準。C_b は V_ba、C_c は V_ca で駆動される</text>
+
+          <polygon points="612,110 699,260 525,260" fill="none" stroke="#bbb" strokeWidth="1.5" strokeDasharray="5,3"/>
+          <text x="612" y="286" textAnchor="middle" fontSize="10" fill="#aaa">同じ正三角形（基準点のみ変更）</text>
+
+          <circle cx="612" cy="110" r="5" fill="#c33"/>
+          <text x="622" y="107" fontSize="11" fill="#c33" fontWeight="600">a相地絡点（= 大地 = 0V）</text>
+
+          <circle cx="612" cy="210" r="4" fill="#aaa" opacity="0.5"/>
+          <text x="622" y="225" fontSize="10" fill="#aaa">O（中性点・移動後）</text>
+
+          <line x1="612" y1="110" x2="695" y2="258" stroke="#2a8" strokeWidth="3" markerEnd="url(#ph60Grn)"/>
+          <text x="705" y="266" fontSize="13" fill="#2a8" fontWeight="700">V_ba</text>
+          <text x="703" y="282" fontSize="10" fill="#2a8">線間電圧</text>
+
+          <line x1="612" y1="110" x2="529" y2="258" stroke="#27c" strokeWidth="3" markerEnd="url(#ph60Blu)"/>
+          <text x="445" y="266" fontSize="13" fill="#27c" fontWeight="700">V_ca</text>
+          <text x="450" y="282" fontSize="10" fill="#27c">線間電圧</text>
+
+          <path d="M 632 145 A 40 40 0 0 1 592 145" fill="none" stroke="#e60" strokeWidth="2.5"/>
+          <text x="612" y="164" textAnchor="middle" fontSize="15" fill="#e60" fontWeight="700">60°</text>
+
+          <text x="612" y="316" textAnchor="middle" fontSize="12" fill="#a11" fontWeight="700">正三角形の内角 = 60° → V_ba と V_ca の位相差 = 60°</text>
+          <text x="612" y="334" textAnchor="middle" fontSize="11" fill="#666">I_b = jωC·V_ba、I_c = jωC·V_ca → 電流の位相差も 60°</text>
+        </svg>
+        <div style={{fontSize: 12, color:'var(--ink-3)', marginTop:8}}>
+          <strong>なぜ 120°→60° に変わるか：</strong>
+          平常時は「中性点から各相」への電圧（相電圧）を比べるので 120°差。
+          a相地絡後は「a相端（= 大地）から b相・c相」への電圧（線間電圧 V_ba・V_ca）がコンデンサを駆動する。
+          フェーザの先端 3点は正三角形を作るため、<strong>V_a 頂点での内角 = 60°</strong>。これが 60°差の本質。
+        </div>
+      </div>
+
       <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24}}>
         <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📐 ベクトル和の図解（I_b と I_c が60°差で√3倍になる理由）</div>
         <svg viewBox="0 0 820 380" style={{width: '100%', height: 'auto', background: '#fff'}}>
