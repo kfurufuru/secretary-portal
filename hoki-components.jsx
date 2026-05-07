@@ -110,6 +110,40 @@ function LawSource({ title, text, source, confirmedAt }) {
   );
 }
 
+function MasteredToggle({ pageId, label = "" }) {
+  const key = `hoki-mastered-${pageId}`;
+  const [mastered, setMastered] = React.useState(() => {
+    try { return localStorage.getItem(key) === '1'; } catch { return false; }
+  });
+  const toggle = () => {
+    const next = !mastered;
+    setMastered(next);
+    try { localStorage.setItem(key, next ? '1' : '0'); } catch {}
+  };
+  return (
+    <button
+      onClick={toggle}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 6,
+        padding: '8px 14px',
+        borderRadius: 'var(--radius)',
+        border: mastered ? '1px solid var(--good)' : '1px solid var(--line)',
+        background: mastered ? 'var(--bg-elev)' : 'var(--bg-elev)',
+        color: mastered ? 'var(--good)' : 'var(--ink-2)',
+        fontSize: 13,
+        fontWeight: 600,
+        cursor: 'pointer',
+      }}
+      title={mastered ? 'クリックで「未習得」に戻す' : 'クリックで「覚えた」にマーク'}
+    >
+      {mastered ? '✓ 覚えた' : '⚪ 未習得'}
+      {label && <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 400 }}>（{label}）</span>}
+    </button>
+  );
+}
+
 function PlainExplain({ children }) {
   return (
     <div style={{
