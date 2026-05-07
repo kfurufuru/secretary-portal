@@ -54,12 +54,18 @@
 4. **認証情報** → 「OAuth クライアント ID を作成」
    - アプリケーションの種類: **Web application**
    - 名前: 任意（例: "Control Center Local"）
-   - **承認済JavaScript生成元**: `http://localhost:8765` を**必ず追加**
+   - **承認済JavaScript生成元**: 利用環境に応じて以下を追加
+     - ローカル: `http://localhost:8765`
+     - GH Pages: `https://kfurufuru.github.io`（GH Pages から使う場合は必須）
    - 作成 → Client ID をコピー
 5. ダッシュボードの ⚙ → Google Calendar セクション → ペースト → 接続
 
 **トークン有効期限**: 1時間。期限切れになったら ⚙ → 「Googleで接続」で再接続。
 **朝の運用**: 開始時に1回接続すれば、その後 1時間以内の自動同期はOK。長時間離席後は再接続必要。
+
+> **GH Pages での注意**: `https://kfurufuru.github.io` 経由でアクセスする場合は、  
+> Google Cloud Console の「承認済JavaScript生成元」に GH Pages の URL も追加しないと  
+> OAuth 認証が `origin_mismatch` エラーで失敗する。両環境を使うなら両方登録。
 
 ### 3. PWA インストール（iPhone）
 1. Safari で `http://[PC_IP]:8765/control-center.html` を開く
@@ -79,6 +85,11 @@
 | `Q` `F` `S` | Video Wall レイアウト (Quad/Focus/Single) |
 | `Esc` | 編集モード解除・モーダル閉じる |
 
+### 全画面（Fullscreen）
+- Video Wall 右上の **「全画面」ボタン**（↕アイコン）をクリック → ビデオグリッドがブラウザ全画面表示
+- 解除: `Esc` キー または ブラウザの全画面解除ボタン
+- キーボードの `F` キーは現状非対応（ボタン操作のみ）
+
 ---
 
 ## モジュール一覧（10個・3 Tier構造）
@@ -95,8 +106,8 @@
 ### Ambient Tier（折りたたみ・背景再生）
 | モジュール | 機能 |
 |---|---|
-| **Video Wall** | 4タイル YouTube live・17プリセット・カスタムURL |
-| **News Pulse** | 5タブ（世界/日本/業界/地震/芸能）・地震警報 |
+| **Video Wall** | 4タイル YouTube live・18プリセット・カスタムURL・全画面ボタン |
+| **News Pulse** | 5タブ（世界/日本/業界/地震/芸能）・P2P地震API対応 |
 
 ### Reference Tier（折りたたみ・参照系）
 | モジュール | 機能 |
@@ -151,7 +162,40 @@
 ### YouTube動画が再生されない
 - ライブストリームのID は時々変わる（要更新）
 - カスタムURL欄に最新の動画IDを貼り付け
-- 17プリセットの生死は半年〜1年ごとに見直し推奨
+- 18プリセットの生死は半年〜1年ごとに見直し推奨
+
+### Video Wall プリセット一覧（全18件）
+
+| グループ | チャンネル | 備考 |
+|---|---|---|
+| 国内ニュース | ANN News（テレ朝24） | |
+| 国内ニュース | 日テレNEWS 24H | |
+| 国内ニュース | TBS NEWS DIG 24h | |
+| 国内ニュース | **WeatherNews 地震Live** | 防災/地震専門。地震発生時に即切替推奨 |
+| 世界ニュース | Bloomberg TV | 金融・経済 |
+| 世界ニュース | Sky News | 英国系 |
+| 世界ニュース | France 24 English | |
+| 世界ニュース | DW News | ドイツ国際放送 |
+| 世界ニュース | Al Jazeera English | |
+| 世界ニュース | NHK World-Japan | |
+| 世界ニュース | NASA Live | スペース |
+| ライブカメラ | NY Times Sq (4K) | |
+| ライブカメラ | African Safari | |
+| BGM | Lofi 作業用 | 集中BGM |
+| BGM | Lofi 睡眠/リラックス | |
+| BGM | Synthwave Radio | |
+| BGM | Space Ambient 24/7 | |
+| BGM | Nature Calm Sounds | 自然音 |
+
+### News Pulse データソース詳細
+
+| タブ | データソース | 特記 |
+|---|---|---|
+| 世界 | Hacker News Top Stories | CORS-open / リアルタイム |
+| 日本 | Reddit r/japan (day top) | CORS-open |
+| 業界 | GDELT 2.0 Doc API | キーワード: chemical / petrochemical / utilities / DX / industrial AI |
+| 地震 | P2PQuake API (気象庁経由) | CORS-open / 震度1以上を自動取得 |
+| 芸能 | Reddit r/JapaneseEntertainment + r/anime | CORS-open |
 
 ### モバイルで崩れる
 - `<meta name="viewport">` 設定済み
@@ -217,6 +261,7 @@
 | v1.2 | 2026-05-06 | TOP 3 ACTIONS追加・Settings/Help/ErrorBoundary・PWA・Mobile対応 |
 | v1.3 | 2026-05-06 | Markets削除・AI Daily Brief・Tier化・AI→TOP 3連携 |
 | v1.4 | 2026-05-06 | Google Calendar OAuth連携（GIS Token Client）|
+| v1.4.1 | 2026-05-07 | OPERATIONS.md 最新化（全画面・WeatherNews一覧・News Pulseソース・GH Pages OAuth注意）|
 
 ---
 

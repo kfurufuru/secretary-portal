@@ -410,12 +410,12 @@
   const CardHeader = ({ icon, title, status, statusTone = 'neutral', statusIcon, lastUpdate = '06:00' }) => (
     <div className="flex items-start justify-between mb-4">
       <div className="flex items-center gap-2">
-        <Icon name={icon} size={20} style={{ color: '#5f6368' }} />
-        <h3 className="font-display text-[15px] font-medium tracking-tight" style={{color:'#1f1f1f'}}>{title}</h3>
+        <Icon name={icon} size={20} style={{ color: 'var(--on-surface-variant,#5f6368)' }} />
+        <h3 className="font-display text-[15px] font-medium tracking-tight" style={{color:'var(--on-surface,#1f1f1f)'}}>{title}</h3>
         {status && <Chip tone={statusTone} icon={statusIcon}>{status}</Chip>}
       </div>
       <div className="flex items-center gap-1">
-        <span className="text-[11px] tnum" style={{color:'#9aa0a6'}}>{lastUpdate}</span>
+        <span className="text-[11px] tnum" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>{lastUpdate}</span>
         <button
           className="icon-btn"
           aria-label="refresh"
@@ -448,43 +448,43 @@
       <div className="m3-card px-4 md:px-7 py-4 md:py-5 flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
         {/* time */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          <Icon name="schedule" size={22} style={{color:'#1a73e8'}} />
+          <Icon name="schedule" size={22} style={{color:'var(--primary,#1a73e8)'}} />
           <div>
             <div className="font-display tnum text-[28px] leading-none" style={{fontWeight:400}}>
-              {hh}:{mm}<span className="text-[18px]" style={{color:'#9aa0a6'}}>:{ss}</span>
-              <span className="ml-2 text-[12px] font-mono" style={{color:'#5f6368'}}>JST</span>
+              {hh}:{mm}<span className="text-[18px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>:{ss}</span>
+              <span className="ml-2 text-[12px] font-mono" style={{color:'var(--on-surface-variant,#5f6368)'}}>JST</span>
             </div>
-            <div className="text-[12px] mt-1" style={{color:'#5f6368'}}>{now.getFullYear()}年{now.getMonth()+1}月{now.getDate()}日 {['日','月','火','水','木','金','土'][now.getDay()]}曜</div>
+            <div className="text-[12px] mt-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>{now.getFullYear()}年{now.getMonth()+1}月{now.getDate()}日 {['日','月','火','水','木','金','土'][now.getDay()]}曜</div>
           </div>
         </div>
 
-        <div className="hidden md:block w-px h-10" style={{background:'#e7eef9'}}></div>
+        <div className="hidden md:block w-px h-10" style={{background:'var(--border,#e7eef9)'}}></div>
 
         {/* weather */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <Icon name="partly_cloudy_day" size={22} style={{color:'#ea8600'}} />
+          <Icon name="partly_cloudy_day" size={22} style={{color:'var(--warning,#ea8600)'}} />
           <div>
             <div className="text-[14px] font-medium tnum">晴れ &nbsp;12°C</div>
-            <div className="text-[11px]" style={{color:'#5f6368'}}>東京 · 湿度 48%</div>
+            <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>東京 · 湿度 48%</div>
           </div>
         </div>
 
-        <div className="hidden md:block w-px h-10" style={{background:'#e7eef9'}}></div>
+        <div className="hidden md:block w-px h-10" style={{background:'var(--border,#e7eef9)'}}></div>
 
         {/* anomaly */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <span className="relative">
-            <Icon name="warning" size={22} style={{color:'#b3261e'}} />
+            <Icon name="warning" size={22} style={{color:'var(--error,#b3261e)'}} />
             <span className="notif-dot pulse absolute -top-0.5 -right-0.5"></span>
           </span>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[14px] font-medium" style={{color:'#b3261e'}}>異常検知</span>
+              <span className="text-[14px] font-medium" style={{color:'var(--error,#b3261e)'}}>異常検知</span>
               <Chip tone="error">2件</Chip>
             </div>
             <div
               className="text-[11px] cursor-text outline-none"
-              style={{color:'#5f6368'}}
+              style={{color:'var(--on-surface-variant,#5f6368)'}}
               contentEditable
               suppressContentEditableWarning
               onBlur={(e) => {
@@ -495,18 +495,18 @@
           </div>
         </div>
 
-        <div className="hidden md:block w-px h-10" style={{background:'#e7eef9'}}></div>
+        <div className="hidden md:block w-px h-10" style={{background:'var(--border,#e7eef9)'}}></div>
 
         {/* stakeholder */}
         <div className="flex items-start gap-2 flex-1 min-w-0">
-          <Icon name="person" size={22} style={{color:'#5f6368'}} />
+          <Icon name="person" size={22} style={{color:'var(--on-surface-variant,#5f6368)'}} />
           <div className="min-w-0">
-            <div className="text-[11px] uppercase tracking-wider" style={{color:'#9aa0a6', letterSpacing:'.08em'}}>
+            <div className="text-[11px] uppercase tracking-wider" style={{color:'var(--on-surface-variant,#9aa0a6)', letterSpacing:'.08em'}}>
               本部長 · 昨日
             </div>
             <div
               className="text-[13px] mt-0.5 cursor-text outline-none"
-              style={{color:'#1f1f1f'}}
+              style={{color:'var(--on-surface,#1f1f1f)'}}
               contentEditable
               suppressContentEditableWarning
               onBlur={(e) => setStakeholderText(e.currentTarget.textContent.trim() || stakeholderText)}
@@ -536,10 +536,10 @@
             <span className="font-mono text-[13px] tnum font-medium" style={{ color: accent }}>{time}</span>
             <Icon name={icon} size={16} style={{ color: accent }} />
           </div>
-          <div className="font-display text-[15px] leading-snug" style={{ color: '#1f1f1f', fontWeight: 500 }}>
+          <div className="font-display text-[15px] leading-snug" style={{ color: 'var(--on-surface,#1f1f1f)', fontWeight: 500 }}>
             {title}
           </div>
-          {sub && <div className="text-[12px] mt-1" style={{ color: '#5f6368' }}>{sub}</div>}
+          {sub && <div className="text-[12px] mt-1" style={{ color: 'var(--on-surface-variant,#5f6368)' }}>{sub}</div>}
         </div>
         <button className="icon-btn flex-none">
           <Icon name="arrow_forward" size={18} />
@@ -570,7 +570,7 @@
   const KPIRow = ({ label, value, delta, deltaTone='neutral', spark, sparkColor }) => (
     <div className="flex items-center justify-between gap-3 py-2.5">
       <div className="flex-none w-20">
-        <div className="text-[11px]" style={{color:'#5f6368'}}>{label}</div>
+        <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>{label}</div>
         <div className="text-[14px] font-medium tnum mt-0.5">{value}</div>
       </div>
       <div className="flex-1 max-w-[120px]">
@@ -596,7 +596,7 @@
     return (
       <div className="flex items-center justify-between gap-3 py-2.5">
         <div className="flex-none w-20">
-          <div className="text-[11px]" style={{color:'#5f6368'}}>{label}</div>
+          <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>{label}</div>
           <div className="text-[14px] font-medium tnum mt-0.5" style={{color: flash, transition:'color .4s'}}>
             {format(mkt.value)}
           </div>
@@ -626,9 +626,9 @@
         {/* hero */}
         <div className="flex items-end justify-between gap-4 mb-3">
           <div>
-            <div className="text-[11px]" style={{color:'#5f6368'}}>米10年金利</div>
+            <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>米10年金利</div>
             <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400, color: flash, transition:'color .4s'}}>
-              {hero.value.toFixed(2)}<span className="text-[20px] ml-0.5" style={{color:'#5f6368'}}>%</span>
+              {hero.value.toFixed(2)}<span className="text-[20px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>%</span>
             </div>
             <div className="flex items-center gap-2 mt-2">
               <Chip tone="warning" icon={heroDelta>=0?'north':'south'}>
@@ -647,18 +647,18 @@
         </div>
 
         {/* secondary stock */}
-        <div className="flex items-center justify-between py-3" style={{borderTop:'1px solid #e7eef9', borderBottom:'1px solid #e7eef9'}}>
+        <div className="flex items-center justify-between py-3" style={{borderTop:'1px solid var(--border,#e7eef9)', borderBottom:'1px solid var(--border,#e7eef9)'}}>
           <div>
-            <div className="text-[11px]" style={{color:'#5f6368'}}>三菱ケミカル (4188.T)</div>
+            <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>三菱ケミカル (4188.T)</div>
             <div className="text-[18px] font-medium tnum mt-0.5" style={{color: flashColor(markets.mcc.value, markets.mcc.prev), transition:'color .4s'}}>
               ¥{Math.round(markets.mcc.value).toLocaleString()}
             </div>
           </div>
           <div className="text-right">
-            <div className="text-[13px] font-medium tnum" style={{color:'#b3261e'}}>
+            <div className="text-[13px] font-medium tnum" style={{color:'var(--error,#b3261e)'}}>
               {(((markets.mcc.value - 863)/863)*100).toFixed(1)}%
             </div>
-            <div className="text-[11px] tnum" style={{color:'#5f6368'}}>業界 −0.4%</div>
+            <div className="text-[11px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>業界 −0.4%</div>
           </div>
         </div>
 
@@ -674,7 +674,7 @@
         {/* So what */}
         <div className="flex items-start gap-2 mt-auto">
           <Chip tone="warning" icon="lightbulb">SO WHAT</Chip>
-          <div className="text-[12.5px] leading-relaxed flex-1" style={{color:'#1f1f1f'}}>
+          <div className="text-[12.5px] leading-relaxed flex-1" style={{color:'var(--on-surface,#1f1f1f)'}}>
             米10年金利 <span className="font-medium">2σ超</span> → 設備投資判断見直し推奨
           </div>
         </div>
@@ -747,16 +747,16 @@
         <div className="flex items-start gap-5 mb-4">
           <div className="flex-none">
             <div className="font-display tnum leading-none" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400}}>{hero.time}</div>
-            <div className="text-[11px] mt-1 tnum" style={{color:'#5f6368'}}>あと <span className="font-medium" style={{color:'#1a73e8'}}>{countdown}</span></div>
+            <div className="text-[11px] mt-1 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>あと <span className="font-medium" style={{color:'var(--primary,#1a73e8)'}}>{countdown}</span></div>
           </div>
           <div className="flex-1 min-w-0 pt-2">
             <div className="font-display text-[16px] font-medium leading-snug">{hero.title}</div>
-            <div className="text-[12px] mt-1" style={{color:'#5f6368'}}>
+            <div className="text-[12px] mt-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>
               GOAL: {hero.goal}
             </div>
             {typeof hero.prep === 'number' && (
               <div className="flex items-center gap-2 mt-3">
-                <span className="text-[11px]" style={{color:'#5f6368'}}>準備度</span>
+                <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>準備度</span>
                 <div className="progress-track flex-1 max-w-[140px]">
                   <div className="progress-fill" style={{width: hero.prep + '%', background: heroPrepColor}}></div>
                 </div>
@@ -768,12 +768,12 @@
       ) : (
         <div className="flex items-start gap-5 mb-4">
           <div className="flex-none">
-            <div className="font-display tnum leading-none" style={{fontSize:'40px', fontWeight:400, color:'#5f6368'}}>—</div>
-            <div className="text-[11px] mt-1 tnum" style={{color:'#5f6368'}}>明日 09:00 まで</div>
+            <div className="font-display tnum leading-none" style={{fontSize:'40px', fontWeight:400, color:'var(--on-surface-variant,#5f6368)'}}>—</div>
+            <div className="text-[11px] mt-1 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>明日 09:00 まで</div>
           </div>
           <div className="flex-1 min-w-0 pt-2">
             <div className="font-display text-[16px] font-medium leading-snug">No more meetings today</div>
-            <div className="text-[12px] mt-1" style={{color:'#5f6368'}}>本日の予定はすべて終了しました</div>
+            <div className="text-[12px] mt-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>本日の予定はすべて終了しました</div>
           </div>
         </div>
       )}
@@ -797,10 +797,10 @@
           {secondary.map((m, i) => (
             <div key={i} className="flex items-center gap-3 px-2 py-2">
               <span className={`dot ${dotClass(m.status)}`}></span>
-              <span className="font-mono text-[12px] tnum w-12" style={{color:'#5f6368'}}>{m.time}</span>
+              <span className="font-mono text-[12px] tnum w-12" style={{color:'var(--on-surface-variant,#5f6368)'}}>{m.time}</span>
               <div className="flex-1 min-w-0">
                 <div className="text-[13px] truncate">{m.title}</div>
-                <div className="text-[11px]" style={{color:'#5f6368'}}>
+                <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                   {typeof m.prep === 'number' ? `準備度 ${m.prep}% · ` : ''}{m.goal}
                 </div>
               </div>
@@ -834,14 +834,14 @@
               <span className="dot" style={{background: ragColor(p.rag)}}></span>
             </div>
             <div className="col-span-4 min-w-0">
-              <div className="text-[13.5px] font-medium truncate" style={{color:'#1f1f1f'}}>{p.name}</div>
-              <div className="text-[11px]" style={{color:'#5f6368'}}>{p.who}</div>
+              <div className="text-[13.5px] font-medium truncate" style={{color:'var(--on-surface,#1f1f1f)'}}>{p.name}</div>
+              <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>{p.who}</div>
             </div>
             <div className="col-span-4">
               <div className="progress-track">
                 <div className="progress-fill" style={{ width: `${p.pct}%`, background: ragColor(p.rag) }}></div>
               </div>
-              <div className="text-[11px] tnum mt-1" style={{color:'#5f6368'}}>{p.pct}%</div>
+              <div className="text-[11px] tnum mt-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>{p.pct}%</div>
             </div>
             <div className="col-span-3 flex justify-end">
               <Chip tone={p.tone}>{p.status}</Chip>
@@ -852,11 +852,11 @@
 
       {/* action chip row */}
       <div className="mt-4 m3-surface-container p-4 flex items-center gap-3">
-        <Icon name="priority_high" size={20} style={{color:'#b3261e'}} />
-        <div className="flex-1 text-[12.5px]" style={{color:'#1f1f1f'}}>
+        <Icon name="priority_high" size={20} style={{color:'var(--error,#b3261e)'}} />
+        <div className="flex-1 text-[12.5px]" style={{color:'var(--on-surface,#1f1f1f)'}}>
           <span className="font-medium">Member B 介入要</span>
-          <span style={{color:'#5f6368'}}> · </span>
-          <span className="font-medium" style={{color:'#b3261e'}}>Antigravity 11:00 まで判断</span>
+          <span style={{color:'var(--on-surface-variant,#5f6368)'}}> · </span>
+          <span className="font-medium" style={{color:'var(--error,#b3261e)'}}>Antigravity 11:00 まで判断</span>
         </div>
         <button className="btn-tonal">
           対処
@@ -871,9 +871,9 @@
     const color = tone === 'warning' ? '#ea8600' : tone === 'error' ? '#b3261e' : '#1f1f1f';
     return (
       <div className="m3-surface-container p-4">
-        <div className="text-[11px]" style={{color:'#5f6368'}}>{label}</div>
+        <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>{label}</div>
         <div className="font-display tnum mt-1" style={{ fontSize:'28px', fontWeight:400, color }}>{value}</div>
-        {sub && <div className="text-[11px] mt-0.5" style={{color:'#5f6368'}}>{sub}</div>}
+        {sub && <div className="text-[11px] mt-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>{sub}</div>}
       </div>
     );
   };
@@ -887,9 +887,9 @@
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch">
         {/* hero */}
         <div className="md:col-span-2 flex flex-col justify-center pl-1">
-          <div className="text-[11px]" style={{color:'#5f6368'}}>24h 未返信</div>
-          <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(48px, 14vw, 72px)', fontWeight:400, color:'#b3261e'}}>3</div>
-          <div className="text-[11px] mt-2 tnum" style={{color:'#5f6368'}}>うち本部長: <span className="font-medium" style={{color:'#1f1f1f'}}>1</span></div>
+          <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>24h 未返信</div>
+          <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(48px, 14vw, 72px)', fontWeight:400, color:'var(--error,#b3261e)'}}>3</div>
+          <div className="text-[11px] mt-2 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>うち本部長: <span className="font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>1</span></div>
         </div>
         {/* 2x2 grid */}
         <div className="md:col-span-3 grid grid-cols-2 gap-3">
@@ -901,12 +901,12 @@
       </div>
 
       {/* top action */}
-      <div className="mt-4 flex items-center gap-3 px-3 py-3 rounded-2xl" style={{background:'#fef7e0', border:'1px solid #fce8a3'}}>
-        <Icon name="priority_high" size={20} style={{color:'#ea8600'}} />
+      <div className="mt-4 flex items-center gap-3 px-3 py-3 rounded-2xl" style={{background:'rgba(234,134,0,0.12)', border:'1px solid rgba(234,134,0,0.35)'}}>
+        <Icon name="priority_high" size={20} style={{color:'var(--warning,#ea8600)'}} />
         <div className="flex-1 text-[13px]">
           <span className="font-medium">本部長メール</span> · 「AI活用事例の準備状況」
-          <span style={{color:'#5f6368'}}> — </span>
-          <span className="font-medium" style={{color:'#ea8600'}}>09:00 までに返信</span>
+          <span style={{color:'var(--on-surface-variant,#5f6368)'}}> — </span>
+          <span className="font-medium" style={{color:'var(--warning,#ea8600)'}}>09:00 までに返信</span>
         </div>
         <button className="btn-tonal">
           <Icon name="reply" size={14} />
@@ -932,7 +932,7 @@
       return defaults;
     });
     const sleepStages = [
-      { name:'深い',  pct: recovery.deepSleepPct,  color: '#1a73e8' },
+      { name:'深い',  pct: recovery.deepSleepPct,  color: 'var(--primary,#1a73e8)' },
       { name:'レム',  pct: recovery.remPct,        color: '#34a853' },
       { name:'浅い',  pct: recovery.lightPct,      color: '#aecbfa' },
       { name:'覚醒',  pct: recovery.awakePct,      color: '#dadce0' },
@@ -955,18 +955,18 @@
         {/* hero sleep */}
         <div className="flex items-end justify-between gap-3 mb-3">
           <div>
-            <div className="text-[11px]" style={{color:'#5f6368'}}>睡眠スコア</div>
+            <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>睡眠スコア</div>
             <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400}}>{recovery.sleepScore}</div>
-            <div className="text-[12px] mt-2 tnum" style={{color:'#5f6368'}}>{recovery.sleepDuration}</div>
+            <div className="text-[12px] mt-2 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>{recovery.sleepDuration}</div>
           </div>
           <div className="flex-1 max-w-[110px]">
-            <div className="text-[10px] mb-1" style={{color:'#5f6368'}}>睡眠構成</div>
+            <div className="text-[10px] mb-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>睡眠構成</div>
             <div className="flex h-3 rounded-full overflow-hidden">
               {sleepStages.map((s,i)=>(
                 <div key={i} title={`${s.name} ${s.pct}%`} style={{ width: `${s.pct}%`, background: s.color }}></div>
               ))}
             </div>
-            <div className="flex justify-between mt-1.5 text-[10px] tnum" style={{color:'#5f6368'}}>
+            <div className="flex justify-between mt-1.5 text-[10px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
               <span>深い {recovery.deepSleepPct}%</span>
               <span>レム {recovery.remPct}%</span>
             </div>
@@ -977,36 +977,36 @@
         <div className="grid grid-cols-2 gap-2.5 mb-4">
           <div className="m3-surface-container p-3">
             <div className="flex items-center justify-between">
-              <span className="text-[11px]" style={{color:'#5f6368'}}>HRV</span>
+              <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>HRV</span>
               <Chip tone="success" icon="north">回復</Chip>
             </div>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.hrv}<span className="text-[11px] ml-0.5" style={{color:'#5f6368'}}>ms</span></div>
-            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>7d avg {recovery.hrvAvg} ms</div>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.hrv}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>ms</span></div>
+            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>7d avg {recovery.hrvAvg} ms</div>
           </div>
           <div className="m3-surface-container p-3">
             <div className="flex items-center justify-between">
-              <span className="text-[11px]" style={{color:'#5f6368'}}>安静時心拍</span>
+              <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>安静時心拍</span>
               <Chip tone="neutral">平常</Chip>
             </div>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.rhr}<span className="text-[11px] ml-0.5" style={{color:'#5f6368'}}>bpm</span></div>
-            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>範囲 50–62</div>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.rhr}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>bpm</span></div>
+            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>範囲 50–62</div>
           </div>
           <div className="m3-surface-container p-3">
-            <span className="text-[11px]" style={{color:'#5f6368'}}>アクティブ kcal</span>
+            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>アクティブ kcal</span>
             <div className="text-[18px] font-medium tnum mt-1">{recovery.kcal}</div>
-            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>週 2,840</div>
+            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>週 2,840</div>
           </div>
           <div className="m3-surface-container p-3">
-            <span className="text-[11px]" style={{color:'#5f6368'}}>スタンド</span>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.stand}<span className="text-[11px] ml-0.5" style={{color:'#5f6368'}}>h</span></div>
-            <div className="text-[10.5px] tnum" style={{color:'#5f6368'}}>目標 12h</div>
+            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>スタンド</span>
+            <div className="text-[18px] font-medium tnum mt-1">{recovery.stand}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>h</span></div>
+            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>目標 12h</div>
           </div>
         </div>
 
         {/* decision strength */}
-        <div className="mt-auto pt-3" style={{borderTop:'1px solid #e7eef9'}}>
+        <div className="mt-auto pt-3" style={{borderTop:'1px solid var(--border,#e7eef9)'}}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px]" style={{color:'#5f6368'}}>意思決定強度</span>
+            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>意思決定強度</span>
             <div className="flex items-center gap-1.5">
               {[0,1,2,3,4].map((i)=>(
                 <span key={i} className={`meter-dot ${i < ds ? 'meter-on' : 'meter-off'}`}></span>
@@ -1014,12 +1014,12 @@
               <span className="text-[11px] ml-1.5 font-medium">{dsLabel}</span>
             </div>
           </div>
-          <div className="text-[12px] leading-relaxed" style={{color:'#1f1f1f'}}>
+          <div className="text-[12px] leading-relaxed" style={{color:'var(--on-surface,#1f1f1f)'}}>
             {adviceParts.length >= 2 ? (
               <>
-                <span className="font-medium" style={{color:'#137333'}}>{adviceParts[0]}</span>
-                <span style={{color:'#5f6368'}}> · </span>
-                <span style={{color:'#ea8600'}} className="font-medium">{adviceParts.slice(1).join(' · ')}</span>
+                <span className="font-medium" style={{color:'var(--success,#137333)'}}>{adviceParts[0]}</span>
+                <span style={{color:'var(--on-surface-variant,#5f6368)'}}> · </span>
+                <span style={{color:'var(--warning,#ea8600)'}} className="font-medium">{adviceParts.slice(1).join(' · ')}</span>
               </>
             ) : (
               <span>{recovery.advice}</span>
@@ -1033,9 +1033,9 @@
   // ---------- C. Capability + Time Audit ----------
   const Growth = () => {
     const timeData = [
-      { cat: '戦略', h: 3.5, target: 4.0, color: '#ea8600' },
-      { cat: '運用', h: 4.2, target: 3.5, color: '#1a73e8' },
-      { cat: '学習', h: 1.0, target: 1.0, color: '#137333' },
+      { cat: '戦略', h: 3.5, target: 4.0, color: 'var(--warning,#ea8600)' },
+      { cat: '運用', h: 4.2, target: 3.5, color: 'var(--primary,#1a73e8)' },
+      { cat: '学習', h: 1.0, target: 1.0, color: 'var(--success,#137333)' },
       { cat: '1on1', h: 1.0, target: 1.0, color: '#aecbfa' },
     ];
     return (
@@ -1046,15 +1046,15 @@
         <div className="m3-surface-container p-4 mb-3">
           <div className="flex items-start justify-between">
             <div>
-              <div className="text-[11px]" style={{color:'#5f6368'}}>本日の30分投資先</div>
+              <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>本日の30分投資先</div>
               <div className="font-display text-[15px] font-medium mt-1 leading-snug">電験3種『機械』<br/>直流機 電機子反作用</div>
             </div>
             <Chip tone="primary" icon="schedule">22:00</Chip>
           </div>
-          <div className="flex items-center gap-3 mt-3 text-[11px] tnum" style={{color:'#5f6368'}}>
-            <span>残 <span className="font-medium" style={{color:'#1f1f1f'}}>168日</span></span>
+          <div className="flex items-center gap-3 mt-3 text-[11px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+            <span>残 <span className="font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>168日</span></span>
             <span>·</span>
-            <span>直近模試 <span className="font-medium" style={{color:'#ea8600'}}>42%</span></span>
+            <span>直近模試 <span className="font-medium" style={{color:'var(--warning,#ea8600)'}}>42%</span></span>
             <span>·</span>
             <span>目標 60%</span>
           </div>
@@ -1062,9 +1062,9 @@
 
         {/* required reading */}
         <div className="flex items-start gap-3 mb-3 px-1">
-          <Icon name="menu_book" size={18} style={{color:'#5f6368'}} />
+          <Icon name="menu_book" size={18} style={{color:'var(--on-surface-variant,#5f6368)'}} />
           <div className="flex-1">
-            <div className="text-[11px]" style={{color:'#5f6368'}}>今週の必読 1本</div>
+            <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>今週の必読 1本</div>
             <div className="text-[13px] mt-0.5">経産省「次世代計装ガイドライン改訂版」</div>
           </div>
           <Chip tone="warning">期限 金</Chip>
@@ -1075,8 +1075,8 @@
         {/* time audit */}
         <div className="flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-medium" style={{color:'#1f1f1f'}}>YESTERDAY · TIME AUDIT</span>
-            <span className="text-[11px] tnum" style={{color:'#5f6368'}}>9.7h</span>
+            <span className="text-[11px] font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>YESTERDAY · TIME AUDIT</span>
+            <span className="text-[11px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>9.7h</span>
           </div>
           <div style={{height: 140}}>
             <ResponsiveContainer width="100%" height="100%">
@@ -1090,9 +1090,9 @@
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex items-center justify-between mt-1 text-[11px] tnum" style={{color:'#5f6368'}}>
-            <span>中断 <span className="font-medium" style={{color:'#ea8600'}}>12 回</span></span>
-            <span>集中ブロック平均 <span className="font-medium" style={{color:'#1f1f1f'}}>38 分</span></span>
+          <div className="flex items-center justify-between mt-1 text-[11px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+            <span>中断 <span className="font-medium" style={{color:'var(--warning,#ea8600)'}}>12 回</span></span>
+            <span>集中ブロック平均 <span className="font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>38 分</span></span>
           </div>
         </div>
       </div>
@@ -1123,21 +1123,21 @@
             style={{textDecoration:'none', color:'inherit'}}
           >
             <div className="flex-none w-9 h-9 rounded-full m3-surface-container flex items-center justify-center">
-              <Icon name={a.icon} size={18} style={{color:'#1a73e8'}} />
+              <Icon name={a.icon} size={18} style={{color:'var(--primary,#1a73e8)'}} />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-[10px] font-medium tracking-wider" style={{color:'#9aa0a6', letterSpacing:'.08em'}}>{a.tag}</span>
+                <span className="text-[10px] font-medium tracking-wider" style={{color:'var(--on-surface-variant,#9aa0a6)', letterSpacing:'.08em'}}>{a.tag}</span>
               </div>
-              <div className="text-[13px] font-medium leading-snug truncate" style={{color:'#1f1f1f'}}>{a.title}</div>
-              <div className="text-[11.5px] mt-0.5" style={{color:'#5f6368'}}>→ {a.use}</div>
+              <div className="text-[13px] font-medium leading-snug truncate" style={{color:'var(--on-surface,#1f1f1f)'}}>{a.title}</div>
+              <div className="text-[11.5px] mt-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>→ {a.use}</div>
             </div>
           </a>
         ))}
       </div>
 
       <div className="divider my-3"></div>
-      <div className="flex items-center justify-between text-[11px]" style={{color:'#5f6368'}}>
+      <div className="flex items-center justify-between text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>
         <span>5 件 · 直近24h で更新</span>
         <button className="btn-tonal" style={{padding:'6px 12px', fontSize:'12px'}}>
           <Icon name="add" size={14} />
@@ -1332,24 +1332,24 @@
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-medium tracking-wider px-1.5 py-0.5 rounded"
                       style={{ background:'#b3261e', color:'white', letterSpacing:'.08em' }}>緊急</span>
-                <span className="text-[13px] font-medium" style={{color:'#1f1f1f'}}>{recentQuake.title}</span>
+                <span className="text-[13px] font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>{recentQuake.title}</span>
               </div>
-              <div className="text-[11px] mt-0.5 tnum" style={{color:'#5f6368'}}>
+              <div className="text-[11px] mt-0.5 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                 {recentQuake.magnitude != null && `M${recentQuake.magnitude} · `}
                 {recentQuake.depth != null && recentQuake.depth >= 0 && `深さ${recentQuake.depth}km · `}
                 {timeAgo(recentQuake.ts)}
               </div>
             </div>
-            <Icon name="open_in_new" size={16} style={{color:'#5f6368'}} />
+            <Icon name="open_in_new" size={16} style={{color:'var(--on-surface-variant,#5f6368)'}} />
           </a>
         )}
 
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-2">
-            <Icon name="newspaper" size={20} style={{color:'#5f6368'}} />
+            <Icon name="newspaper" size={20} style={{color:'var(--on-surface-variant,#5f6368)'}} />
             <h3 className="font-display text-[15px] font-medium tracking-tight">News Pulse</h3>
             <Chip tone="error" icon="fiber_manual_record">LIVE</Chip>
-            <span className="text-[11px]" style={{color:'#9aa0a6'}}>
+            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
               {last ? `更新 ${timeAgo(last)}` : '取得中...'}
             </span>
           </div>
@@ -1388,7 +1388,7 @@
 
         {/* content */}
         {err && (
-          <div className="m3-surface-container p-4 text-[12px]" style={{color:'#b3261e'}}>
+          <div className="m3-surface-container p-4 text-[12px]" style={{color:'var(--error,#b3261e)'}}>
             <Icon name="cloud_off" size={14} /> 取得失敗: {err}
           </div>
         )}
@@ -1422,15 +1422,15 @@
                           style={{ background: tagBg, color: tagFg, letterSpacing:'.08em' }}>
                       {tagLabel}
                     </span>
-                    <span className="text-[11px] tnum" style={{color:'#5f6368'}}>
+                    <span className="text-[11px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                       {timeAgo(it.ts)}
                     </span>
-                    <span className="text-[11px] truncate" style={{color:'#9aa0a6'}}>· {it.source}</span>
+                    <span className="text-[11px] truncate" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>· {it.source}</span>
                   </div>
-                  <div className="text-[13px] leading-snug font-medium line-clamp-3" style={{color:'#1f1f1f'}}>
+                  <div className="text-[13px] leading-snug font-medium line-clamp-3" style={{color:'var(--on-surface,#1f1f1f)'}}>
                     {it.title}
                   </div>
-                  <div className="flex items-center gap-3 text-[11px] tnum mt-auto" style={{color:'#5f6368'}}>
+                  <div className="flex items-center gap-3 text-[11px] tnum mt-auto" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                     {isQuake && it.magnitude != null && <span>M{it.magnitude}</span>}
                     {isQuake && it.depth != null && it.depth >= 0 && <span>深さ{it.depth}km</span>}
                     {!isQuake && it.score != null && (
@@ -1443,7 +1443,7 @@
           </div>
         )}
 
-        <div className="mt-3 flex items-center justify-between text-[11px]" style={{color:'#9aa0a6'}}>
+        <div className="mt-3 flex items-center justify-between text-[11px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
           <span>
             {tab === 'world' && 'Hacker News · 世界テック・経済'}
             {tab === 'japan' && 'r/japan · 日本トレンド（英語要約）'}
@@ -1654,7 +1654,7 @@
             <Icon name={muted[idx] ? 'volume_off' : 'volume_up'} size={16} />
           </button>
           {isActive && (
-            <span className="absolute top-2 right-2 text-[9px] font-medium px-1.5 py-0.5 rounded" style={{ background:'#1a73e8', color:'white', letterSpacing:'.05em' }}>
+            <span className="absolute top-2 right-2 text-[9px] font-medium px-1.5 py-0.5 rounded" style={{ background:'var(--primary,#1a73e8)', color:'white', letterSpacing:'.05em' }}>
               ACTIVE
             </span>
           )}
@@ -1666,10 +1666,10 @@
       <div className="m3-card p-6">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-2">
-            <Icon name="grid_view" size={20} style={{color:'#5f6368'}} />
+            <Icon name="grid_view" size={20} style={{color:'var(--on-surface-variant,#5f6368)'}} />
             <h3 className="font-display text-[15px] font-medium tracking-tight">Video Wall</h3>
             <Chip tone="error" icon="fiber_manual_record">LIVE × 4</Chip>
-            <span className="text-[11px]" style={{color:'#9aa0a6'}}>
+            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
               スロット {activeSlot+1} 操作中: {slotLabel(slots[activeSlot])}
             </span>
           </div>
@@ -1699,8 +1699,8 @@
               onClick={() => setPausedAll(v => !v)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors"
               style={{
-                background: pausedAll ? '#ea8600' : '#eef2fa',
-                color: pausedAll ? 'white' : '#5f6368'
+                background: pausedAll ? 'var(--warning,#ea8600)' : 'var(--surface-container,#eef2fa)',
+                color: pausedAll ? 'white' : 'var(--on-surface-variant,#5f6368)'
               }}
               title="全動画を停止/再開 (P)"
             >
@@ -1718,7 +1718,7 @@
                 }
               }}
               className="action-pill flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-medium"
-              style={{ background:'#1a73e8', color:'white' }}
+              style={{ background:'var(--primary,#1a73e8)', color:'white' }}
               title="動画グリッドを全画面 (Esc で解除)"
             >
               <Icon name="fullscreen" size={14} />
@@ -1762,12 +1762,12 @@
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-medium"
-                          style={{ background:'#1a73e8', color:'white' }}>{idx+1}</span>
-                    <span className="text-[11px] font-medium" style={{color:'#5f6368'}}>スロット {idx+1}</span>
+                          style={{ background:'var(--primary,#1a73e8)', color:'white' }}>{idx+1}</span>
+                    <span className="text-[11px] font-medium" style={{color:'var(--on-surface-variant,#5f6368)'}}>スロット {idx+1}</span>
                   </div>
                   <button onClick={() => setActiveSlot(idx)} className="text-[10px] px-2 py-0.5 rounded-full"
-                          style={{ background: idx === activeSlot ? '#1a73e8' : '#e7eef9',
-                                   color: idx === activeSlot ? 'white' : '#5f6368' }}>
+                          style={{ background: idx === activeSlot ? 'var(--primary,#1a73e8)' : 'var(--border,#e7eef9)',
+                                   color: idx === activeSlot ? 'white' : 'var(--on-surface-variant,#5f6368)' }}>
                     {idx === activeSlot ? 'ACTIVE' : '選択'}
                   </button>
                 </div>
@@ -1775,7 +1775,7 @@
                   value={currentValue}
                   onChange={(e) => { if (e.target.value !== '__custom__') setSlot(idx, e.target.value); }}
                   className="w-full text-[12px] px-3 py-2 rounded-full"
-                  style={{ background:'white', border:'1px solid #e7eef9', outline:'none', color:'#1f1f1f' }}
+                  style={{ background:'white', border:'1px solid var(--border,#e7eef9)', outline:'none', color:'var(--on-surface,#1f1f1f)' }}
                 >
                   {isCustom && <option value="__custom__">カスタム ({slot.id})</option>}
                   {PRESET_GROUPS.map(g => {
@@ -1796,7 +1796,7 @@
                     );
                   })}
                 </select>
-                <div className="text-[10px] mt-1.5 truncate" style={{color:'#9aa0a6'}}>
+                <div className="text-[10px] mt-1.5 truncate" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
                   再生中: {currentLabel}
                 </div>
               </div>
@@ -1807,7 +1807,7 @@
         {/* custom URL */}
         <div className="mt-3 flex flex-col md:flex-row md:items-center gap-2">
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Icon name="link" size={16} style={{color:'#9aa0a6'}} />
+            <Icon name="link" size={16} style={{color:'var(--on-surface-variant,#9aa0a6)'}} />
             <input
               type="text"
               value={customUrl}
@@ -1815,7 +1815,7 @@
               onKeyDown={(e) => { if (e.key === 'Enter') applyCustomToActive(); }}
               placeholder={`スロット${activeSlot+1}にカスタムYouTube URL`}
               className="flex-1 min-w-0 text-[12px] tnum px-3 py-2 rounded-full"
-              style={{ background:'#eef2fa', border:'1px solid #e7eef9', outline:'none' }}
+              style={{ background:'var(--surface-container,#eef2fa)', border:'1px solid var(--border,#e7eef9)', outline:'none' }}
             />
           </div>
           <button onClick={applyCustomToActive} className="btn-tonal flex-shrink-0 self-start md:self-auto" disabled={!parseYT(customUrl)}
@@ -1826,13 +1826,13 @@
 
         {urlHistory.length > 0 && (
           <div className="mt-2 flex items-center gap-2 flex-wrap">
-            <span className="text-[10px]" style={{color:'#9aa0a6'}}>履歴:</span>
+            <span className="text-[10px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>履歴:</span>
             {urlHistory.map(h => (
               <button
                 key={h.id}
                 onClick={() => setCustomUrl(`https://youtu.be/${h.id}`)}
                 className="text-[11px] px-2 py-1 rounded-full hover:bg-blue-50 transition-colors"
-                style={{background:'#eef2fa', color:'#5f6368'}}
+                style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}
                 title={h.url}
               >
                 {h.id}
@@ -1841,7 +1841,7 @@
             <button
               onClick={() => setUrlHistory([])}
               className="text-[10px] ml-1"
-              style={{color:'#b3261e'}}
+              style={{color:'var(--error,#b3261e)'}}
               title="履歴クリア"
             >
               クリア
@@ -1849,11 +1849,11 @@
           </div>
         )}
 
-        <div className="mt-3 text-[11px] flex flex-wrap gap-x-3 gap-y-1" style={{color:'#9aa0a6'}}>
-          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>1-4</kbd> スロット切替</span>
-          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>M</kbd> 全ミュート</span>
-          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>P</kbd> 全停止</span>
-          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'#eef2fa', color:'#5f6368'}}>Q/F/S</kbd> レイアウト</span>
+        <div className="mt-3 text-[11px] flex flex-wrap gap-x-3 gap-y-1" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}>1-4</kbd> スロット切替</span>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}>M</kbd> 全ミュート</span>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}>P</kbd> 全停止</span>
+          <span><kbd className="px-1.5 py-0.5 rounded text-[10px]" style={{background:'var(--surface-container,#eef2fa)', color:'var(--on-surface-variant,#5f6368)'}}>Q/F/S</kbd> レイアウト</span>
         </div>
       </div>
     );
@@ -1878,10 +1878,10 @@
   const ExternalViewers = () => (
     <div className="m3-card p-5">
       <div className="flex items-center gap-2 mb-3">
-        <Icon name="open_in_new" size={20} style={{color:'#1a73e8'}} />
-        <h3 className="font-display text-[15px]" style={{fontWeight:500, color:'#1f1f1f'}}>External Viewers</h3>
+        <Icon name="open_in_new" size={20} style={{color:'var(--primary,#1a73e8)'}} />
+        <h3 className="font-display text-[15px]" style={{fontWeight:500, color:'var(--on-surface,#1f1f1f)'}}>External Viewers</h3>
         <Chip tone="neutral">{EXTERNAL_VIEWERS.length} services</Chip>
-        <span className="ml-auto text-[11px]" style={{color:'#9aa0a6'}}>新規タブで開く</span>
+        <span className="ml-auto text-[11px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>新規タブで開く</span>
       </div>
       <div className="flex flex-wrap gap-2">
         {EXTERNAL_VIEWERS.map(v => (
@@ -1937,8 +1937,8 @@
     return (
       <div className="m3-card p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Icon name="priority_high" size={20} style={{color:'#1a73e8'}} />
-          <h3 className="font-display text-[15px]" style={{fontWeight:500, color:'#1f1f1f'}}>TOP 3 ACTIONS TODAY</h3>
+          <Icon name="priority_high" size={20} style={{color:'var(--primary,#1a73e8)'}} />
+          <h3 className="font-display text-[15px]" style={{fontWeight:500, color:'var(--on-surface,#1f1f1f)'}}>TOP 3 ACTIONS TODAY</h3>
           <Chip tone={completedCount === 3 ? 'success' : 'primary'}>{completedCount} / 3 完了</Chip>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -1952,10 +1952,10 @@
                   <Chip tone="neutral">{a.time}</Chip>
                 </div>
                 <div className="text-[13px] leading-relaxed mb-2"
-                     style={{ color:'#1f1f1f', textDecoration: isDone ? 'line-through' : 'none', opacity: isDone ? 0.5 : 1 }}>
+                     style={{ color:'var(--on-surface,#1f1f1f)', textDecoration: isDone ? 'line-through' : 'none', opacity: isDone ? 0.5 : 1 }}>
                   {a.text}
                 </div>
-                <label className="flex items-center gap-2 cursor-pointer text-[11px]" style={{color:'#5f6368'}}>
+                <label className="flex items-center gap-2 cursor-pointer text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                   <input type="checkbox" checked={isDone} onChange={() => toggle(a.id)} style={{accentColor:'#1a73e8'}} />
                   完了
                 </label>
@@ -1980,10 +1980,10 @@
         return (
           <div className="m3-card p-5" style={{borderLeft:'4px solid #b3261e'}}>
             <div className="flex items-center gap-2 mb-2">
-              <Icon name="error" size={20} style={{color:'#b3261e'}} />
-              <div className="font-display text-[14px] font-medium" style={{color:'#1f1f1f'}}>モジュールエラー</div>
+              <Icon name="error" size={20} style={{color:'var(--error,#b3261e)'}} />
+              <div className="font-display text-[14px] font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>モジュールエラー</div>
             </div>
-            <div className="text-[12px]" style={{color:'#5f6368'}}>このカードの読込に失敗しました。リロードで復旧する可能性があります。</div>
+            <div className="text-[12px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>このカードの読込に失敗しました。リロードで復旧する可能性があります。</div>
             <button className="btn-tonal mt-3" onClick={() => this.setState({ hasError: false, err: null })}>
               <Icon name="refresh" size={14} /> 再試行
             </button>
@@ -2014,7 +2014,7 @@
              style={{maxWidth:'520px',width:'100%',background:'var(--surface)'}}>
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <Icon name="keyboard" size={22} style={{color:'#1a73e8'}} />
+              <Icon name="keyboard" size={22} style={{color:'var(--primary,#1a73e8)'}} />
               <h3 className="font-display text-[18px]" style={{fontWeight:500,color:'var(--on-surface,#1f1f1f)'}}>キーボードショートカット</h3>
             </div>
             <button className="icon-btn" onClick={onClose}><Icon name="close" size={20} /></button>
@@ -2244,7 +2244,7 @@
              style={{maxWidth:'520px',width:'100%',background:'var(--surface)'}}>
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <Icon name="settings" size={22} style={{color:'#1a73e8'}} />
+              <Icon name="settings" size={22} style={{color:'var(--primary,#1a73e8)'}} />
               <h3 className="font-display text-[18px]" style={{fontWeight:500,color:'var(--on-surface,#1f1f1f)'}}>設定</h3>
             </div>
             <button className="icon-btn" onClick={onClose}><Icon name="close" size={20} /></button>
@@ -2252,11 +2252,11 @@
           <div className="space-y-4 text-[13px]" style={{color:'var(--on-surface,#1f1f1f)'}}>
             <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #1a73e8'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
-                <Icon name="auto_awesome" size={16} style={{color:'#1a73e8'}} />
+                <Icon name="auto_awesome" size={16} style={{color:'var(--primary,#1a73e8)'}} />
                 AI Daily Brief（Claude API）
               </div>
               <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
-                朝のブリーフィングを Claude が自動生成。APIキーは <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style={{color:'#1a73e8',textDecoration:'underline'}}>console.anthropic.com</a> から取得（sk-ant-...形式）。ブラウザのlocalStorageに保存されます（Anthropic以外には送信されません）。
+                朝のブリーフィングを Claude が自動生成。APIキーは <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style={{color:'var(--primary,#1a73e8)',textDecoration:'underline'}}>console.anthropic.com</a> から取得（sk-ant-...形式）。ブラウザのlocalStorageに保存されます（Anthropic以外には送信されません）。
               </div>
               <div className="flex gap-2 mb-3">
                 <input
@@ -2288,12 +2288,12 @@
             {/* ─── Google Calendar OAuth Section ─── */}
             <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #34a853'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
-                <Icon name="calendar_month" size={16} style={{color:'#34a853'}} />
+                <Icon name="calendar_month" size={16} style={{color:'var(--calendar,#34a853)'}} />
                 Google Calendar 連携（オプション）
               </div>
               <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                 本日の予定を Google Calendar から自動取得。<strong>事前準備</strong>:
-                <br/>1. <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener" style={{color:'#1a73e8',textDecoration:'underline'}}>Google Cloud Console</a> でプロジェクト作成→ Calendar API 有効化
+                <br/>1. <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener" style={{color:'var(--primary,#1a73e8)',textDecoration:'underline'}}>Google Cloud Console</a> でプロジェクト作成→ Calendar API 有効化
                 <br/>2. OAuth 2.0 Client ID 作成（種別: <strong>Web application</strong>）
                 <br/>3. 承認済JavaScript生成元に <code style={{background:'var(--surface,#fff)',padding:'1px 4px',borderRadius:'4px'}}>http://localhost:8765</code> 追加
                 <br/>4. Client ID をコピー → 下にペースト
@@ -2322,7 +2322,7 @@
                     <button className="btn-tonal" onClick={() => fetchGcalEvents()}>
                       <Icon name="refresh" size={14} /> 今すぐ同期
                     </button>
-                    <button className="btn-tonal" onClick={disconnectGcal} style={{borderColor:'#b3261e',color:'#b3261e'}}>
+                    <button className="btn-tonal" onClick={disconnectGcal} style={{borderColor:'#b3261e',color:'var(--error,#b3261e)'}}>
                       <Icon name="logout" size={14} /> 切断
                     </button>
                   </>
@@ -2348,7 +2348,7 @@
 
             <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #ea8600'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
-                <Icon name="event" size={16} style={{color:'#ea8600'}} />
+                <Icon name="event" size={16} style={{color:'var(--warning,#ea8600)'}} />
                 Today's Schedule（手動編集）
               </div>
               <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
@@ -2368,7 +2368,7 @@
             </div>
             <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #34a853'}}>
               <div className="font-medium mb-1 flex items-center gap-1.5">
-                <Icon name="favorite" size={16} style={{color:'#34a853'}} />
+                <Icon name="favorite" size={16} style={{color:'var(--calendar,#34a853)'}} />
                 Recovery（Apple Watch 値）
               </div>
               <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
@@ -2409,11 +2409,11 @@
               </ul>
             </div>
             <div className="m3-surface-container p-4 rounded-2xl" style={{borderLeft:'3px solid #b3261e'}}>
-              <div className="font-medium mb-1" style={{color:'#b3261e'}}>危険な操作</div>
+              <div className="font-medium mb-1" style={{color:'var(--error,#b3261e)'}}>危険な操作</div>
               <div className="text-[12px] mb-3" style={{color:'var(--on-surface-variant,#5f6368)'}}>
                 すべての設定を初期化します（取り消し不可）。
               </div>
-              <button className="btn-tonal" onClick={onReset} style={{borderColor:'#b3261e',color:'#b3261e'}}>
+              <button className="btn-tonal" onClick={onReset} style={{borderColor:'#b3261e',color:'var(--error,#b3261e)'}}>
                 <Icon name="restart_alt" size={14} /> 全リセット
               </button>
             </div>
@@ -2614,7 +2614,7 @@
       <div className="m3-card p-6" style={{borderTop:'4px solid #1a73e8'}}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <Icon name="auto_awesome" size={22} style={{color:'#1a73e8'}} />
+            <Icon name="auto_awesome" size={22} style={{color:'var(--primary,#1a73e8)'}} />
             <h3 className="font-display text-[16px]" style={{fontWeight:500, color:'var(--on-surface,#1f1f1f)'}}>AI Daily Brief</h3>
             <Chip tone="primary">Claude Sonnet 4.5</Chip>
             <Chip tone="neutral">{segmentLabel(new Date())}</Chip>
@@ -2631,7 +2631,7 @@
           </div>
         )}
         {error && (
-          <div className="m3-surface-container p-4 rounded-2xl text-[12px]" style={{color:'#b3261e', borderLeft:'3px solid #b3261e'}}>
+          <div className="m3-surface-container p-4 rounded-2xl text-[12px]" style={{color:'var(--error,#b3261e)', borderLeft:'3px solid #b3261e'}}>
             <strong>エラー:</strong> {error}
           </div>
         )}
@@ -2646,7 +2646,7 @@
                   <Icon name="checklist" size={14} /> TOP 3 ACTIONS に取り込む
                 </button>
                 {applied && (
-                  <span className="text-[11px] flex items-center gap-1" style={{color:'#137333'}}>
+                  <span className="text-[11px] flex items-center gap-1" style={{color:'var(--success,#137333)'}}>
                     <Icon name="check_circle" size={14} /> 取り込み済み（チェック状態リセット）
                   </span>
                 )}
@@ -2730,14 +2730,14 @@
       {/* top app bar */}
       <header className="px-4 md:px-8 pt-4 md:pt-6 pb-2 flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{background:'#e8f0fe'}}>
-            <Icon name="hub" size={22} style={{color:'#1a73e8'}} />
+          <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{background:'var(--surface-container,#eef2fa)'}}>
+            <Icon name="hub" size={22} style={{color:'var(--primary,#1a73e8)'}} />
           </div>
           <div>
             <div className="font-display text-[18px] leading-none" style={{fontWeight:500}}>Personal Control Center</div>
             <div
               className="text-[11px] mt-1 cursor-text outline-none"
-              style={{color:'#5f6368'}}
+              style={{color:'var(--on-surface-variant,#5f6368)'}}
               contentEditable
               suppressContentEditableWarning
               onBlur={(e) => {
@@ -2766,7 +2766,7 @@
           <button className="icon-btn" onClick={openSettings}><Icon name="settings" size={20} /></button>
           <div
             className="w-9 h-9 rounded-full ml-1 flex items-center justify-center font-display text-[13px] cursor-text outline-none"
-            style={{background:'#1a73e8', color:'white', fontWeight:500}}
+            style={{background:'var(--primary,#1a73e8)', color:'white', fontWeight:500}}
             contentEditable
             suppressContentEditableWarning
             onBlur={(e) => {
@@ -2843,7 +2843,7 @@
           </>
         )}
 
-        <footer className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-[11px]" style={{color:'#9aa0a6'}}>
+        <footer className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-[11px]" style={{color:'var(--on-surface-variant,#9aa0a6)'}}>
           <div className="flex items-center gap-2">
             <Icon name="lock" size={14} />
             ローカル保管 · 健康・社内データは GitHub Pages 非公開
