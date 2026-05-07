@@ -5068,35 +5068,56 @@ function RyokurituKaizanPage({ onNav, data }) {
 
       <PlainExplain>
         <p><strong>「SRがQsc × 0.06 を消費する」の導出</strong></p>
-        <p>ここで間違えやすいのは <em>「なぜ SR の消費無効電力が Qsc × 0.06 になるのか」</em> という点。根拠は <strong>直列接続なので同じ電流 I が流れる</strong> という一点に尽きる。</p>
-        <table style={{width:'100%', borderCollapse:'collapse', fontSize:13, marginTop:8, marginBottom:8}}>
+        <p>ここで間違えやすいのは <em>「なぜ SR の消費無効電力が Qsc × 0.06 になるのか」</em> という点。根拠は <strong>直列接続なので同じ電流 I が流れる</strong> ことに尽きる。</p>
+        <p style={{fontSize:12, color:'var(--ink-3)', marginTop:4, marginBottom:8}}>
+          ※ 三相全体では本来 Q = 3I²X だが、SC と SR で係数 3 は共通なので、比を見るために以下では省略する。
+        </p>
+        <table style={{width:'100%', borderCollapse:'collapse', fontSize:13, marginTop:4, marginBottom:12}}>
           <thead>
             <tr style={{background:'var(--bg-3)'}}>
               <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>素子</th>
-              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>無効電力の式</th>
-              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>値</th>
+              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>無効電力</th>
+              <th style={{border:'1px solid var(--line)', padding:'6px 10px', textAlign:'left'}}>意味</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#27c', fontWeight:700}}>SC（コンデンサ）</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#27c', fontWeight:700}}>SC</td>
               <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>Qsc = I² × Xc</td>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>← これが「SC容量 Qsc」の定義</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>コンデンサ単体の容量</td>
             </tr>
             <tr style={{background:'var(--bg-2)'}}>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#c66', fontWeight:700}}>SR（リアクトル）</td>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>QSR = I² × XL = I² × 0.06Xc</td>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>= 0.06 × (I² × Xc) = <strong>0.06 × Qsc</strong></td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#c66', fontWeight:700}}>SR</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>QSR = I² × XL</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>リアクトルの消費無効電力</td>
             </tr>
             <tr>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#396', fontWeight:700}}>系統への正味供給</td>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>ΔQ = Qsc − QSR</td>
-              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>= Qsc − 0.06Qsc = <strong>0.94 × Qsc</strong></td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#c66'}}>SRが6%の場合</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>XL = 0.06Xc</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>6%リアクトル</td>
+            </tr>
+            <tr style={{background:'var(--bg-2)'}}>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontWeight:700}}>よって</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif'}}>QSR = I² × 0.06Xc = <strong>0.06 × Qsc</strong></td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px'}}>SRはSC容量の6%を消費</td>
+            </tr>
+            <tr style={{background:'#f0fff4'}}>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#396', fontWeight:700}}>正味供給</td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', fontFamily:'serif', color:'#396', fontWeight:700}}>ΔQ = Qsc − QSR = <strong>0.94 × Qsc</strong></td>
+              <td style={{border:'1px solid var(--line)', padding:'6px 10px', color:'#396'}}>系統に供給される無効電力</td>
             </tr>
           </tbody>
         </table>
-        <p>つまり「直列なので I が同じ → Q の比 = X の比」という論理。XL が Xc の 6% だから、SR の消費も SC 容量の 6%。</p>
-        <p>あとは <strong>0.94 × Qsc = 175</strong> を解いて <strong>Qsc = 175 ÷ 0.94 ≒ 186 kvar</strong>。</p>
+        <div style={{background:'var(--bg-2)', border:'1px solid var(--line)', borderRadius:'var(--radius)', padding:'10px 16px', marginBottom:12, lineHeight:2.0, fontSize:13}}>
+          <strong>直列なので電流が同じ</strong><br/>
+          → <strong>無効電力の比 = リアクタンスの比</strong><br/>
+          → <strong>SRのリアクタンスがSCの6%</strong><br/>
+          → <strong>SRの消費無効電力もSC容量の6%</strong>
+        </div>
+        <p>したがって、系統へ正味で 175 kvar 供給したい場合は：</p>
+        <div style={{textAlign:'center', fontSize:16, fontFamily:'serif', fontWeight:700, padding:'10px 0', color:'#27c'}}>
+          0.94 × Qsc = 175　→　Qsc = 175 ÷ 0.94 ≒ <span style={{color:'#d33'}}>186 kvar</span>
+        </div>
       </PlainExplain>
 
       {/* SVG6: 無効電力フロー図 */}
