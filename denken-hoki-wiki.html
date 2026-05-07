@@ -1551,6 +1551,61 @@ window.GLOSSARY_TERMS_V1 = {
       exam_note: '「対地間」とペアで出題。条文の「及び」に注意',
       distractors: ['対地間', '電線地絡間', '中性点間'],
       addedDate: '2026-05-06'
+    },
+    {
+      id: 'saidai-juyodenryoku',
+      term: '最大需要電力',
+      yomi: 'さいだいじゅようでんりょく',
+      meaning: '30分間の平均使用電力の最大値[kW]（デマンド）',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '日常の「ピーク電力（瞬時値）」とは異なり30分平均値。需要料金（基本料金）の計算基準',
+      distractors: ['瞬時最大電力', 'ピーク電力', '契約電力'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'demand-shuki',
+      term: 'デマンド周期',
+      yomi: 'でまんどしゅうき',
+      meaning: '最大需要電力の計測区間（通常30分）',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '正時（00分・30分）を起点とする30分区間。計算問題では時間の単位を分に統一して使う',
+      distractors: ['15分', '1時間', '60分'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'demand-mokuhyochi',
+      term: 'デマンド目標値',
+      yomi: 'でまんどもくひょうち',
+      meaning: '30分平均電力を超えてはいけない上限値[kW]',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '超過すると翌月以降の基本料金が上昇。「未満」か「以下」かで境界値の扱いが変わる',
+      distractors: ['需要率目標', '負荷率上限', '設備容量'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'juyoritsu',
+      term: '需要率',
+      yomi: 'じゅようりつ',
+      meaning: '需要率 = 最大需要電力 ÷ 設備容量 × 100%',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '最大需要電力を下げると需要率も下がる。負荷率・不等率とセットで出題',
+      distractors: ['負荷率', '不等率', '力率'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'demand-controller',
+      term: 'デマンドコントローラ',
+      yomi: 'でまんどこんとろーら',
+      meaning: '30分積算電力を常時監視し目標値超過時に警報を発する装置',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '工場の受電盤に設置される省エネ設備。自動負荷遮断（EMS連携）も可能',
+      distractors: ['電力量計', '無効電力補償装置', 'デマンドレスポンダー'],
+      addedDate: '2026-05-07'
     }
   ]
 };
@@ -2012,8 +2067,10 @@ function ExamAnswer({ correct, explanations }) {
   );
 }
 
-function QuickReview({ items }) {
+function QuickReview({ items, showRating }) {
   const limited = items.slice(0, 5);
+  const [ratings, setRatings] = React.useState({});
+  const setRating = (i, r) => setRatings(prev => ({ ...prev, [i]: r }));
   return (
     <div className="quick-review" style={{ marginBottom: '24px' }}>
       <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '10px', color: 'var(--ink-2)' }}>1分復習</div>
@@ -2021,6 +2078,18 @@ function QuickReview({ items }) {
         <details key={i} className="quick-review">
           <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
           <div className="quick-review-answer">A: {item.a}</div>
+          {showRating && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 6, paddingLeft: 12 }}>
+              <button
+                onClick={() => setRating(i, 'ok')}
+                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ok' ? '#d4f5d4' : 'var(--bg-elev)', cursor: 'pointer' }}
+              >✓ 理解できた</button>
+              <button
+                onClick={() => setRating(i, 'ng')}
+                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ng' ? '#fde8e8' : 'var(--bg-elev)', cursor: 'pointer' }}
+              >△ もう一度</button>
+            </div>
+          )}
         </details>
       ))}
     </div>
@@ -7355,6 +7424,7 @@ function DemandKanriPage({ onNav, data }) {
       />
 
       {/* 1. GoalQuestion */}
+      <h2 id="goal-question">1. ゴール問題</h2>
       <GoalQuestion
         year="令和5年上期 法規 問10"
         question="ある工場では、換気用ファン（定格出力5.5kW）を最大8台まで停止できる。9:00〜9:20の平均使用電力は310kWであった。9:20〜9:30の間にファンを何台か停止させるとともに、その他の負荷10kW分を停止した。9:00〜9:30の最大需要電力を300kW未満に抑えるためには、ファンを最低何台停止させる必要があるか。"
@@ -7364,12 +7434,12 @@ function DemandKanriPage({ onNav, data }) {
 
       {/* 問題文の読み替えポイント */}
       <div className="topic" style={{marginBottom:16, fontSize:14}}>
-        <strong>問題文の読み替え</strong>：「9:00〜9:30の<strong>最大需要電力</strong>を300kW未満」
-        ＝「その30分区間の<strong>平均電力を300kW未満に抑える</strong>（30分デマンドを300kW未満に制御する）」。
-        最大需要電力はデマンド周期内の<em>平均電力</em>なので、瞬時値ではなく区間全体の平均で判断する。
+        <p style={{margin:'0 0 4px'}}><strong>問題文の読み替え</strong>：「9:00〜9:30の<strong>最大需要電力</strong>を300kW未満」＝「その30分区間の<strong>平均電力を300kW未満に制御する</strong>」こと。</p>
+        <p style={{margin:0, color:'var(--ink-2)'}}>最大需要電力 = デマンド周期内の<em>平均電力</em>。瞬時値ではなく30分区間全体の平均で判断する。</p>
       </div>
 
       {/* 2. ConclusionBox */}
+      <h2 id="conclusion-box">2. 結論ボックス</h2>
       <ConclusionBox>
         <p style={{margin: '0 0 6px'}}><strong>デマンド制御の核心</strong>：30分区間の平均電力を目標値未満に保つ</p>
         <p style={{margin: '0 0 4px'}}>① 後半電力の上限Pを逆算：(310×20 + P×10)/30 &lt; 300 → P &lt; 280kW</p>
@@ -7383,8 +7453,7 @@ function DemandKanriPage({ onNav, data }) {
         <span className="tag hot" style={{fontSize:12}}>電気施設管理の頻出計算</span>
       </div>
       <div className="topic" style={{marginBottom:20, fontSize:14}}>
-        <strong>重要前提</strong>：最大需要電力は<strong>瞬間値ではなく30分平均</strong>で判断する。
-        瞬時に310kWを超えていても、30分間の平均が300kW未満であれば目標達成。
+        <strong>重要前提</strong>：最大需要電力は<strong>瞬間値ではなく30分平均</strong>で判断する。瞬時に310kWを超えていても、30分間の平均が300kW未満であれば目標達成。
       </div>
 
       {/* 3. MinShortcutCard */}
@@ -7422,12 +7491,22 @@ function DemandKanriPage({ onNav, data }) {
         lastChecked="2026-05-07"
       />
 
+      {/* 過去出題実績 */}
+      <MemTable
+        headers={["年度・期", "問番号", "出題内容", "答え"]}
+        rows={[
+          ["R5上（2023）", "問10", "換気ファン5.5kW×台数 + 他10kW停止。9:20〜9:30の制御で300kW未満にする最小台数", "4台"],
+          ["CH06全体", "（参考）", "電気施設管理カテゴリ全体：過去10年で30問以上（Sランク）。デマンド計算・需要率・変圧器容量等を含む", "─"],
+        ]}
+        note="※ デマンド制御計算の単独集計。電気施設管理カテゴリ全体の出題は別途テーマランキングを参照"
+      />
+
       {/* 5. §3 試験で問われること */}
       <h2 id="exam-focus">3. 試験で問われること</h2>
       <ExamFocus items={[
         { label: "主体",   value: "30分デマンド管理：30分区間の平均電力を指定値未満に抑える計算" },
         { label: "手法",   value: "（前半電力×前半時間 + 後半電力×後半時間）÷ 30 ＜ 目標値 から後半電力上限を逆算" },
-        { label: "条件",   value: "「未満」（boundary excluded）なので境界値はNG。計算結果に小数が出たら必ず切り上げ" },
+        { label: "条件",   value: "「未満」なので境界値はNG（300kWは含まない）。計算結果に小数が出たら必ず切り上げ" },
         { label: "単位",   value: "電力[kW]×時間[分]でエネルギーを統一。kWh と kW·分を混在させない" },
         { label: "応用",   value: "ファン以外の固定停止負荷（○kW分）が与えられた場合の差し引き処理" },
         { label: "出典",   value: "R5上 問10：換気ファン5.5kW×台数 + 他10kW 停止で300kW未満（答え4台）" },
@@ -7688,16 +7767,16 @@ function DemandKanriPage({ onNav, data }) {
       {/* §13 ひっかけ表 */}
       <h2 id="traps">13. よくあるひっかけ（10項目）</h2>
       <TrapTable traps={[
-        { trap: "「300kW以下」と読み違えて P=280 もOKとする", correct: "「300kW未満」なのでP=280はNG（平均ちょうど300kWになり条件不成立）" },
-        { trap: "X=3.64 → 切り捨てで3台と答える", correct: "3台ではP=283.5kW>280で条件未達。整数台しかないので切り上げ→4台" },
-        { trap: "その他停止負荷10kWを忘れる", correct: "停止電力 = 5.5X + 10。10kWを引いてからXを求める（必要ファン停止は20kW分）" },
-        { trap: "後半10分の計算を30分で割らない", correct: "P×10 が後半エネルギー。P×30 は誤り（10分しかない）" },
-        { trap: "平均を (310+P)/2 で計算（単純平均）", correct: "時間加重平均が正しい。(310×20 + P×10)/30。区間が20:10で非均等" },
-        { trap: "最大8台を「答え=8台」と混同", correct: "8台は上限（停止可能最大数）。問いは「最低何台か」なので4台" },
-        { trap: "目標エネルギーを 300×30=9,000 以下と設定（境界値OK扱い）", correct: "「未満」なので 9,000 kW·分は含まない。9,000 未満（=8,999 以下）" },
-        { trap: "デマンド周期を1時間として計算", correct: "デマンド周期は30分。9:00〜9:30の30分で1区間" },
-        { trap: "ファンの電力を kW·h 扱いして計算する", correct: "5.5kW は電力。停止電力は5.5X kW であり時間をかける前の値" },
-        { trap: "停止後P=278kWなのに「280kWを下回ったから十分」と3台で答える", correct: "3台はX=3で3.64未満。3台停止ではP=300-16.5=283.5kW>280でNG" },
+        { wrong: "「300kW以下」と読み違えて P=280 もOKとする", correct: "「300kW未満」なのでP=280はNG（平均ちょうど300kWになり条件不成立）" },
+        { wrong: "X=3.64 → 切り捨てで3台と答える", correct: "3台ではP=283.5kW>280で条件未達。整数台しかないので切り上げ→4台" },
+        { wrong: "その他停止負荷10kWを忘れる", correct: "停止電力 = 5.5X + 10。10kWを引いてからXを求める（必要ファン停止は20kW分）" },
+        { wrong: "後半10分の計算を30分で割らない", correct: "P×10 が後半エネルギー。P×30 は誤り（10分しかない）" },
+        { wrong: "平均を (310+P)/2 で計算（単純平均）", correct: "時間加重平均が正しい。(310×20 + P×10)/30。区間が20:10で非均等" },
+        { wrong: "最大8台を「答え=8台」と混同", correct: "8台は上限（停止可能最大数）。問いは「最低何台か」なので4台" },
+        { wrong: "目標エネルギーを 300×30=9,000 以下と設定（境界値OK扱い）", correct: "「未満」なので 9,000 kW·分は含まない。9,000 未満（=8,999 以下）" },
+        { wrong: "デマンド周期を1時間として計算", correct: "デマンド周期は30分。9:00〜9:30の30分で1区間" },
+        { wrong: "ファンの電力を kW·h 扱いして計算する", correct: "5.5kW は電力。停止電力は5.5X kW であり時間をかける前の値" },
+        { wrong: "停止後P=278kWなのに「280kWを下回ったから十分」と3台で答える", correct: "3台はX=3で3.64未満。3台停止ではP=300-16.5=283.5kW>280でNG" },
       ]} />
 
       {/* §14 過去問 */}
@@ -7789,7 +7868,7 @@ function DemandKanriPage({ onNav, data }) {
 
       {/* §18 1分復習 */}
       <h2 id="quick-review">18. 1分復習</h2>
-      <QuickReview
+      <QuickReview showRating
         items={[
           { q: "最大需要電力の定義は？", a: "30分間の平均使用電力の最大値[kW]" },
           { q: "R5上問10の後半電力上限の計算は？", a: "(310×20 + P×10)/30 < 300 → P < 280kW" },

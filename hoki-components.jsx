@@ -451,8 +451,10 @@ function ExamAnswer({ correct, explanations }) {
   );
 }
 
-function QuickReview({ items }) {
+function QuickReview({ items, showRating }) {
   const limited = items.slice(0, 5);
+  const [ratings, setRatings] = React.useState({});
+  const setRating = (i, r) => setRatings(prev => ({ ...prev, [i]: r }));
   return (
     <div className="quick-review" style={{ marginBottom: '24px' }}>
       <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '10px', color: 'var(--ink-2)' }}>1分復習</div>
@@ -460,6 +462,18 @@ function QuickReview({ items }) {
         <details key={i} className="quick-review">
           <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
           <div className="quick-review-answer">A: {item.a}</div>
+          {showRating && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 6, paddingLeft: 12 }}>
+              <button
+                onClick={() => setRating(i, 'ok')}
+                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ok' ? '#d4f5d4' : 'var(--bg-elev)', cursor: 'pointer' }}
+              >✓ 理解できた</button>
+              <button
+                onClick={() => setRating(i, 'ng')}
+                style={{ fontSize: 12, padding: '2px 10px', borderRadius: 4, border: '1px solid var(--line)', background: ratings[i] === 'ng' ? '#fde8e8' : 'var(--bg-elev)', cursor: 'pointer' }}
+              >△ もう一度</button>
+            </div>
+          )}
         </details>
       ))}
     </div>

@@ -116,6 +116,61 @@ window.GLOSSARY_TERMS_V1 = {
       exam_note: '「対地間」とペアで出題。条文の「及び」に注意',
       distractors: ['対地間', '電線地絡間', '中性点間'],
       addedDate: '2026-05-06'
+    },
+    {
+      id: 'saidai-juyodenryoku',
+      term: '最大需要電力',
+      yomi: 'さいだいじゅようでんりょく',
+      meaning: '30分間の平均使用電力の最大値[kW]（デマンド）',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '日常の「ピーク電力（瞬時値）」とは異なり30分平均値。需要料金（基本料金）の計算基準',
+      distractors: ['瞬時最大電力', 'ピーク電力', '契約電力'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'demand-shuki',
+      term: 'デマンド周期',
+      yomi: 'でまんどしゅうき',
+      meaning: '最大需要電力の計測区間（通常30分）',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '正時（00分・30分）を起点とする30分区間。計算問題では時間の単位を分に統一して使う',
+      distractors: ['15分', '1時間', '60分'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'demand-mokuhyochi',
+      term: 'デマンド目標値',
+      yomi: 'でまんどもくひょうち',
+      meaning: '30分平均電力を超えてはいけない上限値[kW]',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '超過すると翌月以降の基本料金が上昇。「未満」か「以下」かで境界値の扱いが変わる',
+      distractors: ['需要率目標', '負荷率上限', '設備容量'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'juyoritsu',
+      term: '需要率',
+      yomi: 'じゅようりつ',
+      meaning: '需要率 = 最大需要電力 ÷ 設備容量 × 100%',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '最大需要電力を下げると需要率も下がる。負荷率・不等率とセットで出題',
+      distractors: ['負荷率', '不等率', '力率'],
+      addedDate: '2026-05-07'
+    },
+    {
+      id: 'demand-controller',
+      term: 'デマンドコントローラ',
+      yomi: 'でまんどこんとろーら',
+      meaning: '30分積算電力を常時監視し目標値超過時に警報を発する装置',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '工場の受電盤に設置される省エネ設備。自動負荷遮断（EMS連携）も可能',
+      distractors: ['電力量計', '無効電力補償装置', 'デマンドレスポンダー'],
+      addedDate: '2026-05-07'
     }
   ]
 };
