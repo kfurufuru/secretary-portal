@@ -5253,11 +5253,111 @@ function HichuseiJirakuPage({ onNav, data }) {
         </ol>
 
         <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 12, padding: '10px 14px', background: 'var(--bg-2)', borderRadius: 'var(--radius)', borderLeft: '3px solid var(--ink-3)'}}>
-          <strong>同時並行ループ</strong>：c相も <strong>地絡点 → 大地 → C_c → c相導体 → V_c</strong> の経路で同型ループを並行して流れる。<br/>
-          <strong>「3相分のC」が式に入る理由</strong>：Ig の還流路は健全2相のC（C_b と C_c）の<strong>両方</strong>を経由する。地絡電流 I_g = I_b + I_c の合成 = √3·ωC·V
+          <strong>上図は b相ループのみ追跡。</strong>c相も同型ループ（地絡点→大地→C_c→c相導体→V_c）を同時並行で流れる。→ 下の【両ループ全体図】参照。
         </div>
         <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ <strong>電験テキスト慣例の方向</strong>（V_a 駆動・地絡点で大地へ降下する Ig 視点）。AC電流のため向きは50/60Hzで反転。C_a は地絡点で短絡されているため電流ゼロ（点線で薄く描画）</div>
       </div>
+
+      <div style={{background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 20}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 6}}>🔁 【両ループ全体図】b相ループ（緑）と c相ループ（青）が同時並行 → 地絡点で I_g に合流</div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginBottom: 10}}>
+          地絡は a相のみ。しかし I_g の<strong>還流路</strong>として健全 b相の C_b と c相の C_c が<strong>同時に</strong>経由される。
+          2電流が地絡点でベクトル和として合流 → <strong>I_g = √3·ωCV</strong>（60°位相差のため単純加算より √3 倍）。
+        </div>
+        <svg viewBox="0 0 820 520" style={{width:'100%',height:'auto',background:'#fff'}}>
+          <defs>
+            <marker id="dualArrIb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#2a8"/>
+            </marker>
+            <marker id="dualArrIc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#27c"/>
+            </marker>
+            <marker id="dualArrIg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#c33"/>
+            </marker>
+          </defs>
+
+          <text x="410" y="22" textAnchor="middle" fontSize="13" fontWeight="700" fill="#222">a相完全地絡時: b相ループ（緑）と c相ループ（青）が同時並行 — 地絡点で I_g = I_b + I_c</text>
+
+          <line x1="80" y1="120" x2="80" y2="390" stroke="#888" strokeWidth="1.5"/>
+          <text x="32" y="260" fontSize="11" fill="#888" transform="rotate(-90 32 260)">仮想中性点</text>
+
+          <circle cx="120" cy="155" r="16" fill="#fff" stroke="#2a8" strokeWidth="2"/>
+          <text x="120" y="160" textAnchor="middle" fontSize="12" fill="#2a8" fontWeight="700">V_b</text>
+          <line x1="80" y1="155" x2="104" y2="155" stroke="#888" strokeWidth="1.5"/>
+
+          <circle cx="120" cy="255" r="16" fill="#fff" stroke="#ccc" strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x="120" y="260" textAnchor="middle" fontSize="11" fill="#ccc">V_a</text>
+          <line x1="80" y1="255" x2="104" y2="255" stroke="#ccc" strokeWidth="1" strokeDasharray="3,2"/>
+
+          <circle cx="120" cy="360" r="16" fill="#fff" stroke="#27c" strokeWidth="2"/>
+          <text x="120" y="365" textAnchor="middle" fontSize="12" fill="#27c" fontWeight="700">V_c</text>
+          <line x1="80" y1="360" x2="104" y2="360" stroke="#888" strokeWidth="1.5"/>
+
+          <line x1="136" y1="155" x2="680" y2="155" stroke="#2a8" strokeWidth="2.5"/>
+          <text x="210" y="147" fontSize="11" fill="#2a8" fontWeight="600">b相導体</text>
+
+          <line x1="136" y1="255" x2="666" y2="255" stroke="#ddd" strokeWidth="1.5" strokeDasharray="4,3"/>
+          <text x="210" y="247" fontSize="11" fill="#bbb">a相（地絡 → 大地電位）</text>
+
+          <line x1="136" y1="360" x2="680" y2="360" stroke="#27c" strokeWidth="2.5"/>
+          <text x="210" y="352" fontSize="11" fill="#27c" fontWeight="600">c相導体</text>
+
+          <line x1="370" y1="155" x2="370" y2="203" stroke="#2a8" strokeWidth="2.5"/>
+          <line x1="352" y1="205" x2="388" y2="205" stroke="#2a8" strokeWidth="3"/>
+          <line x1="352" y1="215" x2="388" y2="215" stroke="#2a8" strokeWidth="3"/>
+          <line x1="370" y1="215" x2="370" y2="470" stroke="#2a8" strokeWidth="2.5"/>
+          <text x="394" y="213" fontSize="13" fill="#2a8" fontWeight="700">C_b</text>
+
+          <line x1="510" y1="360" x2="510" y2="403" stroke="#27c" strokeWidth="2.5"/>
+          <line x1="492" y1="405" x2="528" y2="405" stroke="#27c" strokeWidth="3"/>
+          <line x1="492" y1="415" x2="528" y2="415" stroke="#27c" strokeWidth="3"/>
+          <line x1="510" y1="415" x2="510" y2="470" stroke="#27c" strokeWidth="2.5"/>
+          <text x="534" y="413" fontSize="13" fill="#27c" fontWeight="700">C_c</text>
+
+          <line x1="140" y1="470" x2="700" y2="470" stroke="#555" strokeWidth="2.5"/>
+          {[150,180,210,240,270,300,330,360,390,420,450,480,510,540,570,600,630,660,690].map(x =>
+            <line key={x} x1={x} y1="470" x2={x-12} y2="483" stroke="#555" strokeWidth="1.2"/>
+          )}
+          <text x="706" y="482" fontSize="11" fill="#555">大地</text>
+
+          <line x1="680" y1="255" x2="680" y2="470" stroke="#c33" strokeWidth="3"/>
+          <line x1="668" y1="243" x2="692" y2="267" stroke="#c33" strokeWidth="3"/>
+          <line x1="692" y1="243" x2="668" y2="267" stroke="#c33" strokeWidth="3"/>
+          <text x="694" y="248" fontSize="12" fill="#c33" fontWeight="700">地絡点</text>
+          <text x="694" y="263" fontSize="10" fill="#c33">Rg=0</text>
+
+          <line x1="680" y1="260" x2="680" y2="455" stroke="#c33" strokeWidth="4" markerEnd="url(#dualArrIg)"/>
+          <text x="700" y="340" fontSize="13" fill="#c33" fontWeight="700">I_g ↓</text>
+          <text x="700" y="356" fontSize="11" fill="#c33">= I_b + I_c</text>
+          <text x="700" y="374" fontSize="12" fill="#c33" fontWeight="700" fontFamily="serif">= √3·ωCV</text>
+
+          <line x1="660" y1="470" x2="392" y2="470" stroke="#2a8" strokeWidth="3" markerEnd="url(#dualArrIb)"/>
+          <line x1="370" y1="460" x2="370" y2="225" stroke="#2a8" strokeWidth="3" markerEnd="url(#dualArrIb)"/>
+          <line x1="356" y1="155" x2="198" y2="155" stroke="#2a8" strokeWidth="3" markerEnd="url(#dualArrIb)"/>
+          <text x="255" y="172" fontSize="12" fill="#2a8" fontWeight="700">← I_b</text>
+
+          <line x1="654" y1="474" x2="528" y2="474" stroke="#27c" strokeWidth="2.5" markerEnd="url(#dualArrIc)"/>
+          <line x1="510" y1="456" x2="510" y2="425" stroke="#27c" strokeWidth="3" markerEnd="url(#dualArrIc)"/>
+          <line x1="510" y1="400" x2="510" y2="368" stroke="#27c" strokeWidth="3" markerEnd="url(#dualArrIc)"/>
+          <line x1="496" y1="360" x2="198" y2="360" stroke="#27c" strokeWidth="3" markerEnd="url(#dualArrIc)"/>
+          <text x="330" y="377" fontSize="12" fill="#27c" fontWeight="700">← I_c</text>
+
+          <rect x="20" y="390" width="248" height="100" fill="#f9f9f9" stroke="#ddd" strokeWidth="1" rx="4"/>
+          <text x="32" y="408" fontSize="12" fontWeight="700" fill="#333">凡例（矢印の向き = 電流方向）</text>
+          <line x1="32" y1="424" x2="62" y2="424" stroke="#2a8" strokeWidth="2.5"/>
+          <text x="70" y="428" fontSize="11" fill="#2a8">b相充電電流 I_b = ω·C_b·V_b</text>
+          <line x1="32" y1="444" x2="62" y2="444" stroke="#27c" strokeWidth="2.5"/>
+          <text x="70" y="448" fontSize="11" fill="#27c">c相充電電流 I_c = ω·C_c·V_c</text>
+          <line x1="32" y1="464" x2="62" y2="464" stroke="#c33" strokeWidth="3"/>
+          <text x="70" y="468" fontSize="11" fill="#c33">地絡電流 I_g = I_b + I_c（ベクトル和）</text>
+          <text x="32" y="484" fontSize="10" fill="#888">C_b = C_c = C のとき |I_g| = √3·ωCV</text>
+        </svg>
+        <div style={{fontSize: 12, color:'var(--ink-3)', marginTop:8}}>
+          <strong>なぜ √3 倍？</strong> I_b と I_c の大きさは等しい（C_b = C_c = C、健全相電圧 ≒ V）。ただし<strong>60°の位相差</strong>があるため単純加算ではなくベクトル和 → 大きさが √3 倍 = <strong>2|I|·cos30° = √3·|I|</strong>。幾何学的証明は下のフェーザ図参照。
+        </div>
+      </div>
+
       <MemTable
         headers={["相", "平常時の対地電圧", "1線地絡時（a相地絡）の対地電圧"]}
         rows={[
