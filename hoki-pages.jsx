@@ -4446,6 +4446,80 @@ function JuyoritsuGainenPage({ onNav, data }) {
         note="電力会社目線では『負荷率高・不等率高』が理想（設備効率が良い）"
       />
 
+      <h2 id="hierarchy">具体例で見る3階層（200→120→90 kW）</h2>
+      <p style={{margin: '0 0 12px', fontSize: 13, lineHeight: 1.7, color: 'var(--ink-2)'}}>
+        「設備容量」「各最大の合計」「合成最大需要」の違いを<strong>3工場の具体例</strong>で図解。
+        カタログ値 → 単純足し算 → 同時最大、と縮んでいくイメージを掴む。
+      </p>
+
+      <MemTable
+        headers={["工場","設備（定格kW）","設備容量","実最大","ピーク時刻"]}
+        rows={[
+          ["A 事務棟",   "A1 照明:10 / A2 空調:20 / A3 生産:30",    "60 kW", "40 kW", "朝 9時"],
+          ["B 製造棟",   "B1 圧縮機:15 / B2 搬送:25 / B3 プレス:40", "80 kW", "50 kW", "昼 12時"],
+          ["C 夜間倉庫", "C1 冷凍:20 / C2 照明:20 / C3 搬送:20",    "60 kW", "30 kW", "夜 20時"],
+          ["合計",       "—",                                       "200 kW", "120 kW", "—"],
+        ]}
+        note="『設備容量』はカタログ定格の単純合計（誰も使わなくても出る理論値）。『実最大』は各工場が実運用で記録したピーク。"
+      />
+
+      <MemTable
+        headers={["時刻","工場A","工場B","工場C","同時刻合計"]}
+        rows={[
+          ["朝 9時",  "40", "30", "10", "80 kW"],
+          ["昼 12時", "25", "50", "15", "90 kW ← 同時最大"],
+          ["夜 20時", "10", "20", "30", "60 kW"],
+        ]}
+        note="3工場のピーク時刻は別々。全工場を同じ瞬間で合算した最大が『合成最大需要』= 90 kW（昼12時）"
+      />
+
+      <div style={{margin: '16px 0', padding: 16, background: '#fff', border: '1px solid var(--bd)', borderRadius: 8}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📊 3階層の縮小イメージ（横幅が kW に比例）</div>
+        <svg viewBox="0 0 820 480" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="juyHierArr" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L5,10 L10,0 z" fill="#666"/>
+            </marker>
+          </defs>
+
+          <rect x="50" y="30" width="720" height="120" fill="#eaf3fd" stroke="#4a7fb8" strokeWidth="2" rx="6"/>
+          <text x="410" y="58" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0e3a6e">① 設備容量合計 = 200 kW</text>
+          <text x="410" y="80" textAnchor="middle" fontSize="11" fill="#555">（カタログ定格の単純合計・誰も使わなくても変わらない）</text>
+          <text x="410" y="108" textAnchor="middle" fontSize="12" fill="#222">工場A: 10+20+30=60　/　工場B: 15+25+40=80　/　工場C: 20+20+20=60</text>
+          <text x="410" y="132" textAnchor="middle" fontSize="13" fill="#0e3a6e" fontWeight="700">→ 60 + 80 + 60 = 200 kW</text>
+
+          <line x1="410" y1="155" x2="410" y2="215" stroke="#666" strokeWidth="2" markerEnd="url(#juyHierArr)"/>
+          <rect x="488" y="160" width="290" height="44" fill="#fff" stroke="#a06" strokeWidth="1" rx="4"/>
+          <text x="633" y="178" textAnchor="middle" fontSize="12" fontWeight="700" fill="#a06">需要率で目減り（機器同時運転しない）</text>
+          <text x="633" y="196" textAnchor="middle" fontSize="11" fill="#555">A:40/60=0.67　B:50/80=0.63　C:30/60=0.50</text>
+
+          <rect x="194" y="220" width="432" height="90" fill="#fef5e6" stroke="#d4a046" strokeWidth="2" rx="6"/>
+          <text x="410" y="248" textAnchor="middle" fontSize="16" fontWeight="700" fill="#7a5418">② 各需要家の最大の合計 = 120 kW</text>
+          <text x="410" y="270" textAnchor="middle" fontSize="11" fill="#555">（各工場の実ピーク値を時刻無視でそのまま足したもの）</text>
+          <text x="410" y="296" textAnchor="middle" fontSize="13" fill="#7a5418" fontWeight="700">→ 40（朝） + 50（昼） + 30（夜） = 120 kW</text>
+
+          <line x1="410" y1="315" x2="410" y2="375" stroke="#666" strokeWidth="2" markerEnd="url(#juyHierArr)"/>
+          <rect x="488" y="320" width="290" height="44" fill="#fff" stroke="#0e6b22" strokeWidth="1" rx="4"/>
+          <text x="633" y="338" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0e6b22">不等率で目減り（ピーク時刻ズレ）</text>
+          <text x="633" y="356" textAnchor="middle" fontSize="11" fill="#555">不等率 = 120 / 90 = 1.33</text>
+
+          <rect x="248" y="380" width="324" height="90" fill="#e8f6e9" stroke="#4a9f5a" strokeWidth="2" rx="6"/>
+          <text x="410" y="408" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1f5c2e">③ 合成最大需要電力 = 90 kW</text>
+          <text x="410" y="430" textAnchor="middle" fontSize="11" fill="#555">（同じ瞬間で見たときの真のピーク・変圧器に流れる最大）</text>
+          <text x="410" y="456" textAnchor="middle" fontSize="13" fill="#1f5c2e" fontWeight="700">→ 昼12時の同時値: 25 + 50 + 15 = 90 kW</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 横幅が kW に比例（200→120→90）。①→②は <strong>1需要家内で全機器を同時最大運転しない</strong> ロス（需要率）、②→③は <strong>需要家間でピーク時刻がズレる</strong> ロス（不等率）。大小関係は必ず <strong>① ≧ ② ≧ ③</strong>。</div>
+      </div>
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>①設備容量</strong> = カタログ値の合計（200 kW）。ハード側の数値で運用に依存しない</li>
+          <li><strong>②各最大の合計</strong> = 各工場の実ピークを時刻無視で足したもの（120 kW）</li>
+          <li><strong>③合成最大需要</strong> = 同じ瞬間の最大（90 kW）。変圧器に実際に流れる最大値</li>
+          <li>大小関係は必ず <strong>① ≧ ② ≧ ③</strong>（例外なし）</li>
+        </ul>
+      </ConclusionBox>
+
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "不等率が大きいと効率が悪い",        correct: "逆。不等率が大きい＝ピーク分散＝設備を効率よく使える" },
@@ -4463,6 +4537,7 @@ function JuyoritsuGainenPage({ onNav, data }) {
       ]} />
 
       <UpdateLog entries={[
+        { date: "2026-05-09", content: "「具体例で見る3階層」セクション追加（3工場×設備A1A2A3、設備容量・各最大の合計・合成最大需要のSVG階層図）", reason: "設備容量と各最大の合計の違いが直感的に掴めない問い合わせ対応" },
         { date: "2026-05-08", content: "ページ上部にdenken-wiki誘導CTA1本に集約・URL検索ハイライト付与", reason: "下部CTAだけでは視認性低・上下重複は冗長との指摘対応" },
         { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・概念ページ。計算ページ（juyoritsu-keisan）と棲み分け" }
       ]} />
