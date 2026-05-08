@@ -43,6 +43,7 @@ window.renderPage = function(page, navigate) {
     case 'furyoku-gijutsukijun':   return React.createElement(StubPage, { ...props, pageId: 'furyoku-gijutsukijun' });
     case 'taiyouchi-gijutsukijun': return React.createElement(StubPage, { ...props, pageId: 'taiyouchi-gijutsukijun' });
     case 'keito-renkei':           return React.createElement(StubPage, { ...props, pageId: 'keito-renkei' });
+    case 'demand-kwh-kiso':        return React.createElement(DemandKwhKisoPage, props);
     case 'juyoritsu-gainen':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-gainen' });
     case 'furitsu':                return React.createElement(StubPage, { ...props, pageId: 'furitsu' });
     case 'futorito':               return React.createElement(StubPage, { ...props, pageId: 'futorito' });
@@ -4753,3 +4754,489 @@ function DemandKanriPage({ onNav, data }) {
     </div>
   );
 }
+// ─────────────────────────────────────────────
+// 6. DemandKwhKisoPage（6.0 デマンド値と電力量kWhの基礎）
+// ─────────────────────────────────────────────
+function DemandKwhKisoPage({ onNav, data }) {
+  return (
+    <div>
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 6 }}>06 電気施設管理 / CH06</div>
+        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>デマンド値と電力量kWh（基礎）</h1>
+        <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+          <span className="rank rank-A">A</span>
+          <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>出題頻度: high（前提知識）</span>
+          <span className="tag">★必須</span>
+        </div>
+      </div>
+
+      <GoalQuestion
+        question="ある工場で1日（24時間）に消費した電力量が 6,000 kWh、その日の最大需要電力（30分デマンド最大値）が 400 kW だった。この日の負荷率は？"
+        choices={["50.0%", "62.5%", "75.0%", "87.5%"]}
+        correctIndex={1}
+        year="基礎理解"
+        note="読み終えたら戻って解こう（kW と kWh の違いがわかれば即解ける）"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>kW</strong>（瞬時電力）= ある瞬間の電力。自動車の<strong>速度メーター</strong>。</li>
+          <li><strong>kWh</strong>（電力量）= ある時間に使った累積エネルギー。自動車の<strong>走行距離計</strong>。</li>
+          <li><strong>30分デマンド値</strong>= 30分間の<strong>平均</strong>電力 [kW]＝（30分間の使用電力量 [kWh]）× 2。</li>
+          <li><strong>最大需要電力</strong>= その月の30分デマンド値の最大。請求書の「kW部分（基本料金）」を決める。</li>
+          <li><strong>契約電力（500kW未満の高圧）</strong>= 当月＋過去11ヶ月の最大需要電力のうち最大値（1度ピークが出ると1年間引きずる）。</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 電気施設管理"
+        importance="A"
+        freq="毎年（前提知識）"
+        examType="A問題・B問題（計算）"
+        targets="6.1〜6.6 全ページの前提"
+        tags={["デマンド","kWh","負荷率","契約電力","実務直結"]}
+        lastChecked="2026-05-08"
+      />
+
+      <PlainExplain>
+        <p style={{ margin: '0 0 8px' }}>
+          電気の請求書には <strong>kW（基本料金）</strong> と <strong>kWh（従量料金）</strong> の2つの軸がある。
+          「kW＝今この瞬間どれだけ電気を引っ張ってきているか」「kWh＝ある期間に合計どれだけ使ったか」を
+          切り分けて理解できれば、需要率・負荷率・不等率は全部1分で解ける。
+        </p>
+        <p style={{ margin: 0 }}>
+          化学プラント／工場の電気主任技術者として実務でよく使うのは「<strong>30分デマンドが契約電力を超えそうだから、空調を一時停止して負荷を逃がす</strong>」という<strong>デマンドコントロール</strong>。試験範囲ではないが、なぜ30分なのかを理解すると暗記が不要になる。
+        </p>
+      </PlainExplain>
+
+      <h2 id="kw-vs-kwh">1. kW と kWh の違い（瞬時値 vs 累積値）</h2>
+      <MemTable
+        headers={["項目", "kW（電力）", "kWh（電力量）"]}
+        rows={[
+          ["何を表すか",     "ある瞬間に流れる電気の量",                "ある時間に使った電気の合計"],
+          ["アナロジー",     "車の速度メーター",                       "車の走行距離計（オドメータ）"],
+          ["単位",           "キロワット（kJ/秒）",                    "キロワット時（kJ × 3600）"],
+          ["請求書での扱い", "基本料金（最大需要電力で決まる）",        "従量料金（使った分だけ）"],
+          ["変換式",         "kWh ÷ 時間 = 平均kW",                    "kW × 時間 = kWh"],
+        ]}
+        note="この区別を曖昧にしたまま需要率・負荷率に進むと必ず詰む。"
+      />
+
+      <h2 id="kw-kwh-deep">1.5 「時間をかければ同じ」が間違いな理由（深掘り）</h2>
+      <PlainExplain>
+        <p style={{ margin: '0 0 8px' }}>
+          <strong>kW と kWh は「時間をかければ同じ」ではなく、次元が違う別物</strong>。
+          ✕「kW × 時間 = kWh」だから kW と kWh は本質的に同じ
+          → ○「kW は瞬間の流量、kWh は時間に積もった量。両者は別の物理量で、変換式は『流量を時間で積分すると量になる』という関係に過ぎない」。
+        </p>
+        <p style={{ margin: 0 }}>
+          速度（km/h）と距離（km）の関係と同じ。「速度に時間を掛ければ距離だから、速度と距離は同じ」とは言わない。<strong>瞬間どれだけ速く動いてるか</strong>と<strong>累積でどれだけ移動したか</strong>は別の概念。
+        </p>
+      </PlainExplain>
+
+      <MemTable
+        headers={["観点", "kW（電力 = 流量）", "kWh（電力量 = 累積）"]}
+        rows={[
+          ["物理量",        "パワー P（仕事率）",                  "エネルギー W（仕事）"],
+          ["微積関係",      "P = dW/dt（kWh を時間で微分）",       "W = ∫ P dt（kW を時間で積分）"],
+          ["時刻指定の要否", "時刻を1つ指定する（例: 10:30 の kW）", "時間幅を指定する（例: 0〜24時の kWh）"],
+          ["値の振る舞い",  "刻一刻と変動する",                    "単調増加するだけ（戻らない）"],
+          ["メーター",      "デマンド計（針が動く）",              "電力量計（数字が増えるだけ）"],
+          ["請求書",        "基本料金（kWでロックされる）",        "従量料金（kWhで課金）"],
+        ]}
+        note="次元: kW = J/s（毎秒）／ kWh = J（総量）。J/s × s = J で次元が変わるのが両者の関係。"
+      />
+
+      <PlainExplain>
+        <p style={{ margin: '0 0 8px' }}>
+          <strong>具体例で確認</strong>:
+        </p>
+        <ul style={{ margin: '0 0 8px', paddingLeft: 20 }}>
+          <li>1 kW のヒーターを <strong>1時間</strong> 使う → 1 kW × 1 h = <strong>1 kWh</strong></li>
+          <li>同じ 1 kW のヒーターを <strong>2時間</strong> 使う → 1 kW × 2 h = <strong>2 kWh</strong>（kWは1のまま、kWhだけ増える）</li>
+          <li>2 kW のヒーターを <strong>30分</strong> 使う → 2 kW × 0.5 h = <strong>1 kWh</strong>（kWh同じでもkWは違う）</li>
+        </ul>
+        <p style={{ margin: 0 }}>
+          つまり <strong>同じ kWh でも、短時間に集中して使えば kW は大きく、長時間に薄く使えば kW は小さい</strong>。電力会社が両方で課金するのはこのため: kWh だけ見ると「使った総量」しかわからず、瞬間ピーク（=設備負担）が見えない。kW がピーク負担を、kWh が総量を表す<strong>2軸の課金</strong>になっている。
+        </p>
+      </PlainExplain>
+
+      <MemTable
+        headers={["シナリオ", "kWh（同じ）", "kW（=ピーク）", "請求書での違い"]}
+        rows={[
+          ["A: 1kW × 24h（夜間も平均的に使用）",  "24 kWh",  "1 kW",   "kWh料金: 同じ／kW料金: 安い"],
+          ["B: 24kW × 1h（昼に1時間集中使用）",   "24 kWh",  "24 kW",  "kWh料金: 同じ／kW料金: 24倍"],
+        ]}
+        note="同じ24kWhでもAとBで基本料金が大きく違う。これが「kWとkWhは別物」の実務的帰結。デマンドコントロールが効くのはこの構造が理由。"
+      />
+
+      <h2 id="curve-svg">2. 負荷曲線で見る（面積＝kWh、ピーク＝最大デマンド）</h2>
+      <div style={{ background: 'var(--bg-2)', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 24 }}>
+        <svg viewBox="0 0 640 320" style={{ width: '100%', height: 'auto', maxWidth: 640, display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          {/* 軸 */}
+          <line x1="60" y1="260" x2="600" y2="260" stroke="#888" strokeWidth="1.5" />
+          <line x1="60" y1="60"  x2="60"  y2="260" stroke="#888" strokeWidth="1.5" />
+          {/* 軸ラベル */}
+          <text x="330" y="295" fontSize="12" textAnchor="middle" fill="#666">時刻 [h]</text>
+          <text x="22"  y="160" fontSize="12" textAnchor="middle" fill="#666" transform="rotate(-90 22 160)">電力 [kW]</text>
+          <text x="60"  y="278" fontSize="10" textAnchor="middle" fill="#888">0</text>
+          <text x="330" y="278" fontSize="10" textAnchor="middle" fill="#888">12</text>
+          <text x="600" y="278" fontSize="10" textAnchor="middle" fill="#888">24</text>
+          {/* 負荷曲線 */}
+          <path
+            d="M 60 240 L 130 235 L 180 200 L 230 150 L 280 110 L 330 90 L 370 120 L 410 160 L 450 130 L 490 170 L 540 220 L 600 245"
+            fill="rgba(74,144,226,0.16)"
+            stroke="#4a90e2"
+            strokeWidth="2"
+          />
+          {/* 平均線 */}
+          <line x1="60" y1="175" x2="600" y2="175" stroke="#888" strokeWidth="1" strokeDasharray="4,3" />
+          <text x="62"  y="170" fontSize="10" textAnchor="start" fill="#666">平均負荷</text>
+          {/* 30分ブロック（ピーク位置） */}
+          <rect x="310" y="80" width="40" height="180" fill="rgba(217,84,84,0.10)" stroke="#d95454" strokeWidth="1" strokeDasharray="2,2" />
+          {/* ピーク点 */}
+          <circle cx="330" cy="90" r="5" fill="#d95454" />
+          <line x1="330" y1="90" x2="330" y2="260" stroke="#d95454" strokeWidth="1" strokeDasharray="3,3" />
+          {/* ピーク注記（吹き出し風・右下に配置して曲線と被らせない） */}
+          <line x1="330" y1="90" x2="450" y2="40" stroke="#d95454" strokeWidth="0.8" />
+          <rect x="450" y="22" width="180" height="36" rx="4" fill="#fff" stroke="#d95454" strokeWidth="1" />
+          <text x="540" y="38" fontSize="11" textAnchor="middle" fill="#d95454" fontWeight="700">★ 最大需要電力</text>
+          <text x="540" y="52" fontSize="10" textAnchor="middle" fill="#d95454">（30分デマンド最大）</text>
+          {/* 30分平均ラベル（ブロック直下に配置） */}
+          <text x="330" y="74" fontSize="10" textAnchor="middle" fill="#d95454">30分平均</text>
+          {/* 面積ラベル（曲線下の中央寄り低い位置） */}
+          <text x="180" y="245" fontSize="13" textAnchor="middle" fill="#2a6db6" fontWeight="700">面積 = 1日の総kWh</text>
+        </svg>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 8, textAlign: 'center' }}>
+          青の曲線=瞬時電力。曲線下の面積=その日の総kWh。30分ブロックの平均値の最大=その日の最大デマンド値。
+        </div>
+      </div>
+
+      <h2 id="demand30">3. なぜ「30分」なのか</h2>
+      <PlainExplain>
+        <p style={{ margin: '0 0 8px' }}>
+          30分という刻みは <strong>電力会社の課金単位</strong>。電子式電力量計が30分ごとに使用電力量を区切って積算し、その値を2倍したものを「その30分間の平均電力（30分デマンド値）」として記録する。
+          毎時 <strong>0〜30分・30〜60分</strong> の固定境界で区切られる（任意の30分窓ではない）。
+        </p>
+        <p style={{ margin: 0 }}>
+          5分や10分にすると<strong>瞬間的な突入電流</strong>でデマンドが跳ね上がってしまい不公平。1時間以上にすると<strong>ピーク制御の応答時間</strong>として粗すぎる。30分は両者の妥協点として歴史的に定着した。
+        </p>
+      </PlainExplain>
+
+      <h2 id="contract">4. 最大需要電力と契約電力</h2>
+      <MemTable
+        headers={["用語", "決まり方", "請求書での役割"]}
+        rows={[
+          ["30分デマンド値",   "30分平均電力 [kW]（=その30分のkWh × 2）",                "計測の最小単位"],
+          ["最大需要電力",     "その月のデマンド値のうち最大",                            "その月の基本料金kW部分"],
+          ["契約電力（500kW未満）", "当月＋過去11ヶ月の最大需要電力の最大値",            "1度ピークが出ると12ヶ月引きずる"],
+          ["契約電力（500kW以上）", "電力会社と協議して決定（協議制契約電力）",          "デマンドではなく事前協議で固定"],
+        ]}
+        note="500kW未満の高圧需要家は「実量制契約」と呼ばれ、デマンド値が直接契約電力になる。"
+      />
+
+      <h2 id="demand-control">5. デマンドコントローラ（実務）</h2>
+      <PlainExplain>
+        <p style={{ margin: '0 0 8px' }}>
+          化学プラント／工場の電気主任技術者は <strong>デマンド監視装置</strong> を受電盤に設置する。
+          30分の経過時間と現在の積算電力量から「このペースだと30分後にデマンド値がいくらになるか」を予測し、
+          設定値を超えそうなら<strong>警報→自動的に優先度の低い負荷を遮断</strong>する仕組み。
+        </p>
+        <p style={{ margin: 0 }}>
+          典型的に切られるのは <strong>空調・電気炉・電気温水器</strong> など蓄熱性のある負荷（数十秒止めても影響が出にくい）。
+          逆に切ってはいけないのは <strong>計装用電源・冷却系・反応プロセス</strong>（即停止＝品質事故）。
+        </p>
+      </PlainExplain>
+
+      <h2 id="bridge">6. 需要率・負荷率・不等率（言葉と公式のリンク）</h2>
+      <PlainExplain>
+        <p style={{ margin: '0 0 6px' }}>
+          <strong>公式を覚える前に「言葉が何を聞いているか」を掴む</strong>のがコツ。
+          各指標は「<strong>分母に対して分子がどれだけか</strong>」という<strong>％の話</strong>。
+          分母＝<strong>もしフル稼働したら</strong>の値、分子＝<strong>実際の値</strong>、と読むと公式が直感に直結する。
+        </p>
+      </PlainExplain>
+
+      <MemTable
+        headers={["指標", "言葉の問い", "分母（=もし最悪なら）", "分子（=実際）", "公式"]}
+        rows={[
+          [
+            <strong>需要率</strong>,
+            "設備のうち、ピークでどれだけ使った？",
+            "設備容量の合計（全部一斉に動いたらこの kW）",
+            "実際の最大需要電力（30分デマンド最大）",
+            "最大需要 ÷ 設備容量",
+          ],
+          [
+            <strong>負荷率</strong>,
+            "ピークに対して、平均はどれだけ近い？（＝設備をどれだけ平らに使った？）",
+            "最大需要電力（ずっとピークで動いたらこの kW）",
+            "平均需要電力（総kWh ÷ 時間）",
+            "平均需要 ÷ 最大需要",
+          ],
+          [
+            <strong>不等率</strong>,
+            "複数需要家のピークは、どれだけ時間がずれてる？",
+            "合成最大需要電力（全員のピークを合計した時刻の値）",
+            "Σ各需要家の最大需要電力（個別ピークの単純合計）",
+            "Σ各最大 ÷ 合成最大（≧ 1）",
+          ],
+        ]}
+        note="負荷率＝平均/最大が低い → 設備に余裕アリだが基本料金がもったいない。不等率＝1 なら全員同時刻にピーク（最悪）、>1 なら時間差で抑えられる（良）。"
+      />
+
+      <h2 id="bridge-why">6.5 なぜこの公式になるのか（直感）</h2>
+      <MemTable
+        headers={["指標", "1秒で思い出すフレーズ", "公式が浮かぶ手順"]}
+        rows={[
+          [
+            "需要率",
+            "「設備のうち何％動いた？」",
+            "全部動いたら設備容量[kW] → 実際は最大需要[kW] → 比 = 最大需要 ÷ 設備容量",
+          ],
+          [
+            "負荷率",
+            "「ピーク基準で、平均はどれだけ？」",
+            "ピーク[kW] が分母（理想なら24h これ） → 実際の平均[kW] が分子 → 比 = 平均 ÷ 最大",
+          ],
+          [
+            "不等率",
+            "「ピークがずれた分、合計より小さくなる」",
+            "個別ピークを足したら[kW合計] → 合成（実際の同時最大）はそれより小さい[kW] → 比 = 個別合計 ÷ 合成（必ず ≧ 1）",
+          ],
+        ]}
+        note="共通: 分母 = もし最悪なら の値・分子 = 実際の値。「最悪 vs 実際」で公式の上下が決まる。"
+      />
+
+      <h2 id="practical">6.6 数値から実務判断（化学プラント／工場の現場で何が決まるか）</h2>
+      <PlainExplain>
+        <p style={{ margin: 0 }}>
+          需要率・負荷率・不等率の値は<strong>「設備容量の妥当性」「契約電力の見直し可否」「デマンドコントロール投資の費用対効果」</strong>を判断する物差し。
+          試験では公式を答えるが、実務ではここからが本番。代表値と判断基準を以下に示す。
+        </p>
+      </PlainExplain>
+
+      <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 24, marginBottom: 8 }}>需要率の判断基準</h3>
+      <MemTable
+        headers={["値", "意味", "実務判断", "アクション"]}
+        rows={[
+          [
+            "30〜50%",
+            "設備の半分以下しか同時稼働していない",
+            "過剰設備の疑い。新設・更新時に容量見直しの余地",
+            "次回更新時に小型機種へダウンサイジング検討。投資効率〇",
+          ],
+          [
+            "50〜70%",
+            "一般的な工場の標準範囲",
+            "妥当。上位トランス容量も問題なし",
+            "現状維持。需要増の予兆だけウォッチ",
+          ],
+          [
+            "70〜85%",
+            "高負荷率な化学プラント・連続運転設備",
+            "余裕は少ない。新規負荷追加で容量超過リスク",
+            "トランス余力を確認。新規設備計画は事前に容量試算",
+          ],
+          [
+            "85%超",
+            "ほぼフル稼働状態",
+            "上位トランスの更新・容量増設を検討すべき領域",
+            "✕容量増設計画／✕系統分割／予備機の事前手配",
+          ],
+        ]}
+        note="化学プラントの連続運転ラインは70-85%が普通。バッチ系工場は40-60%が多い。"
+      />
+
+      <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 24, marginBottom: 8 }}>負荷率の判断基準</h3>
+      <MemTable
+        headers={["値", "意味", "実務判断", "アクション"]}
+        rows={[
+          [
+            "30〜40%",
+            "ピークだけ高く、平均は低い（昼夜の差が大）",
+            "デマンド削減の効果が大きい。基本料金が割高",
+            "○蓄熱式空調／○ピークシフト／○デマンドコントローラ導入。ROI 高い",
+          ],
+          [
+            "40〜60%",
+            "一般的な事業所・工場の標準",
+            "妥当。改善余地は中程度",
+            "デマンド警報設定を見直し、空調の段階制御で5-10%改善狙い",
+          ],
+          [
+            "60〜80%",
+            "24時間連続運転に近い",
+            "既に効率的。デマンド削減の効果は限定的",
+            "新規導入よりも、既存ピーク時刻の負荷再配置で微調整",
+          ],
+          [
+            "80%超",
+            "理想的な平準化（連続運転の化学プラント等）",
+            "デマンドコントロール投資の効果は薄い",
+            "投資より運転改善・力率改善で電気料金削減を狙う",
+          ],
+        ]}
+        note="負荷率が低いほど『ピークだけ高い』状態。基本料金=最大需要電力で決まるので、低負荷率はムダの温床。"
+      />
+
+      <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 24, marginBottom: 8 }}>不等率の判断基準（受電設備容量に直結）</h3>
+      <MemTable
+        headers={["値", "意味", "上位トランス容量への影響", "判断"]}
+        rows={[
+          [
+            "1.0〜1.1",
+            "全需要家がほぼ同時刻にピーク",
+            "上位トランスは Σ各最大 に近い容量が必要",
+            "✕余裕なし。系統増強・分割を検討",
+          ],
+          [
+            "1.1〜1.3",
+            "ピークが少しずれる（一般的な工場群）",
+            "上位トランスは Σ各最大 ÷ 1.2 程度で足りる",
+            "○妥当。現状維持",
+          ],
+          [
+            "1.3〜1.5",
+            "ピークが分散（運転スケジュールが工夫されている）",
+            "Σ各最大 ÷ 1.4 程度で足りる、容量に余裕アリ",
+            "○余裕アリ。次回更新で容量見直しの余地",
+          ],
+          [
+            "1.5超",
+            "ピークが大きくバラけている",
+            "上位トランスは大幅にダウンサイジング可能",
+            "○再エネ連系・蓄電池追加など新規負荷の余地大",
+          ],
+        ]}
+        note="不等率は1以上（必ず）。高いほど時間差で電力ピークが分散＝上位トランスに優しい。"
+      />
+
+      <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 24, marginBottom: 8 }}>3指標を組み合わせた実務判断フロー</h3>
+      <SolveFlow
+        type="工場の電気主任技術者の判断手順"
+        steps={[
+          "Step1: 需要率 > 85% → 上位トランス容量超過リスク。**容量増設または系統分割が最優先**。",
+          "Step2: 需要率 < 70% かつ 負荷率 < 40% → ピークだけ高い過剰設備。**デマンドコントローラ・蓄熱化でROI大**。",
+          "Step3: 不等率 < 1.1 → 全需要家が同時にピーク。**運転スケジュール調整**で時差ピークを作る。",
+          "Step4: 負荷率 > 70% → 既に平準化済。**改善は力率改善や運転点最適化に振る**。",
+          "Step5: 力率改善・需要家分割・契約電力見直しを年1回の保守計画に組み込む。",
+        ]}
+      />
+
+      <PlainExplain>
+        <p style={{ margin: 0 }}>
+          <strong>例: 化学プラントで「需要率72% / 負荷率55% / 不等率1.25」のとき</strong>
+          → 需要率は許容範囲・負荷率は改善余地中・不等率は標準。
+          → 結論: 「上位トランス容量は問題ない／新規負荷追加は容量試算後OK／デマンド警報の閾値を再調整して年5%程度のkW削減を狙う」。
+          このように<strong>3つの数値だけで投資判断・容量判断・運転改善の優先順位が決まる</strong>のが施設管理の核心。
+        </p>
+      </PlainExplain>
+
+      <h2 id="example">7. 計算例</h2>
+      <SolveFlow
+        type="ゴール問題の解き方"
+        steps={[
+          "1日の総使用電力量 = 6,000 kWh、最大需要電力 = 400 kW（与件）",
+          "1日の平均需要電力 = 6,000 kWh ÷ 24 h = 250 kW",
+          "負荷率 = 平均需要電力 ÷ 最大需要電力 = 250 ÷ 400 = 0.625",
+          "答: 62.5%",
+        ]}
+      />
+
+      <h2 id="exam-r05-1-11">8. 過去問: R05上 問11 B問題（合成需要率・総合負荷率）</h2>
+      <PlainExplain>
+        <p style={{ margin: 0 }}>
+          A工場（設備容量 <strong>400 kW</strong>）とB工場（設備容量 <strong>700 kW</strong>）の合成負荷曲線が次のように与えられた:
+          <br />
+          0〜6時 = 700 kW ／ 6〜12時 = 500 kW ／ 12〜18時 = 600 kW ／ 18〜24時 = 700 kW
+        </p>
+      </PlainExplain>
+
+      <ExamQuestion
+        year="R05上 問11(a)"
+        question="A工場とB工場を合わせた需要率 [%] の値として最も近いものはどれか。"
+        choices={[
+          { text: "54.5" },
+          { text: "56.8" },
+          { text: "63.6", correct: true },
+          { text: "89.3" },
+          { text: "90.4" },
+        ]}
+        note="合成最大需要電力 ÷ 設備容量合計"
+      />
+      <ExamAnswer
+        correct="(3) 63.6 [%]"
+        explanations={[
+          { choice: "Step1", mark: "○", reason: "合成負荷曲線の最大値 = 700 kW（0〜6時 / 18〜24時）" },
+          { choice: "Step2", mark: "○", reason: "設備容量合計 = 400 + 700 = 1,100 kW" },
+          { choice: "Step3", mark: "○", reason: "需要率 = 700 ÷ 1,100 = 0.6363… ≒ 63.6%" },
+        ]}
+      />
+
+      <ExamQuestion
+        year="R05上 問11(b)"
+        question="A工場とB工場を合わせた総合負荷率 [%] の値として最も近いものはどれか。"
+        choices={[
+          { text: "56.8" },
+          { text: "63.6" },
+          { text: "78.1" },
+          { text: "89.3", correct: true },
+          { text: "91.6" },
+        ]}
+        note="平均需要電力 ÷ 合成最大需要電力。各時間帯6時間ずつなので算術平均でOK"
+      />
+      <ExamAnswer
+        correct="(4) 89.3 [%]"
+        explanations={[
+          { choice: "Step1", mark: "○", reason: "平均需要電力 = (700 + 500 + 600 + 700) ÷ 4 = 625 kW（各6時間で等分なので単純平均）" },
+          { choice: "Step2", mark: "○", reason: "合成最大需要電力 = 700 kW（(a)と同じ）" },
+          { choice: "Step3", mark: "○", reason: "総合負荷率 = 625 ÷ 700 = 0.8928… ≒ 89.3%" },
+          { choice: "盲点",  mark: "⚠", reason: "「平均=総kWh÷総時間」も同値: kWh = 700×6 + 500×6 + 600×6 + 700×6 = 15,000 kWh、15,000÷24 = 625 kW" },
+        ]}
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "30分デマンド値はその30分間の最大瞬時電力",            correct: "30分間の平均電力（瞬時値ではない）" },
+        { wrong: "kWとkWhは時間をかければ同じもの",                    correct: "kWは瞬時値・kWhは積算値。次元が違う（速度と距離の関係）" },
+        { wrong: "契約電力は毎月のデマンド最大値そのもの",              correct: "過去12ヶ月の最大値（1度のピークが1年間続く）" },
+        { wrong: "デマンド値は任意の連続30分間で計算する",              correct: "毎時0〜30分・30〜60分の固定境界で区切る" },
+        { wrong: "1日の平均需要電力 = 24時間中のデマンド値の平均",      correct: "1日の総kWh ÷ 24h（kWh→kW変換が必須）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "kWとkWhの違いを1行で？",                          a: "kWは瞬時電力（速度）、kWhは累積電力量（距離）" },
+        { q: "30分デマンド値の定義は？",                        a: "30分間の平均電力 [kW]＝（30分間の使用電力量 [kWh]）× 2" },
+        { q: "なぜ30分か？",                                    a: "電力会社の課金単位。短すぎず長すぎずの妥協点" },
+        { q: "契約電力（500kW未満）の決まり方は？",             a: "当月＋過去11ヶ月の最大需要電力のうち最大値" },
+        { q: "1日6,000kWh・24時間運転・最大400kWのときの負荷率は？", a: "平均250kW ÷ 最大400kW = 62.5%" },
+      ]} />
+
+      <h2 id="related-pages">関連ページ</h2>
+      <RelatedPages
+        items={[
+          { id: 'juyoritsu-gainen', title: '6.1 需要率・負荷率・不等率（概念）', relation: '次のステップ：3指標の使い分け' },
+          { id: 'juyoritsu-keisan', title: '1.6 需要率・負荷率・不等率（計算）', relation: 'B問題対策（最頻出）' },
+          { id: 'furitsu',          title: '6.2 負荷率',                         relation: '深掘り：平均/最大の比' },
+          { id: 'futorito',         title: '6.3 不等率',                         relation: '深掘り：合成最大の話' },
+          { id: 'ryokuritsu-kaizen', title: '1.5 力率改善',                       relation: 'デマンド削減の代表手法' },
+        ]}
+        onNav={onNav}
+      />
+
+      <UpdateLog entries={[
+        { date: "2026-05-08", content: "初版作成（6.0 基礎ページ）", reason: "需要率・負荷率の前提概念が独立ページとして欠落していたため" },
+      ]} />
+
+      <PageNav
+        prevId="top"               prevTitle="トップ"
+        nextId="juyoritsu-gainen"  nextTitle="6.1 需要率・負荷率・不等率（概念）"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+

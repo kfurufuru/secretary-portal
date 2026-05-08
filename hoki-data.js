@@ -49,6 +49,7 @@ window.WIKI_DATA = { chapters: [
     { id:"keito-renkei",           num:"5.3", title:"系統連系・保護装置",     freq:"mid", ch:"CH05" }
   ]},
   { id:"sec06", num:"06", title:"電気施設管理", ch:"CH06", pages:[
+    { id:"demand-kwh-kiso",    num:"6.0", title:"デマンド値と電力量kWh（基礎）", freq:"high", ch:"CH06", priority:"required" },
     { id:"juyoritsu-gainen",   num:"6.1", title:"需要率・負荷率・不等率（概念）", freq:"high", ch:"CH06", twin:"juyoritsu-keisan" },
     { id:"furitsu",            num:"6.2", title:"負荷率",           freq:"high", ch:"CH06" },
     { id:"futorito",           num:"6.3", title:"不等率",           freq:"mid",  ch:"CH06" },

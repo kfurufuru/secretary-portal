@@ -1187,7 +1187,7 @@ function App() {
 (function() {
   const style = document.createElement('style');
   style.textContent = `
-    .goal-question { border: 2px solid var(--accent); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 24px; background: var(--accent-soft); }
+    .goal-question { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 24px; background: var(--bg-2); }
     .goal-label { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 8px; }
     .goal-q { font-size: 14px; line-height: 1.7; margin: 0 0 10px; }
     .goal-choices summary { font-size: 12px; color: var(--ink-3); cursor: pointer; }
