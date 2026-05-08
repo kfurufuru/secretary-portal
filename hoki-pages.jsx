@@ -13,7 +13,7 @@ window.renderPage = function(page, navigate) {
     case 'shisen-hikisama':        return React.createElement(StubPage, { ...props, pageId: 'shisen-hikisama' });
     case 'henshatsuki-koritu':     return React.createElement(StubPage, { ...props, pageId: 'henshatsuki-koritu' });
     case 'ryokuritsu-kaizen':      return React.createElement(StubPage, { ...props, pageId: 'ryokuritsu-kaizen' });
-    case 'juyoritsu-keisan':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-keisan' });
+    case 'juyoritsu-keisan':       return React.createElement(JuyoritsuKeisanPage, props);
     case 'bshu-setsuchi':          return React.createElement(BshuSetsuchiPage, props);
     case 'hichusei-jiraku':        return React.createElement(HichuseiJirakuPage, props);
     case 'zerosou-henryuki':       return React.createElement(ZeroSouHenryukiPage, props);
@@ -44,10 +44,10 @@ window.renderPage = function(page, navigate) {
     case 'taiyouchi-gijutsukijun': return React.createElement(StubPage, { ...props, pageId: 'taiyouchi-gijutsukijun' });
     case 'keito-renkei':           return React.createElement(StubPage, { ...props, pageId: 'keito-renkei' });
     case 'demand-kwh-kiso':        return React.createElement(DemandKwhKisoPage, props);
-    case 'juyoritsu-gainen':       return React.createElement(StubPage, { ...props, pageId: 'juyoritsu-gainen' });
-    case 'furitsu':                return React.createElement(StubPage, { ...props, pageId: 'furitsu' });
+    case 'juyoritsu-gainen':       return React.createElement(JuyoritsuGainenPage, props);
+    case 'furitsu':                return React.createElement(FuritsuPage, props);
     case 'futorito':               return React.createElement(StubPage, { ...props, pageId: 'futorito' });
-    case 'hensyatsuki-yoryo':      return React.createElement(StubPage, { ...props, pageId: 'hensyatsuki-yoryo' });
+    case 'hensyatsuki-yoryo':      return React.createElement(HensyatsukiYoryoPage, props);
     case 'haiden-kanri':           return React.createElement(StubPage, { ...props, pageId: 'haiden-kanri' });
     case 'juden-setsubi-kanri':    return React.createElement(StubPage, { ...props, pageId: 'juden-setsubi-kanri' });
     case 'demand-kanri':           return React.createElement(DemandKanriPage, props);
@@ -4342,6 +4342,391 @@ function GijutsuKijunGaiyouPage({ onNav, data }) {
       <PageNav
         prevId="bunsangata-dengen" prevTitle="分散型電源連系"
         nextId="kosakubutsu-bunrui" nextTitle="電気工作物の区分"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-23. JuyoritsuGainenPage（需要率・負荷率・不等率の概念・A）
+// ─────────────────────────────────────────────
+function JuyoritsuGainenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="不等率は必ず1以上になる。その理由として正しいものはどれか"
+        choices={[
+          "各需要家の最大電力が同時に重なることはないため",
+          "合成最大需要電力が常に各最大の合計を超えるため",
+          "需要率の定義から導かれる",
+          "電気事業法で1以上と定められているため"
+        ]}
+        year="頻出"
+        note="「分母と分子の関係」で覚える。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>需要率</strong> = 最大需要電力 ÷ 設備容量　→ 「どれだけ使うか」</li>
+          <li><strong>負荷率</strong> = 平均需要電力 ÷ 最大需要電力　→ 「ムラなく使うか」</li>
+          <li><strong>不等率</strong> = 各最大の合計 ÷ 合成最大需要電力　→ 「バラバラに使うか」</li>
+          <li>需要率・負荷率は<strong>1以下</strong>、不等率は<strong>必ず1以上</strong></li>
+          <li>すべて<strong>無次元（kW/kW）</strong>。ただし全日効率は kWh/kWh で別概念</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 施設管理"
+        importance="A"
+        freq="頻出"
+        examType="A問題（概念）・B問題（計算）"
+        targets="R05・R03・R02・H26"
+        tags={["需要率","負荷率","不等率","概念","施設管理"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="formulas">3つの率の定義と公式</h2>
+      <MemTable
+        headers={["率","公式（分子 / 分母）","意味","範囲"]}
+        rows={[
+          ["需要率", "最大需要電力 / 設備容量",                "設備をどれだけ使ったか", "0 〜 1（0〜100%）"],
+          ["負荷率", "平均需要電力 / 最大需要電力",            "電力をムラなく使ったか", "0 〜 1（0〜100%）"],
+          ["不等率", "各需要家の最大の合計 / 合成最大需要電力","ピークがどれだけ分散したか","必ず 1 以上"],
+        ]}
+        note="「分母」を覚えれば公式は復元できる。需要率の分母=設備容量、負荷率の分母=最大需要、不等率の分母=合成最大需要"
+      />
+
+      <h2 id="story">日常イメージで覚える</h2>
+      <MemTable
+        headers={["率","高い場合","低い場合"]}
+        rows={[
+          ["需要率", "設備をフル稼働している（電気をたくさん使う）", "設備に余裕がある（あまり使わない）"],
+          ["負荷率", "コンビニ（24時間ほぼ同じ消費 0.8〜0.9）",       "レストラン（昼夜ピーク・夜閑散 0.3〜0.4）"],
+          ["不等率", "工場ごとのピークがバラバラ → 設備を小さくできる","ピークが集中 → 設備容量を大きくする必要"],
+        ]}
+        note="電力会社目線では『負荷率高・不等率高』が理想（設備効率が良い）"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "不等率が大きいと効率が悪い",        correct: "逆。不等率が大きい＝ピーク分散＝設備を効率よく使える" },
+        { wrong: "需要率は1以上になることがある",    correct: "1以下（最大需要電力 ≤ 設備容量）" },
+        { wrong: "3つの率はすべて kWh の単位を持つ", correct: "3つとも無次元（kW/kW）。kWh は全日効率（別概念）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "需要率の分母は？",                   a: "設備容量（負荷の定格電力の合計）" },
+        { q: "負荷率の分母は？",                   a: "最大需要電力" },
+        { q: "不等率の分母は？",                   a: "合成最大需要電力（同時最大値）" },
+        { q: "不等率が必ず1以上になる理由は？",     a: "各需要家の最大が同時に重なることはないため、各最大の合計≧合成最大が成立" },
+        { q: "コンビニの負荷率はどのくらい？",      a: "0.8〜0.9（24時間ほぼ均一に消費）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/"
+        label="denken-wiki「需要率・負荷率・不等率」を開く"
+        note="3率の物理的意味・経済性指標としての役割は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・概念ページ。計算ページ（juyoritsu-keisan）と棲み分け" }]} />
+      <PageNav
+        prevId="demand-kanri"      prevTitle="デマンド制御"
+        nextId="juyoritsu-keisan"  nextTitle="需要率・負荷率・不等率（計算）"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-24. JuyoritsuKeisanPage（需要率・負荷率・不等率の計算・S）
+// ─────────────────────────────────────────────
+function JuyoritsuKeisanPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="設備容量500kW、需要率0.8、不等率1.25、力率0.9のとき、必要な変圧器容量[kVA]は約いくらか"
+        choices={["約 200 kVA","約 280 kVA","約 356 kVA","約 444 kVA"]}
+        year="頻出"
+        note="変圧器容量 [kVA] = 設備容量 × 需要率 ÷ (不等率 × 力率)。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>3公式は「<strong>juyoritsu-gainen</strong>」で確認（概念と棲み分け）</li>
+          <li><strong>変圧器容量 [kVA] = 設備容量 × 需要率 ÷ (不等率 × 力率)</strong></li>
+          <li>計算後は<strong>標準サイズ</strong>から選定（例：356kVA → 400kVA）</li>
+          <li>合算需要率 = 各最大の合計 / 各設備容量の合計</li>
+          <li>総合負荷率 = 各電力量[kWh]の合計 ÷ 24h ÷ 合成最大需要電力</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH04"
+        category="01 B問題対策"
+        importance="S"
+        freq="毎年（B問題）"
+        examType="B問題（計算）"
+        targets="R05上・R04上・R03・H26"
+        tags={["計算問題","需要率","変圧器容量","B問題","施設管理"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="patterns">出題パターン3種</h2>
+      <MemTable
+        headers={["パターン","問われ方","解法の核心"]}
+        rows={[
+          ["①基本",       "需要率・不等率・負荷率を直接計算",         "公式に代入。需要率・負荷率は1以下、不等率は1以上の検算"],
+          ["②変圧器容量","設備容量+需要率+不等率+力率→kVA",        "kVA = 設備容量 × 需要率 ÷ (不等率 × 力率)。標準サイズ選定"],
+          ["③2工場合算", "2つの工場の合算需要率・総合負荷率",        "分子は各工場の合計、分母は合成最大需要電力"],
+        ]}
+        note="R05上は③（2工場合算）。R04上は②（変圧器容量）。R08は①または②が有力"
+      />
+
+      <h2 id="pat1">パターン①: 基本計算</h2>
+      <ConclusionBox>
+        <ul>
+          <li>例：A工場 設備容量400kW・最大需要280kW・1日電力量3,360kWh → 需要率 = 280/400 = <strong>0.7</strong>、負荷率 = (3,360/24) / 280 = <strong>0.5</strong></li>
+          <li>2工場合計の不等率：(280 + 240) / 400 = <strong>1.3</strong>（1以上で OK）</li>
+          <li><strong>検算</strong>: 不等率 &gt;1、需要率・負荷率 ≤ 1 を必ず確認</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="pat2">パターン②: 変圧器容量算定</h2>
+      <ConclusionBox>
+        <ul>
+          <li>公式：<strong>変圧器容量 [kVA] = 設備容量 × 需要率 ÷ (不等率 × 力率)</strong></li>
+          <li>例：500 × 0.8 ÷ (1.25 × 0.9) = 400 ÷ 1.125 ≈ <strong>356 kVA</strong></li>
+          <li>標準サイズから選定（300・400・500・630・750 kVA等）→ <strong>400 kVA</strong> 選定</li>
+          <li>注意：変圧器容量の単位は <strong>kVA</strong>（皮相電力）。kW を力率で割って変換</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="pat3">パターン③: 2工場合算</h2>
+      <ConclusionBox>
+        <ul>
+          <li><strong>合算需要率</strong> = (各工場の最大需要の合計) ÷ (各工場の設備容量の合計)</li>
+          <li><strong>総合負荷率</strong> = (各工場の電力量[kWh]の合計 ÷ 24h) ÷ <strong>合成最大需要電力</strong></li>
+          <li>注意：総合負荷率の分母は<strong>合成最大需要電力</strong>（各最大の合計ではない）</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "変圧器容量を kW で答える",                       correct: "kVA で答える（皮相電力。kW÷力率）" },
+        { wrong: "総合負荷率の分母に各最大の合計を使う",          correct: "分母は『合成最大需要電力』（同時最大）" },
+        { wrong: "計算結果のままを答える（355.55... kVA）",        correct: "標準サイズから次のサイズを選定（400kVA等）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "変圧器容量の公式は？",                              a: "kVA = 設備容量 × 需要率 ÷ (不等率 × 力率)" },
+        { q: "設備500kW・需要率0.8・不等率1.25・力率0.9 の容量は？", a: "約 356 kVA → 標準400kVA を選定" },
+        { q: "総合負荷率の分母は？",                              a: "合成最大需要電力（同時最大）" },
+        { q: "不等率の検算ポイントは？",                          a: "必ず1以上（合致しなければ計算ミス）" },
+        { q: "kW と kVA の変換は？",                              a: "kW ÷ 力率 = kVA（力率0.9なら kVA = kW/0.9）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/"
+        label="denken-wiki「需要率・負荷率・不等率」を開く"
+        note="計算式の物理的根拠・過去問解説詳細は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→計算問題Hubページに昇格", reason: "S・B問題max級。3パターンを集約・twin概念ページと棲み分け" }]} />
+      <PageNav
+        prevId="juyoritsu-gainen" prevTitle="需要率・負荷率・不等率（概念）"
+        nextId="bshu-setsuchi"     nextTitle="B種接地工事計算"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-25. FuritsuPage（負荷率特化・経済性指標・A）
+// ─────────────────────────────────────────────
+function FuritsuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="ある工場の最大需要電力500kW、1日の使用電力量6,000kWhのとき、1日の負荷率はいくらか"
+        choices={["0.3（30%）","0.4（40%）","0.5（50%）","0.6（60%）"]}
+        year="頻出"
+        note="平均電力 = 1日電力量 ÷ 24h、負荷率 = 平均/最大。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>負荷率</strong> = 平均需要電力 ÷ 最大需要電力</li>
+          <li><strong>平均需要電力 = 一定期間の電力量[kWh] ÷ 期間時間[h]</strong>（1日なら ÷24h）</li>
+          <li>負荷率は<strong>0〜1</strong>（高いほど電力をムラなく使用＝経済的）</li>
+          <li>電力会社にとって<strong>負荷率が高い顧客が望ましい</strong>（設備を効率よく使える）</li>
+          <li>需要率・不等率と混同しないよう「分母=最大需要電力」を確実に</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 施設管理"
+        importance="A"
+        freq="頻出"
+        examType="A問題・B問題"
+        targets="R05・H28・H26"
+        tags={["負荷率","経済性指標","施設管理","計算"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="formula">負荷率の公式（期間別）</h2>
+      <MemTable
+        headers={["期間","公式","典型値"]}
+        rows={[
+          ["日負荷率",  "（1日の電力量[kWh]÷24h）÷ 1日の最大需要電力", "0.4〜0.6（一般工場）"],
+          ["月負荷率",  "（1か月の電力量[kWh]÷月の時間）÷ 月の最大需要電力", "0.5〜0.7"],
+          ["年負荷率",  "（年間電力量[kWh]÷8760h）÷ 年最大需要電力",   "0.5〜0.65（電力会社全体）"],
+        ]}
+        note="期間によって平均電力の計算方法が変わる。期間の総時間で電力量を割る"
+      />
+
+      <h2 id="economic">負荷率と経済性</h2>
+      <MemTable
+        headers={["業種","負荷率","理由"]}
+        rows={[
+          ["コンビニエンスストア",  "0.8〜0.9", "24時間営業で消費が均一"],
+          ["連続操業工場",          "0.7〜0.8", "3交代制で稼働時間が長い"],
+          ["一般オフィスビル",      "0.4〜0.5", "業務時間（8〜18時）に集中"],
+          ["レストラン",            "0.3〜0.4", "ランチ・ディナーのピーク集中"],
+          ["電力会社全体（年）",    "0.55〜0.65","産業・家庭・商業の合算"],
+        ]}
+        note="高負荷率＝設備を効率よく使えている＝電力会社にとって優良顧客"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "負荷率の分母は設備容量",                  correct: "分母は『最大需要電力』（設備容量は需要率の分母）" },
+        { wrong: "負荷率は1以上にもなる",                   correct: "0〜1（平均 ≤ 最大なので必ず1以下）" },
+        { wrong: "負荷率を高めるには設備を増やす",          correct: "負荷率は使い方の指標。設備を増やしても変わらない（平均利用を増やすのが正解）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "負荷率の公式は？",                       a: "平均需要電力 ÷ 最大需要電力" },
+        { q: "1日の電力量6,000kWh・最大500kWの日負荷率は？", a: "(6000÷24)÷500 = 250÷500 = 0.5（50%）" },
+        { q: "コンビニの典型的な負荷率は？",            a: "0.8〜0.9（24時間均一消費）" },
+        { q: "電力会社にとって望ましい顧客は？",        a: "高負荷率（設備効率がよい）" },
+        { q: "年負荷率の分母の時間数は？",              a: "8760 h（24×365）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/"
+        label="denken-wiki「需要率・負荷率・不等率」を開く"
+        note="負荷率の経済学的意義・電力料金体系との関係は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・負荷率特化。期間別公式と業種別典型値を集約" }]} />
+      <PageNav
+        prevId="juyoritsu-keisan" prevTitle="需要率・負荷率・不等率（計算）"
+        nextId="futorito"          nextTitle="不等率"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-26. HensyatsukiYoryoPage（変圧器容量算定・A）
+// ─────────────────────────────────────────────
+function HensyatsukiYoryoPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="設備容量1,000kW、需要率0.6、不等率1.2、力率0.95の事業所に必要な変圧器容量[kVA]は約いくらか"
+        choices={["約 526 kVA","約 600 kVA","約 720 kVA","約 1,000 kVA"]}
+        year="頻出"
+        note="変圧器容量 [kVA] = 設備容量 × 需要率 ÷ (不等率 × 力率)。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>変圧器容量 [kVA] = 設備容量 [kW] × 需要率 ÷ (不等率 × 力率)</strong></li>
+          <li>単位は<strong>kVA（皮相電力）</strong>。kW÷力率で変換</li>
+          <li>計算結果から<strong>標準サイズ（kVA）</strong>を選定（次のサイズを選ぶ）</li>
+          <li>標準容量例：50・75・100・150・200・300・500・750・1000 kVA</li>
+          <li>選定後は<strong>余裕率（10〜30%）</strong>を考慮するケースもある</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH06"
+        category="06 施設管理"
+        importance="A"
+        freq="頻出"
+        examType="B問題（計算）"
+        targets="R04上・H29・H25"
+        tags={["変圧器容量","kVA","計算","施設管理"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="formula">基本公式</h2>
+      <ConclusionBox>
+        <ul>
+          <li>変圧器容量 P[kVA] = 設備容量 ÷ 不等率 × 需要率 ÷ 力率</li>
+          <li>= <strong>設備容量 × 需要率 / (不等率 × 力率)</strong></li>
+          <li>力率を含まない場合（力率1とみなす）：P[kVA] = 設備容量 × 需要率 / 不等率</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="example">計算例</h2>
+      <MemTable
+        headers={["条件","計算","結果"]}
+        rows={[
+          ["設備500kW・需要0.8・不等1.25・力率0.9", "500 × 0.8 ÷ (1.25 × 0.9) = 400/1.125", "≈ 356 kVA → 400 kVA選定"],
+          ["設備1000kW・需要0.6・不等1.2・力率0.95", "1000 × 0.6 ÷ (1.2 × 0.95) = 600/1.14",  "≈ 526 kVA → 750 kVA選定"],
+          ["設備300kW・需要0.7・不等1.1・力率1.0",   "300 × 0.7 ÷ (1.1 × 1.0) = 210/1.1",     "≈ 191 kVA → 200 kVA選定"],
+        ]}
+        note="計算結果をそのまま答える問題と、標準サイズを選定する問題の両方が出題される"
+      />
+
+      <h2 id="standard">標準容量（JIS C 4304など）</h2>
+      <MemTable
+        headers={["低圧変圧器（典型）","高圧変圧器（典型）"]}
+        rows={[
+          ["3, 5, 7.5, 10, 15, 20 kVA",  "50, 75, 100, 150, 200 kVA"],
+          ["30, 50, 75, 100 kVA",         "300, 500, 750, 1000 kVA"],
+          ["—",                           "1500, 2000, 3000 kVA"],
+        ]}
+        note="計算結果より大きい次の標準サイズを選定するのが原則"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "変圧器容量を kW で答える",              correct: "kVA で答える（皮相電力）。kW÷力率＝kVA" },
+        { wrong: "計算結果（356.5kVA等）をそのまま答える", correct: "標準サイズから次のサイズ（400kVA）を選定" },
+        { wrong: "力率を分子に置く（×力率）",              correct: "力率は分母（÷力率）。kW→kVA変換は割り算" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "変圧器容量の公式は？",                       a: "kVA = 設備容量 × 需要率 ÷ (不等率 × 力率)" },
+        { q: "力率0.9のとき kW を kVA に変換すると？",     a: "kVA = kW ÷ 0.9（力率は分母）" },
+        { q: "計算結果526kVA、標準サイズなら何選ぶ？",     a: "750 kVA（次のサイズ）" },
+        { q: "変圧器容量の単位は？",                       a: "kVA（皮相電力）" },
+        { q: "需要率0.7・不等率1.0なら？",                  a: "kVA = 設備容量 × 0.7 ÷ 力率（不等率1で個別需要のみ）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/"
+        label="denken-wiki「需要率・負荷率・不等率」を開く"
+        note="変圧器選定の物理的意味・力率改善コンデンサとの関係は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・変圧器容量算定の計算問題対策。標準サイズ選定込み" }]} />
+      <PageNav
+        prevId="haiden-kanri"      prevTitle="配電管理"
+        nextId="juden-setsubi-kanri" nextTitle="受電設備管理"
         onNav={onNav}
       />
     </div>
