@@ -4387,6 +4387,12 @@ function JuyoritsuGainenPage({ onNav, data }) {
         lastChecked="2026-05-08"
       />
 
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/?h=%E9%9C%80%E8%A6%81"
+        label="📖 詳細解説は denken-wiki で"
+        note="物理的意味・経済性指標・条文根拠は denken-wiki が SOT。"
+      />
+
       <h2 id="formulas">3つの率の定義と公式</h2>
       <MemTable
         headers={["率","公式（分子 / 分母）","意味","範囲"]}
@@ -4426,12 +4432,15 @@ function JuyoritsuGainenPage({ onNav, data }) {
       ]} />
 
       <DenkenWikiCTA
-        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/"
+        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/?h=%E9%9C%80%E8%A6%81"
         label="denken-wiki「需要率・負荷率・不等率」を開く"
         note="3率の物理的意味・経済性指標としての役割は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・概念ページ。計算ページ（juyoritsu-keisan）と棲み分け" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-08", content: "ページ上部にdenken-wiki誘導CTA追加・URL検索ハイライト付与", reason: "下部CTAだけでは scrollY=12888 で視認性低い課題への対応" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・概念ページ。計算ページ（juyoritsu-keisan）と棲み分け" }
+      ]} />
       <PageNav
         prevId="demand-kanri"      prevTitle="デマンド制御"
         nextId="juyoritsu-keisan"  nextTitle="需要率・負荷率・不等率（計算）"
