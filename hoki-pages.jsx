@@ -2855,22 +2855,53 @@ function HokokuTodokeKigenPage({ onNav, data }) {
 // ─────────────────────────────────────────────
 function DenkenWikiCTA({ url, label, note }) {
   return (
-    <div style={{
-      background: 'var(--bg-elev)',
-      border: '1px solid var(--border)',
-      borderLeft: '4px solid var(--accent)',
-      borderRadius: 'var(--radius)',
-      padding: '14px 18px',
-      margin: '20px 0',
-    }}>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="denken-wiki-cta"
+      style={{
+        display: 'block',
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--border)',
+        borderLeft: '4px solid var(--accent)',
+        borderRadius: 'var(--radius)',
+        padding: '14px 18px',
+        margin: '20px 0',
+        textDecoration: 'none',
+        color: 'inherit',
+        cursor: 'pointer',
+        transition: 'background 0.15s, border-color 0.15s, transform 0.05s',
+      }}
+    >
       <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 700, marginBottom: 6 }}>
-        📚 条文・解説・"なぜ"は denken-wiki
+        🔗 外部サイトへ — 条文・解説・"なぜ"は denken-wiki
       </div>
-      <a href={url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
-        {label} →
-      </a>
-      {note && <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 6 }}>{note}</div>}
-    </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+        <span style={{
+          color: 'var(--accent)',
+          fontSize: 15,
+          fontWeight: 700,
+          textDecoration: 'underline',
+          textDecorationThickness: 2,
+          textUnderlineOffset: 3,
+        }}>
+          {label}
+        </span>
+        <span style={{
+          background: 'var(--accent)',
+          color: '#fff',
+          fontSize: 11,
+          fontWeight: 700,
+          padding: '2px 8px',
+          borderRadius: 999,
+          letterSpacing: '0.05em',
+        }}>
+          OPEN ↗
+        </span>
+      </div>
+      {note && <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 8 }}>{note}</div>}
+    </a>
   );
 }
 
@@ -4431,14 +4462,8 @@ function JuyoritsuGainenPage({ onNav, data }) {
         { q: "コンビニの負荷率はどのくらい？",      a: "0.8〜0.9（24時間ほぼ均一に消費）" },
       ]} />
 
-      <DenkenWikiCTA
-        url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/?h=%E9%9C%80%E8%A6%81"
-        label="denken-wiki「需要率・負荷率・不等率」を開く"
-        note="3率の物理的意味・経済性指標としての役割は denken-wiki が SOT。"
-      />
-
       <UpdateLog entries={[
-        { date: "2026-05-08", content: "ページ上部にdenken-wiki誘導CTA追加・URL検索ハイライト付与", reason: "下部CTAだけでは scrollY=12888 で視認性低い課題への対応" },
+        { date: "2026-05-08", content: "ページ上部にdenken-wiki誘導CTA1本に集約・URL検索ハイライト付与", reason: "下部CTAだけでは視認性低・上下重複は冗長との指摘対応" },
         { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・概念ページ。計算ページ（juyoritsu-keisan）と棲み分け" }
       ]} />
       <PageNav

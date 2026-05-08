@@ -1213,6 +1213,9 @@ function App() {
     .cross-ref-item { font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--line); }
     .cross-ref-item:last-child { border-bottom: none; }
     .twin-banner { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .denken-wiki-cta:hover { background: var(--accent-soft); border-color: var(--accent); }
+    .denken-wiki-cta:active { transform: translateY(1px); }
+    .denken-wiki-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .freq-max  { background: #fde8e8; color: #c0392b; border-radius: 4px; padding: 1px 5px; font-size: 10px; }
     .freq-high { background: #fef3cd; color: #7d6608; border-radius: 4px; padding: 1px 5px; font-size: 10px; }
     .nav-badge-review { color: #2980b9; font-size: 11px; }
