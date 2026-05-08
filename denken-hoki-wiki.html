@@ -2133,98 +2133,148 @@ function ExamAnswer({ correct, explanations }) {
   );
 }
 
+// QuickReview: denken-wiki self-check.js と互換の理解度4段階トラッキング
+// 4状態: understood(✓緑) / vague(?黄) / review(!橙) / wrong(✗赤)
+// localStorage キー形式: denken_check::hoki_<pageId>::<itemHash>
+// 同じボタン再押下でトグル解除
+const QR_STATUSES = [
+  { key: 'understood', label: '理解した', color: '#22c55e', icon: '✓' },
+  { key: 'vague',      label: 'うる覚え', color: '#f59e0b', icon: '?' },
+  { key: 'review',     label: '要確認',   color: '#f97316', icon: '!' },
+  { key: 'wrong',      label: '間違えた', color: '#dc2626', icon: '✗' },
+];
+
+function qrDjb2(str) {
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) + h) + str.charCodeAt(i);
+    h = h & 0xffffffff;
+  }
+  return (h >>> 0).toString(36);
+}
+
+function qrFormatTs(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const m  = String(d.getMonth() + 1).padStart(2, '0');
+  const dy = String(d.getDate()).padStart(2, '0');
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return `記録: ${d.getFullYear()}-${m}-${dy} ${hh}:${mm}`;
+}
+
 function QuickReview({ items, pageId }) {
   const limited = items.slice(0, 5);
-  const key = pageId
+  const slug = pageId
     || (typeof window !== 'undefined' ? (window.location.hash.replace(/^#/, '').split(':')[0] || 'unknown') : 'unknown');
-  const ratingStorage = `hoki_qr_${key}`;
-  const memoStorage   = `hoki_qrmemo_${key}`;
 
-  const loadJSON = (k) => {
-    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : {}; }
-    catch (e) { return {}; }
-  };
-  const saveJSON = (k, v) => {
-    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  const storageKey = (i) => `denken_check::hoki_${slug}::${qrDjb2('quickreview::Q' + (i + 1) + '::' + limited[i].q)}`;
+
+  const loadAll = () => {
+    const r = {};
+    for (let i = 0; i < limited.length; i++) {
+      try {
+        const v = localStorage.getItem(storageKey(i));
+        r[i] = v ? JSON.parse(v) : null;
+      } catch (e) { r[i] = null; }
+    }
+    return r;
   };
 
-  const [ratings, setRatings] = React.useState(() => loadJSON(ratingStorage));
-  const [memos, setMemos]     = React.useState(() => loadJSON(memoStorage));
-  const [memoOpen, setMemoOpen] = React.useState({});
+  const [records, setRecords] = React.useState(loadAll);
 
-  const setRating = (i, r) => {
-    setRatings(prev => {
-      const next = { ...prev, [i]: prev[i] === r ? null : r }; // toggle off when same
-      saveJSON(ratingStorage, next);
-      return next;
-    });
+  const setRecord = (i, status) => {
+    const cur = records[i];
+    let next;
+    if (cur && cur.status === status) {
+      try { localStorage.removeItem(storageKey(i)); } catch (e) {}
+      next = null;
+    } else {
+      const payload = {
+        status,
+        updatedAt: new Date().toISOString(),
+        articleUrl: typeof location !== 'undefined' ? (location.origin + location.pathname + '#' + slug) : '',
+        articleTitle: typeof document !== 'undefined' ? document.title : '',
+        itemTitle: 'Q' + (i + 1) + ': ' + limited[i].q,
+        itemType: 'quickreview',
+      };
+      try { localStorage.setItem(storageKey(i), JSON.stringify(payload)); } catch (e) {}
+      next = payload;
+    }
+    setRecords(prev => ({ ...prev, [i]: next }));
   };
-  const setMemo = (i, text) => {
-    setMemos(prev => {
-      const next = { ...prev, [i]: text };
-      saveJSON(memoStorage, next);
-      return next;
-    });
-  };
-  const toggleMemo = (i) => setMemoOpen(prev => ({ ...prev, [i]: !prev[i] }));
-
-  const RATE_BTN = (label, value, onColor) => (i) => (
-    <button
-      onClick={() => setRating(i, value)}
-      style={{
-        fontSize: 12, padding: '3px 10px', borderRadius: 4,
-        border: '1px solid var(--line)',
-        background: ratings[i] === value ? onColor : 'var(--bg-elev)',
-        fontWeight: ratings[i] === value ? 700 : 400,
-        cursor: 'pointer',
-      }}
-    >{label}</button>
-  );
-  const BtnOk    = RATE_BTN('〇 理解',     'ok',    '#d4f5d4');
-  const BtnAmari = RATE_BTN('△ 曖昧',     'amari', '#fff3cd');
-  const BtnNg    = RATE_BTN('✕ わからない','ng',    '#fde8e8');
 
   return (
     <div className="quick-review" style={{ marginBottom: '24px' }}>
       <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '10px', color: 'var(--ink-2)' }}>1分復習</div>
       {limited.map((item, i) => {
-        const hasMemo = !!(memos[i] && memos[i].trim());
+        const rec = records[i];
+        const status = rec ? rec.status : null;
+        const def = status ? QR_STATUSES.find(s => s.key === status) : null;
         return (
-          <details key={i} className="quick-review">
-            <summary>Q{i + 1}: {item.q}　（クリックで答えを確認）</summary>
+          <details
+            key={i}
+            className={`quick-review${status ? ' sc-status-' + status : ''}`}
+            style={status ? { borderLeft: `3px solid ${def.color}` } : undefined}
+          >
+            <summary>
+              Q{i + 1}: {item.q}　（クリックで答えを確認）
+              {def && (
+                <span style={{
+                  display: 'inline-block', marginLeft: 8,
+                  padding: '1px 8px',
+                  background: def.color, color: '#fff',
+                  borderRadius: 999,
+                  fontSize: 11, fontWeight: 700,
+                  verticalAlign: 'middle', lineHeight: 1.6,
+                  letterSpacing: '0.02em', whiteSpace: 'nowrap',
+                }}>
+                  {def.icon} {def.label}
+                </span>
+              )}
+            </summary>
             <div className="quick-review-answer">A: {item.a}</div>
-            <div style={{ display: 'flex', gap: 8, marginTop: 8, paddingLeft: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-              {BtnOk(i)}
-              {BtnAmari(i)}
-              {BtnNg(i)}
-              <button
-                onClick={() => toggleMemo(i)}
-                style={{
-                  fontSize: 12, padding: '3px 10px', borderRadius: 4,
-                  border: '1px solid var(--line)',
-                  background: hasMemo ? '#dbeafe' : 'var(--bg-elev)',
-                  fontWeight: hasMemo ? 700 : 400,
-                  cursor: 'pointer',
-                }}
-              >📝 メモ{hasMemo ? '●' : ''}</button>
+            <div style={{
+              display: 'flex', flexWrap: 'wrap', gap: 6,
+              alignItems: 'center',
+              marginTop: 10, paddingTop: 8, paddingLeft: 12, paddingRight: 12,
+              borderTop: '1px dashed var(--line)',
+              fontSize: 12,
+            }}>
+              <span style={{ fontWeight: 700, color: 'var(--ink-2)', marginRight: 4 }}>理解度:</span>
+              {QR_STATUSES.map(s => {
+                const active = status === s.key;
+                return (
+                  <button
+                    key={s.key}
+                    type="button"
+                    onClick={() => setRecord(i, s.key)}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                      padding: '4px 12px',
+                      borderRadius: 999,
+                      border: `1.5px solid ${s.color}`,
+                      background: active ? s.color : 'transparent',
+                      color: active ? '#fff' : s.color,
+                      cursor: 'pointer',
+                      fontWeight: 700, fontSize: 12,
+                      fontFamily: 'inherit',
+                      lineHeight: 1.4,
+                      transition: 'all 0.15s',
+                      boxShadow: active ? '0 2px 6px rgba(0,0,0,0.18)' : 'none',
+                    }}
+                  >
+                    <span style={{ fontWeight: 800, fontSize: 13, lineHeight: 1, width: '1em', textAlign: 'center' }}>{s.icon}</span>
+                    <span>{s.label}</span>
+                  </button>
+                );
+              })}
+              {rec && rec.updatedAt && (
+                <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--ink-3)', fontVariantNumeric: 'tabular-nums' }}>
+                  {qrFormatTs(rec.updatedAt)}
+                </span>
+              )}
             </div>
-            {memoOpen[i] && (
-              <div style={{ marginTop: 8, paddingLeft: 12 }}>
-                <textarea
-                  value={memos[i] || ''}
-                  onChange={(e) => setMemo(i, e.target.value)}
-                  placeholder="メモ（誤解・気付き・次回チェックなど）"
-                  rows={3}
-                  style={{
-                    width: '100%', maxWidth: 560,
-                    fontSize: 12, padding: '6px 8px',
-                    border: '1px solid var(--line)', borderRadius: 4,
-                    background: 'var(--bg-elev)', color: 'var(--ink-1)',
-                    fontFamily: 'inherit', resize: 'vertical',
-                  }}
-                />
-              </div>
-            )}
           </details>
         );
       })}
