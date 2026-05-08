@@ -418,6 +418,7 @@
     <div class="nav-tab" onclick="switchLevel('advanced'); scrollToSection('guide')">上級</div>
     <div class="nav-tab" onclick="scrollToSection('routines')">Routines</div>
     <div class="nav-tab" onclick="scrollToSection('tips')">活用Tips</div>
+    <div class="nav-tab" onclick="scrollToSection('git-knowledge')">Git落とし穴</div>
     <div class="nav-tab" onclick="scrollToSection('shortcuts')">ショートカット</div>
   </div>
 </nav>
@@ -838,6 +839,155 @@ Cmd+Shift+E — Effort 切替メニュー</pre>
         <div class="feature-icon"><i data-lucide="image-off" size="18"></i></div>
         <div class="feature-title">スクリーンショットは最後の手段</div>
         <div class="feature-desc">画像はテキストの4-10倍トークン消費。構造確認は <code>preview_eval</code> + JS queryで代替する。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Git／GitHub 連携で詰まるポイント -->
+<div class="section" id="git-knowledge">
+  <div class="container">
+    <div class="section-title">Git/GitHub連携で詰まるポイント</div>
+
+    <p style="color:var(--text2);margin-bottom:var(--sp-6);max-width:780px;line-height:1.7;">
+      Claude Codeは <strong style="color:var(--text)">複数セッション・worktreeで並列作業</strong> するため、Gitの分岐・コンフリクト事故が起きやすい。
+      実戦で遭遇した落とし穴と対処法をまとめる。
+    </p>
+
+    <!-- ① HEAD と origin/main の分岐とは -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">① HEAD と origin/main の「分岐」とは何か</h3>
+    <div class="feature-card" style="margin-bottom:var(--sp-6)">
+      <div class="feature-desc" style="margin-bottom:var(--sp-4)">
+        <strong style="color:var(--text)">分岐 = 同じ祖先から枝分かれして、両側がそれぞれ別のコミットを積んでいる状態</strong>。
+        この状態で <code>git push</code> しても fast-forward できず、Git は「上書きできません」と拒否する。
+      </div>
+      <div class="code-block" style="background:#0a0f1c;padding:var(--sp-4);border-radius:var(--radius-sm);font-family:monospace;font-size:0.85rem;line-height:1.6;color:var(--text);white-space:pre">
+                   ┌── a ── b ── c ── … (origin/main 側に58コミット積まれた)
+共通の祖先 ────────┤
+                   └── x ── y ── z (ローカルHEAD側に5コミット積まれた)
+      </div>
+      <div class="feature-when" style="margin-top:var(--sp-3)">
+        <strong>典型的な発生原因：</strong>
+        別のClaude Codeセッション（別worktree）が origin/main に直接commit & pushしていた一方、
+        このセッションは古いベースから始まったため、その間の進化を取り込まなかった。
+      </div>
+    </div>
+
+    <!-- ② 対処法（3択） -->
+    <h3 style="font-size:var(--fs-h3);margin-bottom:var(--sp-4);color:var(--text);font-weight:700">② 分岐したときの対処法（3択）</h3>
+    <div class="feature-grid">
+      <div class="feature-card" style="border-left:3px solid var(--green)">
+        <div class="feature-icon"><i data-lucide="check-circle" size="18"></i></div>
+        <div class="feature-title">A: 純粋な貢献分のみ抽出して載せ直す（推奨）</div>
+        <div class="feature-desc">
+          自分の作業ブランチで何が変わったかを見極め、<strong style="color:var(--text)">origin/main の最新を取得 → そこに自分の差分だけを手動適用 → 1コミットでpush</strong>。
+          相手側の進化（別セッションの作業）を温存できる。
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>git branch backup-detached HEAD                # 念のためバックアップ
+git fetch origin main
+git checkout -B tmp-merge origin/main          # 最新ベースに乗せ替え
+# ここで自分の変更を手動で再適用（必要箇所のみ）
+git add -A &amp;&amp; git commit -m "feat: ..."
+git push origin tmp-merge:main                 # main へ反映</pre>
+        </div>
+      </div>
+
+      <div class="feature-card" style="border-left:3px solid var(--yellow)">
+        <div class="feature-icon"><i data-lucide="git-merge" size="18"></i></div>
+        <div class="feature-title">B: cherry-pick（小規模な分岐向け）</div>
+        <div class="feature-desc">
+          自分の数コミットを <code>git cherry-pick</code> で origin/main 上に乗せ直す。
+          ただし <strong style="color:var(--yellow)">既に同じ内容が origin/main に入っているとコンフリクト</strong>するため、大規模分岐では避ける。
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>git checkout -B tmp origin/main
+git cherry-pick &lt;commit1&gt; &lt;commit2&gt; …
+git push origin tmp:main</pre>
+        </div>
+      </div>
+
+      <div class="feature-card" style="border-left:3px solid var(--red)">
+        <div class="feature-icon"><i data-lucide="alert-triangle" size="18"></i></div>
+        <div class="feature-title">C: force-push（最終手段／原則禁止）</div>
+        <div class="feature-desc">
+          <code>git push -f origin HEAD:main</code> で自分の歴史を上書き。
+          <strong style="color:var(--red)">origin/main の他セッションの作業が全消失</strong>するため、
+          自分以外がpushしていないと確信できる場合のみ。GH Pages 配信元なら配信内容も巻き戻る。
+        </div>
+        <div class="feature-when" style="color:var(--red)">
+          <strong style="color:var(--red)">ルール：</strong>main/master への force-push は古舘さんの明示許可がない限り絶対やらない。
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 予防策 -->
+    <h3 style="font-size:var(--fs-h3);margin:var(--sp-8) 0 var(--sp-4);color:var(--text);font-weight:700">③ 分岐を起こさない予防策</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="download" size="18"></i></div>
+        <div class="feature-title">作業開始前に必ず fetch</div>
+        <div class="feature-desc">
+          新セッション開始時・worktree作成時は <code>git fetch origin</code> → <code>git log origin/main HEAD --oneline</code> で分岐有無を確認。
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="lock" size="18"></i></div>
+        <div class="feature-title">編集ロック宣言（並列セッション）</div>
+        <div class="feature-desc">
+          大型HTML編集前に <code>python claim_edit.py claim --target &lt;file&gt;</code> でロック宣言。並列セッションの commit 巻き込み事故を防ぐ。
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="git-pull-request" size="18"></i></div>
+        <div class="feature-title">こまめに小さくpush</div>
+        <div class="feature-desc">
+          1セッションで5コミット以上溜めない。pushが遅れるほど他セッションとの分岐リスクが累積する。
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="git-branch" size="18"></i></div>
+        <div class="feature-title">detached HEAD で長居しない</div>
+        <div class="feature-desc">
+          worktreeのcheckoutが detached HEAD のまま放置されると、後で「どのブランチに反映するか」判断が難しくなる。作業前に名前付きブランチ化。
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="archive" size="18"></i></div>
+        <div class="feature-title">バックアップブランチを切る</div>
+        <div class="feature-desc">
+          rebase / cherry-pick / 強制操作の前に <code>git branch backup-YYYY-MM-DD HEAD</code>。事故時に1コマンドで戻れる。
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="search" size="18"></i></div>
+        <div class="feature-title">push前の分岐状況確認</div>
+        <div class="feature-desc">
+          <code>git rev-list --count HEAD ^origin/main</code> で「自分が何コミット先行しているか」、
+          <code>git rev-list --count origin/main ^HEAD</code> で「相手が何コミット先行しているか」を確認。両方0以外＝分岐。
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 実戦事例 -->
+    <h3 style="font-size:var(--fs-h3);margin:var(--sp-8) 0 var(--sp-4);color:var(--text);font-weight:700">④ 実戦事例: 2026-05-08 hoki-wiki §6.0 追加時</h3>
+    <div class="feature-card" style="border-left:3px solid var(--accent)">
+      <div class="feature-desc">
+        <strong style="color:var(--text)">状況：</strong>detached HEAD で5コミット積んだ後、push しようとしたら origin/main が58コミット先行していた。<br><br>
+        <strong style="color:var(--text)">判断：</strong>cherry-pick だと QuickReview 等で origin/main と二重実装になりコンフリクト多発。
+        → <strong style="color:var(--green)">A案（純粋な貢献分のみ抽出）</strong>を採用。<br><br>
+        <strong style="color:var(--text)">手順：</strong>
+        <ol style="padding-left:1.4em;margin-top:0.5em;line-height:1.8">
+          <li><code>git branch backup-detached-2026-05-08 HEAD</code> で歴史を保全</li>
+          <li><code>git checkout -B tmp-merge-demand-page origin/main</code> で最新ベースに乗り替え</li>
+          <li>新規ファイル（DemandKwhKisoPage関数 / sec06.0データ / .goal-question CSS）<strong style="color:var(--text)">のみ</strong>を手動適用</li>
+          <li><code>python build-hoki-wiki.py</code> で再ビルド</li>
+          <li>1コミットにまとめて <code>git push origin tmp-merge-demand-page:main</code></li>
+        </ol>
+        <strong style="color:var(--text)">結果：</strong>origin/main の既存58コミット（4段階UI・検索・他ページ追加）を温存しつつ、自分の貢献を反映。所要約2分。
       </div>
     </div>
 
