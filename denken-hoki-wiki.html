@@ -8656,13 +8656,16 @@ function JuyoritsuGainenPage({ onNav, data }) {
 
       <h2 id="loadcurve">時系列グラフで見る「各最大の合計 vs 合成最大需要」</h2>
       <p style={{margin: '0 0 12px', fontSize: 13, lineHeight: 1.7, color: 'var(--ink-2)'}}>
-        3工場の<strong>負荷曲線を1日（24h）でプロット</strong>。各工場のピーク（●）が時刻バラバラなので、
+        3工場の<strong>1日の負荷推移を 30分平均値（デマンド値）の階段状</strong>でプロット。各工場のピーク（●）が時刻バラバラなので、
         ピーク値の単純合計（<strong style={{color:'#a11'}}>120 kW・上の赤点線</strong>）と、同じ瞬間で合算した最大（<strong style={{color:'#0e3a6e'}}>90 kW・紺の◎</strong>）に <strong>30 kW の差</strong>が生まれる。
         これが <strong>不等率 = 120/90 = 1.33</strong> の正体。
       </p>
+      <div style={{margin: '0 0 12px', padding: '8px 12px', background: '#f6f8fc', borderLeft: '3px solid #4a7fb8', fontSize: 12, color: 'var(--ink-2)', lineHeight: 1.6}}>
+        ※ 最大需要電力は <strong>30分平均（30分デマンド値）</strong>として扱うため、ここでは折れ線（直線補間）ではなく <strong>階段状（区間ごとに値を保持）</strong>で描く。
+      </div>
 
       <div style={{margin: '16px 0', padding: 16, background: '#fff', border: '1px solid var(--bd)', borderRadius: 8}}>
-        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📈 1日の負荷曲線（kW vs 時刻）</div>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📊 1日の負荷推移（30分平均値・階段状）</div>
         <svg viewBox="0 0 820 460" style={{width: '100%', height: 'auto'}}>
           <defs>
             <marker id="juyArrUp" viewBox="0 0 10 10" refX="5" refY="0" markerWidth="6" markerHeight="6" orient="auto">
@@ -8698,19 +8701,19 @@ function JuyoritsuGainenPage({ onNav, data }) {
           <text x="770" y="396" textAnchor="middle" fontSize="11" fill="#666">22</text>
           <text x="420" y="416" textAnchor="middle" fontSize="11" fill="#444">時刻 [時]</text>
 
-          <polyline points="70,367 166,367 261,329 356,279 452,317 547,329 643,342 706,355 770,367" fill="none" stroke="#d33" strokeWidth="2"/>
-          <polyline points="70,367 166,367 261,342 356,304 452,253 547,291 643,317 706,329 770,355" fill="none" stroke="#2a8" strokeWidth="2"/>
-          <polyline points="70,329 166,329 261,342 356,355 452,342 547,329 643,317 706,304 770,329" fill="none" stroke="#a06" strokeWidth="2"/>
-          <polyline points="70,304 166,304 261,253 356,177 452,152 547,190 643,215 706,228 770,279" fill="none" stroke="#0e3a6e" strokeWidth="3.5"/>
+          <polyline points="70,367 166,367 261,367 261,329 356,329 356,279 452,279 452,317 547,317 547,329 643,329 643,342 706,342 706,355 770,355" fill="none" stroke="#d33" strokeWidth="2"/>
+          <polyline points="70,367 166,367 261,367 261,342 356,342 356,304 452,304 452,253 547,253 547,291 643,291 643,317 706,317 706,329 770,329" fill="none" stroke="#2a8" strokeWidth="2"/>
+          <polyline points="70,329 166,329 261,329 261,342 356,342 356,355 452,355 452,342 547,342 547,329 643,329 643,317 706,317 706,304 770,304" fill="none" stroke="#a06" strokeWidth="2"/>
+          <polyline points="70,304 166,304 261,304 261,253 356,253 356,177 452,177 452,152 547,152 547,190 643,190 643,215 706,215 706,228 770,228" fill="none" stroke="#0e3a6e" strokeWidth="3.5"/>
 
-          <circle cx="356" cy="279" r="5" fill="#d33"/>
-          <text x="356" y="271" textAnchor="middle" fontSize="11" fontWeight="700" fill="#d33">A 40kW</text>
-          <circle cx="452" cy="253" r="5" fill="#2a8"/>
-          <text x="476" y="251" textAnchor="start" fontSize="11" fontWeight="700" fill="#2a8">B 50kW</text>
-          <circle cx="706" cy="304" r="5" fill="#a06"/>
-          <text x="706" y="296" textAnchor="middle" fontSize="11" fontWeight="700" fill="#a06">C 30kW</text>
+          <circle cx="404" cy="279" r="5" fill="#d33"/>
+          <text x="404" y="271" textAnchor="middle" fontSize="11" fontWeight="700" fill="#d33">A 40kW（9-12時）</text>
+          <circle cx="500" cy="253" r="5" fill="#2a8"/>
+          <text x="524" y="251" textAnchor="start" fontSize="11" fontWeight="700" fill="#2a8">B 50kW（12-15時）</text>
+          <circle cx="738" cy="304" r="5" fill="#a06"/>
+          <text x="738" y="296" textAnchor="middle" fontSize="11" fontWeight="700" fill="#a06">C 30kW（20-22時）</text>
 
-          <circle cx="452" cy="152" r="7" fill="#0e3a6e" stroke="#fff" strokeWidth="2"/>
+          <circle cx="500" cy="152" r="7" fill="#0e3a6e" stroke="#fff" strokeWidth="2"/>
           <text x="430" y="143" textAnchor="end" fontSize="12" fontWeight="700" fill="#0e3a6e">合成最大 = 90 kW</text>
 
           <text x="775" y="72" textAnchor="start" fontSize="11" fontWeight="700" fill="#a11">各最大の合計</text>
@@ -8731,10 +8734,11 @@ function JuyoritsuGainenPage({ onNav, data }) {
           <text x="124" y="132" fontSize="11" fill="#a06">工場C（夜間倉庫）</text>
         </svg>
         <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8, lineHeight: 1.7}}>
-          ※ 紺の太線＝3工場合算（合成需要）。●＝各工場のピーク（A:9時 / B:12時 / C:20時）。<br/>
+          ※ 紺の太い階段線＝3工場合算（合成需要）。●＝各工場のピーク区間（A:9-12時 / B:12-15時 / C:20-22時）。<br/>
           ・<strong style={{color:'#a11'}}>赤点線 120 kW</strong>＝「●3つの単純合計」（時刻無視）＝<strong>不等率の分子</strong><br/>
-          ・<strong style={{color:'#0e3a6e'}}>◎ 90 kW</strong>＝「合計線の最大値」（昼12時の同時最大）＝<strong>不等率の分母</strong><br/>
-          ・差 30 kW＝ピーク時刻ズレによる「分散効果」 → <strong>不等率 = 120 / 90 = 1.33</strong>
+          ・<strong style={{color:'#0e3a6e'}}>◎ 90 kW</strong>＝「合計階段の最大段」（12-15時区間）＝<strong>不等率の分母</strong><br/>
+          ・差 30 kW＝ピーク時刻ズレによる「ピーク分散効果」 → <strong>不等率 = 120 / 90 = 1.33</strong><br/>
+          ・各段の幅は<strong>3時間（または2時間）の30分平均値の代表</strong>。実運用は48段／日（30分刻み）の階段だが、概念図のため粗くサンプリング表示
         </div>
       </div>
 
@@ -8758,6 +8762,7 @@ function JuyoritsuGainenPage({ onNav, data }) {
       ]} />
 
       <UpdateLog entries={[
+        { date: "2026-05-09", content: "loadcurveを折れ線→階段状（step graph）に変更。30分平均値（デマンド値）前提と整合させ、各値を区間で保持表示。ピークラベルも区間表記（A:9-12時 / B:12-15時 / C:20-22時）に修正", reason: "30分平均値なら直線補間ではなく階段保持が正確、との指摘対応" },
         { date: "2026-05-09", content: "電験受験者向けに表現精度UP：①「ロス/目減り」→「同時使用しない効果/ピーク分散効果」②「必ず1以上/1以下」→「通常〜として検算」③最大需要電力=30分平均の前提カード追加 ④公式整理表（指標×分子×分母×見ているもの）追加 ⑤QuickReview Q&A 3問追加（合成最大の定義・各最大との違い・30分平均）⑥ TrapTableに30分平均1問追加", reason: "ChatGPTレビュー指摘：電気的損失との誤読防止・電験計算上の検算ルールへの言い換え・30分デマンド前提の明記" },
         { date: "2026-05-09", content: "「時系列グラフ」セクション追加（3工場負荷曲線・各ピーク時刻ズレ・各最大の合計120kW vs 合成最大90kW の差30kWを可視化）", reason: "各最大の合計と合成最大需要の差をグラフで見たいという追加要望" },
         { date: "2026-05-09", content: "「具体例で見る3階層」セクション追加（3工場×設備A1A2A3、設備容量・各最大の合計・合成最大需要のSVG階層図）", reason: "設備容量と各最大の合計の違いが直感的に掴めない問い合わせ対応" },
