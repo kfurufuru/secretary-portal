@@ -4402,7 +4402,7 @@ function JuyoritsuGainenPage({ onNav, data }) {
           <li><strong>需要率</strong> = 最大需要電力 ÷ 設備容量　→ 「どれだけ使うか」</li>
           <li><strong>負荷率</strong> = 平均需要電力 ÷ 最大需要電力　→ 「ムラなく使うか」</li>
           <li><strong>不等率</strong> = 各最大の合計 ÷ 合成最大需要電力　→ 「バラバラに使うか」</li>
-          <li>需要率・負荷率は<strong>1以下</strong>、不等率は<strong>必ず1以上</strong></li>
+          <li>電験3種の計算では、通常、<strong>需要率・負荷率は 1 以下</strong>、<strong>不等率は 1 以上</strong>として検算する（負荷率は定義上1以下、需要率は最大需要電力 ≤ 設備容量の前提）</li>
           <li>すべて<strong>無次元（kW/kW）</strong>。ただし全日効率は kWh/kWh で別概念</li>
         </ul>
       </ConclusionBox>
@@ -4415,8 +4415,17 @@ function JuyoritsuGainenPage({ onNav, data }) {
         examType="A問題（概念）・B問題（計算）"
         targets="R05・R03・R02・H26"
         tags={["需要率","負荷率","不等率","概念","施設管理"]}
-        lastChecked="2026-05-08"
+        lastChecked="2026-05-09"
       />
+
+      <div style={{margin: '12px 0 20px', padding: '12px 16px', background: '#fff8e6', border: '1px solid #e0b85a', borderLeft: '4px solid #d49a2c', borderRadius: 8, fontSize: 13, lineHeight: 1.75}}>
+        <div style={{fontWeight: 700, color: '#7a5418', marginBottom: 4}}>📌 「最大需要電力」とは何か（前提）</div>
+        <div>
+          ここでいう <strong>最大需要電力は瞬時値ではない</strong>。
+          一般に <strong>30分ごとの平均使用電力</strong>（30分デマンド値）の中で<strong>最大のもの</strong>をいう。
+          したがって、需要率・負荷率の式に出てくる「最大需要電力」は、<strong>瞬間的なピーク</strong>ではなく<strong>30分平均の最大値</strong>として考える。
+        </div>
+      </div>
 
       <DenkenWikiCTA
         url="https://kfurufuru.github.io/denken-wiki/themes/juyoritsu-fukaritsu/?h=%E9%9C%80%E8%A6%81"
@@ -4428,11 +4437,21 @@ function JuyoritsuGainenPage({ onNav, data }) {
       <MemTable
         headers={["率","公式（分子 / 分母）","意味","範囲"]}
         rows={[
-          ["需要率", "最大需要電力 / 設備容量",                "設備をどれだけ使ったか", "0 〜 1（0〜100%）"],
-          ["負荷率", "平均需要電力 / 最大需要電力",            "電力をムラなく使ったか", "0 〜 1（0〜100%）"],
-          ["不等率", "各需要家の最大の合計 / 合成最大需要電力","ピークがどれだけ分散したか","必ず 1 以上"],
+          ["需要率", "最大需要電力 / 設備容量",                "設備をどれだけ使ったか", "通常 0〜1（最大需要 ≤ 設備容量の前提）"],
+          ["負荷率", "平均需要電力 / 最大需要電力",            "電力をムラなく使ったか", "0〜1（定義上）"],
+          ["不等率", "各需要家の最大の合計 / 合成最大需要電力","ピークがどれだけ分散したか","通常 1 以上（電験計算上の検算）"],
         ]}
         note="「分母」を覚えれば公式は復元できる。需要率の分母=設備容量、負荷率の分母=最大需要、不等率の分母=合成最大需要"
+      />
+
+      <MemTable
+        headers={["指標","分子","分母","見ているもの"]}
+        rows={[
+          ["需要率", "最大需要電力",         "設備容量",         "設備のうち最大でどれだけ使ったか"],
+          ["負荷率", "平均需要電力",         "最大需要電力",     "ピークに対して平均がどれだけ近いか"],
+          ["不等率", "各最大需要電力の合計", "合成最大需要電力", "ピーク時刻がどれだけズレたか"],
+        ]}
+        note="3つの率は『分子と分母が何を見ているか』で覚える。分母は左から 設備容量 → 最大需要 → 合成最大需要 の順に絞り込まれる"
       />
 
       <h2 id="story">日常イメージで覚える</h2>
@@ -4490,7 +4509,7 @@ function JuyoritsuGainenPage({ onNav, data }) {
 
           <line x1="410" y1="155" x2="410" y2="215" stroke="#666" strokeWidth="2" markerEnd="url(#juyHierArr)"/>
           <rect x="488" y="160" width="290" height="44" fill="#fff" stroke="#a06" strokeWidth="1" rx="4"/>
-          <text x="633" y="178" textAnchor="middle" fontSize="12" fontWeight="700" fill="#a06">需要率で目減り（機器同時運転しない）</text>
+          <text x="633" y="178" textAnchor="middle" fontSize="12" fontWeight="700" fill="#a06">同時使用しない効果（需要率）</text>
           <text x="633" y="196" textAnchor="middle" fontSize="11" fill="#555">A:40/60=0.67　B:50/80=0.63　C:30/60=0.50</text>
 
           <rect x="194" y="220" width="432" height="90" fill="#fef5e6" stroke="#d4a046" strokeWidth="2" rx="6"/>
@@ -4500,7 +4519,7 @@ function JuyoritsuGainenPage({ onNav, data }) {
 
           <line x1="410" y1="315" x2="410" y2="375" stroke="#666" strokeWidth="2" markerEnd="url(#juyHierArr)"/>
           <rect x="488" y="320" width="290" height="44" fill="#fff" stroke="#0e6b22" strokeWidth="1" rx="4"/>
-          <text x="633" y="338" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0e6b22">不等率で目減り（ピーク時刻ズレ）</text>
+          <text x="633" y="338" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0e6b22">ピーク分散効果（不等率）</text>
           <text x="633" y="356" textAnchor="middle" fontSize="11" fill="#555">不等率 = 120 / 90 = 1.33</text>
 
           <rect x="248" y="380" width="324" height="90" fill="#e8f6e9" stroke="#4a9f5a" strokeWidth="2" rx="6"/>
@@ -4508,7 +4527,10 @@ function JuyoritsuGainenPage({ onNav, data }) {
           <text x="410" y="430" textAnchor="middle" fontSize="11" fill="#555">（同じ瞬間で見たときの真のピーク・変圧器に流れる最大）</text>
           <text x="410" y="456" textAnchor="middle" fontSize="13" fill="#1f5c2e" fontWeight="700">→ 昼12時の同時値: 25 + 50 + 15 = 90 kW</text>
         </svg>
-        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8}}>※ 横幅が kW に比例（200→120→90）。①→②は <strong>1需要家内で全機器を同時最大運転しない</strong> ロス（需要率）、②→③は <strong>需要家間でピーク時刻がズレる</strong> ロス（不等率）。大小関係は必ず <strong>① ≧ ② ≧ ③</strong>。</div>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8, lineHeight: 1.7}}>
+          ※ 横幅が kW に比例（200→120→90）。①→②は <strong>1需要家内で全機器を同時最大運転しないことによる「同時使用しない効果」</strong>（需要率）、②→③は <strong>需要家間でピーク時刻がズレることによる「ピーク分散効果」</strong>（不等率）。大小関係は <strong>① ≧ ② ≧ ③</strong>。<br/>
+          <span style={{color:'#a11', fontWeight:600}}>これらは電力損失ではなく</span>、設備容量から実際の最大需要を小さく見積もれる効果（係数）である。
+        </div>
       </div>
 
       <ConclusionBox>
@@ -4607,20 +4629,24 @@ function JuyoritsuGainenPage({ onNav, data }) {
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "不等率が大きいと効率が悪い",        correct: "逆。不等率が大きい＝ピーク分散＝設備を効率よく使える" },
-        { wrong: "需要率は1以上になることがある",    correct: "1以下（最大需要電力 ≤ 設備容量）" },
+        { wrong: "需要率は1以上になることがある",    correct: "通常は1以下（最大需要電力 ≤ 設備容量 の前提で扱う）" },
         { wrong: "3つの率はすべて kWh の単位を持つ", correct: "3つとも無次元（kW/kW）。kWh は全日効率（別概念）" },
+        { wrong: "最大需要電力は瞬間的なピーク値",   correct: "通常は30分平均（30分デマンド値）の最大値" },
       ]} />
 
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
-        { q: "需要率の分母は？",                   a: "設備容量（負荷の定格電力の合計）" },
-        { q: "負荷率の分母は？",                   a: "最大需要電力" },
-        { q: "不等率の分母は？",                   a: "合成最大需要電力（同時最大値）" },
-        { q: "不等率が必ず1以上になる理由は？",     a: "各需要家の最大が同時に重なることはないため、各最大の合計≧合成最大が成立" },
-        { q: "コンビニの負荷率はどのくらい？",      a: "0.8〜0.9（24時間ほぼ均一に消費）" },
+        { q: "需要率の分母は？",                                   a: "設備容量（負荷の定格電力の合計）" },
+        { q: "負荷率の分母は？",                                   a: "最大需要電力" },
+        { q: "不等率の分母は？",                                   a: "合成最大需要電力。同じ瞬間で見た合計需要の最大値" },
+        { q: "各最大需要電力の合計と合成最大需要電力は同じか？",   a: "違う。各最大は時刻を無視した単純合計、合成最大は同じ時刻で合算した最大値" },
+        { q: "最大需要電力は瞬時値か？",                           a: "通常は30分平均（30分デマンド値）の最大値として扱う" },
+        { q: "不等率が通常1以上になる理由は？",                    a: "各需要家のピーク時刻はズレるため、各最大の合計 ≧ 合成最大 が成立する" },
+        { q: "コンビニの負荷率はどのくらい？",                     a: "0.8〜0.9（24時間ほぼ均一に消費）" },
       ]} />
 
       <UpdateLog entries={[
+        { date: "2026-05-09", content: "電験受験者向けに表現精度UP：①「ロス/目減り」→「同時使用しない効果/ピーク分散効果」②「必ず1以上/1以下」→「通常〜として検算」③最大需要電力=30分平均の前提カード追加 ④公式整理表（指標×分子×分母×見ているもの）追加 ⑤QuickReview Q&A 3問追加（合成最大の定義・各最大との違い・30分平均）⑥ TrapTableに30分平均1問追加", reason: "ChatGPTレビュー指摘：電気的損失との誤読防止・電験計算上の検算ルールへの言い換え・30分デマンド前提の明記" },
         { date: "2026-05-09", content: "「時系列グラフ」セクション追加（3工場負荷曲線・各ピーク時刻ズレ・各最大の合計120kW vs 合成最大90kW の差30kWを可視化）", reason: "各最大の合計と合成最大需要の差をグラフで見たいという追加要望" },
         { date: "2026-05-09", content: "「具体例で見る3階層」セクション追加（3工場×設備A1A2A3、設備容量・各最大の合計・合成最大需要のSVG階層図）", reason: "設備容量と各最大の合計の違いが直感的に掴めない問い合わせ対応" },
         { date: "2026-05-08", content: "ページ上部にdenken-wiki誘導CTA1本に集約・URL検索ハイライト付与", reason: "下部CTAだけでは視認性低・上下重複は冗長との指摘対応" },
