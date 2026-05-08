@@ -8632,6 +8632,90 @@ function JuyoritsuGainenPage({ onNav, data }) {
         </ul>
       </ConclusionBox>
 
+      <h2 id="loadcurve">時系列グラフで見る「各最大の合計 vs 合成最大需要」</h2>
+      <p style={{margin: '0 0 12px', fontSize: 13, lineHeight: 1.7, color: 'var(--ink-2)'}}>
+        3工場の<strong>負荷曲線を1日（24h）でプロット</strong>。各工場のピーク（●）が時刻バラバラなので、
+        ピーク値の単純合計（<strong style={{color:'#a11'}}>120 kW・上の赤点線</strong>）と、同じ瞬間で合算した最大（<strong style={{color:'#0e3a6e'}}>90 kW・紺の◎</strong>）に <strong>30 kW の差</strong>が生まれる。
+        これが <strong>不等率 = 120/90 = 1.33</strong> の正体。
+      </p>
+
+      <div style={{margin: '16px 0', padding: 16, background: '#fff', border: '1px solid var(--bd)', borderRadius: 8}}>
+        <div style={{fontSize: 13, fontWeight: 600, color: 'var(--ink-2)', marginBottom: 8}}>📈 1日の負荷曲線（kW vs 時刻）</div>
+        <svg viewBox="0 0 820 460" style={{width: '100%', height: 'auto'}}>
+          <defs>
+            <marker id="juyArrUp" viewBox="0 0 10 10" refX="5" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,10 L5,0 L10,10 z" fill="#a11"/>
+            </marker>
+            <marker id="juyArrDn" viewBox="0 0 10 10" refX="5" refY="10" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L5,10 L10,0 z" fill="#a11"/>
+            </marker>
+          </defs>
+
+          <line x1="70" y1="380" x2="770" y2="380" stroke="#333" strokeWidth="1.5"/>
+          <line x1="70" y1="50" x2="70" y2="380" stroke="#333" strokeWidth="1.5"/>
+
+          <line x1="70" y1="75" x2="770" y2="75" stroke="#a11" strokeWidth="1.5" strokeDasharray="6,4"/>
+          <text x="64" y="78" textAnchor="end" fontSize="11" fill="#a11" fontWeight="700">120</text>
+          <line x1="70" y1="152" x2="770" y2="152" stroke="#0e3a6e" strokeWidth="1" strokeDasharray="3,3"/>
+          <text x="64" y="155" textAnchor="end" fontSize="11" fill="#0e3a6e" fontWeight="700">90</text>
+          <line x1="70" y1="228" x2="770" y2="228" stroke="#eee" strokeWidth="1"/>
+          <text x="64" y="231" textAnchor="end" fontSize="11" fill="#666">60</text>
+          <line x1="70" y1="304" x2="770" y2="304" stroke="#eee" strokeWidth="1"/>
+          <text x="64" y="307" textAnchor="end" fontSize="11" fill="#666">30</text>
+          <text x="64" y="383" textAnchor="end" fontSize="11" fill="#666">0</text>
+          <text x="22" y="215" textAnchor="middle" fontSize="11" fill="#444" transform="rotate(-90 22 215)">需要電力 [kW]</text>
+
+          <text x="70" y="396" textAnchor="middle" fontSize="11" fill="#666">0</text>
+          <text x="166" y="396" textAnchor="middle" fontSize="11" fill="#666">3</text>
+          <text x="261" y="396" textAnchor="middle" fontSize="11" fill="#666">6</text>
+          <text x="356" y="396" textAnchor="middle" fontSize="11" fill="#666">9</text>
+          <text x="452" y="396" textAnchor="middle" fontSize="11" fill="#666">12</text>
+          <text x="547" y="396" textAnchor="middle" fontSize="11" fill="#666">15</text>
+          <text x="643" y="396" textAnchor="middle" fontSize="11" fill="#666">18</text>
+          <text x="706" y="396" textAnchor="middle" fontSize="11" fill="#666">20</text>
+          <text x="770" y="396" textAnchor="middle" fontSize="11" fill="#666">22</text>
+          <text x="420" y="416" textAnchor="middle" fontSize="11" fill="#444">時刻 [時]</text>
+
+          <polyline points="70,367 166,367 261,329 356,279 452,317 547,329 643,342 706,355 770,367" fill="none" stroke="#d33" strokeWidth="2"/>
+          <polyline points="70,367 166,367 261,342 356,304 452,253 547,291 643,317 706,329 770,355" fill="none" stroke="#2a8" strokeWidth="2"/>
+          <polyline points="70,329 166,329 261,342 356,355 452,342 547,329 643,317 706,304 770,329" fill="none" stroke="#a06" strokeWidth="2"/>
+          <polyline points="70,304 166,304 261,253 356,177 452,152 547,190 643,215 706,228 770,279" fill="none" stroke="#0e3a6e" strokeWidth="3.5"/>
+
+          <circle cx="356" cy="279" r="5" fill="#d33"/>
+          <text x="356" y="271" textAnchor="middle" fontSize="11" fontWeight="700" fill="#d33">A 40kW</text>
+          <circle cx="452" cy="253" r="5" fill="#2a8"/>
+          <text x="476" y="251" textAnchor="start" fontSize="11" fontWeight="700" fill="#2a8">B 50kW</text>
+          <circle cx="706" cy="304" r="5" fill="#a06"/>
+          <text x="706" y="296" textAnchor="middle" fontSize="11" fontWeight="700" fill="#a06">C 30kW</text>
+
+          <circle cx="452" cy="152" r="7" fill="#0e3a6e" stroke="#fff" strokeWidth="2"/>
+          <text x="430" y="143" textAnchor="end" fontSize="12" fontWeight="700" fill="#0e3a6e">合成最大 = 90 kW</text>
+
+          <text x="775" y="72" textAnchor="start" fontSize="11" fontWeight="700" fill="#a11">各最大の合計</text>
+          <text x="775" y="86" textAnchor="start" fontSize="11" fontWeight="700" fill="#a11">= 120 kW</text>
+
+          <line x1="500" y1="78" x2="500" y2="149" stroke="#a11" strokeWidth="2" markerStart="url(#juyArrUp)" markerEnd="url(#juyArrDn)"/>
+          <rect x="508" y="100" width="80" height="28" fill="#fff" stroke="#a11" strokeWidth="1" rx="3"/>
+          <text x="548" y="119" textAnchor="middle" fontSize="12" fontWeight="700" fill="#a11">差 30 kW</text>
+
+          <rect x="80" y="58" width="200" height="84" fill="#fff" stroke="#aaa" strokeWidth="1" rx="4" opacity="0.95"/>
+          <line x1="92" y1="74" x2="118" y2="74" stroke="#0e3a6e" strokeWidth="3.5"/>
+          <text x="124" y="78" fontSize="11" fontWeight="700" fill="#0e3a6e">合計（合成需要）</text>
+          <line x1="92" y1="92" x2="118" y2="92" stroke="#d33" strokeWidth="2"/>
+          <text x="124" y="96" fontSize="11" fill="#d33">工場A（事務棟）</text>
+          <line x1="92" y1="110" x2="118" y2="110" stroke="#2a8" strokeWidth="2"/>
+          <text x="124" y="114" fontSize="11" fill="#2a8">工場B（製造棟）</text>
+          <line x1="92" y1="128" x2="118" y2="128" stroke="#a06" strokeWidth="2"/>
+          <text x="124" y="132" fontSize="11" fill="#a06">工場C（夜間倉庫）</text>
+        </svg>
+        <div style={{fontSize: 12, color: 'var(--ink-3)', marginTop: 8, lineHeight: 1.7}}>
+          ※ 紺の太線＝3工場合算（合成需要）。●＝各工場のピーク（A:9時 / B:12時 / C:20時）。<br/>
+          ・<strong style={{color:'#a11'}}>赤点線 120 kW</strong>＝「●3つの単純合計」（時刻無視）＝<strong>不等率の分子</strong><br/>
+          ・<strong style={{color:'#0e3a6e'}}>◎ 90 kW</strong>＝「合計線の最大値」（昼12時の同時最大）＝<strong>不等率の分母</strong><br/>
+          ・差 30 kW＝ピーク時刻ズレによる「分散効果」 → <strong>不等率 = 120 / 90 = 1.33</strong>
+        </div>
+      </div>
+
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "不等率が大きいと効率が悪い",        correct: "逆。不等率が大きい＝ピーク分散＝設備を効率よく使える" },
@@ -8649,6 +8733,7 @@ function JuyoritsuGainenPage({ onNav, data }) {
       ]} />
 
       <UpdateLog entries={[
+        { date: "2026-05-09", content: "「時系列グラフ」セクション追加（3工場負荷曲線・各ピーク時刻ズレ・各最大の合計120kW vs 合成最大90kW の差30kWを可視化）", reason: "各最大の合計と合成最大需要の差をグラフで見たいという追加要望" },
         { date: "2026-05-09", content: "「具体例で見る3階層」セクション追加（3工場×設備A1A2A3、設備容量・各最大の合計・合成最大需要のSVG階層図）", reason: "設備容量と各最大の合計の違いが直感的に掴めない問い合わせ対応" },
         { date: "2026-05-08", content: "ページ上部にdenken-wiki誘導CTA1本に集約・URL検索ハイライト付与", reason: "下部CTAだけでは視認性低・上下重複は冗長との指摘対応" },
         { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・概念ページ。計算ページ（juyoritsu-keisan）と棲み分け" }
