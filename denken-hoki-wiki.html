@@ -7110,22 +7110,43 @@ function KosakubutsuBunruiPage({ onNav, data }) {
 // 5-8. ShuninGijutsusyaPage（主任技術者・S・必須）
 // ─────────────────────────────────────────────
 function ShuninGijutsusyaPage({ onNav, data }) {
+  const successBox = {margin: '14px 0 18px', padding: '14px 18px', background: '#e8f6e9', border: '1px solid #4a9f5a', borderLeft: '4px solid #2e7c3f', borderRadius: 8, fontSize: 14, lineHeight: 1.85};
+  const warningBox = {margin: '10px 0 14px', padding: '12px 16px', background: '#fff3e0', border: '1px solid #ff9f43', borderLeft: '4px solid #c95a00', borderRadius: 8, fontSize: 13, lineHeight: 1.75};
+  const noteBox    = {margin: '10px 0 14px', padding: '12px 16px', background: '#e7f3fb', border: '1px solid #4a7fb8', borderLeft: '4px solid #2c5d8c', borderRadius: 8, fontSize: 13, lineHeight: 1.75};
+  const tipBox     = {margin: '10px 0 14px', padding: '12px 16px', background: '#f3e8fb', border: '1px solid #8e44ad', borderLeft: '4px solid #6a3088', borderRadius: 8, fontSize: 13, lineHeight: 1.75};
+  const reformBox  = {margin: '10px 0 14px', padding: '12px 16px', background: '#fff8e6', border: '1px solid #e0b85a', borderLeft: '4px solid #d49a2c', borderRadius: 8, fontSize: 13, lineHeight: 1.75};
+
   return (
     <div>
       <GoalQuestion
-        question="第三種電気主任技術者が監督できる電圧の上限は？"
-        choices={["50,000 V 以下","50,000 V 未満","100,000 V 未満","170,000 V 未満"]}
+        question="第三種電気主任技術者が監督できる事業用電気工作物の範囲として正しいものはどれか"
+        choices={[
+          "電圧 50,000 V 未満のすべて",
+          "電圧 50,000 V 未満（ただし出力 5,000 kW 以上の発電所を除く）",
+          "電圧 50,000 V 以下（出力制限なし）",
+          "電圧 100,000 V 未満（出力 5,000 kW 以上を除く）"
+        ]}
         year="頻出"
-        note="「以下」と「未満」の違いに注意。読み終えたら戻って解こう"
+        note="第三種は「電圧」と「発電所出力」の2軸で判定。読み終えたら戻って解こう"
       />
+
+      <h2 id="must-know">1. 🔴 このページで取るべき3点</h2>
+      <div style={successBox}>
+        <div style={{fontWeight: 700, color: '#1f5c2e', marginBottom: 8}}>✅ 最優先で覚える 3 点</div>
+        <ol style={{margin: 0, paddingLeft: 22, lineHeight: 1.95}}>
+          <li><strong>第三種は「電圧 5 万 V 未満」だけで判断しない</strong>。<strong>出力 5,000 kW 以上の発電所</strong>は範囲から除外される（電圧＋発電所出力の 2 軸判定）</li>
+          <li><strong>電気事業法 43 条は項番が問われる</strong>。<strong>1 項＝選任義務 / 2 項＝許可選任 / 3 項＝届出 / 4 項＝誠実義務 / 5 項＝指示遵守義務</strong>（特に 2 項と 3 項の入れ替えに注意）</li>
+          <li><strong>外部委託承認は「外部から選任する制度」ではない</strong>。<strong>主任技術者を選任しないことができる制度</strong>（人を置かず、保安管理業務を外部に委託）</li>
+        </ol>
+      </div>
 
       <ConclusionBox>
         <ul>
-          <li><strong>第三種</strong>: <strong>50,000 V 未満</strong>（かつ 5,000 kW 未満の事業用電気工作物）</li>
-          <li><strong>第二種</strong>: <strong>170,000 V 未満</strong></li>
-          <li><strong>第一種</strong>: <strong>すべて（電圧無制限）</strong></li>
-          <li>選任義務（法43条）と届出義務（法42条）は<strong>別個の手続</strong></li>
-          <li>外部委託承認制度: <strong>7,000 V 以下</strong>の需要設備のみ可</li>
+          <li><strong>第一種</strong>: すべての事業用電気工作物（電圧・出力ともに制限なし）</li>
+          <li><strong>第二種</strong>: 電圧 17 万 V 未満の事業用電気工作物</li>
+          <li><strong>第三種</strong>: 電圧 5 万 V 未満（ただし出力 5,000 kW 以上の発電所を除く）</li>
+          <li>選任義務（法 43 条）と工作物の届出義務（法 42 条）は<strong>別個の手続</strong></li>
+          <li>外部委託承認は<strong>「主任技術者を選任しないことができる制度」</strong>。代表例は 7,000 V 以下で受電する需要設備</li>
         </ul>
       </ConclusionBox>
 
@@ -7136,44 +7157,160 @@ function ShuninGijutsusyaPage({ onNav, data }) {
         freq="毎年"
         examType="A問題"
         targets="R07・R05・R03・H30"
-        tags={["法令","主任技術者","頻出S","電圧区分"]}
-        lastChecked="2026-05-08"
+        tags={["法令","主任技術者","頻出S","電圧区分","43条","外部委託","兼任"]}
+        lastChecked="2026-05-09"
       />
-
-      <h2 id="tables">主任技術者の監督範囲</h2>
-      <MemTable
-        headers={["種別","電圧上限","発電所制限","主な選任形態"]}
-        rows={[
-          ["第三種","50,000 V 未満","5,000 kW 未満","通常 / 許可 / 外部委託"],
-          ["第二種","170,000 V 未満","制限なし",   "通常 / 許可 / 兼任"],
-          ["第一種","制限なし",     "制限なし",   "通常 / 許可 / 兼任"],
-        ]}
-        note="第三種は「電圧」と「発電所出力」の2軸で範囲を判定する点に注意"
-      />
-
-      <h2 id="traps">よくあるひっかけ</h2>
-      <TrapTable traps={[
-        { wrong: "第三種は50,000V以下まで監督できる",        correct: "正しくは50,000V未満（ちょうど50,000Vは不可）" },
-        { wrong: "第三種なら出力に関係なく監督できる",        correct: "発電所5,000kW以上は不可（電圧と出力の2軸判定）" },
-        { wrong: "外部委託は低圧需要設備に限る",              correct: "7,000V以下の需要設備（高圧6,600Vも対象）" },
-      ]} />
-
-      <h2 id="quick-review">1分復習</h2>
-      <QuickReview items={[
-        { q: "第三種の電圧上限は？",            a: "50,000V未満（「以下」ではない）" },
-        { q: "第三種で監督できない発電所は？",  a: "出力5,000kW以上の発電所" },
-        { q: "第二種の電圧上限は？",            a: "170,000V未満" },
-        { q: "外部委託の対象範囲は？",          a: "7,000V以下の需要設備のみ" },
-        { q: "選任と届出はワンセット？",        a: "別個の手続（法43条 vs 法42条）" },
-      ]} />
 
       <DenkenWikiCTA
-        url="https://kfurufuru.github.io/denken-wiki/themes/shunin-gijutsusha/"
-        label="denken-wiki「電気主任技術者」を開く"
-        note="許可選任・兼任・外部委託の手続詳細と条文根拠は denken-wiki が SOT。"
+        url="https://kfurufuru.github.io/denken-wiki/themes/shunin-gijutsusha/?h=%E4%B8%BB%E4%BB%BB%E6%8A%80%E8%A1%93%E8%80%85"
+        label="📖 詳細解説は denken-wiki で"
+        note="許可選任・兼任承認・外部委託承認の条文根拠と手続詳細は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。監督範囲の暗記を hoki-wiki に集約" }]} />
+      <h2 id="why">2. 🔴 なぜ重要か</h2>
+      <PlainExplain>
+        <p style={{margin: '0 0 8px'}}>主任技術者は<strong>毎年出題される最頻出テーマ</strong>。問われ方は概ね 4 系統に集約される。</p>
+        <ul style={{margin: 0, paddingLeft: 20, lineHeight: 1.85}}>
+          <li><strong>免状種別ごとの監督範囲</strong>（電圧と発電所出力の組み合わせ判定）</li>
+          <li><strong>43 条の項番</strong>（許可・届出・誠実義務などの入れ替え）</li>
+          <li><strong>届出・許可・承認の違い</strong>（手続き名の取り違え）</li>
+          <li><strong>外部委託承認制度</strong>（「外部から選任」と誤解させる選択肢）</li>
+        </ul>
+      </PlainExplain>
+
+      <h2 id="article43">3. 🔴 電気事業法 43 条の項番整理</h2>
+      <MemTable
+        headers={["項","内容","試験での狙われ方"]}
+        rows={[
+          ["1 項","主任技術者の選任義務（設置者は主任技術者を選任しなければならない）","義務主体（設置者）と対象（事業用電気工作物）の空欄補充"],
+          ["2 項","免状を持たない者を許可により主任技術者として選任","「届出」と入れ替える誤選択肢が定番"],
+          ["3 項","主任技術者の選任・解任の届出（遅滞なく）","「許可」と入れ替える誤選択肢が定番（2 項とのペア注意）"],
+          ["4 項","主任技術者の誠実義務（職務を誠実に行う）","「責任」「監督」キーワードと混同させる選択肢"],
+          ["5 項","従業者の指示遵守義務（主任技術者の指示に従う）","主任技術者→従業者の方向。逆向きに書かれた誤選択肢に注意"],
+        ]}
+        note="2 項＝許可、3 項＝届出。語感が似ているため毎年入れ替え誤選択肢が出る"
+      />
+      <div style={warningBox}>
+        <strong>⚠ 43 条 2 項は「許可選任」、3 項は「選任・解任の届出」</strong>。許可と届出を入れ替える問題は本試験で頻出。「許可がいるのは免状なしの選任のみ」「免状ありの選任・解任はあくまで届出」と覚える。
+      </div>
+
+      <h2 id="kantoku-han-i">4. 🔴 免状種別ごとの保安監督範囲</h2>
+      <MemTable
+        headers={["種別","監督できる範囲","ひっかけポイント"]}
+        rows={[
+          ["第一種","すべての事業用電気工作物（電圧・出力ともに制限なし）","「電圧上限なし」だけで判断しない（運転監督として全範囲）"],
+          ["第二種","電圧 17 万 V 未満の事業用電気工作物","「以下」ではなく「未満」"],
+          ["第三種","電圧 5 万 V 未満の事業用電気工作物（ただし出力 5,000 kW 以上の発電所を除く）","電圧＋発電所出力の 2 軸で判断。電圧だけで答えると失点"],
+        ]}
+        note="第三種は『電圧 5 万 V 未満』だけでは不十分。『かつ出力 5,000 kW 以上の発電所を除く』を必ず添える"
+      />
+      <div style={noteBox}>
+        <strong>📌 表記統一</strong>：本ページでは <strong>「5 万 V 未満」「50,000 V 未満」「17 万 V 未満」</strong>で表記。「49,999 V 以下」のような表現は使わない（「未満」は『その値を含まない』を意味する境界表現で、本試験の正規表記）。
+      </div>
+
+      <h2 id="todoke-kyoka-shounin">5. 🟠 届出・許可・承認の違い（手続種別整理）</h2>
+      <MemTable
+        headers={["手続種別","内容（要点）","根拠"]}
+        rows={[
+          ["選任届出",     "免状を持つ者を主任技術者として選任し、遅滞なく届け出る",                       "法 43 条 3 項"],
+          ["選任許可",     "免状を持たない者を、許可により主任技術者として選任する",                       "法 43 条 2 項"],
+          ["兼任承認",     "他の事業場の主任技術者を兼ねる（届出ではなく承認）",                            "施行規則第 52 条 等"],
+          ["選任委託",     "設置者の従業員でない常時勤務者を、主任技術者として選任する制度",                "施行規則第 52 条 等"],
+          ["外部委託承認", "主任技術者を選任せず、保安管理業務を外部（電気保安法人・電気管理技術者）に委託","施行規則第 52 条の 2 等"],
+        ]}
+        note="選任委託（人を置く）と 外部委託承認（人を置かず業務を委託）は別物。混同注意"
+      />
+      <div style={noteBox}>
+        <strong>📌 原則</strong>：主任技術者は<strong>主任技術者免状を持つ者</strong>から選任する（法 43 条 1 項）。
+      </div>
+      <div style={warningBox}>
+        <strong>⚠ 例外（3 つを区別）</strong><br/>
+        ・<strong>免状を持たない者</strong>を選任する場合 → <strong>許可</strong>が必要（43 条 2 項）<br/>
+        ・<strong>複数の事業場</strong>を兼任する場合 → <strong>承認</strong>が必要（兼任承認・届出ではない）<br/>
+        ・<strong>外部委託承認</strong>を受ければ、主任技術者を<strong>選任しないこと</strong>ができる
+      </div>
+
+      <h2 id="gaibu-itaku">6. 🟠 外部委託承認制度</h2>
+
+      <h3 style={{marginTop: 14, fontSize: 16, color: 'var(--ink-1)'}}>6-1. 🔴 まず覚える</h3>
+      <ConclusionBox>
+        <ul>
+          <li>外部委託承認は<strong>主任技術者を選任しないことができる</strong>制度（外部から選任する制度ではない）</li>
+          <li>代表例は<strong>7,000 V 以下で受電する需要設備</strong></li>
+          <li>委託先は<strong>電気保安法人</strong>または<strong>電気管理技術者</strong>（資格要件あり）</li>
+          <li>月次点検は<strong>原則 1 月に 1 回以上</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <h3 style={{marginTop: 14, fontSize: 16, color: 'var(--ink-1)'}}>6-2. 🟠 正誤問題で注意</h3>
+      <TrapTable traps={[
+        { wrong: "外部委託承認＝主任技術者を外部から選任する制度",          correct: "主任技術者を選任しないことができる制度（人を置かず、業務を委託）" },
+        { wrong: "外部委託承認は需要設備に限る（と断定）",                  correct: "代表例は 7,000 V 以下の需要設備。一定規模以下の発電所・蓄電所等も対象になり得る" },
+        { wrong: "委託先は誰でもよい",                                       correct: "電気保安法人 または 電気管理技術者（資格要件あり）" },
+      ]} />
+
+      <h3 style={{marginTop: 14, fontSize: 16, color: 'var(--ink-1)'}}>6-3. 🟡 余力・改正論点</h3>
+      <div style={reformBox}>
+        <strong>🟡 令和 7 年 4 月 1 日施行の改正</strong>：一定要件を満たす需要設備では、月次点検頻度を <strong>3 月に 1 回以上</strong>とできる場合がある。
+        <br/>ただし<strong>試験対策ではまず原則「1 月に 1 回以上」を優先</strong>して覚える。3 月特例は余力がある場合に「改正で例外あり」と押さえる程度で十分。
+      </div>
+
+      <h2 id="kennin">7. 🟠 兼任承認</h2>
+      <div style={tipBox}>
+        <div style={{fontWeight: 700, color: '#5e2076', marginBottom: 6}}>💡 兼任承認は「7・2・6・2」で覚える</div>
+        <ul style={{margin: 0, paddingLeft: 22, lineHeight: 1.9}}>
+          <li><strong>7</strong>,000 V 以下（受電電圧）</li>
+          <li><strong>2</strong>,000 kW 未満（設備容量）</li>
+          <li><strong>6</strong> カ所以内（兼任できる事業場数）</li>
+          <li><strong>2</strong> 時間以内（事業場間の移動時間）</li>
+        </ul>
+      </div>
+      <div style={warningBox}>
+        <strong>⚠ 兼任承認は「届出」ではなく「承認」</strong>。手続き名の入れ替え（「兼任届出」と書かれているなど）は誤り。
+      </div>
+
+      <h2 id="traps">8. 🟠 よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "第三種は 50,000 V 以下まで監督できる",                          correct: "正しくは 50,000 V 未満（ちょうど 50,000 V は不可）" },
+        { wrong: "第三種なら出力に関係なく監督できる",                            correct: "出力 5,000 kW 以上の発電所は対象外（電圧＋出力の 2 軸判定）" },
+        { wrong: "外部委託承認は主任技術者を外部から選任する制度",               correct: "主任技術者を選任しないことができる制度" },
+        { wrong: "兼任は届出で済む",                                                correct: "兼任は承認（届出ではない）" },
+        { wrong: "免状なしでも自由に選任できる",                                    correct: "許可を受ければ、免状を持たない者を主任技術者として選任できる（43 条 2 項）" },
+        { wrong: "43 条 2 項＝届出、3 項＝許可",                                    correct: "43 条 2 項＝許可選任、3 項＝選任・解任の届出（入れ替え注意）" },
+        { wrong: "外部委託は需要設備限定",                                          correct: "代表例は 7,000 V 以下の需要設備。一定規模以下の発電所等も対象になり得る" },
+      ]} />
+
+      <h2 id="kakomon">9. ⚪ 過去問演習（要点）</h2>
+      <MemTable
+        headers={["年度","問われた論点","正解の核"]}
+        rows={[
+          ["R07", "第三種の監督範囲（電圧と出力の組み合わせ）","電圧 5 万 V 未満 かつ 出力 5,000 kW 以上の発電所を除く"],
+          ["R05", "43 条の項番（許可選任・届出）",              "2 項＝許可選任、3 項＝届出"],
+          ["R03", "外部委託承認の対象範囲・委託先",              "原則 7,000 V 以下の需要設備。委託先は電気保安法人 or 電気管理技術者"],
+          ["H30", "兼任承認の数値要件",                            "7,000 V 以下／2,000 kW 未満／6 カ所以内／2 時間以内"],
+        ]}
+        note="近年は『2 軸判定』『43 条項番』『外部委託の制度趣旨』を直接問う出題が定番"
+      />
+
+      <h2 id="quick-review">10. 🔴 5 秒で思い出す</h2>
+      <QuickReview items={[
+        { q: "第三種の監督範囲は？",                              a: "電圧 5 万 V 未満（ただし出力 5,000 kW 以上の発電所を除く）" },
+        { q: "第二種の監督範囲は？",                              a: "電圧 17 万 V 未満の事業用電気工作物" },
+        { q: "第一種の監督範囲は？",                              a: "すべての事業用電気工作物（電圧・出力制限なし）" },
+        { q: "電気事業法 43 条 2 項は？",                         a: "免状を持たない者の許可選任" },
+        { q: "電気事業法 43 条 3 項は？",                         a: "主任技術者の選任・解任の届出（遅滞なく）" },
+        { q: "電気事業法 43 条 4 項は？",                         a: "主任技術者の誠実義務" },
+        { q: "電気事業法 43 条 5 項は？",                         a: "従業者の指示遵守義務（主任技術者の指示に従う）" },
+        { q: "兼任承認の数字 4 つは？",                            a: "7,000 V 以下 / 2,000 kW 未満 / 6 カ所以内 / 2 時間以内" },
+        { q: "兼任の手続種別は？（届出か承認か）",                a: "承認（届出ではない）" },
+        { q: "外部委託承認は外部から選任する制度？",              a: "違う。主任技術者を選任しないことができる制度" },
+        { q: "外部委託の月次点検頻度は？",                         a: "原則 1 月に 1 回以上（令和 7 年改正で一定要件下では 3 月に 1 回も可）" },
+      ]} />
+
+      <UpdateLog entries={[
+        { date: "2026-05-09", content: "ChatGPT指摘に基づき大幅再構成：①重要度ラベル(🔴🟠🟡⚪)で優先度可視化 ②冒頭に「3点」success ③43条1〜5項の項番整理表+warning ④免状種別ごとの監督範囲表（電圧+出力2軸判定） ⑤届出/許可/承認の違いを5種一覧で整理 ⑥外部委託承認を3段階分割（まず覚える/正誤注意/令和7年改正） ⑦兼任承認7-2-6-2 tip+承認/届出warning ⑧原則/例外を note/warning で分離 ⑨ひっかけ拡充（7問） ⑩過去問演習要点表+QuickReview 11問", reason: "免状種別と手続が混在・外部委託の誤解・43条項番混乱・兼任承認の手続種別曖昧、を整理（ChatGPTレビュー）" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。監督範囲の暗記を hoki-wiki に集約" }
+      ]} />
       <PageNav
         prevId="kosakubutsu-bunrui" prevTitle="電気工作物の区分"
         nextId="hoan-kitei"          nextTitle="保安規程"
