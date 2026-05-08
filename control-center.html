@@ -963,11 +963,45 @@
   };
 
   // ---------- D. Recovery / Human Capital ----------
+  // Apple Watch 風 Activity Rings (Move / Exercise / Stand)
+  const ActivityRings = ({ move, exercise, stand, size = 110 }) => {
+    const cx = 50, cy = 50;
+    const stroke = 8.5;
+    const rings = [
+      { r: 42, pct: move,     color: '#ff375f', bg: 'rgba(255,55,95,0.18)',  label: 'Move' },
+      { r: 32, pct: exercise, color: '#7af754', bg: 'rgba(122,247,84,0.20)', label: 'Exercise' },
+      { r: 22, pct: stand,    color: '#42d4f4', bg: 'rgba(66,212,244,0.22)', label: 'Stand' },
+    ];
+    return (
+      <svg width={size} height={size} viewBox="0 0 100 100" style={{flex:'none'}}>
+        {rings.map((ring, i) => {
+          const c = 2 * Math.PI * ring.r;
+          const pct = Math.max(0, Math.min(100, ring.pct || 0));
+          const offset = c - (pct / 100) * c;
+          return (
+            <g key={i}>
+              <circle cx={cx} cy={cy} r={ring.r} fill="none" stroke={ring.bg} strokeWidth={stroke} />
+              <circle
+                cx={cx} cy={cy} r={ring.r} fill="none"
+                stroke={ring.color} strokeWidth={stroke}
+                strokeDasharray={c} strokeDashoffset={offset}
+                strokeLinecap="round"
+                transform={`rotate(-90 ${cx} ${cy})`}
+                style={{transition:'stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)'}}
+              />
+            </g>
+          );
+        })}
+      </svg>
+    );
+  };
+
   const Recovery = () => {
     const defaults = {
       sleepScore: 78, sleepDuration: '7h 12m', deepSleepPct: 18, remPct: 22, lightPct: 54, awakePct: 6,
-      hrv: 42, hrvAvg: 38, rhr: 54, kcal: 420, stand: 11,
-      decisionStrength: 4, advice: '09:00 重要決定OK · 16:00 以降は判断保留'
+      hrv: 42, hrvAvg: 38, rhr: 54, kcal: 420, stand: 11, exerciseMin: 0,
+      decisionStrength: 4, advice: '09:00 重要決定OK · 16:00 以降は判断保留',
+      _updated: null, _source: 'manual'
     };
     const [recovery, setRecovery] = useState(() => {
       try {
@@ -995,73 +1029,116 @@
 
     const sleepStages = [
       { name:'深い',  pct: recovery.deepSleepPct,  color: 'var(--primary,#1a73e8)' },
-      { name:'レム',  pct: recovery.remPct,        color: '#34a853' },
+      { name:'REM',   pct: recovery.remPct,        color: '#34a853' },
       { name:'浅い',  pct: recovery.lightPct,      color: '#aecbfa' },
       { name:'覚醒',  pct: recovery.awakePct,      color: '#dadce0' },
     ];
     const ds = Math.max(0, Math.min(5, Number(recovery.decisionStrength) || 0));
     const dsLabel = ds >= 5 ? 'high' : ds >= 3 ? 'medium' : 'low';
-    // Split advice into 2 chunks at " · " for the two-color display
     const adviceParts = (recovery.advice || '').split(' · ');
+
+    // Activity ring percentages (target-based)
+    const MOVE_GOAL = 600, EX_GOAL = 30, STAND_GOAL = 12;
+    const movePct  = (recovery.kcal / MOVE_GOAL) * 100;
+    const exPct    = ((recovery.exerciseMin || 0) / EX_GOAL) * 100;
+    const standPct = (recovery.stand / STAND_GOAL) * 100;
+
+    // HRV trend vs 7d avg
+    const hrvDelta = recovery.hrv - recovery.hrvAvg;
+    const hrvTone  = hrvDelta >  3 ? 'success' : hrvDelta < -3 ? 'warning' : 'neutral';
+    const hrvLabel = hrvDelta >  3 ? '回復'    : hrvDelta < -3 ? '疲労'    : '平常';
+    const hrvIcon  = hrvDelta >  3 ? 'north'   : hrvDelta < -3 ? 'south'   : 'remove';
+
+    // Data freshness
+    const isLive = recovery._source === 'scriptable' || recovery._source === 'ios-shortcut';
+    const lastSync = recovery._updated
+      ? new Date(recovery._updated).toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'})
+      : '06:00';
+    const sourceLabel = isLive ? `Watch Live · ${lastSync}` : `Manual · ${lastSync}`;
+
+    // Sleep score color tier
+    const ss = recovery.sleepScore || 0;
+    const ssColor = ss >= 85 ? 'var(--success,#137333)'
+                  : ss >= 70 ? 'var(--primary,#1a73e8)'
+                  : ss >= 55 ? 'var(--warning,#ea8600)'
+                  : 'var(--error,#b3261e)';
+
     return (
       <div className="m3-card p-6 flex flex-col">
         <CardHeader
           icon="favorite"
           title="Recovery"
-          status="Watch · 06:00 sync"
-          statusTone="success"
+          status={sourceLabel}
+          statusTone={isLive ? 'success' : 'neutral'}
           statusIcon="watch"
-          lastUpdate="06:00"
+          lastUpdate={lastSync}
         />
 
-        {/* hero sleep */}
-        <div className="flex items-end justify-between gap-3 mb-3">
-          <div>
-            <div className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>睡眠スコア</div>
-            <div className="font-display tnum leading-none mt-1" style={{fontSize:'clamp(40px, 11vw, 56px)', fontWeight:400}}>{recovery.sleepScore}</div>
-            <div className="text-[12px] mt-2 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>{recovery.sleepDuration}</div>
-          </div>
-          <div className="flex-1 max-w-[110px]">
-            <div className="text-[10px] mb-1" style={{color:'var(--on-surface-variant,#5f6368)'}}>睡眠構成</div>
-            <div className="flex h-3 rounded-full overflow-hidden">
-              {sleepStages.map((s,i)=>(
-                <div key={i} title={`${s.name} ${s.pct}%`} style={{ width: `${s.pct}%`, background: s.color }}></div>
-              ))}
+        {/* HERO: Sleep Score (left) + Activity Rings (right) */}
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <div className="flex-1 min-w-0">
+            <div className="text-[11px] uppercase tracking-wider" style={{color:'var(--on-surface-variant,#5f6368)', letterSpacing:'.08em'}}>
+              SLEEP
             </div>
-            <div className="flex justify-between mt-1.5 text-[10px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
-              <span>深い {recovery.deepSleepPct}%</span>
-              <span>レム {recovery.remPct}%</span>
+            <div className="font-display tnum leading-none mt-1"
+                 style={{fontSize:'clamp(48px, 13vw, 64px)', fontWeight:300, color: ssColor, letterSpacing:'-.02em'}}>
+              {recovery.sleepScore || '—'}
+            </div>
+            <div className="text-[13px] mt-1 tnum font-medium" style={{color:'var(--on-surface,#1f1f1f)'}}>
+              {recovery.sleepDuration || '—'}
+            </div>
+          </div>
+          <div className="flex flex-col items-center" style={{flex:'none'}}>
+            <ActivityRings move={movePct} exercise={exPct} stand={standPct} size={110} />
+            <div className="flex gap-2 mt-1.5 text-[9.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+              <span style={{color:'#ff375f'}}>●</span><span>{recovery.kcal}</span>
+              <span style={{color:'#7af754'}}>●</span><span>{recovery.exerciseMin || 0}m</span>
+              <span style={{color:'#42d4f4'}}>●</span><span>{recovery.stand}h</span>
             </div>
           </div>
         </div>
 
-        {/* 2x2 stats */}
+        {/* Sleep stages compact bar */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between text-[10.5px] mb-1.5 tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+            <span>睡眠ステージ</span>
+            <span>深 {recovery.deepSleepPct}% · REM {recovery.remPct}% · 浅 {recovery.lightPct}% · 覚 {recovery.awakePct}%</span>
+          </div>
+          <div className="flex h-2 rounded-full overflow-hidden" style={{background:'var(--surface-container,#eef2fa)'}}>
+            {sleepStages.map((s,i)=>(
+              <div key={i} title={`${s.name} ${s.pct}%`}
+                   style={{width: `${s.pct}%`, background: s.color, transition:'width .8s cubic-bezier(.2,.8,.2,1)'}}></div>
+            ))}
+          </div>
+        </div>
+
+        {/* HRV / RHR (2 cards) */}
         <div className="grid grid-cols-2 gap-2.5 mb-4">
           <div className="m3-surface-container p-3">
             <div className="flex items-center justify-between">
               <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>HRV</span>
-              <Chip tone="success" icon="north">回復</Chip>
+              <Chip tone={hrvTone} icon={hrvIcon}>{hrvLabel}</Chip>
             </div>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.hrv}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>ms</span></div>
-            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>7d avg {recovery.hrvAvg} ms</div>
+            <div className="text-[18px] font-medium tnum mt-1">
+              {recovery.hrv}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>ms</span>
+            </div>
+            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>
+              7d avg {recovery.hrvAvg} ms {hrvDelta !== 0 && (
+                <span style={{color: hrvDelta > 0 ? 'var(--success,#137333)' : 'var(--warning,#ea8600)'}}>
+                  ({hrvDelta > 0 ? '+' : ''}{hrvDelta})
+                </span>
+              )}
+            </div>
           </div>
           <div className="m3-surface-container p-3">
             <div className="flex items-center justify-between">
               <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>安静時心拍</span>
               <Chip tone="neutral">平常</Chip>
             </div>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.rhr}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>bpm</span></div>
+            <div className="text-[18px] font-medium tnum mt-1">
+              {recovery.rhr}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>bpm</span>
+            </div>
             <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>範囲 50–62</div>
-          </div>
-          <div className="m3-surface-container p-3">
-            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>アクティブ kcal</span>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.kcal}</div>
-            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>週 2,840</div>
-          </div>
-          <div className="m3-surface-container p-3">
-            <span className="text-[11px]" style={{color:'var(--on-surface-variant,#5f6368)'}}>スタンド</span>
-            <div className="text-[18px] font-medium tnum mt-1">{recovery.stand}<span className="text-[11px] ml-0.5" style={{color:'var(--on-surface-variant,#5f6368)'}}>h</span></div>
-            <div className="text-[10.5px] tnum" style={{color:'var(--on-surface-variant,#5f6368)'}}>目標 12h</div>
           </div>
         </div>
 
