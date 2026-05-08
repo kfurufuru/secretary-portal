@@ -4133,9 +4133,9 @@ window.renderPage = function(page, navigate) {
     case 'den-atsu-kubun':         return React.createElement(DenAtsuKubunPage, props);
     case 'densen-size':            return React.createElement(DensenSizePage, props);
     case 'hokoku-todoke-kigen':    return React.createElement(HokokuTodokeKigenPage, props);
-    case 'denro-zetsuen':          return React.createElement(StubPage, { ...props, pageId: 'denro-zetsuen' });
-    case 'setsuchi-koji':          return React.createElement(StubPage, { ...props, pageId: 'setsuchi-koji' });
-    case 'densenro':               return React.createElement(StubPage, { ...props, pageId: 'densenro' });
+    case 'denro-zetsuen':          return React.createElement(DenroZetsuenPage, props);
+    case 'setsuchi-koji':          return React.createElement(SetsuchiKojiPage, props);
+    case 'densenro':               return React.createElement(DensenroPage, props);
     case 'okunai-haisen':          return React.createElement(StubPage, { ...props, pageId: 'okunai-haisen' });
     case 'kako-denryu':            return React.createElement(StubPage, { ...props, pageId: 'kako-denryu' });
     case 'chichuu-densenro':       return React.createElement(StubPage, { ...props, pageId: 'chichuu-densenro' });
@@ -7657,6 +7657,294 @@ function KojiGyohoPage({ onNav, data }) {
       <PageNav
         prevId="koji-shi-ho" prevTitle="電気工事士法"
         nextId="furyoku-gijutsukijun" nextTitle="風力発電の技術基準"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-15. DenroZetsuenPage（電路の絶縁・低圧抵抗値・S・必須）
+// ─────────────────────────────────────────────
+function DenroZetsuenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="単相3線式100/200V電路の絶縁抵抗値はいくら以上必要か"
+        choices={["0.1 MΩ以上","0.2 MΩ以上","0.4 MΩ以上","1.0 MΩ以上"]}
+        year="頻出"
+        note="対地電圧で判断するのがコツ。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>対地電圧 150V以下</strong>: 0.1 MΩ 以上</li>
+          <li><strong>対地電圧 150V超 300V以下</strong>: 0.2 MΩ 以上</li>
+          <li><strong>使用電圧 300V超の低圧</strong>: 0.4 MΩ 以上</li>
+          <li>覚え方：<strong>「い・に・し」（0.1→0.2→0.4）</strong></li>
+          <li>接地式 vs 非接地式で対地電圧が変わるので、まず接地方式を確認</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="S"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R06・R04・H29"
+        tags={["絶縁","低圧","表暗記","頻出S","電技解釈第14条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="tables">絶縁抵抗値（電技解釈 第14条）</h2>
+      <MemTable
+        headers={["電路区分","対地電圧／使用電圧","絶縁抵抗値"]}
+        rows={[
+          ["低圧（150V以下）",     "対地電圧 150V 以下",    "0.1 MΩ 以上"],
+          ["低圧（150V超300V以下）","対地電圧 150V 超 300V 以下","0.2 MΩ 以上"],
+          ["低圧（300V超）",       "使用電圧 300V 超",        "0.4 MΩ 以上"],
+        ]}
+        note="0.1MΩ「以上」が正解（0.1MΩちょうども合格）。「を超える」と書いてある選択肢はひっかけ"
+      />
+
+      <h2 id="examples">配線方式別の判定例</h2>
+      <MemTable
+        headers={["配線方式","対地電圧／使用電圧","絶縁抵抗値"]}
+        rows={[
+          ["単相3線式 100/200V",        "対地電圧 100V → 150V以下",         "0.1 MΩ 以上"],
+          ["三相3線式 200V（非接地式）","対地電圧 200V → 150V超300V以下",   "0.2 MΩ 以上"],
+          ["三相4線式 400V",            "使用電圧 400V → 300V超",            "0.4 MΩ 以上"],
+        ]}
+        note="非接地式は対地電圧＝線間電圧。接地式の三相3線200Vなら対地電圧は相電圧（約115V）→ 0.1MΩ"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "三相3線200Vは200Vだから0.2MΩ",        correct: "接地方式により異なる。非接地式なら0.2MΩ、接地式なら相電圧115V→0.1MΩ" },
+        { wrong: "0.1MΩ「を超える」が合格基準",        correct: "正しくは「0.1MΩ以上」（ちょうど0.1MΩは合格）" },
+        { wrong: "絶縁抵抗試験と絶縁耐力試験は同じもの", correct: "絶縁抵抗=日常の漏れ電流チェック／耐力試験=竣工・改修時の強度確認" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "単相3線式100/200V電路の絶縁抵抗値は？",  a: "0.1 MΩ 以上（対地電圧100V）" },
+        { q: "三相4線式400V電路の絶縁抵抗値は？",      a: "0.4 MΩ 以上（使用電圧300V超）" },
+        { q: "覚え方の語呂は？",                        a: "い・に・し（0.1→0.2→0.4）。境目は150Vと300V" },
+        { q: "0.1MΩの電路に150V印加時の漏れ電流は？",  a: "1.5 mA（150V ÷ 0.1MΩ）— 感電閾値以下" },
+        { q: "絶縁抵抗と絶縁耐力試験の違いは？",        a: "絶縁抵抗=日常管理、耐力試験=竣工・改修時の強度確認" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/zetsuen/"
+        label="denken-wiki「電路の絶縁」を開く"
+        note="接地方式・対地電圧の特定方法・条文構造（法39条→電技5条→解釈14条）は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。絶縁抵抗値0.1/0.2/0.4MΩ暗記表を整備" }]} />
+      <PageNav
+        prevId="hokoku-todoke-kigen" prevTitle="報告・届出期限"
+        nextId="setsuchi-koji"        nextTitle="接地工事（制度全体）"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-16. SetsuchiKojiPage（接地工事・制度全体・S・必須）
+// ─────────────────────────────────────────────
+function SetsuchiKojiPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="0.5秒以内に動作する漏電遮断器を施設したD種接地工事で、緩和される接地抵抗値の上限は？"
+        choices={["100 Ω以下","200 Ω以下","500 Ω以下","1,000 Ω以下"]}
+        year="頻出"
+        note="ELB緩和はC種・D種だけに適用される。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>4種別の数値暗記表は<strong>「接地工事一覧表」（setsuchi-ichiran）</strong>で確認</li>
+          <li><strong>ELB緩和</strong>: C種・D種のみ → <strong>500 Ω 以下</strong>（A種・B種には適用なし）</li>
+          <li><strong>ELB条件</strong>: <strong>0.5秒以内</strong>に動作する漏電遮断器が施設されている</li>
+          <li><strong>B種倍々ルール</strong>: 規定なし<strong>150/Ig</strong> → 1秒以内<strong>300/Ig</strong> → 0.5秒以内<strong>600/Ig</strong></li>
+          <li><strong>接地線径</strong>: A種2.6mm／B種4mm／C・D種1.6mm（引張強さで規定）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="S"
+        freq="毎年"
+        examType="A問題・B問題"
+        targets="R06下・R05・R03・H30"
+        tags={["接地","頻出S","制度","電技解釈第17〜19条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="elb">ELB（漏電遮断器）緩和まとめ</h2>
+      <MemTable
+        headers={["種別","ELB緩和","緩和後の抵抗値","条件"]}
+        rows={[
+          ["A種","× なし",    "—",         "— （高圧・特別高圧機器は厳格に10Ω）"],
+          ["B種","× なし",    "—",         "B種は遮断時間で別途緩和あり（下表参照）"],
+          ["C種","○ あり",   "500 Ω 以下", "0.5秒以内に動作する漏電遮断器を施設"],
+          ["D種","○ あり",   "500 Ω 以下", "0.5秒以内に動作する漏電遮断器を施設"],
+        ]}
+        note="ELB（30mA・0.1秒）動作なら 500Ω×30mA=15V で接触電圧が安全レベル"
+      />
+
+      <h2 id="b-rule">B種接地工事の倍々ルール（解釈第18条）</h2>
+      <MemTable
+        headers={["遮断時間","接地抵抗値","係数"]}
+        rows={[
+          ["規定なし（2秒超）", "150 / Ig Ω 以下", "1倍（基本）"],
+          ["1秒以内に遮断",     "300 / Ig Ω 以下", "2倍"],
+          ["0.5秒以内に遮断",   "600 / Ig Ω 以下", "4倍"],
+        ]}
+        note="「時間が半分→係数2倍」。Ig は高圧側の1線地絡電流"
+      />
+
+      <h2 id="d-omit">D種接地工事の省略条件</h2>
+      <ConclusionBox>
+        <ul>
+          <li>対地電圧 <strong>150V 以下</strong>の機械器具を、<strong>乾燥した場所</strong>に施設する場合</li>
+          <li><strong>木製の床</strong>等、絶縁性のものの上で取り扱うように施設する場合</li>
+          <li>機械器具に<strong>二重絶縁の構造</strong>のものを施設する場合</li>
+          <li>低圧用機械器具に<strong>絶縁変圧器</strong>を施設し、二次側を非接地とした場合</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "A種・B種にもELB緩和が適用される",       correct: "ELB緩和はC種・D種のみ（A種B種は厳格）" },
+        { wrong: "B種は常に150/Ig固定",                   correct: "倍々ルール：1秒以内→300/Ig、0.5秒以内→600/Ig" },
+        { wrong: "A種とC種は同じ10Ωだから接地線径も同じ", correct: "A種は2.6mm以上（高圧機器）、C種は1.6mm以上（低圧機器）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "ELB緩和でC種・D種の抵抗値は？",         a: "500 Ω 以下（0.5秒以内ELB条件）" },
+        { q: "ELB緩和の動作時間条件は？",              a: "0.5秒以内に動作する漏電遮断器" },
+        { q: "B種で1秒以内遮断時の抵抗値は？",         a: "300 / Ig Ω 以下" },
+        { q: "ELB緩和が適用されない接地工事は？",      a: "A種・B種（高圧機器・変圧器中性点は厳格）" },
+        { q: "D種接地が省略可能な代表条件は？",        a: "対地電圧150V以下＋乾燥場所、木製床、二重絶縁、絶縁変圧器二次非接地" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/setsuchi/"
+        label="denken-wiki「接地工事」を開く"
+        note="条文構造（法39条→電技10条→解釈17〜19条）と各種別の物理的根拠（接触電圧の抑制原理）は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。ELB緩和とB種倍々ルールを集約（setsuchi-ichiran と棲み分け）" }]} />
+      <PageNav
+        prevId="denro-zetsuen" prevTitle="電路の絶縁"
+        nextId="densenro"      nextTitle="電線路（架空）"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-17. DensenroPage（架空電線路・高さ・風圧荷重・A・必須）
+// ─────────────────────────────────────────────
+function DensenroPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="高圧架空電線が道路を横断する場合、路面上の最低高さは？"
+        choices={["5 m 以上","5.5 m 以上","6 m 以上","7 m 以上"]}
+        year="頻出"
+        note="鉄道横断と混同しないように。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>離隔距離（建造物・道路上等）の数値は<strong>「離隔距離一覧」（rikkaku-ichiran）</strong>を参照</li>
+          <li><strong>横断時の高さ</strong>: 道路 <strong>6m 以上</strong> / 鉄道・軌道 <strong>5.5m 以上</strong> / 横断歩道橋上 <strong>3.5m 以上</strong></li>
+          <li><strong>風圧荷重</strong>: 甲種（高温季・氷雪なし・全風）／乙種（低温季・氷雪付着・甲種の1/2風圧）／丙種（高温季・人家密集・甲種の1/2）</li>
+          <li><strong>たるみ計算</strong>: D = W S² / 8T（スパン S² に比例）</li>
+          <li><strong>安全率</strong>: 硬銅線 2.2 / 鉄柱 2.0 / 支線 1.5</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="A"
+        freq="頻出"
+        examType="A問題・B問題（計算）"
+        targets="R05・R02・H29・H27"
+        tags={["架空電線路","高さ","風圧荷重","電技解釈第49条・第58条・第68条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="height">横断時の最低高さ</h2>
+      <MemTable
+        headers={["場所","低圧","高圧","特別高圧"]}
+        rows={[
+          ["道路横断",       "6 m 以上",   "6 m 以上",   "6 m 以上"],
+          ["鉄道・軌道横断", "5.5 m 以上", "5.5 m 以上", "5.5 m 以上"],
+          ["横断歩道橋の上", "3.5 m 以上", "3.5 m 以上", "—"],
+          ["その他（一般）", "5 m 以上",   "5 m 以上",   "5 m 以上"],
+        ]}
+        note="道路6m＞鉄道5.5m＞その他5m＞横断歩道橋3.5m。「車両が通る道路が最高」と覚える"
+      />
+
+      <h2 id="wind">風圧荷重の3区分（解釈第58条）</h2>
+      <MemTable
+        headers={["種別","季節条件","氷雪","風圧"]}
+        rows={[
+          ["甲種風圧荷重","高温季",          "なし",                          "風速40m/s相当（フル）"],
+          ["乙種風圧荷重","低温季",          "付着あり（厚さ6mm・比重0.9）", "甲種の 1/2"],
+          ["丙種風圧荷重","高温季・人家密集","なし",                          "甲種の 1/2"],
+        ]}
+        note="設計時は3種のうち最も厳しい荷重を採用。乙種は風圧1/2でも氷雪で受風面積が増えて支配的になる場合あり"
+      />
+
+      <h2 id="safety">安全率（解釈第68条等）</h2>
+      <MemTable
+        headers={["対象部材","安全率"]}
+        rows={[
+          ["硬銅線・耐熱銅合金線", "2.2 以上"],
+          ["その他の電線",         "2.5 以上"],
+          ["鉄柱・コンクリート柱", "2.0 以上"],
+          ["支線",                 "1.5 以上"],
+        ]}
+        note="「硬銅2.2／柱2.0／支線1.5」と数値の大小関係で覚える"
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "鉄道横断が一番高い6m",                    correct: "道路6m＞鉄道5.5m（車両は鉄道車両より背の高い大型車も通る）" },
+        { wrong: "乙種は風圧が甲種の1/2だから設計上弱い",   correct: "氷雪付着で受風面積が増え、結果的に乙種が支配的になる地域もある" },
+        { wrong: "たるみは D = W S / 8T（一次比例）",       correct: "正しくは D = W S² / 8T（スパン S² に比例）" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "道路を横断する架空電線の最低高さは？",   a: "6 m 以上（低圧・高圧・特別高圧とも）" },
+        { q: "鉄道を横断する架空電線の最低高さは？",   a: "5.5 m 以上" },
+        { q: "乙種風圧荷重の特徴は？",                  a: "低温季・氷雪付着（厚さ6mm）想定、風圧は甲種の1/2" },
+        { q: "たるみ D の計算式は？",                   a: "D = W S² / 8T（スパン S² に比例）" },
+        { q: "硬銅線の安全率は？",                     a: "2.2 以上" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/kachiku-densen/"
+        label="denken-wiki「架空電線路」を開く"
+        note="支持物の種類別規定・電線太さの選定・地中電線路との比較は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・必須テーマ。高さ・風圧荷重・たるみ計算式を集約（rikkaku-ichiran と棲み分け）" }]} />
+      <PageNav
+        prevId="setsuchi-koji" prevTitle="接地工事（制度全体）"
+        nextId="okunai-haisen" nextTitle="屋内配線"
         onNav={onNav}
       />
     </div>
