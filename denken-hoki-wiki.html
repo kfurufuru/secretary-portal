@@ -4136,11 +4136,11 @@ window.renderPage = function(page, navigate) {
     case 'denro-zetsuen':          return React.createElement(DenroZetsuenPage, props);
     case 'setsuchi-koji':          return React.createElement(SetsuchiKojiPage, props);
     case 'densenro':               return React.createElement(DensenroPage, props);
-    case 'okunai-haisen':          return React.createElement(StubPage, { ...props, pageId: 'okunai-haisen' });
-    case 'kako-denryu':            return React.createElement(StubPage, { ...props, pageId: 'kako-denryu' });
-    case 'chichuu-densenro':       return React.createElement(StubPage, { ...props, pageId: 'chichuu-densenro' });
-    case 'bunsangata-dengen':      return React.createElement(StubPage, { ...props, pageId: 'bunsangata-dengen' });
-    case 'gijutsu-kijun-gaiyou':   return React.createElement(StubPage, { ...props, pageId: 'gijutsu-kijun-gaiyou' });
+    case 'okunai-haisen':          return React.createElement(OkunaiHaisenPage, props);
+    case 'kako-denryu':            return React.createElement(KakoDenryuPage, props);
+    case 'chichuu-densenro':       return React.createElement(ChichuuDensenroPage, props);
+    case 'bunsangata-dengen':      return React.createElement(BunsangataDengenPage, props);
+    case 'gijutsu-kijun-gaiyou':   return React.createElement(GijutsuKijunGaiyouPage, props);
     case 'kosakubutsu-bunrui':     return React.createElement(KosakubutsuBunruiPage, props);
     case 'shunin-gijutsusya':      return React.createElement(ShuninGijutsusyaPage, props);
     case 'hoan-kitei':             return React.createElement(HoanKiteiPage, props);
@@ -7945,6 +7945,512 @@ function DensenroPage({ onNav, data }) {
       <PageNav
         prevId="setsuchi-koji" prevTitle="接地工事（制度全体）"
         nextId="okunai-haisen" nextTitle="屋内配線"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-18. OkunaiHaisenPage（屋内配線・PF/CD管・分岐回路・B）
+// ─────────────────────────────────────────────
+function OkunaiHaisenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="20A配線用遮断器の分岐回路に使用できる電線の最小太さはどれか"
+        choices={["直径 1.6 mm 以上","直径 2.0 mm 以上","直径 2.6 mm 以上","断面積 5.5 mm² 以上"]}
+        year="頻出"
+        note="配線用遮断器とヒューズで規定が違う。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><strong>PF管</strong>: 自己消火性あり → <strong>露出・隠ぺい場所どちらもOK</strong></li>
+          <li><strong>CD管</strong>: 自己消火性なし（オレンジ色）→ <strong>コンクリート埋設専用</strong></li>
+          <li>20A分岐回路: 配線用遮断器なら<strong>1.6mm</strong>以上 / ヒューズなら<strong>2.0mm</strong>以上</li>
+          <li>幹線の遮断器容量: 電動機分は<strong>定格 × 3</strong>＋他の負荷を加算（上限：幹線許容電流 × 2.5）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R02・H29"
+        tags={["屋内配線","PF管","CD管","分岐回路","電技解釈第156条・第170条〜第174条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="bunki">分岐回路の電線太さとコンセント定格（解釈第170条〜174条）</h2>
+      <MemTable
+        headers={["分岐回路","遮断器定格","電線の太さ","コンセント定格"]}
+        rows={[
+          ["15A 分岐回路",                 "15A",  "直径 1.6 mm 以上",          "15A 以下"],
+          ["20A 分岐回路（配線用遮断器）", "20A",  "直径 1.6 mm 以上",          "20A 以下"],
+          ["20A 分岐回路（ヒューズ）",     "20A",  "直径 2.0 mm 以上",          "20A"],
+          ["30A 分岐回路",                 "30A",  "直径 2.6 mm 以上（5.5mm²）", "20〜30A"],
+          ["40A 分岐回路",                 "40A",  "断面積 8 mm² 以上",         "30〜40A"],
+          ["50A 分岐回路",                 "50A",  "断面積 14 mm² 以上",        "40〜50A"],
+        ]}
+        note="20Aは配線用遮断器（1.6mm）vs ヒューズ（2.0mm）で異なる。30A以上は断面積基準も併記"
+      />
+
+      <h2 id="kanro">配線方法の使用可否（解釈第156条）</h2>
+      <MemTable
+        headers={["工事種別","展開（露出）","点検可隠ぺい","点検不可隠ぺい"]}
+        rows={[
+          ["がいし引き工事",       "○",     "○",     "× 不可"],
+          ["金属管工事",           "○",     "○",     "○"],
+          ["合成樹脂管（PF管）",  "○",     "○",     "○"],
+          ["合成樹脂管（CD管）",  "× 不可","× 不可","× コンクリート埋設のみ"],
+          ["ケーブル工事（VVF等）","○",     "○",     "○"],
+        ]}
+        note="点検不可の隠ぺい場所で使えるのは『金属管・PF管・ケーブル』の3つのみ。CD管は埋設専用"
+      />
+
+      <h2 id="kansen">幹線の遮断器容量計算</h2>
+      <ConclusionBox>
+        <ul>
+          <li><strong>原則</strong>: 幹線の許容電流以下</li>
+          <li><strong>電動機 + 他の負荷</strong>: 電動機の定格電流の合計 <strong>I<sub>M</sub> × 3</strong>＋他の負荷の合計 I<sub>H</sub></li>
+          <li><strong>上限</strong>: 幹線許容電流 × 2.5</li>
+          <li>例: 電動機30A + その他10A → 30 × 3 + 10 = <strong>100A</strong></li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "PF管とCD管はどちらも合成樹脂管なので同じ場所に使える", correct: "PF管=自己消火性あり（隠ぺいOK）、CD管=なし（コンクリート埋設専用）" },
+        { wrong: "20A分岐回路の電線は一律 1.6 mm",                     correct: "配線用遮断器=1.6mm、ヒューズ=2.0mm（遮断器種別で異なる）" },
+        { wrong: "がいし引き工事は点検不可の隠ぺい場所でも使える",     correct: "× 不可。点検不可の隠ぺい場所は金属管・PF管・ケーブルの3つのみ" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "PF管とCD管の決定的な違いは？",                a: "PF=自己消火性あり（隠ぺいOK） / CD=なし（コンクリート埋設専用）" },
+        { q: "20A配線用遮断器の電線太さは？",               a: "直径 1.6 mm 以上" },
+        { q: "20Aヒューズの電線太さは？",                   a: "直径 2.0 mm 以上" },
+        { q: "電動機 30A・他の負荷 10A の幹線遮断器容量は？", a: "100A（30×3 + 10）" },
+        { q: "点検不可の隠ぺい場所で使える工事は？",        a: "金属管・合成樹脂管(PF管)・ケーブルの3つのみ" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/haisen-koji/"
+        label="denken-wiki「屋内配線工事」を開く"
+        note="工事種別の構造詳細・施工条件・JIS規格は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・配線方法×場所マトリクスと分岐回路電線太さを集約" }]} />
+      <PageNav
+        prevId="densenro"   prevTitle="電線路（架空）"
+        nextId="kako-denryu" nextTitle="過電流保護"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-19. KakoDenryuPage（過電流保護・漏電遮断器・B）
+// ─────────────────────────────────────────────
+function KakoDenryuPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="人体保護用の高感度・高速形漏電遮断器の感度電流と動作時間として正しいものはどれか"
+        choices={["100 mA・0.1 秒","30 mA・0.1 秒","30 mA・1 秒","15 mA・0.5 秒"]}
+        year="頻出"
+        note="人体保護の基本数値。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>過電流遮断器（30A以下）: <strong>1.25倍 → 60分以内</strong> / <strong>2倍 → 2分以内</strong></li>
+          <li>過電流遮断器（50A超）: <strong>1.25倍 → 120分以内</strong>に時間が延びる（区分注意）</li>
+          <li>漏電遮断器（人体保護）: <strong>30 mA・0.1 秒以内</strong>（高感度・高速形）</li>
+          <li>ELB緩和: C種・D種接地で<strong>500Ω</strong>に緩和（接地工事と連動・ <strong>setsuchi-koji</strong> 参照）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・H28"
+        tags={["過電流保護","漏電遮断器","電技解釈第33条・第36条・第37条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="ocb">過電流遮断器の動作時間（解釈第33条）</h2>
+      <MemTable
+        headers={["定格電流","1.25倍の動作時間","2倍の動作時間"]}
+        rows={[
+          ["30A 以下",         "60 分 以内", "2 分 以内"],
+          ["30A超 〜 50A 以下", "60 分 以内", "4 分 以内"],
+          ["50A 超",           "120 分 以内","6 分 以内"],
+        ]}
+        note="「1.25倍＝60分」は30A以下のみ。50A超は120分に延びる（区分を問う問題が多い）"
+      />
+
+      <h2 id="elb">漏電遮断器の種類と感度（解釈第37条）</h2>
+      <MemTable
+        headers={["分類","感度電流","動作時間","用途"]}
+        rows={[
+          ["高感度・高速形", "30 mA 以下", "0.1 秒 以内", "人体保護（一般回路）"],
+          ["高感度・時延形", "30 mA 以下", "0.1〜2 秒",   "不要動作防止"],
+          ["中感度",         "100 mA〜",   "—",            "工場大型機器・配電盤"],
+        ]}
+        note="人体保護の基本値は『30mA・0.1秒』。心室細動電流から逆算した安全閾値"
+      />
+
+      <h2 id="omit">漏電遮断器の省略条件（4つ全て満たす場合）</h2>
+      <ConclusionBox>
+        <ul>
+          <li>機械器具を<strong>乾燥した場所</strong>に施設する場合</li>
+          <li><strong>対地電圧 150V以下</strong>の機械器具を、簡易接触防護措置を施す場合</li>
+          <li>機械器具に<strong>二重絶縁構造</strong>のものを施設する場合</li>
+          <li>機械器具を<strong>絶縁変圧器</strong>に接続し、二次側電路を非接地とする場合</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "1.25倍の動作時間はすべて60分",                  correct: "50A超は120分に延びる（定格区分で異なる）" },
+        { wrong: "漏電遮断器の動作は1秒",                          correct: "高感度・高速形は0.1秒以内（心室細動防止）" },
+        { wrong: "過電流遮断器と漏電遮断器は同じもの",            correct: "過電流＝過負荷・短絡から保護／漏電＝地絡（漏電）から保護。守る対象が違う" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "20A遮断器が2倍過電流で動作する時間は？",       a: "2 分 以内（30A以下の区分）" },
+        { q: "100A遮断器が1.25倍過電流で動作する時間は？",   a: "120 分 以内（50A超の区分）" },
+        { q: "高感度・高速形漏電遮断器の感度・時間は？",     a: "30 mA 以下・0.1 秒 以内" },
+        { q: "漏電遮断器を省略できる代表条件は？",           a: "二重絶縁構造、絶縁変圧器二次非接地、乾燥場所＋対地150V以下、等" },
+        { q: "ELB緩和でC種・D種接地はいくらまで緩和？",      a: "500 Ω 以下（setsuchi-koji と連動）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/hogo-sochi/"
+        label="denken-wiki「過電流保護・漏電遮断器」を開く"
+        note="動作特性の物理的根拠（I²t特性・感度電流の選定根拠）は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・過電流遮断器の区分別動作時間と漏電遮断器の感度を集約" }]} />
+      <PageNav
+        prevId="okunai-haisen"    prevTitle="屋内配線"
+        nextId="chichuu-densenro" nextTitle="地中電線路"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-20. ChichuuDensenroPage（地中電線路・埋設深さ・施設方式・B）
+// ─────────────────────────────────────────────
+function ChichuuDensenroPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="管路式で車両通行のない場所に地中電線を埋設する場合の最低埋設深さは？"
+        choices={["1.2 m 以上","0.6 m 以上","0.3 m 以上","0.1 m 以上"]}
+        year="頻出"
+        note="施設方式と車両通行の有無の2軸で判断。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>施設方式3つ: <strong>直接埋設式 / 管路式 / 暗渠式（洞道）</strong></li>
+          <li><strong>埋設深さ</strong>は「車両通行の有無」×「施設方式」の2軸で決まる</li>
+          <li>直接埋設・車両あり <strong>1.2m</strong> ／ 直接埋設・車両なし <strong>0.6m</strong></li>
+          <li>管路式 <strong>0.3m</strong>（管が圧力に耐える構造であれば車両有無問わず）</li>
+          <li><strong>離隔距離は電圧の組み合わせで決まる</strong>（施設方式ではない）：低-高 0.15m / 低・高-特高 0.3m</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="B"
+        freq="2〜3年に1回"
+        examType="A問題"
+        targets="R05・R02・H28"
+        tags={["地中電線路","埋設深さ","管路式","電技解釈第120条〜第125条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="depth">施設方式と埋設深さ（解釈第120〜125条）</h2>
+      <MemTable
+        headers={["施設方式","車両通行あり","車両通行なし","特徴"]}
+        rows={[
+          ["直接埋設式", "1.2 m 以上",                         "0.6 m 以上",                       "土の中に直接埋設・最安値・掘削で交換"],
+          ["管路式",     "0.3 m 以上（管が圧力に耐える構造）","0.3 m 以上",                       "FEP管/ヒューム管に通す・交換容易"],
+          ["暗渠式",     "—（共同溝・洞道）",                  "—",                                "人が中に入って点検可能・最高保護"],
+        ]}
+        note="管路式が浅くて済む（管による保護分）。直接埋設の車両なし0.6m vs 管路式の車両なし0.3mの差が頻出"
+      />
+
+      <h2 id="rikkaku">他物との離隔距離（電圧の組み合わせ）</h2>
+      <MemTable
+        headers={["組み合わせ","離隔距離"]}
+        rows={[
+          ["低圧 - 高圧 間",      "0.15 m 以上"],
+          ["低圧/高圧 - 特別高圧","0.3 m 以上"],
+          ["暗渠式内 地中電線相互","0.1 m 以上"],
+        ]}
+        note="離隔は『電圧の組み合わせ』で決まる（施設方式ではない）"
+      />
+
+      <h2 id="hyoji">表示と保護</h2>
+      <ConclusionBox>
+        <ul>
+          <li>直接埋設式: <strong>標示シート</strong>（埋設物上部）＋ <strong>標柱</strong>（地表）の両方が原則</li>
+          <li>直接埋設式: <strong>トラフ（保護板）</strong>で上から押し潰しを防ぐ</li>
+          <li>暗渠式: 人が点検できる構造（地下道・共同溝・洞道）</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "埋設深さは電圧種別で決まる",          correct: "車両通行有無 × 施設方式の2軸で決まる（電圧は無関係）" },
+        { wrong: "管路式は深さ自由",                    correct: "管が圧力に耐える構造でも最小0.3m必要" },
+        { wrong: "離隔距離は施設方式で変わる",          correct: "電圧の組み合わせ（低-高 0.15m / 低・高-特高 0.3m）で決まる" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "直接埋設・車両あり場所の最低深さは？",     a: "1.2 m 以上" },
+        { q: "管路式・車両あり場所の最低深さは？",       a: "0.3 m 以上（管が圧力に耐える場合）" },
+        { q: "低圧と高圧の地中電線間の離隔距離は？",     a: "0.15 m 以上" },
+        { q: "高圧と特別高圧の離隔距離は？",             a: "0.3 m 以上" },
+        { q: "直接埋設式の表示方法は？",                 a: "標示シート（上部）＋標柱（地表）の両方" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/chichuu-densen/"
+        label="denken-wiki「地中電線路」を開く"
+        note="架空電線路との比較・施設方式選定の判断基準は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・施設方式×車両通行マトリクスと離隔距離を集約" }]} />
+      <PageNav
+        prevId="kako-denryu"       prevTitle="過電流保護"
+        nextId="bunsangata-dengen" nextTitle="分散型電源連系"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-21. BunsangataDengenPage（分散型電源連系・保護装置マトリクス・B）
+// ─────────────────────────────────────────────
+function BunsangataDengenPage({ onNav, data }) {
+  return (
+    <div>
+      <GoalQuestion
+        question="低圧連系の系統連系設備で、単独運転検出方式について正しいものはどれか"
+        choices={["受動的方式のみで可","能動的方式のみで可","受動的＋能動的の両方式が必要","検出方式は不要"]}
+        year="頻出"
+        note="低圧でも『両方必要』が条文の規定。読み終えたら戻って解こう"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li>低圧連系（600V以下）でも<strong>受動的＋能動的の両方式</strong>が必要（解釈第227条）</li>
+          <li>低圧連系: <strong>OCR・OVGR・転送遮断 すべて不要</strong>（PCS内蔵）</li>
+          <li>高圧連系: 上記＋ <strong>OCR（過電流リレー）＋OVGR（地絡過電圧リレー）</strong></li>
+          <li>特別高圧連系: 上記＋ <strong>転送遮断装置</strong></li>
+          <li><strong>RPR（逆電力リレー）</strong>は<strong>逆潮流「なし」</strong>の場合に必要（直感と逆）</li>
+          <li>力率: <strong>遅れ力率 85% 以上</strong>を維持（充電側）</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="B"
+        freq="高頻度"
+        examType="A問題"
+        targets="R06・R04・R02"
+        tags={["分散型電源","系統連系","保護装置","電技解釈第220条〜第231条"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="matrix">電圧レベル別 保護装置要件マトリクス</h2>
+      <MemTable
+        headers={["保護装置","低圧連系","高圧連系","特別高圧連系"]}
+        rows={[
+          ["単独運転検出（受動＋能動）", "○ 必要", "○ 必要", "○ 必要"],
+          ["逆電力リレー（RPR）",       "○ 逆潮流なし時", "○ 逆潮流なし時", "○ 逆潮流なし時"],
+          ["過電流リレー（OCR）",       "× 不要", "○ 必要", "○ 必要"],
+          ["地絡過電圧リレー（OVGR）",  "× 不要", "○ 必要", "○ 必要"],
+          ["転送遮断装置",              "× 不要", "× 不要", "○ 必要"],
+        ]}
+        note="低圧→高圧→特高の順に保護装置が階段的に追加される。低圧連系のOVGR・OCR不要は頻出ひっかけ"
+      />
+
+      <h2 id="rpr">逆潮流とRPRの関係</h2>
+      <ConclusionBox>
+        <ul>
+          <li>逆潮流「<strong>あり</strong>」（売電OK）→ <strong>RPR不要</strong></li>
+          <li>逆潮流「<strong>なし</strong>」（売電不可・自家消費のみ）→ <strong>RPR必要</strong>（逆潮を防ぐ）</li>
+          <li>「逆潮流があるからRPR必要」は誤り。RPRは「逆潮流を防ぎたい」ときに使う</li>
+        </ul>
+      </ConclusionBox>
+
+      <h2 id="quality">電力品質要件</h2>
+      <MemTable
+        headers={["項目","基準値"]}
+        rows={[
+          ["力率",       "遅れ力率 85% 以上（充電側）"],
+          ["電圧変化",   "±2% 以内（連系点・JEAC 9701）"],
+          ["低圧供給電圧維持", "101 ± 6 V / 202 ± 20 V（電気事業法施行規則）"],
+        ]}
+      />
+
+      <h2 id="traps">よくあるひっかけ</h2>
+      <TrapTable traps={[
+        { wrong: "低圧連系では能動的方式は不要",          correct: "解釈第227条で『受動・能動それぞれ1方式以上』と明記" },
+        { wrong: "逆潮流があるならRPRが必要",              correct: "逆潮流『なし』の場合に必要（防止のため）。直感と逆" },
+        { wrong: "低圧連系でもOVGR・OCRが必要",          correct: "低圧はPCS内蔵で不要。高圧から必要" },
+      ]} />
+
+      <h2 id="quick-review">1分復習</h2>
+      <QuickReview items={[
+        { q: "低圧連系で必須の単独運転検出方式は？",     a: "受動的＋能動的の両方式（解釈第227条）" },
+        { q: "高圧連系で追加される保護装置は？",          a: "OCR（過電流リレー）＋OVGR（地絡過電圧リレー）" },
+        { q: "特別高圧連系で追加される保護装置は？",      a: "転送遮断装置" },
+        { q: "RPRが必要なのはどんな場合？",               a: "逆潮流『なし』の場合（売電不可・自家消費のみ）" },
+        { q: "分散型電源の力率要件は？",                  a: "遅れ力率 85% 以上（充電側）" },
+      ]} />
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/bunsan-dengen/"
+        label="denken-wiki「分散型電源連系」を開く"
+        note="単独運転防止の物理原理・JEAC9701系統連系規程の詳細は denken-wiki が SOT。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・電圧レベル別保護装置マトリクスを集約。再エネ連系の基本" }]} />
+      <PageNav
+        prevId="chichuu-densenro"     prevTitle="地中電線路"
+        nextId="gijutsu-kijun-gaiyou" nextTitle="電気設備技術基準の概要"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 5-22. GijutsuKijunGaiyouPage（電気設備技術基準の概要・章立て・索引型）
+// ─────────────────────────────────────────────
+function GijutsuKijunGaiyouPage({ onNav, data }) {
+  const ChapterTable = ({ rows }) => (
+    <table className="meta-strip-table" style={{ width: '100%', marginBottom: 16 }}>
+      <thead>
+        <tr>
+          <th style={{ padding: '8px 12px', background: 'var(--bg-2)', textAlign: 'left', fontSize: 12, borderBottom: '1px solid var(--line)' }}>章 / 節</th>
+          <th style={{ padding: '8px 12px', background: 'var(--bg-2)', textAlign: 'left', fontSize: 12, borderBottom: '1px solid var(--line)' }}>主要条文</th>
+          <th style={{ padding: '8px 12px', background: 'var(--bg-2)', textAlign: 'left', fontSize: 12, borderBottom: '1px solid var(--line)' }}>hoki-wiki 内対応ページ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r, i) => (
+          <tr key={i}>
+            <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)' }}>{r[0]}</td>
+            <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)', fontSize: 13 }}>{r[1]}</td>
+            <td style={{ padding: '8px 12px', borderBottom: '1px solid var(--line)' }}>
+              {r[2] ? (
+                <button
+                  onClick={() => onNav(r[2])}
+                  style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', padding: 0, fontSize: 13, textDecoration: 'underline' }}
+                >{r[3]} →</button>
+              ) : <span style={{ color: 'var(--ink-3)', fontSize: 13 }}>—</span>}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+
+  return (
+    <div>
+      <ConclusionBox>
+        <ul>
+          <li>電技省令（電気設備に関する技術基準を定める省令）は<strong>全78条＋付則</strong></li>
+          <li>第1章 <strong>総則</strong>（第1〜4条）= 保安原則 → <strong>hoan-kitei</strong> 参照</li>
+          <li>第2章 <strong>電気の供給のための電気設備の施設</strong>（第5条〜）= 絶縁・接地・電線路</li>
+          <li>第3章 <strong>電気使用場所の施設</strong>（第56条〜）= 屋内配線・特殊場所</li>
+          <li>解釈は告示（電気設備の技術基準の解釈）で具体数値が示される</li>
+        </ul>
+      </ConclusionBox>
+
+      <MetaStrip
+        ch="CH03"
+        category="03 技術基準"
+        importance="B"
+        freq="低頻度（索引）"
+        examType="—（ナビゲーション）"
+        targets="—"
+        tags={["電技省令","章立て","索引","電気事業法施行規則"]}
+        lastChecked="2026-05-08"
+      />
+
+      <h2 id="ch1">第1章 総則（保安原則）</h2>
+      <ChapterTable rows={[
+        ["第1条 危害防止",         "人体・物件への危害防止",                          "hoan-kitei",       "保安規程・保安原則"],
+        ["第2条 電路の絶縁",       "大地から絶縁（構造上やむを得ない場合は例外）",    "hoan-kitei",       "保安規程・保安原則"],
+        ["第3条 電気機械器具",     "熱・爆発・火災防止",                              "hoan-kitei",       "保安規程・保安原則"],
+        ["第4条 他への損傷防止",   "他の電気工作物・植物・電線路に損傷を与えない",    "hoan-kitei",       "保安規程・保安原則"],
+      ]} />
+
+      <h2 id="ch2">第2章 電気の供給のための電気設備の施設</h2>
+      <ChapterTable rows={[
+        ["第5条〜第14条 絶縁性能", "絶縁抵抗値・絶縁耐力試験",                        "denro-zetsuen",    "電路の絶縁"],
+        ["第14条 絶縁抵抗値",       "0.1 / 0.2 / 0.4 MΩ（解釈第14条）",                "denro-zetsuen",    "電路の絶縁"],
+        ["第15条 絶縁耐力試験",     "1.5倍 / 1.25倍 ×10分",                            "zetsuen-ichiran",  "絶縁耐力試験一覧"],
+        ["第17〜19条 接地工事",     "A/B/C/D種接地",                                   "setsuchi-ichiran", "接地工事一覧"],
+        ["第20条〜 電線路",         "架空電線路・地中電線路",                          "densenro",         "電線路（架空）"],
+        ["第49条・第58条 架空",     "高さ規定・風圧荷重",                              "densenro",         "電線路（架空）"],
+        ["第120〜125条 地中",       "埋設深さ・施設方式",                              "chichuu-densenro", "地中電線路"],
+        ["第220〜231条 分散型電源", "系統連系・保護装置",                              "bunsangata-dengen","分散型電源連系"],
+      ]} />
+
+      <h2 id="ch3">第3章 電気使用場所の施設</h2>
+      <ChapterTable rows={[
+        ["第56条〜 一般原則",     "感電・火災防止",                                  "okunai-haisen",    "屋内配線"],
+        ["第156条 配線方法",       "施設場所×工事種類のマトリクス",                   "okunai-haisen",    "屋内配線"],
+        ["第170〜174条 分岐回路", "電線太さ・コンセント定格",                        "okunai-haisen",    "屋内配線"],
+        ["第33条 過電流保護",     "過電流遮断器（1.25倍/2倍）",                      "kako-denryu",      "過電流保護"],
+        ["第36条・第37条 漏電",   "漏電遮断器（30mA・0.1秒）",                       "kako-denryu",      "過電流保護"],
+      ]} />
+
+      <h2 id="hierarchy">法令階層の構造</h2>
+      <ConclusionBox>
+        <ul>
+          <li><strong>電気事業法</strong>（法律）→ 第39条「保安義務」</li>
+          <li><strong>電気事業法施行令</strong>（政令）→ 一般用/事業用の区分など</li>
+          <li><strong>電気事業法施行規則</strong>（経済産業省令）→ 主任技術者選任・保安規程</li>
+          <li><strong>電気設備技術基準</strong>（経済産業省令）→ 第1〜78条（本テーマ）</li>
+          <li><strong>電気設備技術基準の解釈</strong>（告示）→ 具体数値（0.1MΩ等）</li>
+        </ul>
+      </ConclusionBox>
+
+      <DenkenWikiCTA
+        url="https://kfurufuru.github.io/denken-wiki/themes/hoan-gensoku/"
+        label="denken-wiki「電気設備技術基準の保安原則」を開く"
+        note="電技省令の各条文・解釈の詳細解説は denken-wiki が SOT。本ページは索引・章立てのみ。"
+      />
+
+      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→章立て索引型ページに昇格", reason: "電技省令の構造を可視化し各暗記Hubページへ誘導" }]} />
+      <PageNav
+        prevId="bunsangata-dengen" prevTitle="分散型電源連系"
+        nextId="kosakubutsu-bunrui" nextTitle="電気工作物の区分"
         onNav={onNav}
       />
     </div>
