@@ -1,0 +1,466 @@
+[
+  {
+    "id": "top",
+    "title": "法規の学習マップ",
+    "chapterTitle": "はじめに",
+    "num": "00.0",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "zetsuen-tairyoku",
+    "title": "絶縁耐力試験",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.1",
+    "freq": "max",
+    "priority": ""
+  },
+  {
+    "id": "denatsu-kouka",
+    "title": "電圧降下",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.2",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "shisen-hikisama",
+    "title": "支線の引張強さ",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.3",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "henshatsuki-koritu",
+    "title": "変圧器の全日効率",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.4",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "ryokuritsu-kaizen",
+    "title": "力率改善",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.5",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "juyoritsu-keisan",
+    "title": "需要率・負荷率・不等率（計算）",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.6",
+    "freq": "max",
+    "priority": ""
+  },
+  {
+    "id": "bshu-setsuchi",
+    "title": "B種接地抵抗値",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.7",
+    "freq": "max",
+    "priority": ""
+  },
+  {
+    "id": "hichusei-jiraku",
+    "title": "中性点非接地系の地絡電流",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.8",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "zerosou-henryuki",
+    "title": "零相変流器（ZCT）の仕組み",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.9",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "hogokyo-dgr",
+    "title": "保護協調・地絡方向継電器（DGR）",
+    "chapterTitle": "B問題・計算問題対策",
+    "num": "1.10",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "setsuchi-ichiran",
+    "title": "接地工事一覧表",
+    "chapterTitle": "頻出数値・表暗記",
+    "num": "2.1",
+    "freq": "max",
+    "priority": ""
+  },
+  {
+    "id": "zetsuen-ichiran",
+    "title": "絶縁耐力試験一覧表",
+    "chapterTitle": "頻出数値・表暗記",
+    "num": "2.2",
+    "freq": "max",
+    "priority": ""
+  },
+  {
+    "id": "rikkaku-ichiran",
+    "title": "離隔距離一覧表",
+    "chapterTitle": "頻出数値・表暗記",
+    "num": "2.3",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "den-atsu-kubun",
+    "title": "電圧区分一覧表",
+    "chapterTitle": "頻出数値・表暗記",
+    "num": "2.4",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "densen-size",
+    "title": "電線サイズ一覧表",
+    "chapterTitle": "頻出数値・表暗記",
+    "num": "2.5",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "hokoku-todoke-kigen",
+    "title": "報告・届出期限一覧表",
+    "chapterTitle": "頻出数値・表暗記",
+    "num": "2.6",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "denro-zetsuen",
+    "title": "電路の絶縁",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.1",
+    "freq": "max",
+    "priority": "required"
+  },
+  {
+    "id": "setsuchi-koji",
+    "title": "接地工事",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.2",
+    "freq": "max",
+    "priority": "required"
+  },
+  {
+    "id": "densenro",
+    "title": "電線路",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.3",
+    "freq": "high",
+    "priority": "required"
+  },
+  {
+    "id": "okunai-haisen",
+    "title": "屋内配線",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.4",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "kako-denryu",
+    "title": "過電流保護",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.5",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "chichuu-densenro",
+    "title": "地中電線路",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.6",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "bunsangata-dengen",
+    "title": "分散型電源連系",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.7",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "gijutsu-kijun-gaiyou",
+    "title": "電気設備技術基準の概要",
+    "chapterTitle": "電気設備技術基準・解釈",
+    "num": "3.0",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "kosakubutsu-bunrui",
+    "title": "電気工作物の区分",
+    "chapterTitle": "法令・制度",
+    "num": "4.1",
+    "freq": "max",
+    "priority": "required"
+  },
+  {
+    "id": "shunin-gijutsusya",
+    "title": "主任技術者",
+    "chapterTitle": "法令・制度",
+    "num": "4.2",
+    "freq": "max",
+    "priority": "required"
+  },
+  {
+    "id": "hoan-kitei",
+    "title": "保安規程",
+    "chapterTitle": "法令・制度",
+    "num": "4.3",
+    "freq": "max",
+    "priority": "required"
+  },
+  {
+    "id": "shiyo-jishu-kensa",
+    "title": "使用前自主検査",
+    "chapterTitle": "法令・制度",
+    "num": "4.4",
+    "freq": "high",
+    "priority": "optional"
+  },
+  {
+    "id": "jiko-hokoku",
+    "title": "事故報告",
+    "chapterTitle": "法令・制度",
+    "num": "4.5",
+    "freq": "high",
+    "priority": "optional"
+  },
+  {
+    "id": "denki-yohin-anzen",
+    "title": "電気用品安全法",
+    "chapterTitle": "法令・制度",
+    "num": "4.6",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "koji-shi-ho",
+    "title": "電気工事士法",
+    "chapterTitle": "法令・制度",
+    "num": "4.7",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "koji-gyoho",
+    "title": "電気工事業法",
+    "chapterTitle": "法令・制度",
+    "num": "4.8",
+    "freq": "mid",
+    "priority": "optional"
+  },
+  {
+    "id": "furyoku-gijutsukijun",
+    "title": "風力発電の技術基準",
+    "chapterTitle": "再エネ技術基準",
+    "num": "5.1",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "taiyouchi-gijutsukijun",
+    "title": "太陽電池発電の技術基準",
+    "chapterTitle": "再エネ技術基準",
+    "num": "5.2",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "keito-renkei",
+    "title": "系統連系・保護装置",
+    "chapterTitle": "再エネ技術基準",
+    "num": "5.3",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "demand-kwh-kiso",
+    "title": "デマンド値と電力量kWh（基礎）",
+    "chapterTitle": "電気施設管理",
+    "num": "6.0",
+    "freq": "high",
+    "priority": "required"
+  },
+  {
+    "id": "juyoritsu-gainen",
+    "title": "需要率・負荷率・不等率（概念）",
+    "chapterTitle": "電気施設管理",
+    "num": "6.1",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "furitsu",
+    "title": "負荷率",
+    "chapterTitle": "電気施設管理",
+    "num": "6.2",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "futorito",
+    "title": "不等率",
+    "chapterTitle": "電気施設管理",
+    "num": "6.3",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "hensyatsuki-yoryo",
+    "title": "変圧器容量",
+    "chapterTitle": "電気施設管理",
+    "num": "6.4",
+    "freq": "high",
+    "priority": ""
+  },
+  {
+    "id": "haiden-kanri",
+    "title": "配電管理",
+    "chapterTitle": "電気施設管理",
+    "num": "6.5",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "juden-setsubi-kanri",
+    "title": "受電設備管理",
+    "chapterTitle": "電気施設管理",
+    "num": "6.6",
+    "freq": "mid",
+    "priority": ""
+  },
+  {
+    "id": "demand-kanri",
+    "title": "デマンド制御・最大需要電力管理",
+    "chapterTitle": "電気施設管理",
+    "num": "6.7",
+    "freq": "max",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-b",
+    "title": "B問題だけ",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.1",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-setsuchi",
+    "title": "接地",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.2",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-zetsuen",
+    "title": "絶縁",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.3",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-shunin",
+    "title": "主任技術者",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.4",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-hoan",
+    "title": "保安規程",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.5",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-jiko",
+    "title": "事故報告",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.6",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-densenro",
+    "title": "電線路",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.7",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-saiene",
+    "title": "再エネ",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.8",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "kakomon-random",
+    "title": "ランダム10問モード（65分タイマー）",
+    "chapterTitle": "過去問テーマ別演習",
+    "num": "7.R",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "chokuzen-suuchi",
+    "title": "数値だけ確認",
+    "chapterTitle": "直前チェック",
+    "num": "8.1",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "chokuzen-formula",
+    "title": "公式だけ確認",
+    "chapterTitle": "直前チェック",
+    "num": "8.2",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "chokuzen-hikkake",
+    "title": "ひっかけだけ確認",
+    "chapterTitle": "直前チェック",
+    "num": "8.3",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "chokuzen-machigai",
+    "title": "間違いノート",
+    "chapterTitle": "直前チェック",
+    "num": "8.4",
+    "freq": "",
+    "priority": ""
+  },
+  {
+    "id": "chokuzen-yougo",
+    "title": "用語クイズ",
+    "chapterTitle": "直前チェック",
+    "num": "8.5",
+    "freq": "",
+    "priority": ""
+  }
+]

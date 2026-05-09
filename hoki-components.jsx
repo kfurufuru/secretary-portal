@@ -1065,6 +1065,111 @@ function TopBar({ page, onNav }) {
     });
   }
 
+  // 横断検索 state（hoki-wiki + denken-wiki）
+  const [query, setQuery] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+  const [highlight, setHighlight] = React.useState(0);
+  const [denkenIndex, setDenkenIndex] = React.useState(null);
+  const [denkenLoading, setDenkenLoading] = React.useState(true);
+  const containerRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+
+  // denken-wiki search_index.json を非同期 preload（HTML描画と並列）
+  React.useEffect(() => {
+    const CACHE_KEY = 'denken-wiki-search-index-v1';
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      if (cached) {
+        setDenkenIndex(JSON.parse(cached));
+        setDenkenLoading(false);
+        return;
+      }
+    } catch (e) { /* sessionStorage無効環境はそのまま fetch へ */ }
+    fetch('https://kfurufuru.github.io/denken-wiki/search/search_index.json')
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then(j => {
+        const docs = (j.docs || []).filter(d => d && d.location && d.title);
+        setDenkenIndex(docs);
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(docs)); } catch (e) { /* 容量超過は黙殺 */ }
+        setDenkenLoading(false);
+      })
+      .catch(err => {
+        console.warn('[hoki-wiki] denken-wiki検索インデックスのロード失敗、hoki側のみで動作:', err);
+        setDenkenLoading(false);
+      });
+  }, []);
+
+  // Click outside で閉じる
+  React.useEffect(() => {
+    const h = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+
+  // 結果計算（インクリメンタル即時）
+  // hoki側はローカル・小規模なので埋もれないよう上枠を確保
+  const results = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    const hokiOut = [];
+    const denkenOut = [];
+    const hokiIndex = window.HOKI_SEARCH_INDEX || [];
+    hokiIndex.forEach(e => {
+      if (!e.title) return;
+      const title = e.title.toLowerCase();
+      const ch = (e.chapterTitle || '').toLowerCase();
+      let score = 0;
+      if (title.includes(q)) score += 10;
+      if (ch.includes(q)) score += 3;
+      if (score > 0) hokiOut.push({ kind: 'hoki', score, id: e.id, title: e.title, num: e.num, chapterTitle: e.chapterTitle });
+    });
+    if (denkenIndex) {
+      denkenIndex.forEach(d => {
+        const title = (d.title || '').toLowerCase();
+        const text = d.text || '';
+        const textLow = text.toLowerCase();
+        let score = 0;
+        if (title.includes(q)) score += 10;
+        if (textLow.slice(0, 200).includes(q)) score += 5;
+        else if (textLow.includes(q)) score += 1;
+        if (score > 0) {
+          const plain = text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+          denkenOut.push({ kind: 'denken', score, title: d.title, location: d.location, preview: plain.slice(0, 80) });
+        }
+      });
+    }
+    hokiOut.sort((a, b) => b.score - a.score);
+    denkenOut.sort((a, b) => b.score - a.score);
+    // hoki最大5件先頭・残り枠を denken で埋め、計10件
+    const TOTAL = 10;
+    const hokiTake = Math.min(hokiOut.length, 5);
+    const denkenTake = Math.max(0, TOTAL - hokiTake);
+    return [...hokiOut.slice(0, hokiTake), ...denkenOut.slice(0, denkenTake)];
+  }, [query, denkenIndex]);
+
+  React.useEffect(() => { setHighlight(0); }, [query]);
+
+  const select = (r) => {
+    if (!r) return;
+    if (r.kind === 'hoki') {
+      onNav && onNav(r.id);
+      setOpen(false);
+      setQuery('');
+    } else {
+      window.open('https://kfurufuru.github.io/denken-wiki/' + r.location, '_blank', 'noopener');
+    }
+  };
+
+  const onKey = (e) => {
+    if (e.key === 'Escape') { setOpen(false); inputRef.current && inputRef.current.blur(); return; }
+    if (!results.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); setHighlight(h => Math.min(h + 1, results.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setHighlight(h => Math.max(h - 1, 0)); }
+    else if (e.key === 'Enter') { e.preventDefault(); select(results[highlight]); }
+  };
+
   return (
     <div className="topbar" style={{
       display: 'flex',
@@ -1091,20 +1196,91 @@ function TopBar({ page, onNav }) {
         </>
       )}
       <div style={{ flex: 1 }} />
-      <input
-        type="text"
-        placeholder="検索（準備中）"
-        disabled
-        style={{
-          padding: '5px 12px',
-          borderRadius: 'var(--radius)',
-          border: '1px solid var(--line)',
-          fontSize: '12px',
-          background: 'var(--bg-2)',
-          color: 'var(--ink-3)',
-          width: '160px',
-        }}
-      />
+      <div ref={containerRef} style={{ position: 'relative' }}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={query}
+          onChange={e => { setQuery(e.target.value); setOpen(true); }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={onKey}
+          placeholder="検索（hoki + 法規wiki横断）"
+          style={{
+            padding: '5px 12px',
+            borderRadius: 'var(--radius)',
+            border: '1px solid var(--line)',
+            fontSize: '12px',
+            background: 'var(--bg)',
+            color: 'var(--ink)',
+            width: '240px',
+          }}
+        />
+        {open && query.trim() && (
+          <div style={{
+            position: 'absolute',
+            top: '100%',
+            right: 0,
+            marginTop: '4px',
+            width: '440px',
+            background: 'var(--bg)',
+            border: '1px solid var(--line)',
+            borderRadius: 'var(--radius)',
+            boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
+            zIndex: 100,
+            maxHeight: '70vh',
+            overflowY: 'auto',
+          }}>
+            {results.length === 0 && (
+              <div style={{ padding: '12px 16px', fontSize: '12px', color: 'var(--ink-3)' }}>
+                {denkenLoading ? '法規Wiki読込中... hoki側を先に検索しています' : 'ヒットなし'}
+              </div>
+            )}
+            {results.map((r, i) => (
+              <div
+                key={r.kind + '-' + (r.id || r.location)}
+                onMouseEnter={() => setHighlight(i)}
+                onClick={() => select(r)}
+                style={{
+                  padding: '10px 14px',
+                  cursor: 'pointer',
+                  background: i === highlight ? 'var(--bg-2)' : 'transparent',
+                  borderBottom: '1px solid var(--line)',
+                }}
+              >
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span style={{
+                    fontSize: '10px',
+                    padding: '1px 6px',
+                    borderRadius: '3px',
+                    background: r.kind === 'hoki' ? '#dcfce7' : '#dbeafe',
+                    color: r.kind === 'hoki' ? '#166534' : '#1e40af',
+                    fontWeight: 700,
+                    flexShrink: 0,
+                  }}>
+                    {r.kind === 'hoki' ? '🟢 暗記Hub' : '🔵 法規Wiki'}
+                  </span>
+                  <span style={{ fontWeight: 600, fontSize: '13px' }}>{r.title}</span>
+                </div>
+                {r.kind === 'denken' && r.preview && (
+                  <div style={{ marginTop: '4px', fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
+                    {r.preview}…
+                  </div>
+                )}
+                {r.kind === 'hoki' && r.chapterTitle && (
+                  <div style={{ marginTop: '2px', fontSize: '11px', color: 'var(--ink-3)' }}>
+                    {r.num} · {r.chapterTitle}
+                  </div>
+                )}
+              </div>
+            ))}
+            {denkenLoading && results.length > 0 && (
+              <div style={{ padding: '6px 14px', fontSize: '10px', color: 'var(--ink-3)', borderTop: '1px solid var(--line)' }}>
+                法規Wiki読込中... 完了後さらに結果が追加されます
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

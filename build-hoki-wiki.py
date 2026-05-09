@@ -13,7 +13,7 @@ build-hoki-wiki.py — 電験3種 法規Wiki HTML組み立てスクリプト
 着手前防衛策（ひろゆき指摘）: bundle前に .js ファイルを node --check で構文検証。
 JSX は Babel CDN がブラウザで検証するため事前検証スキップ。
 """
-import os, shutil, subprocess, sys
+import json, os, shutil, subprocess, sys
 
 BASE = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
 
@@ -97,6 +97,52 @@ window.HOKI_RANKING = {ranking_json};
 </script>
 """
 
+# --- 検索インデックス生成（横断検索 Phase 1） ---
+# WIKI_DATA を node で評価し、フラット化した検索エントリを作る
+node_eval = (
+    'global.window = {};'
+    'require(process.cwd() + "/hoki-data.js");'
+    'process.stdout.write(JSON.stringify(global.window.WIKI_DATA));'
+)
+res = subprocess.run(['node', '-e', node_eval], capture_output=True, text=True, encoding='utf-8', cwd=BASE)
+if res.returncode != 0:
+    print('FAILED to evaluate hoki-data.js:'); print(res.stderr); sys.exit(1)
+wiki_data = json.loads(res.stdout)
+
+search_entries = []
+for ch in wiki_data.get('chapters', []):
+    chapter_title = ch.get('title', '')
+    for p in ch.get('pages', []):
+        search_entries.append({
+            'id': p.get('id'),
+            'title': p.get('title', ''),
+            'chapterTitle': chapter_title,
+            'num': p.get('num', ''),
+            'freq': p.get('freq', ''),
+            'priority': p.get('priority', ''),
+        })
+
+# 件数アサート（ビルド忘れ・抽出漏れ検知）
+expected = sum(len(ch.get('pages', [])) for ch in wiki_data.get('chapters', []))
+if len(search_entries) != expected:
+    print(f'INDEX MISMATCH: extracted={len(search_entries)} expected={expected}')
+    sys.exit(1)
+
+# data/ に出力（参照用・他ツール連携用）
+search_index_path = f'{BASE}/data/hoki-search-index.json'
+with open(search_index_path, 'w', encoding='utf-8') as f:
+    json.dump(search_entries, f, ensure_ascii=False, indent=2)
+print(f'Indexed {len(search_entries)} pages → {search_index_path}')
+
+# HTMLに埋め込む用の JSON 文字列
+search_index_json = json.dumps(search_entries, ensure_ascii=False)
+search_index_block = f"""
+<!-- hoki-wiki 検索インデックス（横断検索 Phase 1） -->
+<script>
+window.HOKI_SEARCH_INDEX = {search_index_json};
+</script>
+"""
+
 # Babelスクリプトブロック
 script_block = f"""
 <script type="text/babel">
@@ -131,7 +177,7 @@ script_block = f"""
 
 # 組み立て（</head>を差し替え）
 output = css_head.replace('</head>', extra_css + '\n' + cdn)
-output += body_open + ranking_block + script_block
+output += body_open + ranking_block + search_index_block + script_block
 
 # 書き出し
 out_path = f'{BASE}/denken-hoki-wiki.html'
