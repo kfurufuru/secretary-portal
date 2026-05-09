@@ -162,6 +162,61 @@ window.GLOSSARY_TERMS_V1 = {
       addedDate: '2026-05-07'
     },
     {
+      id: 'fukaritsu',
+      term: '負荷率',
+      yomi: 'ふかりつ',
+      meaning: '負荷率 = 平均需要電力 ÷ 最大需要電力 × 100%。単独需要家のピークに対する平均利用度',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '通常 1 以下。1 を超えたら平均と最大を取り違えていないか疑う。「総合負荷率」とは分子・分母が別物',
+      distractors: ['需要率', '不等率', '総合負荷率'],
+      addedDate: '2026-05-09'
+    },
+    {
+      id: 'futoritsu',
+      term: '不等率',
+      yomi: 'ふとうりつ',
+      meaning: '不等率 = 各需要家の最大需要電力の合計 ÷ 合成最大需要電力。複数需要家のピークがどれだけバラけているかを表す',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '通常 1 以上（％にせず 1.3 等の比率で答えることが多い）。1 未満になったら合成最大の読み違いを疑う',
+      distractors: ['需要率', '負荷率', '力率'],
+      addedDate: '2026-05-09'
+    },
+    {
+      id: 'sougou-fukaritsu',
+      term: '総合負荷率',
+      yomi: 'そうごうふかりつ',
+      meaning: '総合負荷率 = 合成平均需要電力 ÷ 合成最大需要電力 × 100%。複数需要家を合算した後の平均利用度',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '単独の負荷率を平均しても出ない。分母は合成最大（同時最大）であって各最大の合計ではない',
+      distractors: ['負荷率', '需要率', '不等率'],
+      addedDate: '2026-05-09'
+    },
+    {
+      id: 'gousei-saidai-juyodenryoku',
+      term: '合成最大需要電力',
+      yomi: 'ごうせいさいだいじゅようでんりょく',
+      meaning: '複数需要家を合算したときに同時刻に発生する最大需要電力（同時最大値）。各最大の合計とは別の量',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '出し方は3通り（問題文で与えられる／負荷曲線から読み取る／不等率と各最大の合計から計算する）。変電所容量の根拠値',
+      distractors: ['各最大の合計', '設備容量', '契約電力'],
+      addedDate: '2026-05-09'
+    },
+    {
+      id: 'awaseta-juyoritsu',
+      term: '合わせた需要率',
+      yomi: 'あわせたじゅようりつ',
+      meaning: '合わせた需要率 = 合成最大需要電力 ÷ 総設備容量。複数需要家を合算したときの需要率',
+      field: 'hoki',
+      articles: ['demand'],
+      exam_note: '不等率と分子が違う（合わせた需要率の分子は合成最大、不等率の分子は各最大の合計）。混同するとB問題で連鎖失点',
+      distractors: ['需要率', '不等率', '総合負荷率'],
+      addedDate: '2026-05-09'
+    },
+    {
       id: 'demand-controller',
       term: 'デマンドコントローラ',
       yomi: 'でまんどこんとろーら',
