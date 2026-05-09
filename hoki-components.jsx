@@ -728,8 +728,8 @@ function PageVariantSwitch({ variants, current, onNav }) {
       gap: 4,
       margin: '0 0 14px',
       padding: 4,
-      background: 'var(--bg-2)',
-      border: '1px solid var(--line)',
+      background: 'var(--bg-elev)',
+      border: '1px solid var(--bd)',
       borderRadius: 10,
       width: 'fit-content',
     }}>
