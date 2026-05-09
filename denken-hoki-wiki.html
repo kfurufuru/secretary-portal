@@ -6945,7 +6945,7 @@ function SetsuchiIchiranPage({ onNav, data }) {
           ["C種", "300V 超低圧",     "10 Ω 以下",  "1.6 mm 以上"],
           ["D種", "300V 以下低圧",   "100 Ω 以下", "1.6 mm 以上"],
         ]}
-        note="B種の 150/Ig は「1秒以内に自動遮断される場合は 300/Ig」に緩和される"
+        note="B種の 150/Ig は「1秒超〜2秒以内に自動遮断→300/Ig、1秒以内に自動遮断→600/Ig」に緩和される（電技解釈第17条第2項）"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
@@ -6964,7 +6964,10 @@ function SetsuchiIchiranPage({ onNav, data }) {
         { q: "B種の電線の太さは？",                  a: "4.0 mm 以上（最も太い）" },
       ]} />
 
-      <UpdateLog entries={[{ date: "2026-04-28", content: "初版作成", reason: "—" }]} />
+      <UpdateLog entries={[
+        { date: "2026-04-28", content: "初版作成", reason: "—" },
+        { date: "2026-05-09", content: "B種接地のnote内記述を電技解釈第17条第2項の正規表現に修正（誤『1秒以内→300/Ig』→ 正『1秒超〜2秒以内→300/Ig、1秒以内→600/Ig』）", reason: "並列監査で発見・古舘さん指摘の波及修正" },
+      ]} />
       <PageNav
         prevId="top"            prevTitle="トップ"
         nextId="zetsuen-ichiran" nextTitle="絶縁耐力試験一覧"
