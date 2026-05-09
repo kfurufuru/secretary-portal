@@ -2776,6 +2776,7 @@ function TopBar({ page, onNav }) {
   const [highlight, setHighlight] = React.useState(0);
   const [denkenIndex, setDenkenIndex] = React.useState(null);
   const [denkenLoading, setDenkenLoading] = React.useState(true);
+  const [activeFilter, setActiveFilter] = React.useState('all'); // 'all' | 'hoki' | 'glossary' | 'denken'
   const containerRef = React.useRef(null);
   const inputRef = React.useRef(null);
 
@@ -2813,13 +2814,13 @@ function TopBar({ page, onNav }) {
     return () => document.removeEventListener('mousedown', h);
   }, []);
 
-  // 結果計算（インクリメンタル即時）
-  // hoki側はローカル・小規模なので埋もれないよう上枠を確保
-  const results = React.useMemo(() => {
+  // 結果計算（インクリメンタル即時）— 3カテゴリ別に分けて保持
+  const buckets = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return [];
-    const hokiOut = [];
-    const denkenOut = [];
+    if (!q) return { hokiPages: [], glossary: [], denken: [] };
+    const hokiPages = [];
+    const glossary = [];
+    const denken = [];
     const hokiIndex = window.HOKI_SEARCH_INDEX || [];
     hokiIndex.forEach(e => {
       if (!e.title) return;
@@ -2834,7 +2835,7 @@ function TopBar({ page, onNav }) {
       if (isGlossary && meaning.includes(q)) score += 3;
       if (ch.includes(q)) score += 3;
       if (score > 0) {
-        hokiOut.push({
+        const item = {
           kind: 'hoki',
           subKind: isGlossary ? 'glossary' : 'page',
           score,
@@ -2844,7 +2845,9 @@ function TopBar({ page, onNav }) {
           num: e.num,
           chapterTitle: e.chapterTitle,
           meaning: e.meaning || '',
-        });
+        };
+        if (isGlossary) glossary.push(item);
+        else hokiPages.push(item);
       }
     });
     if (denkenIndex) {
@@ -2858,20 +2861,31 @@ function TopBar({ page, onNav }) {
         else if (textLow.includes(q)) score += 1;
         if (score > 0) {
           const plain = text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-          denkenOut.push({ kind: 'denken', score, title: d.title, location: d.location, preview: plain.slice(0, 80) });
+          denken.push({ kind: 'denken', score, title: d.title, location: d.location, preview: plain.slice(0, 80) });
         }
       });
     }
-    hokiOut.sort((a, b) => b.score - a.score);
-    denkenOut.sort((a, b) => b.score - a.score);
-    // hoki最大5件先頭・残り枠を denken で埋め、計10件
-    const TOTAL = 10;
-    const hokiTake = Math.min(hokiOut.length, 5);
-    const denkenTake = Math.max(0, TOTAL - hokiTake);
-    return [...hokiOut.slice(0, hokiTake), ...denkenOut.slice(0, denkenTake)];
+    hokiPages.sort((a, b) => b.score - a.score);
+    glossary.sort((a, b) => b.score - a.score);
+    denken.sort((a, b) => b.score - a.score);
+    return { hokiPages, glossary, denken };
   }, [query, denkenIndex]);
 
-  React.useEffect(() => { setHighlight(0); }, [query]);
+  // フィルタ適用
+  const results = React.useMemo(() => {
+    const { hokiPages, glossary, denken } = buckets;
+    if (activeFilter === 'hoki') return hokiPages.slice(0, 20);
+    if (activeFilter === 'glossary') return glossary.slice(0, 20);
+    if (activeFilter === 'denken') return denken.slice(0, 20);
+    // 'all': hoki 3 + glossary 2 + denken 5 = 10（埋もれ防止）
+    const TOTAL = 10;
+    const pageTake = Math.min(hokiPages.length, 3);
+    const glossTake = Math.min(glossary.length, 2);
+    const denkenTake = Math.max(0, TOTAL - pageTake - glossTake);
+    return [...hokiPages.slice(0, pageTake), ...glossary.slice(0, glossTake), ...denken.slice(0, denkenTake)];
+  }, [buckets, activeFilter]);
+
+  React.useEffect(() => { setHighlight(0); }, [query, activeFilter]);
 
   const select = (r) => {
     if (!r) return;
@@ -2943,7 +2957,7 @@ function TopBar({ page, onNav }) {
             top: '100%',
             right: 0,
             marginTop: '4px',
-            width: '440px',
+            width: '480px',
             background: 'var(--bg)',
             border: '1px solid var(--line)',
             borderRadius: 'var(--radius)',
@@ -2952,6 +2966,42 @@ function TopBar({ page, onNav }) {
             maxHeight: '70vh',
             overflowY: 'auto',
           }}>
+            {/* セクションフィルタチップ（denken-wiki標準パターン移植） */}
+            <div style={{
+              display: 'flex',
+              gap: '6px',
+              padding: '8px 12px',
+              borderBottom: '1px solid var(--line)',
+              background: 'var(--bg-2)',
+              flexWrap: 'wrap',
+            }}>
+              {[
+                { id: 'all', label: 'すべて', count: buckets.hokiPages.length + buckets.glossary.length + buckets.denken.length },
+                { id: 'hoki', label: '🟢 暗記Hub', count: buckets.hokiPages.length },
+                { id: 'glossary', label: '🟡 用語', count: buckets.glossary.length },
+                { id: 'denken', label: '🔵 法規Wiki', count: buckets.denken.length },
+              ].map(chip => {
+                const isActive = activeFilter === chip.id;
+                return (
+                  <button
+                    key={chip.id}
+                    onClick={(e) => { e.stopPropagation(); setActiveFilter(chip.id); }}
+                    style={{
+                      padding: '3px 10px',
+                      borderRadius: '999px',
+                      border: '1px solid ' + (isActive ? 'var(--accent)' : 'var(--line)'),
+                      background: isActive ? 'var(--accent)' : 'var(--bg)',
+                      color: isActive ? '#fff' : 'var(--ink-2)',
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {chip.label} <span style={{ opacity: 0.7, marginLeft: '2px' }}>{chip.count}</span>
+                  </button>
+                );
+              })}
+            </div>
             {results.length === 0 && (
               <div style={{ padding: '12px 16px', fontSize: '12px', color: 'var(--ink-3)' }}>
                 {denkenLoading ? '法規Wiki読込中... hoki側を先に検索しています' : 'ヒットなし'}
