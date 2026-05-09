@@ -721,6 +721,55 @@ function UpdateLog({ entries }) {
   );
 }
 
+function PageVariantSwitch({ variants, current, onNav }) {
+  return (
+    <div style={{
+      display: 'flex',
+      gap: 4,
+      margin: '0 0 14px',
+      padding: 4,
+      background: 'var(--bg-2)',
+      border: '1px solid var(--line)',
+      borderRadius: 10,
+      width: 'fit-content',
+    }}>
+      {variants.map(v => {
+        const active = v.id === current;
+        return (
+          <button
+            key={v.id}
+            type="button"
+            onClick={() => !active && onNav && onNav(v.id)}
+            disabled={active}
+            style={{
+              cursor: active ? 'default' : 'pointer',
+              padding: '7px 16px',
+              background: active ? 'var(--accent)' : 'transparent',
+              color: active ? '#fff' : 'var(--ink-2)',
+              border: 'none',
+              borderRadius: 7,
+              fontSize: 13,
+              fontWeight: active ? 700 : 500,
+              lineHeight: 1.2,
+              transition: 'background 0.15s',
+            }}
+          >
+            {v.label}
+            {v.sublabel && (
+              <span style={{
+                marginLeft: 6,
+                fontSize: 11,
+                opacity: active ? 0.85 : 0.7,
+                fontWeight: 400,
+              }}>{v.sublabel}</span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function PageNav({ prevId, prevTitle, nextId, nextTitle, onNav }) {
   return (
     <div style={{

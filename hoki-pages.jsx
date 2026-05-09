@@ -4529,6 +4529,14 @@ function GijutsuKijunGaiyouPage({ onNav, data }) {
 function JuyoritsuGainenPage({ onNav, data }) {
   return (
     <div>
+      <PageVariantSwitch
+        variants={[
+          { id: 'juyoritsu-gainen', label: '概念', sublabel: 'A・施設管理' },
+          { id: 'juyoritsu-keisan', label: '計算', sublabel: 'S・B問題' },
+        ]}
+        current="juyoritsu-gainen"
+        onNav={onNav}
+      />
       <GoalQuestion
         question="不等率は必ず1以上になる。その理由として正しいものはどれか"
         choices={[
@@ -4816,6 +4824,14 @@ function JuyoritsuGainenPage({ onNav, data }) {
 function JuyoritsuKeisanPage({ onNav, data }) {
   return (
     <div>
+      <PageVariantSwitch
+        variants={[
+          { id: 'juyoritsu-gainen', label: '概念', sublabel: 'A・施設管理' },
+          { id: 'juyoritsu-keisan', label: '計算', sublabel: 'S・B問題' },
+        ]}
+        current="juyoritsu-keisan"
+        onNav={onNav}
+      />
       <GoalQuestion
         question="設備容量500kW、需要率0.8、不等率1.25、力率0.9のとき、必要な変圧器容量[kVA]は約いくらか"
         choices={["約 200 kVA","約 280 kVA","約 356 kVA","約 444 kVA"]}
