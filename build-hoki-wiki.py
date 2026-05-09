@@ -97,17 +97,23 @@ window.HOKI_RANKING = {ranking_json};
 </script>
 """
 
-# --- 検索インデックス生成（横断検索 Phase 1） ---
-# WIKI_DATA を node で評価し、フラット化した検索エントリを作る
+# --- 検索インデックス生成（横断検索 Phase 1 + 用語クイズ統合） ---
+# WIKI_DATA / GLOSSARY_TERMS_V1 を node で評価し、フラット化した検索エントリを作る
 node_eval = (
     'global.window = {};'
     'require(process.cwd() + "/hoki-data.js");'
-    'process.stdout.write(JSON.stringify(global.window.WIKI_DATA));'
+    'require(process.cwd() + "/hoki-glossary-data.js");'
+    'process.stdout.write(JSON.stringify({'
+    '  wiki: global.window.WIKI_DATA,'
+    '  glossary: global.window.GLOSSARY_TERMS_V1'
+    '}));'
 )
 res = subprocess.run(['node', '-e', node_eval], capture_output=True, text=True, encoding='utf-8', cwd=BASE)
 if res.returncode != 0:
-    print('FAILED to evaluate hoki-data.js:'); print(res.stderr); sys.exit(1)
-wiki_data = json.loads(res.stdout)
+    print('FAILED to evaluate hoki-data.js / hoki-glossary-data.js:'); print(res.stderr); sys.exit(1)
+combined = json.loads(res.stdout)
+wiki_data = combined['wiki']
+glossary_data = combined.get('glossary') or {}
 
 search_entries = []
 for ch in wiki_data.get('chapters', []):
@@ -120,19 +126,39 @@ for ch in wiki_data.get('chapters', []):
             'num': p.get('num', ''),
             'freq': p.get('freq', ''),
             'priority': p.get('priority', ''),
+            'kind': 'page',
         })
 
+# 用語クイズ entries 追加（id衝突回避: 'glossary-' prefix）
+glossary_terms = glossary_data.get('terms', []) or []
+for t in glossary_terms:
+    tid = t.get('id')
+    if not tid:
+        continue
+    search_entries.append({
+        'id': 'glossary-' + tid,
+        'title': t.get('term', ''),
+        'yomi': t.get('yomi', ''),
+        'meaning': t.get('meaning', ''),
+        'chapterTitle': '用語クイズ',
+        'num': '8.5',
+        'navTarget': 'chokuzen-yougo',
+        'kind': 'glossary',
+    })
+
 # 件数アサート（ビルド忘れ・抽出漏れ検知）
-expected = sum(len(ch.get('pages', [])) for ch in wiki_data.get('chapters', []))
+expected_pages = sum(len(ch.get('pages', [])) for ch in wiki_data.get('chapters', []))
+expected_glossary = len(glossary_terms)
+expected = expected_pages + expected_glossary
 if len(search_entries) != expected:
-    print(f'INDEX MISMATCH: extracted={len(search_entries)} expected={expected}')
+    print(f'INDEX MISMATCH: extracted={len(search_entries)} expected={expected} (pages={expected_pages}, glossary={expected_glossary})')
     sys.exit(1)
 
 # data/ に出力（参照用・他ツール連携用）
 search_index_path = f'{BASE}/data/hoki-search-index.json'
 with open(search_index_path, 'w', encoding='utf-8') as f:
     json.dump(search_entries, f, ensure_ascii=False, indent=2)
-print(f'Indexed {len(search_entries)} pages → {search_index_path}')
+print(f'Indexed {len(search_entries)} entries (pages={expected_pages} + glossary={expected_glossary}) → {search_index_path}')
 
 # HTMLに埋め込む用の JSON 文字列
 search_index_json = json.dumps(search_entries, ensure_ascii=False)

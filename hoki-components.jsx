@@ -1054,6 +1054,23 @@ function TOC({ page }) {
   );
 }
 
+// クエリ文字列をテキスト中で <mark> 風（黄色背景）にハイライトする
+// 戻り値: 文字列のまま（マッチ無し）または React 要素配列（マッチあり）
+function highlightMatch(text, query) {
+  if (!query || !text) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return [
+    text.slice(0, idx),
+    React.createElement(
+      'span',
+      { key: 'hl', style: { background: '#fef08a', fontWeight: 700, borderRadius: '2px', padding: '0 1px' } },
+      text.slice(idx, idx + query.length)
+    ),
+    text.slice(idx + query.length),
+  ];
+}
+
 function TopBar({ page, onNav }) {
   const data = window.WIKI_DATA;
   let pageTitle = page;
@@ -1120,10 +1137,27 @@ function TopBar({ page, onNav }) {
       if (!e.title) return;
       const title = e.title.toLowerCase();
       const ch = (e.chapterTitle || '').toLowerCase();
+      const isGlossary = e.kind === 'glossary';
+      const yomi = (e.yomi || '').toLowerCase();
+      const meaning = (e.meaning || '').toLowerCase();
       let score = 0;
       if (title.includes(q)) score += 10;
+      if (isGlossary && yomi.includes(q)) score += 8;
+      if (isGlossary && meaning.includes(q)) score += 3;
       if (ch.includes(q)) score += 3;
-      if (score > 0) hokiOut.push({ kind: 'hoki', score, id: e.id, title: e.title, num: e.num, chapterTitle: e.chapterTitle });
+      if (score > 0) {
+        hokiOut.push({
+          kind: 'hoki',
+          subKind: isGlossary ? 'glossary' : 'page',
+          score,
+          id: e.id,
+          navTarget: e.navTarget || e.id,
+          title: e.title,
+          num: e.num,
+          chapterTitle: e.chapterTitle,
+          meaning: e.meaning || '',
+        });
+      }
     });
     if (denkenIndex) {
       denkenIndex.forEach(d => {
@@ -1154,7 +1188,7 @@ function TopBar({ page, onNav }) {
   const select = (r) => {
     if (!r) return;
     if (r.kind === 'hoki') {
-      onNav && onNav(r.id);
+      onNav && onNav(r.navTarget || r.id);
       setOpen(false);
       setQuery('');
     } else {
@@ -1235,44 +1269,56 @@ function TopBar({ page, onNav }) {
                 {denkenLoading ? '法規Wiki読込中... hoki側を先に検索しています' : 'ヒットなし'}
               </div>
             )}
-            {results.map((r, i) => (
-              <div
-                key={r.kind + '-' + (r.id || r.location)}
-                onMouseEnter={() => setHighlight(i)}
-                onClick={() => select(r)}
-                style={{
-                  padding: '10px 14px',
-                  cursor: 'pointer',
-                  background: i === highlight ? 'var(--bg-2)' : 'transparent',
-                  borderBottom: '1px solid var(--line)',
-                }}
-              >
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span style={{
-                    fontSize: '10px',
-                    padding: '1px 6px',
-                    borderRadius: '3px',
-                    background: r.kind === 'hoki' ? '#dcfce7' : '#dbeafe',
-                    color: r.kind === 'hoki' ? '#166534' : '#1e40af',
-                    fontWeight: 700,
-                    flexShrink: 0,
-                  }}>
-                    {r.kind === 'hoki' ? '🟢 暗記Hub' : '🔵 法規Wiki'}
-                  </span>
-                  <span style={{ fontWeight: 600, fontSize: '13px' }}>{r.title}</span>
+            {results.map((r, i) => {
+              const isGlossary = r.kind === 'hoki' && r.subKind === 'glossary';
+              const badgeBg = r.kind === 'denken' ? '#dbeafe' : (isGlossary ? '#fef3c7' : '#dcfce7');
+              const badgeFg = r.kind === 'denken' ? '#1e40af' : (isGlossary ? '#92400e' : '#166534');
+              const badgeText = r.kind === 'denken' ? '🔵 法規Wiki' : (isGlossary ? '🟡 用語' : '🟢 暗記Hub');
+              const meaningPreview = isGlossary && r.meaning ? r.meaning.slice(0, 80) : '';
+              return (
+                <div
+                  key={r.kind + '-' + (r.id || r.location)}
+                  onMouseEnter={() => setHighlight(i)}
+                  onClick={() => select(r)}
+                  style={{
+                    padding: '10px 14px',
+                    cursor: 'pointer',
+                    background: i === highlight ? 'var(--bg-2)' : 'transparent',
+                    borderBottom: '1px solid var(--line)',
+                  }}
+                >
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <span style={{
+                      fontSize: '10px',
+                      padding: '1px 6px',
+                      borderRadius: '3px',
+                      background: badgeBg,
+                      color: badgeFg,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}>
+                      {badgeText}
+                    </span>
+                    <span style={{ fontWeight: 600, fontSize: '13px' }}>{highlightMatch(r.title, query.trim())}</span>
+                  </div>
+                  {r.kind === 'denken' && r.preview && (
+                    <div style={{ marginTop: '4px', fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
+                      {highlightMatch(r.preview, query.trim())}…
+                    </div>
+                  )}
+                  {isGlossary && meaningPreview && (
+                    <div style={{ marginTop: '4px', fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
+                      {highlightMatch(meaningPreview, query.trim())}{r.meaning.length > 80 ? '…' : ''}
+                    </div>
+                  )}
+                  {r.kind === 'hoki' && r.chapterTitle && (
+                    <div style={{ marginTop: '2px', fontSize: '11px', color: 'var(--ink-3)' }}>
+                      {r.num} · {r.chapterTitle}
+                    </div>
+                  )}
                 </div>
-                {r.kind === 'denken' && r.preview && (
-                  <div style={{ marginTop: '4px', fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
-                    {r.preview}…
-                  </div>
-                )}
-                {r.kind === 'hoki' && r.chapterTitle && (
-                  <div style={{ marginTop: '2px', fontSize: '11px', color: 'var(--ink-3)' }}>
-                    {r.num} · {r.chapterTitle}
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
             {denkenLoading && results.length > 0 && (
               <div style={{ padding: '6px 14px', fontSize: '10px', color: 'var(--ink-3)', borderTop: '1px solid var(--line)' }}>
                 法規Wiki読込中... 完了後さらに結果が追加されます
