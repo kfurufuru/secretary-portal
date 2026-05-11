@@ -5291,6 +5291,7 @@ function KojiShiHoPage({ onNav, data }) {
         { wrong: "第一種は自家用電気工作物すべての工事ができる",   correct: "500kW以上の自家用は作業不可" },
         { wrong: "第二種は実務経験が必要",                        correct: "第二種は試験合格のみ（実務経験不要）" },
         { wrong: "第二種で自家用電気工作物の工事を行った",         correct: "第二種で自家用は不可→電気工事士法違反" },
+        { wrong: "「認定電気工事従事者」なら一般用電気工作物も触れる（名前が広いから）", correct: "直感と逆：認定電気工事従事者は《自家用600V以下の簡易工事》専用。一般用工作物は対象外（第二種電気工事士の独占範囲）。名称が「認定」で広く見えるが業務範囲は限定" },
       ]} />
 
       <h2 id="quick-review">11. 1分復習</h2>
@@ -5309,7 +5310,10 @@ function KojiShiHoPage({ onNav, data }) {
       ]} />
 
       <NextAction nextPageId="koji-gyoho" nextPageTitle="電気工事業法" onNav={onNav} />
-      <UpdateLog entries={[{ date: "2026-05-01", content: "初版作成", reason: "—" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：認定電気工事従事者「一般用工事不可」の直感反パターンを TrapTable に補注（名称が広く見えるが業務範囲は《自家用600V以下の簡易工事》専用）", reason: "B6 名称印象と業務範囲のギャップによる選択肢誘導遮断" },
+        { date: "2026-05-01", content: "初版作成", reason: "—" },
+      ]} />
       <PageNav
         prevId="denki-yohin-anzen" prevTitle="電気用品安全法"
         nextId="koji-gyoho"        nextTitle="電気工事業法"
@@ -5380,9 +5384,9 @@ function BshuSetsuchiPage({ onNav, data }) {
         importance="S"
         freq="max"
         examType="B問題"
-        targets="H29・R02・R04"
+        targets="R06下・R05上・H28"
         tags={["B種接地", "1線地絡電流", "混触防止", "変圧器", "解釈17条"]}
-        lastChecked="2026-05-07"
+        lastChecked="2026-05-11"
       />
 
       <h2>§3 試験で問われること</h2>
@@ -7132,10 +7136,10 @@ function RikkakuIchiranPage({ onNav, data }) {
 
       <ConclusionBox>
         <ul>
-          <li><strong>建造物上部</strong>: 低圧2m / 高圧2m / 特高3m</li>
-          <li><strong>建造物側方</strong>: 低圧1m / 高圧1.2m / 特高3m</li>
-          <li><strong>道路横断</strong>: 低高圧共通6m / 特高6m</li>
-          <li><strong>鉄道横断</strong>: 低圧5.5m / 高圧5.5m / 特高6m</li>
+          <li><strong>建造物上部</strong>: 低圧2m / 高圧2m / 特高3m（電技解釈<a href="https://kfurufuru.github.io/denken-wiki/articles/kaishaku/71/" target="_blank" rel="noopener noreferrer">第71条「建造物との接近」</a>）</li>
+          <li><strong>建造物側方</strong>: 低圧1m / 高圧1.2m / 特高3m（同 第71条）</li>
+          <li><strong>道路横断</strong>: 低高圧共通6m / 特高6m（電技解釈第68条 68-1表）</li>
+          <li><strong>鉄道横断</strong>: 低圧5.5m / 高圧5.5m / 特高6m（同 第68条）</li>
         </ul>
       </ConclusionBox>
 
@@ -7196,6 +7200,7 @@ function RikkakuIchiranPage({ onNav, data }) {
       </div>
 
       <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：建造物上部/側方の典拠条文（§71「建造物との接近」）への直接リンクを追加。道路/鉄道横断は §68 と明示", reason: "B7 phaseHoki-G3 F9 指摘（典拠条文の直接参照）" },
         { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：道路横断/横断歩道橋の高さを告示68-1表（経産省告示令和7年11月版・低高圧共通）に訂正", reason: "F1 公開停止級（道路横断 低圧5m/高圧6m → 低高圧共通6m）" },
         { date: "2026-04-26", content: "初版作成", reason: "—" },
       ]} />
@@ -7548,7 +7553,7 @@ function ShuninGijutsusyaPage({ onNav, data }) {
         <div style={{fontWeight: 700, color: '#1f5c2e', marginBottom: 8}}>✅ 最優先で覚える 3 点</div>
         <ol style={{margin: 0, paddingLeft: 22, lineHeight: 1.95}}>
           <li><strong>第三種は「電圧 5 万 V 未満」だけで判断しない</strong>。<strong>出力 5,000 kW 以上の発電所</strong>は範囲から除外される（電圧＋発電所出力の 2 軸判定）</li>
-          <li><strong>電気事業法 43 条は項番が問われる</strong>。<strong>1 項＝選任義務 / 2 項＝許可選任 / 3 項＝届出 / 4 項＝誠実義務 / 5 項＝指示遵守義務</strong>（特に 2 項と 3 項の入れ替えに注意）</li>
+          <li><strong>電気事業法 43 条は項番が問われる</strong>。<strong>1 項＝選任義務 / 2 項＝許可選任（自家用設置者に限る・小規模事業用を除く） / 3 項＝届出 / 4 項＝誠実義務 / 5 項＝従事者の指示遵守義務</strong>（特に 2 項と 3 項の入れ替えに注意）</li>
           <li><strong>外部委託承認は「外部から選任する制度」ではない</strong>。<strong>主任技術者を選任しないことができる制度</strong>（人を置かず、保安管理業務を外部に委託）</li>
         </ol>
       </div>
@@ -7596,10 +7601,10 @@ function ShuninGijutsusyaPage({ onNav, data }) {
         headers={["項","内容","試験での狙われ方"]}
         rows={[
           ["1 項","主任技術者の選任義務（設置者は主任技術者を選任しなければならない）","義務主体（設置者）と対象（事業用電気工作物）の空欄補充"],
-          ["2 項","免状を持たない者を許可により主任技術者として選任","「届出」と入れ替える誤選択肢が定番"],
+          ["2 項","自家用電気工作物（小規模事業用を除く）を設置する者に限り、免状を持たない者を許可により主任技術者として選任","「届出」と入れ替える誤選択肢が定番。許可選任は自家用限定（電気事業者の事業用設備は不可）"],
           ["3 項","主任技術者の選任・解任の届出（遅滞なく）","「許可」と入れ替える誤選択肢が定番（2 項とのペア注意）"],
           ["4 項","主任技術者の誠実義務（職務を誠実に行う）","「責任」「監督」キーワードと混同させる選択肢"],
-          ["5 項","従業者の指示遵守義務（主任技術者の指示に従う）","主任技術者→従業者の方向。逆向きに書かれた誤選択肢に注意"],
+          ["5 項","事業用電気工作物の工事・維持・運用に従事する者の指示遵守義務（主任技術者の指示に従う）","主任技術者→従事者の方向。逆向きに書かれた誤選択肢に注意。条文表現は「従業者」ではなく「従事する者」"],
         ]}
         note="2 項＝許可、3 項＝届出。語感が似ているため毎年入れ替え誤選択肢が出る"
       />
@@ -7626,7 +7631,7 @@ function ShuninGijutsusyaPage({ onNav, data }) {
         headers={["手続種別","内容（要点）","根拠"]}
         rows={[
           ["選任届出",     "免状を持つ者を主任技術者として選任し、遅滞なく届け出る",                       "法 43 条 3 項"],
-          ["選任許可",     "免状を持たない者を、許可により主任技術者として選任する",                       "法 43 条 2 項"],
+          ["選任許可",     "自家用電気工作物（小規模事業用を除く）の設置者に限り、免状を持たない者を許可により主任技術者として選任する",                       "法 43 条 2 項"],
           ["兼任承認",     "他の事業場の主任技術者を兼ねる（届出ではなく承認）",                            "施行規則第 52 条 等"],
           ["選任委託",     "設置者の従業員でない常時勤務者を、主任技術者として選任する制度",                "施行規則第 52 条 等"],
           ["外部委託承認", "主任技術者を選任せず、保安管理業務を外部（電気保安法人・電気管理技術者）に委託","施行規則第 52 条の 2 等"],
@@ -7688,7 +7693,7 @@ function ShuninGijutsusyaPage({ onNav, data }) {
         { wrong: "第三種なら出力に関係なく監督できる",                            correct: "出力 5,000 kW 以上の発電所は対象外（電圧＋出力の 2 軸判定）" },
         { wrong: "外部委託承認は主任技術者を外部から選任する制度",               correct: "主任技術者を選任しないことができる制度" },
         { wrong: "兼任は届出で済む",                                                correct: "兼任は承認（届出ではない）" },
-        { wrong: "免状なしでも自由に選任できる",                                    correct: "許可を受ければ、免状を持たない者を主任技術者として選任できる（43 条 2 項）" },
+        { wrong: "免状なしでも自由に選任できる",                                    correct: "自家用電気工作物（小規模事業用を除く）を設置する者に限り、許可を受ければ免状を持たない者を主任技術者として選任できる（43 条 2 項）" },
         { wrong: "43 条 2 項＝届出、3 項＝許可",                                    correct: "43 条 2 項＝許可選任、3 項＝選任・解任の届出（入れ替え注意）" },
         { wrong: "外部委託は需要設備限定",                                          correct: "代表例は 7,000 V 以下の需要設備。一定規模以下の発電所等も対象になり得る" },
       ]} />
@@ -7710,10 +7715,10 @@ function ShuninGijutsusyaPage({ onNav, data }) {
         { q: "第三種の監督範囲は？",                              a: "電圧 5 万 V 未満（ただし出力 5,000 kW 以上の発電所を除く）" },
         { q: "第二種の監督範囲は？",                              a: "電圧 17 万 V 未満の事業用電気工作物" },
         { q: "第一種の監督範囲は？",                              a: "すべての事業用電気工作物（電圧・出力制限なし）" },
-        { q: "電気事業法 43 条 2 項は？",                         a: "免状を持たない者の許可選任" },
+        { q: "電気事業法 43 条 2 項は？",                         a: "自家用設置者（小規模事業用を除く）に限る、免状を持たない者の許可選任" },
         { q: "電気事業法 43 条 3 項は？",                         a: "主任技術者の選任・解任の届出（遅滞なく）" },
         { q: "電気事業法 43 条 4 項は？",                         a: "主任技術者の誠実義務" },
-        { q: "電気事業法 43 条 5 項は？",                         a: "従業者の指示遵守義務（主任技術者の指示に従う）" },
+        { q: "電気事業法 43 条 5 項は？",                         a: "従事する者の指示遵守義務（主任技術者の指示に従う・条文表現は『従業者』ではない）" },
         { q: "兼任承認の数字 4 つは？",                            a: "7,000 V 以下 / 2,000 kW 未満 / 6 カ所以内 / 2 時間以内" },
         { q: "兼任の手続種別は？（届出か承認か）",                a: "承認（届出ではない）" },
         { q: "外部委託承認は外部から選任する制度？",              a: "違う。主任技術者を選任しないことができる制度" },
@@ -7721,6 +7726,7 @@ function ShuninGijutsusyaPage({ onNav, data }) {
       ]} />
 
       <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：43条2項「自家用（小規模事業用を除く）の設置者に限る」明示・43条5項『従業者』→『従事する者』条文表現に統一（4箇所）", reason: "B5 法令一次表現優先（feedback_law_text_accuracy.md）・許可選任の範囲混同遮断" },
         { date: "2026-05-09", content: "ChatGPT指摘に基づき大幅再構成：①重要度ラベル(🔴🟠🟡⚪)で優先度可視化 ②冒頭に「3点」success ③43条1〜5項の項番整理表+warning ④免状種別ごとの監督範囲表（電圧+出力2軸判定） ⑤届出/許可/承認の違いを5種一覧で整理 ⑥外部委託承認を3段階分割（まず覚える/正誤注意/令和7年改正） ⑦兼任承認7-2-6-2 tip+承認/届出warning ⑧原則/例外を note/warning で分離 ⑨ひっかけ拡充（7問） ⑩過去問演習要点表+QuickReview 11問", reason: "免状種別と手続が混在・外部委託の誤解・43条項番混乱・兼任承認の手続種別曖昧、を整理（ChatGPTレビュー）" },
         { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。監督範囲の暗記を hoki-wiki に集約" }
       ]} />
@@ -7836,7 +7842,7 @@ function JikoHokokuPage({ onNav, data }) {
           <li><strong>速報</strong>: 事故発生を<strong>知った時</strong>から<strong>24時間以内</strong>（電話等）</li>
           <li><strong>詳報</strong>: 事故発生を<strong>知った日</strong>から<strong>30日以内</strong>（様式第13）</li>
           <li><strong>報告先</strong>: 所轄<strong>産業保安監督部長</strong>（原則）</li>
-          <li><strong>感電要件</strong>: 死亡 OR <strong>入院を要する</strong>負傷（軽傷は対象外）</li>
+          <li><strong>感電要件</strong>: 死亡 OR <strong>病院・診療所に入院した</strong>負傷（電気関係報告規則第3条第1項第1号・軽傷の通院は対象外）</li>
           <li>速報・詳報は<strong>別個の義務</strong>（速報を出しても詳報は必要）</li>
         </ul>
       </ConclusionBox>
@@ -7867,7 +7873,7 @@ function JikoHokokuPage({ onNav, data }) {
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "速報は事故発生時から24時間",      correct: "事故発生を『知った時』から24時間（夜間等は発見・通報時点）" },
-        { wrong: "感電は軽傷でも全件報告",          correct: "死亡または『入院を要する』負傷が条件" },
+        { wrong: "感電は軽傷でも全件報告",          correct: "死亡または『病院・診療所に入院した』負傷が条件（電気関係報告規則§3①一・通院のみは対象外）" },
         { wrong: "速報を出せば詳報は省略可能",      correct: "速報・詳報は別個の義務（両方必要）" },
       ]} />
 
@@ -7876,7 +7882,7 @@ function JikoHokokuPage({ onNav, data }) {
         { q: "速報の期限と起算点は？",          a: "知った時から24時間以内" },
         { q: "詳報の期限と起算点は？",          a: "知った日から30日以内" },
         { q: "事故報告の原則の報告先は？",      a: "所轄産業保安監督部長" },
-        { q: "感電報告の閾値は？",              a: "死亡または入院を要する負傷" },
+        { q: "感電報告の閾値は？",              a: "死亡または病院・診療所に入院した負傷（通院のみは対象外）" },
         { q: "波及事故の方向は？",              a: "自家用 → 一般送配電事業者等への供給支障" },
       ]} />
 
@@ -7886,7 +7892,10 @@ function JikoHokokuPage({ onNav, data }) {
         note="報告対象事故の全リスト・PCB漏洩等の詳細は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "速報24h・詳報30dの混同防止用に暗記表を整備" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：感電要件を学習教材表現「入院を要する」→ 条文表現「病院・診療所に入院した」に統一（電気関係報告規則§3①一）", reason: "B3 法令一次表現優先（feedback_law_text_accuracy.md・通院誤判定リスク遮断）" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "速報24h・詳報30dの混同防止用に暗記表を整備" },
+      ]} />
       <PageNav
         prevId="shiyo-jishu-kensa" prevTitle="使用前自主検査"
         nextId="denki-yohin-anzen" nextTitle="電気用品安全法"
@@ -8028,7 +8037,7 @@ function ShiyoJishuKensaPage({ onNav, data }) {
         importance="A"
         freq="頻出"
         examType="A問題"
-        targets="R05・R02・H29"
+        targets="—（単独出題なし／§43・§51・§51の2 周辺問題に出題）"
         tags={["法令","点検","施設管理","頻出"]}
         lastChecked="2026-05-11"
       />
@@ -8077,6 +8086,7 @@ function ShiyoJishuKensaPage({ onNav, data }) {
       />
 
       <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：targets の誤主張（R05/R02/H29）を kakomon.yml 照合結果に基づき「単独出題なし／§43・§51・§51の2 周辺問題に出題」に誠実化", reason: "B11 phaseHoki-kakomon 主題ミスマッチ修正" },
         { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：ページ名「使用前自主検査」と内容「月次点検」の主題ミスマッチを解消（案A：ページ名を施設管理に改名）・施行規則第94/96条の典拠を「要再確認」フラグ付きで整理・KAISEI-2025-001（3月特例）reformBox 追加", reason: "G2監査で🔴致命3件（主題ミスマッチ／架空条文典拠／改正未反映）指摘・誤答誘発リスク即時遮断" },
         { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "点検頻度の暗記表を整備" },
       ]} />
@@ -8118,7 +8128,7 @@ function DenkiYohinAnzenPage({ onNav, data }) {
         importance="B"
         freq="2〜3年に1回"
         examType="A問題"
-        targets="R04・H30・H27"
+        targets="H27（直接出題は1問のみ。kakomon.yml R04/H30 はPSE主題外）"
         tags={["法令","PSE","電気用品安全法","表暗記"]}
         lastChecked="2026-05-08"
       />
@@ -8169,7 +8179,10 @@ function DenkiYohinAnzenPage({ onNav, data }) {
         note="特定品目リスト全体・販売業者の例外規定は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "PSE区分の暗記表を整備" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：targets を kakomon.yml 照合に合わせ「H27（直接出題1問のみ）」に訂正（R04・H30 はPSE主題外）", reason: "B11 phaseHoki-kakomon 主題ミスマッチ修正" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "PSE区分の暗記表を整備" },
+      ]} />
       <PageNav
         prevId="jiko-hokoku" prevTitle="事故報告"
         nextId="koji-shi-ho" nextTitle="電気工事士法"
@@ -8499,7 +8512,7 @@ function DensenroPage({ onNav, data }) {
         freq="頻出"
         examType="A問題・B問題（計算）"
         targets="R05・R02・H29・H27"
-        tags={["架空電線路","高さ","風圧荷重","電技解釈第49条・第58条・第68条"]}
+        tags={["架空電線路","高さ","風圧荷重","電技解釈第58条・第59条・第68条"]}
         lastChecked="2026-05-11"
       />
 
@@ -8526,7 +8539,7 @@ function DensenroPage({ onNav, data }) {
         note="設計時は3種のうち最も厳しい荷重を採用。乙種は風圧1/2でも氷雪で受風面積が増えて支配的になる場合あり"
       />
 
-      <h2 id="safety">安全率（解釈第68条等）</h2>
+      <h2 id="safety">安全率（解釈第59条「支持物の強度」・第62条「支線の安全率」）</h2>
       <MemTable
         headers={["対象部材","安全率"]}
         rows={[
@@ -8561,6 +8574,7 @@ function DensenroPage({ onNav, data }) {
       />
 
       <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：MetaStrip tags の典拠条文を訂正（§49は「電気使用機械器具の電圧」で架空電線路と無関係）。支持物強度の主条文 §59 に置換し、安全率セクション見出しを §59・§62 に最新化", reason: "B8 phaseHoki-G3 F3 指摘（典拠条文の正確化）" },
         { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：道路横断/横断歩道橋の高さを告示68-1表（経産省告示令和7年11月版・低高圧共通）に訂正", reason: "F2 横断歩道橋 低圧3.5m → 3m（高圧3.5mは正・電技解釈第68条 68-1表）" },
         { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・必須テーマ。高さ・風圧荷重・たるみ計算式を集約（rikkaku-ichiran と棲み分け）" },
       ]} />
@@ -8602,11 +8616,11 @@ function OkunaiHaisenPage({ onNav, data }) {
         freq="2〜3年に1回"
         examType="A問題"
         targets="R05・R02・H29"
-        tags={["屋内配線","PF管","CD管","分岐回路","電技解釈第156条・第170条〜第174条"]}
-        lastChecked="2026-05-08"
+        tags={["屋内配線","PF管","CD管","分岐回路","電技解釈第149条・第156条・第158条・第170条〜第174条"]}
+        lastChecked="2026-05-11"
       />
 
-      <h2 id="bunki">分岐回路の電線太さとコンセント定格（解釈第170条〜174条）</h2>
+      <h2 id="bunki">分岐回路の電線太さとコンセント定格（解釈第149条「低圧分岐回路の施設」・第170条〜174条）</h2>
       <MemTable
         headers={["分岐回路","遮断器定格","電線の太さ","コンセント定格"]}
         rows={[
@@ -8620,7 +8634,7 @@ function OkunaiHaisenPage({ onNav, data }) {
         note="20Aは配線用遮断器（1.6mm）vs ヒューズ（2.0mm）で異なる。30A以上は断面積基準も併記"
       />
 
-      <h2 id="kanro">配線方法の使用可否（解釈第156条）</h2>
+      <h2 id="kanro">配線方法の使用可否（解釈第156条「施設場所×工事種類」・第158条「合成樹脂管工事」）</h2>
       <MemTable
         headers={["工事種別","展開（露出）","点検可隠ぺい","点検不可隠ぺい"]}
         rows={[
@@ -8630,7 +8644,7 @@ function OkunaiHaisenPage({ onNav, data }) {
           ["合成樹脂管（CD管）",  "× 不可","× 不可","× コンクリート埋設のみ"],
           ["ケーブル工事（VVF等）","○",     "○",     "○"],
         ]}
-        note="点検不可の隠ぺい場所で使えるのは『金属管・PF管・ケーブル』の3つのみ。CD管は埋設専用"
+        note="§156 は「施設場所×工事種類」のマトリクス（入口）、§158 は合成樹脂管工事の具体仕様（PF/CD管の使い分け詳細）。点検不可の隠ぺい場所で使えるのは『金属管・PF管・ケーブル』の3つのみ。CD管は埋設専用（§158由来）"
       />
 
       <h2 id="kansen">幹線の遮断器容量計算</h2>
@@ -8665,7 +8679,10 @@ function OkunaiHaisenPage({ onNav, data }) {
         note="工事種別の構造詳細・施工条件・JIS規格は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・配線方法×場所マトリクスと分岐回路電線太さを集約" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：tags に §149（低圧分岐回路）・§158（合成樹脂管工事）を追加。§156（入口・マトリクス）と §158（PF/CD管詳細）の役割分担を見出しと note に明示", reason: "B9 phaseHoki-G3 F5/F6 指摘（kakomon.yml R02問6/H24問9 の主題対応）" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・配線方法×場所マトリクスと分岐回路電線太さを集約" },
+      ]} />
       <PageNav
         prevId="densenro"   prevTitle="電線路（架空）"
         nextId="kako-denryu" nextTitle="過電流保護"
@@ -8884,7 +8901,7 @@ function BunsangataDengenPage({ onNav, data }) {
 
       <ConclusionBox>
         <ul>
-          <li>低圧連系（600V以下）でも<strong>受動的＋能動的の両方式</strong>が必要（解釈第227条）</li>
+          <li>低圧連系（600V以下）でも<strong>受動的＋能動的の両方式</strong>が必要（解釈第232条「単独運転の防止」）</li>
           <li>低圧連系: <strong>OCR・OVGR・転送遮断 すべて不要</strong>（PCS内蔵）</li>
           <li>高圧連系: 上記＋ <strong>OCR（過電流リレー）＋OVGR（地絡過電圧リレー）</strong></li>
           <li>特別高圧連系: 上記＋ <strong>転送遮断装置</strong></li>
@@ -8900,8 +8917,8 @@ function BunsangataDengenPage({ onNav, data }) {
         freq="高頻度"
         examType="A問題"
         targets="R06・R04・R02"
-        tags={["分散型電源","系統連系","保護装置","電技解釈第220条〜第231条"]}
-        lastChecked="2026-05-08"
+        tags={["分散型電源","系統連系","保護装置","電技解釈第220条〜第232条"]}
+        lastChecked="2026-05-11"
       />
 
       <h2 id="matrix">電圧レベル別 保護装置要件マトリクス</h2>
@@ -8938,14 +8955,14 @@ function BunsangataDengenPage({ onNav, data }) {
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
-        { wrong: "低圧連系では能動的方式は不要",          correct: "解釈第227条で『受動・能動それぞれ1方式以上』と明記" },
+        { wrong: "低圧連系では能動的方式は不要",          correct: "解釈第232条（単独運転の防止）で『受動・能動それぞれ1方式以上』と明記" },
         { wrong: "逆潮流があるならRPRが必要",              correct: "逆潮流『なし』の場合に必要（防止のため）。直感と逆" },
         { wrong: "低圧連系でもOVGR・OCRが必要",          correct: "低圧はPCS内蔵で不要。高圧から必要" },
       ]} />
 
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
-        { q: "低圧連系で必須の単独運転検出方式は？",     a: "受動的＋能動的の両方式（解釈第227条）" },
+        { q: "低圧連系で必須の単独運転検出方式は？",     a: "受動的＋能動的の両方式（解釈第232条）" },
         { q: "高圧連系で追加される保護装置は？",          a: "OCR（過電流リレー）＋OVGR（地絡過電圧リレー）" },
         { q: "特別高圧連系で追加される保護装置は？",      a: "転送遮断装置" },
         { q: "RPRが必要なのはどんな場合？",               a: "逆潮流『なし』の場合（売電不可・自家消費のみ）" },
@@ -8958,7 +8975,10 @@ function BunsangataDengenPage({ onNav, data }) {
         note="単独運転防止の物理原理・JEAC9701系統連系規程の詳細は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・電圧レベル別保護装置マトリクスを集約。再エネ連系の基本" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：単独運転検出方式の典拠条文を §227（高圧連系の保護装置）→ §232（単独運転の防止）に訂正。tags §220〜§231 → §220〜§232", reason: "B1 kaishaku/232 と整合（denken-wiki SOT）" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・電圧レベル別保護装置マトリクスを集約。再エネ連系の基本" },
+      ]} />
       <PageNav
         prevId="chichuu-densenro"     prevTitle="地中電線路"
         nextId="gijutsu-kijun-gaiyou" nextTitle="電気設備技術基準の概要"
@@ -9008,7 +9028,8 @@ function GijutsuKijunGaiyouPage({ onNav, data }) {
           <li>第1章 <strong>総則</strong>（第1〜4条）= 保安原則 → <strong>hoan-kitei</strong> 参照</li>
           <li>第2章 <strong>電気の供給のための電気設備の施設</strong>（第5条〜）= 絶縁・接地・電線路</li>
           <li>第3章 <strong>電気使用場所の施設</strong>（第56条〜）= 屋内配線・特殊場所</li>
-          <li>解釈は告示（電気設備の技術基準の解釈）で具体数値が示される</li>
+          <li>解釈は告示（電気設備の技術基準の解釈）で具体数値が示される（§33・§36/37・§156・§170-174 等は告示由来。電技省令の章番号と混同注意）</li>
+          <li><strong>電気工作物の区分は4区分体系</strong>（KAISEI-2022-001 反映）：一般用 / 小規模事業用 / 自家用 / 事業用（電気事業者の事業用設備）— 詳細は <strong>kosakubutsu-bunrui</strong> ページ参照</li>
         </ul>
       </ConclusionBox>
 
@@ -9043,23 +9064,31 @@ function GijutsuKijunGaiyouPage({ onNav, data }) {
         ["第220〜231条 分散型電源", "系統連系・保護装置",                              "bunsangata-dengen","分散型電源連系"],
       ]} />
 
-      <h2 id="ch3">第3章 電気使用場所の施設</h2>
+      <h2 id="ch3">第3章 電気使用場所の施設（電技省令）</h2>
       <ChapterTable rows={[
-        ["第56条〜 一般原則",     "感電・火災防止",                                  "okunai-haisen",    "屋内配線"],
-        ["第156条 配線方法",       "施設場所×工事種類のマトリクス",                   "okunai-haisen",    "屋内配線"],
-        ["第170〜174条 分岐回路", "電線太さ・コンセント定格",                        "okunai-haisen",    "屋内配線"],
-        ["第33条 過電流保護",     "過電流遮断器（1.25倍/2倍）",                      "kako-denryu",      "過電流保護"],
-        ["第36条・第37条 漏電",   "漏電遮断器（30mA・0.1秒）",                       "kako-denryu",      "過電流保護"],
+        ["電技省令 第56条〜 一般原則",     "感電・火災防止",                                  "okunai-haisen",    "屋内配線"],
+      ]} />
+      <div style={{margin: '8px 0 16px', padding: '10px 14px', background: '#f5f7fb', border: '1px solid #d4dbe6', borderLeft: '4px solid #6c84a8', borderRadius: 6, fontSize: 12.5, lineHeight: 1.7, color: '#34465e'}}>
+        📌 <strong>解釈（告示）由来の主要規定</strong>（電技省令の章ではない・kakomon でよく問われる）
+      </div>
+      <ChapterTable rows={[
+        ["解釈第33条 過電流保護",     "過電流遮断器（1.25倍/2倍）",                      "kako-denryu",      "過電流保護"],
+        ["解釈第36条・第37条 漏電",   "漏電遮断器（30mA・0.1秒）",                       "kako-denryu",      "過電流保護"],
+        ["解釈第149条 低圧分岐回路", "分岐回路の電線太さ・施設",                        "okunai-haisen",    "屋内配線"],
+        ["解釈第156条 配線方法",       "施設場所×工事種類のマトリクス（入口）",           "okunai-haisen",    "屋内配線"],
+        ["解釈第158条 合成樹脂管工事","PF/CD管の使い分け詳細",                           "okunai-haisen",    "屋内配線"],
+        ["解釈第170〜174条 分岐回路", "電線太さ・コンセント定格",                        "okunai-haisen",    "屋内配線"],
       ]} />
 
       <h2 id="hierarchy">法令階層の構造</h2>
       <ConclusionBox>
         <ul>
-          <li><strong>電気事業法</strong>（法律）→ 第39条「保安義務」</li>
-          <li><strong>電気事業法施行令</strong>（政令）→ 一般用/事業用の区分など</li>
+          <li><strong>電気事業法</strong>（法律）→ 第39条「保安義務」・第43条「主任技術者」</li>
+          <li><strong>電気事業法施行令</strong>（政令）→ 一般用 / 小規模事業用 / 自家用 / 事業用 の<strong>4区分</strong>（2分体系ではない・KAISEI-2022-001）</li>
           <li><strong>電気事業法施行規則</strong>（経済産業省令）→ 主任技術者選任・保安規程</li>
-          <li><strong>電気設備技術基準</strong>（経済産業省令）→ 第1〜78条（本テーマ）</li>
-          <li><strong>電気設備技術基準の解釈</strong>（告示）→ 具体数値（0.1MΩ等）</li>
+          <li><strong>電気設備技術基準（電技省令）</strong>（経済産業省令）→ 第1〜78条（本テーマ・電技省令）</li>
+          <li><strong>電気設備技術基準の解釈</strong>（告示）→ 第1条〜第237条等の具体規定（§33過電流保護・§36-37漏電遮断・§156配線・§170-174分岐回路・§220-232分散型電源 等）</li>
+          <li>📌 章別の対応表で「第33条」「第156条」のように見えても、§33以降は<strong>告示「解釈」の条文</strong>で電技省令第3章ではない。条番号だけで章帰属を判断しない</li>
         </ul>
       </ConclusionBox>
 
@@ -9069,7 +9098,10 @@ function GijutsuKijunGaiyouPage({ onNav, data }) {
         note="電技省令の各条文・解釈の詳細解説は denken-wiki が SOT。本ページは索引・章立てのみ。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→章立て索引型ページに昇格", reason: "電技省令の構造を可視化し各暗記Hubページへ誘導" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：4区分体系（一般用/小規模事業用/自家用/事業用）を ConclusionBox と法令階層に明示・第3章テーブルで §33/§36/§37/§149/§156/§158/§170-174 を「解釈」由来として分離（電技省令の章番号と混同しないよう注記追加）", reason: "B4 phaseHoki-G4 指摘（2分体系→4区分・省令vs解釈の章帰属混乱解消）" },
+        { date: "2026-05-08", content: "スタブ→章立て索引型ページに昇格", reason: "電技省令の構造を可視化し各暗記Hubページへ誘導" },
+      ]} />
       <PageNav
         prevId="bunsangata-dengen" prevTitle="分散型電源連系"
         nextId="kosakubutsu-bunrui" nextTitle="電気工作物の区分"
@@ -9400,7 +9432,7 @@ function JuyoritsuKeisanPage({ onNav, data }) {
           <li>3公式は「<strong>juyoritsu-gainen</strong>」で確認（概念と棲み分け）</li>
           <li><strong>変圧器容量 [kVA] = 設備容量 × 需要率 ÷ (不等率 × 力率)</strong></li>
           <li>計算後は<strong>標準サイズ</strong>から選定（例：356kVA → 400kVA）</li>
-          <li>合算需要率 = 各最大の合計 / 各設備容量の合計</li>
+          <li><strong>合わせた需要率</strong> = <strong>合成最大需要電力 ÷ 設備容量合計</strong>（用語集・DemandKwhKisoPage R05上問11解法と整合。各最大の合計÷設備容量合計ではない）</li>
           <li>総合負荷率 = 各電力量[kWh]の合計 ÷ 24h ÷ 合成最大需要電力</li>
         </ul>
       </ConclusionBox>
@@ -9420,9 +9452,9 @@ function JuyoritsuKeisanPage({ onNav, data }) {
       <MemTable
         headers={["パターン","問われ方","解法の核心"]}
         rows={[
-          ["①基本",       "需要率・不等率・負荷率を直接計算",         "公式に代入。需要率・負荷率は1以下、不等率は1以上の検算"],
+          ["①基本",       "需要率・不等率・負荷率を直接計算",         "公式に代入。負荷率は定義上1以下、需要率・不等率は通常1以下/1以上として検算"],
           ["②変圧器容量","設備容量+需要率+不等率+力率→kVA",        "kVA = 設備容量 × 需要率 ÷ (不等率 × 力率)。標準サイズ選定"],
-          ["③2工場合算", "2つの工場の合算需要率・総合負荷率",        "分子は各工場の合計、分母は合成最大需要電力"],
+          ["③2工場合算", "2つの工場の合わせた需要率・総合負荷率",   "合わせた需要率：分子=合成最大需要電力／分母=設備容量合計。総合負荷率：分子=各電力量合計÷24h／分母=合成最大需要電力"],
         ]}
         note="R05上は③（2工場合算）。R04上は②（変圧器容量）。R08は①または②が有力"
       />
@@ -9431,8 +9463,8 @@ function JuyoritsuKeisanPage({ onNav, data }) {
       <ConclusionBox>
         <ul>
           <li>例：A工場 設備容量400kW・最大需要280kW・1日電力量3,360kWh → 需要率 = 280/400 = <strong>0.7</strong>、負荷率 = (3,360/24) / 280 = <strong>0.5</strong></li>
-          <li>2工場合計の不等率：(280 + 240) / 400 = <strong>1.3</strong>（1以上で OK）</li>
-          <li><strong>検算</strong>: 不等率 &gt;1、需要率・負荷率 ≤ 1 を必ず確認</li>
+          <li>2工場合計の不等率：(280 + 240) / 400 = <strong>1.3</strong>（通常1以上として検算 OK）</li>
+          <li><strong>検算</strong>: 負荷率は定義上 ≤ 1、需要率は通常 ≤ 1、不等率は通常 &gt; 1 として確認</li>
         </ul>
       </ConclusionBox>
 
@@ -9446,11 +9478,12 @@ function JuyoritsuKeisanPage({ onNav, data }) {
         </ul>
       </ConclusionBox>
 
-      <h2 id="pat3">パターン③: 2工場合算</h2>
+      <h2 id="pat3">パターン③: 2工場合算（R05上 問11型）</h2>
       <ConclusionBox>
         <ul>
-          <li><strong>合算需要率</strong> = (各工場の最大需要の合計) ÷ (各工場の設備容量の合計)</li>
+          <li><strong>合わせた需要率</strong> = <strong>合成最大需要電力</strong> ÷ <strong>各工場の設備容量の合計</strong>（用語集 awaseta-juyoritsu と整合）</li>
           <li><strong>総合負荷率</strong> = (各工場の電力量[kWh]の合計 ÷ 24h) ÷ <strong>合成最大需要電力</strong></li>
+          <li>注意：合わせた需要率の<strong>分子は「合成最大需要電力」</strong>（同時最大）。「各最大の合計」ではない。「各最大の合計」を使うと過大評価になる</li>
           <li>注意：総合負荷率の分母は<strong>合成最大需要電力</strong>（各最大の合計ではない）</li>
         </ul>
       </ConclusionBox>
@@ -9467,7 +9500,7 @@ function JuyoritsuKeisanPage({ onNav, data }) {
         { q: "変圧器容量の公式は？",                              a: "kVA = 設備容量 × 需要率 ÷ (不等率 × 力率)" },
         { q: "設備500kW・需要率0.8・不等率1.25・力率0.9 の容量は？", a: "約 356 kVA → 標準400kVA を選定" },
         { q: "総合負荷率の分母は？",                              a: "合成最大需要電力（同時最大）" },
-        { q: "不等率の検算ポイントは？",                          a: "必ず1以上（合致しなければ計算ミス）" },
+        { q: "不等率の検算ポイントは？",                          a: "通常1以上として検算（各需要家のピーク時刻はズレるため。合致しなければ計算ミスを疑う）" },
         { q: "kW と kVA の変換は？",                              a: "kW ÷ 力率 = kVA（力率0.9なら kVA = kW/0.9）" },
       ]} />
 
@@ -9477,7 +9510,10 @@ function JuyoritsuKeisanPage({ onNav, data }) {
         note="計算式の物理的根拠・過去問解説詳細は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→計算問題Hubページに昇格", reason: "S・B問題max級。3パターンを集約・twin概念ページと棲み分け" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：『合算需要率＝各最大の合計÷設備容量合計』の誤公式を『合わせた需要率＝合成最大需要電力÷設備容量合計』に訂正（用語集 awaseta-juyoritsu と DemandKwhKisoPage R05上問11(a)解法と整合）", reason: "B2 不等率と合わせた需要率の分子混同による誤答誘発の遮断（feedback_calc_single_vs_composite.md）" },
+        { date: "2026-05-08", content: "スタブ→計算問題Hubページに昇格", reason: "S・B問題max級。3パターンを集約・twin概念ページと棲み分け" },
+      ]} />
       <PageNav
         prevId="juyoritsu-gainen" prevTitle="需要率・負荷率・不等率（概念）"
         nextId="bshu-setsuchi"     nextTitle="B種接地工事計算"
@@ -9548,7 +9584,7 @@ function FuritsuPage({ onNav, data }) {
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "負荷率の分母は設備容量",                  correct: "分母は『最大需要電力』（設備容量は需要率の分母）" },
-        { wrong: "負荷率は1以上にもなる",                   correct: "0〜1（平均 ≤ 最大なので必ず1以下）" },
+        { wrong: "負荷率は1以上にもなる",                   correct: "定義上 0〜1（平均 ≤ 最大）。負荷率だけは定義から1以下が保証される（需要率・不等率の『通常検算』とは別格の確定値）" },
         { wrong: "負荷率を高めるには設備を増やす",          correct: "負荷率は使い方の指標。設備を増やしても変わらない（平均利用を増やすのが正解）" },
       ]} />
 
@@ -9606,7 +9642,7 @@ function HensyatsukiYoryoPage({ onNav, data }) {
         importance="A"
         freq="頻出"
         examType="B問題（計算）"
-        targets="R04上・H29・H25"
+        targets="R04上・H26（変圧器容量算定の直接出題は2問。H29/H25 はshisetsu-kanri 別主題）"
         tags={["変圧器容量","kVA","計算","施設管理"]}
         lastChecked="2026-05-08"
       />
@@ -9664,7 +9700,10 @@ function HensyatsukiYoryoPage({ onNav, data }) {
         note="変圧器選定の物理的意味・力率改善コンデンサとの関係は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・変圧器容量算定の計算問題対策。標準サイズ選定込み" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-B：targets を kakomon.yml 照合に合わせ「R04上・H26（変圧器容量算定の直接出題は2問）」に訂正（H29・H25 は shisetsu-kanri 別主題）", reason: "B11 phaseHoki-kakomon 主題ミスマッチ修正" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・変圧器容量算定の計算問題対策。標準サイズ選定込み" },
+      ]} />
       <PageNav
         prevId="haiden-kanri"      prevTitle="配電管理"
         nextId="juden-setsubi-kanri" nextTitle="受電設備管理"
@@ -11282,7 +11321,7 @@ function DemandKwhKisoPage({ onNav, data }) {
             "○再エネ連系・蓄電池追加など新規負荷の余地大",
           ],
         ]}
-        note="不等率は1以上（必ず）。高いほど時間差で電力ピークが分散＝上位トランスに優しい。"
+        note="不等率は通常1以上として検算する（各需要家のピーク時刻がズレるため）。高いほど時間差で電力ピークが分散＝上位トランスに優しい。"
       />
 
       <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 24, marginBottom: 8 }}>3指標を組み合わせた実務判断フロー</h3>
