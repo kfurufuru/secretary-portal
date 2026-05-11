@@ -7134,7 +7134,7 @@ function RikkakuIchiranPage({ onNav, data }) {
         <ul>
           <li><strong>建造物上部</strong>: 低圧2m / 高圧2m / 特高3m</li>
           <li><strong>建造物側方</strong>: 低圧1m / 高圧1.2m / 特高3m</li>
-          <li><strong>道路横断</strong>: 低圧5m / 高圧6m / 特高6m</li>
+          <li><strong>道路横断</strong>: 低高圧共通6m / 特高6m</li>
           <li><strong>鉄道横断</strong>: 低圧5.5m / 高圧5.5m / 特高6m</li>
         </ul>
       </ConclusionBox>
@@ -7147,7 +7147,7 @@ function RikkakuIchiranPage({ onNav, data }) {
         examType="A問題"
         targets="R04・R01・H29"
         tags={["離隔距離","頻出A","表暗記","高圧","特別高圧"]}
-        lastChecked="2026-04-26"
+        lastChecked="2026-05-11"
       />
 
       <h2 id="tables">離隔距離一覧表</h2>
@@ -7156,15 +7156,15 @@ function RikkakuIchiranPage({ onNav, data }) {
         rows={[
           ["建造物上部", "2 m",   "2 m",   "3 m"],
           ["建造物側方", "1 m",   "1.2 m", "3 m"],
-          ["道路横断",   "5 m",   "6 m",   "6 m"],
+          ["道路横断",   "6 m",   "6 m",   "6 m"],
           ["鉄道横断",   "5.5 m", "5.5 m", "6 m"],
         ]}
-        note="道路横断は高圧・特高で6m（低圧の5mより1m高い）。鉄道横断は低圧・高圧とも5.5mで同じ"
+        note="道路横断は低圧・高圧・特高すべて6m（電技解釈第68条 68-1表より共通）。鉄道横断は低圧・高圧とも5.5mで同じ"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
-        { wrong: "道路横断の高さは低圧も高圧も同じ",      correct: "低圧5m、高圧6m（高圧は1m高い）" },
+        { wrong: "道路横断は低圧と高圧で高さが違う",      correct: "低高圧共通で6m（電技解釈第68条 68-1表・差ゼロ）" },
         { wrong: "鉄道横断の高さは電圧によって違う",      correct: "低圧・高圧とも5.5m（同じ）。特高だけ6m" },
         { wrong: "建造物上部の低圧と高圧の離隔は違う",    correct: "上部は低圧・高圧とも2m（同じ）。特高だけ3m" },
       ]} />
@@ -7175,7 +7175,7 @@ function RikkakuIchiranPage({ onNav, data }) {
         { q: "低圧架空電線が鉄道を横断する時の最低高さは？", a: "5.5 m" },
         { q: "特別高圧架空電線と建造物上部の離隔は？",       a: "3 m" },
         { q: "高圧架空電線と建造物側方の離隔は？",           a: "1.2 m" },
-        { q: "道路横断で低圧と高圧の高さの差は？",           a: "1 m（低圧5m、高圧6m）" },
+        { q: "道路横断で低圧と高圧の高さの差は？",           a: "差ゼロ（低高圧共通6m）" },
       ]} />
 
       {/* denken-wiki への逆リンク（条文ベース解説） */}
@@ -7195,7 +7195,10 @@ function RikkakuIchiranPage({ onNav, data }) {
         （条文との対応・出題文脈）
       </div>
 
-      <UpdateLog entries={[{ date: "2026-04-26", content: "初版作成", reason: "—" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：道路横断/横断歩道橋の高さを告示68-1表（経産省告示令和7年11月版・低高圧共通）に訂正", reason: "F1 公開停止級（道路横断 低圧5m/高圧6m → 低高圧共通6m）" },
+        { date: "2026-04-26", content: "初版作成", reason: "—" },
+      ]} />
       <PageNav
         prevId="zetsuen-ichiran"  prevTitle="絶縁耐力試験一覧"
         nextId="den-atsu-kubun"   nextTitle="電圧区分一覧"
@@ -7424,7 +7427,8 @@ function KosakubutsuBunruiPage({ onNav, data }) {
           <li><strong>低圧</strong>: 交流 600V以下 / 直流 750V以下</li>
           <li><strong>高圧</strong>: 交流 600V超〜<strong>7,000V以下</strong> / 直流 750V超〜7,000V以下</li>
           <li><strong>特別高圧</strong>: 交流・直流とも <strong>7,000V超</strong></li>
-          <li>一般用電気工作物は主任技術者・保安規程・届出すべて<strong>不要</strong>（電力会社の調査義務あり）</li>
+          <li>電気工作物は <strong>4区分</strong>（一般用 / 小規模事業用 / 自家用 / 電力会社等）— <strong>2022年改正（令和5年3月20日施行）</strong>で「小規模事業用」新設</li>
+          <li>太陽光は <strong>10kW未満=一般用 / 10〜50kW未満=小規模事業用 / 50kW以上=自家用</strong>（旧「50kW未満=一般用」は廃止）</li>
         </ul>
       </ConclusionBox>
 
@@ -7435,8 +7439,8 @@ function KosakubutsuBunruiPage({ onNav, data }) {
         freq="毎年"
         examType="A問題"
         targets="R06・H29・H25"
-        tags={["法令","電気工作物","電圧区分","頻出S"]}
-        lastChecked="2026-05-08"
+        tags={["法令","電気工作物","電圧区分","4区分","頻出S"]}
+        lastChecked="2026-05-11"
       />
 
       <h2 id="tables">電圧区分一覧表</h2>
@@ -7450,23 +7454,39 @@ function KosakubutsuBunruiPage({ onNav, data }) {
         note="低圧上限は交流600V／直流750V（直流の方が高い）。特別高圧は交直共通で7,000V超"
       />
 
-      <h2 id="kosakubutsu">工作物の区分（小出力発電設備の閾値）</h2>
+      <h2 id="kosakubutsu">工作物の区分（小規模発電設備の出力閾値・2022年改正後）</h2>
       <MemTable
-        headers={["発電方式","小出力閾値（一般用判定）"]}
+        headers={["発電方式","一般用（省令未満）","小規模事業用（省令以上）"]}
         rows={[
-          ["太陽光",  "50 kW 未満（低圧連系のみ）"],
-          ["風力",    "20 kW 未満"],
-          ["水力",    "20 kW 未満（ダム不要）"],
-          ["内燃力",  "10 kW 未満"],
-          ["燃料電池","10 kW 未満（出力10kW未満）"],
+          ["太陽光",   "10 kW 未満",  "10 kW 以上 50 kW 未満"],
+          ["風力",     "—",           "20 kW 未満"],
+          ["水力",     "20 kW 未満（ダム不要）", "—"],
+          ["内燃力",   "10 kW 未満",  "—"],
+          ["燃料電池", "10 kW 未満",  "—"],
         ]}
-        note="高圧連系の場合は出力に関係なく自家用扱い。閾値は条件次第で変わるため一次資料で要確認"
+        note="2022年改正（令和5年3月20日施行）で太陽光の一般用上限が50kW未満→10kW未満に変更。10kW以上50kW未満は新設の「小規模事業用」に移行。なお旧用語は現行法に存在せず、現行は一般用も小規模事業用もどちらも「小規模発電設備」と呼び出力閾値で区分する"
+      />
+
+      <h2 id="four-bunrui">4区分の義務マトリクス（2022年改正後）</h2>
+      <MemTable
+        headers={["義務項目","一般用","小規模事業用","自家用","電力会社等"]}
+        rows={[
+          ["技術基準適合",   "不要",   "必要",   "必要",   "必要"],
+          ["基礎情報届出",   "不要",   "必要（新設）", "—",     "—"],
+          ["使用前自己確認", "不要",   "必要（新設）", "—",     "—"],
+          ["保安規程（第42条）", "不要", "不要",  "必要",   "必要"],
+          ["主任技術者（第43条）","不要","不要",  "必要",   "必要"],
+          ["定期調査",      "電力会社実施（第57条）", "なし（自己確認のみ）", "自主保安", "国の検査"],
+        ]}
+        note="小規模事業用は「事業用」だが保安規程・主任技術者は不要（中間カテゴリ）。「事業用 = 必ず主任技術者」は誤り"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
         { wrong: "直流も低圧の上限は600V",                correct: "直流の低圧は750V以下（交流600Vより高い）" },
-        { wrong: "出力50kW未満の太陽光なら必ず一般用",     correct: "高圧連系（6,600V等）の場合は自家用（出力無関係）" },
+        { wrong: "出力50kW未満の太陽光なら一般用（旧知識）", correct: "現行法は10kW未満=一般用／10〜50kW未満=小規模事業用／50kW以上=自家用（2022年改正）" },
+        { wrong: "旧用語が現行法でも使われている",         correct: "2022年改正以降は一般用も小規模事業用も「小規模発電設備」（出力閾値で区分）。旧用語は現行法に存在しない" },
+        { wrong: "事業用電気工作物は必ず主任技術者が必要", correct: "小規模事業用（事業用の一部）は保安規程・主任技術者ともに不要" },
         { wrong: "高圧の上限は10,000V",                   correct: "高圧は7,000V以下／7,000V超は特別高圧" },
       ]} />
 
@@ -7475,17 +7495,21 @@ function KosakubutsuBunruiPage({ onNav, data }) {
         { q: "交流600V・直流750Vは低圧？",        a: "両方とも低圧の上限値（含む）" },
         { q: "直流1,000Vの区分は？",              a: "高圧（750V超〜7,000V以下）" },
         { q: "高圧と特別高圧の境界は？",          a: "7,000V（7,000V超は特別高圧、交直共通）" },
-        { q: "太陽光50kW・低圧連系の区分は？",    a: "一般用電気工作物（小出力発電設備）" },
-        { q: "一般用は主任技術者の選任が必要？",  a: "不要（電力会社の調査義務でカバー）" },
+        { q: "太陽光30kWの区分は？",              a: "小規模事業用電気工作物（10kW以上50kW未満・2022年改正後）" },
+        { q: "太陽光50kWの区分は？",              a: "自家用電気工作物（50kW以上は自家用。「未満／以上」に注意）" },
+        { q: "小規模事業用は主任技術者が必要？",  a: "不要。ただし基礎情報届出・使用前自己確認は必要（新設義務）" },
       ]} />
 
       <DenkenWikiCTA
-        url="https://kfurufuru.github.io/denken-wiki/themes/kosakubutsu-bunrui/"
-        label="denken-wiki「電気工作物の区分」を開く"
-        note="条文構造・調査義務・小出力発電設備の正確な定義は denken-wiki が SOT。"
+        url="https://kfurufuru.github.io/denken-wiki/articles/jigyoho/38/"
+        label="denken-wiki「電気事業法 第38条（電気工作物の定義と分類）」を開く"
+        note="4区分の条文構造・小規模発電設備の正確な定義・2022年改正の詳細は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。数値暗記を hoki-wiki に集約" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：太陽光10kW境界（2022年改正反映）・「小出力発電設備」→「小規模発電設備」用語統一・4区分体系追加", reason: "G4監査で2022年改正前の旧基準のまま残存していたため現行法準拠に書き換え" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。数値暗記を hoki-wiki に集約" },
+      ]} />
       <PageNav
         prevId="hokoku-todoke-kigen" prevTitle="報告・届出期限"
         nextId="shunin-gijutsusya"   nextTitle="主任技術者"
@@ -7724,11 +7748,11 @@ function HoanKiteiPage({ onNav, data }) {
 
       <ConclusionBox>
         <ul>
-          <li><strong>対象</strong>: 自家用電気工作物の設置者（一般用は不要）</li>
+          <li><strong>対象</strong>: <strong>事業用電気工作物（小規模事業用電気工作物を除く）を設置する者</strong>（電気事業法 第42条第1項）— 電気事業者の事業用設備 + 自家用電気工作物の双方が対象。「自家用のみ」と狭めない</li>
           <li><strong>届出時期</strong>: 使用の開始<strong>前</strong>に届出</li>
           <li><strong>変更時</strong>: <strong>遅滞なく</strong>届出（事前届出ではない）</li>
-          <li><strong>必要記載</strong>: 保安組織・保安教育・巡視点検・運転操作・災害対策など</li>
-          <li><strong>保安原則</strong>（電技省令 第1〜4条）: 人体・物件・電気機械器具・他工作物/植物 を守る</li>
+          <li><strong>記載事項の核心</strong>（施行規則 第50条）: <strong>職務分掌・保安教育・巡視点検・運転操作・保全方法・非常時措置・記録</strong>（頭文字「職保巡措記」）</li>
+          <li><strong>KAISEI-2022-001</strong>: 2023年3月施行で<strong>小規模事業用電気工作物（10kW以上50kW未満太陽光・20kW未満風力等）は保安規程の対象外</strong></li>
         </ul>
       </ConclusionBox>
 
@@ -7739,45 +7763,52 @@ function HoanKiteiPage({ onNav, data }) {
         freq="毎年"
         examType="A問題"
         targets="R07・R04・H29"
-        tags={["法令","保安規程","保安原則","頻出S"]}
-        lastChecked="2026-05-08"
+        tags={["法令","保安規程","施行規則第50条","頻出S"]}
+        lastChecked="2026-05-11"
       />
 
-      <h2 id="tables">保安原則（電気事業法施行規則 / 電技省令 第1〜4条）</h2>
+      <h2 id="tables">保安規程の必要記載事項（電気事業法施行規則 第50条）</h2>
       <MemTable
-        headers={["条文","保護対象","キーワード"]}
+        headers={["核心7項目","内容","語呂"]}
         rows={[
-          ["第1条","人体・物件",      "危害防止"],
-          ["第2条","電路",            "大地から絶縁（構造上やむを得ない場合は例外）"],
-          ["第3条","電気機械器具",    "熱・爆発・火災防止"],
-          ["第4条","他の電気工作物・植物・電線路","損傷防止"],
+          ["職務分掌",     "保安業務を管理する者の職務及び組織",                 "職"],
+          ["保安教育",     "従事者に対する保安教育",                             "保"],
+          ["巡視点検",     "工作物の工事・維持・運用に関する巡視・点検・検査",   "巡"],
+          ["運転操作",     "工作物の運転又は操作",                               "（運）"],
+          ["保全方法",     "発電所運転の長期計画・保全方法（該当時）",           "（全）"],
+          ["非常時措置",   "災害その他非常の場合に採るべき措置",                 "措"],
+          ["記録",         "保安についての記録",                                 "記"],
         ]}
-        note="第4条の保護対象に『植物』が入っている点が頻出ひっかけ"
+        note="頭文字「職保巡措記」で5語暗記。運転操作・保全方法は施設内容に応じ追加"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
-        { wrong: "保安規程の変更は事前届出",            correct: "変更は『遅滞なく』届出（事後届出も含む）" },
-        { wrong: "電路は必ず大地から絶縁する",          correct: "『構造上やむを得ない場合』は例外あり（第2条但書）" },
-        { wrong: "第4条が守るのは他の電線路のみ",       correct: "他の電気工作物・植物・電線路の3点セット" },
+        { wrong: "保安規程は自家用電気工作物の設置者のみが対象",  correct: "『事業用電気工作物（小規模事業用を除く）の設置者』が対象。電気事業者の事業用設備も含む" },
+        { wrong: "保安規程の変更は事前届出",                      correct: "変更は『遅滞なく』届出（事後届出も含む）" },
+        { wrong: "小規模事業用電気工作物にも保安規程が必要",      correct: "KAISEI-2022-001 で対象外（小規模事業用は基礎情報届出制）" },
+        { wrong: "電気料金の算定方法も保安規程の必須記載",        correct: "保安規程は『安全確保のための社内ルール』。料金算定は対象外" },
       ]} />
 
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
-        { q: "保安規程の届出時期は？",              a: "使用開始前（事前届出）" },
-        { q: "保安規程の変更時の届出は？",          a: "遅滞なく（事後でも可）" },
-        { q: "第3条で防止すべき3つの危険は？",      a: "熱・爆発・火災" },
-        { q: "保安規程は一般用電気工作物にも必要？",a: "不要（自家用のみ）" },
-        { q: "第2条の例外規定は？",                 a: "『構造上やむを得ない場合はこの限りでない』" },
+        { q: "保安規程の対象者は？",                    a: "事業用電気工作物（小規模事業用を除く）を設置する者" },
+        { q: "保安規程の届出時期は？",                  a: "使用開始前（事前届出）" },
+        { q: "保安規程の変更時の届出は？",              a: "遅滞なく（事後でも可）" },
+        { q: "施行規則第50条の核心7項目の頭文字は？",   a: "職保巡措記（職務分掌・保安教育・巡視点検・非常時措置・記録）" },
+        { q: "小規模事業用電気工作物に保安規程は必要？",a: "不要（KAISEI-2022-001 で対象外）" },
       ]} />
 
       <DenkenWikiCTA
-        url="https://kfurufuru.github.io/denken-wiki/themes/hoan-gensoku/"
-        label="denken-wiki「保安原則・保安規程」を開く"
-        note="条文の正確な記載事項・電技省令の階層構造は denken-wiki が SOT。"
+        url="https://kfurufuru.github.io/denken-wiki/articles/jigyoho/42/"
+        label="denken-wiki「電気事業法第42条（保安規程）」を開く"
+        note="義務者範囲・施行規則第50条の記載事項・改正履歴は denken-wiki jigyoho/42 v1.2 が SOT。電技省令の絶縁原則（第5条）は別ページ参照。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。保安原則4条の暗記表を整備" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：義務者範囲「自家用→事業用（小規模事業用除く）」拡大（denken-wiki Phase B反映）・保安原則と保安規程の混在解消・施行規則第50条由来の核心追加", reason: "denken-wiki jigyoho/42 v1.2 と整合" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "S・必須テーマ。保安原則4条の暗記表を整備" },
+      ]} />
       <PageNav
         prevId="shunin-gijutsusya" prevTitle="主任技術者"
         nextId="shiyo-jishu-kensa" nextTitle="使用前自主検査"
@@ -7956,25 +7987,38 @@ function DensenSizePage({ onNav, data }) {
 }
 
 // ─────────────────────────────────────────────
-// 5-12. ShiyoJishuKensaPage（使用前自主検査・点検頻度・A）
+// 5-12. ShiyoJishuKensaPage（点検頻度（施設管理）・A）
+//   ※ ページIDは 'shiyo-jishu-kensa' のまま保持（リンク互換性のため）
+//   旧称「使用前自主検査」は内容と主題ミスマッチ（実態は通常運転中の月次/年次点検）
+//   2026-05-11 Phase Hoki-A 緊急修正：ページ名を「事業用電気工作物の点検頻度（施設管理）」に改名
 // ─────────────────────────────────────────────
 function ShiyoJishuKensaPage({ onNav, data }) {
+  const reformBox = {margin: '10px 0 14px', padding: '12px 16px', background: '#fff8e6', border: '1px solid #e0b85a', borderLeft: '4px solid #d49a2c', borderRadius: 8, fontSize: 13, lineHeight: 1.75};
+  const noteBox   = {margin: '8px 0 14px', padding: '10px 14px', background: '#f5f7fb', border: '1px solid #d4dbe6', borderLeft: '4px solid #6c84a8', borderRadius: 6, fontSize: 12.5, lineHeight: 1.7, color: '#34465e'};
   return (
     <div>
+      <h1 style={{fontSize: 22, margin: '4px 0 10px'}}>事業用電気工作物の点検頻度（施設管理）</h1>
+      <div style={noteBox}>
+        <strong>📌 ページ主題の整理</strong>：本ページは<strong>使用開始後の通常運転中の月次・年次点検</strong>（事業法第39条＋施行規則由来）を扱う。
+        工事完成後・使用開始前の<strong>「使用前自主検査」（事業法第51条）</strong>とは別制度。
+        旧ページ名「使用前自主検査」は内容ミスマッチのため改名（ページID <code>shiyo-jishu-kensa</code> はリンク互換性のため保持）。
+        第51条本来の解説は <a href="https://kfurufuru.github.io/denken-wiki/articles/jigyoho/51/" target="_blank" rel="noopener">denken-wiki §51</a> 参照。
+      </div>
+
       <GoalQuestion
         question="事業用電気工作物の月次点検頻度として正しいものはどれか"
         choices={["1回以上/週","1回以上/月","1回以上/3か月","1回以上/年"]}
         year="頻出"
-        note="点検頻度は月次・年次が基本。外部委託で月次→隔月に緩和"
+        note="原則は1月に1回以上。外部委託で隔月、改正で条件付き3月に1回以上に緩和（KAISEI-2025-001）"
       />
 
       <ConclusionBox>
         <ul>
-          <li><strong>月次点検</strong>: <strong>1回以上/月</strong>（事業用電気工作物の基本）</li>
+          <li><strong>月次点検</strong>: <strong>1回以上/月</strong>（事業用電気工作物の原則）</li>
           <li><strong>年次点検</strong>: <strong>1回以上/年</strong></li>
-          <li><strong>外部委託</strong>時は月次→<strong>隔月</strong>に緩和（廃止ではない）</li>
+          <li><strong>外部委託</strong>時は条件で<strong>隔月</strong> または <strong>3月に1回以上</strong>に緩和（<strong>KAISEI-2025-001</strong>・廃止ではない）</li>
           <li><strong>一般用</strong>は<strong>4年に1回</strong>の定期調査（電力会社が実施）</li>
-          <li>根拠: 電気事業法 第39条「常時技術基準に適合させよ」</li>
+          <li>根拠: 電気事業法 第39条「常時技術基準に適合させよ」＋施行規則・告示</li>
         </ul>
       </ConclusionBox>
 
@@ -7986,44 +8030,56 @@ function ShiyoJishuKensaPage({ onNav, data }) {
         examType="A問題"
         targets="R05・R02・H29"
         tags={["法令","点検","施設管理","頻出"]}
-        lastChecked="2026-05-08"
+        lastChecked="2026-05-11"
       />
+
+      <h2 id="reform">改正論点（KAISEI-2025-001）</h2>
+      <div style={reformBox}>
+        <strong>🟡 令和7年4月1日施行の改正</strong>：一定要件を満たす需要設備で外部委託する場合、月次点検頻度を <strong>3月に1回以上</strong>とできる場合がある（従来の「隔月」より長期化）。
+        <br/>ただし<strong>試験対策ではまず原則「1月に1回以上」を優先</strong>して覚える。R08上期以降は「外部委託の月次点検は最長何ヶ月か」で<strong>3月</strong>が新しい正答候補となるため、旧暗記「隔月が最大緩和」に固執しないこと。
+        <br/>典拠: denken-wiki <code>themes/shisetsu-kanri.md</code> L41,44,47 / <code>jigyoho/43.md</code> L599 / <code>reference/hourei-kaisei.md</code>
+      </div>
 
       <h2 id="tables">点検頻度一覧</h2>
       <MemTable
         headers={["点検内容","頻度","主体","根拠"]}
         rows={[
-          ["月次点検",     "1回以上/月", "設置者またはメーカ", "施行規則 第94条"],
-          ["年次点検",     "1回以上/年", "同上",              "同上"],
-          ["月次（外部委託）","隔月OK",   "外部委託業者",       "外部委託承認制度"],
-          ["定期調査（一般用）","4年に1回","電力会社",          "施行規則 第96条"],
+          ["月次点検",     "1回以上/月", "設置者または保安担当者", "事業法§39＋告示由来 [要再確認]"],
+          ["年次点検",     "1回以上/年", "同上",              "同上 [要再確認]"],
+          ["月次（外部委託）","隔月 または 3月に1回以上（改正）",   "電気保安法人／電気管理技術者",       "外部委託承認制度＋KAISEI-2025-001"],
+          ["定期調査（一般用）","4年に1回","電力会社",          "施行規則（第96条相当・要一次照合）"],
         ]}
-        note="『隔月』は月次の緩和であって廃止ではない。義務自体は継続"
+        note="『隔月』『3月』はいずれも月次の緩和であって廃止ではない。義務自体は継続。施行規則の条番号は denken-wiki SOT で『保安規程に頻度を定める義務（第94条）』『一般用の定期調査（第96条相当）』として整理されている範囲のみ確実。月次/年次の頻度自体の根拠は告示由来でありe-Gov一次照合の上で訂正予定（[要再確認]）。"
       />
 
       <h2 id="traps">よくあるひっかけ</h2>
       <TrapTable traps={[
-        { wrong: "月次点検は1回/3ヶ月でOK",                correct: "1回以上/月（毎月が最低基準）" },
-        { wrong: "外部委託すれば月次点検は廃止される",     correct: "隔月に緩和されるだけ（実施義務は継続）" },
+        { wrong: "月次点検は1回/3ヶ月でOK",                correct: "原則は1回以上/月（毎月が最低基準）。外部委託で改正により条件付き3月に1回以上が可能になっただけ" },
+        { wrong: "外部委託すれば月次点検は廃止される",     correct: "隔月または3月に1回以上に緩和されるだけ（実施義務は継続）" },
         { wrong: "一般用も設置者が4年に1回点検する",       correct: "一般用は電力会社が4年に1回調査" },
+        { wrong: "本ページは『使用前自主検査（第51条）』の解説である", correct: "ページIDは互換性保持のため shiyo-jishu-kensa のままだが、内容は通常運転中の月次/年次点検（施設管理）。第51条の使用前自主検査は denken-wiki §51 が正典" },
       ]} />
 
       <h2 id="quick-review">1分復習</h2>
       <QuickReview items={[
-        { q: "事業用の月次点検頻度は？",        a: "1回以上/月" },
-        { q: "外部委託時の月次点検頻度は？",    a: "隔月（2か月に1回）に緩和" },
+        { q: "事業用の月次点検頻度は？",        a: "原則 1回以上/月" },
+        { q: "外部委託時の月次点検頻度は？",    a: "隔月（2か月に1回）または改正で条件付き3月に1回以上（KAISEI-2025-001）" },
         { q: "一般用の定期調査頻度と主体は？",  a: "電力会社が4年に1回" },
         { q: "年次点検の頻度は？",              a: "1回以上/年" },
-        { q: "点検義務の法的根拠は？",          a: "電気事業法 第39条（技術基準への常時適合義務）" },
+        { q: "点検義務の法的根拠は？",          a: "電気事業法 第39条（技術基準への常時適合義務）＋施行規則・告示" },
+        { q: "本ページと『使用前自主検査』の違いは？", a: "本ページ＝使用開始後の通常運転中の点検／使用前自主検査（第51条）＝工事完成後・使用開始前の検査。別制度" },
       ]} />
 
       <DenkenWikiCTA
         url="https://kfurufuru.github.io/denken-wiki/themes/shisetsu-kanri/"
         label="denken-wiki「施設管理・点検体制」を開く"
-        note="点検項目の詳細・記録保存期間・変圧器全日効率の計算は denken-wiki が SOT。"
+        note="点検項目の詳細・記録保存期間・変圧器全日効率の計算は denken-wiki が SOT。第51条の使用前自主検査は別ページ（jigyoho/51）を参照。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "点検頻度の暗記表を整備" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：ページ名「使用前自主検査」と内容「月次点検」の主題ミスマッチを解消（案A：ページ名を施設管理に改名）・施行規則第94/96条の典拠を「要再確認」フラグ付きで整理・KAISEI-2025-001（3月特例）reformBox 追加", reason: "G2監査で🔴致命3件（主題ミスマッチ／架空条文典拠／改正未反映）指摘・誤答誘発リスク即時遮断" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "点検頻度の暗記表を整備" },
+      ]} />
       <PageNav
         prevId="hoan-kitei"  prevTitle="保安規程"
         nextId="jiko-hokoku" nextTitle="事故報告"
@@ -8429,7 +8485,7 @@ function DensenroPage({ onNav, data }) {
       <ConclusionBox>
         <ul>
           <li>離隔距離（建造物・道路上等）の数値は<strong>「離隔距離一覧」（rikkaku-ichiran）</strong>を参照</li>
-          <li><strong>横断時の高さ</strong>: 道路 <strong>6m 以上</strong> / 鉄道・軌道 <strong>5.5m 以上</strong> / 横断歩道橋上 <strong>3.5m 以上</strong></li>
+          <li><strong>横断時の高さ</strong>: 道路 <strong>6m 以上</strong>（低高圧共通）/ 鉄道・軌道 <strong>5.5m 以上</strong> / 横断歩道橋上は <strong>低圧3m / 高圧3.5m</strong></li>
           <li><strong>風圧荷重</strong>: 甲種（高温季・氷雪なし・全風）／乙種（低温季・氷雪付着・甲種の1/2風圧）／丙種（高温季・人家密集・甲種の1/2）</li>
           <li><strong>たるみ計算</strong>: D = W S² / 8T（スパン S² に比例）</li>
           <li><strong>安全率</strong>: 硬銅線 2.2 / 鉄柱 2.0 / 支線 1.5</li>
@@ -8444,7 +8500,7 @@ function DensenroPage({ onNav, data }) {
         examType="A問題・B問題（計算）"
         targets="R05・R02・H29・H27"
         tags={["架空電線路","高さ","風圧荷重","電技解釈第49条・第58条・第68条"]}
-        lastChecked="2026-05-08"
+        lastChecked="2026-05-11"
       />
 
       <h2 id="height">横断時の最低高さ</h2>
@@ -8453,10 +8509,10 @@ function DensenroPage({ onNav, data }) {
         rows={[
           ["道路横断",       "6 m 以上",   "6 m 以上",   "6 m 以上"],
           ["鉄道・軌道横断", "5.5 m 以上", "5.5 m 以上", "5.5 m 以上"],
-          ["横断歩道橋の上", "3.5 m 以上", "3.5 m 以上", "—"],
+          ["横断歩道橋の上", "3 m 以上",   "3.5 m 以上", "—"],
           ["その他（一般）", "5 m 以上",   "5 m 以上",   "5 m 以上"],
         ]}
-        note="道路6m＞鉄道5.5m＞その他5m＞横断歩道橋3.5m。「車両が通る道路が最高」と覚える"
+        note="道路6m＞鉄道5.5m＞その他5m＞横断歩道橋（低圧3m・高圧3.5m）。横断歩道橋のみ低圧と高圧で値が異なる（電技解釈第68条 68-1表）"
       />
 
       <h2 id="wind">風圧荷重の3区分（解釈第58条）</h2>
@@ -8504,7 +8560,10 @@ function DensenroPage({ onNav, data }) {
         note="支持物の種類別規定・電線太さの選定・地中電線路との比較は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・必須テーマ。高さ・風圧荷重・たるみ計算式を集約（rikkaku-ichiran と棲み分け）" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-11", content: "Phase Hoki-A 緊急修正：道路横断/横断歩道橋の高さを告示68-1表（経産省告示令和7年11月版・低高圧共通）に訂正", reason: "F2 横断歩道橋 低圧3.5m → 3m（高圧3.5mは正・電技解釈第68条 68-1表）" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "A・必須テーマ。高さ・風圧荷重・たるみ計算式を集約（rikkaku-ichiran と棲み分け）" },
+      ]} />
       <PageNav
         prevId="setsuchi-koji" prevTitle="接地工事（制度全体）"
         nextId="okunai-haisen" nextTitle="屋内配線"
