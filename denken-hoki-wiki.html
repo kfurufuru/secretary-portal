@@ -4560,7 +4560,7 @@ window.renderPage = function(page, navigate) {
     case 'chokuzen-suuchi':        return React.createElement(StubPage, { ...props, pageId: 'chokuzen-suuchi' });
     case 'chokuzen-formula':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-formula' });
     case 'chokuzen-hikkake':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-hikkake' });
-    case 'chokuzen-machigai':      return React.createElement(StubPage, { ...props, pageId: 'chokuzen-machigai' });
+    case 'chokuzen-machigai':      return React.createElement(MachigaiNotePage, { ...props, pageId: 'chokuzen-machigai' });
     case 'chokuzen-yougo':         return React.createElement(window.ChokuzenYougoPage, props);
     default:                       return React.createElement(StubPage, { ...props, pageId: page });
   }
@@ -4630,6 +4630,335 @@ function StubPage({ pageId, data, onNav }) {
         <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>作成中</div>
         <div style={{ fontSize: 13 }}>このページはまだ作成されていません。</div>
       </div>
+
+      <div style={{ marginTop: 24 }}>
+        <button
+          style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, padding: 0 }}
+          onClick={() => onNav('top')}
+        >
+          ← トップに戻る
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 2.5 MachigaiNotePage（間違いノート — localStorage集約）
+// localStorageキー: denken_check::<slug>::* および denken_check::hoki_<pageId>::*
+// 両wiki（denken-wiki / hoki-wiki）の理解度ボタン記録を横断スキャンして表示
+// ─────────────────────────────────────────────
+function MachigaiNotePage({ pageId, data, onNav }) {
+  const pageInfo = React.useMemo(() => {
+    if (!data) return null;
+    for (const ch of data.chapters) {
+      const p = ch.pages.find(p => p.id === pageId);
+      if (p) return { ...p, chTitle: ch.title };
+    }
+    return null;
+  }, [pageId, data]);
+
+  const STATUS_DEFS = {
+    understood: { label: '理解した', color: '#22c55e', icon: '✓' },
+    vague:      { label: 'うる覚え', color: '#f59e0b', icon: '?' },
+    review:     { label: '要確認',   color: '#f97316', icon: '!' },
+    wrong:      { label: '間違えた', color: '#dc2626', icon: '✗' },
+  };
+  const PRIORITY = { wrong: 0, review: 1, vague: 2, understood: 3 };
+
+  function collectRecords() {
+    const records = [];
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key || !key.startsWith('denken_check::')) continue;
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) continue;
+          const parsed = JSON.parse(raw);
+          if (!parsed || !parsed.status) continue;
+          records.push({
+            key,
+            status: parsed.status,
+            updatedAt: parsed.updatedAt || '',
+            articleUrl: parsed.articleUrl || '',
+            articleTitle: parsed.articleTitle || '(無題)',
+            itemTitle: parsed.itemTitle || '(無題項目)',
+            itemType: parsed.itemType || 'unknown',
+            memo: parsed.memo || '',
+            source: key.indexOf('::hoki_') >= 0 ? 'hoki' : 'denken',
+          });
+        } catch (e) { /* skip broken */ }
+      }
+    } catch (e) { /* localStorage unavailable */ }
+    return records;
+  }
+
+  const [filter, setFilter] = React.useState('priority');
+  const [records, setRecords] = React.useState(collectRecords);
+
+  React.useEffect(() => {
+    function handler(ev) {
+      if (!ev.key || ev.key.indexOf('denken_check::') === 0) {
+        setRecords(collectRecords());
+      }
+    }
+    window.addEventListener('storage', handler);
+    return function() { window.removeEventListener('storage', handler); };
+  }, []);
+
+  function formatTs(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    const y  = d.getFullYear();
+    const m  = String(d.getMonth() + 1).padStart(2, '0');
+    const dy = String(d.getDate()).padStart(2, '0');
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    return y + '-' + m + '-' + dy + ' ' + hh + ':' + mm;
+  }
+
+  function statusMatches(status, f) {
+    if (f === 'all') return true;
+    if (f === 'priority') return status === 'wrong' || status === 'review' || status === 'vague';
+    return status === f;
+  }
+
+  const counts = { wrong: 0, review: 0, vague: 0, understood: 0 };
+  records.forEach(r => { if (counts[r.status] != null) counts[r.status]++; });
+
+  const filtered = records
+    .filter(r => statusMatches(r.status, filter))
+    .sort((a, b) => {
+      const pa = PRIORITY[a.status] == null ? 9 : PRIORITY[a.status];
+      const pb = PRIORITY[b.status] == null ? 9 : PRIORITY[b.status];
+      if (pa !== pb) return pa - pb;
+      return (b.updatedAt || '').localeCompare(a.updatedAt || '');
+    });
+
+  function handleDelete(key) {
+    if (!confirm('この記録を削除しますか？')) return;
+    try { localStorage.removeItem(key); } catch (e) {}
+    setRecords(collectRecords());
+  }
+  function handleClearFiltered() {
+    if (!confirm('表示中の ' + filtered.length + ' 件を削除しますか？')) return;
+    filtered.forEach(r => { try { localStorage.removeItem(r.key); } catch (e) {} });
+    setRecords(collectRecords());
+  }
+
+  const FILTERS = [
+    { key: 'priority',   label: '要復習',   color: '#dc2626',                    count: counts.wrong + counts.review + counts.vague },
+    { key: 'wrong',      label: '間違えた', color: STATUS_DEFS.wrong.color,      count: counts.wrong },
+    { key: 'review',     label: '要確認',   color: STATUS_DEFS.review.color,     count: counts.review },
+    { key: 'vague',      label: 'うる覚え', color: STATUS_DEFS.vague.color,      count: counts.vague },
+    { key: 'understood', label: '理解した', color: STATUS_DEFS.understood.color, count: counts.understood },
+    { key: 'all',        label: 'すべて',   color: 'var(--accent)',              count: records.length },
+  ];
+
+  return (
+    <div>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 6 }}>
+          {pageInfo ? pageInfo.chTitle : '直前チェック'}
+        </div>
+        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>
+          {pageInfo ? pageInfo.title : '間違いノート'}
+        </h1>
+      </div>
+
+      <div style={{
+        background: 'var(--bg-elev)',
+        border: '1px solid var(--line)',
+        borderRadius: 'var(--radius)',
+        padding: '10px 14px',
+        marginBottom: 16,
+        fontSize: 13,
+        lineHeight: 1.7,
+        color: 'var(--ink-2)',
+      }}>
+        💡 各記事の理解度ボタンで「<strong style={{ color: '#dc2626' }}>間違えた</strong> / <strong style={{ color: '#f97316' }}>要確認</strong> / <strong style={{ color: '#f59e0b' }}>うる覚え</strong>」を選ぶと、ここに自動で集約されます。法規wiki（hoki）・電験wiki両方の記録を横断して表示。
+      </div>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16, alignItems: 'center' }}>
+        {FILTERS.map(f => {
+          const active = filter === f.key;
+          return (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => setFilter(f.key)}
+              style={{
+                padding: '4px 12px',
+                borderRadius: 999,
+                border: '1.5px solid ' + f.color,
+                background: active ? f.color : 'transparent',
+                color: active ? '#fff' : f.color,
+                cursor: 'pointer',
+                fontSize: 12,
+                fontWeight: 700,
+                fontFamily: 'inherit',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                transition: 'all 0.15s',
+              }}
+            >
+              {f.label}
+              <span style={{ fontSize: 11, opacity: 0.85 }}>({f.count})</span>
+            </button>
+          );
+        })}
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--ink-3)' }}>
+          合計 {records.length} 件 / 表示 {filtered.length} 件
+        </span>
+        {filtered.length > 0 && (
+          <button
+            type="button"
+            onClick={handleClearFiltered}
+            style={{
+              padding: '4px 12px',
+              borderRadius: 999,
+              border: '1px solid var(--line-2)',
+              background: 'transparent',
+              color: 'var(--ink-3)',
+              cursor: 'pointer',
+              fontSize: 12,
+              fontFamily: 'inherit',
+            }}
+          >
+            表示中をクリア
+          </button>
+        )}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div style={{
+          padding: '32px 16px',
+          textAlign: 'center',
+          color: 'var(--ink-3)',
+          fontSize: 13,
+          border: '1px dashed var(--line)',
+          borderRadius: 'var(--radius)',
+          background: 'var(--bg-elev)',
+        }}>
+          {filter === 'priority'
+            ? '🎉 復習が必要な項目はありません。各記事で理解度ボタンを押すとここに表示されます。'
+            : '該当する記録がありません。'}
+        </div>
+      ) : (
+        filtered.map(r => {
+          const def = STATUS_DEFS[r.status] || { label: r.status, color: '#999', icon: '?' };
+          return (
+            <div
+              key={r.key}
+              style={{
+                border: '1px solid var(--line)',
+                borderLeft: '4px solid ' + def.color,
+                borderRadius: 8,
+                padding: '12px 16px',
+                marginBottom: 10,
+                background: 'var(--bg-elev)',
+              }}
+            >
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', marginBottom: 6 }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 3,
+                  padding: '2px 10px',
+                  borderRadius: 999,
+                  background: def.color,
+                  color: '#fff',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.02em',
+                  lineHeight: 1.5,
+                }}>
+                  {def.icon} {def.label}
+                </span>
+                {r.articleUrl ? (
+                  <a
+                    href={r.articleUrl}
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: 'var(--accent)',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    {r.articleTitle}
+                  </a>
+                ) : (
+                  <span style={{ fontSize: 13, fontWeight: 700 }}>{r.articleTitle}</span>
+                )}
+                <span style={{
+                  fontSize: 10,
+                  padding: '1px 6px',
+                  borderRadius: 3,
+                  background: r.source === 'hoki' ? 'var(--accent-soft)' : 'var(--bg-2)',
+                  color: 'var(--ink-2)',
+                }}>
+                  {r.source === 'hoki' ? '法規wiki' : '電験wiki'}
+                </span>
+              </div>
+              <div style={{ fontSize: 13, lineHeight: 1.55 }}>{r.itemTitle}</div>
+              <div style={{
+                fontSize: 11,
+                color: 'var(--ink-3)',
+                marginTop: 6,
+                display: 'flex',
+                gap: 12,
+                alignItems: 'center',
+              }}>
+                <span style={{
+                  padding: '1px 6px',
+                  borderRadius: 3,
+                  background: 'var(--bg-2)',
+                  fontSize: 10,
+                  fontFamily: 'var(--mono)',
+                }}>
+                  {r.itemType}
+                </span>
+                <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+                  {formatTs(r.updatedAt)}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(r.key)}
+                  style={{
+                    marginLeft: 'auto',
+                    padding: '2px 8px',
+                    border: '1px solid var(--line-2)',
+                    borderRadius: 4,
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    fontSize: 11,
+                    color: 'var(--ink-3)',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  削除
+                </button>
+              </div>
+              {r.memo && (
+                <div style={{
+                  fontSize: 12,
+                  marginTop: 8,
+                  padding: '6px 10px',
+                  borderLeft: '2px solid var(--line)',
+                  background: 'var(--bg-2)',
+                  whiteSpace: 'pre-wrap',
+                  borderRadius: '0 4px 4px 0',
+                }}>
+                  📝 {r.memo}
+                </div>
+              )}
+            </div>
+          );
+        })
+      )}
 
       <div style={{ marginTop: 24 }}>
         <button
