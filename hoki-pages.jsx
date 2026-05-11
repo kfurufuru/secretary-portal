@@ -586,6 +586,29 @@ function HomePage({ onNav, data }) {
     return { mastered: mastered, learning: learning, untouched: untouched, total: total };
   }, []);
 
+  // 間違いノート進捗サマリー（localStorage denken_check::* から集計）
+  const mnStats = React.useMemo(function() {
+    let wrong = 0, review = 0, vague = 0, understood = 0;
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key || key.indexOf('denken_check::') !== 0) continue;
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) continue;
+          const parsed = JSON.parse(raw);
+          if (!parsed || !parsed.status) continue;
+          if (parsed.status === 'wrong') wrong++;
+          else if (parsed.status === 'review') review++;
+          else if (parsed.status === 'vague') vague++;
+          else if (parsed.status === 'understood') understood++;
+        } catch (e) {}
+      }
+    } catch (e) {}
+    const total = wrong + review + vague + understood;
+    return { wrong: wrong, review: review, vague: vague, understood: understood, total: total };
+  }, []);
+
   const DAILY_Q = {
     date: '2026年5月1日 · R5上期 改',
     q: '高圧電路に施設する変圧器の低圧側の中性点に施す接地工事は、原則として何種接地工事か。',
@@ -673,8 +696,9 @@ function HomePage({ onNav, data }) {
 
         {/* 前回のつづきカード（localStorage hoki_lastSeen_* から動的生成） */}
         {(() => {
+          // 直前チェック系（chokuzen-*）は学習ページではないので「前回のつづき」対象から除外
           const allPages = (data?.chapters || []).flatMap(ch =>
-            (ch.pages || []).filter(p => p.id !== 'top').map(p => ({ ...p, chTitle: ch.title }))
+            (ch.pages || []).filter(p => p.id !== 'top' && p.id.indexOf('chokuzen-') !== 0).map(p => ({ ...p, chTitle: ch.title }))
           );
           let lastPage = null;
           let lastTime = 0;
@@ -739,6 +763,35 @@ function HomePage({ onNav, data }) {
           </div>
           <button className="btn primary" onClick={() => onNav('chokuzen-yougo')} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
             クイズを始める →
+          </button>
+        </div>
+
+        {/* ====== 間違いノート クイックアクセスカード（用語クイズと同形式） ====== */}
+        <div style={{ marginTop: 12, padding: '14px 18px', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderLeft: '4px solid #dc2626', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, minWidth: 160 }}>
+            <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, letterSpacing: '0.06em', marginBottom: 4 }}>直前チェック · 理解度トラッキング</div>
+            <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>
+              📕 間違いノート <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--ink-3)' }}>記録 {mnStats.total}件</span>
+            </div>
+            <div style={{ height: 5, background: 'var(--border)', borderRadius: 3, marginBottom: 8, overflow: 'hidden', display: 'flex' }}>
+              {mnStats.total > 0 && (
+                <React.Fragment>
+                  <div style={{ width: (mnStats.wrong / mnStats.total * 100) + '%', height: '100%', background: '#dc2626' }} />
+                  <div style={{ width: (mnStats.review / mnStats.total * 100) + '%', height: '100%', background: '#f97316' }} />
+                  <div style={{ width: (mnStats.vague / mnStats.total * 100) + '%', height: '100%', background: '#f59e0b' }} />
+                  <div style={{ width: (mnStats.understood / mnStats.total * 100) + '%', height: '100%', background: '#22c55e' }} />
+                </React.Fragment>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: 12, fontSize: 12, flexWrap: 'wrap' }}>
+              <span style={{ color: '#dc2626', fontWeight: 600 }}>✗ {mnStats.wrong}件 間違えた</span>
+              <span style={{ color: '#f97316', fontWeight: 600 }}>! {mnStats.review}件 要確認</span>
+              <span style={{ color: '#8a6500', fontWeight: 600 }}>? {mnStats.vague}件 うる覚え</span>
+              <span style={{ color: '#1a6e1a', fontWeight: 600 }}>✓ {mnStats.understood}件 理解した</span>
+            </div>
+          </div>
+          <button className="btn primary" onClick={() => onNav('chokuzen-machigai')} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+            復習を始める →
           </button>
         </div>
       </section>
