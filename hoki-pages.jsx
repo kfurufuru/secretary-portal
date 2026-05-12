@@ -273,6 +273,11 @@ function MachigaiNotePage({ pageId, data, onNav }) {
       }
       // self-check-buttons / self-check-memo（理解度UIの再描画）は除去してクリーンに
       foundEl.querySelectorAll('.self-check-buttons, .self-check-memo').forEach(n => n.remove());
+      // 解答・解説の details / admonition を強制展開（閉じ状態だと中身が見えないため）
+      // 1. fetched ブロック自体が <details> なら open
+      if (foundEl.tagName === 'DETAILS') foundEl.setAttribute('open', '');
+      // 2. ネストされた <details>（解答・解説など）を全展開
+      foundEl.querySelectorAll('details').forEach(d => d.setAttribute('open', ''));
       setExpanded(prev => Object.assign({}, prev, { [r.key]: foundEl.outerHTML }));
     } catch (e) {
       setExpanded(prev => Object.assign({}, prev, { [r.key]: 'error' }));
