@@ -505,17 +505,25 @@ function QuickReview({ items, pageId }) {
     const cur = records[i];
     let next;
     if (cur && cur.status === status) {
+      // toggle OFF: 完全削除（denken-wiki self-check.js は memo を残すが
+      //   hoki QuickReview には memo 機能が無いので削除で十分）。
+      //   reviewCount/firstSeenAt も消える（同じ問題を別途やり直すと再カウント）。
       try { localStorage.removeItem(storageKey(i)); } catch (e) {}
       next = null;
     } else {
-      const payload = {
+      const nowIso = new Date().toISOString();
+      // ⚠ payload schema: denken-wiki/docs/javascripts/self-check.js と同期必須
+      //   詳細: build-hoki-wiki.py のヘッダコメント参照
+      const payload = Object.assign({}, cur || {}, {
         status,
-        updatedAt: new Date().toISOString(),
+        updatedAt: nowIso,
         articleUrl: typeof location !== 'undefined' ? (location.origin + location.pathname + '#' + slug) : '',
         articleTitle: typeof document !== 'undefined' ? document.title : '',
         itemTitle: 'Q' + (i + 1) + ': ' + limited[i].q,
         itemType: 'quickreview',
-      };
+        firstSeenAt: (cur && cur.firstSeenAt) || nowIso,
+        reviewCount: ((cur && cur.reviewCount) || 0) + 1,
+      });
       try { localStorage.setItem(storageKey(i), JSON.stringify(payload)); } catch (e) {}
       next = payload;
     }

@@ -169,6 +169,11 @@ function MachigaiNotePage({ pageId, data, onNav }) {
   };
   const PRIORITY = { wrong: 0, review: 1, vague: 2, understood: 3 };
 
+  // 緊急度閾値（経験的初期値・エビデンス無し・運用しながら調整）
+  // 「wrong は 3日以内に復習すべき」等の数値は理論ではなく感覚値。
+  // 将来データが溜まれば個人別最適化を検討（次フェーズ）
+  const URGENCY_DAYS = { wrong: 3, review: 7, vague: 14, understood: 30 };
+
   function collectRecords() {
     const records = [];
     try {
@@ -189,12 +194,38 @@ function MachigaiNotePage({ pageId, data, onNav }) {
             itemTitle: parsed.itemTitle || '(無題項目)',
             itemType: parsed.itemType || 'unknown',
             memo: parsed.memo || '',
+            // 新規フィールド（古い記録は未定義 → フォールバック）
+            firstSeenAt: parsed.firstSeenAt || parsed.updatedAt || '',
+            reviewCount: parsed.reviewCount || 0,
             source: key.indexOf('::hoki_') >= 0 ? 'hoki' : 'denken',
           });
         } catch (e) { /* skip broken */ }
       }
     } catch (e) { /* localStorage unavailable */ }
     return records;
+  }
+
+  function daysSince(iso) {
+    if (!iso) return 0;
+    const t = new Date(iso).getTime();
+    if (isNaN(t)) return 0;
+    return (Date.now() - t) / 86400000;
+  }
+
+  function relTime(iso) {
+    if (!iso) return '';
+    const days = daysSince(iso);
+    if (days < 1)   return '1日以内';
+    if (days < 7)   return Math.floor(days) + '日前';
+    if (days < 30)  return Math.floor(days / 7) + '週間前';
+    if (days < 365) return Math.floor(days / 30) + 'ヶ月前';
+    return Math.floor(days / 365) + '年前';
+  }
+
+  function urgencyScore(r) {
+    const threshold = URGENCY_DAYS[r.status];
+    if (!threshold || !r.updatedAt) return 0;
+    return daysSince(r.updatedAt) / threshold;
   }
 
   const [filter, setFilter] = React.useState('priority');
@@ -233,11 +264,16 @@ function MachigaiNotePage({ pageId, data, onNav }) {
 
   const filtered = records
     .filter(r => statusMatches(r.status, filter))
+    .map(r => Object.assign({}, r, { _urgency: urgencyScore(r) }))
     .sort((a, b) => {
+      // 1. 緊急度スコア降順（経過日数 / 閾値）— 超緊急が最上位
+      if (Math.abs(a._urgency - b._urgency) > 0.01) return b._urgency - a._urgency;
+      // 2. status priority（既存ロジック踏襲）
       const pa = PRIORITY[a.status] == null ? 9 : PRIORITY[a.status];
       const pb = PRIORITY[b.status] == null ? 9 : PRIORITY[b.status];
       if (pa !== pb) return pa - pb;
-      return (b.updatedAt || '').localeCompare(a.updatedAt || '');
+      // 3. 古い順（同条件なら長期放置を上に）
+      return (a.updatedAt || '').localeCompare(b.updatedAt || '');
     });
 
   function handleDelete(key) {
@@ -405,6 +441,20 @@ function MachigaiNotePage({ pageId, data, onNav }) {
                 }}>
                   {r.source === 'hoki' ? '法規wiki' : '電験wiki'}
                 </span>
+                {r._urgency >= 2 && (
+                  <span style={{
+                    fontSize: 11,
+                    padding: '2px 8px',
+                    borderRadius: 999,
+                    background: '#dc2626',
+                    color: '#fff',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.5,
+                  }}>
+                    {Math.floor(daysSince(r.updatedAt))}日経過
+                  </span>
+                )}
               </div>
               <div style={{ fontSize: 13, lineHeight: 1.55 }}>{r.itemTitle}</div>
               <div style={{
@@ -426,6 +476,13 @@ function MachigaiNotePage({ pageId, data, onNav }) {
                 </span>
                 <span style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {formatTs(r.updatedAt)}
+                </span>
+                <span style={{
+                  fontVariantNumeric: 'tabular-nums',
+                  color: r._urgency >= 2 ? 'var(--ink-3)' : (r._urgency >= 1 ? '#f97316' : 'var(--ink-3)'),
+                  fontWeight: r._urgency >= 1 && r._urgency < 2 ? 700 : 400,
+                }}>
+                  ({relTime(r.updatedAt)})
                 </span>
                 <button
                   type="button"

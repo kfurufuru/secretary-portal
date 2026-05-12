@@ -12,6 +12,14 @@ build-hoki-wiki.py — 電験3種 法規Wiki HTML組み立てスクリプト
 
 着手前防衛策（ひろゆき指摘）: bundle前に .js ファイルを node --check で構文検証。
 JSX は Babel CDN がブラウザで検証するため事前検証スキップ。
+
+⚠ denken_check::* localStorage payload schema 変更時の同期更新リマインダー：
+   両wiki共通の理解度ボタン payload（status/updatedAt/firstSeenAt/reviewCount 等）の
+   書き手は **2ファイルに分散** しているため、片方変更時は必ずもう片方も同期する。
+     1. hoki-components.jsx の QuickReview コンポーネント（このリポジトリ）
+     2. denken-wiki/docs/javascripts/self-check.js（別リポジトリ）
+   読み手（MachigaiNotePage in hoki-pages.jsx）も同様の追従が必要。
+   片側忘れの再発防止：マンガー反転思考 2026-05-13。
 """
 import json, os, shutil, subprocess, sys
 
