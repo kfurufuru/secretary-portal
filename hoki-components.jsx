@@ -992,14 +992,20 @@ function Sidebar({ data, page, onNav }) {
               >
                 <span style={{
                   background: RANK_COLORS[t.rank] || 'var(--ink-3)',
-                  color: '#fff', fontSize: 9, fontWeight: 700,
-                  padding: '1px 5px', borderRadius: 3, minWidth: 14, textAlign: 'center',
+                  color: '#fff',
+                  fontSize: t.rank === 'S' ? 9 : 8.5,
+                  fontWeight: 700,
+                  padding: t.rank === 'S' ? '1px 5px' : '0 4px',
+                  borderRadius: 3,
+                  minWidth: t.rank === 'S' ? 14 : 12,
+                  textAlign: 'center',
+                  opacity: t.rank === 'S' ? 1 : 0.85,
                 }}>{t.rank}</span>
                 {!isInternal && t.mkdocs && (
                   <span style={{ fontSize: 9, color: 'var(--ink-3)' }} title="外部Wiki（denken-wiki/themes）へ">↗</span>
                 )}
                 <span style={{ flex: 1, lineHeight: 1.4 }}>{t.label}</span>
-                <span style={{ fontSize: 10, color: 'var(--ink-3)', fontVariantNumeric: 'tabular-nums' }}>{t.count}</span>
+                <span style={{ fontSize: 9.5, color: 'var(--ink-3)', fontVariantNumeric: 'tabular-nums', opacity: 0.75 }}>{t.count}</span>
               </div>
             );
           })}
@@ -1439,6 +1445,59 @@ function TopBar({ page, onNav }) {
 }
 
 // ============================================================
+// 2-bis. BottomNav（スマホ専用・下部固定ショートカット）
+// ============================================================
+// CSSは hoki-head-template.html の .bottom-nav で制御（900px以下のみ表示）。
+// サイドバーの代替ではなく、スマホでサイドバーが消える時の遷移ショートカット。
+
+function BottomNav({ page, onNav }) {
+  const items = [
+    { key: 'top',      label: 'TOP',  icon: '🏠', target: 'top' },
+    { key: 'hot',      label: '頻出', icon: '🔥', target: 'top', anchor: 'hp-topics' },
+    { key: 'search',   label: '検索', icon: '🔍', target: '__search__' },
+    { key: 'review',   label: '復習', icon: '📓', target: 'chokuzen-machigai' },
+    { key: 'glossary', label: '用語', icon: '💡', target: 'chokuzen-yougo' },
+  ];
+
+  const handle = (it) => {
+    if (it.target === '__search__') {
+      const input = document.querySelector('.search input')
+        || document.querySelector('input[placeholder*="検索"]');
+      if (input) {
+        try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
+        setTimeout(() => { try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); } }, 200);
+      }
+      return;
+    }
+    if (it.anchor) {
+      location.hash = it.target + ':' + it.anchor;
+    } else {
+      onNav && onNav(it.target);
+    }
+  };
+
+  return (
+    <nav className="bottom-nav" aria-label="モバイル下部ナビ">
+      {items.map((it) => {
+        // 「TOP」と「頻出」は両方 target='top' なので、anchor 有無で識別する
+        const active = it.key === 'top' && it.target === page;
+        return (
+          <button
+            key={it.key}
+            className={'bottom-nav-item' + (active ? ' active' : '')}
+            onClick={() => handle(it)}
+            aria-label={it.label}
+          >
+            <span className="icon" aria-hidden="true">{it.icon}</span>
+            <span>{it.label}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+// ============================================================
 // 3. Appコンポーネント（メインアプリ）
 // ============================================================
 
@@ -1505,6 +1564,7 @@ function App() {
         </div>
       </main>
       <TOC page={page} />
+      <BottomNav page={page} onNav={navigate} />
     </div>
   );
 }

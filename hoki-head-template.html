@@ -900,5 +900,40 @@
     font-size: 13px;
   }
 
+  /* ── 下部固定ナビ（スマホ専用） ── */
+  .bottom-nav { display: none; }
+  @media (max-width: 900px) {
+    .bottom-nav {
+      display: flex;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 30;
+      background: oklch(0.985 0.008 75 / 0.96);
+      backdrop-filter: saturate(1.2) blur(10px);
+      -webkit-backdrop-filter: saturate(1.2) blur(10px);
+      border-top: 1px solid var(--line);
+      padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+    .bottom-nav-item {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 6px 0;
+      font-size: 10.5px;
+      color: var(--ink-3);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      line-height: 1.1;
+    }
+    .bottom-nav-item.active { color: var(--accent); font-weight: 700; }
+    .bottom-nav-item .icon { font-size: 18px; line-height: 1; }
+    /* メイン本文に下部ナビ分の余白を確保（コンテンツが隠れないように） */
+    .content { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important; }
+  }
+  [data-theme="dark"] .bottom-nav {
+    background: oklch(0.20 0.010 60 / 0.96);
+  }
+
 </style>
 </head>
