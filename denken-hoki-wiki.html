@@ -9523,7 +9523,7 @@ function KakoDenryuPage({ onNav, data }) {
         note="「1.25倍＝60分」は30A以下のみ。50A超は120分に延びる（区分を問う問題が多い）"
       />
 
-      <h2 id="elb">漏電遮断器の種類と感度（解釈第37条）</h2>
+      <h2 id="elb">漏電遮断器の種類と感度（解釈第36条「地絡遮断装置の施設」・第37条「漏電遮断器の規格」）</h2>
       <MemTable
         headers={["分類","感度電流","動作時間","用途"]}
         rows={[
@@ -9566,7 +9566,10 @@ function KakoDenryuPage({ onNav, data }) {
         note="動作特性の物理的根拠（I²t特性・感度電流の選定根拠）は denken-wiki が SOT。"
       />
 
-      <UpdateLog entries={[{ date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・過電流遮断器の区分別動作時間と漏電遮断器の感度を集約" }]} />
+      <UpdateLog entries={[
+        { date: "2026-05-13", content: "Phase Hoki-B': hoki_check.py 検出の tag-body 整合修正 — 漏電遮断器セクション見出しに §36（地絡遮断装置の施設）を追記（tags 単独記載と本文の整合化）", reason: "hoki_check.py [tag] 唯一の検出案件・整合確保" },
+        { date: "2026-05-08", content: "スタブ→暗記Hubページに昇格", reason: "B・過電流遮断器の区分別動作時間と漏電遮断器の感度を集約" },
+      ]} />
       <PageNav
         prevId="okunai-haisen"    prevTitle="屋内配線"
         nextId="chichuu-densenro" nextTitle="地中電線路"
