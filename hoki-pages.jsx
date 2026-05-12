@@ -230,6 +230,54 @@ function MachigaiNotePage({ pageId, data, onNav }) {
 
   const [filter, setFilter] = React.useState('priority');
   const [records, setRecords] = React.useState(collectRecords);
+  // 各カードの問題本文展開状態: { [r.key]: 'loading' | 'error' | 'not-found' | htmlString }
+  const [expanded, setExpanded] = React.useState({});
+
+  // 元記事から該当問題ブロックを fetch して HTML を抜き出す
+  // 対象: denken-wiki kakomon (admonition.abstract) / selfcheck (details.question)
+  // hoki QuickReview は SPA で fetch しても本文取れないため未対応（itemTitle に問題文が含まれる）
+  async function toggleExpand(r) {
+    if (expanded[r.key]) {
+      // 閉じる
+      setExpanded(prev => {
+        const cp = Object.assign({}, prev);
+        delete cp[r.key];
+        return cp;
+      });
+      return;
+    }
+    if (!r.articleUrl) {
+      setExpanded(prev => Object.assign({}, prev, { [r.key]: 'not-found' }));
+      return;
+    }
+    setExpanded(prev => Object.assign({}, prev, { [r.key]: 'loading' }));
+    try {
+      const baseUrl = r.articleUrl.split('#')[0];
+      const resp = await fetch(baseUrl);
+      const text = await resp.text();
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      const needle = (r.itemTitle || '').trim();
+      let foundEl = null;
+      // 1. admonition.abstract (kakomon)
+      const adms = doc.querySelectorAll('div.admonition.abstract, div.admonition.question, details.question');
+      for (const el of adms) {
+        const title = (el.querySelector('summary, p.admonition-title, .admonition-title') || {}).textContent || '';
+        if (needle && (title.indexOf(needle) >= 0 || needle.indexOf(title.trim()) >= 0)) {
+          foundEl = el;
+          break;
+        }
+      }
+      if (!foundEl) {
+        setExpanded(prev => Object.assign({}, prev, { [r.key]: 'not-found' }));
+        return;
+      }
+      // self-check-buttons / self-check-memo（理解度UIの再描画）は除去してクリーンに
+      foundEl.querySelectorAll('.self-check-buttons, .self-check-memo').forEach(n => n.remove());
+      setExpanded(prev => Object.assign({}, prev, { [r.key]: foundEl.outerHTML }));
+    } catch (e) {
+      setExpanded(prev => Object.assign({}, prev, { [r.key]: 'error' }));
+    }
+  }
 
   React.useEffect(() => {
     function handler(ev) {
@@ -479,6 +527,52 @@ function MachigaiNotePage({ pageId, data, onNav }) {
                 )}
               </div>
               <div style={{ fontSize: 13, lineHeight: 1.55 }}>{r.itemTitle}</div>
+              {/* 問題を見る — fetch して該当ブロックをインライン展開（同タブで完結） */}
+              {r.source === 'denken' && r.articleUrl && (
+                <div style={{ marginTop: 8 }}>
+                  <button
+                    type="button"
+                    onClick={() => toggleExpand(r)}
+                    style={{
+                      padding: '3px 10px',
+                      border: '1px solid var(--line-2)',
+                      borderRadius: 6,
+                      background: 'transparent',
+                      color: 'var(--accent)',
+                      cursor: 'pointer',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    {expanded[r.key] ? '▲ 閉じる' : '▼ 問題を見る'}
+                  </button>
+                  {expanded[r.key] === 'loading' && (
+                    <span style={{ marginLeft: 10, fontSize: 11, color: 'var(--ink-3)' }}>読込中…</span>
+                  )}
+                  {expanded[r.key] === 'error' && (
+                    <span style={{ marginLeft: 10, fontSize: 11, color: '#dc2626' }}>取得失敗（記事リンクから確認）</span>
+                  )}
+                  {expanded[r.key] === 'not-found' && (
+                    <span style={{ marginLeft: 10, fontSize: 11, color: '#f97316' }}>該当ブロック未検出（記事リンクから確認）</span>
+                  )}
+                  {expanded[r.key] && expanded[r.key] !== 'loading' && expanded[r.key] !== 'error' && expanded[r.key] !== 'not-found' && (
+                    <div
+                      className="machigai-embedded-question"
+                      style={{
+                        marginTop: 10,
+                        padding: '10px 14px',
+                        background: 'var(--bg-2)',
+                        border: '1px solid var(--line)',
+                        borderRadius: 6,
+                        fontSize: 13,
+                        lineHeight: 1.7,
+                      }}
+                      dangerouslySetInnerHTML={{ __html: expanded[r.key] }}
+                    />
+                  )}
+                </div>
+              )}
               {/* 4ボタン理解度更新（feedback_self_check_4button_standard 準拠） */}
               <div style={{
                 display: 'flex', flexWrap: 'wrap', gap: 6,
@@ -738,7 +832,7 @@ function HomePage({ onNav, data }) {
     rank: 'S', tags: ['#高圧', '#頻出S'], avgRate: '71%',
   };
 
-  // HOT TOPICS は data/hoki-theme-ranking.json (10年) の S ランクのみ採用。
+  // HOT TOPICS は data/hoki-theme-ranking.json (10年) の S+A ランクを採用（rank昇順→count降順）。
   // ハードコードを廃止し、サイドバー「テーマ別」と同じ一次データから生成して
   // 「過去10年で20回」等の数値乖離を防ぐ（受験指導レビュー指摘の信頼性問題）。
   const ranking = (typeof window !== 'undefined' && window.HOKI_RANKING) || null;
@@ -751,7 +845,15 @@ function HomePage({ onNav, data }) {
   }, [data]);
   const hotTopics = React.useMemo(() => {
     if (!ranking || !ranking.windows || !ranking.windows['10y']) return [];
-    return ranking.windows['10y'].filter(t => t.rank === 'S');
+    const RANK_ORDER = { S: 0, A: 1 };
+    return ranking.windows['10y']
+      .filter(t => t.rank === 'S' || t.rank === 'A')
+      .slice()
+      .sort((a, b) => {
+        const dr = (RANK_ORDER[a.rank] ?? 9) - (RANK_ORDER[b.rank] ?? 9);
+        if (dr !== 0) return dr;
+        return (b.count || 0) - (a.count || 0);
+      });
   }, [ranking]);
   const MKDOCS_BASE_HOT = 'https://kfurufuru.github.io/denken-wiki/';
 
@@ -810,6 +912,84 @@ function HomePage({ onNav, data }) {
             </div>
           </div>
         </div>
+
+        {/* ====== 今日、何から始める？（初見ユーザー向け3CTA） ====== */}
+        {(() => {
+          const sCount = (ranking?.windows?.['10y'] || []).filter(t => t.rank === 'S').length;
+          const mnPending = mnStats.wrong + mnStats.review + mnStats.vague;
+          const glossaryRemaining = (yqStats.total || 0) - yqStats.mastered;
+          const ctaCards = [
+            {
+              key: 'hot',
+              icon: '🔥',
+              accent: 'var(--accent)',
+              eyebrow: 'STEP 1',
+              title: 'Sランク頻出から見る',
+              sub: sCount > 0 ? `${sCount}テーマ · 過去10年で頻出` : 'まず合格ラインに直結する論点',
+              cta: 'いま頻出を見る →',
+              onClick: () => {
+                const el = document.getElementById('hp-topics');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              },
+            },
+            {
+              key: 'review',
+              icon: '📓',
+              accent: '#dc2626',
+              eyebrow: 'STEP 2',
+              title: '間違いノートで復習',
+              sub: mnPending > 0 ? `要復習 ${mnPending}件（間違 ${mnStats.wrong}・要確認 ${mnStats.review}・うる覚え ${mnStats.vague}）` : 'まだ記録はゼロ。学習しながら自動で溜まります',
+              cta: '復習を始める →',
+              onClick: () => onNav && onNav('chokuzen-machigai'),
+            },
+            {
+              key: 'glossary',
+              icon: '💡',
+              accent: '#c8a830',
+              eyebrow: 'STEP 3',
+              title: '用語クイズで土台固め',
+              sub: yqStats.total > 0 ? `${yqStats.total}語中 マスター ${yqStats.mastered}・残 ${Math.max(0, glossaryRemaining)}` : '法規の基本用語をクイズ形式で',
+              cta: '用語クイズへ →',
+              onClick: () => onNav && onNav('chokuzen-yougo'),
+            },
+          ];
+          return (
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 700, letterSpacing: '0.08em', marginBottom: 8 }}>TODAY · 何から始める？</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
+                {ctaCards.map(c => (
+                  <button
+                    key={c.key}
+                    onClick={c.onClick}
+                    style={{
+                      textAlign: 'left',
+                      background: 'var(--bg-elev)',
+                      border: '1px solid var(--border)',
+                      borderLeft: `4px solid ${c.accent}`,
+                      borderRadius: 'var(--radius)',
+                      padding: '14px 16px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 6,
+                      transition: 'border-color 0.15s, transform 0.05s',
+                      fontFamily: 'inherit',
+                      color: 'inherit',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 18 }} aria-hidden="true">{c.icon}</span>
+                      <span style={{ fontSize: 10, color: c.accent, fontWeight: 700, letterSpacing: '0.08em' }}>{c.eyebrow}</span>
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: 15, lineHeight: 1.35 }}>{c.title}</div>
+                    <div style={{ fontSize: 12, color: 'var(--ink-2)', lineHeight: 1.5, flex: 1 }}>{c.sub}</div>
+                    <div style={{ fontSize: 12, color: c.accent, fontWeight: 700, marginTop: 4 }}>{c.cta}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* 前回のつづきカード（localStorage hoki_lastSeen_* から動的生成） */}
         {(() => {
@@ -1107,13 +1287,13 @@ function HomePage({ onNav, data }) {
         </div>
       </section>
 
-      {/* ====== 頻出テーマ（Sランクのみ・kakomon.yml実データ） ====== */}
+      {/* ====== 頻出テーマ（S+A・kakomon.yml実データ） ====== */}
       <section style={{ marginBottom: 40 }} id="hp-topics">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 4 }}>HOT TOPICS</div>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Sランク頻出テーマ</h2>
-            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年（H28-R07）kakomon.yml 集計の上位S群。詳細はサイドバー「分野で探す」で5/10/15年切替。</p>
+            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>頻出テーマ（S / A）</h2>
+            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-2)' }}>過去10年（H28-R07）kakomon.yml 集計の S＋A 群。Sランクが先頭、続けてAランク。詳細はサイドバー「分野で探す」で5/10/15年切替。</p>
           </div>
         </div>
         {hotTopics.length === 0 ? (
