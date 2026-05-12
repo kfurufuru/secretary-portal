@@ -758,14 +758,15 @@ function ExamCountdownBanner() {
     );
   }
   const color = daysLeft <= 14 ? '#d95454' : daysLeft <= 30 ? '#e68b17' : daysLeft <= 60 ? '#e6a817' : 'var(--accent)';
-  // フェーズ定義（境界日数の降順・タイムライン用 + ラベル）
+  // フェーズ定義（基礎固めは既習者前提で除外・109日時点は「過去問演習期」に再カリブレーション）
+  // 境界日数の降順・タイムライン左から右の順
   const PHASES = [
-    { id: 'foundation', label: '基礎固め',  full: '基礎固め期（章立て学習＋用語整理）',   startDays: Infinity, endDays: 91 },
-    { id: 'building',   label: '実力養成',  full: '実力養成期（B問題集中＋表暗記）',     startDays: 90,       endDays: 61 },
-    { id: 'polish',     label: '仕上げ',    full: '仕上げ期（B問題反復＋頻出論点）',     startDays: 60,       endDays: 31 },
-    { id: 'pre-a',      label: '直前A',     full: '直前期A（弱点補強＋通し演習）',       startDays: 30,       endDays: 15 },
-    { id: 'pre-b',      label: '直前B',     full: '直前期B（表暗記・過去問総ざらい）',   startDays: 14,       endDays: 8 },
-    { id: 'final',      label: '最終週',    full: '最終週（弱点だけ・新規禁止）',         startDays: 7,        endDays: 1 },
+    { id: 'kakomon',   label: '過去問演習',  full: '過去問演習期（過去問＋弱点復習中心・新規は最小）',     startDays: Infinity, endDays: 91 },
+    { id: 'building',  label: '実力養成',    full: '実力養成期（弱点補強＋B問題反復）',                   startDays: 90,       endDays: 61 },
+    { id: 'polish',    label: '仕上げ',      full: '仕上げ期（B問題反復＋頻出論点総ざらい）',             startDays: 60,       endDays: 31 },
+    { id: 'pre-a',     label: '直前A',       full: '直前期A（通し演習＋弱点ノート）',                     startDays: 30,       endDays: 15 },
+    { id: 'pre-b',     label: '直前B',       full: '直前期B（表暗記再確認＋過去問総ざらい）',             startDays: 14,       endDays: 8 },
+    { id: 'final',     label: '最終週',      full: '最終週（弱点だけ・新規禁止）',                         startDays: 7,        endDays: 1 },
   ];
   const currentPhaseIdx = PHASES.findIndex(p => daysLeft >= p.endDays && daysLeft <= p.startDays);
   const currentPhase = currentPhaseIdx >= 0 ? PHASES[currentPhaseIdx] : PHASES[0];
@@ -777,9 +778,15 @@ function ExamCountdownBanner() {
   const examWday = WD[examDate.getDay()];
   // 残日数の桁分解（D-109 を D - 1 0 9 と表示するため）
   const dStr = String(daysLeft);
-  // フェーズタイムライン上の位置（基礎固め期は120日上限として頭打ち表示）
-  const TIMELINE_MAX = 120;
-  const positionPct = Math.min(100, Math.max(0, (1 - Math.min(daysLeft, TIMELINE_MAX) / TIMELINE_MAX) * 100));
+  // タイムラインは6フェーズ均等分割（各 1/6）＋ 現フェーズ内の進行率で補間
+  // 過去問演習期（最左セグメント）の左端は 150日とみなす（それより前は頭打ち）
+  const PHASE_LEFT_CAP_DAYS = 150;
+  const phaseIdxForPos = Math.max(0, currentPhaseIdx);
+  const phaseStartDays = phaseIdxForPos === 0 ? PHASE_LEFT_CAP_DAYS : PHASES[phaseIdxForPos].startDays;
+  const phaseEndDays = PHASES[phaseIdxForPos].endDays;
+  const phaseSpan = Math.max(1, phaseStartDays - phaseEndDays);
+  const intraRatio = Math.min(1, Math.max(0, (phaseStartDays - daysLeft) / phaseSpan));
+  const positionPct = ((phaseIdxForPos + intraRatio) / PHASES.length) * 100;
   return (
     <div style={{
       marginBottom: 24,
