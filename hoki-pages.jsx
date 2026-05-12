@@ -281,6 +281,28 @@ function MachigaiNotePage({ pageId, data, onNav }) {
     try { localStorage.removeItem(key); } catch (e) {}
     setRecords(collectRecords());
   }
+  // カード内4ボタンから直接ステータス更新（記事に飛ばずに復習完結）
+  // ⚠ payload schema: hoki-components.jsx QuickReview / self-check.js と同期必須
+  function handleStatusChange(r, newStatus) {
+    try {
+      const raw = localStorage.getItem(r.key);
+      const existing = raw ? JSON.parse(raw) : {};
+      if (existing.status === newStatus) {
+        // toggle off — 完全削除（カードもリストから消える）
+        localStorage.removeItem(r.key);
+      } else {
+        const nowIso = new Date().toISOString();
+        const payload = Object.assign({}, existing, {
+          status: newStatus,
+          updatedAt: nowIso,
+          firstSeenAt: existing.firstSeenAt || nowIso,
+          reviewCount: (existing.reviewCount || 0) + 1,
+        });
+        localStorage.setItem(r.key, JSON.stringify(payload));
+      }
+      setRecords(collectRecords());
+    } catch (e) { /* ignore */ }
+  }
   function handleClearFiltered() {
     if (!confirm('表示中の ' + filtered.length + ' 件を削除しますか？')) return;
     filtered.forEach(r => { try { localStorage.removeItem(r.key); } catch (e) {} });
@@ -457,6 +479,44 @@ function MachigaiNotePage({ pageId, data, onNav }) {
                 )}
               </div>
               <div style={{ fontSize: 13, lineHeight: 1.55 }}>{r.itemTitle}</div>
+              {/* 4ボタン理解度更新（feedback_self_check_4button_standard 準拠） */}
+              <div style={{
+                display: 'flex', flexWrap: 'wrap', gap: 6,
+                marginTop: 10, paddingTop: 8,
+                borderTop: '1px dashed var(--line)',
+                alignItems: 'center',
+              }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-2)', marginRight: 2 }}>理解度を更新:</span>
+                {['understood','vague','review','wrong'].map(sk => {
+                  const sdef = STATUS_DEFS[sk];
+                  const active = r.status === sk;
+                  return (
+                    <button
+                      key={sk}
+                      type="button"
+                      onClick={() => handleStatusChange(r, sk)}
+                      title={active ? 'もう一度押すと記録削除' : sdef.label + 'に更新'}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 3,
+                        padding: '3px 10px',
+                        borderRadius: 999,
+                        border: '1.5px solid ' + sdef.color,
+                        background: active ? sdef.color : 'transparent',
+                        color: active ? '#fff' : sdef.color,
+                        cursor: 'pointer',
+                        fontWeight: 700, fontSize: 11,
+                        fontFamily: 'inherit',
+                        lineHeight: 1.4,
+                        transition: 'all 0.15s',
+                        boxShadow: active ? '0 2px 6px rgba(0,0,0,0.18)' : 'none',
+                      }}
+                    >
+                      <span style={{ fontWeight: 800, fontSize: 12, lineHeight: 1, width: '1em', textAlign: 'center' }}>{sdef.icon}</span>
+                      <span>{sdef.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
               <div style={{
                 fontSize: 11,
                 color: 'var(--ink-3)',
