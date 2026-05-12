@@ -4871,14 +4871,36 @@ function MachigaiNotePage({ pageId, data, onNav }) {
         setExpanded(prev => Object.assign({}, prev, { [r.key]: 'not-found' }));
         return;
       }
-      // self-check-buttons / self-check-memo（理解度UIの再描画）は除去してクリーンに
-      foundEl.querySelectorAll('.self-check-buttons, .self-check-memo').forEach(n => n.remove());
-      // 解答・解説の details / admonition を強制展開（閉じ状態だと中身が見えないため）
-      // 1. fetched ブロック自体が <details> なら open
-      if (foundEl.tagName === 'DETAILS') foundEl.setAttribute('open', '');
-      // 2. ネストされた <details>（解答・解説など）を全展開
-      foundEl.querySelectorAll('details').forEach(d => d.setAttribute('open', ''));
-      setExpanded(prev => Object.assign({}, prev, { [r.key]: foundEl.outerHTML }));
+      // 問題ブロック + 直後の「解答・解説」兄弟要素を収集
+      // !!! abstract "問題" → <div class="admonition abstract">
+      // ??? success "解答・解説" → <details class="success">  ← 次兄弟として配置される
+      const ANSWER_RE = /解答|解説|答え|ヒント|補足|ポイント/;
+      const collected = [foundEl];
+      let sib = foundEl.nextElementSibling;
+      for (let i = 0; sib && i < 5; i++) {
+        // 次の問題ブロック or 見出しに当たったら停止
+        if (/^H[1-6]$/.test(sib.tagName)) break;
+        if (sib.matches && sib.matches('div.admonition.abstract, div.admonition.question, details.question')) break;
+        const isCandidate = sib.tagName === 'DETAILS' || (sib.matches && sib.matches('.admonition'));
+        if (isCandidate) {
+          const titleEl = sib.querySelector('summary, .admonition-title, p.admonition-title');
+          const title = titleEl ? titleEl.textContent : '';
+          if (ANSWER_RE.test(title)) {
+            collected.push(sib);
+            sib = sib.nextElementSibling;
+            continue;
+          }
+        }
+        break;
+      }
+      // 収集した全ブロックをクリーンアップ & 強制展開（閉じ状態だと中身が見えない）
+      collected.forEach(el => {
+        el.querySelectorAll('.self-check-buttons, .self-check-memo').forEach(n => n.remove());
+        if (el.tagName === 'DETAILS') el.setAttribute('open', '');
+        el.querySelectorAll('details').forEach(d => d.setAttribute('open', ''));
+      });
+      const html = collected.map(el => el.outerHTML).join('\n');
+      setExpanded(prev => Object.assign({}, prev, { [r.key]: html }));
     } catch (e) {
       setExpanded(prev => Object.assign({}, prev, { [r.key]: 'error' }));
     }
