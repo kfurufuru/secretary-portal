@@ -780,5 +780,115 @@
     "num": "8.5",
     "navTarget": "chokuzen-yougo",
     "kind": "glossary"
+  },
+  {
+    "id": "glossary-kouatsu",
+    "title": "高圧",
+    "yomi": "こうあつ",
+    "meaning": "交流600V超〜7,000V以下、又は直流750V超〜7,000V以下の電圧区分（電技省令第2条）",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-kikai-kigu",
+    "title": "機械器具",
+    "yomi": "きかいきぐ",
+    "meaning": "変圧器・開閉器・コンデンサ・断路器 等の電気機器全般。第21条主文括弧書きで「これに附属する高圧電線（ケーブル以外）」も含む定義拡張あり",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-saku-hei-tou",
+    "title": "さく・へい等",
+    "yomi": "さく・へいとう",
+    "meaning": "周囲を物理的に囲む障壁（第21条二号 イ）。素材は問わないが「適当な」＝用途に耐える性能を要する",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-kiken-de-aru-mune",
+    "title": "危険である旨の表示",
+    "yomi": "きけんであるむねのひょうじ",
+    "meaning": "第21条二号 ハで規定される警告掲示。条文の正確な表現は「危険である旨」",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-juuden-bubun",
+    "title": "充電部分",
+    "yomi": "じゅうでんぶぶん",
+    "meaning": "通電している電線・端子等の露出部分。さくからの距離測定基準であり、四号・五号では「露出しない」が条件",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-shigaichi",
+    "title": "市街地",
+    "yomi": "しがいち",
+    "meaning": "人家が連続している地域。第21条三号で高さ判定（4.5m or 4m）に影響",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-fuzoku-suru-kouatsu-densen",
+    "title": "附属する高圧電線",
+    "yomi": "ふぞくするこうあつでんせん",
+    "meaning": "機械器具に接続される高圧側の電線。第21条主文括弧書きで「ケーブル以外のもの」が「機械器具」の定義に含まれる（条全体での規制対象）",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-hikisage-you-kouatsu-zetsuen-densen",
+    "title": "引下げ用高圧絶縁電線",
+    "yomi": "ひきさげようこうあつぜつえんでんせん",
+    "meaning": "柱上変圧器等への引下げ専用の高圧絶縁電線（DV線等）。一般の高圧絶縁電線とは別規格",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-d-shu-secchi-kouji",
+    "title": "D種接地工事",
+    "yomi": "でぃーしゅせっちこうじ",
+    "meaning": "接地抵抗100Ω以下（漏電遮断器0.5秒以内動作なら500Ω以下まで緩和）。300V以下の低圧機器の外箱に施す接地工事（電技解釈第17条・第19条）",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-kani-sesshoku-bougo-sochi",
+    "title": "簡易接触防護措置",
+    "yomi": "かんいせっしょくぼうごそち",
+    "meaning": "軽度の接触防止措置（電技解釈第1条で定義）。完全接触防護措置より弱い段階の防護",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
+  },
+  {
+    "id": "glossary-tadashi-gaki",
+    "title": "ただし書",
+    "yomi": "ただしがき",
+    "meaning": "条文の例外規定。「ただし、〜の場合はこの限りでない」の構文で示される",
+    "chapterTitle": "用語クイズ",
+    "num": "8.5",
+    "navTarget": "chokuzen-yougo",
+    "kind": "glossary"
   }
 ]
