@@ -5014,11 +5014,19 @@ function MachigaiNotePage({ pageId, data, onNav }) {
         }
         break;
       }
-      // 収集した全ブロックをクリーンアップ & 強制展開（閉じ状態だと中身が見えない）
-      collected.forEach(el => {
+      // 収集した全ブロックをクリーンアップ。問題本体だけ開き、解答・解説は閉じる
+      // （ユーザーが自力で考える時間を確保。展開はユーザー操作に任せる）
+      collected.forEach((el, idx) => {
         el.querySelectorAll('.self-check-buttons, .self-check-memo').forEach(n => n.remove());
-        if (el.tagName === 'DETAILS') el.setAttribute('open', '');
-        el.querySelectorAll('details').forEach(d => d.setAttribute('open', ''));
+        if (idx === 0) {
+          // 問題本体: outer details は開く（問題文が見える状態）
+          if (el.tagName === 'DETAILS') el.setAttribute('open', '');
+        } else {
+          // 兄弟として配置された「解答・解説」blockは閉じる
+          if (el.tagName === 'DETAILS') el.removeAttribute('open');
+        }
+        // 内部のネストされた details（解答・解説サブブロック）は全て閉じる
+        el.querySelectorAll('details').forEach(d => d.removeAttribute('open'));
       });
       const html = collected.map(el => el.outerHTML).join('\n');
       setExpanded(prev => Object.assign({}, prev, { [r.key]: html }));
