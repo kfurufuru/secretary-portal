@@ -1,0 +1,259 @@
+{
+  "system": "AI社員諮問システム",
+  "generated": "2026-05-16",
+  "description": "古舘さんが3つのAIペルソナ（落合陽一・ひろゆき・ホリエモン）に並列諮問し、判断パターンを集約してログ・Notion同期まで行う意思決定ワークフロー。",
+  "categories": [
+    { "id": "actor",    "label": "Actor",           "color": "#f5a623" },
+    { "id": "skill",    "label": "Skill",           "color": "#5ec4ff" },
+    { "id": "persona",  "label": "Persona",         "color": "#b388ff" },
+    { "id": "script",   "label": "Script",          "color": "#7ed957" },
+    { "id": "state",    "label": "Local state/log", "color": "#ffd54f" },
+    { "id": "external", "label": "External svc",    "color": "#ff6b9b" },
+    { "id": "doc",      "label": "Doc/Rule",        "color": "#9ea7b3" }
+  ],
+  "components": [
+    {
+      "id": "user",
+      "category": "actor",
+      "label": "古舘さん",
+      "subtitle": "判断者・諮問のトリガー",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "claude",
+      "category": "actor",
+      "label": "Claude (orchestrator)",
+      "subtitle": "Skillを発火しAgentを並列起動",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "consult-skill",
+      "category": "skill",
+      "label": "ai-shain-consult",
+      "subtitle": "3者並列諮問・集約・ログ書込まで",
+      "file": "~/.claude/skills/ai-shain-consult/SKILL.md",
+      "verified": true
+    },
+    {
+      "id": "sync-skill",
+      "category": "skill",
+      "label": "ai-shain-notion-sync",
+      "subtitle": "JSONL→Notion DB 増分同期",
+      "file": "~/.claude/skills/ai-shain-notion-sync/SKILL.md",
+      "verified": true
+    },
+    {
+      "id": "add-persona-skill",
+      "category": "skill",
+      "label": "add-persona",
+      "subtitle": "Fカンパニーへ新規ペルソナ追加（5箇所同期）",
+      "file": "~/.claude/skills/add-persona/SKILL.md",
+      "verified": true
+    },
+    {
+      "id": "ochiai",
+      "category": "persona",
+      "label": "落合陽一",
+      "subtitle": "構造・本質・SoT分離",
+      "file": "~/OneDrive/ドキュメント/Claude/personas/ochiai-yoichi.md",
+      "verified": true
+    },
+    {
+      "id": "hiroyuki",
+      "category": "persona",
+      "label": "ひろゆき",
+      "subtitle": "ROI・現実主義・「ぶっちゃけ意味ある？」",
+      "file": "~/OneDrive/ドキュメント/Claude/personas/hiroyuki.md",
+      "verified": true
+    },
+    {
+      "id": "horie",
+      "category": "persona",
+      "label": "ホリエモン",
+      "subtitle": "選択と集中・最速実装",
+      "file": "~/OneDrive/ドキュメント/Claude/personas/horie.md",
+      "verified": true
+    },
+    {
+      "id": "log-script",
+      "category": "script",
+      "label": "ai-shain-log.py",
+      "subtitle": "JSONLへ1行追記（諮問結果）",
+      "file": ".secretary/scripts/ai-shain-log.py",
+      "verified": true
+    },
+    {
+      "id": "stats-script",
+      "category": "script",
+      "label": "ai-shain-stats.py",
+      "subtitle": "JSONL集計（split率・少数派採用率）",
+      "file": ".secretary/scripts/ai-shain-stats.py",
+      "verified": true
+    },
+    {
+      "id": "dashboard-script",
+      "category": "script",
+      "label": "build_ai_shain_dashboard.py",
+      "subtitle": "ローカルHTMLダッシュボード生成",
+      "file": ".secretary/scripts/build_ai_shain_dashboard.py",
+      "verified": true
+    },
+    {
+      "id": "consult-log",
+      "category": "state",
+      "label": "ai-shain-consult.jsonl",
+      "subtitle": "諮問ログ（1件1行JSONL）",
+      "file": ".secretary/logs/ai-shain-consult.jsonl",
+      "verified": true
+    },
+    {
+      "id": "sync-state",
+      "category": "state",
+      "label": ".notion-sync-state.json",
+      "subtitle": "db_id / data_source_id / last_synced_ts",
+      "file": ".secretary/.notion-sync-state.json",
+      "verified": true
+    },
+    {
+      "id": "dashboard-html",
+      "category": "state",
+      "label": "ai-shain-stats.html",
+      "subtitle": "オフライン閲覧用ダッシュボード",
+      "file": ".secretary/dashboards/ai-shain-stats.html",
+      "verified": true
+    },
+    {
+      "id": "notion-mcp",
+      "category": "external",
+      "label": "Notion MCP",
+      "subtitle": "notion-create-pages 等で page 作成",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "notion-db",
+      "category": "external",
+      "label": "Notion DB「AI社員諮問ログ」",
+      "subtitle": "data_source_id 経由で同期先",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "work-rules",
+      "category": "doc",
+      "label": "work-rules.md",
+      "subtitle": "発動方針・スコープ厳守ルール",
+      "file": ".secretary/.claude/rules/work-rules.md",
+      "verified": true
+    },
+    {
+      "id": "memory-feedback",
+      "category": "doc",
+      "label": "feedback_* memory",
+      "subtitle": "persona_parallel / consensus / majority_bias / rescope",
+      "file": "memory/feedback_*.md",
+      "verified": true
+    },
+    {
+      "id": "f-company-claude-md",
+      "category": "doc",
+      "label": "Fカンパニー CLAUDE.md",
+      "subtitle": "組織図・振り分け表（add-personaが更新）",
+      "file": "~/OneDrive/ドキュメント/Claude/CLAUDE.md",
+      "verified": true
+    }
+  ],
+  "connections": [
+    { "from": "user", "to": "claude", "kind": "request" },
+    { "from": "claude", "to": "consult-skill", "kind": "invokes" },
+    { "from": "claude", "to": "sync-skill", "kind": "invokes" },
+    { "from": "claude", "to": "add-persona-skill", "kind": "invokes" },
+    { "from": "consult-skill", "to": "ochiai", "kind": "parallel-agent" },
+    { "from": "consult-skill", "to": "hiroyuki", "kind": "parallel-agent" },
+    { "from": "consult-skill", "to": "horie", "kind": "parallel-agent" },
+    { "from": "consult-skill", "to": "log-script", "kind": "writes-via" },
+    { "from": "log-script", "to": "consult-log", "kind": "appends" },
+    { "from": "consult-skill", "to": "memory-feedback", "kind": "reads-rules" },
+    { "from": "consult-skill", "to": "work-rules", "kind": "reads-rules" },
+    { "from": "sync-skill", "to": "sync-state", "kind": "reads-writes" },
+    { "from": "sync-skill", "to": "consult-log", "kind": "reads" },
+    { "from": "sync-skill", "to": "notion-mcp", "kind": "calls" },
+    { "from": "notion-mcp", "to": "notion-db", "kind": "creates-pages" },
+    { "from": "stats-script", "to": "consult-log", "kind": "reads" },
+    { "from": "dashboard-script", "to": "consult-log", "kind": "reads" },
+    { "from": "dashboard-script", "to": "dashboard-html", "kind": "writes" },
+    { "from": "add-persona-skill", "to": "f-company-claude-md", "kind": "edits" }
+  ],
+  "flows": [
+    {
+      "id": "consult-execute",
+      "label": "ペルソナ諮問実行",
+      "steps": [
+        { "n": 1, "from": "user", "to": "claude", "what": "「AI社員に確認して」等の発話", "data": "判断材料・選択肢" },
+        { "n": 2, "from": "claude", "to": "consult-skill", "what": "ai-shain-consult Skill 発火", "data": "Skill本文ロード" },
+        { "n": 3, "from": "consult-skill", "to": "memory-feedback", "what": "consensus/majority_bias/rescope ルール参照", "data": "判定基準" },
+        { "n": 4, "from": "consult-skill", "to": "ochiai", "what": "Agent並列起動（落合・構造視点）", "data": "200字結論プロンプト" },
+        { "n": 5, "from": "consult-skill", "to": "hiroyuki", "what": "Agent並列起動（ROI視点）", "data": "200字結論プロンプト" },
+        { "n": 6, "from": "consult-skill", "to": "horie", "what": "Agent並列起動（選択集中視点）", "data": "200字結論プロンプト" },
+        { "n": 7, "from": "consult-skill", "to": "user", "what": "一致パターン判定（unanimous/majority/split）＋表形式報告", "data": "集約表" },
+        { "n": 8, "from": "consult-skill", "to": "log-script", "what": "Bash自動実行（ユーザー確認待たない）", "data": "--topic/--pattern/--result/--ochiai/--hiroyuki/--horie/--category" },
+        { "n": 9, "from": "log-script", "to": "consult-log", "what": "JSONL 1行 append", "data": "ts含むレコード" }
+      ]
+    },
+    {
+      "id": "notion-sync",
+      "label": "Notion同期",
+      "steps": [
+        { "n": 1, "from": "user", "to": "claude", "what": "「諮問ログをNotionに同期」", "data": null },
+        { "n": 2, "from": "claude", "to": "sync-skill", "what": "ai-shain-notion-sync 発火", "data": null },
+        { "n": 3, "from": "sync-skill", "to": "sync-state", "what": "state読込（data_source_id / last_synced_ts）", "data": "state JSON" },
+        { "n": 4, "from": "sync-skill", "to": "consult-log", "what": "JSONL読込＋増分抽出（ts > last_synced_ts）", "data": "新規レコード" },
+        { "n": 5, "from": "sync-skill", "to": "notion-mcp", "what": "notion-create-pages を1件ずつ呼出", "data": "Topic/Pattern/Personas/Timestamp" },
+        { "n": 6, "from": "notion-mcp", "to": "notion-db", "what": "DBへページ追加", "data": "page properties" },
+        { "n": 7, "from": "sync-skill", "to": "sync-state", "what": "last_synced_ts 上書き", "data": "最新ts" },
+        { "n": 8, "from": "sync-skill", "to": "user", "what": "同期完了報告（送信N件/スキップM件/DB URL）", "data": "サマリ" }
+      ]
+    },
+    {
+      "id": "add-persona",
+      "label": "新規ペルソナ追加",
+      "steps": [
+        { "n": 1, "from": "user", "to": "claude", "what": "「ペルソナ追加 [人物名]」", "data": "人物名" },
+        { "n": 2, "from": "claude", "to": "add-persona-skill", "what": "add-persona 発火", "data": null },
+        { "n": 3, "from": "add-persona-skill", "to": "user", "what": "ヒアリング（役職/部署/専門/発動キーワード）", "data": "確認質問7項目" },
+        { "n": 4, "from": "add-persona-skill", "to": "f-company-claude-md", "what": "組織ツリー・振り分け表・AI社員数を更新", "data": "diff" },
+        { "n": 5, "from": "add-persona-skill", "to": "user", "what": "完了検証チェックリスト報告", "data": "6項目" }
+      ]
+    },
+    {
+      "id": "stats-dashboard",
+      "label": "統計集計・ダッシュボード",
+      "steps": [
+        { "n": 1, "from": "user", "to": "stats-script", "what": "python ai-shain-stats.py 実行", "data": null },
+        { "n": 2, "from": "stats-script", "to": "consult-log", "what": "JSONL全件読込", "data": null },
+        { "n": 3, "from": "stats-script", "to": "user", "what": "split率/少数派採用率/拡張判断ヒント出力", "data": "stdout" },
+        { "n": 4, "from": "user", "to": "dashboard-script", "what": "python build_ai_shain_dashboard.py", "data": null },
+        { "n": 5, "from": "dashboard-script", "to": "consult-log", "what": "JSONL読込", "data": null },
+        { "n": 6, "from": "dashboard-script", "to": "dashboard-html", "what": "Chart.js HTML出力", "data": "ai-shain-stats.html" }
+      ]
+    },
+    {
+      "id": "rescope",
+      "label": "rescope（v0.5圧縮再評価）",
+      "steps": [
+        { "n": 1, "from": "consult-skill", "to": "memory-feedback", "what": "feedback_ai_persona_rescope の4トリガー判定", "data": "連続性/繰り返し/関連Stub" },
+        { "n": 2, "from": "consult-skill", "to": "ochiai", "what": "v0.5規模で再諮問（Agent並列）", "data": "圧縮版プロンプト" },
+        { "n": 3, "from": "consult-skill", "to": "hiroyuki", "what": "v0.5規模で再諮問", "data": "圧縮版プロンプト" },
+        { "n": 4, "from": "consult-skill", "to": "horie", "what": "v0.5規模で再諮問", "data": "圧縮版プロンプト" },
+        { "n": 5, "from": "consult-skill", "to": "log-script", "what": "--rescope-applied フラグ付与でログ", "data": "rescope_applied: true" }
+      ]
+    }
+  ],
+  "notes": [
+    "ペルソナファイルの存在は Fカンパニー側（~/OneDrive/ドキュメント/Claude/personas/）で確認済み。.secretary 直下にはコピーされていない。",
+    "Routine（スケジュール起動）の存在は今回未確認。scheduled-tasks MCP は登録されているが AI社員諮問専用のジョブは見つかっていない。",
+    "ai-shain-notion-sync の MCP は notion-create-pages を parent=data_source_id で呼ぶ（database_id ではない）と state.json の note に明記されている。"
+  ]
+}

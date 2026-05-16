@@ -1,0 +1,562 @@
+{
+  "system": "denken-wiki 監修フロー",
+  "generated": "2026-05-16",
+  "description": "電験3種 wiki の人間+AI編集パイプライン。執筆 → 一次照合 → AI社員3者 → ChatGPT第4監修 → CI → ビルド/デプロイ → 遡及監査 までのループ全体を可視化する。",
+  "repo_path": "C:/Users/kfuru/denken-wiki-master",
+  "repo_branch": "feat/hallucination-defense-v2",
+  "repo_remote": "kfurufuru/denken-wiki",
+  "site_url": "https://kfurufuru.github.io/denken-wiki/",
+  "categories": [
+    { "id": "author",      "label": "Author / Orchestrator", "color": "#f5a623" },
+    { "id": "ai-reviewer", "label": "AI Reviewer (社内)",     "color": "#b388ff" },
+    { "id": "external-ai", "label": "External AI (社外)",    "color": "#ff6b9b" },
+    { "id": "rule",        "label": "Rule / Template",       "color": "#9ea7b3" },
+    { "id": "script",      "label": "Script / CI",           "color": "#7ed957" },
+    { "id": "data",        "label": "Data / SOT",            "color": "#ffd54f" },
+    { "id": "output",      "label": "Output / Article",      "color": "#5ec4ff" },
+    { "id": "external",    "label": "External source",       "color": "#ff8a65" }
+  ],
+  "components": [
+    {
+      "id": "user",
+      "category": "author",
+      "label": "古舘さん",
+      "subtitle": "編集者・最終承認者・Step6先見せ承認",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "claude",
+      "category": "author",
+      "label": "Claude (orchestrator)",
+      "subtitle": "執筆・編集・並列エージェント指揮",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "claude-md",
+      "category": "rule",
+      "label": "CLAUDE.md",
+      "subtitle": "wiki全体規約・テンプレート参照ルール",
+      "file": "denken-wiki-master/CLAUDE.md",
+      "verified": true
+    },
+    {
+      "id": "page-creation-rule",
+      "category": "rule",
+      "label": "denken-page-creation.md",
+      "subtitle": "Step0〜Step6＋Step6.5 ChatGPT監修フロー",
+      "file": "denken-wiki-master/.claude/rules/denken-page-creation.md",
+      "verified": true
+    },
+    {
+      "id": "mkdocs-rules",
+      "category": "rule",
+      "label": "mkdocs-rules.md",
+      "subtitle": "MkDocs/admonition/SVG/数式規約",
+      "file": "denken-wiki-master/.claude/rules/mkdocs-rules.md",
+      "verified": true
+    },
+    {
+      "id": "refs-rule",
+      "category": "rule",
+      "label": "refs-auto-reflect.md",
+      "subtitle": "参考URLは refs-pending.yml に append運用",
+      "file": "denken-wiki-master/.claude/rules/refs-auto-reflect.md",
+      "verified": true
+    },
+    {
+      "id": "gold-58",
+      "category": "rule",
+      "label": "kijun/58.md (Gold S)",
+      "subtitle": "v2.7・98点・数値規定系ゴールド",
+      "file": "denken-wiki-master/docs/articles/kijun/58.md",
+      "verified": true
+    },
+    {
+      "id": "gold-jiko3",
+      "category": "rule",
+      "label": "jigyoho/jiko-3.md (Gold S)",
+      "subtitle": "97点・手続規定系ゴールド (折畳原文)",
+      "file": "denken-wiki-master/docs/articles/jigyoho/",
+      "verified": false
+    },
+    {
+      "id": "gold-jiko1",
+      "category": "rule",
+      "label": "jigyoho/jiko-1.md (Gold S)",
+      "subtitle": "97点・定義条文系ゴールド",
+      "file": "denken-wiki-master/docs/articles/jigyoho/",
+      "verified": false
+    },
+    {
+      "id": "template-v24",
+      "category": "rule",
+      "label": "template-v24.md",
+      "subtitle": "テンプレートv2.4 仕様書",
+      "file": "denken-wiki-master/docs/reference/template-v24.md",
+      "verified": true
+    },
+    {
+      "id": "checklist",
+      "category": "rule",
+      "label": "article-creation-checklist.md",
+      "subtitle": "執筆前チェックリスト",
+      "file": "denken-wiki-master/docs/reference/article-creation-checklist.md",
+      "verified": true
+    },
+    {
+      "id": "ochiai",
+      "category": "ai-reviewer",
+      "label": "落合陽一",
+      "subtitle": "構造・本質・SOT分離視点",
+      "file": "~/OneDrive/ドキュメント/Claude/personas/ochiai-yoichi.md",
+      "verified": true
+    },
+    {
+      "id": "hiroyuki",
+      "category": "ai-reviewer",
+      "label": "ひろゆき",
+      "subtitle": "ROI・現実主義視点",
+      "file": "~/OneDrive/ドキュメント/Claude/personas/hiroyuki.md",
+      "verified": true
+    },
+    {
+      "id": "horiemon",
+      "category": "ai-reviewer",
+      "label": "ホリエモン",
+      "subtitle": "選択と集中・最速実装視点",
+      "file": "~/OneDrive/ドキュメント/Claude/personas/horie.md",
+      "verified": true
+    },
+    {
+      "id": "san-dan-shinshu",
+      "category": "ai-reviewer",
+      "label": "三段監修（AI社員3者）",
+      "subtitle": "落合・ひろゆき・ホリエモン 並列諮問",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "chatgpt-4th",
+      "category": "external-ai",
+      "label": "ChatGPT 第4監修",
+      "subtitle": "クリティカル4領域(法令/数値/正誤表/穴埋)必須",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "egov",
+      "category": "external",
+      "label": "eGov 法令API",
+      "subtitle": "条文一次ソース (lawid: 409M.../340M.../339AC...)",
+      "file": "https://laws.e-gov.go.jp/api/1/lawdata/",
+      "verified": true
+    },
+    {
+      "id": "denken-ou",
+      "category": "external",
+      "label": "denken-ou.com",
+      "subtitle": "過去問解説 一次ソース",
+      "file": "https://denken-ou.com/",
+      "verified": true
+    },
+    {
+      "id": "meti",
+      "category": "external",
+      "label": "経産省告示・JESC",
+      "subtitle": "改正情報・KAISEI-* 根拠",
+      "file": "https://www.meti.go.jp/",
+      "verified": true
+    },
+    {
+      "id": "kakomon-yml",
+      "category": "data",
+      "label": "_data/kakomon.yml",
+      "subtitle": "過去問DB (year/num/article/topic/theme)",
+      "file": "denken-wiki-master/_data/kakomon.yml",
+      "verified": true
+    },
+    {
+      "id": "law-articles-yml",
+      "category": "data",
+      "label": "_data/law_articles.yml",
+      "subtitle": "条文タイトル・lawid 索引",
+      "file": "denken-wiki-master/_data/law_articles.yml",
+      "verified": true
+    },
+    {
+      "id": "denken-ou-cache",
+      "category": "data",
+      "label": "_data/denken-ou-cache.yml",
+      "subtitle": "denken-ou.com 取得キャッシュ (pre-commit用)",
+      "file": "denken-wiki-master/_data/denken-ou-cache.yml",
+      "verified": true
+    },
+    {
+      "id": "refs-pending",
+      "category": "data",
+      "label": "_data/refs-pending.yml",
+      "subtitle": "新規参照URL append-only ログ",
+      "file": "denken-wiki-master/_data/refs-pending.yml",
+      "verified": true
+    },
+    {
+      "id": "wiki-check",
+      "category": "script",
+      "label": "wiki_check.py",
+      "subtitle": "§記号/簡体字/[要確認]/空タグ/壊リンク",
+      "file": "denken-wiki-master/wiki_check.py",
+      "verified": true
+    },
+    {
+      "id": "quality-check",
+      "category": "script",
+      "label": "wiki_quality_check.py",
+      "subtitle": "v3.1 18項目スコアラ (--rank --v3)",
+      "file": "denken-wiki-master/wiki_quality_check.py",
+      "verified": true
+    },
+    {
+      "id": "audit-kakomon",
+      "category": "script",
+      "label": "audit_kakomon.py",
+      "subtitle": "kakomon.yml × denken-ou.com 条番号照合",
+      "file": "denken-wiki-master/scripts/audit_kakomon.py",
+      "verified": true
+    },
+    {
+      "id": "precommit-kakomon",
+      "category": "script",
+      "label": "precommit_kakomon.py",
+      "subtitle": "commit時に kakomon.yml article誤編集を検出",
+      "file": "denken-wiki-master/scripts/precommit_kakomon.py",
+      "verified": true
+    },
+    {
+      "id": "merge-refs",
+      "category": "script",
+      "label": "merge_refs.py",
+      "subtitle": "refs-pending → links.md マージ",
+      "file": "denken-wiki-master/scripts/merge_refs.py",
+      "verified": true
+    },
+    {
+      "id": "check-stale",
+      "category": "script",
+      "label": "check_stale_evidence.py",
+      "subtitle": "verified_on / next_audit からstale記事検出",
+      "file": "denken-wiki-master/scripts/check_stale_evidence.py",
+      "verified": true
+    },
+    {
+      "id": "check-consistency",
+      "category": "script",
+      "label": "check_kakomon_consistency.py",
+      "subtitle": "md ↔ by-field.md 内部整合性",
+      "file": "denken-wiki-master/scripts/check_kakomon_consistency.py",
+      "verified": true
+    },
+    {
+      "id": "audit-titles",
+      "category": "script",
+      "label": "audit_titles.py / audit_kaishaku_titles.py",
+      "subtitle": "条文タイトル正本との照合監査",
+      "file": "denken-wiki-master/scripts/audit_titles.py",
+      "verified": true
+    },
+    {
+      "id": "ci-quality",
+      "category": "script",
+      "label": "CI: quality-check.yml",
+      "subtitle": "PR/push時 wiki_check.py + arithmatex空行検査",
+      "file": "denken-wiki-master/.github/workflows/quality-check.yml",
+      "verified": true
+    },
+    {
+      "id": "ci-audit",
+      "category": "script",
+      "label": "CI: audit-kakomon.yml",
+      "subtitle": "月初9:00JST 自動監査→GitHub Issue起票",
+      "file": "denken-wiki-master/.github/workflows/audit-kakomon.yml",
+      "verified": true
+    },
+    {
+      "id": "ci-deploy",
+      "category": "script",
+      "label": "CI: deploy.yml",
+      "subtitle": "master push → mkdocs build → GH Pages",
+      "file": "denken-wiki-master/.github/workflows/deploy.yml",
+      "verified": true
+    },
+    {
+      "id": "article-md",
+      "category": "output",
+      "label": "条文記事 *.md",
+      "subtitle": "kijun/kaishaku/jigyoho/other 配下",
+      "file": "denken-wiki-master/docs/articles/",
+      "verified": true
+    },
+    {
+      "id": "theme-md",
+      "category": "output",
+      "label": "テーマ横断記事",
+      "subtitle": "themes/ 配下 (juyoritsu, bunsan-dengen等)",
+      "file": "denken-wiki-master/docs/themes/",
+      "verified": true
+    },
+    {
+      "id": "strategy-md",
+      "category": "output",
+      "label": "戦略記事",
+      "subtitle": "strategy/ 配下 (b-mondai, hourei-master等)",
+      "file": "denken-wiki-master/docs/strategy/",
+      "verified": true
+    },
+    {
+      "id": "kakomon-md",
+      "category": "output",
+      "label": "過去問解説 kakomon/*.md",
+      "subtitle": "H18〜R07 年度別 + 個別解説",
+      "file": "denken-wiki-master/docs/kakomon/",
+      "verified": true
+    },
+    {
+      "id": "links-md",
+      "category": "output",
+      "label": "links.md",
+      "subtitle": "外部参考URL集約 (merge_refs反映先)",
+      "file": "denken-wiki-master/docs/reference/links.md",
+      "verified": true
+    },
+    {
+      "id": "abbreviations",
+      "category": "output",
+      "label": "includes/abbreviations.md",
+      "subtitle": "全ページ共通の略語tooltip注入",
+      "file": "denken-wiki-master/includes/abbreviations.md",
+      "verified": true
+    },
+    {
+      "id": "glossary",
+      "category": "output",
+      "label": "reference/glossary.md",
+      "subtitle": "用語集 (abbreviationsと同期)",
+      "file": "denken-wiki-master/docs/reference/glossary.md",
+      "verified": true
+    },
+    {
+      "id": "hourei-kaisei",
+      "category": "output",
+      "label": "hourei-kaisei.md",
+      "subtitle": "改正登録レジストリ (KAISEI-* ID)",
+      "file": "denken-wiki-master/docs/reference/hourei-kaisei.md",
+      "verified": true
+    },
+    {
+      "id": "gh-pages",
+      "category": "output",
+      "label": "GH Pages (公開)",
+      "subtitle": "kfurufuru.github.io/denken-wiki/",
+      "file": "https://kfurufuru.github.io/denken-wiki/",
+      "verified": true
+    },
+    {
+      "id": "hoki-wiki",
+      "category": "output",
+      "label": "denken-hoki-wiki (sister)",
+      "subtitle": "法規Wiki (React/HTML別repo) cross-ref先",
+      "file": null,
+      "verified": false
+    }
+  ],
+  "connections": [
+    { "from": "user", "to": "claude", "label": "依頼" },
+    { "from": "claude", "to": "claude-md", "label": "規約読込" },
+    { "from": "claude", "to": "page-creation-rule", "label": "Step0〜6.5" },
+    { "from": "claude", "to": "mkdocs-rules", "label": "書式規約" },
+    { "from": "page-creation-rule", "to": "quality-check", "label": "Step0 --rank --v3" },
+    { "from": "quality-check", "to": "gold-58", "label": "Goldスコア参照" },
+    { "from": "claude", "to": "gold-58", "label": "テンプレ比較" },
+    { "from": "claude", "to": "gold-jiko3", "label": "テンプレ比較" },
+    { "from": "claude", "to": "gold-jiko1", "label": "テンプレ比較" },
+    { "from": "claude", "to": "kakomon-yml", "label": "Step1 出題実績" },
+    { "from": "claude", "to": "denken-ou", "label": "Step2 論点照合" },
+    { "from": "claude", "to": "egov", "label": "Step4 一次取得" },
+    { "from": "claude", "to": "meti", "label": "改正根拠" },
+    { "from": "audit-kakomon", "to": "denken-ou", "label": "条番号一致監査" },
+    { "from": "audit-kakomon", "to": "denken-ou-cache", "label": "キャッシュ更新" },
+    { "from": "precommit-kakomon", "to": "denken-ou-cache", "label": "0token照合" },
+    { "from": "precommit-kakomon", "to": "kakomon-yml", "label": "誤編集検出" },
+    { "from": "claude", "to": "user", "label": "Step6 構造ドラフト先見せ" },
+    { "from": "user", "to": "claude", "label": "Step6 承認/指摘" },
+    { "from": "claude", "to": "san-dan-shinshu", "label": "三段監修" },
+    { "from": "san-dan-shinshu", "to": "ochiai", "label": "落合" },
+    { "from": "san-dan-shinshu", "to": "hiroyuki", "label": "ひろゆき" },
+    { "from": "san-dan-shinshu", "to": "horiemon", "label": "ホリエモン" },
+    { "from": "san-dan-shinshu", "to": "chatgpt-4th", "label": "Step6.5 必須化" },
+    { "from": "chatgpt-4th", "to": "claude", "label": "致命/注意/軽微指摘" },
+    { "from": "claude", "to": "article-md", "label": "執筆/改修" },
+    { "from": "claude", "to": "theme-md", "label": "執筆/改修" },
+    { "from": "claude", "to": "strategy-md", "label": "執筆/改修" },
+    { "from": "claude", "to": "kakomon-md", "label": "執筆/改修" },
+    { "from": "claude", "to": "refs-pending", "label": "新規URL append" },
+    { "from": "merge-refs", "to": "refs-pending", "label": "pending → merged" },
+    { "from": "merge-refs", "to": "links-md", "label": "URL追記" },
+    { "from": "article-md", "to": "abbreviations", "label": "略語同期チェック" },
+    { "from": "article-md", "to": "glossary", "label": "用語同期チェック" },
+    { "from": "article-md", "to": "hoki-wiki", "label": "横展開 cross-ref" },
+    { "from": "article-md", "to": "wiki-check", "label": "lint" },
+    { "from": "article-md", "to": "quality-check", "label": "スコア確認" },
+    { "from": "article-md", "to": "check-stale", "label": "next_audit 監視" },
+    { "from": "kakomon-md", "to": "check-consistency", "label": "整合性" },
+    { "from": "kakomon-yml", "to": "check-consistency", "label": "突合" },
+    { "from": "article-md", "to": "audit-titles", "label": "タイトル監査" },
+    { "from": "ci-quality", "to": "wiki-check", "label": "CI実行" },
+    { "from": "ci-audit", "to": "audit-kakomon", "label": "月初cron" },
+    { "from": "ci-audit", "to": "kakomon-yml", "label": "全件監査" },
+    { "from": "ci-deploy", "to": "article-md", "label": "mkdocs build入力" },
+    { "from": "ci-deploy", "to": "theme-md", "label": "build入力" },
+    { "from": "ci-deploy", "to": "strategy-md", "label": "build入力" },
+    { "from": "ci-deploy", "to": "kakomon-md", "label": "build入力" },
+    { "from": "ci-deploy", "to": "gh-pages", "label": "デプロイ" },
+    { "from": "meti", "to": "hourei-kaisei", "label": "改正登録" },
+    { "from": "hourei-kaisei", "to": "article-md", "label": "改正警告admonition" },
+    { "from": "hourei-kaisei", "to": "theme-md", "label": "改正警告admonition" }
+  ],
+  "flows": [
+    {
+      "id": "write-new-article",
+      "label": "新規条文記事執筆",
+      "color": "#ffd54f",
+      "highlight": [
+        "user","claude","page-creation-rule","quality-check","gold-58","kakomon-yml","denken-ou","egov","san-dan-shinshu","ochiai","hiroyuki","horiemon","chatgpt-4th","article-md","refs-pending","wiki-check","ci-deploy","gh-pages"
+      ],
+      "steps": [
+        { "n": 1, "label": "Step0: テンプレ解決", "detail": "python wiki_quality_check.py --rank --v3 | head -5 → 最上位S-rank記事をRead" },
+        { "n": 2, "label": "Step1: 出題実績確認", "detail": "_data/kakomon.yml で該当条文の出題年度・問番号を抽出" },
+        { "n": 3, "label": "Step2: 論点照合", "detail": "denken-ou.com で最新出題の論点を確認 (houkir{N}-{期}-{問})" },
+        { "n": 4, "label": "Step3: 改正チェック", "detail": "kakomon.yml topic ↔ denken-ou.com 論点 不一致なら改正疑い" },
+        { "n": 5, "label": "Step4: eGov一次取得", "detail": "lawdata API で <Article Num=N> <Paragraph> <Item> を直接確認" },
+        { "n": 6, "label": "Step5: 信頼度自己評価", "detail": "<70%は [要確認] フラグ・条文タイトル90%未確認なら再取得" },
+        { "n": 7, "label": "Step6: 構造ドラフト先見せ", "detail": "章立て+10必須ブロック配置+主要数値+関連条文を古舘さんに提示し承認待ち" },
+        { "n": 8, "label": "本文執筆", "detail": "v2.7 10必須ブロックを配置 (5秒/数値検証PASS/改変明記/3列翻訳/🟢軽度/mermaid・SVG/実務/重要度bold/条文原文折畳/マーカー凡例)" },
+        { "n": 9, "label": "三段監修", "detail": "AI社員3者で初版レビュー (構造/ROI/集中)" },
+        { "n": 10, "label": "Step6.5: ChatGPT第4監修", "detail": "クリティカル4領域(法令条文/数値計算/正誤表/穴埋)で必須・スキップ理由は明記" },
+        { "n": 11, "label": "指摘振分け4分類", "detail": "本物/誤解/場所違い/既充足 で仕分け・本物のみ修正" },
+        { "n": 12, "label": "古舘さん最終確認", "detail": "Step6 再確認 → push承認" },
+        { "n": 13, "label": "CI quality-check", "detail": "wiki_check.py §/簡体/空タグ/壊リンク・arithmatex空行" },
+        { "n": 14, "label": "mkdocs build → GH Pages", "detail": "deploy.yml が master push をトリガに自動公開" }
+      ]
+    },
+    {
+      "id": "san-dan-shinshu",
+      "label": "三段監修 (AI社員3者)",
+      "color": "#b388ff",
+      "highlight": ["claude","san-dan-shinshu","ochiai","hiroyuki","horiemon"],
+      "steps": [
+        { "n": 1, "label": "落合 視点", "detail": "構造・本質・SOT分離・テンプレ準拠" },
+        { "n": 2, "label": "ひろゆき 視点", "detail": "ROI・現実的に試験で点に繋がるか" },
+        { "n": 3, "label": "ホリエモン 視点", "detail": "選択と集中・最速で公開価値ある形" },
+        { "n": 4, "label": "一致パターン判定", "detail": "全員一致→即実行 / 2-1→深掘り / バラバラ→前提見直し" },
+        { "n": 5, "label": "少数派尊重トリガー", "detail": "構造的負債領域・連続性ある場合は落合論を優先 (feedback_ai_persona_majority_bias)" }
+      ]
+    },
+    {
+      "id": "chatgpt-4th-review",
+      "label": "ChatGPT 第4監修 (必須4領域)",
+      "color": "#ff6b9b",
+      "highlight": ["claude","san-dan-shinshu","chatgpt-4th","article-md"],
+      "steps": [
+        { "n": 1, "label": "必須化4領域判定", "detail": "法令条文/数値計算/正誤判定表/過去問空欄 → スキップ禁止" },
+        { "n": 2, "label": "依頼テンプレート貼付", "detail": "記事タイプ+優先確認項目+Markdown全文+致命/注意/軽微フォーマット指定" },
+        { "n": 3, "label": "指摘受領", "detail": "条文番号/期限/桁ミス/論理誤り/見落とし" },
+        { "n": 4, "label": "4分類で振分け", "detail": "本物/誤解/場所違い/既充足 (feedback_external_review_verification)" },
+        { "n": 5, "label": "本物指摘 修正", "detail": "必要なら再依頼・致命残置NG" },
+        { "n": 6, "label": "スキップ条件", "detail": "緊急修正/typo/既同等レビュー済 のみ・1行報告必須" }
+      ]
+    },
+    {
+      "id": "kakomon-register",
+      "label": "kakomon登録・整合性",
+      "color": "#7ed957",
+      "highlight": ["claude","kakomon-yml","denken-ou","audit-kakomon","precommit-kakomon","denken-ou-cache","check-consistency","ci-audit","kakomon-md"],
+      "steps": [
+        { "n": 1, "label": "問題抽出", "detail": "denken-ou.com から年度/問番号/出題条文/topic" },
+        { "n": 2, "label": "kakomon.yml append", "detail": "year/year_label/num/topic/theme/form/article (article欄は単一主条文)" },
+        { "n": 3, "label": "audit_kakomon.py 監査", "detail": "条番号一致を denken-ou.com と照合 (--recent / --all)" },
+        { "n": 4, "label": "denken-ou-cache 生成", "detail": "--all --cache で _data/denken-ou-cache.yml に保存" },
+        { "n": 5, "label": "pre-commit hook", "detail": "precommit_kakomon.py が commit時に0トークンで誤編集検出" },
+        { "n": 6, "label": "月次CI監査", "detail": "audit-kakomon.yml が月初9:00JST 自動実行 → real-issueはGitHub Issue起票" },
+        { "n": 7, "label": "内部整合性", "detail": "check_kakomon_consistency.py で md ↔ by-field.md 同期確認" }
+      ]
+    },
+    {
+      "id": "retroactive-audit",
+      "label": "遡及監査 (ルール改定後)",
+      "color": "#ff8a65",
+      "highlight": ["page-creation-rule","claude","article-md","check-stale","audit-titles","san-dan-shinshu","chatgpt-4th"],
+      "steps": [
+        { "n": 1, "label": "新ルール制定検知", "detail": "feedback memory / .claude/rules/ 更新 → 既存記事の置き土産リスク" },
+        { "n": 2, "label": "並列監査エージェント", "detail": "3層パターン: 監査並列→集約→修正並列 (feedback_parallel_audit_modify_pattern)" },
+        { "n": 3, "label": "wiki_check + 規則チェック", "detail": "§記号/簡体/空タグ/[要確認]残置の全件grep" },
+        { "n": 4, "label": "条文タイトル照合", "detail": "audit_titles.py / audit_kaishaku_titles.py で正本一致確認" },
+        { "n": 5, "label": "stale 検出", "detail": "check_stale_evidence.py で verified_on/next_audit 経過記事一覧" },
+        { "n": 6, "label": "修正実行 (AI社員諮問付き)", "detail": "S-rank達成・致命指摘ゼロを確認してから一括push" },
+        { "n": 7, "label": "反映確認", "detail": "GH Pages デプロイ後 ?v=YYYYMMDD でキャッシュバスト・DOM突合" }
+      ]
+    },
+    {
+      "id": "refs-sync",
+      "label": "abbreviations / refs 同期",
+      "color": "#5ec4ff",
+      "highlight": ["claude","refs-pending","merge-refs","links-md","abbreviations","glossary","article-md"],
+      "steps": [
+        { "n": 1, "label": "編集中の新規参照URL", "detail": "eGov/経産省/JEAC/denken-ou など links.md 未収載を発見" },
+        { "n": 2, "label": "refs-pending.yml に append", "detail": "url/title/category/used_in/used_at/rationale の6項目 (append-only)" },
+        { "n": 3, "label": "merge_refs.py --dry-run", "detail": "プレビュー (重複URL自動スキップ・カテゴリH2部分一致)" },
+        { "n": 4, "label": "merge_refs.py 実反映", "detail": "pending → merged 移動・links.md 追記" },
+        { "n": 5, "label": "abbreviations / glossary 同期チェック", "detail": "条文記事の用語修正時は両ファイルのtooltip注入も突合 (feedback_glossary_abbreviations_sync)" }
+      ]
+    },
+    {
+      "id": "hourei-kaisei-flow",
+      "label": "法令改正の4セット展開",
+      "color": "#f5a623",
+      "highlight": ["meti","claude","hourei-kaisei","article-md","theme-md","hoki-wiki"],
+      "steps": [
+        { "n": 1, "label": "改正情報取得", "detail": "経産省告示・JESC・電気書院追補で改正記録を確認" },
+        { "n": 2, "label": "hourei-kaisei.md に正式登録", "detail": "KAISEI-YYYY-NNN ID付与・公布日/施行日/出典URL必須" },
+        { "n": 3, "label": "条文記事 詳細表反映", "detail": "改正前/改正後の条番号対応・記事冒頭に改正注記admonition" },
+        { "n": 4, "label": "themes に警告+リンク", "detail": "横断テーマ側にも改正影響範囲を波及" },
+        { "n": 5, "label": "別系統wiki横展", "detail": "denken-hoki-wiki などsister wikiにcross-ref" }
+      ]
+    },
+    {
+      "id": "build-deploy",
+      "label": "ビルド & デプロイ (副軸)",
+      "color": "#9ea7b3",
+      "highlight": ["claude","article-md","theme-md","strategy-md","kakomon-md","ci-quality","wiki-check","ci-deploy","gh-pages"],
+      "steps": [
+        { "n": 1, "label": "ローカルプレビュー", "detail": "mkdocs serve で確認" },
+        { "n": 2, "label": "PR/push", "detail": "feat/* ブランチ → PR → master" },
+        { "n": 3, "label": "CI quality-check", "detail": "wiki_check.py + arithmatex空行検査 (docs/** push/PR)" },
+        { "n": 4, "label": "CI deploy.yml", "detail": "master push → mkdocs build (ubuntu/python3.x/PYTHONUTF8=1)" },
+        { "n": 5, "label": "GH Pages 公開", "detail": "actions/deploy-pages@v4 で kfurufuru.github.io/denken-wiki/ 反映" }
+      ]
+    },
+    {
+      "id": "hallucination-defense",
+      "label": "ハルシネーション4層防御",
+      "color": "#ff6b9b",
+      "highlight": ["page-creation-rule","claude","egov","denken-ou","san-dan-shinshu","chatgpt-4th","check-stale","wiki-check","ci-audit"],
+      "steps": [
+        { "n": 1, "label": "層1: 執筆前チェックリスト", "detail": "denken-page-creation.md Step0-6 / pre-writing checklist (feedback_pre_writing_checklist)" },
+        { "n": 2, "label": "層2: 一次ソース優先", "detail": "eGov XML <Article Num=N> 直接取得・denken-ou.com で論点照合" },
+        { "n": 3, "label": "層3: AI社員3者 三段監修", "detail": "落合/ひろゆき/ホリエモン の異視点で再点検" },
+        { "n": 4, "label": "層4: ChatGPT第4監修", "detail": "クリティカル4領域は必須・Claude基盤の盲点共有を補正" },
+        { "n": 5, "label": "事後: 遡及監査・stale検出", "detail": "ルール制定後の置き土産防止・next_auditの時間軸監視" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>denken-wiki 監修フロー Architecture Map</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #0a0e1a;
+    color: #d9e1f2;
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    min-height: 100vh;
+  }
+  header {
+    padding: 18px 24px 12px;
+    border-bottom: 1px solid #1c2540;
+    background: #0d1325;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 19px;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  header .sub {
+    color: #8a94b0; font-size: 12px;
+  }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 18px;
+    margin-top: 10px;
+  }
+  .legend .item {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; color: #b6c2dc;
+  }
+  .legend .sw {
+    display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    min-height: calc(100vh - 110px);
+  }
+  .canvas-wrap {
+    position: relative;
+    padding: 16px;
+    overflow: auto;
+  }
+  .canvas {
+    position: relative;
+    width: 1400px;
+    min-height: 900px;
+  }
+  svg.lines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .lane {
+    position: absolute;
+    border: 1px dashed rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 6px 8px;
+  }
+  .lane-label {
+    position: absolute;
+    top: 6px; left: 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.35);
+  }
+  .node {
+    position: absolute;
+    width: 168px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #131a2e;
+    border: 1.5px solid #2a3556;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transition: opacity 0.25s, transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .node .lbl {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+  }
+  .node .sub {
+    font-size: 10.5px;
+    color: #8a94b0;
+    margin-top: 3px;
+    line-height: 1.35;
+  }
+  .node.dim { opacity: 0.18; }
+  .node.hi  { border-color: #ffd54f; box-shadow: 0 0 0 2px rgba(255,213,79,0.35), 0 4px 18px rgba(255,213,79,0.18); transform: translateY(-1px); }
+  .node .stripe {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; border-radius: 8px 0 0 8px;
+  }
+  .node.unverified::after {
+    content: "?";
+    position: absolute; top: 4px; right: 6px;
+    font-size: 10px; color: #ff8a65;
+    opacity: 0.8;
+  }
+
+  aside.sidebar {
+    border-left: 1px solid #1c2540;
+    background: #0c1122;
+    padding: 16px 14px;
+    overflow-y: auto;
+    max-height: calc(100vh - 110px);
+  }
+  aside h2 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #8a94b0;
+  }
+  .flows {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-bottom: 18px;
+  }
+  .flow-btn {
+    text-align: left;
+    background: #131a2e;
+    border: 1px solid #2a3556;
+    color: #d9e1f2;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .flow-btn:hover { background: #1a2240; }
+  .flow-btn.active {
+    border-color: #ffd54f;
+    background: #2a2818;
+    color: #ffd54f;
+  }
+  .flow-btn .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+
+  .steps {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .step {
+    background: #131a2e;
+    border-left: 3px solid #2a3556;
+    padding: 6px 9px 7px;
+    border-radius: 0 5px 5px 0;
+  }
+  .step .n {
+    color: #ffd54f;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .step .l {
+    color: #fff; font-weight: 600; font-size: 12px;
+  }
+  .step .d {
+    margin-top: 3px;
+    color: #8a94b0;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .hint {
+    margin-top: 12px;
+    padding: 8px 10px;
+    background: rgba(255,213,79,0.06);
+    border: 1px dashed rgba(255,213,79,0.3);
+    border-radius: 6px;
+    color: #c9b46a;
+    font-size: 11px;
+  }
+  .reset {
+    margin-top: 8px;
+    background: transparent;
+    border: 1px solid #2a3556;
+    color: #8a94b0;
+    padding: 5px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+  }
+  .reset:hover { color: #fff; border-color: #5a6792; }
+
+  .conn-line       { stroke: #2a3556; stroke-width: 1.2; fill: none; opacity: 0.5; transition: stroke 0.25s, opacity 0.25s, stroke-width 0.25s; }
+  .conn-line.dim   { opacity: 0.08; }
+  .conn-line.hi    { stroke: #ffd54f; stroke-width: 2; opacity: 0.95; }
+</style>
+</head>
+<body>
+<header>
+  <h1>denken-wiki 監修フロー — Architecture Map</h1>
+  <div class="sub">電験3種 wiki の編集パイプライン: 執筆 → 一次照合 → AI社員3者 → ChatGPT第4監修 → CI → 公開 / 遡及監査 ループ</div>
+  <div class="legend" id="legend"></div>
+</header>
+
+<div class="layout">
+  <div class="canvas-wrap">
+    <div class="canvas" id="canvas">
+      <svg class="lines" id="svg" viewBox="0 0 1400 900" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3a4775" />
+          </marker>
+          <marker id="arrow-hi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffd54f" />
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <h2>Flows</h2>
+    <div class="flows" id="flows"></div>
+    <button class="reset" id="reset">× highlight解除</button>
+
+    <h2 style="margin-top:18px">Steps</h2>
+    <div class="steps" id="steps"></div>
+
+    <div class="hint" id="hint">
+      左のflowをクリックすると関連ノードとconnectionを黄色でハイライトします。「?」マークは未検証。
+    </div>
+  </aside>
+</div>
+
+<script>
+"use strict";
+
+// === Data (mirror of denken-wiki-map.json) ===
+const DATA = {
+  categories: [
+    { id: "author",      label: "Author / Orchestrator", color: "#f5a623" },
+    { id: "ai-reviewer", label: "AI Reviewer (社内)",     color: "#b388ff" },
+    { id: "external-ai", label: "External AI (社外)",    color: "#ff6b9b" },
+    { id: "rule",        label: "Rule / Template",       color: "#9ea7b3" },
+    { id: "script",      label: "Script / CI",           color: "#7ed957" },
+    { id: "data",        label: "Data / SOT",            color: "#ffd54f" },
+    { id: "output",      label: "Output / Article",      color: "#5ec4ff" },
+    { id: "external",    label: "External source",       color: "#ff8a65" }
+  ],
+  components: [
+    { id: "user",                category: "author",      label: "古舘さん",                       subtitle: "編集者・最終承認者・Step6先見せ承認" },
+    { id: "claude",              category: "author",      label: "Claude (orchestrator)",         subtitle: "執筆・編集・並列エージェント指揮" },
+
+    { id: "claude-md",           category: "rule",        label: "CLAUDE.md",                     subtitle: "wiki全体規約・テンプレ参照ルール" },
+    { id: "page-creation-rule",  category: "rule",        label: "denken-page-creation.md",       subtitle: "Step0〜6.5 必須ワークフロー" },
+    { id: "mkdocs-rules",        category: "rule",        label: "mkdocs-rules.md",               subtitle: "MkDocs/admonition/SVG/数式規約" },
+    { id: "refs-rule",           category: "rule",        label: "refs-auto-reflect.md",          subtitle: "参考URL append運用ルール" },
+    { id: "gold-58",             category: "rule",        label: "kijun/58.md (Gold S)",          subtitle: "v2.7・98点・数値規定系ゴールド" },
+    { id: "gold-jiko3",          category: "rule",        label: "jiko-3.md (Gold S)",            subtitle: "97点・手続規定系・折畳原文",  verified: false },
+    { id: "gold-jiko1",          category: "rule",        label: "jiko-1.md (Gold S)",            subtitle: "97点・定義条文系",          verified: false },
+    { id: "template-v24",        category: "rule",        label: "template-v24.md",               subtitle: "テンプレートv2.4 仕様書" },
+    { id: "checklist",           category: "rule",        label: "article-creation-checklist.md", subtitle: "執筆前チェックリスト" },
+
+    { id: "ochiai",              category: "ai-reviewer", label: "落合陽一",                       subtitle: "構造・本質・SOT分離" },
+    { id: "hiroyuki",            category: "ai-reviewer", label: "ひろゆき",                       subtitle: "ROI・現実主義" },
+    { id: "horiemon",            category: "ai-reviewer", label: "ホリエモン",                     subtitle: "選択と集中・最速実装" },
+    { id: "san-dan-shinshu",     category: "ai-reviewer", label: "三段監修",                       subtitle: "AI社員3者 並列諮問" },
+
+    { id: "chatgpt-4th",         category: "external-ai", label: "ChatGPT 第4監修",                subtitle: "クリティカル4領域 必須" },
+
+    { id: "egov",                category: "external",    label: "eGov 法令API",                  subtitle: "条文一次ソース XML" },
+    { id: "denken-ou",           category: "external",    label: "denken-ou.com",                 subtitle: "過去問解説 一次ソース" },
+    { id: "meti",                category: "external",    label: "経産省告示 / JESC",              subtitle: "改正情報" },
+
+    { id: "kakomon-yml",         category: "data",        label: "_data/kakomon.yml",             subtitle: "過去問DB" },
+    { id: "law-articles-yml",    category: "data",        label: "_data/law_articles.yml",        subtitle: "条文タイトル索引" },
+    { id: "denken-ou-cache",     category: "data",        label: "denken-ou-cache.yml",           subtitle: "denken-ou 取得キャッシュ" },
+    { id: "refs-pending",        category: "data",        label: "_data/refs-pending.yml",        subtitle: "参考URL append-only ログ" },
+
+    { id: "wiki-check",          category: "script",      label: "wiki_check.py",                 subtitle: "§/簡体/[要確認]/空タグ/壊リンク" },
+    { id: "quality-check",       category: "script",      label: "wiki_quality_check.py",         subtitle: "v3.1 18項目スコアラ --rank --v3" },
+    { id: "audit-kakomon",       category: "script",      label: "audit_kakomon.py",              subtitle: "kakomon × denken-ou 条番号照合" },
+    { id: "precommit-kakomon",   category: "script",      label: "precommit_kakomon.py",          subtitle: "commit時 0token照合" },
+    { id: "merge-refs",          category: "script",      label: "merge_refs.py",                 subtitle: "refs-pending → links.md" },
+    { id: "check-stale",         category: "script",      label: "check_stale_evidence.py",       subtitle: "verified_on/next_audit 監視" },
+    { id: "check-consistency",   category: "script",      label: "check_kakomon_consistency.py",  subtitle: "md ↔ by-field 整合性" },
+    { id: "audit-titles",        category: "script",      label: "audit_titles.py",               subtitle: "条文タイトル正本照合" },
+    { id: "ci-quality",          category: "script",      label: "CI: quality-check.yml",         subtitle: "PR/push時 lint" },
+    { id: "ci-audit",            category: "script",      label: "CI: audit-kakomon.yml",         subtitle: "月初9JST 自動Issue起票" },
+    { id: "ci-deploy",           category: "script",      label: "CI: deploy.yml",                subtitle: "master push → GH Pages" },
+
+    { id: "article-md",          category: "output",      label: "条文記事 *.md",                  subtitle: "kijun/kaishaku/jigyoho/other" },
+    { id: "theme-md",            category: "output",      label: "テーマ横断 themes/",             subtitle: "juyoritsu/bunsan-dengen 等" },
+    { id: "strategy-md",         category: "output",      label: "戦略 strategy/",                subtitle: "b-mondai / hourei-master 等" },
+    { id: "kakomon-md",          category: "output",      label: "過去問解説 kakomon/",           subtitle: "H18〜R07 年度別" },
+    { id: "links-md",            category: "output",      label: "links.md",                      subtitle: "外部参考URL集約" },
+    { id: "abbreviations",       category: "output",      label: "includes/abbreviations.md",     subtitle: "略語tooltip注入" },
+    { id: "glossary",            category: "output",      label: "reference/glossary.md",         subtitle: "用語集 (abbrev同期)" },
+    { id: "hourei-kaisei",       category: "output",      label: "hourei-kaisei.md",              subtitle: "改正登録 KAISEI-*" },
+    { id: "gh-pages",            category: "output",      label: "GH Pages 公開",                 subtitle: "kfurufuru.github.io/denken-wiki/" },
+    { id: "hoki-wiki",           category: "output",      label: "denken-hoki-wiki (sister)",     subtitle: "法規Wiki cross-ref先", verified: false }
+  ],
+  connections: [
+    ["user","claude","依頼"],
+    ["claude","claude-md","規約"],
+    ["claude","page-creation-rule","Step0-6.5"],
+    ["claude","mkdocs-rules","書式"],
+    ["page-creation-rule","quality-check","--rank --v3"],
+    ["quality-check","gold-58","Goldスコア"],
+    ["claude","gold-58","テンプレ比較"],
+    ["claude","gold-jiko3","テンプレ比較"],
+    ["claude","gold-jiko1","テンプレ比較"],
+    ["claude","kakomon-yml","出題実績"],
+    ["claude","denken-ou","論点照合"],
+    ["claude","egov","一次取得"],
+    ["claude","meti","改正根拠"],
+    ["audit-kakomon","denken-ou","条番号照合"],
+    ["audit-kakomon","denken-ou-cache","cache更新"],
+    ["precommit-kakomon","denken-ou-cache","0token照合"],
+    ["precommit-kakomon","kakomon-yml","誤編集検出"],
+    ["claude","user","Step6 先見せ"],
+    ["claude","san-dan-shinshu","三段監修"],
+    ["san-dan-shinshu","ochiai","落合"],
+    ["san-dan-shinshu","hiroyuki","ひろゆき"],
+    ["san-dan-shinshu","horiemon","ホリエモン"],
+    ["san-dan-shinshu","chatgpt-4th","Step6.5"],
+    ["chatgpt-4th","claude","致命/注意/軽微"],
+    ["claude","article-md","執筆"],
+    ["claude","theme-md","執筆"],
+    ["claude","strategy-md","執筆"],
+    ["claude","kakomon-md","執筆"],
+    ["claude","refs-pending","URL append"],
+    ["merge-refs","refs-pending","pending→merged"],
+    ["merge-refs","links-md","追記"],
+    ["article-md","abbreviations","同期"],
+    ["article-md","glossary","同期"],
+    ["article-md","hoki-wiki","横展開"],
+    ["article-md","wiki-check","lint"],
+    ["article-md","quality-check","スコア"],
+    ["article-md","check-stale","next_audit"],
+    ["kakomon-md","check-consistency","整合性"],
+    ["kakomon-yml","check-consistency","突合"],
+    ["article-md","audit-titles","タイトル監査"],
+    ["ci-quality","wiki-check","CI実行"],
+    ["ci-audit","audit-kakomon","月初cron"],
+    ["ci-audit","kakomon-yml","全件監査"],
+    ["ci-deploy","article-md","build入力"],
+    ["ci-deploy","theme-md","build入力"],
+    ["ci-deploy","strategy-md","build入力"],
+    ["ci-deploy","kakomon-md","build入力"],
+    ["ci-deploy","gh-pages","deploy"],
+    ["meti","hourei-kaisei","改正登録"],
+    ["hourei-kaisei","article-md","改正注記"],
+    ["hourei-kaisei","theme-md","改正注記"]
+  ],
+  flows: [
+    {
+      id: "write-new-article",
+      label: "新規条文記事執筆",
+      color: "#ffd54f",
+      highlight: ["user","claude","page-creation-rule","quality-check","gold-58","kakomon-yml","denken-ou","egov","san-dan-shinshu","ochiai","hiroyuki","horiemon","chatgpt-4th","article-md","refs-pending","wiki-check","ci-deploy","gh-pages"],
+      steps: [
+        ["1","Step0: テンプレ解決","wiki_quality_check.py --rank --v3 → 最上位S-rank記事をRead"],
+        ["2","Step1: 出題実績","_data/kakomon.yml で該当条文の出題年度/問番号"],
+        ["3","Step2: 論点照合","denken-ou.com で最新出題の論点 (houkir{N}-{期}-{問})"],
+        ["4","Step3: 改正チェック","topic ↔ 論点 不一致なら改正疑い → 経産省で確認"],
+        ["5","Step4: eGov一次取得","lawdata API で <Article Num=N><Paragraph><Item> 直接確認"],
+        ["6","Step5: 信頼度自己評価","<70%は [要確認] フラグ・90%未確認は再取得"],
+        ["7","Step6: 構造ドラフト先見せ","章立て+10必須ブロック配置を古舘さんに提示し承認"],
+        ["8","本文執筆","v2.7 10必須ブロック (5秒/数値検証PASS/改変明記/3列翻訳/🟢軽度/SVG/実務/重要度bold/条文折畳/マーカー凡例)"],
+        ["9","三段監修","落合/ひろゆき/ホリエモン 初版レビュー"],
+        ["10","Step6.5: ChatGPT第4監修","法令/数値/正誤表/穴埋 4領域は必須"],
+        ["11","指摘振分け","本物/誤解/場所違い/既充足 の4分類"],
+        ["12","古舘さん最終確認","Step6 再確認 → push承認"],
+        ["13","CI quality-check","wiki_check.py + arithmatex空行検査"],
+        ["14","build → GH Pages","master push → deploy.yml → 公開"]
+      ]
+    },
+    {
+      id: "san-dan-shinshu",
+      label: "三段監修 (AI社員3者)",
+      color: "#b388ff",
+      highlight: ["claude","san-dan-shinshu","ochiai","hiroyuki","horiemon"],
+      steps: [
+        ["1","落合 視点","構造・本質・SOT分離・テンプレ準拠"],
+        ["2","ひろゆき 視点","ROI・現実的に試験で点に繋がるか"],
+        ["3","ホリエモン 視点","選択と集中・最速で公開価値ある形"],
+        ["4","一致パターン判定","全員一致→即実行 / 2-1→深掘り / バラバラ→前提見直し"],
+        ["5","少数派尊重トリガー","構造的負債領域は落合論を優先 (feedback_ai_persona_majority_bias)"]
+      ]
+    },
+    {
+      id: "chatgpt-4th-review",
+      label: "ChatGPT 第4監修",
+      color: "#ff6b9b",
+      highlight: ["claude","san-dan-shinshu","chatgpt-4th","article-md"],
+      steps: [
+        ["1","必須化4領域","法令条文/数値計算/正誤判定表/過去問空欄 → スキップ禁止"],
+        ["2","依頼テンプレ","記事タイプ+優先確認項目+Markdown全文+致命/注意/軽微"],
+        ["3","指摘受領","条文番号/期限/桁ミス/論理誤り/見落とし"],
+        ["4","4分類振分け","本物/誤解/場所違い/既充足"],
+        ["5","本物指摘修正","必要なら再依頼・致命残置NG"],
+        ["6","スキップ条件","緊急/typo/既同等レビュー済 のみ・1行報告"]
+      ]
+    },
+    {
+      id: "kakomon-register",
+      label: "kakomon登録・整合性",
+      color: "#7ed957",
+      highlight: ["claude","kakomon-yml","denken-ou","audit-kakomon","precommit-kakomon","denken-ou-cache","check-consistency","ci-audit","kakomon-md"],
+      steps: [
+        ["1","問題抽出","denken-ou.com から 年度/問番号/出題条文/topic"],
+        ["2","kakomon.yml append","article欄は単一主条文・topicは複合論点を許容"],
+        ["3","audit_kakomon.py","--recent / --all で条番号一致監査"],
+        ["4","denken-ou-cache 生成","--all --cache で _data/denken-ou-cache.yml"],
+        ["5","pre-commit hook","commit時0トークン誤編集検出"],
+        ["6","月次CI監査","月初9JST audit-kakomon.yml → real issue起票"],
+        ["7","内部整合性","check_kakomon_consistency.py で md ↔ by-field"]
+      ]
+    },
+    {
+      id: "retroactive-audit",
+      label: "遡及監査 (ルール改定後)",
+      color: "#ff8a65",
+      highlight: ["page-creation-rule","claude","article-md","check-stale","audit-titles","san-dan-shinshu","chatgpt-4th"],
+      steps: [
+        ["1","新ルール制定検知","feedback / .claude/rules/ 更新 → 置き土産リスク"],
+        ["2","並列監査エージェント","監査並列→集約→修正並列の3層パターン"],
+        ["3","wiki_check + 規則チェック","§/簡体/空タグ/[要確認]残置 全件grep"],
+        ["4","条文タイトル照合","audit_titles.py で正本一致確認"],
+        ["5","stale 検出","check_stale_evidence.py で verified_on/next_audit 経過"],
+        ["6","修正実行","AI社員諮問付き・S-rank達成を確認"],
+        ["7","反映確認","GH Pages後 ?v=YYYYMMDD でキャッシュバスト・DOM突合"]
+      ]
+    },
+    {
+      id: "refs-sync",
+      label: "abbreviations / refs 同期",
+      color: "#5ec4ff",
+      highlight: ["claude","refs-pending","merge-refs","links-md","abbreviations","glossary","article-md"],
+      steps: [
+        ["1","新規参照URL","eGov/経産省/JEAC/denken-ou など links.md未収載"],
+        ["2","refs-pending.yml append","url/title/category/used_in/used_at/rationale (append-only)"],
+        ["3","merge_refs.py --dry-run","重複URL自動スキップ・カテゴリH2部分一致"],
+        ["4","merge_refs.py 実反映","pending → merged 移動・links.md 追記"],
+        ["5","abbrev / glossary 同期","条文記事の用語修正時は両ファイル突合"]
+      ]
+    },
+    {
+      id: "hourei-kaisei-flow",
+      label: "法令改正の4セット展開",
+      color: "#f5a623",
+      highlight: ["meti","claude","hourei-kaisei","article-md","theme-md","hoki-wiki"],
+      steps: [
+        ["1","改正情報取得","経産省告示・JESC・電気書院追補"],
+        ["2","hourei-kaisei.md 登録","KAISEI-YYYY-NNN・公布日/施行日/URL"],
+        ["3","条文記事 詳細表反映","改正前後の条番号対応・冒頭admonition"],
+        ["4","themes 警告+リンク","横断テーマに波及"],
+        ["5","別系統wiki横展","denken-hoki-wiki にcross-ref"]
+      ]
+    },
+    {
+      id: "build-deploy",
+      label: "ビルド & デプロイ (副軸)",
+      color: "#9ea7b3",
+      highlight: ["claude","article-md","theme-md","strategy-md","kakomon-md","ci-quality","wiki-check","ci-deploy","gh-pages"],
+      steps: [
+        ["1","ローカルプレビュー","mkdocs serve"],
+        ["2","PR/push","feat/* → PR → master"],
+        ["3","CI quality-check","wiki_check.py + arithmatex空行 (docs/** push/PR)"],
+        ["4","CI deploy.yml","master push → mkdocs build (PYTHONUTF8=1)"],
+        ["5","GH Pages 公開","actions/deploy-pages@v4"]
+      ]
+    },
+    {
+      id: "hallucination-defense",
+      label: "ハルシネーション4層防御",
+      color: "#ff6b9b",
+      highlight: ["page-creation-rule","claude","egov","denken-ou","san-dan-shinshu","chatgpt-4th","check-stale","wiki-check","ci-audit"],
+      steps: [
+        ["1","層1: 執筆前チェック","denken-page-creation Step0-6 / pre-writing checklist"],
+        ["2","層2: 一次ソース優先","eGov XML 直接取得・denken-ou 論点照合"],
+        ["3","層3: AI社員3者","落合/ひろゆき/ホリエモン 異視点再点検"],
+        ["4","層4: ChatGPT第4監修","クリティカル4領域必須・Claude基盤の盲点補正"],
+        ["5","事後: 遡及監査・stale","ルール制定後の置き土産防止"]
+      ]
+    }
+  ]
+};
+
+// === Layout: swimlanes by category ===
+const LANES = [
+  { id: "author",      y:  16, h: 110, label: "AUTHOR / ORCHESTRATOR" },
+  { id: "rule",        y: 130, h: 220, label: "RULES & GOLD TEMPLATES" },
+  { id: "ai-reviewer", y: 354, h: 110, label: "AI REVIEWERS (社内・三段監修)" },
+  { id: "external-ai", y: 468, h: 70,  label: "EXTERNAL AI (社外監修)" },
+  { id: "external",    y: 542, h: 70,  label: "EXTERNAL SOURCES" },
+  { id: "data",        y: 616, h: 70,  label: "DATA / SOT (YAML)" },
+  { id: "script",      y: 690, h: 110, label: "SCRIPTS & CI" },
+  { id: "output",      y: 804, h: 88,  label: "OUTPUTS / PUBLISHED" }
+];
+
+// Node positions: (x, y-row-index within lane)
+const POS = {
+  // author lane (y ~ 30, 70)
+  "user":               [40,  40],
+  "claude":             [240, 40],
+
+  // rule lane (rows: 150, 220, 290)
+  "claude-md":          [40,  150],
+  "page-creation-rule": [240, 150],
+  "mkdocs-rules":       [440, 150],
+  "refs-rule":          [640, 150],
+  "template-v24":       [840, 150],
+  "checklist":          [1040,150],
+  "gold-58":            [240, 256],
+  "gold-jiko3":         [440, 256],
+  "gold-jiko1":         [640, 256],
+
+  // ai-reviewer lane (y 374)
+  "ochiai":             [40,  374],
+  "hiroyuki":           [240, 374],
+  "horiemon":           [440, 374],
+  "san-dan-shinshu":    [640, 374],
+
+  // external-ai lane (y 488)
+  "chatgpt-4th":        [640, 488],
+
+  // external lane (y 558)
+  "egov":               [40,  558],
+  "denken-ou":          [240, 558],
+  "meti":               [440, 558],
+
+  // data lane (y 632)
+  "kakomon-yml":        [40,  632],
+  "law-articles-yml":   [240, 632],
+  "denken-ou-cache":    [440, 632],
+  "refs-pending":       [640, 632],
+
+  // script lane (y 710 & 780)
+  "wiki-check":         [40,  710],
+  "quality-check":      [240, 710],
+  "audit-kakomon":      [440, 710],
+  "precommit-kakomon":  [640, 710],
+  "merge-refs":         [840, 710],
+  "check-stale":        [1040,710],
+  "check-consistency":  [40,  774],
+  "audit-titles":       [240, 774],
+  "ci-quality":         [440, 774],
+  "ci-audit":           [640, 774],
+  "ci-deploy":          [840, 774],
+
+  // output lane (y 824)
+  "article-md":         [40,  824],
+  "theme-md":           [240, 824],
+  "strategy-md":        [440, 824],
+  "kakomon-md":         [640, 824],
+  "links-md":           [840, 824],
+  "abbreviations":      [1040,824],
+  "glossary":           [1210,824],
+  "hourei-kaisei":      [1040,150],  // overlap fallback; will reposition
+  "hoki-wiki":          [1210,710],
+  "gh-pages":           [1210,632]
+};
+// Fix overlap (hourei-kaisei already conflicts with checklist) → place in rule row 2
+POS["hourei-kaisei"] = [840, 256];
+POS["checklist"]     = [1040, 150];
+
+// Layout tweaks for any out-of-canvas
+const CANVAS_W = 1400;
+const NODE_W = 168;
+const NODE_H = 50;
+
+// === Build DOM ===
+const canvas = document.getElementById("canvas");
+const svg = document.getElementById("svg");
+const legend = document.getElementById("legend");
+const flowsEl = document.getElementById("flows");
+const stepsEl = document.getElementById("steps");
+
+const catMap = Object.fromEntries(DATA.categories.map(c => [c.id, c]));
+
+// Legend
+DATA.categories.forEach(c => {
+  const el = document.createElement("span");
+  el.className = "item";
+  el.innerHTML = `<span class="sw" style="background:${c.color}"></span>${c.label}`;
+  legend.appendChild(el);
+});
+
+// Swimlane backgrounds
+LANES.forEach(lane => {
+  const div = document.createElement("div");
+  div.className = "lane";
+  div.style.left = "8px";
+  div.style.right = "8px";
+  div.style.top  = lane.y + "px";
+  div.style.height = lane.h + "px";
+  const cat = catMap[lane.id];
+  if (cat) {
+    div.style.borderColor = `${cat.color}33`;
+    div.style.background  = `${cat.color}07`;
+  }
+  const lbl = document.createElement("div");
+  lbl.className = "lane-label";
+  lbl.textContent = lane.label;
+  if (cat) lbl.style.color = cat.color + "AA";
+  div.appendChild(lbl);
+  canvas.appendChild(div);
+});
+
+// Nodes
+const nodeEls = {};
+DATA.components.forEach(c => {
+  const p = POS[c.id];
+  if (!p) { console.warn("no pos for", c.id); return; }
+  const [x, y] = p;
+  const cat = catMap[c.category];
+  const el = document.createElement("div");
+  el.className = "node";
+  if (c.verified === false) el.classList.add("unverified");
+  el.style.left = x + "px";
+  el.style.top  = y + "px";
+  el.style.width = NODE_W + "px";
+  el.innerHTML = `
+    <span class="stripe" style="background:${cat.color}"></span>
+    <div class="lbl">${escapeHtml(c.label)}</div>
+    <div class="sub">${escapeHtml(c.subtitle || "")}</div>
+  `;
+  el.dataset.id = c.id;
+  el.title = c.label + (c.verified === false ? " (unverified)" : "");
+  canvas.appendChild(el);
+  nodeEls[c.id] = el;
+});
+
+// Center anchor helper for SVG lines
+function anchor(id) {
+  const p = POS[id];
+  if (!p) return null;
+  return { x: p[0] + NODE_W / 2, y: p[1] + NODE_H / 2 };
+}
+
+// Edges
+const edgeEls = [];
+DATA.connections.forEach(([from, to, label]) => {
+  const a = anchor(from), b = anchor(to);
+  if (!a || !b) return;
+  // gentle bezier curve
+  const dx = b.x - a.x, dy = b.y - a.y;
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2;
+  // curvature based on vertical distance
+  const curve = Math.min(60, Math.abs(dy) * 0.25 + 12);
+  const cx1 = a.x, cy1 = a.y + (dy > 0 ? curve : -curve);
+  const cx2 = b.x, cy2 = b.y - (dy > 0 ? curve : -curve);
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", `M ${a.x} ${a.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${b.x} ${b.y}`);
+  path.setAttribute("class", "conn-line");
+  path.setAttribute("marker-end", "url(#arrow)");
+  path.dataset.from = from;
+  path.dataset.to = to;
+  svg.appendChild(path);
+  edgeEls.push(path);
+});
+
+// Resize SVG viewBox to actual content bounds
+svg.setAttribute("viewBox", `0 0 ${CANVAS_W} 900`);
+
+// Flow buttons
+DATA.flows.forEach(f => {
+  const btn = document.createElement("button");
+  btn.className = "flow-btn";
+  btn.dataset.id = f.id;
+  btn.innerHTML = `<span class="dot" style="background:${f.color}"></span>${escapeHtml(f.label)}`;
+  btn.addEventListener("click", () => activateFlow(f.id));
+  flowsEl.appendChild(btn);
+});
+
+// Reset
+document.getElementById("reset").addEventListener("click", () => activateFlow(null));
+
+let activeFlow = null;
+function activateFlow(id) {
+  activeFlow = id;
+  // buttons
+  flowsEl.querySelectorAll(".flow-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.id === id);
+  });
+  const flow = id ? DATA.flows.find(f => f.id === id) : null;
+
+  // nodes
+  Object.entries(nodeEls).forEach(([nodeId, el]) => {
+    el.classList.remove("dim", "hi");
+    if (flow) {
+      if (flow.highlight.includes(nodeId)) el.classList.add("hi");
+      else el.classList.add("dim");
+    }
+  });
+
+  // edges
+  edgeEls.forEach(p => {
+    p.classList.remove("dim", "hi");
+    p.removeAttribute("marker-end");
+    if (flow) {
+      const f = p.dataset.from, t = p.dataset.to;
+      if (flow.highlight.includes(f) && flow.highlight.includes(t)) {
+        p.classList.add("hi");
+        p.setAttribute("marker-end", "url(#arrow-hi)");
+      } else {
+        p.classList.add("dim");
+        p.setAttribute("marker-end", "url(#arrow)");
+      }
+    } else {
+      p.setAttribute("marker-end", "url(#arrow)");
+    }
+  });
+
+  // steps panel
+  stepsEl.innerHTML = "";
+  if (flow) {
+    flow.steps.forEach(([n, l, d]) => {
+      const div = document.createElement("div");
+      div.className = "step";
+      div.style.borderLeftColor = flow.color;
+      div.innerHTML = `<div><span class="n">${escapeHtml(n)}.</span><span class="l">${escapeHtml(l)}</span></div><div class="d">${escapeHtml(d)}</div>`;
+      stepsEl.appendChild(div);
+    });
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// Show first flow by default for orientation
+activateFlow("write-new-article");
+</script>
+</body>
+</html>

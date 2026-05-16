@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>AI社員諮問システム — Architecture Map</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-elev: #121829;
+    --bg-elev2: #1a2237;
+    --fg: #e6ebf5;
+    --fg-mute: #8893a8;
+    --border: #2a3550;
+    --hl: #ffd54f;
+    --line: #3a4a6a;
+    --line-hl: #ffd54f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "SF Mono", "Cascadia Mono", "Consolas", "Menlo", monospace;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  header {
+    padding: 18px 24px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { margin: 0 0 6px; font-size: 20px; letter-spacing: 0.02em; }
+  .subtitle { color: var(--fg-mute); font-size: 12px; margin-bottom: 12px; }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    font-size: 11px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  main {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    min-height: calc(100vh - 110px);
+  }
+  #canvas-wrap {
+    position: relative;
+    overflow: auto;
+    padding: 16px;
+  }
+  #canvas {
+    position: relative;
+    width: 1380px;
+    height: 880px;
+  }
+  #wires { position: absolute; inset: 0; pointer-events: none; }
+  .lane {
+    position: absolute;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.015);
+  }
+  .lane-label {
+    position: absolute;
+    top: 6px; left: 10px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-mute);
+    text-transform: uppercase;
+  }
+  .node {
+    position: absolute;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    width: 180px;
+    transition: opacity 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .node .name {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--fg);
+    margin-bottom: 3px;
+  }
+  .node .sub {
+    font-size: 10.5px;
+    color: var(--fg-mute);
+    line-height: 1.3;
+  }
+  .node.dim { opacity: 0.18; }
+  .node.hl {
+    border-color: var(--hl) !important;
+    border-left-color: var(--hl) !important;
+    background: #1f2538;
+    box-shadow: 0 0 0 1px var(--hl), 0 0 16px rgba(255,213,79,0.25);
+  }
+  aside {
+    border-left: 1px solid var(--border);
+    background: var(--bg-elev);
+    padding: 16px 18px;
+    overflow-y: auto;
+  }
+  aside h2 {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    margin: 16px 0 8px;
+  }
+  aside h2:first-child { margin-top: 0; }
+  .flow-list { list-style: none; padding: 0; margin: 0; }
+  .flow-list li {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+  .flow-list li:hover { border-color: var(--hl); color: var(--hl); }
+  .flow-list li.active {
+    border-color: var(--hl);
+    background: rgba(255,213,79,0.08);
+    color: var(--hl);
+  }
+  .clear-btn {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-mute);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+  }
+  .clear-btn:hover { color: var(--hl); border-color: var(--hl); }
+  .step {
+    border-left: 2px solid var(--hl);
+    padding: 6px 10px 6px 10px;
+    margin-bottom: 8px;
+    background: var(--bg-elev2);
+    border-radius: 0 4px 4px 0;
+    font-size: 11.5px;
+  }
+  .step-n {
+    color: var(--hl);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .step-route {
+    color: var(--fg-mute);
+    font-size: 10.5px;
+    margin-top: 3px;
+  }
+  .step-data {
+    color: var(--fg-mute);
+    font-size: 10.5px;
+    margin-top: 2px;
+    font-style: italic;
+  }
+  .empty {
+    color: var(--fg-mute);
+    font-size: 11.5px;
+    font-style: italic;
+  }
+  .notes {
+    margin-top: 18px;
+    padding: 10px;
+    background: var(--bg-elev2);
+    border-radius: 4px;
+    font-size: 10.5px;
+    color: var(--fg-mute);
+    line-height: 1.5;
+  }
+  .notes b { color: var(--fg); }
+</style>
+</head>
+<body>
+<header>
+  <h1>AI社員諮問システム — Architecture Map</h1>
+  <div class="subtitle">古舘さん × 3ペルソナ並列諮問 × Notion同期 / generated 2026-05-16</div>
+  <div class="legend" id="legend"></div>
+</header>
+
+<main>
+  <div id="canvas-wrap">
+    <div id="canvas">
+      <svg id="wires" width="1380" height="880"></svg>
+    </div>
+  </div>
+
+  <aside>
+    <h2>Flows</h2>
+    <ul class="flow-list" id="flow-list"></ul>
+    <button class="clear-btn" onclick="clearSelection()">Clear selection</button>
+
+    <h2>Steps</h2>
+    <div id="steps"><div class="empty">フローを選んでください</div></div>
+
+    <div class="notes" id="notes-box"></div>
+  </aside>
+</main>
+
+<script>
+const DATA = {
+  "categories": [
+    { "id": "actor",    "label": "Actor",           "color": "#f5a623" },
+    { "id": "skill",    "label": "Skill",           "color": "#5ec4ff" },
+    { "id": "persona",  "label": "Persona",         "color": "#b388ff" },
+    { "id": "script",   "label": "Script",          "color": "#7ed957" },
+    { "id": "state",    "label": "Local state/log", "color": "#ffd54f" },
+    { "id": "external", "label": "External svc",    "color": "#ff6b9b" },
+    { "id": "doc",      "label": "Doc/Rule",        "color": "#9ea7b3" }
+  ],
+  // Lane geometry: x, y, w, h for each category in the canvas
+  "lanes": {
+    "actor":    { "x":  20, "y":  20, "w": 1340, "h":  90 },
+    "skill":    { "x":  20, "y": 120, "w": 1340, "h": 100 },
+    "persona":  { "x":  20, "y": 230, "w": 1340, "h": 100 },
+    "script":   { "x":  20, "y": 340, "w": 1340, "h": 100 },
+    "state":    { "x":  20, "y": 450, "w": 1340, "h": 100 },
+    "external": { "x":  20, "y": 560, "w": 1340, "h": 100 },
+    "doc":      { "x":  20, "y": 670, "w": 1340, "h": 100 }
+  },
+  // x position within the lane for each component (y comes from lane)
+  "components": [
+    { "id": "user",                "category": "actor",    "x":  60, "label": "古舘さん",                       "sub": "判断者・諮問のトリガー" },
+    { "id": "claude",              "category": "actor",    "x": 280, "label": "Claude (orchestrator)",          "sub": "Skill発火・Agent並列起動" },
+
+    { "id": "consult-skill",       "category": "skill",    "x": 280, "label": "ai-shain-consult",               "sub": "3者並列諮問・集約・ログ書込" },
+    { "id": "sync-skill",          "category": "skill",    "x": 540, "label": "ai-shain-notion-sync",           "sub": "JSONL→Notion 増分同期" },
+    { "id": "add-persona-skill",   "category": "skill",    "x": 800, "label": "add-persona",                    "sub": "ペルソナ追加（5箇所同期）" },
+
+    { "id": "ochiai",              "category": "persona",  "x": 280, "label": "落合陽一",                       "sub": "構造・本質・SoT分離" },
+    { "id": "hiroyuki",            "category": "persona",  "x": 480, "label": "ひろゆき",                       "sub": "ROI・現実主義" },
+    { "id": "horie",               "category": "persona",  "x": 680, "label": "ホリエモン",                     "sub": "選択と集中・最速実装" },
+
+    { "id": "log-script",          "category": "script",   "x":  60, "label": "ai-shain-log.py",                "sub": "JSONLへ1行追記" },
+    { "id": "stats-script",        "category": "script",   "x": 280, "label": "ai-shain-stats.py",              "sub": "集計（split率等）" },
+    { "id": "dashboard-script",    "category": "script",   "x": 500, "label": "build_ai_shain_dashboard.py",    "sub": "ローカルHTML出力" },
+
+    { "id": "consult-log",         "category": "state",    "x":  60, "label": "ai-shain-consult.jsonl",         "sub": "諮問ログ（1件1行JSONL）" },
+    { "id": "sync-state",          "category": "state",    "x": 280, "label": ".notion-sync-state.json",        "sub": "db_id / last_synced_ts" },
+    { "id": "dashboard-html",      "category": "state",    "x": 500, "label": "ai-shain-stats.html",            "sub": "オフライン閲覧用HTML" },
+
+    { "id": "notion-mcp",          "category": "external", "x": 540, "label": "Notion MCP",                     "sub": "notion-create-pages 等" },
+    { "id": "notion-db",           "category": "external", "x": 780, "label": "Notion DB「AI社員諮問ログ」",  "sub": "data_source_id 経由" },
+
+    { "id": "work-rules",          "category": "doc",      "x":  60, "label": "work-rules.md",                  "sub": "発動・スコープ厳守ルール" },
+    { "id": "memory-feedback",     "category": "doc",      "x": 280, "label": "feedback_* memory",              "sub": "consensus / majority_bias / rescope" },
+    { "id": "f-company-claude-md", "category": "doc",      "x": 540, "label": "Fカンパニー CLAUDE.md",          "sub": "組織図・振り分け表" }
+  ],
+  "connections": [
+    { "from": "user", "to": "claude" },
+    { "from": "claude", "to": "consult-skill" },
+    { "from": "claude", "to": "sync-skill" },
+    { "from": "claude", "to": "add-persona-skill" },
+    { "from": "consult-skill", "to": "ochiai" },
+    { "from": "consult-skill", "to": "hiroyuki" },
+    { "from": "consult-skill", "to": "horie" },
+    { "from": "consult-skill", "to": "log-script" },
+    { "from": "log-script", "to": "consult-log" },
+    { "from": "consult-skill", "to": "memory-feedback" },
+    { "from": "consult-skill", "to": "work-rules" },
+    { "from": "sync-skill", "to": "sync-state" },
+    { "from": "sync-skill", "to": "consult-log" },
+    { "from": "sync-skill", "to": "notion-mcp" },
+    { "from": "notion-mcp", "to": "notion-db" },
+    { "from": "stats-script", "to": "consult-log" },
+    { "from": "dashboard-script", "to": "consult-log" },
+    { "from": "dashboard-script", "to": "dashboard-html" },
+    { "from": "add-persona-skill", "to": "f-company-claude-md" }
+  ],
+  "flows": [
+    {
+      "id": "consult-execute",
+      "label": "ペルソナ諮問実行",
+      "nodes": ["user","claude","consult-skill","memory-feedback","ochiai","hiroyuki","horie","log-script","consult-log","work-rules"],
+      "edges": [
+        ["user","claude"],["claude","consult-skill"],["consult-skill","memory-feedback"],
+        ["consult-skill","work-rules"],
+        ["consult-skill","ochiai"],["consult-skill","hiroyuki"],["consult-skill","horie"],
+        ["consult-skill","log-script"],["log-script","consult-log"]
+      ],
+      "steps": [
+        { "n": 1, "route": "user → claude",                 "what": "「AI社員に確認して」等の発話",        "data": "判断材料・選択肢" },
+        { "n": 2, "route": "claude → ai-shain-consult",      "what": "Skill発火・本文ロード",                "data": "—" },
+        { "n": 3, "route": "consult → feedback memory",      "what": "consensus/majority_bias/rescope 参照", "data": "判定基準" },
+        { "n": 4, "route": "consult → 落合 (Agent並列)",     "what": "構造視点で200字結論",                  "data": "200字プロンプト" },
+        { "n": 5, "route": "consult → ひろゆき (Agent並列)", "what": "ROI視点で200字結論",                   "data": "200字プロンプト" },
+        { "n": 6, "route": "consult → ホリエモン (Agent並列)","what": "選択集中視点で200字結論",              "data": "200字プロンプト" },
+        { "n": 7, "route": "consult → user",                 "what": "一致パターン判定・表形式報告",         "data": "unanimous/majority/split" },
+        { "n": 8, "route": "consult → log-script",           "what": "Bash自動実行（確認待たない）",         "data": "--topic/--pattern/--ochiai/--hiroyuki/--horie/--category" },
+        { "n": 9, "route": "log-script → JSONL",             "what": "1行追記",                              "data": "ts含むレコード" }
+      ]
+    },
+    {
+      "id": "notion-sync",
+      "label": "Notion同期",
+      "nodes": ["user","claude","sync-skill","sync-state","consult-log","notion-mcp","notion-db"],
+      "edges": [
+        ["user","claude"],["claude","sync-skill"],
+        ["sync-skill","sync-state"],["sync-skill","consult-log"],
+        ["sync-skill","notion-mcp"],["notion-mcp","notion-db"]
+      ],
+      "steps": [
+        { "n": 1, "route": "user → claude",                "what": "「諮問ログをNotionに同期」",      "data": "—" },
+        { "n": 2, "route": "claude → sync-skill",          "what": "ai-shain-notion-sync 発火",      "data": "—" },
+        { "n": 3, "route": "sync-skill → sync-state",      "what": "state読込",                       "data": "data_source_id / last_synced_ts" },
+        { "n": 4, "route": "sync-skill → JSONL",           "what": "増分抽出（ts > last_synced_ts）", "data": "新規レコード" },
+        { "n": 5, "route": "sync-skill → Notion MCP",      "what": "notion-create-pages を1件ずつ",  "data": "Topic/Pattern/Personas/Timestamp" },
+        { "n": 6, "route": "Notion MCP → Notion DB",       "what": "DBページ追加",                   "data": "page properties" },
+        { "n": 7, "route": "sync-skill → sync-state",      "what": "last_synced_ts 上書き",           "data": "最新ts" },
+        { "n": 8, "route": "sync-skill → user",            "what": "送信N件/スキップM件 報告",       "data": "サマリ＋DB URL" }
+      ]
+    },
+    {
+      "id": "add-persona",
+      "label": "新規ペルソナ追加",
+      "nodes": ["user","claude","add-persona-skill","f-company-claude-md"],
+      "edges": [
+        ["user","claude"],["claude","add-persona-skill"],["add-persona-skill","f-company-claude-md"]
+      ],
+      "steps": [
+        { "n": 1, "route": "user → claude",                  "what": "「ペルソナ追加 [人物名]」",                  "data": "人物名" },
+        { "n": 2, "route": "claude → add-persona",           "what": "Skill発火",                                  "data": "—" },
+        { "n": 3, "route": "add-persona → user",             "what": "7項目ヒアリング",                            "data": "役職/部署/専門/発動キーワード等" },
+        { "n": 4, "route": "add-persona → Fカンパニー CLAUDE.md", "what": "組織ツリー・振り分け表・社員数を更新",  "data": "diff" },
+        { "n": 5, "route": "add-persona → user",             "what": "完了検証チェックリスト報告",                  "data": "6項目" }
+      ]
+    },
+    {
+      "id": "stats-dashboard",
+      "label": "統計集計・ダッシュボード",
+      "nodes": ["user","stats-script","dashboard-script","consult-log","dashboard-html"],
+      "edges": [
+        ["stats-script","consult-log"],["dashboard-script","consult-log"],["dashboard-script","dashboard-html"]
+      ],
+      "steps": [
+        { "n": 1, "route": "user → stats-script",        "what": "python ai-shain-stats.py",        "data": "—" },
+        { "n": 2, "route": "stats-script → JSONL",        "what": "全件読込",                        "data": "—" },
+        { "n": 3, "route": "stats-script → user",         "what": "split率/少数派採用率/拡張ヒント", "data": "stdout" },
+        { "n": 4, "route": "user → dashboard-script",     "what": "python build_ai_shain_dashboard.py","data": "—" },
+        { "n": 5, "route": "dashboard-script → JSONL",    "what": "JSONL読込",                       "data": "—" },
+        { "n": 6, "route": "dashboard-script → HTML",     "what": "Chart.js HTML出力",               "data": "ai-shain-stats.html" }
+      ]
+    },
+    {
+      "id": "rescope",
+      "label": "rescope（v0.5圧縮再評価）",
+      "nodes": ["consult-skill","memory-feedback","ochiai","hiroyuki","horie","log-script","consult-log"],
+      "edges": [
+        ["consult-skill","memory-feedback"],
+        ["consult-skill","ochiai"],["consult-skill","hiroyuki"],["consult-skill","horie"],
+        ["consult-skill","log-script"],["log-script","consult-log"]
+      ],
+      "steps": [
+        { "n": 1, "route": "consult → feedback memory",  "what": "rescope 4トリガー判定",          "data": "連続性/繰返し/関連Stub" },
+        { "n": 2, "route": "consult → 落合",             "what": "v0.5規模で再諮問",                "data": "圧縮版プロンプト" },
+        { "n": 3, "route": "consult → ひろゆき",         "what": "v0.5規模で再諮問",                "data": "圧縮版プロンプト" },
+        { "n": 4, "route": "consult → ホリエモン",       "what": "v0.5規模で再諮問",                "data": "圧縮版プロンプト" },
+        { "n": 5, "route": "consult → log-script",       "what": "--rescope-applied で記録",        "data": "rescope_applied: true" }
+      ]
+    }
+  ],
+  "notes": [
+    "ペルソナファイルは Fカンパニー側（~/OneDrive/ドキュメント/Claude/personas/）で存在確認済み。.secretary 直下には未配置。",
+    "Routine（スケジュール起動）は今回未確認。AI社員諮問専用のスケジュールタスクは検出されていない。",
+    "ai-shain-notion-sync は parent=data_source_id で notion-create-pages を呼ぶ（database_id ではない・state.json の note より）。"
+  ]
+};
+
+// =====================================================================
+// Render
+// =====================================================================
+const NODE_W = 180;
+const NODE_H = 56;
+
+function catColor(id) {
+  const c = DATA.categories.find(c => c.id === id);
+  return c ? c.color : "#888";
+}
+
+function renderLegend() {
+  const el = document.getElementById("legend");
+  DATA.categories.forEach(c => {
+    const span = document.createElement("span");
+    span.className = "legend-item";
+    span.innerHTML = `<span class="swatch" style="background:${c.color}"></span>${c.label}`;
+    el.appendChild(span);
+  });
+}
+
+function renderLanes() {
+  const canvas = document.getElementById("canvas");
+  DATA.categories.forEach(c => {
+    const g = DATA.lanes[c.id];
+    if (!g) return;
+    const lane = document.createElement("div");
+    lane.className = "lane";
+    lane.style.left = g.x + "px";
+    lane.style.top = g.y + "px";
+    lane.style.width = g.w + "px";
+    lane.style.height = g.h + "px";
+    const lbl = document.createElement("div");
+    lbl.className = "lane-label";
+    lbl.textContent = c.label;
+    lane.appendChild(lbl);
+    canvas.appendChild(lane);
+  });
+}
+
+function nodeRect(comp) {
+  const lane = DATA.lanes[comp.category];
+  const x = lane.x + comp.x;
+  // center vertically in lane (leave room for label)
+  const y = lane.y + Math.round((lane.h - NODE_H) / 2) + 6;
+  return { x, y, w: NODE_W, h: NODE_H };
+}
+
+function renderNodes() {
+  const canvas = document.getElementById("canvas");
+  DATA.components.forEach(c => {
+    const r = nodeRect(c);
+    const div = document.createElement("div");
+    div.className = "node";
+    div.id = "node-" + c.id;
+    div.style.left = r.x + "px";
+    div.style.top = r.y + "px";
+    div.style.borderLeftColor = catColor(c.category);
+    div.innerHTML = `<div class="name">${c.label}</div><div class="sub">${c.sub}</div>`;
+    canvas.appendChild(div);
+  });
+}
+
+function edgePath(a, b) {
+  // Draw an orthogonal-ish path between bottom/top centers or sides.
+  const ar = nodeRect(a);
+  const br = nodeRect(b);
+  const ax = ar.x + ar.w / 2;
+  const ay = ar.y + ar.h / 2;
+  const bx = br.x + br.w / 2;
+  const by = br.y + br.h / 2;
+  // Use cubic curve for nicer look
+  const dy = by - ay;
+  const c1x = ax;
+  const c1y = ay + dy * 0.4;
+  const c2x = bx;
+  const c2y = by - dy * 0.4;
+  return `M ${ax} ${ay} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${bx} ${by}`;
+}
+
+function renderWires() {
+  const svg = document.getElementById("wires");
+  DATA.connections.forEach((conn, i) => {
+    const a = DATA.components.find(c => c.id === conn.from);
+    const b = DATA.components.find(c => c.id === conn.to);
+    if (!a || !b) return;
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", edgePath(a, b));
+    p.setAttribute("stroke", "var(--line)");
+    p.setAttribute("stroke-width", "1.2");
+    p.setAttribute("fill", "none");
+    p.setAttribute("opacity", "0.55");
+    p.dataset.from = conn.from;
+    p.dataset.to = conn.to;
+    p.id = "edge-" + i;
+    svg.appendChild(p);
+  });
+}
+
+function renderFlowList() {
+  const ul = document.getElementById("flow-list");
+  DATA.flows.forEach(f => {
+    const li = document.createElement("li");
+    li.textContent = f.label;
+    li.dataset.flow = f.id;
+    li.onclick = () => selectFlow(f.id);
+    ul.appendChild(li);
+  });
+}
+
+function renderNotes() {
+  const box = document.getElementById("notes-box");
+  box.innerHTML = "<b>Notes</b><br>" + DATA.notes.map(n => "• " + n).join("<br>");
+}
+
+function selectFlow(flowId) {
+  const flow = DATA.flows.find(f => f.id === flowId);
+  if (!flow) return;
+  // Sidebar active state
+  document.querySelectorAll("#flow-list li").forEach(li => {
+    li.classList.toggle("active", li.dataset.flow === flowId);
+  });
+  // Highlight nodes
+  const nodeSet = new Set(flow.nodes);
+  DATA.components.forEach(c => {
+    const el = document.getElementById("node-" + c.id);
+    if (!el) return;
+    if (nodeSet.has(c.id)) {
+      el.classList.add("hl");
+      el.classList.remove("dim");
+    } else {
+      el.classList.remove("hl");
+      el.classList.add("dim");
+    }
+  });
+  // Highlight edges
+  const edgeKey = (e) => e[0] + "→" + e[1];
+  const edgeSet = new Set(flow.edges.map(edgeKey));
+  document.querySelectorAll("#wires path").forEach(p => {
+    const key = p.dataset.from + "→" + p.dataset.to;
+    const keyRev = p.dataset.to + "→" + p.dataset.from;
+    if (edgeSet.has(key) || edgeSet.has(keyRev)) {
+      p.setAttribute("stroke", "var(--line-hl)");
+      p.setAttribute("stroke-width", "2.2");
+      p.setAttribute("opacity", "0.95");
+    } else {
+      p.setAttribute("stroke", "var(--line)");
+      p.setAttribute("stroke-width", "1.2");
+      p.setAttribute("opacity", "0.12");
+    }
+  });
+  // Steps
+  const stepsEl = document.getElementById("steps");
+  stepsEl.innerHTML = flow.steps.map(s => `
+    <div class="step">
+      <span class="step-n">${s.n}.</span>${s.what}
+      <div class="step-route">↳ ${s.route}</div>
+      <div class="step-data">data: ${s.data}</div>
+    </div>
+  `).join("");
+}
+
+function clearSelection() {
+  document.querySelectorAll("#flow-list li").forEach(li => li.classList.remove("active"));
+  document.querySelectorAll(".node").forEach(el => { el.classList.remove("hl"); el.classList.remove("dim"); });
+  document.querySelectorAll("#wires path").forEach(p => {
+    p.setAttribute("stroke", "var(--line)");
+    p.setAttribute("stroke-width", "1.2");
+    p.setAttribute("opacity", "0.55");
+  });
+  document.getElementById("steps").innerHTML = '<div class="empty">フローを選んでください</div>';
+}
+
+// Init
+renderLegend();
+renderLanes();
+renderWires();
+renderNodes();
+renderFlowList();
+renderNotes();
+</script>
+</body>
+</html>

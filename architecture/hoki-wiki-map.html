@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>hoki-wiki Architecture Map</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#11172a; --bg3:#161d33; --line:#222a44;
+  --ink:#e8ecf5; --ink2:#aab2c5; --ink3:#6d7693;
+  --accent:#ffd166; --dim:#3a4260;
+  --c-source:#5ec4ff; --c-data:#7ed957; --c-build:#f5a623;
+  --c-artifact:#ff8a65; --c-page:#b388ff; --c-component:#9ea7b3;
+  --c-storage:#ffd54f; --c-deploy:#ff6b9b; --c-external:#c0c5cf; --c-actor:#ffffff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:'SF Mono','Consolas','Menlo','Source Code Pro',ui-monospace,monospace;
+  font-size:13px;line-height:1.45}
+.app{display:grid;grid-template-columns:1fr 320px;min-height:100vh}
+header{grid-column:1 / -1;padding:18px 24px;border-bottom:1px solid var(--line);background:#0c1224}
+header h1{margin:0 0 6px;font-size:18px;letter-spacing:0.02em;color:var(--ink)}
+header .sub{color:var(--ink3);font-size:12px}
+header .meta{color:var(--ink3);font-size:11px;margin-top:6px}
+header .meta a{color:var(--c-source);text-decoration:none}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.legend .chip{display:flex;align-items:center;gap:6px;background:var(--bg2);
+  border:1px solid var(--line);padding:3px 8px;border-radius:10px;font-size:11px;color:var(--ink2)}
+.legend .chip .sw{width:10px;height:10px;border-radius:2px}
+main.canvas-wrap{position:relative;overflow:auto;padding:12px;background:
+  radial-gradient(circle at 30% 20%, #121b34 0%, var(--bg) 70%);}
+.canvas{position:relative;width:1400px;min-height:1700px}
+svg.connectors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.lane{position:absolute;border:1px dashed var(--line);border-radius:14px;
+  background:rgba(255,255,255,0.015);padding:24px 14px 14px}
+.lane .lane-label{position:absolute;top:-10px;left:14px;background:var(--bg);
+  padding:2px 8px;font-size:11px;letter-spacing:0.08em;color:var(--ink3);text-transform:uppercase}
+.box{position:absolute;background:var(--bg2);border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;width:160px;cursor:default;z-index:2;
+  transition:opacity .2s, box-shadow .2s, transform .15s, border-color .2s}
+.box .name{font-weight:600;font-size:12px;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.box .sub{font-size:10.5px;color:var(--ink3);line-height:1.35}
+.box .cat{position:absolute;top:-7px;left:8px;font-size:9px;padding:1px 5px;
+  border-radius:3px;background:var(--bg3);color:var(--ink2);letter-spacing:0.04em;
+  text-transform:uppercase;border:1px solid var(--line)}
+.box.unverified::after{content:"?";position:absolute;top:-7px;right:6px;width:14px;height:14px;
+  background:var(--accent);color:#000;border-radius:50%;font-size:10px;text-align:center;
+  line-height:14px;font-weight:700}
+.box.dim{opacity:.18}
+.box.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 18px rgba(255,209,102,.15);
+  transform:translateY(-1px)}
+svg .conn{stroke:#2c3656;stroke-width:1;fill:none;transition:stroke .2s,stroke-width .2s,opacity .2s}
+svg .conn.dim{opacity:.12}
+svg .conn.hl{stroke:var(--accent);stroke-width:1.8;opacity:.95}
+svg .arrowhead{fill:#2c3656;transition:fill .2s}
+svg .arrowhead.hl{fill:var(--accent)}
+aside.sidebar{border-left:1px solid var(--line);background:#0c1224;padding:14px 16px;
+  overflow-y:auto;max-height:calc(100vh)}
+aside h2{font-size:11px;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase;
+  margin:14px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.flow-list{list-style:none;margin:0;padding:0}
+.flow-list li{padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--ink2);
+  font-size:12px;margin-bottom:3px;border:1px solid transparent}
+.flow-list li:hover{background:var(--bg2);color:var(--ink)}
+.flow-list li.active{background:var(--bg3);border-color:var(--accent);color:var(--ink)}
+.flow-list li.active::before{content:"▸ ";color:var(--accent)}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{padding:8px 10px 8px 30px;border-radius:6px;background:var(--bg2);
+  margin-bottom:6px;font-size:11.5px;color:var(--ink2);position:relative;line-height:1.5}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:8px;top:8px;
+  width:16px;height:16px;background:var(--accent);color:#000;border-radius:50%;
+  font-size:10px;font-weight:700;text-align:center;line-height:16px}
+.steps li b{color:var(--c-source);font-weight:600}
+.placeholder{color:var(--ink3);font-size:11px;font-style:italic;padding:8px 0}
+.note{font-size:10.5px;color:var(--ink3);padding:8px 10px;background:var(--bg2);
+  border-radius:6px;margin-top:6px;line-height:1.5}
+button.clear{background:transparent;border:1px solid var(--line);color:var(--ink3);
+  font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer;float:right}
+button.clear:hover{color:var(--ink);border-color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <h1>hoki-wiki Architecture Map</h1>
+  <div class="sub">電験3種 法規Wiki — React 18 + Babel CDN による単一HTML SPA。Source(JSX/JS) → Build(Python) → Artifact(HTML) → Deploy(GH Pages) → Browser(localStorage / SPA hash routing)</div>
+  <div class="meta">repo: <a href="https://github.com/kfurufuru/secretary-portal" target="_blank">kfurufuru/secretary-portal</a> · branch chokuzen-suuchi-impl · live: <a href="https://kfurufuru.github.io/denken-hoki-wiki.html" target="_blank">denken-hoki-wiki.html</a> · generated 2026-05-16</div>
+  <div class="legend" id="legend"></div>
+</header>
+
+<main class="canvas-wrap">
+  <div class="canvas" id="canvas">
+    <svg class="connectors" id="svg" viewBox="0 0 1400 1700" preserveAspectRatio="none">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path class="arrowhead" d="M0,0 L10,5 L0,10 z"/>
+        </marker>
+        <marker id="ah-hl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path class="arrowhead hl" d="M0,0 L10,5 L0,10 z"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</main>
+
+<aside class="sidebar">
+  <h2>Flows <button class="clear" id="clearbtn">clear</button></h2>
+  <ul class="flow-list" id="flowlist"></ul>
+  <h2>Steps</h2>
+  <ol class="steps" id="steps"><li class="placeholder" style="list-style:none;padding-left:10px;background:transparent">Select a flow on the left</li></ol>
+  <h2>Notes</h2>
+  <div id="notes"></div>
+</aside>
+
+</div>
+
+<script>
+// ============================================================
+// DATA — extracted from hoki-wiki-map.json (kept inline for portability)
+// ============================================================
+const DATA = {
+  categories: [
+    { id:"actor",     label:"Actor",              color:"var(--c-actor)" },
+    { id:"source",    label:"Source (.jsx/.js)",  color:"var(--c-source)" },
+    { id:"data",      label:"Data/Index",         color:"var(--c-data)" },
+    { id:"build",     label:"Build pipeline",     color:"var(--c-build)" },
+    { id:"artifact",  label:"Build artifact",     color:"var(--c-artifact)" },
+    { id:"component", label:"Shared component",   color:"var(--c-component)" },
+    { id:"page",      label:"SPA page",           color:"var(--c-page)" },
+    { id:"storage",   label:"Browser storage",    color:"var(--c-storage)" },
+    { id:"external",  label:"External system",    color:"var(--c-external)" },
+    { id:"deploy",    label:"Deploy/Host",        color:"var(--c-deploy)" },
+  ],
+  // Lanes — y positions chosen to spread vertically
+  lanes: [
+    { id:"actor",     label:"ACTORS",                       x:20,   y:30,   w:1360, h:120 },
+    { id:"source",    label:"SOURCE (.jsx / .js)",          x:20,   y:170,  w:660,  h:170 },
+    { id:"data",      label:"DATA / INDEX",                 x:700,  y:170,  w:680,  h:170 },
+    { id:"build",     label:"BUILD PIPELINE",               x:20,   y:360,  w:660,  h:170 },
+    { id:"artifact",  label:"BUILD ARTIFACT",               x:700,  y:360,  w:680,  h:170 },
+    { id:"component", label:"SHARED COMPONENTS (in HTML)",  x:20,   y:550,  w:1360, h:170 },
+    { id:"page",      label:"SPA PAGES (renderPage cases)", x:20,   y:740,  w:1360, h:330 },
+    { id:"storage",   label:"BROWSER STORAGE",              x:20,   y:1090, w:660,  h:230 },
+    { id:"external",  label:"EXTERNAL SYSTEMS",             x:700,  y:1090, w:680,  h:230 },
+    { id:"deploy",    label:"DEPLOY / HOSTING",             x:20,   y:1340, w:1360, h:120 },
+  ],
+  // x,y are within canvas coords (1400x1700)
+  components: [
+    // actors
+    { id:"user",   category:"actor", label:"学習者", subtitle:"ブラウザでSPA操作（古舘さん）",   x:60,   y:70 },
+    { id:"claude", category:"actor", label:"Claude Code", subtitle:".jsx編集→build→push実行", x:240,  y:70 },
+
+    // source
+    { id:"components-jsx", category:"source", label:"hoki-components.jsx",
+      subtitle:"App/Sidebar/TOC + 共通テンプレ約25種", x:40,  y:215 },
+    { id:"pages-jsx",      category:"source", label:"hoki-pages.jsx",
+      subtitle:"renderPage + 39 *Page",                x:220, y:215 },
+    { id:"glossary-jsx",   category:"source", label:"hoki-glossary.jsx",
+      subtitle:"ChokuzenYougoPage 用語クイズ",          x:400, y:215 },
+
+    // data
+    { id:"hoki-data",     category:"data", label:"hoki-data.js",
+      subtitle:"WIKI_DATA: 9章×51ページ",     x:720, y:215 },
+    { id:"glossary-data", category:"data", label:"hoki-glossary-data.js",
+      subtitle:"GLOSSARY_TERMS_V1",            x:900, y:215 },
+    { id:"head-template", category:"data", label:"hoki-head-template.html",
+      subtitle:"head/CSSテンプレ",             x:1080,y:215 },
+    { id:"ranking-json",  category:"data", label:"hoki-theme-ranking.json",
+      subtitle:"kakomon.yml集計（S/A/B/C）",   x:720, y:285 },
+    { id:"search-index",  category:"data", label:"hoki-search-index.json",
+      subtitle:"検索インデックス（ビルド時生成）", x:900,y:285 },
+
+    // build
+    { id:"build-script", category:"build", label:"build-hoki-wiki.py",
+      subtitle:"node --check→bundle→HTML出力", x:40,  y:405 },
+    { id:"hoki-check",   category:"build", label:"hoki_check.py",
+      subtitle:"id/cta/tag/yr 4チェッカ",       x:220, y:405 },
+    { id:"gen-ranking",  category:"build", label:"gen_hoki_ranking.py",
+      subtitle:"kakomon.yml → ranking JSON",   x:400, y:405 },
+
+    // artifact
+    { id:"html-artifact", category:"artifact", label:"denken-hoki-wiki.html",
+      subtitle:"単一SPA ~758KB · 直接編集禁止", x:720, y:405 },
+    { id:"html-bak",      category:"artifact", label:"denken-hoki-wiki.html.bak",
+      subtitle:"前版バックアップ（自動）",       x:900, y:405 },
+
+    // component (lane y:550)
+    { id:"comp-app",         category:"component", label:"App (React root)",
+      subtitle:"hashchange / lastSeen",              x:40,  y:595 },
+    { id:"comp-sidebar",     category:"component", label:"Sidebar / TopBar / TOC / BottomNav",
+      subtitle:"ナビUI・テーマ別/章別タブ",          x:220, y:595 },
+    { id:"comp-quickreview", category:"component", label:"QuickReview (4ボタン)",
+      subtitle:"理解した/うろ覚え/要確認/間違えた",  x:440, y:595 },
+    { id:"comp-meta",        category:"component", label:"MetaStrip / GoalQ / TrapTable 他",
+      subtitle:"ハイブリッドページ固定構成素材",     x:660, y:595 },
+
+    // pages (lane y:740 h:330)
+    { id:"page-top",              category:"page", label:"top (HomePage)",
+      subtitle:"00.0 学習マップ・HOT・3 CTA",   x:40,  y:785 },
+    { id:"page-machigai",         category:"page", label:"chokuzen-machigai",
+      subtitle:"8.4 間違いノート（横断集計）",   x:220, y:785 },
+    { id:"page-chokuzen-suuchi",  category:"page", label:"chokuzen-suuchi",
+      subtitle:"8.1 数値だけ確認",               x:400, y:785 },
+    { id:"page-chokuzen-formula", category:"page", label:"chokuzen-formula",
+      subtitle:"8.2 公式だけ確認",               x:580, y:785 },
+    { id:"page-chokuzen-hikkake", category:"page", label:"chokuzen-hikkake",
+      subtitle:"8.3 ひっかけだけ確認",           x:760, y:785 },
+    { id:"page-chokuzen-yougo",   category:"page", label:"chokuzen-yougo",
+      subtitle:"8.5 用語クイズ（3モード）",      x:940, y:785 },
+    { id:"page-stub",             category:"page", label:"StubPage",
+      subtitle:"未実装フォールバック",           x:1120,y:785 },
+    { id:"page-bshu",     category:"page", label:"B計算ページ群",
+      subtitle:"1.1–1.10 絶縁/電圧降下/接地/地絡 等", x:40,  y:885 },
+    { id:"page-hyou",     category:"page", label:"頻出数値・表暗記群",
+      subtitle:"2.1–2.6 接地一覧/絶縁/離隔/区分 等",  x:240, y:885 },
+    { id:"page-gijutsu",  category:"page", label:"技術基準・解釈群",
+      subtitle:"3.x 電路絶縁/接地工事/電線路 等",     x:440, y:885 },
+    { id:"page-horei",    category:"page", label:"法令・制度群",
+      subtitle:"4.x 区分/主任技/保安規程/事故報告 等", x:640, y:885 },
+    { id:"page-kakomon",  category:"page", label:"kakomon-* 過去問演習",
+      subtitle:"7.1–7.R テーマ別+ランダム65分",       x:840, y:885 },
+    { id:"page-saiene",   category:"page", label:"再エネ群 (5.x)",
+      subtitle:"風力/太陽電池/系統連系",              x:1040,y:885 },
+    { id:"page-shisetsu", category:"page", label:"電気施設管理群 (6.x)",
+      subtitle:"デマンド/需要率/負荷率/不等率 等",     x:1040,y:985 },
+    { id:"page-extra",    category:"page", label:"その他 39 *Page",
+      subtitle:"39 個の Page を category 別に集約表示", x:40,  y:985 },
+
+    // storage
+    { id:"ls-selfcheck", category:"storage", label:"denken_check::hoki_<slug>::<hash>",
+      subtitle:"QuickReview状態 JSON payload",        x:40,  y:1135 },
+    { id:"ls-lastseen",  category:"storage", label:"hoki_lastSeen_<pageId>",
+      subtitle:"最終閲覧 timestamp",                  x:280, y:1135 },
+    { id:"ls-sidebar",   category:"storage", label:"hoki_sidebar_mode/_window",
+      subtitle:"テーマ別/章別タブ＋集計window",       x:40,  y:1215 },
+    { id:"ls-glossary",  category:"storage", label:"hoki_quiz_glossary_*",
+      subtitle:"用語クイズ進捗 & バックアップ",        x:280, y:1215 },
+    { id:"hash-router",  category:"storage", label:"location.hash #pageid:anchor",
+      subtitle:"SPA routing（page と anchor を : 分離）", x:500, y:1135 },
+
+    // external
+    { id:"cdn-react",   category:"external", label:"React 18 + Babel CDN",
+      subtitle:"unpkg.com",                          x:720, y:1135 },
+    { id:"cdn-katex",   category:"external", label:"KaTeX CDN",
+      subtitle:"jsdelivr 数式レンダリング",           x:920, y:1135 },
+    { id:"denken-wiki", category:"external", label:"denken-wiki (姉妹)",
+      subtitle:"MkDocs SOT条文記事リンク先",          x:1120,y:1135 },
+    { id:"kakomon-yml", category:"external", label:"kakomon.yml",
+      subtitle:"denken-wiki側過去問DB",                x:720, y:1215, unverified:true },
+    { id:"denken-ou",   category:"external", label:"denken-ou.com",
+      subtitle:"過去問空欄の一次照合元",                x:920, y:1215 },
+    { id:"chatgpt",     category:"external", label:"ChatGPT 監修",
+      subtitle:"第4監修者（数値・正誤判定の最終確認）",  x:1120,y:1215 },
+
+    // deploy
+    { id:"deploy-pages", category:"deploy", label:"GitHub Pages",
+      subtitle:"kfurufuru.github.io 自動デプロイ",     x:300, y:1385 },
+    { id:"portal-link",  category:"deploy", label:"portal-v2.html",
+      subtitle:"Fカンパニーポータルからのエントリ",     x:800, y:1385 },
+  ],
+  connections: [
+    // viewing
+    { from:"user", to:"portal-link" },
+    { from:"portal-link", to:"html-artifact" },
+    { from:"deploy-pages", to:"html-artifact" },
+    { from:"user", to:"deploy-pages" },
+    { from:"html-artifact", to:"cdn-react" },
+    { from:"html-artifact", to:"cdn-katex" },
+    { from:"html-artifact", to:"comp-app" },
+    { from:"comp-app", to:"hash-router" },
+    { from:"comp-app", to:"comp-sidebar" },
+    { from:"comp-app", to:"page-top" },
+    { from:"comp-app", to:"ls-lastseen" },
+    // page usage
+    { from:"page-top", to:"comp-meta" },
+    { from:"page-machigai", to:"ls-selfcheck" },
+    { from:"page-machigai", to:"denken-wiki" },
+    { from:"page-chokuzen-suuchi", to:"comp-meta" },
+    { from:"page-chokuzen-formula", to:"comp-meta" },
+    { from:"page-chokuzen-hikkake", to:"comp-meta" },
+    { from:"page-chokuzen-yougo", to:"ls-glossary" },
+    { from:"page-bshu", to:"comp-meta" },
+    { from:"page-hyou", to:"comp-meta" },
+    { from:"page-gijutsu", to:"comp-meta" },
+    { from:"page-gijutsu", to:"denken-wiki" },
+    { from:"page-horei", to:"denken-wiki" },
+    { from:"page-kakomon", to:"denken-ou" },
+    { from:"page-shisetsu", to:"comp-meta" },
+    { from:"page-saiene", to:"comp-meta" },
+    // quickreview
+    { from:"comp-quickreview", to:"ls-selfcheck" },
+    { from:"comp-sidebar", to:"ranking-json" },
+    { from:"comp-sidebar", to:"ls-sidebar" },
+    // authoring
+    { from:"claude", to:"components-jsx" },
+    { from:"claude", to:"pages-jsx" },
+    { from:"claude", to:"glossary-jsx" },
+    { from:"claude", to:"hoki-data" },
+    { from:"claude", to:"glossary-data" },
+    // build
+    { from:"components-jsx", to:"build-script" },
+    { from:"pages-jsx", to:"build-script" },
+    { from:"glossary-jsx", to:"build-script" },
+    { from:"hoki-data", to:"build-script" },
+    { from:"glossary-data", to:"build-script" },
+    { from:"head-template", to:"build-script" },
+    { from:"ranking-json", to:"build-script" },
+    { from:"build-script", to:"search-index" },
+    { from:"build-script", to:"html-artifact" },
+    { from:"build-script", to:"html-bak" },
+    // checker
+    { from:"pages-jsx", to:"hoki-check" },
+    { from:"hoki-data", to:"hoki-check" },
+    { from:"kakomon-yml", to:"hoki-check" },
+    { from:"denken-wiki", to:"hoki-check" },
+    // ranking
+    { from:"kakomon-yml", to:"gen-ranking" },
+    { from:"gen-ranking", to:"ranking-json" },
+    // deploy
+    { from:"html-artifact", to:"deploy-pages" },
+    // review
+    { from:"chatgpt", to:"claude" },
+  ],
+  flows: [
+    { id:"view-page", label:"ページ閲覧（学習者）", steps:[
+      "user: portal-v2.html から denken-hoki-wiki.html を開く",
+      "deploy-pages: GitHub Pages が単一HTMLを配信",
+      "html-artifact: React / Babel / KaTeX CDN を読み込み <script type=text/babel> 実行",
+      "comp-app: location.hash を parseHash() → setPage(pageId)",
+      "comp-app: hoki_lastSeen_<pageId> に Date.now() を保存",
+      "comp-app: renderPage(page) で対応Pageコンポーネントをマウント",
+    ], highlight:[
+      "user","portal-link","deploy-pages","html-artifact","cdn-react","cdn-katex","comp-app","hash-router","ls-lastseen","page-top",
+    ]},
+    { id:"self-check", label:"セルフチェック4ボタン保存", steps:[
+      "user: QuickReview「理解した/うろ覚え/要確認/間違えた」をタップ",
+      "comp-quickreview: storageKey = denken_check::hoki_<slug>::<DJB2(質問)>",
+      "comp-quickreview: payload {status,updatedAt,firstSeenAt,reviewCount} を JSON.stringify",
+      "ls-selfcheck: localStorage.setItem で同一オリジン領域へ保存",
+      "page-machigai: 後で全keyスキャンし「間違えた」だけ集計表示",
+    ], highlight:[
+      "user","comp-quickreview","ls-selfcheck","page-machigai","denken-wiki",
+    ]},
+    { id:"add-page", label:"新規ページ追加（執筆者）", steps:[
+      "claude: hoki-page-template Skill 発火・棲み分け検証・AI社員3者諮問",
+      "claude: hoki-data.js の chapters[].pages[] に {id,num,title,freq,ch} を追記",
+      "claude: hoki-pages.jsx に *Page と renderPage の case 'xxx' を追加",
+      "hoki-check: python hoki_check.py で id/cta/tag/yr 4チェック",
+      "build-script: python build-hoki-wiki.py で bundle → HTML出力（.bak保存）",
+      "claude: git push → GH Pages 反映（約50秒）→ URL確認",
+    ], highlight:[
+      "claude","hoki-data","pages-jsx","hoki-check","build-script","html-artifact","html-bak","deploy-pages",
+    ]},
+    { id:"build-deploy", label:"Build & Deploy", steps:[
+      "build-script: node --check で hoki-data.js / hoki-glossary-data.js 構文検証",
+      "build-script: hoki-head-template.html の CSS を読み込み",
+      "build-script: node -e で WIKI_DATA / GLOSSARY を eval → 検索index構築",
+      "search-index: data/hoki-search-index.json 出力 + window.HOKI_SEARCH_INDEX 埋込",
+      "html-bak: 既存 denken-hoki-wiki.html を .bak へコピー",
+      "html-artifact: head + CDN + body + ranking + searchIndex + script(babel) を連結出力",
+      "deploy-pages: git push → GitHub Pages が自動デプロイ（~50秒）",
+    ], highlight:[
+      "components-jsx","pages-jsx","glossary-jsx","hoki-data","glossary-data","head-template","ranking-json",
+      "build-script","search-index","html-artifact","html-bak","deploy-pages",
+    ]},
+    { id:"ranking-refresh", label:"出題頻度ランキング更新", steps:[
+      "claude: denken-wiki/_data/kakomon.yml が更新されたら検知",
+      "gen-ranking: python scripts/gen_hoki_ranking.py 実行・テーマ別件数集計",
+      "ranking-json: S(1-4)/A(5-10)/B(11-16)/C(17~) で data/hoki-theme-ranking.json 出力",
+      "build-script: 次回ビルド時に window.HOKI_RANKING として HTML へ埋込",
+      "comp-sidebar: テーマ別タブで 5y/10y/15y window 切替表示",
+    ], highlight:[
+      "kakomon-yml","gen-ranking","ranking-json","build-script","html-artifact","comp-sidebar",
+    ]},
+    { id:"machigai-aggregate", label:"間違いノート横断集計", steps:[
+      "user: ナビ「8.4 間違いノート」を開く（#chokuzen-machigai）",
+      "page-machigai: localStorage 全keyを走査し denken_check::* を抽出",
+      "page-machigai: hoki_/denken_wiki_ 両prefix を横断集計（同一オリジン共有）",
+      "page-machigai: status=='wrong' だけ抽出・lastSeen / カウントでソート",
+      "page-machigai: meta-page（chokuzen-*/top）は推薦対象から除外",
+    ], highlight:[
+      "user","page-machigai","ls-selfcheck","ls-lastseen","denken-wiki",
+    ]},
+    { id:"kakomon-display", label:"kakomon テーマ別演習", steps:[
+      "user: 「7.x B問だけ/接地/絶縁/主任/保安/事故/電線路/再エネ」を開く",
+      "page-kakomon: WIKI_DATA + 内蔵問題リストから該当年度問題を表示",
+      "user: 選択肢を回答 → 解答/解説アコーディオン開閉（学習用初期closed）",
+      "comp-quickreview: 「間違えた」で denken_check::* に記録",
+      "user: ランダム10問モード（kakomon-random）は 65分タイマー付き",
+    ], highlight:[
+      "user","page-kakomon","comp-quickreview","ls-selfcheck","denken-ou",
+    ]},
+    { id:"review-monshu", label:"ChatGPT監修サイクル", steps:[
+      "claude: v1.0 版を執筆して push（先見せ）",
+      "user: ChatGPT にレビュー依頼",
+      "chatgpt: 数値/構造/誤判定/語彙の4視点で指摘",
+      "claude: 本物/誤解/場所違い/既充足 の4分類で振り分け",
+      "claude: 必修だけ反映・改善は提案分離 → 同セッション内 push",
+    ], highlight:[
+      "claude","chatgpt","user","html-artifact","deploy-pages","pages-jsx",
+    ]},
+  ],
+  notes: [
+    "denken-hoki-wiki.html は build artifact — 直接編集禁止。",
+    "SPA hash routing は #pageid:anchor 形式で page と anchor を : で分離。",
+    "localStorage は kfurufuru.github.io 同一オリジンで denken-wiki と共有 — MachigaiNotePage が両wikiを横断集計。",
+    "kakomon.yml の現行パスは build-hoki-wiki.py / hoki_check.py / gen_hoki_ranking.py で記述が分かれている — 一次確認推奨。",
+  ],
+};
+
+// ============================================================
+// RENDER
+// ============================================================
+const canvas = document.getElementById('canvas');
+const svg = document.getElementById('svg');
+const flowList = document.getElementById('flowlist');
+const stepsEl = document.getElementById('steps');
+const legendEl = document.getElementById('legend');
+const notesEl = document.getElementById('notes');
+
+// legend
+DATA.categories.forEach(c => {
+  const chip = document.createElement('div');
+  chip.className = 'chip';
+  chip.innerHTML = `<span class="sw" style="background:${c.color}"></span>${c.label}`;
+  legendEl.appendChild(chip);
+});
+
+// lanes
+DATA.lanes.forEach(l => {
+  const div = document.createElement('div');
+  div.className = 'lane';
+  div.style.left = l.x + 'px';
+  div.style.top = l.y + 'px';
+  div.style.width = l.w + 'px';
+  div.style.height = l.h + 'px';
+  const cat = DATA.categories.find(c => c.id === l.id);
+  if (cat) div.style.borderColor = cat.color + '55';
+  div.innerHTML = `<div class="lane-label" style="color:${cat?cat.color:'var(--ink3)'}">${l.label}</div>`;
+  canvas.appendChild(div);
+});
+
+// boxes
+const boxIndex = {};
+const BOX_W = 160, BOX_H = 56;
+DATA.components.forEach(comp => {
+  const div = document.createElement('div');
+  div.className = 'box' + (comp.unverified ? ' unverified' : '');
+  div.style.left = comp.x + 'px';
+  div.style.top = comp.y + 'px';
+  div.style.width = BOX_W + 'px';
+  const cat = DATA.categories.find(c => c.id === comp.category);
+  if (cat) div.style.borderLeft = `3px solid ${cat.color}`;
+  div.innerHTML = `<div class="cat" style="color:${cat?cat.color:'var(--ink3)'}">${comp.category}</div>
+                   <div class="name">${comp.label}</div>
+                   <div class="sub">${comp.subtitle || ''}</div>`;
+  div.dataset.id = comp.id;
+  canvas.appendChild(div);
+  boxIndex[comp.id] = { el: div, cx: comp.x + BOX_W/2, cy: comp.y + BOX_H/2,
+                       left: comp.x, top: comp.y, right: comp.x + BOX_W, bottom: comp.y + BOX_H };
+});
+
+// connections (with edge-attached path so lines don't cut through boxes' centers)
+function edgePoint(box, tx, ty) {
+  // pick the side closest to the target
+  const cx = box.cx, cy = box.cy;
+  const dx = tx - cx, dy = ty - cy;
+  if (Math.abs(dx) * (box.bottom - box.top) > Math.abs(dy) * (box.right - box.left)) {
+    // exit horizontally
+    return { x: dx > 0 ? box.right : box.left, y: cy + dy * ((box.right - box.left)/2) / Math.max(1, Math.abs(dx)) };
+  } else {
+    return { x: cx + dx * ((box.bottom - box.top)/2) / Math.max(1, Math.abs(dy)), y: dy > 0 ? box.bottom : box.top };
+  }
+}
+
+const connEls = [];
+DATA.connections.forEach((c, i) => {
+  const a = boxIndex[c.from], b = boxIndex[c.to];
+  if (!a || !b) { console.warn('missing', c); return; }
+  const p1 = edgePoint(a, b.cx, b.cy);
+  const p2 = edgePoint(b, a.cx, a.cy);
+  const mx = (p1.x + p2.x) / 2;
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('class','conn');
+  path.setAttribute('d', `M${p1.x},${p1.y} C${mx},${p1.y} ${mx},${p2.y} ${p2.x},${p2.y}`);
+  path.setAttribute('marker-end','url(#ah)');
+  path.dataset.from = c.from; path.dataset.to = c.to;
+  svg.appendChild(path);
+  connEls.push({ el: path, from: c.from, to: c.to });
+});
+
+// flows
+DATA.flows.forEach(f => {
+  const li = document.createElement('li');
+  li.textContent = f.label;
+  li.dataset.id = f.id;
+  li.addEventListener('click', () => selectFlow(f.id));
+  flowList.appendChild(li);
+});
+
+// notes
+DATA.notes.forEach(n => {
+  const div = document.createElement('div');
+  div.className = 'note';
+  div.textContent = n;
+  notesEl.appendChild(div);
+});
+
+function clearHighlight() {
+  document.querySelectorAll('.box').forEach(b => { b.classList.remove('dim','hl'); });
+  connEls.forEach(c => c.el.classList.remove('dim','hl'));
+  connEls.forEach(c => c.el.setAttribute('marker-end','url(#ah)'));
+  document.querySelectorAll('.flow-list li').forEach(li => li.classList.remove('active'));
+  stepsEl.innerHTML = '<li class="placeholder" style="list-style:none;padding-left:10px;background:transparent">Select a flow on the left</li>';
+}
+
+function selectFlow(id) {
+  const flow = DATA.flows.find(f => f.id === id);
+  if (!flow) return;
+  const hi = new Set(flow.highlight);
+  document.querySelectorAll('.box').forEach(b => {
+    if (hi.has(b.dataset.id)) { b.classList.add('hl'); b.classList.remove('dim'); }
+    else { b.classList.add('dim'); b.classList.remove('hl'); }
+  });
+  connEls.forEach(c => {
+    if (hi.has(c.from) && hi.has(c.to)) {
+      c.el.classList.add('hl'); c.el.classList.remove('dim');
+      c.el.setAttribute('marker-end','url(#ah-hl)');
+    } else {
+      c.el.classList.add('dim'); c.el.classList.remove('hl');
+      c.el.setAttribute('marker-end','url(#ah)');
+    }
+  });
+  document.querySelectorAll('.flow-list li').forEach(li => {
+    li.classList.toggle('active', li.dataset.id === id);
+  });
+  stepsEl.innerHTML = '';
+  flow.steps.forEach(s => {
+    const li = document.createElement('li');
+    // bold the actor token (text before ":")
+    const m = s.match(/^([^:]+):\s*(.*)$/);
+    if (m) li.innerHTML = `<b>${m[1]}</b>: ${m[2]}`;
+    else   li.textContent = s;
+    stepsEl.appendChild(li);
+  });
+}
+
+document.getElementById('clearbtn').addEventListener('click', clearHighlight);
+</script>
+
+</body>
+</html>

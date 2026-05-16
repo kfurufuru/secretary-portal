@@ -1,0 +1,559 @@
+{
+  "system": "hoki-wiki (denken-hoki-wiki)",
+  "generated": "2026-05-16",
+  "description": "電験3種 法規Wiki — React 18 + Babel CDN による単一HTML SPA。Source(JSX/JS) → Build(Python) → Artifact(HTML) → Deploy(GH Pages) → Browser(localStorage/SPA hash routing) の片方向パイプライン。",
+  "repo_path": "C:/Users/kfuru/.secretary/ (git: kfurufuru/secretary-portal, branch chokuzen-suuchi-impl)",
+  "deploy_url": "https://kfurufuru.github.io/denken-hoki-wiki.html",
+  "categories": [
+    { "id": "source",   "label": "Source (.jsx/.js)",  "color": "#5ec4ff" },
+    { "id": "data",     "label": "Data/Index",         "color": "#7ed957" },
+    { "id": "build",    "label": "Build pipeline",     "color": "#f5a623" },
+    { "id": "artifact", "label": "Build artifact",     "color": "#ff8a65" },
+    { "id": "page",     "label": "SPA page",           "color": "#b388ff" },
+    { "id": "component","label": "Shared component",   "color": "#9ea7b3" },
+    { "id": "storage",  "label": "Browser storage",    "color": "#ffd54f" },
+    { "id": "deploy",   "label": "Deploy/Host",        "color": "#ff6b9b" },
+    { "id": "external", "label": "External system",    "color": "#c0c5cf" },
+    { "id": "actor",    "label": "Actor",              "color": "#ffffff" }
+  ],
+  "components": [
+    {
+      "id": "user",
+      "category": "actor",
+      "label": "学習者（古舘さん）",
+      "subtitle": "ブラウザでSPAを操作する受験者",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "claude",
+      "category": "actor",
+      "label": "Claude Code",
+      "subtitle": ".jsx編集→build→push実行",
+      "file": null,
+      "verified": true
+    },
+
+    {
+      "id": "hoki-data",
+      "category": "data",
+      "label": "hoki-data.js",
+      "subtitle": "WIKI_DATA: 9 chapters × 51 pages",
+      "file": "C:/Users/kfuru/.secretary/hoki-data.js",
+      "verified": true
+    },
+    {
+      "id": "glossary-data",
+      "category": "data",
+      "label": "hoki-glossary-data.js",
+      "subtitle": "GLOSSARY_TERMS_V1（用語クイズ）",
+      "file": "C:/Users/kfuru/.secretary/hoki-glossary-data.js",
+      "verified": true
+    },
+    {
+      "id": "head-template",
+      "category": "data",
+      "label": "hoki-head-template.html",
+      "subtitle": "<head>CSSテンプレ（再ビルド汚染防止）",
+      "file": "C:/Users/kfuru/.secretary/hoki-head-template.html",
+      "verified": true
+    },
+    {
+      "id": "search-index",
+      "category": "data",
+      "label": "hoki-search-index.json",
+      "subtitle": "全ページ+用語の横断検索インデックス（ビルド時生成）",
+      "file": "C:/Users/kfuru/.secretary/data/hoki-search-index.json",
+      "verified": true
+    },
+    {
+      "id": "ranking-json",
+      "category": "data",
+      "label": "hoki-theme-ranking.json",
+      "subtitle": "kakomon.yml H23-R07集計のテーマ別ランクS/A/B/C",
+      "file": "C:/Users/kfuru/.secretary/data/hoki-theme-ranking.json",
+      "verified": true
+    },
+
+    {
+      "id": "components-jsx",
+      "category": "source",
+      "label": "hoki-components.jsx",
+      "subtitle": "App/Sidebar/TOC/TopBar/BottomNav + 共通テンプレ約25種",
+      "file": "C:/Users/kfuru/.secretary/hoki-components.jsx",
+      "verified": true
+    },
+    {
+      "id": "pages-jsx",
+      "category": "source",
+      "label": "hoki-pages.jsx",
+      "subtitle": "renderPage + 39 *Page コンポーネント",
+      "file": "C:/Users/kfuru/.secretary/hoki-pages.jsx",
+      "verified": true
+    },
+    {
+      "id": "glossary-jsx",
+      "category": "source",
+      "label": "hoki-glossary.jsx",
+      "subtitle": "ChokuzenYougoPage + 用語クイズ各モード",
+      "file": "C:/Users/kfuru/.secretary/hoki-glossary.jsx",
+      "verified": true
+    },
+
+    {
+      "id": "comp-app",
+      "category": "component",
+      "label": "App (React root)",
+      "subtitle": "hashchange listener / page state / lastSeen記録",
+      "file": "hoki-components.jsx ~L1500",
+      "verified": true
+    },
+    {
+      "id": "comp-sidebar",
+      "category": "component",
+      "label": "Sidebar / TOC / TopBar / BottomNav",
+      "subtitle": "ナビUI（テーマ別/章別タブ切替、出題頻度バッジ）",
+      "file": "hoki-components.jsx",
+      "verified": true
+    },
+    {
+      "id": "comp-quickreview",
+      "category": "component",
+      "label": "QuickReview (4ボタン)",
+      "subtitle": "理解した/うろ覚え/要確認/間違えた → denken_check:: 保存",
+      "file": "hoki-components.jsx ~L456-540",
+      "verified": true
+    },
+    {
+      "id": "comp-meta",
+      "category": "component",
+      "label": "MetaStrip / GoalQuestion / ConclusionBox / MemTable / TrapTable / DirectCheckMode / MinShortcutCard / ExamFocus / LawSource / CrossRef / DenkenWikiCTA",
+      "subtitle": "ハイブリッドページ固定構成の素材コンポーネント群",
+      "file": "hoki-components.jsx",
+      "verified": true
+    },
+
+    {
+      "id": "page-top",
+      "category": "page",
+      "label": "top（HomePage）",
+      "subtitle": "00.0 法規の学習マップ・HOT TOPICS・3 CTA・継続セッション復元",
+      "file": "hoki-pages.jsx HomePage",
+      "verified": true
+    },
+    {
+      "id": "page-machigai",
+      "category": "page",
+      "label": "chokuzen-machigai（MachigaiNotePage）",
+      "subtitle": "間違いノート — 両wikiのdenken_check::*履歴を横断集計",
+      "file": "hoki-pages.jsx MachigaiNotePage",
+      "verified": true
+    },
+    {
+      "id": "page-chokuzen-suuchi",
+      "category": "page",
+      "label": "chokuzen-suuchi",
+      "subtitle": "8.1 数値だけ確認（直前チェック）",
+      "file": "hoki-pages.jsx ChokuzenSuuchiPage",
+      "verified": true
+    },
+    {
+      "id": "page-chokuzen-formula",
+      "category": "page",
+      "label": "chokuzen-formula",
+      "subtitle": "8.2 公式だけ確認",
+      "file": "hoki-pages.jsx ChokuzenFormulaPage",
+      "verified": true
+    },
+    {
+      "id": "page-chokuzen-hikkake",
+      "category": "page",
+      "label": "chokuzen-hikkake",
+      "subtitle": "8.3 ひっかけだけ確認",
+      "file": "hoki-pages.jsx ChokuzenHikkakePage",
+      "verified": true
+    },
+    {
+      "id": "page-chokuzen-yougo",
+      "category": "page",
+      "label": "chokuzen-yougo",
+      "subtitle": "8.5 用語クイズ（QuizMeaning/QuizTerm/List モード）",
+      "file": "hoki-glossary.jsx ChokuzenYougoPage",
+      "verified": true
+    },
+    {
+      "id": "page-bshu",
+      "category": "page",
+      "label": "B計算問題ページ群",
+      "subtitle": "1.1〜1.10（絶縁耐力/電圧降下/支線/全日効率/力率/需要率/B種接地/地絡電流/ZCT/DGR）",
+      "file": "hoki-pages.jsx (BshuSetsuchiPage 等)",
+      "verified": true
+    },
+    {
+      "id": "page-hyou",
+      "category": "page",
+      "label": "頻出数値・表暗記ページ群",
+      "subtitle": "2.1〜2.6（接地工事/絶縁耐力/離隔距離/電圧区分/電線サイズ/報告届出期限）",
+      "file": "hoki-pages.jsx (SetsuchiIchiranPage 等)",
+      "verified": true
+    },
+    {
+      "id": "page-gijutsu",
+      "category": "page",
+      "label": "技術基準・解釈ページ群",
+      "subtitle": "3.x 電路絶縁/接地工事/電線路/屋内配線/過電流/地中/分散型/概要",
+      "file": "hoki-pages.jsx (DenroZetsuenPage 等)",
+      "verified": true
+    },
+    {
+      "id": "page-horei",
+      "category": "page",
+      "label": "法令・制度ページ群",
+      "subtitle": "4.x 区分/主任技術者/保安規程/使用前自主検査/事故報告/用品安全/工事士/工事業",
+      "file": "hoki-pages.jsx (KosakubutsuBunruiPage 等)",
+      "verified": true
+    },
+    {
+      "id": "page-kakomon",
+      "category": "page",
+      "label": "kakomon-* 過去問テーマ別演習",
+      "subtitle": "7.1〜7.R（B問だけ/接地/絶縁/主任/保安/事故/電線路/再エネ/ランダム65分）",
+      "file": "hoki-pages.jsx (RandomModePage 等)",
+      "verified": true
+    },
+    {
+      "id": "page-stub",
+      "category": "page",
+      "label": "StubPage（未実装）",
+      "subtitle": "renderPageでフォールバック表示",
+      "file": "hoki-pages.jsx StubPage",
+      "verified": true
+    },
+
+    {
+      "id": "build-script",
+      "category": "build",
+      "label": "build-hoki-wiki.py",
+      "subtitle": "JS構文検証→bundle→検索index生成→HTML出力（.bak保存）",
+      "file": "C:/Users/kfuru/.secretary/build-hoki-wiki.py",
+      "verified": true
+    },
+    {
+      "id": "hoki-check",
+      "category": "build",
+      "label": "hoki_check.py",
+      "subtitle": "id/cta/tag/yr 4チェッカ（pages.jsx ↔ data.js ↔ kakomon.yml）",
+      "file": "C:/Users/kfuru/.secretary/hoki_check.py",
+      "verified": true
+    },
+    {
+      "id": "gen-ranking",
+      "category": "build",
+      "label": "gen_hoki_ranking.py",
+      "subtitle": "denken-wiki/kakomon.yml → hoki-theme-ranking.json 再生成",
+      "file": "C:/Users/kfuru/.secretary/scripts/gen_hoki_ranking.py",
+      "verified": true
+    },
+
+    {
+      "id": "html-artifact",
+      "category": "artifact",
+      "label": "denken-hoki-wiki.html",
+      "subtitle": "単一SPA（~758KB）— 直接編集禁止のbuild artifact",
+      "file": "C:/Users/kfuru/.secretary/denken-hoki-wiki.html",
+      "verified": true
+    },
+    {
+      "id": "html-bak",
+      "category": "artifact",
+      "label": "denken-hoki-wiki.html.bak",
+      "subtitle": "前回ビルドのバックアップ（build時に自動コピー）",
+      "file": "C:/Users/kfuru/.secretary/denken-hoki-wiki.html.bak",
+      "verified": true
+    },
+
+    {
+      "id": "ls-selfcheck",
+      "category": "storage",
+      "label": "denken_check::hoki_<slug>::<hash>",
+      "subtitle": "QuickReview 4ボタン状態 — slug=pageId / hash=DJB2(質問文)",
+      "file": "localStorage (origin: kfurufuru.github.io)",
+      "verified": true
+    },
+    {
+      "id": "ls-lastseen",
+      "category": "storage",
+      "label": "hoki_lastSeen_<pageId>",
+      "subtitle": "最終閲覧timestamp — 「前回のつづき」復元用",
+      "file": "localStorage",
+      "verified": true
+    },
+    {
+      "id": "ls-sidebar",
+      "category": "storage",
+      "label": "hoki_sidebar_mode / hoki_sidebar_window",
+      "subtitle": "サイドバーのテーマ別/章別タブ + 集計ウィンドウ（5y/10y/15y）",
+      "file": "localStorage",
+      "verified": true
+    },
+    {
+      "id": "ls-glossary",
+      "category": "storage",
+      "label": "hoki_quiz_glossary_progress / lastBackup",
+      "subtitle": "用語クイズ進捗・バックアップ時刻",
+      "file": "localStorage",
+      "verified": true
+    },
+    {
+      "id": "hash-router",
+      "category": "storage",
+      "label": "location.hash (#pageid:anchor)",
+      "subtitle": "SPA hash routing — page部分とanchor部分を : で分離",
+      "file": "hoki-components.jsx parseHash/App.useEffect",
+      "verified": true
+    },
+
+    {
+      "id": "cdn-react",
+      "category": "external",
+      "label": "React 18 + Babel CDN",
+      "subtitle": "unpkg.com（react.development.js / babel.standalone）",
+      "file": "build-hoki-wiki.py cdn block",
+      "verified": true
+    },
+    {
+      "id": "cdn-katex",
+      "category": "external",
+      "label": "KaTeX CDN",
+      "subtitle": "jsdelivr（数式レンダリング）",
+      "file": "build-hoki-wiki.py cdn block",
+      "verified": true
+    },
+    {
+      "id": "denken-wiki",
+      "category": "external",
+      "label": "denken-wiki (姉妹)",
+      "subtitle": "MkDocs Material 静的wiki — SOT条文記事へのリンク先",
+      "file": "https://kfurufuru.github.io/denken-wiki/",
+      "verified": true
+    },
+    {
+      "id": "kakomon-yml",
+      "category": "external",
+      "label": "kakomon.yml",
+      "subtitle": "denken-wiki側の過去問DB（年度ごとのarticle/topic登録）",
+      "file": "C:/Users/kfuru/Projects/denken-wiki/_data/kakomon.yml",
+      "verified": false,
+      "note": "build-hoki-wiki.py内部参照だが、scripts/gen_hoki_ranking.pyは別パス（denken-wiki/docs/_data/kakomon.yml）を指している — 実際の現行配置は要確認"
+    },
+    {
+      "id": "denken-ou",
+      "category": "external",
+      "label": "denken-ou.com",
+      "subtitle": "過去問空欄の一次照合元（人手レビュー時に参照）",
+      "file": null,
+      "verified": true
+    },
+    {
+      "id": "chatgpt",
+      "category": "external",
+      "label": "ChatGPT（第4監修者）",
+      "subtitle": "v2.x大型改修・正誤判定表・数値計算の最終チェック",
+      "file": null,
+      "verified": true
+    },
+
+    {
+      "id": "deploy-pages",
+      "category": "deploy",
+      "label": "GitHub Pages (kfurufuru.github.io)",
+      "subtitle": "secretary-portal repo origin/main 自動デプロイ",
+      "file": "https://github.com/kfurufuru/secretary-portal",
+      "verified": true
+    },
+    {
+      "id": "portal-link",
+      "category": "deploy",
+      "label": "portal-v2.html",
+      "subtitle": "Fカンパニーポータル — denken-hoki-wiki.html へのエントリ",
+      "file": "C:/Users/kfuru/.secretary/portal-v2.html",
+      "verified": true
+    }
+  ],
+  "connections": [
+    { "from": "user", "to": "deploy-pages", "label": "ブラウザでアクセス" },
+    { "from": "user", "to": "portal-link",  "label": "ポータル経由" },
+    { "from": "portal-link", "to": "html-artifact", "label": "<a href>" },
+    { "from": "deploy-pages", "to": "html-artifact", "label": "配信" },
+
+    { "from": "html-artifact", "to": "cdn-react",  "label": "<script>" },
+    { "from": "html-artifact", "to": "cdn-katex",  "label": "<link/script>" },
+    { "from": "html-artifact", "to": "comp-app",   "label": "type=text/babel" },
+
+    { "from": "comp-app", "to": "hash-router",   "label": "hashchange listener" },
+    { "from": "comp-app", "to": "comp-sidebar",  "label": "render" },
+    { "from": "comp-app", "to": "page-top",      "label": "renderPage()" },
+    { "from": "comp-app", "to": "ls-lastseen",   "label": "setItem" },
+
+    { "from": "page-top",             "to": "comp-meta",        "label": "uses" },
+    { "from": "page-machigai",        "to": "ls-selfcheck",     "label": "全件scan" },
+    { "from": "page-machigai",        "to": "denken-wiki",      "label": "横断スキャン対象" },
+    { "from": "page-chokuzen-suuchi", "to": "comp-meta",        "label": "uses" },
+    { "from": "page-chokuzen-formula","to": "comp-meta",        "label": "uses" },
+    { "from": "page-chokuzen-hikkake","to": "comp-meta",        "label": "uses" },
+    { "from": "page-chokuzen-yougo",  "to": "ls-glossary",      "label": "progress" },
+    { "from": "page-bshu",            "to": "comp-meta",        "label": "uses" },
+    { "from": "page-hyou",            "to": "comp-meta",        "label": "uses" },
+    { "from": "page-gijutsu",         "to": "comp-meta",        "label": "uses" },
+    { "from": "page-gijutsu",         "to": "denken-wiki",      "label": "DenkenWikiCTA" },
+    { "from": "page-horei",           "to": "denken-wiki",      "label": "DenkenWikiCTA" },
+    { "from": "page-kakomon",         "to": "denken-ou",        "label": "問題本文照合（人手）" },
+
+    { "from": "comp-quickreview", "to": "ls-selfcheck", "label": "setItem JSON" },
+    { "from": "comp-sidebar",     "to": "ranking-json", "label": "window.HOKI_RANKING" },
+    { "from": "comp-sidebar",     "to": "ls-sidebar",   "label": "mode/window保存" },
+
+    { "from": "claude",         "to": "components-jsx", "label": "Edit" },
+    { "from": "claude",         "to": "pages-jsx",      "label": "Edit" },
+    { "from": "claude",         "to": "glossary-jsx",   "label": "Edit" },
+    { "from": "claude",         "to": "hoki-data",      "label": "Edit" },
+    { "from": "claude",         "to": "glossary-data",  "label": "Edit" },
+
+    { "from": "components-jsx", "to": "build-script", "label": "bundle入力" },
+    { "from": "pages-jsx",      "to": "build-script", "label": "bundle入力" },
+    { "from": "glossary-jsx",   "to": "build-script", "label": "bundle入力" },
+    { "from": "hoki-data",      "to": "build-script", "label": "bundle入力" },
+    { "from": "glossary-data",  "to": "build-script", "label": "bundle入力" },
+    { "from": "head-template",  "to": "build-script", "label": "head注入" },
+    { "from": "ranking-json",   "to": "build-script", "label": "window.HOKI_RANKING埋込" },
+    { "from": "build-script",   "to": "search-index", "label": "生成" },
+    { "from": "build-script",   "to": "html-artifact","label": "出力" },
+    { "from": "build-script",   "to": "html-bak",     "label": "前版退避" },
+
+    { "from": "kakomon-yml", "to": "gen-ranking",  "label": "集計入力" },
+    { "from": "gen-ranking", "to": "ranking-json", "label": "出力" },
+    { "from": "kakomon-yml", "to": "hoki-check",   "label": "yr整合チェック" },
+    { "from": "pages-jsx",   "to": "hoki-check",   "label": "id/cta/tag入力" },
+    { "from": "hoki-data",   "to": "hoki-check",   "label": "id入力" },
+    { "from": "denken-wiki", "to": "hoki-check",   "label": "DenkenWikiCTA url存在検証" },
+
+    { "from": "html-artifact","to": "deploy-pages", "label": "git push" },
+    { "from": "chatgpt",      "to": "claude",       "label": "監修フィードバック" }
+  ],
+  "flows": [
+    {
+      "id": "view-page",
+      "label": "ページ閲覧（学習者）",
+      "steps": [
+        { "n": 1, "actor": "user",          "action": "portal-v2.html から denken-hoki-wiki.html を開く" },
+        { "n": 2, "actor": "deploy-pages",  "action": "GitHub Pages が単一HTMLを配信" },
+        { "n": 3, "actor": "html-artifact", "action": "React/Babel/KaTeX CDN を読み込み <script type=text/babel> を実行" },
+        { "n": 4, "actor": "comp-app",      "action": "location.hash を parseHash() → setPage(pageId)" },
+        { "n": 5, "actor": "comp-app",      "action": "hoki_lastSeen_<pageId> に Date.now() を保存" },
+        { "n": 6, "actor": "comp-app",      "action": "renderPage(page) で対応PageコンポーネントをDOMマウント" }
+      ],
+      "highlight_components": ["user","portal-link","deploy-pages","html-artifact","cdn-react","comp-app","hash-router","ls-lastseen","page-top"],
+      "highlight_connections": ["user->portal-link","portal-link->html-artifact","deploy-pages->html-artifact","html-artifact->comp-app","html-artifact->cdn-react","comp-app->hash-router","comp-app->ls-lastseen","comp-app->page-top"]
+    },
+    {
+      "id": "self-check",
+      "label": "セルフチェック4ボタン保存",
+      "steps": [
+        { "n": 1, "actor": "user",          "action": "QuickReveiwで「理解した/うろ覚え/要確認/間違えた」をタップ" },
+        { "n": 2, "actor": "comp-quickreview","action": "storageKey = denken_check::hoki_<slug>::<DJB2(質問)>" },
+        { "n": 3, "actor": "comp-quickreview","action": "payload {status,updatedAt,firstSeenAt,reviewCount} を JSON.stringify" },
+        { "n": 4, "actor": "ls-selfcheck",  "action": "localStorage.setItem で同一オリジン共有領域へ保存" },
+        { "n": 5, "actor": "page-machigai", "action": "後でMachigaiNotePageが全keyスキャンし「間違えた」だけ集計表示" }
+      ],
+      "highlight_components": ["user","comp-quickreview","ls-selfcheck","page-machigai","denken-wiki"],
+      "highlight_connections": ["comp-quickreview->ls-selfcheck","page-machigai->ls-selfcheck","page-machigai->denken-wiki"]
+    },
+    {
+      "id": "add-page",
+      "label": "新規ページ追加（執筆者）",
+      "steps": [
+        { "n": 1, "actor": "claude",         "action": "hoki-page-template Skill 発火・棲み分け検証・AI社員3者諮問" },
+        { "n": 2, "actor": "claude",         "action": "hoki-data.js の chapters[].pages[] に { id, num, title, freq, ch } を追記" },
+        { "n": 3, "actor": "claude",         "action": "hoki-pages.jsx に <XxxPage> を追加・renderPageに case 'xxx' 分岐を追加" },
+        { "n": 4, "actor": "claude",         "action": "python hoki_check.py で id/cta/tag/yr 4チェック" },
+        { "n": 5, "actor": "build-script",   "action": "python build-hoki-wiki.py で bundle → denken-hoki-wiki.html 出力" },
+        { "n": 6, "actor": "claude",         "action": "git push → GH Pages 反映（約50秒）→ URL確認" }
+      ],
+      "highlight_components": ["claude","hoki-data","pages-jsx","hoki-check","build-script","html-artifact","deploy-pages"],
+      "highlight_connections": ["claude->hoki-data","claude->pages-jsx","hoki-data->hoki-check","pages-jsx->hoki-check","hoki-data->build-script","pages-jsx->build-script","build-script->html-artifact","html-artifact->deploy-pages"]
+    },
+    {
+      "id": "build-deploy",
+      "label": "Build & Deploy",
+      "steps": [
+        { "n": 1, "actor": "build-script",  "action": "node --check で hoki-data.js / hoki-glossary-data.js の構文検証" },
+        { "n": 2, "actor": "build-script",  "action": "hoki-head-template.html の CSS を読み込み" },
+        { "n": 3, "actor": "build-script",  "action": "node -e で WIKI_DATA/GLOSSARY を eval → search index 構築" },
+        { "n": 4, "actor": "search-index",  "action": "data/hoki-search-index.json を出力 + HTML内 window.HOKI_SEARCH_INDEX 埋込" },
+        { "n": 5, "actor": "build-script",  "action": "既存 denken-hoki-wiki.html を .bak へコピー" },
+        { "n": 6, "actor": "html-artifact", "action": "head + CDN + body + ranking + searchIndex + script(babel) を連結出力" },
+        { "n": 7, "actor": "claude",        "action": "git commit & push → GitHub Pages が自動デプロイ" }
+      ],
+      "highlight_components": ["components-jsx","pages-jsx","glossary-jsx","hoki-data","glossary-data","head-template","ranking-json","build-script","search-index","html-artifact","html-bak","deploy-pages"],
+      "highlight_connections": ["components-jsx->build-script","pages-jsx->build-script","glossary-jsx->build-script","hoki-data->build-script","glossary-data->build-script","head-template->build-script","ranking-json->build-script","build-script->search-index","build-script->html-artifact","build-script->html-bak","html-artifact->deploy-pages"]
+    },
+    {
+      "id": "ranking-refresh",
+      "label": "出題頻度ランキング更新",
+      "steps": [
+        { "n": 1, "actor": "claude",        "action": "denken-wiki/_data/kakomon.yml が更新されたら検知" },
+        { "n": 2, "actor": "gen-ranking",   "action": "python scripts/gen_hoki_ranking.py 実行・テーマ別件数集計" },
+        { "n": 3, "actor": "ranking-json",  "action": "data/hoki-theme-ranking.json を S(1-4)/A(5-10)/B(11-16)/C(17~)で出力" },
+        { "n": 4, "actor": "build-script",  "action": "次回ビルド時に window.HOKI_RANKING として HTML へ埋込" },
+        { "n": 5, "actor": "comp-sidebar",  "action": "テーマ別タブで5y/10y/15yウィンドウ切替表示" }
+      ],
+      "highlight_components": ["kakomon-yml","gen-ranking","ranking-json","build-script","html-artifact","comp-sidebar"],
+      "highlight_connections": ["kakomon-yml->gen-ranking","gen-ranking->ranking-json","ranking-json->build-script","comp-sidebar->ranking-json"]
+    },
+    {
+      "id": "machigai-aggregate",
+      "label": "間違いノート横断集計",
+      "steps": [
+        { "n": 1, "actor": "user",          "action": "ナビ「8.4 間違いノート」を開く（#chokuzen-machigai）" },
+        { "n": 2, "actor": "page-machigai", "action": "localStorage 全keyを走査し denken_check::* を抽出" },
+        { "n": 3, "actor": "page-machigai", "action": "hoki_/denken_wiki_ 両prefixを横断集計（同一オリジン共有）" },
+        { "n": 4, "actor": "page-machigai", "action": "status=='wrong' だけ抽出・lastSeen/カウントでソート" },
+        { "n": 5, "actor": "page-machigai", "action": "metaページ（chokuzen-*/top）は推薦対象から除外" }
+      ],
+      "highlight_components": ["user","page-machigai","ls-selfcheck","ls-lastseen","denken-wiki"],
+      "highlight_connections": ["page-machigai->ls-selfcheck","comp-app->ls-lastseen","page-machigai->denken-wiki"]
+    },
+    {
+      "id": "kakomon-display",
+      "label": "kakomon テーマ別演習",
+      "steps": [
+        { "n": 1, "actor": "user",          "action": "「7.x B問だけ/接地/絶縁/主任/...」のページを開く" },
+        { "n": 2, "actor": "page-kakomon",  "action": "WIKI_DATA + 内蔵問題リストから該当年度問題を表示" },
+        { "n": 3, "actor": "user",          "action": "選択肢を回答 → 解答/解説アコーディオン開閉（学習用初期closed）" },
+        { "n": 4, "actor": "comp-quickreview","action": "「間違えた」を選ぶと denken_check::* に記録" },
+        { "n": 5, "actor": "user",          "action": "ランダム10問モード（kakomon-random）は 65分タイマー付き" }
+      ],
+      "highlight_components": ["user","page-kakomon","comp-quickreview","ls-selfcheck","denken-ou"],
+      "highlight_connections": ["page-kakomon->denken-ou","comp-quickreview->ls-selfcheck"]
+    },
+    {
+      "id": "review-monshu",
+      "label": "ChatGPT監修サイクル",
+      "steps": [
+        { "n": 1, "actor": "claude",        "action": "v1.0版を執筆して push（先見せ）" },
+        { "n": 2, "actor": "user",          "action": "ChatGPTにレビュー依頼" },
+        { "n": 3, "actor": "chatgpt",       "action": "数値/構造/誤判定/語彙の4視点で指摘" },
+        { "n": 4, "actor": "claude",        "action": "指摘を本物/誤解/場所違い/既充足の4分類で振り分け" },
+        { "n": 5, "actor": "claude",        "action": "必修だけ反映・改善は提案分離 → 同セッション内push" }
+      ],
+      "highlight_components": ["claude","chatgpt","user","html-artifact","deploy-pages"],
+      "highlight_connections": ["chatgpt->claude","claude->pages-jsx","html-artifact->deploy-pages"]
+    }
+  ],
+  "notes": [
+    "denken-hoki-wiki.html は build artifact — 直接編集禁止（feedback_no_direct_html_edit）。",
+    "SPA hash routing は #pageid:anchor 形式で page と anchor を : で分離（feedback_spa_anchor_routing）。",
+    "localStorage は kfurufuru.github.io 同一オリジンで denken-wiki と共有 — MachigaiNotePage が両wikiの履歴を横断集計（feedback_same_origin_localstorage_aggregation）。",
+    "kakomon.yml の現行パスはbuild-hoki-wiki.py / hoki_check.py / gen_hoki_ranking.py で記述が分かれているため一次確認推奨。"
+  ]
+}
