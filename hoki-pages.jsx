@@ -3457,6 +3457,9 @@ function ChokuzenSuuchiPage({ onNav, data }) {
         ]}
         note="『前』『遅滞なく』『30 日前』『24 時間以内』『30 日以内』は混同が出やすい。条文との対応をセットで覚える"
       />
+      <div style={{margin:'8px 0 14px', padding:'10px 14px', background:'#fff8e6', border:'1px solid #e0b85a', borderLeft:'4px solid #d49a2c', borderRadius:6, fontSize:13, lineHeight:1.7}}>
+        <strong>⚠ 境界値の当日扱い</strong>：「<strong>30 日前まで</strong>」は工事開始日の<strong>ちょうど 30 日前の日も<u>含む</u></strong>（その日に届出可）。同様に「24 時間以内」「30 日以内」も境界ちょうどの値は含む（以下扱い）。「○日経過した日」など別表現の場合は条文の一次表現を必ず確認すること。
+      </div>
       {sectionRefLink("https://kfurufuru.github.io/denken-wiki/reference/deadlines/", "denken-wiki「届出・申請期限一覧」（SOT）")}
 
       {/* ─ Section 6: 絶縁耐力試験倍率 ─ */}
@@ -4945,6 +4948,9 @@ function ShiyoJishuKensaPage({ onNav, data }) {
   return (
     <div>
       <h1 style={{fontSize: 22, margin: '4px 0 10px'}}>事業用電気工作物の点検頻度（施設管理）</h1>
+      <div style={{margin: '6px 0 10px', padding: '10px 14px', background: '#fff5f5', border: '1px solid #e5a7a7', borderLeft: '4px solid #c43d3d', borderRadius: 6, fontSize: 13, lineHeight: 1.7, color: '#5a1a1a'}}>
+        <strong>📌 本ページ＝使用前自主検査ではなく「使用開始後の月次・年次点検」</strong>：混同しやすい<strong>「使用前自己確認」（事業法第51条の2／小規模事業用）</strong>および<strong>「使用前自主検査」（事業法第51条／自家用）</strong>はいずれも別制度。ページIDは互換性のため <code>shiyo-jishu-kensa</code> を保持しているが、内容は通常運転中の施設管理である。
+      </div>
       <div style={noteBox}>
         <strong>📌 ページ主題の整理</strong>：本ページは<strong>使用開始後の通常運転中の月次・年次点検</strong>（事業法第39条＋施行規則由来）を扱う。
         工事完成後・使用開始前の<strong>「使用前自主検査」（事業法第51条）</strong>とは別制度。
@@ -5646,6 +5652,7 @@ function KakoDenryuPage({ onNav, data }) {
       <ConclusionBox>
         <ul>
           <li>過電流遮断器（30A以下）: <strong>1.25倍 → 60分以内</strong> / <strong>2倍 → 2分以内</strong></li>
+          <li>過電流遮断器（30A超〜50A以下）: <strong>1.25倍 → 60分以内</strong> / <strong>2倍 → 4分以内</strong>（中間区分）</li>
           <li>過電流遮断器（50A超）: <strong>1.25倍 → 120分以内</strong>に時間が延びる（区分注意）</li>
           <li>漏電遮断器（人体保護）: <strong>30 mA・0.1 秒以内</strong>（高感度・高速形）</li>
           <li>ELB緩和: C種・D種接地で<strong>500Ω</strong>に緩和（接地工事と連動・ <strong>setsuchi-koji</strong> 参照）</li>
@@ -7724,7 +7731,7 @@ function DemandKanriPage({ onNav, data }) {
         { wrong: "後半10分の計算を30分で割らない", correct: "P×10 が後半エネルギー。P×30 は誤り（10分しかない）" },
         { wrong: "平均を (310+P)/2 で計算（単純平均）", correct: "時間加重平均が正しい。(310×20 + P×10)/30。区間が20:10で非均等" },
         { wrong: "最大8台を「答え=8台」と混同", correct: "8台は上限（停止可能最大数）。問いは「最低何台か」なので4台" },
-        { wrong: "目標エネルギーを 300×30=9,000 以下と設定（境界値OK扱い）", correct: "「未満」なので 9,000 kW·分は含まない（< 9,000 kW·分）。合計エネルギーは8,980で条件クリア" },
+        { wrong: "目標エネルギーを 300×30=9,000 kW·分 以下と設定（境界値OK扱い）", correct: "「未満」なので 9,000 kW·分は含まない（< 9,000 kW·分）。合計エネルギーは8,980で条件クリア" },
         { wrong: "デマンド周期を1時間として計算", correct: "デマンド周期は30分。9:00〜9:30の30分で1区間" },
         { wrong: "ファンの電力を kW·h 扱いして計算する", correct: "5.5kW は電力。停止電力は5.5X kW であり時間をかける前の値" },
         { wrong: "停止後P=278kWなのに「280kWを下回ったから十分」と3台で答える", correct: "3台(X=3)は条件X>3.64を満たさない。3台停止ではP=310−16.5−10=283.5kW>280でNG。最低4台必要" },
