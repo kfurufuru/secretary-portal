@@ -60,7 +60,7 @@ window.renderPage = function(page, navigate) {
     case 'kakomon-densenro':       return React.createElement(StubPage, { ...props, pageId: 'kakomon-densenro' });
     case 'kakomon-saiene':         return React.createElement(StubPage, { ...props, pageId: 'kakomon-saiene' });
     case 'kakomon-random':         return React.createElement(RandomModePage, props);
-    case 'chokuzen-suuchi':        return React.createElement(StubPage, { ...props, pageId: 'chokuzen-suuchi' });
+    case 'chokuzen-suuchi':        return React.createElement(ChokuzenSuuchiPage, props);
     case 'chokuzen-formula':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-formula' });
     case 'chokuzen-hikkake':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-hikkake' });
     case 'chokuzen-machigai':      return React.createElement(MachigaiNotePage, { ...props, pageId: 'chokuzen-machigai' });
@@ -3292,6 +3292,242 @@ function ZeroSouHenryukiPage({ onNav, data }) {
       <PageNav
         prevId="hichusei-jiraku"   prevTitle="中性点非接地系の地絡電流"
         nextId="setsuchi-ichiran"  nextTitle="接地工事一覧表"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4.9 ChokuzenSuuchiPage（直前チェック・数値だけ確認）
+// メタページ扱い：denken_check 等の学習トラッキングからは除外
+// 数値の正本(SOT)は sec02 各MemTable・各セクションにコメント記載
+// ─────────────────────────────────────────────
+function ChokuzenSuuchiPage({ onNav, data }) {
+  const headerBox = {
+    margin: '12px 0 18px',
+    padding: '14px 18px',
+    background: 'linear-gradient(135deg, #fff4e0 0%, #ffe8c2 100%)',
+    border: '1px solid #e0a040',
+    borderLeft: '4px solid #c95a00',
+    borderRadius: 8,
+    fontSize: 14,
+    lineHeight: 1.75,
+  };
+  const sectionRefLink = (href, label) => (
+    <div style={{ margin: '4px 0 18px', fontSize: 13, color: 'var(--ink-3)' }}>
+      📚 詳しく → <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{label}</a>
+    </div>
+  );
+  const sec02Link = (pageId, label) => (
+    <div style={{ margin: '4px 0 18px', fontSize: 13, color: 'var(--ink-3)' }}>
+      📚 詳しく → <a href="#" onClick={(e) => { e.preventDefault(); onNav(pageId); }} style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'pointer' }}>{label}</a>
+    </div>
+  );
+
+  return (
+    <div>
+      {/* ─ 冒頭リード（GoalQuestionなし・直前確認モード） ─ */}
+      <h1 style={{ margin: '0 0 8px', fontSize: 24, fontWeight: 800 }}>⚡ 数値だけ確認</h1>
+      <div style={headerBox}>
+        <div style={{ fontWeight: 700, color: '#7a3a00', marginBottom: 6 }}>⚡ 直前確認モード（3 分スクロール）</div>
+        <div>
+          試験直前に「やべぇ忘れてた」を起こすためのカンペ。<strong>Section 0 の混同ペア TOP10</strong> から順に流し読みし、引っかかったら sec02 の各「一覧」ページへ飛ぶ。<br />
+          数値の正本は各「○○一覧」ページ（sec02）。本ページは要点抜粋なので、改正反映があった場合は sec02 が最新。
+        </div>
+      </div>
+
+      <MetaStrip
+        ch="直前"
+        category="08 直前チェック"
+        importance="S"
+        freq="毎年（全分野）"
+        examType="A問題対策"
+        targets="R07・R06・R05"
+        tags={["直前","数値暗記","混同ペア","S頻出","メタページ"]}
+        lastChecked="2026-05-16"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><a href="#trap" style={{ color: 'var(--accent)' }}><strong>Section 0</strong></a>: 直前ひっかけ TOP10（混同ペア）</li>
+          <li><a href="#voltage" style={{ color: 'var(--accent)' }}>1.</a> 電圧区分 ／ <a href="#setsuchi" style={{ color: 'var(--accent)' }}>2.</a> 接地工事 A/B/C/D ／ <a href="#shunin" style={{ color: 'var(--accent)' }}>3.</a> 主任技術者免状</li>
+          <li><a href="#kosakubutsu" style={{ color: 'var(--accent)' }}>4.</a> 電気工作物 4 区分 ／ <a href="#kigen" style={{ color: 'var(--accent)' }}>5.</a> 届出期限 ／ <a href="#zetsuen-bairitsu" style={{ color: 'var(--accent)' }}>6.</a> 絶縁耐力倍率</li>
+          <li><a href="#zetsuen-teikou" style={{ color: 'var(--accent)' }}>7.</a> 低圧電路の絶縁抵抗 ／ <a href="#juyoritsu" style={{ color: 'var(--accent)' }}>8.</a> 需要率・負荷率・不等率</li>
+          <li><a href="#quick" style={{ color: 'var(--accent)' }}>30 秒スクロール復習</a>（15 項目）</li>
+        </ul>
+      </ConclusionBox>
+
+      {/* ─ Section 0: 混同ペア（先頭配置） ─ */}
+      <h2 id="trap">Section 0. 直前ひっかけ TOP10（混同ペア）</h2>
+      {/* SOT: 各sec02 TrapTable から抽出（setsuchi-ichiran L3350-3354 / zetsuen-ichiran L3424-3428 / den-atsu-kubun L3601-3605 / kosakubutsu-bunrui L3831-3837 / shunin-gijutsusya L3957-3965） */}
+      <TrapTable traps={[
+        { wrong: "交流も直流も低圧の上限は 600V",                          correct: "交流 600V 以下、直流 750V 以下（直流の方が高い）" },
+        { wrong: "C 種と D 種は同じ接地抵抗値",                            correct: "C 種は 10Ω 以下、D 種は 100Ω 以下（10 倍違う）" },
+        { wrong: "第三種電気主任技術者は 50kV 以下を監督できる",            correct: "電圧 5 万 V 未満（『以下』ではない）＋出力 5,000 kW 以上の発電所を除く" },
+        { wrong: "B 種接地の分子は常に 150",                               correct: "原則 150/Ig、遮断時間で 300/Ig（1〜2 秒）・600/Ig（1 秒以内）に緩和" },
+        { wrong: "絶縁耐力試験は電圧によらず 1.5 倍",                       correct: "低圧 1.5 倍／高圧 1.25 倍／特高（中性点直接接地）0.64 倍" },
+        { wrong: "配線用遮断器は定格電流 1 倍で動作する",                   correct: "配線用遮断器は 1 倍で『動作しない』（ヒューズの不動作は 1.1 倍）" },
+        { wrong: "出力 50kW 未満の太陽光は一般用電気工作物",                correct: "現行法（2022 年改正）は太陽光 10kW 未満が一般用／10〜50kW 未満は小規模事業用／50kW 以上は自家用" },
+        { wrong: "事業用電気工作物は必ず主任技術者の選任が必要",            correct: "小規模事業用（事業用の一部）は保安規程・主任技術者ともに不要" },
+        { wrong: "選任した主任技術者の届出は『許可』を受ける",              correct: "選任・解任は『遅滞なく届出』（法 43 条 3 項）。免状なしの選任のみ『許可』（同条 2 項）" },
+        { wrong: "保安規程は使用開始の 30 日前までに届け出る",              correct: "保安規程は使用開始『前』に届出（法 42 条）。30 日前は工事計画届出（法 48 条）" },
+      ]} />
+
+      {/* ─ Section 1: 電圧区分 ─ */}
+      <h2 id="voltage">1. 電圧区分 <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 毎年</span></h2>
+      {/* SOT: hoki-pages.jsx DenAtsuKubunPage L3590-3598 */}
+      <MemTable
+        headers={["区分", "交流", "直流"]}
+        rows={[
+          ["低圧",     "600 V 以下",            "750 V 以下"],
+          ["高圧",     "600 V 超 〜 7,000 V 以下", "750 V 超 〜 7,000 V 以下"],
+          ["特別高圧", "7,000 V 超",            "7,000 V 超"],
+        ]}
+        note="低圧上限：交流 600V／直流 750V（直流の方が高い）。特別高圧は交直共通で 7,000V 超"
+      />
+      {sec02Link("den-atsu-kubun", "電圧区分一覧（sec02）")}
+
+      {/* ─ Section 2: 接地工事 A/B/C/D ─ */}
+      <h2 id="setsuchi">2. 接地工事 A/B/C/D <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 毎年</span></h2>
+      {/* SOT: hoki-pages.jsx SetsuchiIchiranPage L3338-3347 */}
+      <MemTable
+        headers={["種別", "対象", "接地抵抗値", "電線太さ"]}
+        rows={[
+          ["A種", "高圧・特高機器",  "10 Ω 以下",  "2.6 mm 以上"],
+          ["B種", "変圧器中性点",    "150 / Ig",   "4.0 mm 以上"],
+          ["C種", "300V 超低圧",     "10 Ω 以下",  "1.6 mm 以上"],
+          ["D種", "300V 以下低圧",   "100 Ω 以下", "1.6 mm 以上"],
+        ]}
+        note="B 種の 150/Ig は「1 秒超〜2 秒以内に自動遮断→300/Ig、1 秒以内に自動遮断→600/Ig」に緩和（電技解釈第 17 条第 2 項）"
+      />
+      {sec02Link("setsuchi-ichiran", "接地工事一覧（sec02）")}
+
+      {/* ─ Section 3: 主任技術者免状 ─ */}
+      <h2 id="shunin">3. 主任技術者免状の監督範囲 <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 毎年</span></h2>
+      {/* SOT: hoki-pages.jsx ShuninGijutsusyaPage L3957-3965 / ConclusionBox L3902-3910 */}
+      <MemTable
+        headers={["種別", "監督範囲", "出力制限"]}
+        rows={[
+          ["第一種", "すべての事業用電気工作物",      "なし"],
+          ["第二種", "電圧 17 万 V 未満",            "なし"],
+          ["第三種", "電圧 5 万 V 未満",             "出力 5,000 kW 以上の発電所を除く"],
+        ]}
+        note="『未満』であって『以下』ではない。第三種は『電圧＋発電所出力』の 2 軸判定が必須"
+      />
+      {sec02Link("shunin-gijutsusya", "主任技術者（sec02）")}
+
+      {/* ─ Section 4: 電気工作物 4 区分（2022 年改正後） ─ */}
+      <h2 id="kosakubutsu">4. 電気工作物の 4 区分（2022 年改正後） <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 毎年</span></h2>
+      {/* SOT: hoki-pages.jsx KosakubutsuBunruiPage L3804-3814（小規模発電設備閾値）／ L3818-3828（義務マトリクス） */}
+      <MemTable
+        headers={["発電方式", "一般用", "小規模事業用"]}
+        rows={[
+          ["太陽光",   "10 kW 未満",            "10 kW 以上 〜 50 kW 未満"],
+          ["風力",     "—",                    "20 kW 未満"],
+          ["水力",     "20 kW 未満（ダム不要）", "—"],
+          ["内燃力",   "10 kW 未満",            "—"],
+          ["燃料電池", "10 kW 未満",            "—"],
+        ]}
+        note="2022 年改正（令和 5 年 3 月 20 日施行）で太陽光の一般用上限が 50kW 未満→10kW 未満に変更。10〜50kW は新設『小規模事業用』。50kW 以上は自家用"
+      />
+      <MemTable
+        headers={["義務", "一般用", "小規模事業用", "自家用"]}
+        rows={[
+          ["保安規程（42 条）",        "不要", "不要",         "必要"],
+          ["主任技術者（43 条）",      "不要", "不要",         "必要"],
+          ["基礎情報届出",             "不要", "必要（新設）", "—"],
+          ["使用前自己確認",           "不要", "必要（新設）", "—"],
+        ]}
+        note="小規模事業用は『事業用』だが保安規程・主任技術者は不要（中間カテゴリ）"
+      />
+      {sec02Link("kosakubutsu-bunrui", "工作物の区分（sec02）")}
+
+      {/* ─ Section 5: 届出期限 ─ */}
+      <h2 id="kigen">5. 各種届出・報告期限 <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 毎年</span></h2>
+      {/* SOT: denken-wiki/reference/deadlines/（HokokuTodokeKigenPage がリンクで誘導）。本ページは要約抜粋 */}
+      <MemTable
+        headers={["手続き", "期限", "条文"]}
+        rows={[
+          ["保安規程の届出",            "使用開始『前』",       "電気事業法 42 条"],
+          ["主任技術者の選任・解任届出", "遅滞なく",            "電気事業法 43 条 3 項"],
+          ["工事計画の届出",            "工事開始 30 日前まで", "電気事業法 48 条"],
+          ["電気関係報告規則 事故報告（速報）", "事故発生を知った時から 24 時間以内", "報告規則 3 条"],
+          ["事故報告（詳報）",          "事故発生を知った日から 30 日以内", "報告規則 3 条"],
+        ]}
+        note="『前』『遅滞なく』『30 日前』『24 時間以内』『30 日以内』は混同が出やすい。条文との対応をセットで覚える"
+      />
+      {sectionRefLink("https://kfurufuru.github.io/denken-wiki/reference/deadlines/", "denken-wiki「届出・申請期限一覧」（SOT）")}
+
+      {/* ─ Section 6: 絶縁耐力試験倍率 ─ */}
+      <h2 id="zetsuen-bairitsu">6. 絶縁耐力試験の倍率 <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 頻出</span></h2>
+      {/* SOT: hoki-pages.jsx ZetsuenIchiranPage L3413-3421 */}
+      <MemTable
+        headers={["電路", "最大使用電圧", "倍率", "時間"]}
+        rows={[
+          ["低圧",                  "7,000 V 以下",         "1.5 倍",   "10 分"],
+          ["高圧",                  "7,000 V 超 60kV 以下", "1.25 倍",  "10 分"],
+          ["特高（中性点直接接地）", "170kV 超",             "0.64 倍",  "10 分"],
+          ["特高（その他）",         "60kV 超",              "1.25 倍",  "10 分"],
+        ]}
+        note="低圧は 1.5 倍（高い）、高圧・特高は 1.25 倍が基本。中性点直接接地の特高だけ 0.64 倍。時間はすべて 10 分間"
+      />
+      {sec02Link("zetsuen-ichiran", "絶縁耐力試験一覧（sec02）")}
+
+      {/* ─ Section 7: 低圧電路の絶縁抵抗 ─ */}
+      <h2 id="zetsuen-teikou">7. 低圧電路の絶縁抵抗 <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 頻出</span></h2>
+      {/* SOT: 電技解釈第 58 条（denken-wiki kaishaku/58）。値は表暗記の定番 */}
+      <MemTable
+        headers={["電路の使用電圧", "対地電圧", "絶縁抵抗値"]}
+        rows={[
+          ["300 V 以下", "150 V 以下",   "0.1 MΩ 以上"],
+          ["300 V 以下", "150 V 超",     "0.2 MΩ 以上"],
+          ["300 V 超",   "—",           "0.4 MΩ 以上"],
+        ]}
+        note="3 段階：0.1 / 0.2 / 0.4 MΩ。境界は使用電圧 300V と対地電圧 150V"
+      />
+      {sectionRefLink("https://kfurufuru.github.io/denken-wiki/articles/kaishaku/58/", "denken-wiki 電技解釈第 58 条（SOT）")}
+
+      {/* ─ Section 8: 需要率・負荷率・不等率 ─ */}
+      <h2 id="juyoritsu">8. 需要率・負荷率・不等率 <span style={{ background:'#c95a00', color:'#fff', fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:999, marginLeft:6 }}>S 毎年</span></h2>
+      {/* SOT: hoki-pages.jsx JuyoritsuGainenPage L5521-5529 / L5531-5539 */}
+      <MemTable
+        headers={["指標", "分子 / 分母", "範囲（電験計算上）"]}
+        rows={[
+          ["需要率", "最大需要電力 / 設備容量",                "通常 0〜1（≤ 1 で検算）"],
+          ["負荷率", "平均需要電力 / 最大需要電力",            "0〜1（定義上）"],
+          ["不等率", "各最大需要電力の合計 / 合成最大需要電力", "通常 1 以上（≥ 1 で検算）"],
+        ]}
+        note="分母を覚えれば公式は復元できる：設備容量 → 最大需要 → 合成最大需要 の順に絞り込まれる"
+      />
+      {sec02Link("juyoritsu-gainen", "需要率・負荷率・不等率の概念（sec02）")}
+
+      {/* ─ 30 秒スクロール復習 ─ */}
+      <h2 id="quick">⚡ 30 秒スクロール復習</h2>
+      <QuickReview items={[
+        { q: "交流の低圧の上限は？",                    a: "600 V 以下" },
+        { q: "直流の低圧の上限は？",                    a: "750 V 以下" },
+        { q: "C 種接地と D 種接地の抵抗値の違いは？",    a: "C 種 10Ω 以下 / D 種 100Ω 以下（10 倍）" },
+        { q: "B 種接地の分子（原則）は？",              a: "150 / Ig（緩和で 300/Ig・600/Ig）" },
+        { q: "第三種の監督電圧と出力上限は？",          a: "5 万 V 未満かつ 5,000 kW 未満の発電所" },
+        { q: "低圧電路の絶縁耐力試験の倍率は？",        a: "1.5 倍 × 10 分" },
+        { q: "高圧電路の絶縁耐力試験の倍率は？",        a: "1.25 倍 × 10 分" },
+        { q: "中性点直接接地の特高の倍率は？",          a: "0.64 倍 × 10 分（170kV 超）" },
+        { q: "300V 以下・対地電圧 150V 以下の絶縁抵抗値は？", a: "0.1 MΩ 以上" },
+        { q: "300V 超の絶縁抵抗値は？",                 a: "0.4 MΩ 以上" },
+        { q: "太陽光 30kW の電気工作物区分は？",        a: "小規模事業用（10〜50kW 未満）" },
+        { q: "太陽光 50kW は？",                       a: "自家用（50kW 以上）" },
+        { q: "保安規程の届出期限は？",                  a: "使用開始『前』" },
+        { q: "工事計画の届出期限は？",                  a: "工事開始 30 日前まで" },
+        { q: "需要率の分母は？／不等率の分母は？",      a: "設備容量／合成最大需要電力" },
+      ]} />
+
+      <UpdateLog entries={[
+        { date: "2026-05-16", content: "初版作成（Section 0 混同ペア 10 組＋8 セクション MVP）", reason: "Stub→直前確認モードのカンペとして実装。残り 5 セクション（接触防護・架空高さ・地絡遮断・過電流動作・工事士範囲）は Phase 2" },
+      ]} />
+      <PageNav
+        prevId="top"               prevTitle="トップ"
+        nextId="chokuzen-formula"  nextTitle="公式だけ確認"
         onNav={onNav}
       />
     </div>
