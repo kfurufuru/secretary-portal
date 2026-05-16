@@ -59,8 +59,15 @@
   .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
   main {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 240px 1fr 320px;
     min-height: calc(100vh - 110px);
+  }
+  @media (max-width: 1100px) {
+    main { grid-template-columns: 1fr; }
+    aside.flows-pane, aside.steps-pane {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
   }
   #canvas-wrap {
     position: relative;
@@ -120,6 +127,13 @@
     background: var(--bg-elev);
     padding: 16px 18px;
     overflow-y: auto;
+  }
+  aside.flows-pane {
+    border-right: 1px solid var(--border);
+    border-left: none;
+  }
+  aside.steps-pane {
+    border-left: 1px solid var(--border);
   }
   aside h2 {
     font-size: 11px;
@@ -208,21 +222,22 @@
 </header>
 
 <main>
+  <aside class="flows-pane">
+    <h2>Flows</h2>
+    <ul class="flow-list" id="flow-list"></ul>
+    <button class="clear-btn" onclick="clearSelection()">Clear selection</button>
+    <div class="notes" id="notes-box"></div>
+  </aside>
+
   <div id="canvas-wrap">
     <div id="canvas">
       <svg id="wires" width="1380" height="880"></svg>
     </div>
   </div>
 
-  <aside>
-    <h2>Flows</h2>
-    <ul class="flow-list" id="flow-list"></ul>
-    <button class="clear-btn" onclick="clearSelection()">Clear selection</button>
-
+  <aside class="steps-pane">
     <h2>Steps</h2>
     <div id="steps"><div class="empty">フローを選んでください</div></div>
-
-    <div class="notes" id="notes-box"></div>
   </aside>
 </main>
 
@@ -575,6 +590,11 @@ renderWires();
 renderNodes();
 renderFlowList();
 renderNotes();
+
+// Auto-select first flow
+setTimeout(() => {
+  document.querySelector("#flow-list li")?.click();
+}, 0);
 </script>
 </body>
 </html>

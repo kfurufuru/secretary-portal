@@ -64,8 +64,18 @@
 
   .layout {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 240px 1fr 320px;
     min-height: calc(100vh - 110px);
+  }
+  aside.sidebar.flows-pane { border-left: none; border-right: 1px solid #1c2540; }
+  aside.sidebar.steps-pane { border-left: 1px solid #1c2540; }
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; }
+    aside.sidebar.flows-pane, aside.sidebar.steps-pane {
+      border: none;
+      border-top: 1px solid #1c2540;
+      max-height: none;
+    }
   }
   .canvas-wrap {
     position: relative;
@@ -234,6 +244,15 @@
 </header>
 
 <div class="layout">
+  <aside class="sidebar flows-pane">
+    <h2>Flows</h2>
+    <div class="flows" id="flows"></div>
+    <button class="reset" id="reset">× highlight解除</button>
+    <div class="hint" id="hint">
+      左のflowをクリックすると関連ノードとconnectionを黄色でハイライトします。「?」マークは未検証。
+    </div>
+  </aside>
+
   <div class="canvas-wrap">
     <div class="canvas" id="canvas">
       <svg class="lines" id="svg" viewBox="0 0 1400 900" preserveAspectRatio="none">
@@ -249,17 +268,9 @@
     </div>
   </div>
 
-  <aside class="sidebar">
-    <h2>Flows</h2>
-    <div class="flows" id="flows"></div>
-    <button class="reset" id="reset">× highlight解除</button>
-
-    <h2 style="margin-top:18px">Steps</h2>
+  <aside class="sidebar steps-pane">
+    <h2>Steps</h2>
     <div class="steps" id="steps"></div>
-
-    <div class="hint" id="hint">
-      左のflowをクリックすると関連ノードとconnectionを黄色でハイライトします。「?」マークは未検証。
-    </div>
   </aside>
 </div>
 
@@ -764,7 +775,14 @@ function escapeHtml(s) {
 }
 
 // Show first flow by default for orientation
-activateFlow("write-new-article");
+setTimeout(() => {
+  const firstBtn = flowsEl.querySelector(".flow-btn");
+  if (!firstBtn) return;
+  const defaultId = DATA.flows.some(f => f.id === "write-new-article")
+    ? "write-new-article"
+    : firstBtn.dataset.id;
+  if (defaultId) activateFlow(defaultId);
+}, 0);
 </script>
 </body>
 </html>
