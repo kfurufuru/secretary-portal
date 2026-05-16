@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>三菱ケミカル鶴見工場 設備技術部 (設備技術1S) Architecture Map</title>
+<title>設備技術部 Architecture Map</title>
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -16,7 +16,7 @@
   }
   header {
     position: relative;
-    padding: 18px 24px 12px;
+    padding: 16px 24px 12px;
     border-bottom: 1px solid #1c2540;
     background: #0d1325;
   }
@@ -41,36 +41,97 @@
     background: #161d33;
   }
   header h1 {
-    margin: 0 0 6px;
-    font-size: 19px;
+    margin: 0 0 4px;
+    font-size: 18px;
     letter-spacing: 0.5px;
     color: #fff;
+    padding-right: 90px;
   }
   header .sub {
     color: #8a94b0; font-size: 12px;
+    max-width: 1100px;
   }
-  .legend {
-    display: flex; flex-wrap: wrap; gap: 10px 18px;
+
+  .header-controls {
+    display: flex; flex-wrap: wrap; gap: 8px 14px;
     margin-top: 10px;
+    align-items: center;
   }
-  .legend .item {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 11px; color: #b6c2dc;
+  .ctl-group {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 6px;
+    border: 1px solid #1c2540;
+    border-radius: 6px;
+    background: rgba(13, 19, 37, 0.6);
   }
-  .legend .sw {
-    display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+  .ctl-group .ctl-label {
+    font-size: 10px;
+    color: #8a94b0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 4px;
+  }
+  .ctl-btn {
+    background: transparent;
+    border: 1px solid #2a3556;
+    color: #b6c2dc;
+    font-family: inherit;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .ctl-btn:hover { background: #161d33; color: #fff; }
+  .ctl-btn.active {
+    background: #2a2818;
+    color: #ffd54f;
+    border-color: #ffd54f;
+  }
+
+  .legend-row {
+    display: flex; flex-wrap: wrap; gap: 8px 14px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #b6c2dc;
+  }
+  .legend-row .legend-title {
+    color: #8a94b0;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 2px;
+    align-self: center;
+  }
+  .legend-row .item {
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .legend-row .sw {
+    display: inline-block; width: 11px; height: 11px; border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .legend-row .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 9px;
+    font-size: 10px;
+    line-height: 1.4;
     border: 1px solid rgba(255,255,255,0.15);
   }
 
   .layout {
     display: grid;
-    grid-template-columns: 1fr 360px;
-    min-height: calc(100vh - 130px);
+    grid-template-columns: 1fr 380px;
+    min-height: calc(100vh - 200px);
   }
   .canvas-wrap {
     position: relative;
-    padding: 16px;
+    padding: 14px;
     overflow: auto;
+  }
+  .canvas-scroll {
+    transform-origin: top left;
+    transition: transform 0.2s ease-out;
   }
   .canvas {
     position: relative;
@@ -82,6 +143,10 @@
     top: 0; left: 0;
     width: 100%; height: 100%;
     pointer-events: none;
+  }
+  svg.lines path {
+    pointer-events: stroke;
+    cursor: help;
   }
   .lane {
     position: absolute;
@@ -106,7 +171,11 @@
     border: 1.5px solid #2a3556;
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     transition: opacity 0.25s, transform 0.15s, box-shadow 0.2s, border-color 0.2s;
-    cursor: default;
+    cursor: pointer;
+  }
+  .node:hover {
+    border-color: #5a6792;
+    transform: translateY(-1px);
   }
   .node .lbl {
     font-size: 12px;
@@ -122,16 +191,27 @@
   }
   .node.dim { opacity: 0.18; }
   .node.hi  { border-color: #ffd54f; box-shadow: 0 0 0 2px rgba(255,213,79,0.35), 0 4px 18px rgba(255,213,79,0.18); transform: translateY(-1px); }
+  .node.selected { border-color: #6bc4ff; box-shadow: 0 0 0 2px rgba(107,196,255,0.4); }
   .node .stripe {
     position: absolute; left: 0; top: 0; bottom: 0;
     width: 4px; border-radius: 8px 0 0 8px;
   }
-  .node.unverified::after {
-    content: "?";
-    position: absolute; top: 4px; right: 6px;
-    font-size: 10px; color: #ff8a65;
-    opacity: 0.8;
+  .node .src-badge {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 9px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
+  .src-self  { background: rgba(255,213,79,0.18);  color: #ffd54f; border: 1px solid #ffd54f66; }
+  .src-jd    { background: rgba(94,196,255,0.15);  color: #5ec4ff; border: 1px solid #5ec4ff55; }
+  .src-resume{ background: rgba(179,136,255,0.18); color: #b388ff; border: 1px solid #b388ff66; }
+  .src-guess { background: rgba(255,138,101,0.18); color: #ff8a65; border: 1px solid #ff8a6566; }
+  .src-tbc   { background: rgba(239,83,80,0.18);   color: #ef5350; border: 1px solid #ef535066; }
   .node.furuta {
     border-color: #ffd54f88;
     background: linear-gradient(180deg, #1c2240 0%, #131a2e 50%);
@@ -140,9 +220,9 @@
   aside.sidebar {
     border-left: 1px solid #1c2540;
     background: #0c1122;
-    padding: 16px 14px;
+    padding: 14px 14px 24px;
     overflow-y: auto;
-    max-height: calc(100vh - 130px);
+    max-height: calc(100vh - 200px);
   }
   aside h2 {
     margin: 0 0 8px;
@@ -151,16 +231,48 @@
     text-transform: uppercase;
     color: #8a94b0;
   }
+  .active-flow-banner {
+    margin-bottom: 12px;
+    padding: 9px 11px;
+    border-radius: 6px;
+    border: 1px solid #ffd54f55;
+    background: rgba(255,213,79,0.06);
+    display: none;
+  }
+  .active-flow-banner.show { display: block; }
+  .active-flow-banner .title {
+    color: #ffd54f;
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .active-flow-banner .reset-prominent {
+    margin-top: 4px;
+    background: #2a2818;
+    border: 1px solid #ffd54f;
+    color: #ffd54f;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .active-flow-banner .reset-prominent:hover {
+    background: #ffd54f;
+    color: #0a0e1a;
+  }
+
   .flows {
     display: flex; flex-direction: column; gap: 4px;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
   .flow-btn {
     text-align: left;
     background: #131a2e;
     border: 1px solid #2a3556;
     color: #d9e1f2;
-    padding: 8px 10px;
+    padding: 7px 10px;
     border-radius: 6px;
     font-family: inherit;
     font-size: 12px;
@@ -176,6 +288,50 @@
   .flow-btn .dot {
     display: inline-block; width: 8px; height: 8px; border-radius: 50%;
     margin-right: 6px; vertical-align: middle;
+  }
+
+  .panel {
+    margin-bottom: 14px;
+  }
+  .panel-title {
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #8a94b0;
+    margin: 0 0 6px;
+  }
+  .interview-box {
+    background: rgba(107,196,255,0.06);
+    border: 1px solid #6bc4ff55;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #d9e1f2;
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .interview-box .ip-label {
+    display: inline-block;
+    font-size: 9.5px;
+    color: #6bc4ff;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .note-box {
+    background: rgba(239,83,80,0.05);
+    border: 1px dashed #ef535066;
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: #f5b5b3;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .note-box .nt-label {
+    color: #ef5350;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-right: 4px;
   }
 
   .steps {
@@ -202,17 +358,82 @@
     line-height: 1.45;
   }
 
+  .conn-list {
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .conn-row {
+    font-size: 11px;
+    color: #b6c2dc;
+    padding: 4px 8px;
+    background: #131a2e;
+    border-radius: 4px;
+    border-left: 2px solid #2a3556;
+    line-height: 1.4;
+  }
+  .conn-row .from { color: #ffd54f; }
+  .conn-row .to   { color: #6bc4ff; }
+  .conn-row .lbl  { color: #fff; margin-left: 4px; }
+  .conn-row .arr  { color: #5a6792; margin: 0 4px; }
+
+  .node-detail {
+    background: rgba(107,196,255,0.04);
+    border: 1px solid #6bc4ff44;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .node-detail .nd-name {
+    font-size: 13px; font-weight: 700; color: #fff;
+    margin-bottom: 3px;
+  }
+  .node-detail .nd-sub {
+    font-size: 11px; color: #8a94b0; margin-bottom: 8px;
+    line-height: 1.45;
+  }
+  .node-detail .nd-section {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #6bc4ff;
+    margin: 9px 0 4px;
+  }
+  .node-detail .nd-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .node-detail .nd-list li {
+    font-size: 11px;
+    color: #b6c2dc;
+    padding: 3px 7px;
+    background: #131a2e;
+    border-radius: 4px;
+    border-left: 2px solid #6bc4ff66;
+    line-height: 1.4;
+  }
+  .node-detail .nd-close {
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid #2a3556;
+    color: #8a94b0;
+    padding: 4px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+  }
+  .node-detail .nd-close:hover { color: #fff; border-color: #5a6792; }
+
   .hint {
-    margin-top: 12px;
+    margin-top: 10px;
     padding: 8px 10px;
     background: rgba(255,213,79,0.06);
     border: 1px dashed rgba(255,213,79,0.3);
     border-radius: 6px;
     color: #c9b46a;
     font-size: 11px;
+    line-height: 1.5;
   }
   .reset {
-    margin-top: 8px;
+    margin-top: 4px;
     background: transparent;
     border: 1px solid #2a3556;
     color: #8a94b0;
@@ -227,42 +448,102 @@
   .conn-line       { stroke: #2a3556; stroke-width: 1.2; fill: none; opacity: 0.5; transition: stroke 0.25s, opacity 0.25s, stroke-width 0.25s; }
   .conn-line.dim   { opacity: 0.08; }
   .conn-line.hi    { stroke: #ffd54f; stroke-width: 2; opacity: 0.95; }
+
+  /* Responsive: sidebar moves below */
+  @media (max-width: 980px) {
+    .layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+    }
+    aside.sidebar {
+      border-left: none;
+      border-top: 1px solid #1c2540;
+      max-height: none;
+    }
+    .canvas-wrap {
+      max-height: 70vh;
+    }
+    header h1 { padding-right: 80px; font-size: 16px; }
+  }
 </style>
 </head>
 <body>
 <header>
   <a class="portal-back" href="../index.html">← Portal</a>
-  <h1>三菱ケミカル鶴見工場 設備技術部 (設備技術1S) — Architecture Map</h1>
-  <div class="sub">古舘さん (電計チーム4名リーダー / 2025-04〜) を中心とした設備技術部の業務構造: 設計・施工管理・保全 + 保安・マネジメント / JD-2210000745CB & 職務経歴書 20251016 ベース</div>
-  <div class="legend" id="legend"></div>
+  <h1 id="page-title">三菱ケミカル鶴見工場 設備技術部 (設備技術1S) — Architecture Map</h1>
+  <div class="sub" id="page-sub">古舘さん (電計チーム4名リーダー / 2025-04〜) を中心とした設備技術部の業務構造: 設計・施工管理・保全 + 保安・マネジメント / JD-2210000745CB &amp; 職務経歴書 20251016 ベース</div>
+
+  <div class="header-controls">
+    <div class="ctl-group">
+      <span class="ctl-label">表示</span>
+      <button class="ctl-btn active" id="mode-detail" data-mode="detail">詳細</button>
+      <button class="ctl-btn" id="mode-anon" data-mode="anon">匿名</button>
+    </div>
+    <div class="ctl-group">
+      <span class="ctl-label">Zoom</span>
+      <button class="ctl-btn active" data-zoom="1">100%</button>
+      <button class="ctl-btn" data-zoom="0.75">75%</button>
+      <button class="ctl-btn" data-zoom="0.5">50%</button>
+      <button class="ctl-btn" data-zoom="fit">Fit</button>
+    </div>
+  </div>
+
+  <div class="legend-row" id="legend-category"></div>
+  <div class="legend-row" id="legend-source"></div>
 </header>
 
 <div class="layout">
-  <div class="canvas-wrap">
-    <div class="canvas" id="canvas">
-      <svg class="lines" id="svg" viewBox="0 0 1600 1010" preserveAspectRatio="none">
-        <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3a4775" />
-          </marker>
-          <marker id="arrow-hi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffd54f" />
-          </marker>
-        </defs>
-      </svg>
+  <div class="canvas-wrap" id="canvas-wrap">
+    <div class="canvas-scroll" id="canvas-scroll">
+      <div class="canvas" id="canvas">
+        <svg class="lines" id="svg" viewBox="0 0 1600 1010" preserveAspectRatio="none">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3a4775" />
+            </marker>
+            <marker id="arrow-hi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffd54f" />
+            </marker>
+          </defs>
+        </svg>
+      </div>
     </div>
   </div>
 
   <aside class="sidebar">
+    <div class="active-flow-banner" id="active-flow-banner">
+      <div class="title" id="active-flow-name"></div>
+      <button class="reset-prominent" id="reset-prominent">× highlight解除</button>
+    </div>
+
     <h2>Flows</h2>
     <div class="flows" id="flows"></div>
     <button class="reset" id="reset">× highlight解除</button>
 
-    <h2 style="margin-top:18px">Steps</h2>
+    <div class="panel" id="panel-interview" style="display:none; margin-top:14px">
+      <div class="panel-title">面接訴求ポイント</div>
+      <div class="interview-box" id="interview-box"></div>
+    </div>
+
+    <div class="panel" id="panel-note" style="display:none">
+      <div class="note-box" id="note-box"></div>
+    </div>
+
+    <h2 style="margin-top:14px" id="steps-title">Steps</h2>
     <div class="steps" id="steps"></div>
 
+    <div class="panel" id="panel-connections" style="display:none; margin-top:14px">
+      <div class="panel-title">関連 connection (Flow内)</div>
+      <div class="conn-list" id="conn-list"></div>
+    </div>
+
+    <div class="panel" id="panel-node" style="display:none; margin-top:14px">
+      <div class="panel-title">ノード詳細</div>
+      <div class="node-detail" id="node-detail"></div>
+    </div>
+
     <div class="hint" id="hint">
-      左のflowをクリックすると関連ノードとconnectionを黄色でハイライトします。「?」マークは未検証 (推測)。電計チーム=古舘さんリーダー領域は背景に金色グラデ。
+      左のFlowをクリックすると関連ノード・connectionを黄色でハイライトします。ノードをクリックすると入出力connection・関連Flowを表示。「詳細／匿名」で公開用表示に切替可能。
     </div>
   </aside>
 </div>
@@ -270,7 +551,7 @@
 <script>
 "use strict";
 
-// === Data (mirror of setsubi-bumon-map.json) ===
+// === Data ===
 const DATA = {
   categories: [
     { id: "user",      label: "社内顧客 (Customer)",      color: "#f5a623" },
@@ -284,58 +565,59 @@ const DATA = {
     { id: "deliv",     label: "成果物・KPI",               color: "#9ea7b3" },
     { id: "tool",      label: "ツール・資格",              color: "#6bc4ff" }
   ],
+  // source: self | jd | resume | guess | tbc
   components: [
-    { id: "seizo",       category: "user",      label: "鶴見工場 製造部",                subtitle: "運転員・現場・トラブル一次窓口" },
-    { id: "kikaku-kanri",category: "user",      label: "企画管理部",                      subtitle: "工場全体の投資・予算統括" },
+    { id: "seizo",       category: "user",      label: "鶴見工場 製造部",                subtitle: "運転員・現場・トラブル一次窓口", source: "jd" },
+    { id: "kikaku-kanri",category: "user",      label: "企画管理部",                      subtitle: "工場全体の投資・予算統括", source: "jd" },
 
-    { id: "denkei",      category: "team",      label: "電計チーム (4名)",                subtitle: "古舘さんリーダー(2025-04〜)+部下3名/制御・計装・電気", furuta: true },
-    { id: "kikai",       category: "team",      label: "機械チーム (6名)",                subtitle: "機械・配管・回転機・ユーティリティ" },
-    { id: "kikaku-team", category: "team",      label: "事務/企画調整 (2名)",             subtitle: "古舘さん呼称『企画調整』/部内予算・庶務" },
+    { id: "denkei",      category: "team",      label: "電計チーム (4名)",                subtitle: "古舘さんリーダー(2025-04〜)+部下3名/制御・計装・電気", furuta: true, source: "self" },
+    { id: "kikai",       category: "team",      label: "機械チーム (6名)",                subtitle: "機械・配管・回転機・ユーティリティ", source: "self" },
+    { id: "kikaku-team", category: "team",      label: "事務/企画調整 (2名)",             subtitle: "古舘さん呼称『企画調整』/部内予算・庶務", source: "self" },
 
-    { id: "sl",          category: "upper",     label: "設備技術1SL (課長)",              subtitle: "上司・機械バックグラウンド (JD募集ポジ)" },
-    { id: "bucho",       category: "upper",     label: "設備技術部 部長",                 subtitle: "稟議・部方針", verified: false },
+    { id: "sl",          category: "upper",     label: "設備技術1SL (課長)",              subtitle: "上司・機械バックグラウンド (JD募集ポジ)", source: "jd" },
+    { id: "bucho",       category: "upper",     label: "設備技術部 部長",                 subtitle: "稟議・部方針", source: "guess" },
 
-    { id: "jimu",        category: "related",   label: "事務部",                          subtitle: "経理・契約・調達事務" },
-    { id: "kanan",       category: "related",   label: "環安部",                          subtitle: "環境・労働安全・法令届出窓口" },
-    { id: "kenkyu",      category: "related",   label: "鶴見研究所",                      subtitle: "新製品プラント要件・試験設備" },
-    { id: "kyoryoku",    category: "related",   label: "鶴見協力会社",                    subtitle: "常駐工事/保全パートナー" },
+    { id: "jimu",        category: "related",   label: "事務部",                          subtitle: "経理・契約・調達事務", source: "jd" },
+    { id: "kanan",       category: "related",   label: "環安部",                          subtitle: "環境・労働安全・法令届出窓口", source: "jd" },
+    { id: "kenkyu",      category: "related",   label: "鶴見研究所",                      subtitle: "新製品プラント要件・試験設備", source: "self" },
+    { id: "kyoryoku",    category: "related",   label: "鶴見協力会社",                    subtitle: "常駐工事/保全パートナー", source: "self" },
 
-    { id: "honsha",      category: "corp",      label: "本社・経営層",                    subtitle: "投資稟議・全社DX方針" },
-    { id: "tashojo",     category: "corp",      label: "他工場 (横展開)",                  subtitle: "電計ナレッジ横展・標準化" },
+    { id: "honsha",      category: "corp",      label: "本社・経営層",                    subtitle: "投資稟議・全社DX方針", source: "jd" },
+    { id: "tashojo",     category: "corp",      label: "他工場 (横展開)",                  subtitle: "電計ナレッジ横展・標準化", source: "self" },
 
-    { id: "vendor",      category: "external",  label: "工事業者",                        subtitle: "RFQ・施工・試運転" },
-    { id: "maker",       category: "external",  label: "機器メーカー",                    subtitle: "DCS/PLC/計装/盤メーカー" },
+    { id: "vendor",      category: "external",  label: "工事業者",                        subtitle: "RFQ・施工・試運転", source: "jd" },
+    { id: "maker",       category: "external",  label: "機器メーカー",                    subtitle: "DCS/PLC/計装/盤メーカー", source: "jd" },
 
-    { id: "hoan-kantoku",category: "regulator", label: "産業保安監督部",                  subtitle: "電気主任技術者・電事法届出先" },
-    { id: "energy",      category: "regulator", label: "資源エネルギー庁",                 subtitle: "省エネ法・エネ管所管" },
-    { id: "denryoku",    category: "regulator", label: "電力会社",                        subtitle: "受電契約・系統連系" },
-    { id: "rouki",       category: "regulator", label: "労基署 / 衛生",                   subtitle: "労安法・衛生管理者所管" },
-    { id: "shunin",      category: "regulator", label: "電気主任技術者(別途)",            subtitle: "古舘さんは保有なし → 別途選任", verified: false },
+    { id: "hoan-kantoku",category: "regulator", label: "産業保安監督部",                  subtitle: "電気主任技術者・電事法届出先", source: "jd" },
+    { id: "energy",      category: "regulator", label: "資源エネルギー庁",                 subtitle: "省エネ法・エネ管所管", source: "jd" },
+    { id: "denryoku",    category: "regulator", label: "電力会社",                        subtitle: "受電契約・系統連系", source: "jd" },
+    { id: "rouki",       category: "regulator", label: "労基署 / 衛生",                   subtitle: "労安法・衛生管理者所管", source: "jd" },
+    { id: "shunin",      category: "regulator", label: "電気主任技術者(別途選任)",        subtitle: "古舘さんは選任されておらず、設備技術部として連携する立場", source: "self" },
 
-    { id: "p-sekkei",    category: "process",   label: "設計業務 (起業)",                  subtitle: "JD必須10年/計画・予算・調整・設計" },
-    { id: "p-sekou",     category: "process",   label: "施工管理 (工事)",                  subtitle: "JD必須10年/仕様・見積査定・選定・安全" },
-    { id: "p-hozen",     category: "process",   label: "保全業務 (設備)",                  subtitle: "JD必須10年/重要度評価・中⾧期保全" },
-    { id: "p-hoan",      category: "process",   label: "保安・法令対応",                  subtitle: "JD30%・変更管理5ステップ" },
-    { id: "p-mgmt",      category: "process",   label: "マネジメント・人材",              subtitle: "JD10%・チーム纏め/教育 (古舘さん2025-04〜)", furuta: true },
-    { id: "p-shomu",     category: "process",   label: "庶務・予算管理",                  subtitle: "JD10%・工数集計/年度予算/IT集計" },
-    { id: "p-dx",        category: "process",   label: "DX・課題解決参画",                subtitle: "JD10%・古舘さん実績PJ複数 (年300万円工数削減)", furuta: true },
-    { id: "p-trouble",   category: "process",   label: "トラブル対応・水平展開",          subtitle: "古舘さん実績:2020 TP画面再設計 週1→2ヶ月1回", furuta: true },
+    { id: "p-sekkei",    category: "process",   label: "設計業務 (起業)",                  subtitle: "JD必須10年/計画・予算・調整・設計", source: "jd" },
+    { id: "p-sekou",     category: "process",   label: "施工管理 (工事)",                  subtitle: "JD必須10年/仕様・見積査定・選定・安全", source: "jd" },
+    { id: "p-hozen",     category: "process",   label: "保全業務 (設備)",                  subtitle: "JD必須10年/重要度評価・中長期保全", source: "jd" },
+    { id: "p-hoan",      category: "process",   label: "保安・法令対応",                  subtitle: "JD30%・変更管理5ステップ", source: "jd" },
+    { id: "p-mgmt",      category: "process",   label: "マネジメント・人材",              subtitle: "JD10%・チーム纏め/教育 (古舘さん2025-04〜)", furuta: true, source: "self" },
+    { id: "p-shomu",     category: "process",   label: "庶務・予算管理",                  subtitle: "JD10%・工数集計/年度予算/IT集計", source: "jd" },
+    { id: "p-dx",        category: "process",   label: "DX・課題解決参画",                subtitle: "JD10%・古舘さん実績PJ複数 (年300万円工数削減)", furuta: true, source: "self" },
+    { id: "p-trouble",   category: "process",   label: "トラブル対応・水平展開",          subtitle: "古舘さん実績:2020 TP画面再設計 週1→2ヶ月1回", furuta: true, source: "resume" },
 
-    { id: "d-kigyo",     category: "deliv",     label: "起業案件 (KPI)",                  subtitle: "計画/実行件数・予算・実績金額" },
-    { id: "d-hozen",     category: "deliv",     label: "保全工事案件 (KPI)",              subtitle: "件数・予算・実績金額" },
-    { id: "d-kaizen",    category: "deliv",     label: "設備改善 (KPI)",                  subtitle: "件数・費用・効果" },
-    { id: "d-rule",      category: "deliv",     label: "社内ルール整備",                  subtitle: "古舘さん実績:電気機器選定/工事基準書/見積依頼FMT(2024-25)", furuta: true },
-    { id: "d-shiyo",     category: "deliv",     label: "仕様書・見積依頼",                subtitle: "仕様書/RFQ/見積査定書" },
-    { id: "d-hokoku",    category: "deliv",     label: "トラブル/コンプラ報告",            subtitle: "工事・設備トラブル・労災・違反" },
-    { id: "d-yosan",     category: "deliv",     label: "年度予算・予実",                  subtitle: "外部支払費・工数時間集計" },
-    { id: "d-kyoiku",    category: "deliv",     label: "教育計画・OJT",                   subtitle: "電計チーム教育・若手育成" },
+    { id: "d-kigyo",     category: "deliv",     label: "起業案件 (KPI)",                  subtitle: "計画/実行件数・予算・実績金額", source: "jd" },
+    { id: "d-hozen",     category: "deliv",     label: "保全工事案件 (KPI)",              subtitle: "件数・予算・実績金額", source: "jd" },
+    { id: "d-kaizen",    category: "deliv",     label: "設備改善 (KPI)",                  subtitle: "件数・費用・効果", source: "jd" },
+    { id: "d-rule",      category: "deliv",     label: "社内ルール整備",                  subtitle: "古舘さん実績:電気機器選定/工事基準書/見積依頼FMT(2024-25)", furuta: true, source: "resume" },
+    { id: "d-shiyo",     category: "deliv",     label: "仕様書・見積依頼",                subtitle: "仕様書/RFQ/見積査定書", source: "jd" },
+    { id: "d-hokoku",    category: "deliv",     label: "トラブル/コンプラ報告",            subtitle: "工事・設備トラブル・労災・違反", source: "jd" },
+    { id: "d-yosan",     category: "deliv",     label: "年度予算・予実",                  subtitle: "外部支払費・工数時間集計", source: "jd" },
+    { id: "d-kyoiku",    category: "deliv",     label: "教育計画・OJT",                   subtitle: "電計チーム教育・若手育成", source: "self" },
 
-    { id: "t-plantia",   category: "tool",      label: "Plantia",                         subtitle: "設備管理システム(社内SOT)" },
-    { id: "t-teams",     category: "tool",      label: "Teams/Outlook/OneNote",           subtitle: "コミュニケーション・記録" },
-    { id: "t-ai",        category: "tool",      label: "AI 4種",                          subtitle: "Gemini/NotebookLM/ChatGPT/Copilot" },
-    { id: "t-plantview", category: "tool",      label: "工場プラントビュー",              subtitle: "古舘さん導入(2024-25 DX-PJ→予算化→導入)", furuta: true },
-    { id: "t-senmon",    category: "tool",      label: "専門ツール",                      subtitle: "GX Works3/2・AutoCAD・テスター・絶縁抵抗計・クランプ" },
-    { id: "t-shikaku",   category: "tool",      label: "古舘さん保有資格",                subtitle: "二種電工(2013)/1級機械保全電気(2018)/エネ管電気(2022)/衛生(2025)", furuta: true }
+    { id: "t-plantia",   category: "tool",      label: "Plantia",                         subtitle: "設備管理システム(社内SOT)", source: "self" },
+    { id: "t-teams",     category: "tool",      label: "Teams/Outlook/OneNote",           subtitle: "コミュニケーション・記録", source: "self" },
+    { id: "t-ai",        category: "tool",      label: "AI 4種",                          subtitle: "Gemini/NotebookLM/ChatGPT/Copilot", source: "self" },
+    { id: "t-plantview", category: "tool",      label: "工場プラントビュー",              subtitle: "古舘さん導入(2024-25 DX-PJ→予算化→導入)", furuta: true, source: "resume" },
+    { id: "t-senmon",    category: "tool",      label: "専門ツール",                      subtitle: "GX Works3/2・AutoCAD・テスター・絶縁抵抗計・クランプ", source: "self" },
+    { id: "t-shikaku",   category: "tool",      label: "古舘さん保有資格",                subtitle: "二種電工(2013)/1級機械保全電気(2018)/エネ管電気(2022)/衛生(2025)", furuta: true, source: "resume" }
   ],
   connections: [
     ["seizo","denkei","運転員→改善依頼"],
@@ -409,9 +691,10 @@ const DATA = {
       label: "① 保全工事サイクル (JD 30%)",
       color: "#ffd54f",
       highlight: ["seizo","denkei","kikai","kikaku-team","sl","p-hozen","p-sekou","t-plantia","d-hozen","d-shiyo","vendor","maker","honsha","kyoryoku"],
+      interviewPoint: "設備重要度評価から仕様化・施工監理・引継までを一貫対応。JD必須10年経験 (保全/施工管理) に直接合致。",
       steps: [
         ["1","重要度評価","Plantiaの点検結果から設備重要度を再評価"],
-        ["2","中⾧期保全計画","次年度/中期の保全候補リストを抽出"],
+        ["2","中長期保全計画","次年度/中期の保全候補リストを抽出"],
         ["3","起案・仕様検討","電計チームで仕様作成 (古舘さんレビュー)"],
         ["4","稟議","設備技術1SL → 部長 → 本社/経営層 ルート"],
         ["5","RFQ/見積査定","協力会社/メーカーへ見積依頼・査定"],
@@ -424,6 +707,7 @@ const DATA = {
       label: "② 新規設備投資 (JD 30%)",
       color: "#5ec4ff",
       highlight: ["seizo","kenkyu","denkei","kikai","sl","bucho","honsha","p-sekkei","p-sekou","d-kigyo","d-shiyo","vendor","maker","kanan"],
+      interviewPoint: "製造部・研究所・ベンダー・経営層を横断的に巻き込み、電計設備 (DCS/PLC/盤/計装) の仕様を確定。JD必須10年経験 (設計) に該当。",
       steps: [
         ["1","起業計画立案","製造部・研究所からの要件吸い上げ"],
         ["2","電計設備仕様設計","DCS/PLC/盤/計装の仕様確定 (古舘さん責任)"],
@@ -438,6 +722,7 @@ const DATA = {
       label: "③ チーム纏め・教育 (JD 10%)",
       color: "#b388ff",
       highlight: ["denkei","sl","p-mgmt","d-kyoiku","kyoryoku","tashojo","kikaku-team"],
+      interviewPoint: "2025-04にリーダー就任 (4名チーム)。業務分担・若手OJT・他工場連携を主導。マネジメント実績は浅いが直近1年の進捗で示せる。",
       steps: [
         ["1","業務分担","電計チーム4名の案件アサイン"],
         ["2","教育計画","新人/若手の年間教育計画 (古舘さん2025-04〜)"],
@@ -452,6 +737,7 @@ const DATA = {
       label: "④ 変更管理・法令対応 (JD 10%)",
       color: "#ef5350",
       highlight: ["denkei","p-hoan","shunin","hoan-kantoku","energy","denryoku","rouki","kanan","d-hokoku"],
+      interviewPoint: "法改正・社内基準改定・設備改造を察知し、環安部・主任技術者・規制当局を連結。電事法/省エネ法/労安法の届出ハンドリング。",
       steps: [
         ["1","変更察知","法改正/社内基準改定/設備改造を察知"],
         ["2","対応案検討","法令乖離防止のための対応案策定"],
@@ -465,6 +751,7 @@ const DATA = {
       label: "⑤ 課題解決参画 (JD 10%)",
       color: "#7ed957",
       highlight: ["denkei","sl","p-dx","t-plantview","kikaku-kanri","honsha","kyoryoku","d-rule","kenkyu","tashojo"],
+      interviewPoint: "現場課題をICT/DXで仕組み化。プラントビュー導入・安全教育オンデマンド化 (年300万円工数削減)・社内ルール3本の予算化〜定着まで主導。",
       steps: [
         ["1","課題発見","部・グループ横断課題の抽出"],
         ["2","関係者協業","社内外パートナー巻き込み"],
@@ -478,6 +765,7 @@ const DATA = {
       label: "⑥ 庶務・予算管理 (JD 10%)",
       color: "#9ea7b3",
       highlight: ["kikaku-team","denkei","kikai","p-shomu","d-yosan","jimu","kikaku-kanri"],
+      interviewPoint: "工数集計・予算枠取りの定型業務に加え、IT集計改善で運営効率化。部門予算をハンドリングできる管理職経験。",
       steps: [
         ["1","工数集計","チームの工数時間を月次集計"],
         ["2","外部支払費集計","協力会社/ベンダー支払額の管理"],
@@ -490,6 +778,7 @@ const DATA = {
       label: "⑦ トラブル対応・水平展開",
       color: "#ff8a65",
       highlight: ["seizo","denkei","p-trouble","vendor","maker","kyoryoku","tashojo","d-hokoku","t-plantia"],
+      interviewPoint: "緊急一次対応からPlantia履歴登録・他工場/類似設備への水平展開まで体系化。2020 TP画面再設計 (週1トラブル→2ヶ月1回) が代表実績。",
       steps: [
         ["1","一次対応","運転員からの通報 → 電計チーム駆けつけ"],
         ["2","原因究明","ベンダー/メーカー協力で根本原因特定"],
@@ -500,13 +789,15 @@ const DATA = {
     },
     {
       id: "shunin-flow",
-      label: "⑧ 主任技術者業務・監督官対応",
+      label: "⑧ 電気保安対応・主任技術者連携",
       color: "#ff6b9b",
       highlight: ["denkei","p-hoan","shunin","hoan-kantoku","denryoku","kanan","d-hokoku"],
+      note: "古舘さんは電気主任技術者として選任されていません。設備技術部の立場で、選任主任技術者・環安部・産業保安監督部・電力会社への連携・支援を担当します。",
+      interviewPoint: "選任主任技術者・環安部・電力会社・産業保安監督部の対応窓口として連携運営。エネ管 (電気) 保有で系統知識・電事法理解は実務レベル。",
       steps: [
-        ["1","保安規程","主任技術者(別途選任)の保安規程に従う"],
-        ["2","点検立会","年次点検・絶縁抵抗測定"],
-        ["3","産業保安監督部対応","事故報告・立入検査対応"],
+        ["1","保安規程連携","選任主任技術者の保安規程に従い、設備技術部として運用支援"],
+        ["2","点検立会","年次点検・絶縁抵抗測定 (主任技術者主導 → 設備技術部で立会)"],
+        ["3","産業保安監督部対応","事故報告・立入検査の事務局支援"],
         ["4","受電契約","電力会社との系統連系/契約変更"],
         ["5","環安部経由届出","工場代表窓口は環安部"]
       ]
@@ -516,6 +807,7 @@ const DATA = {
       label: "⑨ DX推進 (古舘さん実績)",
       color: "#6bc4ff",
       highlight: ["denkei","sl","p-dx","t-plantview","t-ai","t-plantia","kyoryoku","d-rule","tashojo","honsha"],
+      interviewPoint: "全社DX-PJからの現場展開・社内ルール整備・AI活用までDXフルスタック。プラントビュー導入とオンデマンド教育で工数削減を定量化できる。",
       steps: [
         ["1","プラントビュー","全社DX-PJ参画→工場説明→予算化→導入 (2024-25)"],
         ["2","ベンダー安全教育","オンデマンド化PJリーダー (年300万円工数削減)"],
@@ -529,6 +821,7 @@ const DATA = {
       label: "⑩ 社内ツール活用",
       color: "#ffd54f",
       highlight: ["denkei","t-plantia","t-teams","t-ai","t-plantview","t-senmon","t-shikaku"],
+      interviewPoint: "設備管理SOT/AI/PLC開発環境/専門計測器/保有資格を組み合わせて業務遂行。AI 4種を併用しナレッジ整備・工数削減に直結させている。",
       steps: [
         ["1","Plantia","設備管理SOT・点検記録・保全履歴"],
         ["2","Teams/Outlook/OneNote","コミュニケーション/会議録/個人メモ"],
@@ -541,46 +834,97 @@ const DATA = {
   ]
 };
 
-// === Layout: swimlanes ===
+// === Anonymization ===
+// 順序: 長い文字列を先に置換 (部分一致による誤置換防止)
+const ANON_RULES = [
+  ["三菱ケミカル鶴見工場 設備技術部 (設備技術1S)", "化学メーカー・工場 設備技術部門"],
+  ["三菱ケミカル鶴見工場", "化学メーカー・工場"],
+  ["古舘さん本人/直接実績", "Candidate/直接実績"],
+  ["古舘さんリーダー", "本人リーダー"],
+  ["古舘さん保有資格", "本人保有資格"],
+  ["古舘さん主導PJ複数", "本人主導PJ複数"],
+  ["古舘さん導入", "本人導入"],
+  ["古舘さん責任", "本人責任"],
+  ["古舘さんレビュー", "本人レビュー"],
+  ["古舘さん実績", "本人実績"],
+  ["古舘さんPJ", "本人PJ"],
+  ["古舘さん", "本人"],
+  ["鶴見工場", "工場"],
+  ["鶴見研究所", "研究所"],
+  ["鶴見協力会社", "協力会社"],
+  ["Plantia", "設備管理システム"],
+  ["プラントビュー導入", "可視化システム導入"],
+  ["工場プラントビュー", "工場可視化システム"],
+  ["プラントビュー", "可視化システム"],
+  ["GX Works3/2", "PLC開発環境"],
+  ["AutoCAD", "CADソフト"],
+  ["Teams/Outlook/OneNote", "コラボツール"],
+  ["Gemini/NotebookLM/ChatGPT/Copilot", "AIアシスタント 4種"],
+  ["Gemini", "AIアシスタント"],
+  ["NotebookLM", "AIアシスタント"],
+  ["ChatGPT", "AIアシスタント"],
+  ["Copilot", "AIアシスタント"],
+  ["年300万円工数削減", "年間数百万円規模の工数削減"],
+  ["年300万円", "年間数百万円規模"],
+  ["300万円", "数百万円規模"],
+  ["二種電工(2013)/1級機械保全電気(2018)/エネ管電気(2022)/衛生(2025)", "電気系国家資格 (電工/機械保全電気/エネ管電気/衛生)"],
+  ["エネ管 (電気)", "エネ管電気"],
+  ["JD-2210000745CB", "募集要項"],
+  ["職務経歴書 20251016", "職務経歴書"],
+  ["2020 TP画面再設計", "2020 トラブルパネル再設計"],
+  ["TP画面再設計", "トラブルパネル再設計"]
+];
+
+let ANON_MODE = false;
+function anonymize(text) {
+  if (!ANON_MODE || text == null) return text;
+  let out = String(text);
+  for (const [k, v] of ANON_RULES) out = out.split(k).join(v);
+  return out;
+}
+
+// === Source badges ===
+const SOURCE_DEF = {
+  self:   { label: "本人実績",     cls: "src-self"   },
+  jd:     { label: "JD",          cls: "src-jd"     },
+  resume: { label: "職務経歴書",   cls: "src-resume" },
+  guess:  { label: "推測",        cls: "src-guess"  },
+  tbc:    { label: "要確認",      cls: "src-tbc"    }
+};
+function srcOf(c) {
+  if (c.source) return c.source;
+  if (c.furuta) return "self";
+  if (c.verified === false) return "tbc";
+  return "jd";
+}
+
+// === Layout ===
 const LANES = [
   { id: "user",      y:  16, h: 72,  label: "社内顧客 / 工場内ステークホルダー" },
   { id: "upper",     y:  94, h: 72,  label: "設備技術部 上位 (1SL / 部長)" },
   { id: "team",      y: 172, h: 72,  label: "設備技術部 3チーム (13名)" },
   { id: "related",   y: 250, h: 72,  label: "関係部 (工場内・密連携)" },
-  { id: "process",   y: 328, h: 162, label: "業務プロセス 8軸 — JDウエイト・古舘さん実績組込" },
+  { id: "process",   y: 328, h: 162, label: "業務プロセス 8軸 — JDウエイト・本人実績組込" },
   { id: "external",  y: 496, h: 72,  label: "外部 (工事業者・メーカー)" },
   { id: "regulator", y: 574, h: 72,  label: "規制・行政・主任技術者" },
   { id: "deliv",     y: 652, h: 162, label: "成果物・KPI" },
   { id: "tool",      y: 820, h: 152, label: "社内ツール・専門ツール・資格" }
 ];
-
-// Column x positions (8 columns)
 const COLS = [30, 220, 410, 600, 790, 980, 1170, 1360];
-
-// Node positions
 const POS = {
-  // user lane (y=32)
   "seizo":        [COLS[0], 32],
   "kikaku-kanri": [COLS[1], 32],
-  "honsha":       [COLS[5], 32],  // corp on right
+  "honsha":       [COLS[5], 32],
   "tashojo":      [COLS[6], 32],
-
-  // upper lane (y=110)
   "bucho":        [COLS[2], 110],
   "sl":           [COLS[3], 110],
-
-  // team lane (y=188)
-  "denkei":       [COLS[2], 188],   // center, key
+  "denkei":       [COLS[2], 188],
   "kikai":        [COLS[3], 188],
   "kikaku-team":  [COLS[4], 188],
-
-  // related lane (y=266)
   "jimu":         [COLS[1], 266],
   "kanan":        [COLS[3], 266],
   "kenkyu":       [COLS[5], 266],
   "kyoryoku":     [COLS[6], 266],
-
-  // process lane: 2 rows  (y=344, y=412)  — 4+4
   "p-sekkei":     [COLS[0], 344],
   "p-sekou":      [COLS[1], 344],
   "p-hozen":      [COLS[2], 344],
@@ -589,19 +933,13 @@ const POS = {
   "p-shomu":      [COLS[5], 412],
   "p-dx":         [COLS[6], 412],
   "p-trouble":    [COLS[7], 344],
-
-  // external lane (y=512)
   "vendor":       [COLS[1], 512],
   "maker":        [COLS[2], 512],
-
-  // regulator lane (y=590)
   "shunin":       [COLS[2], 590],
   "hoan-kantoku": [COLS[3], 590],
   "denryoku":     [COLS[4], 590],
   "energy":       [COLS[5], 590],
   "rouki":        [COLS[6], 590],
-
-  // deliv lane: 2 rows  (y=668, y=736) — 4+4
   "d-kigyo":      [COLS[0], 668],
   "d-hozen":      [COLS[1], 668],
   "d-kaizen":     [COLS[2], 668],
@@ -610,8 +948,6 @@ const POS = {
   "d-kyoiku":     [COLS[5], 736],
   "d-rule":       [COLS[6], 736],
   "d-hokoku":     [COLS[7], 668],
-
-  // tool lane: 2 rows (y=836, y=904) — 3+3
   "t-plantia":    [COLS[0], 836],
   "t-teams":      [COLS[1], 836],
   "t-ai":         [COLS[2], 836],
@@ -625,28 +961,58 @@ const CANVAS_H = 1010;
 const NODE_W = 170;
 const NODE_H = 56;
 
-// === Build DOM ===
+// === DOM refs ===
 const canvas = document.getElementById("canvas");
+const canvasWrap = document.getElementById("canvas-wrap");
+const canvasScroll = document.getElementById("canvas-scroll");
 const svg = document.getElementById("svg");
-const legend = document.getElementById("legend");
+const legendCat = document.getElementById("legend-category");
+const legendSrc = document.getElementById("legend-source");
 const flowsEl = document.getElementById("flows");
 const stepsEl = document.getElementById("steps");
+const activeFlowBanner = document.getElementById("active-flow-banner");
+const activeFlowName = document.getElementById("active-flow-name");
+const panelInterview = document.getElementById("panel-interview");
+const interviewBox = document.getElementById("interview-box");
+const panelNote = document.getElementById("panel-note");
+const noteBox = document.getElementById("note-box");
+const panelConnections = document.getElementById("panel-connections");
+const connList = document.getElementById("conn-list");
+const panelNode = document.getElementById("panel-node");
+const nodeDetail = document.getElementById("node-detail");
+const pageTitleEl = document.getElementById("page-title");
+const pageSubEl = document.getElementById("page-sub");
 
 const catMap = Object.fromEntries(DATA.categories.map(c => [c.id, c]));
 
-// Legend
-DATA.categories.forEach(c => {
-  const el = document.createElement("span");
-  el.className = "item";
-  el.innerHTML = `<span class="sw" style="background:${c.color}"></span>${c.label}`;
-  legend.appendChild(el);
-});
-// add furuta highlight in legend
+// Render legends (split into category and source)
 {
-  const el = document.createElement("span");
-  el.className = "item";
-  el.innerHTML = `<span class="sw" style="background:linear-gradient(180deg,#ffd54f,#7a5a00);border-color:#ffd54f88"></span>古舘さん本人/直接実績`;
-  legend.appendChild(el);
+  const head = document.createElement("span");
+  head.className = "legend-title";
+  head.textContent = "Category";
+  legendCat.appendChild(head);
+  DATA.categories.forEach(c => {
+    const el = document.createElement("span");
+    el.className = "item";
+    el.innerHTML = `<span class="sw" style="background:${c.color}"></span>${escapeHtml(c.label)}`;
+    legendCat.appendChild(el);
+  });
+}
+{
+  const head = document.createElement("span");
+  head.className = "legend-title";
+  head.textContent = "Source";
+  legendSrc.appendChild(head);
+  Object.entries(SOURCE_DEF).forEach(([k, v]) => {
+    const el = document.createElement("span");
+    el.className = "item";
+    el.innerHTML = `<span class="badge ${v.cls}">${escapeHtml(v.label)}</span>`;
+    legendSrc.appendChild(el);
+  });
+  const fur = document.createElement("span");
+  fur.className = "item";
+  fur.innerHTML = `<span class="sw" style="background:linear-gradient(180deg,#ffd54f,#7a5a00);border-color:#ffd54f88"></span>本人/直接実績ノード強調`;
+  legendSrc.appendChild(fur);
 }
 
 // Swimlane backgrounds
@@ -679,30 +1045,33 @@ DATA.components.forEach(c => {
   const cat = catMap[c.category];
   const el = document.createElement("div");
   el.className = "node";
-  if (c.verified === false) el.classList.add("unverified");
   if (c.furuta) el.classList.add("furuta");
   el.style.left = x + "px";
   el.style.top  = y + "px";
   el.style.width = NODE_W + "px";
+  const src = srcOf(c);
+  const srcDef = SOURCE_DEF[src];
   el.innerHTML = `
     <span class="stripe" style="background:${cat.color}"></span>
-    <div class="lbl">${escapeHtml(c.label)}</div>
-    <div class="sub">${escapeHtml(c.subtitle || "")}</div>
+    <span class="src-badge ${srcDef.cls}">${escapeHtml(srcDef.label)}</span>
+    <div class="lbl"></div>
+    <div class="sub"></div>
   `;
   el.dataset.id = c.id;
-  el.title = c.label + (c.verified === false ? " (unverified)" : "") + (c.furuta ? " ★ 古舘さん本人/直接実績" : "");
+  el.addEventListener("click", (e) => {
+    e.stopPropagation();
+    selectNode(c.id);
+  });
   canvas.appendChild(el);
   nodeEls[c.id] = el;
 });
 
-// Center anchor helper for SVG lines
+// Edges
 function anchor(id) {
   const p = POS[id];
   if (!p) return null;
   return { x: p[0] + NODE_W / 2, y: p[1] + NODE_H / 2 };
 }
-
-// Edges
 const edgeEls = [];
 DATA.connections.forEach(([from, to, label]) => {
   const a = anchor(from), b = anchor(to);
@@ -717,41 +1086,95 @@ DATA.connections.forEach(([from, to, label]) => {
   path.setAttribute("marker-end", "url(#arrow)");
   path.dataset.from = from;
   path.dataset.to = to;
+  path.dataset.label = label || "";
+  const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+  titleEl.textContent = `${labelOf(from)} → ${labelOf(to)} : ${label || ""}`;
+  path.appendChild(titleEl);
   svg.appendChild(path);
   edgeEls.push(path);
 });
-
 svg.setAttribute("viewBox", `0 0 ${CANVAS_W} ${CANVAS_H}`);
+
+function labelOf(id) {
+  const c = DATA.components.find(x => x.id === id);
+  return c ? anonymize(c.label) : id;
+}
 
 // Flow buttons
 DATA.flows.forEach(f => {
   const btn = document.createElement("button");
   btn.className = "flow-btn";
   btn.dataset.id = f.id;
-  btn.innerHTML = `<span class="dot" style="background:${f.color}"></span>${escapeHtml(f.label)}`;
+  btn.innerHTML = `<span class="dot" style="background:${f.color}"></span><span class="flow-label"></span>`;
   btn.addEventListener("click", () => activateFlow(f.id));
   flowsEl.appendChild(btn);
 });
 
 // Reset
 document.getElementById("reset").addEventListener("click", () => activateFlow(null));
+document.getElementById("reset-prominent").addEventListener("click", () => activateFlow(null));
+
+// Click outside node clears node-detail panel
+canvas.addEventListener("click", () => selectNode(null));
 
 let activeFlow = null;
+let selectedNode = null;
+
+function refreshNodeTexts() {
+  Object.entries(nodeEls).forEach(([id, el]) => {
+    const c = DATA.components.find(x => x.id === id);
+    if (!c) return;
+    el.querySelector(".lbl").textContent = anonymize(c.label);
+    el.querySelector(".sub").textContent = anonymize(c.subtitle || "");
+    el.title = anonymize(c.label) + " [" + SOURCE_DEF[srcOf(c)].label + "]";
+  });
+}
+function refreshFlowButtonTexts() {
+  flowsEl.querySelectorAll(".flow-btn").forEach(b => {
+    const f = DATA.flows.find(x => x.id === b.dataset.id);
+    if (f) b.querySelector(".flow-label").textContent = anonymize(f.label);
+  });
+}
+function refreshHeaderTexts() {
+  pageTitleEl.textContent = anonymize("三菱ケミカル鶴見工場 設備技術部 (設備技術1S) — Architecture Map");
+  pageSubEl.textContent = anonymize("古舘さん (電計チーム4名リーダー / 2025-04〜) を中心とした設備技術部の業務構造: 設計・施工管理・保全 + 保安・マネジメント / JD-2210000745CB & 職務経歴書 20251016 ベース");
+  document.title = anonymize("設備技術部 Architecture Map");
+}
+function refreshEdgeTooltips() {
+  edgeEls.forEach(p => {
+    const t = p.querySelector("title");
+    if (t) t.textContent = `${labelOf(p.dataset.from)} → ${labelOf(p.dataset.to)} : ${anonymize(p.dataset.label)}`;
+  });
+}
+
 function activateFlow(id) {
   activeFlow = id;
+  selectedNode = null;
+  panelNode.style.display = "none";
+
   flowsEl.querySelectorAll(".flow-btn").forEach(b => {
     b.classList.toggle("active", b.dataset.id === id);
   });
   const flow = id ? DATA.flows.find(f => f.id === id) : null;
 
+  // Banner
+  if (flow) {
+    activeFlowBanner.classList.add("show");
+    activeFlowName.textContent = anonymize(flow.label);
+  } else {
+    activeFlowBanner.classList.remove("show");
+  }
+
+  // Nodes
   Object.entries(nodeEls).forEach(([nodeId, el]) => {
-    el.classList.remove("dim", "hi");
+    el.classList.remove("dim", "hi", "selected");
     if (flow) {
       if (flow.highlight.includes(nodeId)) el.classList.add("hi");
       else el.classList.add("dim");
     }
   });
 
+  // Edges
   edgeEls.forEach(p => {
     p.classList.remove("dim", "hi");
     p.removeAttribute("marker-end");
@@ -769,23 +1192,180 @@ function activateFlow(id) {
     }
   });
 
+  // Interview point
+  if (flow && flow.interviewPoint) {
+    panelInterview.style.display = "";
+    interviewBox.innerHTML = `<span class="ip-label">面接訴求</span><br>${escapeHtml(anonymize(flow.interviewPoint))}`;
+  } else {
+    panelInterview.style.display = "none";
+  }
+
+  // Note (disclaimer)
+  if (flow && flow.note) {
+    panelNote.style.display = "";
+    noteBox.innerHTML = `<span class="nt-label">注記</span>${escapeHtml(anonymize(flow.note))}`;
+  } else {
+    panelNote.style.display = "none";
+  }
+
+  // Steps
   stepsEl.innerHTML = "";
   if (flow) {
     flow.steps.forEach(([n, l, d]) => {
       const div = document.createElement("div");
       div.className = "step";
       div.style.borderLeftColor = flow.color;
-      div.innerHTML = `<div><span class="n">${escapeHtml(n)}.</span><span class="l">${escapeHtml(l)}</span></div><div class="d">${escapeHtml(d)}</div>`;
+      div.innerHTML = `<div><span class="n">${escapeHtml(n)}.</span><span class="l">${escapeHtml(anonymize(l))}</span></div><div class="d">${escapeHtml(anonymize(d))}</div>`;
       stepsEl.appendChild(div);
     });
   }
+
+  // Related connections (within this flow's highlight)
+  connList.innerHTML = "";
+  if (flow) {
+    const hl = new Set(flow.highlight);
+    const rels = DATA.connections.filter(([f, t]) => hl.has(f) && hl.has(t));
+    if (rels.length > 0) {
+      panelConnections.style.display = "";
+      rels.forEach(([f, t, lbl]) => {
+        const row = document.createElement("div");
+        row.className = "conn-row";
+        row.innerHTML = `<span class="from">${escapeHtml(labelOf(f))}</span><span class="arr">→</span><span class="to">${escapeHtml(labelOf(t))}</span><div class="lbl">${escapeHtml(anonymize(lbl || ""))}</div>`;
+        connList.appendChild(row);
+      });
+    } else {
+      panelConnections.style.display = "none";
+    }
+  } else {
+    panelConnections.style.display = "none";
+  }
+
+  // Auto-scroll to first highlighted node
+  if (flow && flow.highlight.length > 0) {
+    const firstId = flow.highlight[0];
+    const p = POS[firstId];
+    if (p) {
+      const zoom = currentZoomFactor();
+      canvasWrap.scrollTo({
+        left: Math.max(0, (p[0] - 40) * zoom),
+        top:  Math.max(0, (p[1] - 40) * zoom),
+        behavior: "smooth"
+      });
+    }
+  }
 }
+
+function selectNode(id) {
+  selectedNode = id;
+  Object.entries(nodeEls).forEach(([nid, el]) => {
+    el.classList.toggle("selected", nid === id);
+  });
+  if (!id) {
+    panelNode.style.display = "none";
+    return;
+  }
+  const c = DATA.components.find(x => x.id === id);
+  if (!c) { panelNode.style.display = "none"; return; }
+
+  const inConns  = DATA.connections.filter(x => x[1] === id);
+  const outConns = DATA.connections.filter(x => x[0] === id);
+  const relFlows = DATA.flows.filter(f => f.highlight.includes(id));
+
+  const src = srcOf(c);
+  const srcDef = SOURCE_DEF[src];
+
+  let html = `
+    <div class="nd-name">${escapeHtml(anonymize(c.label))} <span class="src-badge ${srcDef.cls}" style="position:static;margin-left:6px">${escapeHtml(srcDef.label)}</span></div>
+    <div class="nd-sub">${escapeHtml(anonymize(c.subtitle || ""))}</div>
+  `;
+  if (inConns.length > 0) {
+    html += `<div class="nd-section">入力 connection (${inConns.length})</div><ul class="nd-list">`;
+    inConns.forEach(([f, t, lbl]) => {
+      html += `<li>← ${escapeHtml(labelOf(f))} : ${escapeHtml(anonymize(lbl || ""))}</li>`;
+    });
+    html += `</ul>`;
+  }
+  if (outConns.length > 0) {
+    html += `<div class="nd-section">出力 connection (${outConns.length})</div><ul class="nd-list">`;
+    outConns.forEach(([f, t, lbl]) => {
+      html += `<li>→ ${escapeHtml(labelOf(t))} : ${escapeHtml(anonymize(lbl || ""))}</li>`;
+    });
+    html += `</ul>`;
+  }
+  if (relFlows.length > 0) {
+    html += `<div class="nd-section">関連 Flow (${relFlows.length})</div><ul class="nd-list">`;
+    relFlows.forEach(f => {
+      html += `<li>● ${escapeHtml(anonymize(f.label))}</li>`;
+    });
+    html += `</ul>`;
+  }
+  html += `<button class="nd-close" id="nd-close-btn">× 閉じる</button>`;
+  nodeDetail.innerHTML = html;
+  panelNode.style.display = "";
+  document.getElementById("nd-close-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    selectNode(null);
+  });
+}
+
+// === Zoom ===
+let currentZoom = 1;
+function setZoom(z) {
+  let factor = z;
+  if (z === "fit") {
+    const wrapW = canvasWrap.clientWidth - 28;
+    factor = Math.min(1, wrapW / CANVAS_W);
+  }
+  currentZoom = factor;
+  canvasScroll.style.transform = `scale(${factor})`;
+  canvasScroll.style.width = (CANVAS_W * factor) + "px";
+  canvasScroll.style.height = (CANVAS_H * factor) + "px";
+}
+function currentZoomFactor() { return currentZoom; }
+
+document.querySelectorAll("[data-zoom]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-zoom]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const v = btn.dataset.zoom;
+    setZoom(v === "fit" ? "fit" : parseFloat(v));
+  });
+});
+
+// === Anonymization toggle ===
+function setMode(mode) {
+  ANON_MODE = (mode === "anon");
+  document.getElementById("mode-detail").classList.toggle("active", !ANON_MODE);
+  document.getElementById("mode-anon").classList.toggle("active",  ANON_MODE);
+  try { localStorage.setItem("setsubi-map-mode", mode); } catch (e) {}
+  refreshHeaderTexts();
+  refreshNodeTexts();
+  refreshFlowButtonTexts();
+  refreshEdgeTooltips();
+  // re-render dynamic panels by re-activating the current flow/node
+  if (activeFlow) activateFlow(activeFlow);
+  if (selectedNode) selectNode(selectedNode);
+}
+document.getElementById("mode-detail").addEventListener("click", () => setMode("detail"));
+document.getElementById("mode-anon").addEventListener("click", () => setMode("anon"));
 
 function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-// Show first flow by default
+// === Init ===
+refreshHeaderTexts();
+refreshNodeTexts();
+refreshFlowButtonTexts();
+refreshEdgeTooltips();
+
+// Restore mode from localStorage
+try {
+  const saved = localStorage.getItem("setsubi-map-mode");
+  if (saved === "anon") setMode("anon");
+} catch (e) {}
+
+// Default flow
 activateFlow("hozen-cycle");
 </script>
 </body>
