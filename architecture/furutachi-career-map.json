@@ -1,0 +1,243 @@
+{
+  "title": "古舘主寿 キャリアマップ",
+  "subtitle": "三菱ケミカル株式会社 設備技術部 (2014.4 - 現在) / フィルム工場9年 → 半導体材料工場3年目 → 2025.4 管理職",
+  "categories": [
+    { "id": "timeline",   "label": "Timeline / Milestone",    "color": "#9ea7b3" },
+    { "id": "phase1",     "label": "Phase 1: フィルム工場",   "color": "#5ec4ff" },
+    { "id": "phase2",     "label": "Phase 2: 半導体材料工場", "color": "#f5a623" },
+    { "id": "qualif",     "label": "資格 / 教育",             "color": "#7ed957" },
+    { "id": "project",    "label": "実績PJ / 過去案件",       "color": "#ffd54f" },
+    { "id": "skill",      "label": "スキル (制御・保守・設計)", "color": "#b388ff" },
+    { "id": "tool",       "label": "ツール / 機器",           "color": "#ff8a65" },
+    { "id": "work-axis",  "label": "業務軸 (一貫テーマ)",     "color": "#ff6b9b" }
+  ],
+  "components": [
+    { "id": "tl-2014", "category": "timeline", "label": "2014.4 入社",      "subtitle": "三菱樹脂 (現 三菱ケミカル) 大学院修了" },
+    { "id": "tl-2018", "category": "timeline", "label": "2018",             "subtitle": "1級機械保全技能士 取得" },
+    { "id": "tl-2020", "category": "timeline", "label": "2020",             "subtitle": "トラブル削減活動 (Phase1)" },
+    { "id": "tl-2022", "category": "timeline", "label": "2022",             "subtitle": "エネルギー管理士 取得" },
+    { "id": "tl-2023", "category": "timeline", "label": "2023.4 異動",      "subtitle": "中日本(山東) → 関東(鶴見)" },
+    { "id": "tl-2024", "category": "timeline", "label": "2024-25",          "subtitle": "DX/業務改善 4本立て" },
+    { "id": "tl-2025", "category": "timeline", "label": "2025.4 管理職",    "subtitle": "電計チームリーダー昇進" },
+
+    { "id": "p1-place",  "category": "phase1", "label": "中日本事業所 山東地区", "subtitle": "設備技術部 電計グループ" },
+    { "id": "p1-team",   "category": "phase1", "label": "電計グループ 構成",      "subtitle": "課長1/課長代理5/他17名 (投資11+保全11)" },
+    { "id": "p1-role",   "category": "phase1", "label": "6名チーム統括",          "subtitle": "投資3+保全3 / 非管理職・複数ライン担当" },
+    { "id": "p1-target", "category": "phase1", "label": "光学フィルム製造ライン", "subtitle": "電気設備担当", "verified": false },
+    { "id": "p1-job1",   "category": "phase1", "label": "既存設備改良",           "subtitle": "不具合解析・制御変更・インターロック" },
+    { "id": "p1-job2",   "category": "phase1", "label": "トラブル対応",           "subtitle": "TP/PLC/DCS 原因解析・再発防止・水平展開" },
+    { "id": "p1-job3",   "category": "phase1", "label": "新規設備導入",           "subtitle": "要件定義→仕様→見積→施工管理→試運転" },
+
+    { "id": "p2-place",  "category": "phase2", "label": "関東事業所 鶴見地区",    "subtitle": "設備技術部 半導体材料工場" },
+    { "id": "p2-team",   "category": "phase2", "label": "13名 3チーム構成",       "subtitle": "課長1(機械)+電計4+機械6+事務2" },
+    { "id": "p2-role",   "category": "phase2", "label": "電計チームリーダー",     "subtitle": "部下3名 / 2025.4 管理職昇格" },
+    { "id": "p2-mgmt",   "category": "phase2", "label": "マネジメント業務",       "subtitle": "統率・分担・進捗・育成・ルール・他工場連携" },
+    { "id": "p2-dx",     "category": "phase2", "label": "DX推進",                 "subtitle": "全社DXプロジェクト参画" },
+    { "id": "p2-ops",    "category": "phase2", "label": "設備関連業務",           "subtitle": "新規導入・改良・保全 (Phase1継承)" },
+
+    { "id": "q-soroban",  "category": "qualif", "label": "珠算検定2段",              "subtitle": "2002" },
+    { "id": "q-denko2",   "category": "qualif", "label": "第二種電気工事士",          "subtitle": "2013 (入社前)" },
+    { "id": "q-kihohozen","category": "qualif", "label": "1級機械保全技能士 (電気)", "subtitle": "2018" },
+    { "id": "q-enekan",   "category": "qualif", "label": "エネルギー管理士 (電気)",  "subtitle": "2022" },
+    { "id": "q-eisei",    "category": "qualif", "label": "第一種衛生管理者",          "subtitle": "2025 (管理職昇進と同年)" },
+    { "id": "q-edu",      "category": "qualif", "label": "受講済 特別教育",          "subtitle": "フルハーネス/高圧特高/酸欠硫化水素" },
+
+    { "id": "pj-rule",     "category": "project", "label": "社内ルール整備",            "subtitle": "2024-25 / 機器選定基準・工事基準・見積FMT" },
+    { "id": "pj-plantview","category": "project", "label": "工場プラントビュー導入",    "subtitle": "2024-25 / 全社DX・Street View的" },
+    { "id": "pj-safety",   "category": "project", "label": "ベンダー安全教育オンデマンド化", "subtitle": "2024-25 PJリーダー / 年300万円削減" },
+    { "id": "pj-trouble",  "category": "project", "label": "トラブル削減活動",          "subtitle": "2020 (Phase1) / 週1→2ヶ月1回" },
+    { "id": "case-dcs",    "category": "project", "label": "DCS更新 / サーボ / PLC",    "subtitle": "制御系 過去実施案件" },
+    { "id": "case-instr",  "category": "project", "label": "レベル/流量/圧力/調節弁",  "subtitle": "計装系 過去実施案件" },
+    { "id": "case-lv",     "category": "project", "label": "制御盤 / 生産付帯設備",    "subtitle": "低圧 過去実施案件" },
+    { "id": "case-hv",     "category": "project", "label": "高圧配電盤/進相コン/トランス", "subtitle": "高圧 過去実施案件" },
+
+    { "id": "sk-control",  "category": "skill", "label": "制御",       "subtitle": "PLC(三菱・安川)/DCS(横河)/TP(三菱・シュナイダー)" },
+    { "id": "sk-maint",    "category": "skill", "label": "保守",       "subtitle": "休日夜間突発対応・既存改良・保全管理" },
+    { "id": "sk-design",   "category": "skill", "label": "設計",       "subtitle": "電気/計装部品選定・図面作成読解・P&ID/EFD" },
+    { "id": "sk-improve",  "category": "skill", "label": "改善 / CAD", "subtitle": "新規導入・改善業務・CAD図面修正" },
+    { "id": "sk-nodev",    "category": "skill", "label": "新規開発・プログラミング経験なし", "subtitle": "明記 (経歴書記載・要習得領域)" },
+
+    { "id": "tl-gx",       "category": "tool", "label": "GX Works 3/2",     "subtitle": "三菱PLCラダー" },
+    { "id": "tl-meas",     "category": "tool", "label": "テスター/絶縁/クランプ", "subtitle": "電気計測機器" },
+    { "id": "tl-vigen",    "category": "tool", "label": "電圧電流発生器",   "subtitle": "計装ループ点検" },
+    { "id": "tl-m365",     "category": "tool", "label": "Microsoft 365",   "subtitle": "Excel/Word/Teams" },
+    { "id": "tl-cad",      "category": "tool", "label": "AutoCAD",         "subtitle": "図面修正・電気図作成" },
+    { "id": "tl-plantia",  "category": "tool", "label": "Plantia",         "subtitle": "プラント設計・図面管理" },
+
+    { "id": "wa-design",  "category": "work-axis", "label": "設計業務",   "subtitle": "要件定義→仕様検討→見積→発注" },
+    { "id": "wa-const",   "category": "work-axis", "label": "施工管理",   "subtitle": "工事計画→施工監督→試運転→検収" },
+    { "id": "wa-maint",   "category": "work-axis", "label": "保全業務",   "subtitle": "トラブル対応→原因解析→水平展開→改良" }
+  ],
+  "connections": [
+    ["tl-2014","p1-place","新卒配属"],
+    ["p1-place","p1-team","所属"],
+    ["p1-team","p1-role","役割"],
+    ["p1-role","p1-target","担当ライン"],
+    ["p1-role","p1-job1","業務"],
+    ["p1-role","p1-job2","業務"],
+    ["p1-role","p1-job3","業務"],
+    ["p1-job2","pj-trouble","2020 実績"],
+    ["tl-2020","pj-trouble","年"],
+
+    ["tl-2023","p2-place","異動"],
+    ["p2-place","p2-team","所属"],
+    ["p2-team","p2-role","役割"],
+    ["p2-role","p2-mgmt","業務"],
+    ["p2-role","p2-dx","業務"],
+    ["p2-role","p2-ops","業務"],
+    ["tl-2025","p2-role","管理職昇進"],
+    ["p2-mgmt","pj-rule","主導"],
+    ["p2-dx","pj-plantview","主導"],
+    ["p2-mgmt","pj-safety","PJリーダー"],
+    ["tl-2024","pj-rule","期間"],
+    ["tl-2024","pj-plantview","期間"],
+    ["tl-2024","pj-safety","期間"],
+
+    ["tl-2014","q-denko2","入社前"],
+    ["tl-2018","q-kihohozen","取得"],
+    ["tl-2022","q-enekan","取得"],
+    ["tl-2025","q-eisei","取得"],
+
+    ["p1-job3","case-dcs","新規導入"],
+    ["p1-job3","case-instr","新規導入"],
+    ["p1-job3","case-lv","新規導入"],
+    ["p1-job3","case-hv","新規導入"],
+    ["p2-ops","case-dcs","継続"],
+    ["p2-ops","case-instr","継続"],
+
+    ["p1-job1","sk-design","蓄積"],
+    ["p1-job2","sk-maint","蓄積"],
+    ["p1-job3","sk-design","蓄積"],
+    ["case-dcs","sk-control","適用"],
+    ["case-instr","sk-design","適用"],
+    ["case-hv","sk-control","適用"],
+    ["sk-improve","p2-dx","活用"],
+
+    ["sk-control","tl-gx","使用"],
+    ["sk-maint","tl-meas","使用"],
+    ["sk-design","tl-cad","使用"],
+    ["sk-design","tl-plantia","使用"],
+    ["p2-mgmt","tl-m365","使用"],
+    ["sk-design","tl-vigen","使用"],
+
+    ["wa-design","p1-job3","発現"],
+    ["wa-const","p1-job3","発現"],
+    ["wa-maint","p1-job2","発現"],
+    ["wa-design","p2-ops","継続"],
+    ["wa-const","p2-ops","継続"],
+    ["wa-maint","p2-ops","継続"],
+
+    ["p1-role","p2-role","昇格遷移"],
+    ["pj-trouble","pj-rule","継続改善DNA"],
+    ["q-enekan","p2-role","昇格根拠の一つ", "verified-false"],
+    ["q-eisei","p2-role","管理職要件"]
+  ],
+  "flows": [
+    {
+      "id": "career-timeline",
+      "label": "キャリア年表 (2014-2025)",
+      "color": "#ffd54f",
+      "highlight": ["tl-2014","p1-place","p1-team","p1-role","tl-2023","p2-place","p2-team","p2-role","tl-2025"],
+      "steps": [
+        ["1","2014.4 入社",      "大学院修了 → 三菱樹脂(現 三菱ケミカル) 新卒採用"],
+        ["2","Phase1 配属",      "中日本事業所 山東地区 設備技術部 電計グループ"],
+        ["3","Phase1 役割確立",  "投資3+保全3 の6名チーム統括 (非管理職)"],
+        ["4","2023.4 異動",      "関東事業所 鶴見地区 (半導体材料工場) へ"],
+        ["5","Phase2 リーダー",  "電計チームリーダー (部下3名)"],
+        ["6","2025.4 管理職",    "管理職昇進 / 同年 第一種衛生管理者 取得"]
+      ]
+    },
+    {
+      "id": "management-growth",
+      "label": "マネジメント力の獲得",
+      "color": "#f5a623",
+      "highlight": ["p1-role","p2-role","p2-mgmt","tl-2025","q-eisei"],
+      "steps": [
+        ["1","Phase1 チーム統括",   "6名チーム (投資3+保全3) を非管理職で統括・現場指揮"],
+        ["2","他部署調整",         "トラブル時の現場指揮・他部署との利害調整"],
+        ["3","Phase2 リーダー",    "電計4名チームのリーダー (部下3名)"],
+        ["4","業務分担・進捗管理", "ルール整備・若手育成・他工場連携を主導"],
+        ["5","2025.4 管理職昇進",  "正式に管理職へ・第一種衛生管理者 同年取得"]
+      ]
+    },
+    {
+      "id": "dx-improvement",
+      "label": "DX / 業務改善 実績 (2024-25)",
+      "color": "#5ec4ff",
+      "highlight": ["p2-dx","p2-mgmt","pj-rule","pj-plantview","pj-safety","tl-2024"],
+      "steps": [
+        ["1","ルール整備",          "電気機器選定基準書/工事基準書/見積FMT (品質均一化・修繕費削減)"],
+        ["2","プラントビュー導入",  "全社DX参画・予算化→導入 (Street View的・安全教育/資料作成削減)"],
+        ["3","ベンダー安全教育オンデマンド化","PJリーダー・他工場連携で運用ルール整備"],
+        ["4","成果",                "安全教育PJで 年間300万円 の工数削減を達成"],
+        ["5","横展開",              "ルール/フォーマット類は他工場へも展開可能"]
+      ]
+    },
+    {
+      "id": "design-axis",
+      "label": "設計業務の経験軸",
+      "color": "#b388ff",
+      "highlight": ["wa-design","p1-job3","p2-ops","case-dcs","case-instr","case-lv","case-hv","sk-design","tl-cad","tl-plantia"],
+      "steps": [
+        ["1","要件定義",   "ユーザー部門/生産部門との仕様すり合わせ"],
+        ["2","仕様検討",   "電気/計装部品選定・図面作成・P&ID/EFD読解"],
+        ["3","見積取得",   "ベンダー見積依頼 (見積FMTで標準化済)"],
+        ["4","発注",       "予算化→PO→社内承認"],
+        ["5","実績案件",   "DCS更新/サーボ/PLC/レベル流量圧力/低圧盤/高圧配電盤・進相コン・トランス"]
+      ]
+    },
+    {
+      "id": "construction-axis",
+      "label": "施工管理の経験軸",
+      "color": "#ff8a65",
+      "highlight": ["wa-const","p1-job3","p2-ops","case-dcs","case-hv"],
+      "steps": [
+        ["1","工事計画",   "工程表・停止スケジュール・他工事との干渉調整"],
+        ["2","施工監督",   "ベンダー安全教育 (オンデマンド化により効率化)"],
+        ["3","試運転",     "シーケンス確認・アラーム検証・性能確認"],
+        ["4","検収",       "ドキュメント整備・引渡し・運用部門への教育"],
+        ["5","アフター",   "不具合フォロー・改良要求受付"]
+      ]
+    },
+    {
+      "id": "maintenance-axis",
+      "label": "保全業務の経験軸",
+      "color": "#7ed957",
+      "highlight": ["wa-maint","p1-job2","p2-ops","pj-trouble","sk-maint","sk-control","tl-gx","tl-meas"],
+      "steps": [
+        ["1","トラブル対応", "TP/PLC/DCS で発報内容から原因切分け (休日夜間突発含む)"],
+        ["2","原因解析",     "シーケンス・配線・設定値・ハード故障の特定"],
+        ["3","水平展開",     "同型設備・他ラインへの再発防止策展開"],
+        ["4","改良",         "TP画面に起動/運転/警報を個別明示するUX再設計"],
+        ["5","2020 成果",    "アラーム対応 週1回 → 2ヶ月に1回 まで削減"]
+      ]
+    },
+    {
+      "id": "qualif-progress",
+      "label": "資格進行 (2013-2025)",
+      "color": "#7ed957",
+      "highlight": ["q-soroban","q-denko2","q-kihohozen","q-enekan","q-eisei","q-edu","tl-2018","tl-2022","tl-2025"],
+      "steps": [
+        ["1","2002 珠算検定2段",          "計算基礎"],
+        ["2","2013 第二種電気工事士",      "入社前取得・現場の電気工事素養"],
+        ["3","2018 1級機械保全技能士(電気)","Phase1で取得・保全力の公的裏付け"],
+        ["4","2022 エネルギー管理士(電気)", "Phase1終盤・エネルギー視点を獲得"],
+        ["5","2025 第一種衛生管理者",      "管理職昇進と同年・人マネジメント基礎"],
+        ["6","受講済 特別教育",            "フルハーネス/高圧特高/酸欠硫化水素"]
+      ]
+    },
+    {
+      "id": "tool-stack",
+      "label": "ツールスタック",
+      "color": "#ff6b9b",
+      "highlight": ["tl-gx","tl-meas","tl-vigen","tl-m365","tl-cad","tl-plantia","sk-control","sk-design","sk-maint","p2-mgmt"],
+      "steps": [
+        ["1","制御",      "GX Works 3/2 (三菱PLC) / 横河DCS / 三菱・シュナイダーTP"],
+        ["2","計測",      "テスター・絶縁抵抗計・クランプメーター・電圧電流発生器"],
+        ["3","設計",      "AutoCAD (図面修正) / Plantia (プラント設計・図面管理)"],
+        ["4","事務",      "Microsoft 365 (Excel/Word/Teams)"],
+        ["5","未経験領域", "新規開発・プログラミング (経歴書に明記・要習得)"]
+      ]
+    }
+  ]
+}
