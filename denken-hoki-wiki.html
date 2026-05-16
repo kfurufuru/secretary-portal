@@ -4782,8 +4782,8 @@ window.renderPage = function(page, navigate) {
     case 'kakomon-saiene':         return React.createElement(StubPage, { ...props, pageId: 'kakomon-saiene' });
     case 'kakomon-random':         return React.createElement(RandomModePage, props);
     case 'chokuzen-suuchi':        return React.createElement(ChokuzenSuuchiPage, props);
-    case 'chokuzen-formula':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-formula' });
-    case 'chokuzen-hikkake':       return React.createElement(StubPage, { ...props, pageId: 'chokuzen-hikkake' });
+    case 'chokuzen-formula':       return React.createElement(ChokuzenFormulaPage, props);
+    case 'chokuzen-hikkake':       return React.createElement(ChokuzenHikkakePage, props);
     case 'chokuzen-machigai':      return React.createElement(MachigaiNotePage, { ...props, pageId: 'chokuzen-machigai' });
     case 'chokuzen-yougo':         return React.createElement(window.ChokuzenYougoPage, props);
     default:                       return React.createElement(StubPage, { ...props, pageId: page });
@@ -8249,6 +8249,367 @@ function ChokuzenSuuchiPage({ onNav, data }) {
       <PageNav
         prevId="top"               prevTitle="トップ"
         nextId="chokuzen-formula"  nextTitle="公式だけ確認"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4.91 ChokuzenFormulaPage（直前チェック・公式だけ確認）
+// メタページ扱い：B 問題で出題される計算公式 10 本を一気通読
+// SOT は各 sec02 計算ページ・コード上にコメント明記
+// ─────────────────────────────────────────────
+function ChokuzenFormulaPage({ onNav, data }) {
+  const headerBox = {
+    margin: '12px 0 18px',
+    padding: '14px 18px',
+    background: 'linear-gradient(135deg, #e8f4ff 0%, #d4e8fb 100%)',
+    border: '1px solid #4a7fb8',
+    borderLeft: '4px solid #2c5d8c',
+    borderRadius: 8,
+    fontSize: 14,
+    lineHeight: 1.75,
+  };
+  const sec02Link = (pageId, label) => (
+    <div style={{ margin: '4px 0 18px', fontSize: 13, color: 'var(--ink-3)' }}>
+      📚 詳しく → <a href="#" onClick={(e) => { e.preventDefault(); onNav(pageId); }} style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'pointer' }}>{label}</a>
+    </div>
+  );
+  const refLink = (href, label) => (
+    <div style={{ margin: '4px 0 18px', fontSize: 13, color: 'var(--ink-3)' }}>
+      📚 詳しく → <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{label}</a>
+    </div>
+  );
+
+  return (
+    <div>
+      <h1 style={{ margin: '0 0 8px', fontSize: 24, fontWeight: 800 }}>⚡ 公式だけ確認</h1>
+      <div style={headerBox}>
+        <div style={{ fontWeight: 700, color: '#1e3f6a', marginBottom: 6 }}>⚡ 直前確認モード（B 問題公式・3 分スクロール）</div>
+        <div>
+          B 問題で出る計算公式の<strong>分子／分母／単位／適用条件</strong>だけを一気に流し読み。
+          途中で詰まったら sec02 の各計算ページに飛ぶ。<br />
+          数値カンペは <a href="#" onClick={(e) => { e.preventDefault(); onNav('chokuzen-suuchi'); }} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>数値だけ確認</a>、混同ペアは <a href="#" onClick={(e) => { e.preventDefault(); onNav('chokuzen-hikkake'); }} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>ひっかけだけ確認</a> へ。
+        </div>
+      </div>
+
+      <MetaStrip
+        ch="直前"
+        category="08 直前チェック"
+        importance="S"
+        freq="毎年（B 問題）"
+        examType="B 問題対策"
+        targets="R07・R06・R05"
+        tags={["直前","公式暗記","B 問題","計算","メタページ"]}
+        lastChecked="2026-05-16"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><a href="#f1" style={{ color: 'var(--accent)' }}>1.</a> 需要率・負荷率・不等率 ／ <a href="#f2" style={{ color: 'var(--accent)' }}>2.</a> 合わせた需要率・総合負荷率</li>
+          <li><a href="#f3" style={{ color: 'var(--accent)' }}>3.</a> 変圧器容量 ／ <a href="#f4" style={{ color: 'var(--accent)' }}>4.</a> 三相電力 ／ <a href="#f5" style={{ color: 'var(--accent)' }}>5.</a> 電圧降下</li>
+          <li><a href="#f6" style={{ color: 'var(--accent)' }}>6.</a> 電力損失 ／ <a href="#f7" style={{ color: 'var(--accent)' }}>7.</a> 力率改善コンデンサ容量</li>
+          <li><a href="#f8" style={{ color: 'var(--accent)' }}>8.</a> パーセントインピーダンス ／ <a href="#f9" style={{ color: 'var(--accent)' }}>9.</a> 変圧器効率 ／ <a href="#f10" style={{ color: 'var(--accent)' }}>10.</a> B 種接地抵抗</li>
+        </ul>
+      </ConclusionBox>
+
+      {/* 1. 需要率・負荷率・不等率 */}
+      <h2 id="f1">1. 需要率・負荷率・不等率</h2>
+      {/* SOT: hoki-pages.jsx JuyoritsuGainenPage L5521-5529 */}
+      <MemTable
+        headers={["公式", "分子 / 分母", "単位"]}
+        rows={[
+          ["需要率", "最大需要電力 / 設備容量",                "無次元（≤ 1）"],
+          ["負荷率", "平均需要電力 / 最大需要電力",            "無次元（≤ 1）"],
+          ["不等率", "各最大需要電力の合計 / 合成最大需要電力", "無次元（≥ 1）"],
+        ]}
+        note="3 公式は分母で覚える：設備容量 → 最大需要 → 合成最大需要 と絞り込み"
+      />
+      {sec02Link("juyoritsu-gainen", "需要率・負荷率・不等率（概念）")}
+
+      {/* 2. 合わせた需要率・総合負荷率 */}
+      <h2 id="f2">2. 合わせた需要率・総合負荷率（2 工場合算）</h2>
+      {/* SOT: hoki-pages.jsx JuyoritsuKeisanPage L6064-6068 */}
+      <MemTable
+        headers={["公式", "分子 / 分母", "ひっかけ"]}
+        rows={[
+          ["合わせた需要率",   "合成最大需要電力 / 設備容量の合計",            "分子は『合成最大需要電力』。『各最大の合計』ではない"],
+          ["総合負荷率",       "(各電力量[kWh]の合計 / 24h) / 合成最大需要電力", "分母は『合成最大需要電力』。『各最大の合計』ではない"],
+        ]}
+        note="2 工場以上の合算は『合成最大需要電力』が鍵。R05 上問 11 型・毎年候補"
+      />
+      {sec02Link("juyoritsu-keisan", "需要率・負荷率・不等率（計算）")}
+
+      {/* 3. 変圧器容量 */}
+      <h2 id="f3">3. 変圧器容量算定</h2>
+      {/* SOT: hoki-pages.jsx HensyatsukiYoryoPage L6211 / JuyoritsuKeisanPage L6054 */}
+      <MemTable
+        headers={["項目", "式", "注意"]}
+        rows={[
+          ["変圧器容量",       "kVA = 設備容量[kW] × 需要率 ÷ (不等率 × 力率)", "単位は kVA（皮相電力）"],
+          ["kW → kVA 変換",   "kVA = kW ÷ 力率",                              "力率は分母（÷力率）"],
+          ["標準サイズ選定",   "計算結果より大きい次のサイズ",                  "50・75・100・150・200・300・500・750・1000 kVA"],
+        ]}
+        note="例：500 × 0.8 ÷ (1.25 × 0.9) ≈ 356 kVA → 400 kVA 選定"
+      />
+      {sec02Link("hensyatsuki-yoryo", "変圧器容量算定")}
+
+      {/* 4. 三相電力 */}
+      <h2 id="f4">4. 三相電力（皮相・有効・無効）</h2>
+      {/* SOT: 電験理論定石・denken-wiki themes/sansoukairo */}
+      <MemTable
+        headers={["電力", "公式", "単位"]}
+        rows={[
+          ["皮相電力 S", "S = √3 V I",          "VA"],
+          ["有効電力 P", "P = √3 V I cosθ",     "W"],
+          ["無効電力 Q", "Q = √3 V I sinθ",     "var"],
+          ["関係式",     "S² = P² + Q²",         "—"],
+          ["力率",       "cosθ = P / S",         "無次元"],
+        ]}
+        note="三相 3 線式の線間電圧 V・線電流 I 基準。単相は √3 を 1 に置き換える"
+      />
+      {refLink("https://kfurufuru.github.io/denken-wiki/themes/sansoukairo/", "denken-wiki「三相回路」")}
+
+      {/* 5. 電圧降下 */}
+      <h2 id="f5">5. 配電線の電圧降下</h2>
+      {/* SOT: denken-wiki themes/denatsu-kouka・電技解釈第 154 条 */}
+      <MemTable
+        headers={["方式", "電圧降下 v[V]", "備考"]}
+        rows={[
+          ["単相 2 線式",     "v = 2 I (R cosθ + X sinθ)",   "往復 2 本分"],
+          ["単相 3 線式",     "v = I (R cosθ + X sinθ)",     "中性線あり（片側）"],
+          ["三相 3 線式",     "v = √3 I (R cosθ + X sinθ)",  "線間電圧降下"],
+        ]}
+        note="R: 抵抗、X: リアクタンス、I: 線電流、cosθ: 力率。電圧降下率[%] = v / 受電端電圧 × 100"
+      />
+      {refLink("https://kfurufuru.github.io/denken-wiki/themes/denatsu-kouka/", "denken-wiki「電圧降下」")}
+
+      {/* 6. 電力損失 */}
+      <h2 id="f6">6. 線路の電力損失</h2>
+      {/* SOT: 電験理論定石・denken-wiki themes/denryoku-sonshitsu */}
+      <MemTable
+        headers={["方式", "電力損失 P_l[W]", "備考"]}
+        rows={[
+          ["単相 2 線式", "P_l = 2 I² R", "往復 2 本"],
+          ["三相 3 線式", "P_l = 3 I² R", "3 線分"],
+          ["関係",       "I = P / (√3 V cosθ)（三相）", "I を P で表すと負荷依存"],
+        ]}
+        note="同一電力なら高電圧ほど電流 I が小さくなり、I² R 損失が激減（送電電圧を上げる理由）"
+      />
+      {refLink("https://kfurufuru.github.io/denken-wiki/themes/denryoku-sonshitsu/", "denken-wiki「電力損失」")}
+
+      {/* 7. 力率改善コンデンサ */}
+      <h2 id="f7">7. 力率改善コンデンサ容量</h2>
+      {/* SOT: denken-wiki themes/ryokuritsu-kaizen */}
+      <MemTable
+        headers={["項目", "式", "注意"]}
+        rows={[
+          ["改善コンデンサ Q_c", "Q_c = P (tan θ_1 − tan θ_2)",      "P: 有効電力、θ_1: 改善前、θ_2: 改善後"],
+          ["tan θ の求め方",     "tan θ = sin θ / cos θ = √(1 − cos²θ) / cos θ", "力率 cos θ から導出"],
+          ["単位",               "Q_c[kvar] = P[kW] × (tan θ_1 − tan θ_2)", "P は kW、Q は kvar で統一"],
+        ]}
+        note="力率を 0.8 から 0.95 に改善するとき：tan を計算して引き算"
+      />
+      {refLink("https://kfurufuru.github.io/denken-wiki/themes/ryokuritsu-kaizen/", "denken-wiki「力率改善」")}
+
+      {/* 8. パーセントインピーダンス */}
+      <h2 id="f8">8. パーセントインピーダンスと短絡電流</h2>
+      {/* SOT: denken-wiki themes/percent-impedance */}
+      <MemTable
+        headers={["項目", "式", "注意"]}
+        rows={[
+          ["%Z の定義",         "%Z = (Z × I_n / E) × 100 ＝ (Z × P_n / V²) × 100", "I_n: 定格電流、E: 相電圧"],
+          ["短絡電流 I_s",      "I_s = I_n × 100 / %Z",                            "%Z が小さいほど短絡電流は大きい"],
+          ["短絡容量 P_s",      "P_s = P_n × 100 / %Z",                            "P_n: 基準容量"],
+        ]}
+        note="%Z = 5% なら短絡電流は定格の 20 倍。遮断器の遮断容量設計に必須"
+      />
+      {refLink("https://kfurufuru.github.io/denken-wiki/themes/percent-impedance/", "denken-wiki「%Z 法」")}
+
+      {/* 9. 変圧器効率 */}
+      <h2 id="f9">9. 変圧器の効率</h2>
+      {/* SOT: denken-wiki themes/henshatsuki-koritu */}
+      <MemTable
+        headers={["項目", "式", "条件"]}
+        rows={[
+          ["効率 η",                "η = P_out / (P_out + P_i + P_c)",          "P_i: 鉄損（一定）、P_c: 銅損（負荷の 2 乗）"],
+          ["最大効率条件",          "P_i = P_c（鉄損 = 銅損）",                 "全負荷の (√(P_i / P_c_full)) 倍負荷で達成"],
+          ["全日効率 η_d",          "出力電力量 / (出力電力量 + 24h × P_i + Σ P_c × t)", "鉄損は 24 時間ぶん、銅損は運転時間ぶん"],
+        ]}
+        note="鉄損は定常損（一定）、銅損は負荷率の 2 乗で変動。最大効率は鉄損 = 銅損のとき"
+      />
+      {refLink("https://kfurufuru.github.io/denken-wiki/themes/henshatsuki-koritu/", "denken-wiki「変圧器の効率」")}
+
+      {/* 10. B 種接地抵抗 */}
+      <h2 id="f10">10. B 種接地抵抗</h2>
+      {/* SOT: 電技解釈第 17 条第 2 項・hoki-pages.jsx SetsuchiIchiranPage L3346 */}
+      <MemTable
+        headers={["条件（遮断時間）", "B 種接地抵抗 [Ω]"]}
+        rows={[
+          ["遮断装置なし",                "R_B = 150 / I_g"],
+          ["1 秒超〜2 秒以内に自動遮断",  "R_B = 300 / I_g"],
+          ["1 秒以内に自動遮断",          "R_B = 600 / I_g"],
+        ]}
+        note="I_g: 1 線地絡電流 [A]。分子は遮断時間で 150 → 300 → 600 と緩和される"
+      />
+      {sec02Link("setsuchi-ichiran", "接地工事一覧（A/B/C/D 種）")}
+
+      {/* 30 秒スクロール復習 */}
+      <h2 id="quick">⚡ 30 秒スクロール復習</h2>
+      <QuickReview items={[
+        { q: "需要率の分母は？",                          a: "設備容量" },
+        { q: "不等率の分母は？",                          a: "合成最大需要電力" },
+        { q: "合わせた需要率の分子は？",                  a: "合成最大需要電力（各最大の合計ではない）" },
+        { q: "変圧器容量の公式は？",                      a: "kVA = 設備容量 × 需要率 ÷ (不等率 × 力率)" },
+        { q: "三相有効電力 P は？",                       a: "P = √3 V I cosθ" },
+        { q: "三相 3 線式の電圧降下は？",                 a: "v = √3 I (R cosθ + X sinθ)" },
+        { q: "三相線路の電力損失は？",                    a: "P_l = 3 I² R" },
+        { q: "力率改善コンデンサ Q_c は？",               a: "Q_c = P (tan θ_1 − tan θ_2)" },
+        { q: "%Z = 5% のとき短絡電流は定格の何倍？",       a: "20 倍（I_s = I_n × 100/%Z）" },
+        { q: "変圧器の最大効率の条件は？",                a: "鉄損 = 銅損" },
+        { q: "B 種接地抵抗（遮断なし）の式は？",          a: "R_B = 150 / I_g" },
+        { q: "1 秒超〜2 秒以内に自動遮断のときの分子は？", a: "300（R_B = 300 / I_g）" },
+      ]} />
+
+      <UpdateLog entries={[
+        { date: "2026-05-16", content: "初版作成（B 問題公式 10 本）", reason: "Stub→直前確認モード公式カンペとして実装。chokuzen-suuchi（数値）・chokuzen-hikkake（混同）と 3 点セットで運用" },
+      ]} />
+      <PageNav
+        prevId="chokuzen-suuchi"   prevTitle="数値だけ確認"
+        nextId="chokuzen-hikkake"  nextTitle="ひっかけだけ確認"
+        onNav={onNav}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 4.92 ChokuzenHikkakePage（直前チェック・ひっかけだけ確認）
+// メタページ扱い：条文・手続き・用語のひっかけペア 25 組を一気通読
+// chokuzen-suuchi Section 0（数値ペア 10 組）と住み分け：本ページは条文・手続き・用語中心
+// ─────────────────────────────────────────────
+function ChokuzenHikkakePage({ onNav, data }) {
+  const headerBox = {
+    margin: '12px 0 18px',
+    padding: '14px 18px',
+    background: 'linear-gradient(135deg, #ffe8e8 0%, #ffd4d4 100%)',
+    border: '1px solid #c04545',
+    borderLeft: '4px solid #8c2c2c',
+    borderRadius: 8,
+    fontSize: 14,
+    lineHeight: 1.75,
+  };
+  const sec02Link = (pageId, label) => (
+    <div style={{ margin: '4px 0 18px', fontSize: 13, color: 'var(--ink-3)' }}>
+      📚 詳しく → <a href="#" onClick={(e) => { e.preventDefault(); onNav(pageId); }} style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'pointer' }}>{label}</a>
+    </div>
+  );
+
+  return (
+    <div>
+      <h1 style={{ margin: '0 0 8px', fontSize: 24, fontWeight: 800 }}>⚡ ひっかけだけ確認</h1>
+      <div style={headerBox}>
+        <div style={{ fontWeight: 700, color: '#6a1e1e', marginBottom: 6 }}>⚡ 直前確認モード（条文・手続き・用語ひっかけ 25 組）</div>
+        <div>
+          本試験で<strong>毎年仕掛けられる誤選択肢パターン</strong>を分野別に集約。
+          ⚠ 数値ペアは <a href="#" onClick={(e) => { e.preventDefault(); onNav('chokuzen-suuchi'); }} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>数値だけ確認 Section 0</a> を参照（住み分け）。<br />
+          本ページは<strong>条文番号・手続き種別・用語ペア・電気工作物区分</strong>のひっかけが中心。
+        </div>
+      </div>
+
+      <MetaStrip
+        ch="直前"
+        category="08 直前チェック"
+        importance="S"
+        freq="毎年"
+        examType="A 問題対策"
+        targets="R07・R06・R05"
+        tags={["直前","ひっかけ","条文","手続き","メタページ"]}
+        lastChecked="2026-05-16"
+      />
+
+      <ConclusionBox>
+        <ul>
+          <li><a href="#tA" style={{ color: 'var(--accent)' }}>A.</a> 手続き種別（届出 / 許可 / 承認）</li>
+          <li><a href="#tB" style={{ color: 'var(--accent)' }}>B.</a> 条文番号の入れ替え</li>
+          <li><a href="#tC" style={{ color: 'var(--accent)' }}>C.</a> 数値境界（未満 / 以下 / 超 / 以上）</li>
+          <li><a href="#tD" style={{ color: 'var(--accent)' }}>D.</a> 電気工作物 4 区分の用語</li>
+          <li><a href="#tE" style={{ color: 'var(--accent)' }}>E.</a> 接地工事のひっかけ</li>
+          <li><a href="#tF" style={{ color: 'var(--accent)' }}>F.</a> 報告・届出期限の混同</li>
+        </ul>
+      </ConclusionBox>
+
+      {/* A. 手続き種別 */}
+      <h2 id="tA">A. 手続き種別（届出 / 許可 / 承認）</h2>
+      {/* SOT: hoki-pages.jsx ShuninGijutsusyaPage L3971-3981（手続種別整理）／ KosakubutsuBunruiPage 義務マトリクス */}
+      <TrapTable traps={[
+        { wrong: "主任技術者の選任は『許可』を受ける",                  correct: "原則『届出』（法 43 条 3 項）。免状なしの選任のみ『許可』（同条 2 項）" },
+        { wrong: "主任技術者の兼任は『届出』でよい",                    correct: "兼任は『承認』が必要（施行規則第 52 条）。届出ではない" },
+        { wrong: "外部委託承認は『外部から主任技術者を選任する制度』",  correct: "外部委託承認は『主任技術者を選任しないことができる制度』" },
+        { wrong: "選任委託 = 外部委託承認",                              correct: "選任委託は『人を置く』、外部委託承認は『人を置かず業務を委託』。別物" },
+        { wrong: "保安規程の変更は許可申請",                            correct: "保安規程の変更は『届出』（事業法 42 条第 2 項）。許可ではない" },
+      ]} />
+      {sec02Link("shunin-gijutsusya", "主任技術者の詳細")}
+
+      {/* B. 条文番号 */}
+      <h2 id="tB">B. 条文番号の入れ替え（電気事業法）</h2>
+      {/* SOT: hoki-pages.jsx ShuninGijutsusyaPage L3941-3950（43 条整理）／ KosakubutsuBunruiPage */}
+      <TrapTable traps={[
+        { wrong: "保安規程は法 43 条",                                   correct: "保安規程は法 42 条。法 43 条は主任技術者" },
+        { wrong: "工事計画の届出は法 42 条",                             correct: "工事計画は法 48 条。法 42 条は保安規程" },
+        { wrong: "法 43 条 2 項は『選任の届出』",                        correct: "2 項は『許可選任』（免状なし）。3 項が『選任・解任の届出』" },
+        { wrong: "法 57 条は『主任技術者の誠実義務』",                   correct: "法 57 条は『電気事業者の定期調査』。43 条 4 項が主任技術者の誠実義務" },
+        { wrong: "電気工作物の区分は法 43 条",                           correct: "電気工作物の区分は法 38 条。法 43 条は主任技術者" },
+      ]} />
+      {sec02Link("hoan-kitei", "保安規程・工事計画の条文")}
+
+      {/* C. 数値境界 */}
+      <h2 id="tC">C. 数値境界（未満 / 以下 / 超 / 以上）</h2>
+      <TrapTable traps={[
+        { wrong: "第三種は『5 万 V 以下』を監督できる",                  correct: "5 万 V『未満』（『以下』ではない）＋出力 5,000 kW 以上の発電所を除く" },
+        { wrong: "第二種は『17 万 V 以下』",                             correct: "17 万 V『未満』" },
+        { wrong: "高圧の上限は『7,000 V 未満』",                         correct: "高圧の上限は『7,000 V 以下』（7,000 V を含む）" },
+        { wrong: "太陽光 50 kW は『一般用』（50 kW 未満なので）",       correct: "50 kW は『未満ではない』ので自家用（旧法基準も 50 kW 未満で一般用）" },
+      ]} />
+
+      {/* D. 電気工作物区分 */}
+      <h2 id="tD">D. 電気工作物 4 区分（2022 年改正後）</h2>
+      {/* SOT: hoki-pages.jsx KosakubutsuBunruiPage L3804-3814 / L3818-3828 */}
+      <TrapTable traps={[
+        { wrong: "太陽光 30 kW は一般用",                                correct: "太陽光 30 kW は『小規模事業用』（10〜50 kW 未満は 2022 年改正で新設）" },
+        { wrong: "事業用電気工作物は必ず主任技術者の選任が必要",          correct: "小規模事業用（事業用の一部）は保安規程・主任技術者ともに不要" },
+        { wrong: "小規模事業用は使用前自己確認が不要",                   correct: "小規模事業用は『基礎情報届出』＋『使用前自己確認』が必要（新設義務）" },
+        { wrong: "風力 30 kW は一般用",                                  correct: "風力は 20 kW 未満が小規模事業用。30 kW は自家用" },
+      ]} />
+      {sec02Link("kosakubutsu-bunrui", "電気工作物の区分（詳細）")}
+
+      {/* E. 接地工事 */}
+      <h2 id="tE">E. 接地工事のひっかけ</h2>
+      {/* SOT: hoki-pages.jsx SetsuchiIchiranPage L3350-3354 */}
+      <TrapTable traps={[
+        { wrong: "C 種と D 種は同じ接地抵抗値",                          correct: "C 種 10Ω 以下／D 種 100Ω 以下（10 倍違う）" },
+        { wrong: "B 種接地の分子は常に 150",                              correct: "原則 150/Ig、1 秒超〜2 秒以内自動遮断で 300/Ig、1 秒以内で 600/Ig" },
+        { wrong: "A 種と C 種は抵抗値が同じなので電線太さも同じ",         correct: "A 種は 2.6 mm 以上、C 種は 1.6 mm 以上（A 種の方が太い）" },
+      ]} />
+      {sec02Link("setsuchi-ichiran", "接地工事一覧")}
+
+      {/* F. 報告・届出期限 */}
+      <h2 id="tF">F. 報告・届出期限の混同</h2>
+      <TrapTable traps={[
+        { wrong: "保安規程の届出期限は使用開始 30 日前",                  correct: "保安規程は『使用開始前』に届出（法 42 条）。30 日前は工事計画" },
+        { wrong: "主任技術者の選任届出期限は 30 日以内",                   correct: "『遅滞なく』届出（法 43 条 3 項）。具体的な日数規定はない" },
+        { wrong: "事故報告は事故発生から 24 時間以内の 1 段階のみ",        correct: "速報（24 時間以内）＋詳報（30 日以内）の 2 段階（電気関係報告規則 3 条）" },
+        { wrong: "工事計画の届出は『工事終了後 30 日以内』",               correct: "『工事開始 30 日前まで』（法 48 条）。事前届出が原則" },
+      ]} />
+      {sec02Link("hokoku-todoke-kigen", "報告・届出期限の一覧")}
+
+      <UpdateLog entries={[
+        { date: "2026-05-16", content: "初版作成（条文・手続き・用語のひっかけ 25 組）", reason: "Stub→直前確認モード。chokuzen-suuchi Section 0（数値ペア）と住み分け" },
+      ]} />
+      <PageNav
+        prevId="chokuzen-formula"  prevTitle="公式だけ確認"
+        nextId="chokuzen-machigai" nextTitle="間違いノート"
         onNav={onNav}
       />
     </div>
