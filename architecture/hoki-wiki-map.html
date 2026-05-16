@@ -9,6 +9,10 @@
   --bg:#0a0e1a; --bg2:#11172a; --bg3:#161d33; --line:#222a44;
   --ink:#e8ecf5; --ink2:#aab2c5; --ink3:#6d7693;
   --accent:#ffd166; --dim:#3a4260;
+  --danger:#ff5d6c; --danger-bg:#3a1620;
+  --warn:#ffb648;   --warn-bg:#3a2a14;
+  --info:#5ec4ff;   --info-bg:#0f2238;
+  --ok:#7ed957;
   --c-source:#5ec4ff; --c-data:#7ed957; --c-build:#f5a623;
   --c-artifact:#ff8a65; --c-page:#b388ff; --c-component:#9ea7b3;
   --c-storage:#ffd54f; --c-deploy:#ff6b9b; --c-external:#c0c5cf; --c-actor:#ffffff;
@@ -17,24 +21,88 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
   font-family:'SF Mono','Consolas','Menlo','Source Code Pro',ui-monospace,monospace;
   font-size:13px;line-height:1.45}
-.app{display:grid;grid-template-columns:1fr 320px;min-height:100vh}
-header{position:relative;grid-column:1 / -1;padding:18px 24px;border-bottom:1px solid var(--line);background:#0c1224}
+
+/* ========== Header ========== */
+header{position:relative;padding:18px 24px;border-bottom:1px solid var(--line);background:#0c1224}
 .portal-back{position:absolute;top:12px;right:16px;
-  font-family:'SF Mono','Consolas','Menlo',monospace;font-size:11px;color:var(--ink3);
+  font-family:inherit;font-size:11px;color:var(--ink3);
   text-decoration:none;padding:3px 8px;border:1px solid var(--line);border-radius:4px;
   background:rgba(17,23,42,0.6);letter-spacing:0.02em;
-  transition:color 0.15s,border-color 0.15s,background 0.15s}
+  transition:color .15s,border-color .15s,background .15s}
 .portal-back:hover{color:var(--ink);border-color:var(--ink3);background:var(--bg2)}
 header h1{margin:0 0 6px;font-size:18px;letter-spacing:0.02em;color:var(--ink)}
-header .sub{color:var(--ink3);font-size:12px}
+header .sub{color:var(--ink3);font-size:12px;max-width:1100px}
 header .meta{color:var(--ink3);font-size:11px;margin-top:6px}
 header .meta a{color:var(--c-source);text-decoration:none}
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .legend .chip{display:flex;align-items:center;gap:6px;background:var(--bg2);
   border:1px solid var(--line);padding:3px 8px;border-radius:10px;font-size:11px;color:var(--ink2)}
 .legend .chip .sw{width:10px;height:10px;border-radius:2px}
+
+/* ========== Alert strip (上部警告カード) ========== */
+.alerts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 24px 0}
+.alert{border-radius:8px;padding:10px 12px;border-left:4px solid;background:var(--bg2);
+  display:flex;flex-direction:column;gap:4px}
+.alert.danger{border-color:var(--danger);background:linear-gradient(90deg,var(--danger-bg) 0%,var(--bg2) 60%)}
+.alert.warn  {border-color:var(--warn)  ;background:linear-gradient(90deg,var(--warn-bg)   0%,var(--bg2) 60%)}
+.alert.info  {border-color:var(--info)  ;background:linear-gradient(90deg,var(--info-bg)   0%,var(--bg2) 60%)}
+.alert .h{font-size:12px;font-weight:700;letter-spacing:.02em;display:flex;align-items:center;gap:6px}
+.alert.danger .h{color:#ffb0ba}
+.alert.warn  .h{color:#ffd089}
+.alert.info  .h{color:#9bd6ff}
+.alert .b{font-size:11.5px;color:var(--ink2);line-height:1.5}
+.alert code{background:#000;color:#ffd089;padding:1px 5px;border-radius:3px;font-size:11px}
+
+/* ========== Quick Reference (ページ追加手順) ========== */
+.qr-wrap{padding:10px 24px 4px}
+.qr-title{font-size:11px;letter-spacing:.1em;color:var(--ink3);text-transform:uppercase;
+  margin:6px 0;display:flex;align-items:center;gap:8px}
+.qr-title .pill{background:var(--accent);color:#000;padding:1px 7px;border-radius:10px;
+  font-weight:700;font-size:10px;letter-spacing:.04em;text-transform:none}
+.qr{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.qr .step{background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+  padding:8px 10px;border-top:3px solid var(--c-source);position:relative}
+.qr .step .n{position:absolute;top:-9px;left:8px;background:var(--accent);color:#000;
+  width:18px;height:18px;border-radius:50%;font-weight:700;font-size:11px;
+  display:flex;align-items:center;justify-content:center}
+.qr .step .lbl{font-size:11.5px;font-weight:600;color:var(--ink);margin-top:4px;line-height:1.3}
+.qr .step .det{font-size:10.5px;color:var(--ink3);margin-top:4px;line-height:1.45}
+.qr .step code{background:#000;color:#ffd089;padding:1px 4px;border-radius:3px;font-size:10px}
+
+/* ========== App 3-column ========== */
+.app{display:grid;grid-template-columns:240px 1fr 320px;min-height:60vh;margin-top:8px}
+aside.flows-pane{border-right:1px solid var(--line);background:#0c1224;padding:12px 14px;
+  overflow-y:auto;max-height:calc(100vh - 60px)}
+aside.steps-pane{border-left:1px solid var(--line);background:#0c1224;padding:12px 16px;
+  overflow-y:auto;max-height:calc(100vh - 60px)}
+aside h2{font-size:11px;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase;
+  margin:10px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px;
+  display:flex;align-items:center;justify-content:space-between}
+.flow-list{list-style:none;margin:0;padding:0}
+.flow-list li{padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--ink2);
+  font-size:12px;margin-bottom:3px;border:1px solid transparent}
+.flow-list li:hover{background:var(--bg2);color:var(--ink)}
+.flow-list li.active{background:var(--bg3);border-color:var(--accent);color:var(--ink)}
+.flow-list li.active::before{content:"▸ ";color:var(--accent)}
+.flow-list li .meta{display:block;color:var(--ink3);font-size:10px;margin-top:2px}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{padding:8px 10px 8px 30px;border-radius:6px;background:var(--bg2);
+  margin-bottom:6px;font-size:11.5px;color:var(--ink2);position:relative;line-height:1.5}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:8px;top:8px;
+  width:16px;height:16px;background:var(--accent);color:#000;border-radius:50%;
+  font-size:10px;font-weight:700;text-align:center;line-height:16px}
+.steps li b{color:var(--c-source);font-weight:600}
+.placeholder{color:var(--ink3);font-size:11px;font-style:italic;padding:8px 0}
+.note{font-size:10.5px;color:var(--ink3);padding:8px 10px;background:var(--bg2);
+  border-radius:6px;margin-top:6px;line-height:1.5;border-left:2px solid var(--c-component)}
+.note.warn{border-left-color:var(--warn);color:var(--ink2)}
+button.clear{background:transparent;border:1px solid var(--line);color:var(--ink3);
+  font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer}
+button.clear:hover{color:var(--ink);border-color:var(--ink3)}
+
+/* ========== Canvas ========== */
 main.canvas-wrap{position:relative;overflow:auto;padding:12px;background:
-  radial-gradient(circle at 30% 20%, #121b34 0%, var(--bg) 70%);}
+  radial-gradient(circle at 30% 20%, #121b34 0%, var(--bg) 70%);max-height:calc(100vh - 60px)}
 .canvas{position:relative;width:1400px;min-height:1700px}
 svg.connectors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .lane{position:absolute;border:1px dashed var(--line);border-radius:14px;
@@ -49,9 +117,12 @@ svg.connectors{position:absolute;inset:0;width:100%;height:100%;pointer-events:n
 .box .cat{position:absolute;top:-7px;left:8px;font-size:9px;padding:1px 5px;
   border-radius:3px;background:var(--bg3);color:var(--ink2);letter-spacing:0.04em;
   text-transform:uppercase;border:1px solid var(--line)}
-.box.unverified::after{content:"?";position:absolute;top:-7px;right:6px;width:14px;height:14px;
-  background:var(--accent);color:#000;border-radius:50%;font-size:10px;text-align:center;
-  line-height:14px;font-weight:700}
+.box.unverified{border-color:var(--danger);box-shadow:0 0 0 1px rgba(255,93,108,.3) inset}
+.box.unverified::after{content:"⚠ 未確認";position:absolute;top:-7px;right:6px;
+  background:var(--danger);color:#fff;border-radius:10px;font-size:9px;text-align:center;
+  font-weight:700;padding:1px 6px;letter-spacing:.02em}
+.box.no-edit{border-top:3px solid var(--danger)}
+.box.no-edit .name::after{content:" 🚫";font-size:10px}
 .box.dim{opacity:.18}
 .box.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 18px rgba(255,209,102,.15);
   transform:translateY(-1px)}
@@ -60,67 +131,208 @@ svg .conn.dim{opacity:.12}
 svg .conn.hl{stroke:var(--accent);stroke-width:1.8;opacity:.95}
 svg .arrowhead{fill:#2c3656;transition:fill .2s}
 svg .arrowhead.hl{fill:var(--accent)}
-aside.sidebar{border-left:1px solid var(--line);background:#0c1224;padding:14px 16px;
-  overflow-y:auto;max-height:calc(100vh)}
-aside h2{font-size:11px;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase;
-  margin:14px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
-.flow-list{list-style:none;margin:0;padding:0}
-.flow-list li{padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--ink2);
-  font-size:12px;margin-bottom:3px;border:1px solid transparent}
-.flow-list li:hover{background:var(--bg2);color:var(--ink)}
-.flow-list li.active{background:var(--bg3);border-color:var(--accent);color:var(--ink)}
-.flow-list li.active::before{content:"▸ ";color:var(--accent)}
-.steps{list-style:none;margin:0;padding:0;counter-reset:s}
-.steps li{padding:8px 10px 8px 30px;border-radius:6px;background:var(--bg2);
-  margin-bottom:6px;font-size:11.5px;color:var(--ink2);position:relative;line-height:1.5}
-.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:8px;top:8px;
-  width:16px;height:16px;background:var(--accent);color:#000;border-radius:50%;
-  font-size:10px;font-weight:700;text-align:center;line-height:16px}
-.steps li b{color:var(--c-source);font-weight:600}
-.placeholder{color:var(--ink3);font-size:11px;font-style:italic;padding:8px 0}
-.note{font-size:10.5px;color:var(--ink3);padding:8px 10px;background:var(--bg2);
-  border-radius:6px;margin-top:6px;line-height:1.5}
-button.clear{background:transparent;border:1px solid var(--line);color:var(--ink3);
-  font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer;float:right}
-button.clear:hover{color:var(--ink);border-color:var(--ink3)}
+
+/* ========== Procedure Table (Claude Code向けテキスト手順) ========== */
+.proc{padding:14px 24px 24px;border-top:1px solid var(--line);margin-top:8px;background:#0a1020}
+.proc h3{font-size:12px;letter-spacing:.08em;color:var(--ink2);text-transform:uppercase;
+  margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.proc h3 .pill{background:var(--info);color:#000;padding:1px 7px;border-radius:10px;
+  font-weight:700;font-size:10px;letter-spacing:.04em;text-transform:none}
+.proc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proc-card{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.proc-card h4{margin:0 0 8px;font-size:12px;color:var(--ink)}
+.proc-card ol,.proc-card ul{margin:0 0 0 18px;padding:0;font-size:11.5px;color:var(--ink2);line-height:1.7}
+.proc-card code{background:#000;color:#ffd089;padding:1px 5px;border-radius:3px;font-size:10.5px}
+.proc-card .files{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.proc-card .files .f{font-size:10.5px;padding:2px 7px;border-radius:10px;
+  background:var(--bg3);border:1px solid var(--line);color:var(--c-source)}
+.proc-card .files .f.danger{color:var(--danger);border-color:var(--danger)}
+
+/* ========== Responsive ========== */
+@media (max-width:1100px){
+  .alerts{grid-template-columns:1fr}
+  .qr{grid-template-columns:repeat(2,1fr)}
+  .proc-grid{grid-template-columns:1fr}
+  .app{grid-template-columns:1fr;min-height:auto}
+  aside.flows-pane,aside.steps-pane{border:none;border-top:1px solid var(--line);max-height:none}
+  main.canvas-wrap{max-height:80vh}
+}
+@media (max-width:640px){
+  header{padding:12px 14px}
+  .alerts,.qr-wrap,.proc{padding-left:14px;padding-right:14px}
+  .qr{grid-template-columns:1fr}
+  .canvas{transform:scale(.55);transform-origin:top left;width:1400px}
+}
 </style>
 </head>
 <body>
-<div class="app">
 
 <header>
   <a class="portal-back" href="../index.html">← Portal</a>
   <h1>hoki-wiki Architecture Map</h1>
   <div class="sub">電験3種 法規Wiki — React 18 + Babel CDN による単一HTML SPA。Source(JSX/JS) → Build(Python) → Artifact(HTML) → Deploy(GH Pages) → Browser(localStorage / SPA hash routing)</div>
-  <div class="meta">repo: <a href="https://github.com/kfurufuru/secretary-portal" target="_blank">kfurufuru/secretary-portal</a> · branch chokuzen-suuchi-impl · live: <a href="https://kfurufuru.github.io/denken-hoki-wiki.html" target="_blank">denken-hoki-wiki.html</a> · generated 2026-05-16</div>
+  <div class="meta">repo: <a href="https://github.com/kfurufuru/secretary-portal" target="_blank">kfurufuru/secretary-portal</a> · branch <code style="background:#000;color:#ffd089;padding:1px 4px;border-radius:3px">chokuzen-suuchi-impl</code> · live: <a href="https://kfurufuru.github.io/denken-hoki-wiki.html" target="_blank">denken-hoki-wiki.html</a> · generated 2026-05-17</div>
   <div class="legend" id="legend"></div>
 </header>
 
-<main class="canvas-wrap">
-  <div class="canvas" id="canvas">
-    <svg class="connectors" id="svg" viewBox="0 0 1400 1700" preserveAspectRatio="none">
-      <defs>
-        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path class="arrowhead" d="M0,0 L10,5 L0,10 z"/>
-        </marker>
-        <marker id="ah-hl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path class="arrowhead hl" d="M0,0 L10,5 L0,10 z"/>
-        </marker>
-      </defs>
-    </svg>
+<!-- ========== Alert strip ========== -->
+<section class="alerts" aria-label="重要警告">
+  <div class="alert danger">
+    <div class="h">🚫 直接編集禁止</div>
+    <div class="b"><code>denken-hoki-wiki.html</code> は build artifact。修正は <code>hoki-components.jsx</code> / <code>hoki-pages.jsx</code> / <code>hoki-data.js</code> / <code>hoki-glossary.jsx</code> / <code>hoki-glossary-data.js</code> に対して行い、<code>python build-hoki-wiki.py</code> で再生成すること。</div>
   </div>
-</main>
+  <div class="alert warn">
+    <div class="h">⚠ kakomon.yml 参照パス要確認</div>
+    <div class="b"><code>build-hoki-wiki.py</code>/<code>hoki_check.py</code>/<code>scripts/gen_hoki_ranking.py</code> で参照パスが分かれている可能性あり。<br>編集前に <code>grep -r kakomon.yml</code> で現行配置を確認。</div>
+  </div>
+  <div class="alert info">
+    <div class="h">🌐 外部CDN依存</div>
+    <div class="b">React 18 + Babel standalone (unpkg) と KaTeX (jsdelivr) を <code>&lt;script&gt;</code> 読み込み。オフライン環境では動作しない。CDN障害時は <code>html-head-template.html</code> の URL 差替で対応。</div>
+  </div>
+</section>
 
-<aside class="sidebar">
-  <h2>Flows <button class="clear" id="clearbtn">clear</button></h2>
-  <ul class="flow-list" id="flowlist"></ul>
-  <h2>Steps</h2>
-  <ol class="steps" id="steps"><li class="placeholder" style="list-style:none;padding-left:10px;background:transparent">Select a flow on the left</li></ol>
-  <h2>Notes</h2>
-  <div id="notes"></div>
-</aside>
-
+<!-- ========== Quick Reference: ページ追加 ========== -->
+<div class="qr-wrap">
+  <div class="qr-title"><span class="pill">QUICK REF</span> ページ追加フロー（6ステップ・所要 ~5min＋ビルド）</div>
+  <div class="qr">
+    <div class="step"><div class="n">1</div>
+      <div class="lbl">hoki-data.js に追記</div>
+      <div class="det"><code>chapters[].pages[]</code> に <code>{id,num,title,freq,ch}</code></div></div>
+    <div class="step"><div class="n">2</div>
+      <div class="lbl">hoki-pages.jsx に Page</div>
+      <div class="det"><code>*Page</code> コンポーネント本体を追加</div></div>
+    <div class="step"><div class="n">3</div>
+      <div class="lbl">renderPage に case</div>
+      <div class="det"><code>case 'xxx': return &lt;XxxPage/&gt;</code></div></div>
+    <div class="step"><div class="n">4</div>
+      <div class="lbl">hoki_check.py</div>
+      <div class="det"><code>python hoki_check.py</code> で id/cta/tag/yr</div></div>
+    <div class="step"><div class="n">5</div>
+      <div class="lbl">build-hoki-wiki.py</div>
+      <div class="det"><code>python build-hoki-wiki.py</code> ＝検証→bundle→HTML</div></div>
+    <div class="step"><div class="n">6</div>
+      <div class="lbl">git push → 反映確認</div>
+      <div class="det">~50秒で GH Pages に反映、URL で DOM 確認</div></div>
+  </div>
 </div>
+
+<!-- ========== 3-col app ========== -->
+<div class="app">
+  <aside class="flows-pane">
+    <h2>Flows
+      <button class="clear" id="clearbtn">clear</button>
+    </h2>
+    <ul class="flow-list" id="flowlist"></ul>
+    <h2>Notes</h2>
+    <div id="notes"></div>
+  </aside>
+
+  <main class="canvas-wrap">
+    <div class="canvas" id="canvas">
+      <svg class="connectors" id="svg" viewBox="0 0 1400 1700" preserveAspectRatio="none">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="arrowhead" d="M0,0 L10,5 L0,10 z"/>
+          </marker>
+          <marker id="ah-hl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="arrowhead hl" d="M0,0 L10,5 L0,10 z"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </main>
+
+  <aside class="steps-pane">
+    <h2>Steps <span id="flow-label" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink2);font-size:11px"></span></h2>
+    <ol class="steps" id="steps"><li class="placeholder" style="list-style:none;padding-left:10px;background:transparent">左の Flow を選択</li></ol>
+    <h2>Highlight</h2>
+    <div id="highlight-detail" class="note">Flow 選択で対象コンポーネント／接続を表示</div>
+  </aside>
+</div>
+
+<!-- ========== Procedure Table (Claude Code向け) ========== -->
+<section class="proc">
+  <h3><span class="pill">CLAUDE CODE 手順</span> 保守・ページ追加・ビルド・デプロイ</h3>
+  <div class="proc-grid">
+
+    <div class="proc-card">
+      <h4>📝 修正対象ファイル（Source / Data）</h4>
+      <div class="files">
+        <span class="f">hoki-components.jsx</span>
+        <span class="f">hoki-pages.jsx</span>
+        <span class="f">hoki-data.js</span>
+        <span class="f">hoki-glossary.jsx</span>
+        <span class="f">hoki-glossary-data.js</span>
+        <span class="f">hoki-head-template.html</span>
+        <span class="f danger">denken-hoki-wiki.html ＝編集禁止</span>
+      </div>
+      <ul style="margin-top:10px">
+        <li>共通UIは <code>hoki-components.jsx</code>（App/Sidebar/QuickReview/MetaStrip 等）</li>
+        <li>ページ本体は <code>hoki-pages.jsx</code>（39 *Page + renderPage）</li>
+        <li>ナビ/章/頻度は <code>hoki-data.js</code>（WIKI_DATA）</li>
+      </ul>
+    </div>
+
+    <div class="proc-card">
+      <h4>🔍 整合性チェック（push前）</h4>
+      <ol>
+        <li><code>python hoki_check.py</code><br>
+            ＝ <code>pages.jsx</code> ↔ <code>hoki-data.js</code> ↔ <code>kakomon.yml</code> の id/cta/tag/yr</li>
+        <li>未確認警告：<code>kakomon.yml</code> の現行パスが <em>script ごとに違う</em> 可能性あり<br>
+            → <code>grep -r kakomon.yml</code> で配置確認</li>
+        <li>JSX構文エラー時は build-hoki-wiki.py の <code>node --check</code> で位置特定</li>
+      </ol>
+    </div>
+
+    <div class="proc-card">
+      <h4>🏗️ ビルド（build-hoki-wiki.py）</h4>
+      <ol>
+        <li><code>node --check</code> で <code>hoki-data.js</code> / <code>hoki-glossary-data.js</code> 構文検証</li>
+        <li><code>hoki-head-template.html</code> の CSS を head に注入</li>
+        <li><code>node -e</code> で WIKI_DATA / GLOSSARY を eval → 検索 index 構築</li>
+        <li><code>data/hoki-search-index.json</code> 出力 ＋ <code>window.HOKI_SEARCH_INDEX</code> 埋込</li>
+        <li>既存 <code>denken-hoki-wiki.html</code> を <code>.bak</code> へ退避</li>
+        <li>head + CDN + body + ranking + searchIndex + script(babel) を連結出力</li>
+      </ol>
+    </div>
+
+    <div class="proc-card">
+      <h4>🚀 デプロイ＆反映確認</h4>
+      <ol>
+        <li><code>git add -A &amp;&amp; git commit -m "..." &amp;&amp; git push</code></li>
+        <li>GitHub Pages 自動デプロイ（~50秒）</li>
+        <li>確認 URL: <a href="https://kfurufuru.github.io/denken-hoki-wiki.html" target="_blank" style="color:var(--c-source)">denken-hoki-wiki.html</a></li>
+        <li>キャッシュ強制更新は <code>?v=YYYYMMDD</code> 付与で確認</li>
+        <li>SPA route は <code>#pageid:anchor</code> 形式（: で分離）</li>
+      </ol>
+    </div>
+
+    <div class="proc-card">
+      <h4>💾 localStorage キー一覧</h4>
+      <ul>
+        <li><code>denken_check::hoki_&lt;slug&gt;::&lt;DJB2 hash&gt;</code> — QuickReview 4ボタン状態</li>
+        <li><code>hoki_lastSeen_&lt;pageId&gt;</code> — 最終閲覧 timestamp</li>
+        <li><code>hoki_sidebar_mode</code> / <code>hoki_sidebar_window</code> — テーマ別/章別タブ＋集計 5y/10y/15y</li>
+        <li><code>hoki_quiz_glossary_*</code> — 用語クイズ進捗 ＋ バックアップ</li>
+      </ul>
+      <div style="margin-top:8px;font-size:10.5px;color:var(--ink3)">
+        ※同一オリジン（<code>kfurufuru.github.io</code>）配下で <code>denken_check::*</code> は denken-wiki と <em>共有</em>。MachigaiNotePage が両方を横断スキャン。
+      </div>
+    </div>
+
+    <div class="proc-card">
+      <h4>📊 ランキング更新（任意）</h4>
+      <ol>
+        <li><code>denken-wiki/_data/kakomon.yml</code> 更新を検知</li>
+        <li><code>python scripts/gen_hoki_ranking.py</code> を実行</li>
+        <li><code>data/hoki-theme-ranking.json</code>（S/A/B/C 4段階）が再生成される</li>
+        <li>次回 build 時に <code>window.HOKI_RANKING</code> として埋込</li>
+        <li>Sidebar のテーマ別タブで <strong>5y/10y/15y</strong> ウィンドウ切替表示</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
 
 <script>
 // ============================================================
@@ -139,7 +351,6 @@ const DATA = {
     { id:"external",  label:"External system",    color:"var(--c-external)" },
     { id:"deploy",    label:"Deploy/Host",        color:"var(--c-deploy)" },
   ],
-  // Lanes — y positions chosen to spread vertically
   lanes: [
     { id:"actor",     label:"ACTORS",                       x:20,   y:30,   w:1360, h:120 },
     { id:"source",    label:"SOURCE (.jsx / .js)",          x:20,   y:170,  w:660,  h:170 },
@@ -152,7 +363,6 @@ const DATA = {
     { id:"external",  label:"EXTERNAL SYSTEMS",             x:700,  y:1090, w:680,  h:230 },
     { id:"deploy",    label:"DEPLOY / HOSTING",             x:20,   y:1340, w:1360, h:120 },
   ],
-  // x,y are within canvas coords (1400x1700)
   components: [
     // actors
     { id:"user",   category:"actor", label:"学習者", subtitle:"ブラウザでSPA操作（古舘さん）",   x:60,   y:70 },
@@ -188,11 +398,11 @@ const DATA = {
 
     // artifact
     { id:"html-artifact", category:"artifact", label:"denken-hoki-wiki.html",
-      subtitle:"単一SPA ~758KB · 直接編集禁止", x:720, y:405 },
+      subtitle:"単一SPA ~758KB · 直接編集禁止", x:720, y:405, noEdit:true },
     { id:"html-bak",      category:"artifact", label:"denken-hoki-wiki.html.bak",
       subtitle:"前版バックアップ（自動）",       x:900, y:405 },
 
-    // component (lane y:550)
+    // component
     { id:"comp-app",         category:"component", label:"App (React root)",
       subtitle:"hashchange / lastSeen",              x:40,  y:595 },
     { id:"comp-sidebar",     category:"component", label:"Sidebar / TopBar / TOC / BottomNav",
@@ -202,7 +412,7 @@ const DATA = {
     { id:"comp-meta",        category:"component", label:"MetaStrip / GoalQ / TrapTable 他",
       subtitle:"ハイブリッドページ固定構成素材",     x:660, y:595 },
 
-    // pages (lane y:740 h:330)
+    // pages
     { id:"page-top",              category:"page", label:"top (HomePage)",
       subtitle:"00.0 学習マップ・HOT・3 CTA",   x:40,  y:785 },
     { id:"page-machigai",         category:"page", label:"chokuzen-machigai",
@@ -254,7 +464,7 @@ const DATA = {
     { id:"denken-wiki", category:"external", label:"denken-wiki (姉妹)",
       subtitle:"MkDocs SOT条文記事リンク先",          x:1120,y:1135 },
     { id:"kakomon-yml", category:"external", label:"kakomon.yml",
-      subtitle:"denken-wiki側過去問DB",                x:720, y:1215, unverified:true },
+      subtitle:"denken-wiki側過去問DB / 現行パス未確認", x:720, y:1215, unverified:true },
     { id:"denken-ou",   category:"external", label:"denken-ou.com",
       subtitle:"過去問空欄の一次照合元",                x:920, y:1215 },
     { id:"chatgpt",     category:"external", label:"ChatGPT 監修",
@@ -330,7 +540,7 @@ const DATA = {
     { from:"chatgpt", to:"claude" },
   ],
   flows: [
-    { id:"view-page", label:"ページ閲覧（学習者）", steps:[
+    { id:"view-page", label:"ページ閲覧（学習者）", meta:"6 steps · 学習者 → SPA", steps:[
       "user: portal-v2.html から denken-hoki-wiki.html を開く",
       "deploy-pages: GitHub Pages が単一HTMLを配信",
       "html-artifact: React / Babel / KaTeX CDN を読み込み <script type=text/babel> 実行",
@@ -340,7 +550,7 @@ const DATA = {
     ], highlight:[
       "user","portal-link","deploy-pages","html-artifact","cdn-react","cdn-katex","comp-app","hash-router","ls-lastseen","page-top",
     ]},
-    { id:"self-check", label:"セルフチェック4ボタン保存", steps:[
+    { id:"self-check", label:"セルフチェック4ボタン保存", meta:"5 steps · QuickReview", steps:[
       "user: QuickReview「理解した/うろ覚え/要確認/間違えた」をタップ",
       "comp-quickreview: storageKey = denken_check::hoki_<slug>::<DJB2(質問)>",
       "comp-quickreview: payload {status,updatedAt,firstSeenAt,reviewCount} を JSON.stringify",
@@ -349,7 +559,7 @@ const DATA = {
     ], highlight:[
       "user","comp-quickreview","ls-selfcheck","page-machigai","denken-wiki",
     ]},
-    { id:"add-page", label:"新規ページ追加（執筆者）", steps:[
+    { id:"add-page", label:"新規ページ追加（執筆者）", meta:"6 steps · Claude Code", steps:[
       "claude: hoki-page-template Skill 発火・棲み分け検証・AI社員3者諮問",
       "claude: hoki-data.js の chapters[].pages[] に {id,num,title,freq,ch} を追記",
       "claude: hoki-pages.jsx に *Page と renderPage の case 'xxx' を追加",
@@ -359,7 +569,7 @@ const DATA = {
     ], highlight:[
       "claude","hoki-data","pages-jsx","hoki-check","build-script","html-artifact","html-bak","deploy-pages",
     ]},
-    { id:"build-deploy", label:"Build & Deploy", steps:[
+    { id:"build-deploy", label:"Build & Deploy", meta:"7 steps · build-hoki-wiki.py", steps:[
       "build-script: node --check で hoki-data.js / hoki-glossary-data.js 構文検証",
       "build-script: hoki-head-template.html の CSS を読み込み",
       "build-script: node -e で WIKI_DATA / GLOSSARY を eval → 検索index構築",
@@ -371,7 +581,7 @@ const DATA = {
       "components-jsx","pages-jsx","glossary-jsx","hoki-data","glossary-data","head-template","ranking-json",
       "build-script","search-index","html-artifact","html-bak","deploy-pages",
     ]},
-    { id:"ranking-refresh", label:"出題頻度ランキング更新", steps:[
+    { id:"ranking-refresh", label:"出題頻度ランキング更新", meta:"5 steps · gen_hoki_ranking", steps:[
       "claude: denken-wiki/_data/kakomon.yml が更新されたら検知",
       "gen-ranking: python scripts/gen_hoki_ranking.py 実行・テーマ別件数集計",
       "ranking-json: S(1-4)/A(5-10)/B(11-16)/C(17~) で data/hoki-theme-ranking.json 出力",
@@ -380,7 +590,7 @@ const DATA = {
     ], highlight:[
       "kakomon-yml","gen-ranking","ranking-json","build-script","html-artifact","comp-sidebar",
     ]},
-    { id:"machigai-aggregate", label:"間違いノート横断集計", steps:[
+    { id:"machigai-aggregate", label:"間違いノート横断集計", meta:"5 steps · MachigaiNotePage", steps:[
       "user: ナビ「8.4 間違いノート」を開く（#chokuzen-machigai）",
       "page-machigai: localStorage 全keyを走査し denken_check::* を抽出",
       "page-machigai: hoki_/denken_wiki_ 両prefix を横断集計（同一オリジン共有）",
@@ -389,7 +599,7 @@ const DATA = {
     ], highlight:[
       "user","page-machigai","ls-selfcheck","ls-lastseen","denken-wiki",
     ]},
-    { id:"kakomon-display", label:"kakomon テーマ別演習", steps:[
+    { id:"kakomon-display", label:"kakomon テーマ別演習", meta:"5 steps · 7.x ページ", steps:[
       "user: 「7.x B問だけ/接地/絶縁/主任/保安/事故/電線路/再エネ」を開く",
       "page-kakomon: WIKI_DATA + 内蔵問題リストから該当年度問題を表示",
       "user: 選択肢を回答 → 解答/解説アコーディオン開閉（学習用初期closed）",
@@ -398,7 +608,7 @@ const DATA = {
     ], highlight:[
       "user","page-kakomon","comp-quickreview","ls-selfcheck","denken-ou",
     ]},
-    { id:"review-monshu", label:"ChatGPT監修サイクル", steps:[
+    { id:"review-monshu", label:"ChatGPT監修サイクル", meta:"5 steps · v1.0 → 反映", steps:[
       "claude: v1.0 版を執筆して push（先見せ）",
       "user: ChatGPT にレビュー依頼",
       "chatgpt: 数値/構造/誤判定/語彙の4視点で指摘",
@@ -409,10 +619,10 @@ const DATA = {
     ]},
   ],
   notes: [
-    "denken-hoki-wiki.html は build artifact — 直接編集禁止。",
-    "SPA hash routing は #pageid:anchor 形式で page と anchor を : で分離。",
-    "localStorage は kfurufuru.github.io 同一オリジンで denken-wiki と共有 — MachigaiNotePage が両wikiを横断集計。",
-    "kakomon.yml の現行パスは build-hoki-wiki.py / hoki_check.py / gen_hoki_ranking.py で記述が分かれている — 一次確認推奨。",
+    { text:"denken-hoki-wiki.html は build artifact — 直接編集禁止。", warn:true },
+    { text:"SPA hash routing は #pageid:anchor 形式で page と anchor を : で分離。" },
+    { text:"localStorage は kfurufuru.github.io 同一オリジンで denken-wiki と共有 — MachigaiNotePage が両wikiを横断集計。" },
+    { text:"kakomon.yml の現行パスは build-hoki-wiki.py / hoki_check.py / gen_hoki_ranking.py で記述が分かれている — 一次確認推奨。", warn:true },
   ],
 };
 
@@ -425,6 +635,8 @@ const flowList = document.getElementById('flowlist');
 const stepsEl = document.getElementById('steps');
 const legendEl = document.getElementById('legend');
 const notesEl = document.getElementById('notes');
+const flowLabelEl = document.getElementById('flow-label');
+const hlDetailEl = document.getElementById('highlight-detail');
 
 // legend
 DATA.categories.forEach(c => {
@@ -453,7 +665,10 @@ const boxIndex = {};
 const BOX_W = 160, BOX_H = 56;
 DATA.components.forEach(comp => {
   const div = document.createElement('div');
-  div.className = 'box' + (comp.unverified ? ' unverified' : '');
+  let cls = 'box';
+  if (comp.unverified) cls += ' unverified';
+  if (comp.noEdit)     cls += ' no-edit';
+  div.className = cls;
   div.style.left = comp.x + 'px';
   div.style.top = comp.y + 'px';
   div.style.width = BOX_W + 'px';
@@ -462,19 +677,20 @@ DATA.components.forEach(comp => {
   div.innerHTML = `<div class="cat" style="color:${cat?cat.color:'var(--ink3)'}">${comp.category}</div>
                    <div class="name">${comp.label}</div>
                    <div class="sub">${comp.subtitle || ''}</div>`;
+  if (comp.unverified) div.title = '⚠ 現行パス未確認 — grep -r で配置確認のうえ参照';
+  if (comp.noEdit)     div.title = '🚫 build artifact — 直接編集禁止';
   div.dataset.id = comp.id;
   canvas.appendChild(div);
   boxIndex[comp.id] = { el: div, cx: comp.x + BOX_W/2, cy: comp.y + BOX_H/2,
-                       left: comp.x, top: comp.y, right: comp.x + BOX_W, bottom: comp.y + BOX_H };
+                       left: comp.x, top: comp.y, right: comp.x + BOX_W, bottom: comp.y + BOX_H,
+                       label: comp.label };
 });
 
-// connections (with edge-attached path so lines don't cut through boxes' centers)
+// connections
 function edgePoint(box, tx, ty) {
-  // pick the side closest to the target
   const cx = box.cx, cy = box.cy;
   const dx = tx - cx, dy = ty - cy;
   if (Math.abs(dx) * (box.bottom - box.top) > Math.abs(dy) * (box.right - box.left)) {
-    // exit horizontally
     return { x: dx > 0 ? box.right : box.left, y: cy + dy * ((box.right - box.left)/2) / Math.max(1, Math.abs(dx)) };
   } else {
     return { x: cx + dx * ((box.bottom - box.top)/2) / Math.max(1, Math.abs(dy)), y: dy > 0 ? box.bottom : box.top };
@@ -482,7 +698,7 @@ function edgePoint(box, tx, ty) {
 }
 
 const connEls = [];
-DATA.connections.forEach((c, i) => {
+DATA.connections.forEach((c) => {
   const a = boxIndex[c.from], b = boxIndex[c.to];
   if (!a || !b) { console.warn('missing', c); return; }
   const p1 = edgePoint(a, b.cx, b.cy);
@@ -500,7 +716,7 @@ DATA.connections.forEach((c, i) => {
 // flows
 DATA.flows.forEach(f => {
   const li = document.createElement('li');
-  li.textContent = f.label;
+  li.innerHTML = `${f.label}<span class="meta">${f.meta||''}</span>`;
   li.dataset.id = f.id;
   li.addEventListener('click', () => selectFlow(f.id));
   flowList.appendChild(li);
@@ -509,8 +725,8 @@ DATA.flows.forEach(f => {
 // notes
 DATA.notes.forEach(n => {
   const div = document.createElement('div');
-  div.className = 'note';
-  div.textContent = n;
+  div.className = 'note' + (n.warn ? ' warn' : '');
+  div.textContent = n.text || n;
   notesEl.appendChild(div);
 });
 
@@ -519,7 +735,9 @@ function clearHighlight() {
   connEls.forEach(c => c.el.classList.remove('dim','hl'));
   connEls.forEach(c => c.el.setAttribute('marker-end','url(#ah)'));
   document.querySelectorAll('.flow-list li').forEach(li => li.classList.remove('active'));
-  stepsEl.innerHTML = '<li class="placeholder" style="list-style:none;padding-left:10px;background:transparent">Select a flow on the left</li>';
+  stepsEl.innerHTML = '<li class="placeholder" style="list-style:none;padding-left:10px;background:transparent">左の Flow を選択</li>';
+  flowLabelEl.textContent = '';
+  hlDetailEl.textContent = 'Flow 選択で対象コンポーネント／接続を表示';
 }
 
 function selectFlow(id) {
@@ -530,10 +748,12 @@ function selectFlow(id) {
     if (hi.has(b.dataset.id)) { b.classList.add('hl'); b.classList.remove('dim'); }
     else { b.classList.add('dim'); b.classList.remove('hl'); }
   });
+  let hlConns = 0;
   connEls.forEach(c => {
     if (hi.has(c.from) && hi.has(c.to)) {
       c.el.classList.add('hl'); c.el.classList.remove('dim');
       c.el.setAttribute('marker-end','url(#ah-hl)');
+      hlConns++;
     } else {
       c.el.classList.add('dim'); c.el.classList.remove('hl');
       c.el.setAttribute('marker-end','url(#ah)');
@@ -542,18 +762,25 @@ function selectFlow(id) {
   document.querySelectorAll('.flow-list li').forEach(li => {
     li.classList.toggle('active', li.dataset.id === id);
   });
+  flowLabelEl.textContent = '— ' + flow.label;
   stepsEl.innerHTML = '';
   flow.steps.forEach(s => {
     const li = document.createElement('li');
-    // bold the actor token (text before ":")
     const m = s.match(/^([^:]+):\s*(.*)$/);
     if (m) li.innerHTML = `<b>${m[1]}</b>: ${m[2]}`;
     else   li.textContent = s;
     stepsEl.appendChild(li);
   });
+  const compLabels = flow.highlight.map(h => boxIndex[h] ? boxIndex[h].label : h);
+  hlDetailEl.innerHTML =
+    `<strong style="color:var(--ink)">${flow.highlight.length} components / ${hlConns} connections</strong><br>` +
+    `<span style="color:var(--ink3);font-size:10.5px">${compLabels.join(' · ')}</span>`;
 }
 
 document.getElementById('clearbtn').addEventListener('click', clearHighlight);
+
+// auto-select first flow on load (Add-Page を強調)
+selectFlow('add-page');
 </script>
 
 </body>
