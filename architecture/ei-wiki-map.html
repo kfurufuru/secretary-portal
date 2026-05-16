@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ei-wiki 構造マップ — Architecture Map</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #0a0e1a;
+    color: #d9e1f2;
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    min-height: 100vh;
+  }
+  header {
+    padding: 18px 24px 12px;
+    border-bottom: 1px solid #1c2540;
+    background: #0d1325;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 19px;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  header .sub {
+    color: #8a94b0; font-size: 12px;
+  }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px 16px;
+    margin-top: 10px;
+  }
+  .legend .item {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; color: #b6c2dc;
+  }
+  .legend .sw {
+    display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    min-height: calc(100vh - 130px);
+  }
+  .canvas-wrap {
+    position: relative;
+    padding: 16px;
+    overflow: auto;
+  }
+  .canvas {
+    position: relative;
+    width: 1860px;
+    min-height: 2100px;
+  }
+  svg.lines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .lane {
+    position: absolute;
+    border: 1px dashed rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 6px 8px;
+  }
+  .lane-label {
+    position: absolute;
+    top: 6px; left: 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.35);
+  }
+  .node {
+    position: absolute;
+    width: 168px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #131a2e;
+    border: 1.5px solid #2a3556;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transition: opacity 0.25s, transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .node .lbl {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+  }
+  .node .sub {
+    font-size: 10.5px;
+    color: #8a94b0;
+    margin-top: 3px;
+    line-height: 1.35;
+  }
+  .node.dim { opacity: 0.16; }
+  .node.hi  { border-color: #ffd54f; box-shadow: 0 0 0 2px rgba(255,213,79,0.35), 0 4px 18px rgba(255,213,79,0.18); transform: translateY(-1px); }
+  .node .stripe {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; border-radius: 8px 0 0 8px;
+  }
+  .node.unverified::after {
+    content: "?";
+    position: absolute; top: 4px; right: 6px;
+    font-size: 10px; color: #ff8a65;
+    opacity: 0.85;
+  }
+
+  aside.sidebar {
+    border-left: 1px solid #1c2540;
+    background: #0c1122;
+    padding: 16px 14px;
+    overflow-y: auto;
+    max-height: calc(100vh - 130px);
+  }
+  aside h2 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #8a94b0;
+  }
+  .flows {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-bottom: 18px;
+  }
+  .flow-btn {
+    text-align: left;
+    background: #131a2e;
+    border: 1px solid #2a3556;
+    color: #d9e1f2;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .flow-btn:hover { background: #1a2240; }
+  .flow-btn.active {
+    border-color: #ffd54f;
+    background: #2a2818;
+    color: #ffd54f;
+  }
+  .flow-btn .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+
+  .steps {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .step {
+    background: #131a2e;
+    border-left: 3px solid #2a3556;
+    padding: 6px 9px 7px;
+    border-radius: 0 5px 5px 0;
+  }
+  .step .n {
+    color: #ffd54f;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .step .l {
+    color: #fff; font-weight: 600; font-size: 12px;
+  }
+  .step .d {
+    margin-top: 3px;
+    color: #8a94b0;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .hint {
+    margin-top: 12px;
+    padding: 8px 10px;
+    background: rgba(255,213,79,0.06);
+    border: 1px dashed rgba(255,213,79,0.3);
+    border-radius: 6px;
+    color: #c9b46a;
+    font-size: 11px;
+  }
+  .reset {
+    margin-top: 8px;
+    background: transparent;
+    border: 1px solid #2a3556;
+    color: #8a94b0;
+    padding: 5px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+  }
+  .reset:hover { color: #fff; border-color: #5a6792; }
+
+  .conn-line       { stroke: #2a3556; stroke-width: 1.2; fill: none; opacity: 0.45; transition: stroke 0.25s, opacity 0.25s, stroke-width 0.25s; }
+  .conn-line.dim   { opacity: 0.06; }
+  .conn-line.hi    { stroke: #ffd54f; stroke-width: 2; opacity: 0.95; }
+</style>
+</head>
+<body>
+<header>
+  <h1>ei-wiki 構造マップ — Architecture Map</h1>
+  <div class="sub">電気計装 実務Wiki (kfurufuru.github.io/ei-wiki/) — Tier1タブ8本 × 96記事のナビゲーション構造</div>
+  <div class="legend" id="legend"></div>
+</header>
+
+<div class="layout">
+  <div class="canvas-wrap">
+    <div class="canvas" id="canvas">
+      <svg class="lines" id="svg" viewBox="0 0 1860 2100" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3a4775" />
+          </marker>
+          <marker id="arrow-hi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffd54f" />
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <h2>Flows</h2>
+    <div class="flows" id="flows"></div>
+    <button class="reset" id="reset">× highlight解除</button>
+
+    <h2 style="margin-top:18px">Steps</h2>
+    <div class="steps" id="steps"></div>
+
+    <div class="hint" id="hint">
+      左のflowをクリックすると関連ページとconnectionを黄色でハイライト。「?」マークは未検証 (file位置推定)。
+    </div>
+  </aside>
+</div>
+
+<script>
+"use strict";
+
+// === Data (mirror of ei-wiki-map.json) ===
+const DATA = {
+  categories: [
+    { id: "home",       label: "Home / 入口",          color: "#ffd54f" },
+    { id: "trouble",    label: "06 症状逆引き",         color: "#ff6b6b" },
+    { id: "koatsu",     label: "01 高圧",              color: "#ff8a65" },
+    { id: "teiatsu",    label: "02 低圧",              color: "#f5a623" },
+    { id: "keiso",      label: "03 計装",              color: "#5ec4ff" },
+    { id: "sekkei",     label: "04 設計",              color: "#7ed957" },
+    { id: "hozen",      label: "05 保全",              color: "#9ec96b" },
+    { id: "koji",       label: "03 工事・検収",         color: "#b388ff" },
+    { id: "hoantokei",  label: "09 主任技術者業務",     color: "#c084fc" },
+    { id: "safety",     label: "10 安全管理",           color: "#ff5252" },
+    { id: "site",       label: "07 自工場固有",         color: "#a78bfa" },
+    { id: "energy",     label: "08 省エネ",            color: "#4ade80" },
+    { id: "genai",      label: "11 生成AI業務活用",     color: "#22d3ee" },
+    { id: "guidelines", label: "業務マニュアル",        color: "#94a3b8" },
+    { id: "reference",  label: "リファレンス",          color: "#9ea7b3" }
+  ],
+  components: [
+    { id: "home-index",        category: "home",       label: "Home",                   subtitle: "あなたは？/仕事は？で動線分岐" },
+    { id: "getting-started",   category: "home",       label: "読む順番ガイド",          subtitle: "Lv1/Lv2/Lv3 経験別タブ" },
+
+    { id: "trouble-index",     category: "trouble",    label: "症状逆引きインデックス",  subtitle: "症状表→該当記事ジャンプ" },
+    { id: "trouble-basics",    category: "trouble",    label: "トラブル対応の基本",      subtitle: "切り分け・記録・エスカレ" },
+    { id: "trouble-power",     category: "trouble",    label: "電源トラブル",            subtitle: "遮断器・停電・瞬停" },
+    { id: "trouble-motor",     category: "trouble",    label: "モータートラブル",        subtitle: "起動不能・過熱・振動" },
+    { id: "trouble-inv",       category: "trouble",    label: "インバータトラブル",      subtitle: "エラーコード・ノイズ" },
+    { id: "trouble-signal",    category: "trouble",    label: "計装信号トラブル",        subtitle: "4-20mA・HART断線/ドリフト" },
+    { id: "trouble-valve",     category: "trouble",    label: "制御弁トラブル",          subtitle: "固着・ハンチング・リーク" },
+    { id: "trouble-plc",       category: "trouble",    label: "PLC/DCSトラブル",         subtitle: "通信切断・I/O・アラーム" },
+    { id: "trouble-gnd",       category: "trouble",    label: "接地・ノイズ",            subtitle: "シールド・電位差・絶縁低下" },
+    { id: "trouble-protect",   category: "trouble",    label: "保護装置誤動作",          subtitle: "誤動作・不動作・漏電" },
+    { id: "trouble-abnormal",  category: "trouble",    label: "非定常時の判断フレーム",  subtitle: "緊急停止判断・優先順位" },
+
+    { id: "koatsu-index",      category: "koatsu",     label: "高圧 index",              subtitle: "10記事のハブ" },
+    { id: "koatsu-juhenden",   category: "koatsu",     label: "受変電設備概論",          subtitle: "全体構成・主要機器" },
+    { id: "koatsu-trf",        category: "koatsu",     label: "変圧器",                  subtitle: "構造・仕様・点検" },
+    { id: "koatsu-cb",         category: "koatsu",     label: "遮断器・断路器",          subtitle: "VCB/DS 操作手順" },
+    { id: "koatsu-relay",      category: "koatsu",     label: "保護継電器",              subtitle: "OCR/GR/差動 整定・試験" },
+    { id: "koatsu-coord",      category: "koatsu",     label: "保護協調",                subtitle: "保護協調図・整定" },
+    { id: "koatsu-cable",      category: "koatsu",     label: "高圧ケーブル",            subtitle: "CV敷設・接続" },
+    { id: "koatsu-motor",      category: "koatsu",     label: "高圧モーター",            subtitle: "高圧誘導電動機・絶縁管理" },
+    { id: "koatsu-pf",         category: "koatsu",     label: "力率改善",                subtitle: "進相コンデンサ選定" },
+    { id: "koatsu-gnd",        category: "koatsu",     label: "接地（高圧）",            subtitle: "高圧系統接地方式" },
+    { id: "koatsu-insul",      category: "koatsu",     label: "耐圧試験・絶縁診断",      subtitle: "AC耐圧・絶縁抵抗・PD" },
+
+    { id: "teiatsu-index",     category: "teiatsu",    label: "低圧 index",              subtitle: "10記事のハブ" },
+    { id: "teiatsu-dist",      category: "teiatsu",    label: "低圧配電",                subtitle: "動力盤・分電盤・ブレーカー" },
+    { id: "teiatsu-mc",        category: "teiatsu",    label: "モーター制御",            subtitle: "スターデルタ・保護回路" },
+    { id: "teiatsu-inv",       category: "teiatsu",    label: "インバータ",              subtitle: "VVVF基礎・パラメータ" },
+    { id: "teiatsu-cable",     category: "teiatsu",    label: "低圧ケーブル",            subtitle: "選定・施工" },
+    { id: "teiatsu-ctrl",      category: "teiatsu",    label: "制御回路",                subtitle: "シーケンス・自己保持" },
+    { id: "teiatsu-plc",       category: "teiatsu",    label: "PLC基礎",                 subtitle: "I/O割付・ラダー・MOC" },
+    { id: "teiatsu-panel",     category: "teiatsu",    label: "操作盤・表示灯",          subtitle: "HMI・押釦・色規格" },
+    { id: "teiatsu-ups",       category: "teiatsu",    label: "UPS・非常電源",           subtitle: "切替時間・バッテリー" },
+    { id: "teiatsu-gnd",       category: "teiatsu",    label: "接地（低圧）",            subtitle: "A/B/C/D種・等電位" },
+    { id: "teiatsu-light",     category: "teiatsu",    label: "照明・コンセント",        subtitle: "回路設計・選定" },
+
+    { id: "keiso-index",       category: "keiso",      label: "計装 index",              subtitle: "14記事のハブ" },
+    { id: "keiso-basics",      category: "keiso",      label: "計装基礎",                subtitle: "4-20mA/HART/フィールドバス" },
+    { id: "keiso-temp",        category: "keiso",      label: "温度計測",                subtitle: "TC/RTD/補償導線" },
+    { id: "keiso-press",       category: "keiso",      label: "圧力計測",                subtitle: "ゲージ・差圧伝送器" },
+    { id: "keiso-flow",        category: "keiso",      label: "流量計測",                subtitle: "電磁・コリオリ・差圧" },
+    { id: "keiso-level",       category: "keiso",      label: "レベル計測",              subtitle: "差圧・レーダー・静電容量" },
+    { id: "keiso-anlz",        category: "keiso",      label: "分析計",                  subtitle: "pH・濃度・ガス" },
+    { id: "keiso-valve",       category: "keiso",      label: "制御弁",                  subtitle: "ポジショナ・キャリブレ" },
+    { id: "keiso-pid",         category: "keiso",      label: "PID制御",                 subtitle: "P/I/D 意味・チューニング" },
+    { id: "keiso-dcs",         category: "keiso",      label: "DCS",                     subtitle: "I/Oカード・冗長" },
+    { id: "keiso-rec",         category: "keiso",      label: "調節計・記録計",          subtitle: "シングルループ調節計" },
+    { id: "keiso-ex",          category: "keiso",      label: "防爆",                    subtitle: "Ex区分・配線ルール" },
+    { id: "keiso-wiring",      category: "keiso",      label: "計装配線",                subtitle: "シールド・分離・接地" },
+    { id: "keiso-npn",         category: "keiso",      label: "NPN/PNP選定",             subtitle: "近接スイッチ・PLC入力" },
+    { id: "keiso-kanryo",      category: "keiso",      label: "工事完了後の受入実務",    subtitle: "完了範囲・試運転・引継" },
+
+    { id: "sekkei-index",      category: "sekkei",     label: "設計 index",              subtitle: "11記事のハブ" },
+    { id: "sekkei-invest",     category: "sekkei",     label: "設備投資フロー",          subtitle: "稟議〜竣工 6段階" },
+    { id: "sekkei-spec",       category: "sekkei",     label: "仕様書の書き方",          subtitle: "RFQ/データシート" },
+    { id: "sekkei-panel",      category: "sekkei",     label: "盤設計",                  subtitle: "盤内レイアウト・放熱" },
+    { id: "sekkei-route",      category: "sekkei",     label: "電路設計",                subtitle: "ラック・トレイ・配管" },
+    { id: "sekkei-load",       category: "sekkei",     label: "負荷計算",                subtitle: "需要率・力率・容量" },
+    { id: "sekkei-fault",      category: "sekkei",     label: "短絡電流計算",            subtitle: "%Z法・遮断器選定" },
+    { id: "sekkei-vdrop",      category: "sekkei",     label: "電圧降下計算",            subtitle: "ケーブルサイズ選定" },
+    { id: "sekkei-drawing",    category: "sekkei",     label: "図面体系",                subtitle: "単線・展開・ループ図" },
+    { id: "sekkei-std",        category: "sekkei",     label: "規格・法規",              subtitle: "JIS/JEC/コンビナート" },
+    { id: "sekkei-vendor",     category: "sekkei",     label: "メーカー選定",            subtitle: "技術評価・Q&A" },
+    { id: "sekkei-reno",       category: "sekkei",     label: "改造・更新設計",          subtitle: "既設整合・MOC" },
+
+    { id: "hozen-index",       category: "hozen",      label: "保全 index",              subtitle: "10記事のハブ" },
+    { id: "hozen-sys",         category: "hozen",      label: "保全体系",                subtitle: "PM/CBM/BM" },
+    { id: "hozen-periodic",    category: "hozen",      label: "定期点検",                subtitle: "チェックシート・絶縁" },
+    { id: "hozen-insul",       category: "hozen",      label: "絶縁管理",                subtitle: "絶縁抵抗管理基準" },
+    { id: "hozen-cal",         category: "hozen",      label: "校正",                    subtitle: "校正周期・トレーサビリティ" },
+    { id: "hozen-life",        category: "hozen",      label: "寿命管理",                subtitle: "更新計画・余寿命" },
+    { id: "hozen-spare",       category: "hozen",      label: "予備品管理",              subtitle: "在庫・廃番対応" },
+    { id: "hozen-outage",      category: "hozen",      label: "停電作業",                subtitle: "停止手順・復電" },
+    { id: "hozen-meter",       category: "hozen",      label: "測定器の使い方",          subtitle: "テスター・絶縁抵抗計" },
+    { id: "hozen-coord",       category: "hozen",      label: "他部門調整ノウハウ",      subtitle: "製造・保全・工事連携" },
+    { id: "hozen-cbm",         category: "hozen",      label: "予兆保全",                subtitle: "傾向監視・異常検知" },
+
+    { id: "koji-index",        category: "koji",       label: "工事・検収 index",        subtitle: "工事フェーズ別ガイド" },
+    { id: "koji-flow",         category: "koji",       label: "フロー全体図",            subtitle: "企画〜引継 6段階" },
+
+    { id: "hoan-index",        category: "hoantokei",  label: "主任技術者業務 index",    subtitle: "電気事業法対応ハブ" },
+    { id: "hoan-legal",        category: "hoantokei",  label: "法定業務一覧",            subtitle: "工事計画届・法定点検" },
+    { id: "hoan-kisoku",       category: "hoantokei",  label: "保安規程の管理",          subtitle: "作成・変更届" },
+    { id: "hoan-denryoku",     category: "hoantokei",  label: "電力会社との窓口",        subtitle: "設備変更連絡・停電申請" },
+    { id: "hoan-jiko",         category: "hoantokei",  label: "電気事故対応と報告",      subtitle: "速報/確報フロー" },
+
+    { id: "safety-index",      category: "safety",     label: "安全管理 index",          subtitle: "PTW/LOTO/RA ハブ" },
+    { id: "safety-ptw",        category: "safety",     label: "作業許可制度（PTW）",     subtitle: "Permit-to-Work" },
+    { id: "safety-edu",        category: "safety",     label: "特別教育・資格一覧",      subtitle: "法定教育・社内資格" },
+    { id: "safety-loto",       category: "safety",     label: "LOTO",                   subtitle: "停止確認・タグアウト" },
+    { id: "safety-ra",         category: "safety",     label: "リスクアセスメント",      subtitle: "RA手順・記録" },
+    { id: "safety-miss",       category: "safety",     label: "ヒヤリハット集",          subtitle: "事例横展開" },
+
+    { id: "site-index",        category: "site",       label: "自工場固有 index",        subtitle: "塩害・コンビナート" },
+    { id: "site-salt",         category: "site",       label: "塩害・腐食環境",          subtitle: "海岸立地対策" },
+    { id: "site-law",          category: "site",       label: "コンビナート法対応",      subtitle: "石コン法" },
+    { id: "site-process",      category: "site",       label: "プロセス特性",            subtitle: "工程系特有の挙動" },
+    { id: "site-gnd",          category: "site",       label: "接地・腐食対策",          subtitle: "海岸接地の特殊性" },
+
+    { id: "energy-index",      category: "energy",     label: "省エネ index",            subtitle: "省エネ法/デマンド/VFD" },
+    { id: "energy-law",        category: "energy",     label: "省エネ法対応",            subtitle: "法定報告・管理士" },
+    { id: "energy-demand",     category: "energy",     label: "デマンド管理",            subtitle: "デマンド超過防止" },
+    { id: "energy-vfd",        category: "energy",     label: "VFD省エネ計算",          subtitle: "ファン/ポンプ試算" },
+    { id: "energy-pf",         category: "energy",     label: "力率改善ROI",             subtitle: "進相コンデンサ投資回収" },
+    { id: "energy-mon",        category: "energy",     label: "エネルギー監視",          subtitle: "原単位・異常検知" },
+
+    { id: "genai-index",       category: "genai",      label: "生成AI業務活用 index",    subtitle: "Copilot/ChatGPT/Claude" },
+    { id: "genai-basics",      category: "genai",      label: "生成AIの基本",            subtitle: "初心者向け概論" },
+    { id: "genai-m365",        category: "genai",      label: "M365 Copilot活用",        subtitle: "Teams/Outlook/Excel" },
+    { id: "genai-chatgpt",     category: "genai",      label: "ChatGPT活用",             subtitle: "ChatGPT/Claude業務利用" },
+    { id: "genai-prompt",      category: "genai",      label: "プロンプトの書き方",      subtitle: "良い指示・コツ" },
+    { id: "genai-ei",          category: "genai",      label: "電気計装業務への応用",    subtitle: "仕様書/解析/翻訳" },
+    { id: "genai-sec",         category: "genai",      label: "情報セキュリティ",        subtitle: "社外秘・検証義務" },
+    { id: "genai-prompt-btn",  category: "genai",      label: "ChatGPTプロンプトボタン", subtitle: "全記事末尾copy機能", verified: false },
+
+    { id: "gl-index",          category: "guidelines", label: "業務マニュアル index",    subtitle: "SOPハブ" },
+    { id: "gl-loop",           category: "guidelines", label: "計装ループチェック",      subtitle: "I/O〜DCS末端通し" },
+    { id: "gl-relay",          category: "guidelines", label: "保護リレー試験",          subtitle: "二次電流注入" },
+    { id: "gl-gnd",            category: "guidelines", label: "接地抵抗測定",            subtitle: "ER測定手順" },
+    { id: "gl-panel",          category: "guidelines", label: "盤内配線作業要領",        subtitle: "施工標準" },
+    { id: "gl-tray",           category: "guidelines", label: "ケーブルトレイ施工",      subtitle: "支持間隔・分離" },
+    { id: "gl-1st",            category: "guidelines", label: "トラブル初動対応",        subtitle: "First Response" },
+    { id: "gl-ptw",            category: "guidelines", label: "作業許可証(PTW)",         subtitle: "発行・承認・閉鎖" },
+
+    { id: "ref-index",         category: "reference",  label: "リファレンス index",      subtitle: "用語/規格/計算" },
+    { id: "ref-glossary",      category: "reference",  label: "用語集",                  subtitle: "abbreviations同期" },
+    { id: "ref-std",           category: "reference",  label: "規格一覧",                subtitle: "JIS/JEC/NECA/IEC" },
+    { id: "ref-calc",          category: "reference",  label: "計算ツール集",            subtitle: "cable-calc.js等" }
+  ],
+  connections: [
+    ["home-index","trouble-index","今すぐ解決"],
+    ["home-index","getting-started","基礎から"],
+    ["home-index","ref-index","規格確認"],
+    ["home-index","koji-index","新設・更新工事"],
+    ["home-index","hozen-index","点検・保全"],
+    ["home-index","sekkei-invest","設計・見積"],
+    ["home-index","safety-index","安全・PTW"],
+    ["home-index","koatsu-index","高圧"],
+    ["home-index","teiatsu-index","低圧"],
+    ["home-index","keiso-index","計装"],
+    ["home-index","sekkei-index","設計"],
+
+    ["getting-started","keiso-basics","Lv1"],
+    ["getting-started","teiatsu-dist","Lv1"],
+    ["getting-started","hozen-sys","Lv1"],
+    ["getting-started","teiatsu-mc","Lv1"],
+    ["getting-started","hozen-periodic","Lv1"],
+    ["getting-started","trouble-basics","Lv1"],
+    ["getting-started","trouble-signal","Lv2"],
+    ["getting-started","keiso-valve","Lv2"],
+    ["getting-started","keiso-pid","Lv2"],
+    ["getting-started","keiso-dcs","Lv2"],
+    ["getting-started","keiso-ex","Lv2"],
+    ["getting-started","sekkei-spec","Lv2"],
+    ["getting-started","sekkei-load","Lv3"],
+    ["getting-started","sekkei-fault","Lv3"],
+    ["getting-started","sekkei-vdrop","Lv3"],
+    ["getting-started","ref-std","Lv3"],
+
+    ["trouble-index","trouble-basics","まずここ"],
+    ["trouble-index","trouble-power","電源"],
+    ["trouble-index","trouble-motor","モーター"],
+    ["trouble-index","trouble-inv","インバータ"],
+    ["trouble-index","trouble-signal","計装信号"],
+    ["trouble-index","trouble-valve","制御弁"],
+    ["trouble-index","trouble-plc","PLC/DCS"],
+    ["trouble-index","trouble-gnd","接地"],
+    ["trouble-index","trouble-protect","保護装置"],
+    ["trouble-index","koatsu-relay","OCR/GR"],
+    ["trouble-index","koatsu-coord","保護協調"],
+    ["trouble-index","sekkei-vdrop","電圧降下"],
+    ["trouble-index","teiatsu-ups","UPS"],
+    ["trouble-index","teiatsu-mc","モーター制御"],
+    ["trouble-index","keiso-temp","TC"],
+    ["trouble-index","keiso-flow","流量"],
+    ["trouble-index","keiso-level","レベル"],
+    ["trouble-index","keiso-pid","PID"],
+    ["trouble-index","teiatsu-gnd","ステップ電圧"],
+    ["trouble-index","hozen-insul","絶縁"],
+    ["trouble-inv","trouble-gnd","ノイズ"],
+    ["trouble-protect","trouble-gnd","漏電"],
+
+    ["koatsu-index","koatsu-juhenden","受変電"],
+    ["koatsu-index","koatsu-trf","変圧器"],
+    ["koatsu-index","koatsu-cb","遮断器"],
+    ["koatsu-index","koatsu-relay","保護継電器"],
+    ["koatsu-index","koatsu-coord","保護協調"],
+    ["koatsu-index","koatsu-cable","HVケーブル"],
+    ["koatsu-index","koatsu-motor","高圧モーター"],
+    ["koatsu-index","koatsu-pf","力率改善"],
+    ["koatsu-index","koatsu-gnd","接地HV"],
+    ["koatsu-index","koatsu-insul","耐圧"],
+    ["koatsu-relay","koatsu-coord","整定→協調"],
+    ["koatsu-pf","energy-pf","ROI"],
+    ["koatsu-pf","teiatsu-inv","インバータ力率"],
+
+    ["teiatsu-index","teiatsu-dist","配電"],
+    ["teiatsu-index","teiatsu-mc","モーター制御"],
+    ["teiatsu-index","teiatsu-inv","インバータ"],
+    ["teiatsu-index","teiatsu-cable","LVケーブル"],
+    ["teiatsu-index","teiatsu-ctrl","制御回路"],
+    ["teiatsu-index","teiatsu-plc","PLC基礎"],
+    ["teiatsu-index","teiatsu-panel","操作盤"],
+    ["teiatsu-index","teiatsu-ups","UPS"],
+    ["teiatsu-index","teiatsu-gnd","接地LV"],
+    ["teiatsu-index","teiatsu-light","照明"],
+    ["teiatsu-inv","trouble-inv","故障時"],
+    ["teiatsu-plc","trouble-plc","故障時"],
+
+    ["keiso-index","keiso-basics","基礎"],
+    ["keiso-index","keiso-temp","温度"],
+    ["keiso-index","keiso-press","圧力"],
+    ["keiso-index","keiso-flow","流量"],
+    ["keiso-index","keiso-level","レベル"],
+    ["keiso-index","keiso-anlz","分析計"],
+    ["keiso-index","keiso-valve","制御弁"],
+    ["keiso-index","keiso-pid","PID"],
+    ["keiso-index","keiso-dcs","DCS"],
+    ["keiso-index","keiso-rec","調節計"],
+    ["keiso-index","keiso-ex","防爆"],
+    ["keiso-index","keiso-wiring","計装配線"],
+    ["keiso-index","keiso-npn","NPN/PNP"],
+    ["keiso-index","keiso-kanryo","受入"],
+    ["keiso-valve","keiso-pid","チューニング"],
+    ["keiso-pid","trouble-valve","ハンチング"],
+    ["keiso-basics","trouble-signal","切り分け"],
+
+    ["sekkei-index","sekkei-invest","投資フロー"],
+    ["sekkei-index","sekkei-spec","仕様書"],
+    ["sekkei-index","sekkei-panel","盤設計"],
+    ["sekkei-index","sekkei-route","電路設計"],
+    ["sekkei-index","sekkei-load","負荷計算"],
+    ["sekkei-index","sekkei-fault","短絡計算"],
+    ["sekkei-index","sekkei-vdrop","電圧降下"],
+    ["sekkei-index","sekkei-drawing","図面体系"],
+    ["sekkei-index","sekkei-std","規格"],
+    ["sekkei-index","sekkei-vendor","メーカー"],
+    ["sekkei-index","sekkei-reno","改造"],
+    ["sekkei-invest","koji-index","工事へ"],
+    ["sekkei-invest","koji-flow","施工"],
+    ["sekkei-fault","koatsu-cb","遮断器"],
+    ["sekkei-load","koatsu-trf","変圧器"],
+    ["sekkei-std","site-law","石コン法"],
+
+    ["hozen-index","hozen-sys","体系"],
+    ["hozen-index","hozen-periodic","定期点検"],
+    ["hozen-index","hozen-insul","絶縁"],
+    ["hozen-index","hozen-cal","校正"],
+    ["hozen-index","hozen-life","寿命"],
+    ["hozen-index","hozen-spare","予備品"],
+    ["hozen-index","hozen-outage","停電作業"],
+    ["hozen-index","hozen-meter","測定器"],
+    ["hozen-index","hozen-coord","部門調整"],
+    ["hozen-index","hozen-cbm","予兆"],
+    ["hozen-periodic","gl-loop","SOP"],
+    ["hozen-periodic","gl-relay","SOP"],
+    ["hozen-periodic","gl-gnd","SOP"],
+    ["hozen-outage","safety-loto","LOTO"],
+    ["hozen-insul","trouble-gnd","絶縁低下"],
+
+    ["koji-index","koji-flow","フロー"],
+    ["koji-index","sekkei-invest","企画"],
+    ["koji-index","keiso-kanryo","計装受入"],
+    ["koji-index","safety-index","安全"],
+    ["koji-index","hozen-index","引継"],
+    ["koji-flow","keiso-kanryo","検収"],
+    ["keiso-kanryo","gl-loop","ループ"],
+
+    ["hoan-index","hoan-legal","法定"],
+    ["hoan-index","hoan-kisoku","保安規程"],
+    ["hoan-index","hoan-denryoku","電力会社"],
+    ["hoan-index","hoan-jiko","事故対応"],
+    ["hoan-index","energy-index","省エネ法"],
+    ["hoan-index","safety-index","電気安全"],
+    ["hoan-jiko","trouble-power","事故時"],
+    ["hoan-legal","sekkei-invest","計画届"],
+
+    ["safety-index","safety-ptw","PTW"],
+    ["safety-index","safety-edu","特別教育"],
+    ["safety-index","safety-loto","LOTO"],
+    ["safety-index","safety-ra","RA"],
+    ["safety-index","safety-miss","ヒヤリ"],
+    ["safety-ptw","gl-ptw","SOP"],
+    ["safety-loto","hozen-outage","停電作業"],
+
+    ["site-index","site-salt","塩害"],
+    ["site-index","site-law","石コン法"],
+    ["site-index","site-process","プロセス"],
+    ["site-index","site-gnd","海岸接地"],
+    ["site-law","sekkei-std","規格"],
+    ["site-gnd","koatsu-gnd","HV接地"],
+
+    ["energy-index","energy-law","省エネ法"],
+    ["energy-index","energy-demand","デマンド"],
+    ["energy-index","energy-vfd","VFD"],
+    ["energy-index","energy-pf","力率ROI"],
+    ["energy-index","energy-mon","監視"],
+    ["energy-index","keiso-flow","計量"],
+    ["energy-index","hoan-index","保安規程"],
+    ["energy-vfd","teiatsu-inv","インバータ"],
+    ["energy-pf","koatsu-pf","コンデンサ"],
+
+    ["genai-index","genai-basics","基本"],
+    ["genai-index","genai-m365","M365"],
+    ["genai-index","genai-chatgpt","ChatGPT"],
+    ["genai-index","genai-prompt","プロンプト"],
+    ["genai-index","genai-ei","電計応用"],
+    ["genai-index","genai-sec","セキュリティ"],
+    ["genai-prompt-btn","genai-prompt","プロンプト誘導"],
+    ["genai-prompt-btn","genai-chatgpt","ChatGPTへ"],
+
+    ["gl-index","gl-loop","ループ"],
+    ["gl-index","gl-relay","リレー"],
+    ["gl-index","gl-gnd","接地"],
+    ["gl-index","gl-panel","盤配線"],
+    ["gl-index","gl-tray","トレイ"],
+    ["gl-index","gl-1st","初動"],
+    ["gl-index","gl-ptw","PTW"],
+    ["gl-1st","trouble-basics","基本"],
+    ["gl-loop","keiso-basics","参照"],
+    ["gl-relay","koatsu-relay","参照"],
+
+    ["ref-index","ref-glossary","用語"],
+    ["ref-index","ref-std","規格"],
+    ["ref-index","ref-calc","計算"],
+    ["ref-calc","sekkei-vdrop","電圧降下"],
+    ["ref-calc","sekkei-fault","短絡"]
+  ],
+  flows: [
+    {
+      id: "trouble-reverse-lookup",
+      label: "症状逆引きスタート",
+      color: "#ff6b6b",
+      highlight: ["home-index","trouble-index","trouble-basics","trouble-signal","keiso-basics","keiso-temp","keiso-flow","keiso-level","trouble-valve","keiso-pid","hozen-insul"],
+      steps: [
+        ["1","Home入口","「今すぐ解決したい」カード → 症状逆引きインデックス"],
+        ["2","逆引き表","電源/モーター/計装信号/制御弁/PLC/接地/保護の7セクション症状表"],
+        ["3","まず基本","[トラブル対応の基本] で切り分け・記録・エスカレ判断"],
+        ["4","設備別深掘り","症状から該当記事へ (例: 4-20mA振り切れ → 計装信号トラブル)"],
+        ["5","横断知識","計装基礎/温度/流量/レベル で根本理解"],
+        ["6","保全連携","絶縁低下なら hozen-insul で管理基準を確認"]
+      ]
+    },
+    {
+      id: "new-jhd",
+      label: "新規受変電プロジェクト",
+      color: "#ff8a65",
+      highlight: ["home-index","sekkei-invest","sekkei-load","sekkei-fault","sekkei-vdrop","sekkei-spec","koatsu-juhenden","koatsu-trf","koatsu-cb","koatsu-relay","koji-index","koji-flow","keiso-kanryo","hozen-index","hoan-legal"],
+      steps: [
+        ["1","設備投資フロー","稟議→設計→施工→試運転→検収→引継ぎの6段階"],
+        ["2","設計計算","負荷計算・短絡電流計算・電圧降下計算で容量決定"],
+        ["3","仕様書作成","RFQ/データシート→メーカー選定"],
+        ["4","高圧機器知識","受変電概論・変圧器・遮断器・保護継電器で仕様詰め"],
+        ["5","法定届出","09-hoantokei/legal-duties で工事計画届の要否確認"],
+        ["6","工事フロー","03-koji-kenshu/ で施工→竣工→検収"],
+        ["7","受入実務","keiso-kanryo で完了範囲・試運転・引継"],
+        ["8","保全引継","05-hozen/ へ点検計画・予備品・図書を渡す"]
+      ]
+    },
+    {
+      id: "plc-trouble",
+      label: "PLCトラブル切り分け",
+      color: "#22d3ee",
+      highlight: ["trouble-index","trouble-plc","teiatsu-plc","teiatsu-ctrl","keiso-dcs","keiso-basics","trouble-signal","gl-loop"],
+      steps: [
+        ["1","症状逆引き","通信切断/I/O異常/プログラム挙動/アラーム未消去"],
+        ["2","PLC/DCSトラブル","通信ケーブル・LED・プロトコル設定の物理層から"],
+        ["3","I/O源流確認","計装信号トラブル(4-20mA) で現場側を切り分け"],
+        ["4","PLC理論","PLC基礎で I/O割付・ラダー・MOC を確認"],
+        ["5","制御回路","インターロック条件を control-circuit で確認"],
+        ["6","DCS連携","アーキテクチャ・冗長構成・I/Oカード故障判定"],
+        ["7","ループチェック","ガイドライン loop-check で通し確認"]
+      ]
+    },
+    {
+      id: "shoene",
+      label: "省エネ施策（力率・VFD）",
+      color: "#4ade80",
+      highlight: ["home-index","energy-index","energy-pf","energy-vfd","energy-demand","energy-mon","koatsu-pf","teiatsu-inv","keiso-flow","hoan-index"],
+      steps: [
+        ["1","省エネハブ","08-energy/ index から目的別に分岐"],
+        ["2","力率改善ROI","ペナルティ受領 → power-factor-roi で投資回収試算"],
+        ["3","コンデンサ基礎","koatsu/power-factor で進相コンデンサ選定の物理"],
+        ["4","VFD省エネ","ファン・ポンプ更新 → vfd-energy で計算式"],
+        ["5","インバータ基礎","teiatsu/inverter でハード仕様"],
+        ["6","デマンド管理","警報運用は demand-management"],
+        ["7","エネ監視","原単位・異常検知は energy-monitoring"],
+        ["8","保安規程連動","主任技術者として省エネ法対応を保安規程に反映"]
+      ]
+    },
+    {
+      id: "hoan-management",
+      label: "保安管理（事故対応・法定）",
+      color: "#c084fc",
+      highlight: ["hoan-index","hoan-legal","hoan-kisoku","hoan-denryoku","hoan-jiko","safety-index","trouble-power","trouble-protect","sekkei-invest"],
+      steps: [
+        ["1","主任技術者ハブ","09-hoantokei/ index"],
+        ["2","法定業務","工事計画届・法定点検は legal-duties"],
+        ["3","保安規程","作成/変更/届出区分は hoan-kisoku"],
+        ["4","電力会社窓口","設備変更連絡・停電申請は denryoku-toiawase"],
+        ["5","事故対応","発生時は jiko-taiou の速報/確報フロー"],
+        ["6","現場調査","電源トラブル/保護装置誤動作の原因・再発防止"],
+        ["7","安全運用","10-safety で日常のPTW/LOTO/RA を維持"]
+      ]
+    },
+    {
+      id: "ojt",
+      label: "新人OJT（読む順番）",
+      color: "#ffd54f",
+      highlight: ["home-index","getting-started","keiso-basics","teiatsu-dist","hozen-sys","teiatsu-mc","hozen-periodic","trouble-basics","trouble-index"],
+      steps: [
+        ["1","Home","「基礎から学びたい」 → 読む順番ガイド"],
+        ["2","Lv1 Step1","計装基礎 / 低圧配電 / 保全体系 の3本柱"],
+        ["3","Lv1 Step2","モーター制御 / 定期点検 で日常点検レベル"],
+        ["4","Lv1 Step3","トラブル対応の基本 で切り分けフレーム"],
+        ["5","以降","症状逆引きインデックスを日々参照、Lv2計装へ昇格"]
+      ]
+    },
+    {
+      id: "chatgpt-prompt",
+      label: "ChatGPT活用（記事末尾コピー）",
+      color: "#22d3ee",
+      highlight: ["genai-prompt-btn","genai-prompt","genai-chatgpt","genai-ei","genai-sec","genai-index"],
+      steps: [
+        ["1","記事末尾ボタン","直近コミットで全記事末尾にChatGPTプロンプトコピーボタンを追加"],
+        ["2","コピー→ChatGPT","記事文脈付きプロンプトを外部ChatGPTにペースト"],
+        ["3","プロンプト基礎","良い指示の出し方は prompt-writing"],
+        ["4","ツール選択","ChatGPT/Claude/Copilot 使い分けは chatgpt / m365-copilot"],
+        ["5","電計応用","ei-applications で仕様書/解析/翻訳の業務応用"],
+        ["6","セキュリティ","security で社外秘・個人情報の入力禁止ルール"]
+      ]
+    },
+    {
+      id: "koji-acceptance",
+      label: "工事完了→検収→引継",
+      color: "#b388ff",
+      highlight: ["koji-index","koji-flow","keiso-kanryo","gl-loop","gl-relay","gl-gnd","hozen-index","safety-loto","sekkei-invest"],
+      steps: [
+        ["1","工事フロー入口","03-koji-kenshu/ index"],
+        ["2","フェーズ別表","企画→施工→完成報告→現地検査→試運転→検収→引継"],
+        ["3","完了範囲確認","keiso/koji-kanryo で範囲・残件を最優先で固める"],
+        ["4","ループチェック","ガイドライン loop-check.md でI/O〜DCS末端を通す"],
+        ["5","保護リレー試験","二次電流注入で整定値通り動作確認"],
+        ["6","接地抵抗測定","ER測定で接地系統健全性確認"],
+        ["7","LOTO・安全","作業中の停止確認はLOTO手順"],
+        ["8","保全引継","05-hozen へ点検計画・予備品・図書を渡す"]
+      ]
+    }
+  ]
+};
+
+// === Layout: swimlanes by category ===
+// Each lane is a horizontal strip; nodes within are arranged in rows.
+const LANES = [
+  { id: "home",       y:   16, h: 110, label: "HOME / 入口" },
+  { id: "trouble",    y:  130, h: 180, label: "06 TROUBLE — 症状逆引き" },
+  { id: "koatsu",     y:  314, h: 180, label: "01 KOATSU — 高圧" },
+  { id: "teiatsu",    y:  498, h: 180, label: "02 TEIATSU — 低圧" },
+  { id: "keiso",      y:  682, h: 250, label: "03 KEISO — 計装" },
+  { id: "sekkei",     y:  936, h: 180, label: "04 SEKKEI — 設計" },
+  { id: "hozen",      y: 1120, h: 180, label: "05 HOZEN — 保全" },
+  { id: "koji",       y: 1304, h: 90,  label: "03 KOJI — 工事・検収" },
+  { id: "hoantokei",  y: 1398, h: 110, label: "09 HOANTOKEI — 主任技術者業務" },
+  { id: "safety",     y: 1512, h: 110, label: "10 SAFETY — 安全管理" },
+  { id: "site",       y: 1626, h: 110, label: "07 SITE — 自工場固有" },
+  { id: "energy",     y: 1740, h: 110, label: "08 ENERGY — 省エネ" },
+  { id: "genai",      y: 1854, h: 110, label: "11 GENAI — 生成AI業務活用" },
+  { id: "guidelines", y: 1968, h: 70,  label: "GUIDELINES — 業務マニュアル" },
+  { id: "reference",  y: 2042, h: 50,  label: "REFERENCE — リファレンス" }
+];
+
+// Helpers
+const COLS_X = [40, 230, 420, 610, 800, 990, 1180, 1370, 1560, 1690];
+function col(i) { return COLS_X[i]; }
+
+// Compute positions per lane. Each lane has a top-row at lane.y + 26 and second row at lane.y + 88.
+const POS = {};
+function place(id, c, r, laneY) {
+  POS[id] = [COLS_X[c], laneY + 26 + r * 70];
+}
+
+// HOME
+place("home-index",       0, 0, 16);
+place("getting-started",  1, 0, 16);
+
+// TROUBLE (lane y=130, 2 rows)
+place("trouble-index",    0, 0, 130);
+place("trouble-basics",   1, 0, 130);
+place("trouble-power",    2, 0, 130);
+place("trouble-motor",    3, 0, 130);
+place("trouble-inv",      4, 0, 130);
+place("trouble-signal",   5, 0, 130);
+place("trouble-valve",    6, 0, 130);
+place("trouble-plc",      0, 1, 130);
+place("trouble-gnd",      1, 1, 130);
+place("trouble-protect",  2, 1, 130);
+place("trouble-abnormal", 3, 1, 130);
+
+// KOATSU (y=314, 2 rows)
+place("koatsu-index",     0, 0, 314);
+place("koatsu-juhenden",  1, 0, 314);
+place("koatsu-trf",       2, 0, 314);
+place("koatsu-cb",        3, 0, 314);
+place("koatsu-relay",     4, 0, 314);
+place("koatsu-coord",     5, 0, 314);
+place("koatsu-cable",     6, 0, 314);
+place("koatsu-motor",     0, 1, 314);
+place("koatsu-pf",        1, 1, 314);
+place("koatsu-gnd",       2, 1, 314);
+place("koatsu-insul",     3, 1, 314);
+
+// TEIATSU (y=498, 2 rows)
+place("teiatsu-index",    0, 0, 498);
+place("teiatsu-dist",     1, 0, 498);
+place("teiatsu-mc",       2, 0, 498);
+place("teiatsu-inv",      3, 0, 498);
+place("teiatsu-cable",    4, 0, 498);
+place("teiatsu-ctrl",     5, 0, 498);
+place("teiatsu-plc",      6, 0, 498);
+place("teiatsu-panel",    0, 1, 498);
+place("teiatsu-ups",      1, 1, 498);
+place("teiatsu-gnd",      2, 1, 498);
+place("teiatsu-light",    3, 1, 498);
+
+// KEISO (y=682, 3 rows; 14 articles + index = 15)
+place("keiso-index",      0, 0, 682);
+place("keiso-basics",     1, 0, 682);
+place("keiso-temp",       2, 0, 682);
+place("keiso-press",      3, 0, 682);
+place("keiso-flow",       4, 0, 682);
+place("keiso-level",      5, 0, 682);
+place("keiso-anlz",       6, 0, 682);
+place("keiso-valve",      0, 1, 682);
+place("keiso-pid",        1, 1, 682);
+place("keiso-dcs",        2, 1, 682);
+place("keiso-rec",        3, 1, 682);
+place("keiso-ex",         4, 1, 682);
+place("keiso-wiring",     5, 1, 682);
+place("keiso-npn",        6, 1, 682);
+place("keiso-kanryo",     0, 2, 682);
+
+// SEKKEI (y=936, 2 rows)
+place("sekkei-index",     0, 0, 936);
+place("sekkei-invest",    1, 0, 936);
+place("sekkei-spec",      2, 0, 936);
+place("sekkei-panel",     3, 0, 936);
+place("sekkei-route",     4, 0, 936);
+place("sekkei-load",      5, 0, 936);
+place("sekkei-fault",     6, 0, 936);
+place("sekkei-vdrop",     0, 1, 936);
+place("sekkei-drawing",   1, 1, 936);
+place("sekkei-std",       2, 1, 936);
+place("sekkei-vendor",    3, 1, 936);
+place("sekkei-reno",      4, 1, 936);
+
+// HOZEN (y=1120, 2 rows)
+place("hozen-index",      0, 0, 1120);
+place("hozen-sys",        1, 0, 1120);
+place("hozen-periodic",   2, 0, 1120);
+place("hozen-insul",      3, 0, 1120);
+place("hozen-cal",        4, 0, 1120);
+place("hozen-life",       5, 0, 1120);
+place("hozen-spare",      6, 0, 1120);
+place("hozen-outage",     0, 1, 1120);
+place("hozen-meter",      1, 1, 1120);
+place("hozen-coord",      2, 1, 1120);
+place("hozen-cbm",        3, 1, 1120);
+
+// KOJI (y=1304, 1 row)
+place("koji-index",       0, 0, 1304);
+place("koji-flow",        1, 0, 1304);
+
+// HOANTOKEI (y=1398, 1 row)
+place("hoan-index",       0, 0, 1398);
+place("hoan-legal",       1, 0, 1398);
+place("hoan-kisoku",      2, 0, 1398);
+place("hoan-denryoku",    3, 0, 1398);
+place("hoan-jiko",        4, 0, 1398);
+
+// SAFETY (y=1512, 1 row)
+place("safety-index",     0, 0, 1512);
+place("safety-ptw",       1, 0, 1512);
+place("safety-edu",       2, 0, 1512);
+place("safety-loto",      3, 0, 1512);
+place("safety-ra",        4, 0, 1512);
+place("safety-miss",      5, 0, 1512);
+
+// SITE (y=1626, 1 row)
+place("site-index",       0, 0, 1626);
+place("site-salt",        1, 0, 1626);
+place("site-law",         2, 0, 1626);
+place("site-process",     3, 0, 1626);
+place("site-gnd",         4, 0, 1626);
+
+// ENERGY (y=1740, 1 row)
+place("energy-index",     0, 0, 1740);
+place("energy-law",       1, 0, 1740);
+place("energy-demand",    2, 0, 1740);
+place("energy-vfd",       3, 0, 1740);
+place("energy-pf",        4, 0, 1740);
+place("energy-mon",       5, 0, 1740);
+
+// GENAI (y=1854, 1 row)
+place("genai-index",      0, 0, 1854);
+place("genai-basics",     1, 0, 1854);
+place("genai-m365",       2, 0, 1854);
+place("genai-chatgpt",    3, 0, 1854);
+place("genai-prompt",     4, 0, 1854);
+place("genai-ei",         5, 0, 1854);
+place("genai-sec",        6, 0, 1854);
+place("genai-prompt-btn", 7, 0, 1854);
+
+// GUIDELINES (y=1968, 1 row)
+place("gl-index",         0, 0, 1968);
+place("gl-loop",          1, 0, 1968);
+place("gl-relay",         2, 0, 1968);
+place("gl-gnd",           3, 0, 1968);
+place("gl-panel",         4, 0, 1968);
+place("gl-tray",          5, 0, 1968);
+place("gl-1st",           6, 0, 1968);
+place("gl-ptw",           7, 0, 1968);
+
+// REFERENCE (y=2042, 1 row, slim)
+POS["ref-index"]    = [COLS_X[0], 2042 + 14];
+POS["ref-glossary"] = [COLS_X[1], 2042 + 14];
+POS["ref-std"]      = [COLS_X[2], 2042 + 14];
+POS["ref-calc"]     = [COLS_X[3], 2042 + 14];
+
+const CANVAS_W = 1860;
+const NODE_W = 168;
+const NODE_H = 50;
+
+// === Build DOM ===
+const canvas = document.getElementById("canvas");
+const svg = document.getElementById("svg");
+const legend = document.getElementById("legend");
+const flowsEl = document.getElementById("flows");
+const stepsEl = document.getElementById("steps");
+
+const catMap = Object.fromEntries(DATA.categories.map(c => [c.id, c]));
+
+// Legend
+DATA.categories.forEach(c => {
+  const el = document.createElement("span");
+  el.className = "item";
+  el.innerHTML = `<span class="sw" style="background:${c.color}"></span>${c.label}`;
+  legend.appendChild(el);
+});
+
+// Swimlanes
+LANES.forEach(lane => {
+  const div = document.createElement("div");
+  div.className = "lane";
+  div.style.left = "8px";
+  div.style.right = "8px";
+  div.style.top  = lane.y + "px";
+  div.style.height = lane.h + "px";
+  const cat = catMap[lane.id];
+  if (cat) {
+    div.style.borderColor = `${cat.color}33`;
+    div.style.background  = `${cat.color}07`;
+  }
+  const lbl = document.createElement("div");
+  lbl.className = "lane-label";
+  lbl.textContent = lane.label;
+  if (cat) lbl.style.color = cat.color + "BB";
+  div.appendChild(lbl);
+  canvas.appendChild(div);
+});
+
+// Nodes
+const nodeEls = {};
+DATA.components.forEach(c => {
+  const p = POS[c.id];
+  if (!p) { console.warn("no pos for", c.id); return; }
+  const [x, y] = p;
+  const cat = catMap[c.category];
+  const el = document.createElement("div");
+  el.className = "node";
+  if (c.verified === false) el.classList.add("unverified");
+  el.style.left = x + "px";
+  el.style.top  = y + "px";
+  el.style.width = NODE_W + "px";
+  el.innerHTML = `
+    <span class="stripe" style="background:${cat.color}"></span>
+    <div class="lbl">${escapeHtml(c.label)}</div>
+    <div class="sub">${escapeHtml(c.subtitle || "")}</div>
+  `;
+  el.dataset.id = c.id;
+  el.title = c.label + (c.verified === false ? " (unverified)" : "");
+  canvas.appendChild(el);
+  nodeEls[c.id] = el;
+});
+
+function anchor(id) {
+  const p = POS[id];
+  if (!p) return null;
+  return { x: p[0] + NODE_W / 2, y: p[1] + NODE_H / 2 };
+}
+
+// Edges
+const edgeEls = [];
+DATA.connections.forEach(([from, to, label]) => {
+  const a = anchor(from), b = anchor(to);
+  if (!a || !b) return;
+  const dy = b.y - a.y;
+  const curve = Math.min(80, Math.abs(dy) * 0.2 + 14);
+  const cx1 = a.x, cy1 = a.y + (dy > 0 ? curve : -curve);
+  const cx2 = b.x, cy2 = b.y - (dy > 0 ? curve : -curve);
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", `M ${a.x} ${a.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${b.x} ${b.y}`);
+  path.setAttribute("class", "conn-line");
+  path.setAttribute("marker-end", "url(#arrow)");
+  path.dataset.from = from;
+  path.dataset.to = to;
+  svg.appendChild(path);
+  edgeEls.push(path);
+});
+
+svg.setAttribute("viewBox", `0 0 ${CANVAS_W} 2100`);
+
+// Flow buttons
+DATA.flows.forEach(f => {
+  const btn = document.createElement("button");
+  btn.className = "flow-btn";
+  btn.dataset.id = f.id;
+  btn.innerHTML = `<span class="dot" style="background:${f.color}"></span>${escapeHtml(f.label)}`;
+  btn.addEventListener("click", () => activateFlow(f.id));
+  flowsEl.appendChild(btn);
+});
+
+document.getElementById("reset").addEventListener("click", () => activateFlow(null));
+
+let activeFlow = null;
+function activateFlow(id) {
+  activeFlow = id;
+  flowsEl.querySelectorAll(".flow-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.id === id);
+  });
+  const flow = id ? DATA.flows.find(f => f.id === id) : null;
+
+  Object.entries(nodeEls).forEach(([nodeId, el]) => {
+    el.classList.remove("dim", "hi");
+    if (flow) {
+      if (flow.highlight.includes(nodeId)) el.classList.add("hi");
+      else el.classList.add("dim");
+    }
+  });
+
+  edgeEls.forEach(p => {
+    p.classList.remove("dim", "hi");
+    p.removeAttribute("marker-end");
+    if (flow) {
+      const f = p.dataset.from, t = p.dataset.to;
+      if (flow.highlight.includes(f) && flow.highlight.includes(t)) {
+        p.classList.add("hi");
+        p.setAttribute("marker-end", "url(#arrow-hi)");
+      } else {
+        p.classList.add("dim");
+        p.setAttribute("marker-end", "url(#arrow)");
+      }
+    } else {
+      p.setAttribute("marker-end", "url(#arrow)");
+    }
+  });
+
+  stepsEl.innerHTML = "";
+  if (flow) {
+    flow.steps.forEach(([n, l, d]) => {
+      const div = document.createElement("div");
+      div.className = "step";
+      div.style.borderLeftColor = flow.color;
+      div.innerHTML = `<div><span class="n">${escapeHtml(n)}.</span><span class="l">${escapeHtml(l)}</span></div><div class="d">${escapeHtml(d)}</div>`;
+      stepsEl.appendChild(div);
+    });
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// Default: show first flow
+activateFlow("trouble-reverse-lookup");
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+{
+  "system": "設備技術部 業務フローマップ",
+  "generated": "2026-05-16",
+  "verified": false,
+  "note": "三菱ケミカル 設備技術部 電計チーム（古舘さんがチームリーダー）の業務を ei-wiki 構造 + 設備技術部の一般的ライフサイクルから派生した初版。組織固有の手続名・承認ルート・社内システム名は推測を避け、汎用 設備技術部 用語で記述。古舘さんが実態と突合して反復修正する前提。",
+  "source_refs": [
+    "C:/Users/kfuru/ei-wiki/mkdocs.yml (nav構造)",
+    "C:/Users/kfuru/ei-wiki/docs/04-sekkei/investment-flow.md (設備投資フロー mermaid)",
+    "C:/Users/kfuru/ei-wiki/docs/03-koji-kenshu/index.md (工事フェーズ表)",
+    "C:/Users/kfuru/ei-wiki/docs/09-hoantokei/index.md (主任技術者業務)",
+    "C:/Users/kfuru/ei-wiki/docs/10-safety/index.md (安全管理)",
+    "C:/Users/kfuru/ei-wiki/docs/08-energy/index.md (省エネ法)",
+    "C:/Users/kfuru/ei-wiki/docs/06-trouble/index.md (トラブル逆引き)"
+  ],
+  "categories": [
+    { "id": "stakeholder-internal", "label": "社内顧客 (製造・保全)",     "color": "#5ec4ff" },
+    { "id": "stakeholder-own",      "label": "設備技術部 (自部)",         "color": "#f5a623" },
+    { "id": "stakeholder-mgmt",     "label": "経営層・本社",              "color": "#b388ff" },
+    { "id": "stakeholder-external", "label": "外部 (業者・メーカー)",      "color": "#7ed957" },
+    { "id": "stakeholder-regulator","label": "規制 (官庁・電力会社)",      "color": "#ff8a65" },
+    { "id": "activity-plan",        "label": "Plan (企画・設計)",          "color": "#ffd54f" },
+    { "id": "activity-build",       "label": "Build (工事・検収)",         "color": "#ff6b9b" },
+    { "id": "activity-operate",     "label": "Operate / Maintain (運用保全)","color": "#9ea7b3" },
+    { "id": "activity-comply",      "label": "Comply (法令・保安)",        "color": "#d97706" },
+    { "id": "deliverable",          "label": "Deliverable (成果物)",       "color": "#a5b4fc" },
+    { "id": "tools",                "label": "社内ツール",                 "color": "#34d399" }
+  ],
+  "components": [
+    { "id": "team-leader",       "category": "stakeholder-own",      "label": "電計チームリーダー (古舘さん)", "subtitle": "設備技術部内・電気計装担当・主任技術者兼任の可能性", "verified": false, "note": "兼任の有無は本人確認必要" },
+    { "id": "team-member",       "category": "stakeholder-own",      "label": "電計チームメンバー",            "subtitle": "設計/工事監督/保全/トラブル一次対応" },
+    { "id": "shunin-gijutsusha", "category": "stakeholder-own",      "label": "電気主任技術者",                "subtitle": "自家用電気工作物の保安監督・法定業務" },
+    { "id": "energy-kanrishi",   "category": "stakeholder-own",      "label": "エネルギー管理士",              "subtitle": "省エネ法上の選任者・年次報告", "verified": false, "note": "設備技術部内か別組織か要確認" },
+
+    { "id": "seizo-bu",          "category": "stakeholder-internal", "label": "製造部・運転員",                "subtitle": "工事要望元・運転引継先・トラブル発見者" },
+    { "id": "hozen-bu",          "category": "stakeholder-internal", "label": "保全部門",                      "subtitle": "日常点検・現場一次対応・引継先", "verified": false },
+    { "id": "anzen-bu",          "category": "stakeholder-internal", "label": "安全環境部",                    "subtitle": "リスクアセスメント承認・PTW運用", "verified": false },
+
+    { "id": "keiei",             "category": "stakeholder-mgmt",     "label": "経営層 (工場長・本社)",          "subtitle": "投資稟議承認・大型改修決裁" },
+    { "id": "kobai",             "category": "stakeholder-mgmt",     "label": "購買部門",                      "subtitle": "発注・契約・支払処理", "verified": false },
+
+    { "id": "vendor-koji",       "category": "stakeholder-external", "label": "工事業者",                      "subtitle": "電気工事会社・計装工事会社" },
+    { "id": "maker",             "category": "stakeholder-external", "label": "メーカー",                      "subtitle": "盤・変圧器・計装機器・PLC/DCSベンダー" },
+    { "id": "tenken-itaku",      "category": "stakeholder-external", "label": "点検委託先",                    "subtitle": "年次点検・絶縁診断・継電器試験委託", "verified": false },
+
+    { "id": "denryoku-co",       "category": "stakeholder-regulator","label": "電力会社",                      "subtitle": "受電・停電申請・設備変更連絡窓口" },
+    { "id": "sangyo-hoan",       "category": "stakeholder-regulator","label": "産業保安監督部",                "subtitle": "電気事業法・工事計画届出/事故報告先" },
+    { "id": "kpgr-hoan",         "category": "stakeholder-regulator","label": "高圧ガス保安担当行政",           "subtitle": "高圧ガス保安法 変更届/許可申請先", "verified": false, "note": "コンビナート前提・自工場該当は本人確認" },
+    { "id": "shoene-kyoku",      "category": "stakeholder-regulator","label": "資源エネルギー庁",              "subtitle": "省エネ法 定期報告/中長期計画提出先" },
+
+    { "id": "kaizen-kiann",      "category": "activity-plan",        "label": "改修案件起案",                  "subtitle": "課題発見・要求受付・優先度判定" },
+    { "id": "jizen-chosa",       "category": "activity-plan",        "label": "事前調査",                      "subtitle": "現地確認・既設図面確認・法規該当性確認" },
+    { "id": "sekkei-spec",       "category": "activity-plan",        "label": "仕様検討・設計",                "subtitle": "電気/計装仕様・負荷計算・図面承認" },
+    { "id": "ringi",             "category": "activity-plan",        "label": "稟議・投資申請",                "subtitle": "投資額/根拠/代替案/リスク評価" },
+    { "id": "rfq-hattchu",       "category": "activity-plan",        "label": "RFQ・発注",                     "subtitle": "見積取得・技術評価・契約締結" },
+    { "id": "renewal-plan",      "category": "activity-plan",        "label": "中長期設備更新計画",             "subtitle": "寿命管理・更新ロードマップ", "verified": false, "note": "ei-wiki 05-hozen/lifetime に対応・年次運用かは要確認" },
+
+    { "id": "koji-shiyousho",    "category": "activity-build",       "label": "工事仕様書策定",                "subtitle": "工事範囲・品質基準・安全要求" },
+    { "id": "koji-kantoku",      "category": "activity-build",       "label": "工事監督",                      "subtitle": "施工立会・品質確認・進捗管理" },
+    { "id": "shiunten",          "category": "activity-build",       "label": "試運転・ループチェック",          "subtitle": "性能確認・インターロック確認" },
+    { "id": "kenshu",            "category": "activity-build",       "label": "検収",                          "subtitle": "パンチリスト解消・書類確認" },
+    { "id": "hikitsugi",         "category": "activity-build",       "label": "運用引継",                      "subtitle": "製造部/保全部への運転説明・点検ポイント" },
+
+    { "id": "nichijo-junshi",    "category": "activity-operate",     "label": "日常巡視・点検",                "subtitle": "保安規程上の頻度で実施" },
+    { "id": "teiki-tenken",      "category": "activity-operate",     "label": "定期点検 (月次/年次)",          "subtitle": "停電/活線・継電器試験・絶縁測定" },
+    { "id": "houtei-kensa",      "category": "activity-operate",     "label": "法定検査・自主検査",            "subtitle": "電気事業法/高圧ガス保安法の検査" },
+    { "id": "trouble-1st",       "category": "activity-operate",     "label": "トラブル一次対応",              "subtitle": "症状逆引き・現場切分け・暫定復旧" },
+    { "id": "trouble-cause",     "category": "activity-operate",     "label": "原因解析・恒久対策",            "subtitle": "RCA・再発防止策・横展開検討" },
+    { "id": "yochi-hozen",       "category": "activity-operate",     "label": "予知保全・CBM",                 "subtitle": "振動/温度/絶縁トレンド監視", "verified": false, "note": "ei-wiki 記載あるが実運用度合いは要確認" },
+    { "id": "yobihin",           "category": "activity-operate",     "label": "予備品管理",                    "subtitle": "重要予備品選定・在庫管理" },
+    { "id": "shoene-shisaku",    "category": "activity-operate",     "label": "省エネ施策",                    "subtitle": "デマンド管理・VFD・力率改善・原単位監視" },
+
+    { "id": "hoan-kitei-unyou",  "category": "activity-comply",      "label": "保安規程運用",                  "subtitle": "改定・届出・教育・監査" },
+    { "id": "koji-keikaku-todoke","category":"activity-comply",      "label": "工事計画届出",                  "subtitle": "電気事業法 主務官庁届出" },
+    { "id": "jiko-houkoku",      "category": "activity-comply",      "label": "電気事故対応・報告",            "subtitle": "速報24h/確報30日・速報→確報" },
+    { "id": "denryoku-madoguchi","category": "activity-comply",      "label": "電力会社窓口",                  "subtitle": "停電申請・設備変更連絡・受電点" },
+    { "id": "shoene-houkoku",    "category": "activity-comply",      "label": "省エネ法 定期報告",              "subtitle": "エネルギー使用量/原単位/中長期計画" },
+    { "id": "shunin-senin",      "category": "activity-comply",      "label": "主任技術者選任・届出",          "subtitle": "選任/解任届・兼任要件" },
+    { "id": "kpgr-hoshu",        "category": "activity-comply",      "label": "高圧ガス 変更届/許可",          "subtitle": "電気制御変更時の届出区分判定", "verified": false, "note": "自工場該当範囲は本人確認" },
+
+    { "id": "ojt",               "category": "activity-operate",     "label": "OJT・技能伝承",                 "subtitle": "新人受入・OJT計画・評価" },
+    { "id": "tokubetsu-kyoiku",  "category": "activity-operate",     "label": "特別教育・資格取得",            "subtitle": "電気取扱・低圧・高圧・PTW" },
+    { "id": "ka-katsu",          "category": "activity-operate",     "label": "KY活動・ヒヤリハット",          "subtitle": "ツールボックスミーティング・近接災害共有" },
+
+    { "id": "doc-shiyousho",     "category": "deliverable",          "label": "仕様書・図面",                  "subtitle": "電気/計装仕様書・単線結線図・展開図" },
+    { "id": "doc-ringi",         "category": "deliverable",          "label": "稟議書",                        "subtitle": "投資額・根拠・代替案・回収" },
+    { "id": "doc-kenshu",        "category": "deliverable",          "label": "検収書類",                      "subtitle": "パンチリスト・試運転記録・完成図書" },
+    { "id": "doc-tenken-kiroku", "category": "deliverable",          "label": "点検記録",                      "subtitle": "日常/月次/年次・トレンド管理" },
+    { "id": "doc-hoan-kitei",    "category": "deliverable",          "label": "保安規程",                      "subtitle": "工場固有の保安基準・運用ルール" },
+    { "id": "doc-todoke",        "category": "deliverable",          "label": "各種届出書",                    "subtitle": "工事計画/選任/事故報告/省エネ" },
+    { "id": "doc-trouble-report","category": "deliverable",          "label": "トラブル報告書・対策書",        "subtitle": "RCA結果・再発防止・水平展開" },
+
+    { "id": "tool-teams",        "category": "tools", "label": "Teams",      "subtitle": "チャット・会議・チーム連携" },
+    { "id": "tool-outlook",      "category": "tools", "label": "Outlook",    "subtitle": "メール・カレンダー・社内承認連絡" },
+    { "id": "tool-onenote",      "category": "tools", "label": "OneNote",    "subtitle": "議事録・OJTノート・個人/共有メモ" },
+    { "id": "tool-plantia",      "category": "tools", "label": "Plantia",    "subtitle": "設備管理システム・点検記録蓄積", "verified": false, "note": "化学プラント向け工場管理パッケージと推定・要本人確認" },
+    { "id": "tool-gemini",       "category": "tools", "label": "Gemini",     "subtitle": "生成AI・調査/要約" },
+    { "id": "tool-notebooklm",   "category": "tools", "label": "NotebookLM", "subtitle": "生成AI・社内資料ベース問答" },
+    { "id": "tool-chatgpt",      "category": "tools", "label": "ChatGPT",    "subtitle": "生成AI・RCA/省エネ検討支援" },
+    { "id": "tool-copilot",      "category": "tools", "label": "Copilot",    "subtitle": "生成AI・Microsoft 365 連携" }
+  ],
+  "connections": [
+    ["seizo-bu","kaizen-kiann","工事要求"],
+    ["hozen-bu","kaizen-kiann","劣化報告"],
+    ["renewal-plan","kaizen-kiann","更新候補"],
+    ["kaizen-kiann","jizen-chosa","起案承認"],
+    ["jizen-chosa","sekkei-spec","調査結果"],
+    ["sekkei-spec","doc-shiyousho","作成"],
+    ["sekkei-spec","ringi","コスト/根拠"],
+    ["ringi","doc-ringi","作成"],
+    ["ringi","keiei","承認依頼"],
+    ["keiei","ringi","承認"],
+    ["ringi","rfq-hattchu","承認後発注"],
+    ["rfq-hattchu","kobai","発注処理"],
+    ["rfq-hattchu","vendor-koji","RFQ送付"],
+    ["rfq-hattchu","maker","RFQ送付"],
+
+    ["sekkei-spec","koji-shiyousho","設計→工事仕様"],
+    ["koji-shiyousho","vendor-koji","発注根拠"],
+    ["vendor-koji","koji-kantoku","施工"],
+    ["maker","koji-kantoku","機器納入"],
+    ["koji-kantoku","shiunten","施工完了"],
+    ["shiunten","kenshu","性能確認"],
+    ["kenshu","doc-kenshu","作成"],
+    ["kenshu","hikitsugi","検収合格"],
+    ["hikitsugi","seizo-bu","運転引継"],
+    ["hikitsugi","hozen-bu","保全引継"],
+
+    ["seizo-bu","nichijo-junshi","異常連絡"],
+    ["hozen-bu","nichijo-junshi","協働"],
+    ["nichijo-junshi","doc-tenken-kiroku","記録"],
+    ["teiki-tenken","tenken-itaku","委託"],
+    ["teiki-tenken","doc-tenken-kiroku","記録"],
+    ["teiki-tenken","yochi-hozen","トレンド入力"],
+    ["yochi-hozen","kaizen-kiann","予知故障→起案"],
+    ["yobihin","teiki-tenken","補給"],
+
+    ["seizo-bu","trouble-1st","発見通報"],
+    ["trouble-1st","trouble-cause","切分け後"],
+    ["trouble-cause","doc-trouble-report","作成"],
+    ["trouble-cause","kaizen-kiann","恒久対策→起案"],
+    ["trouble-cause","jiko-houkoku","電気事故該当"],
+
+    ["jiko-houkoku","sangyo-hoan","速報/確報"],
+    ["jiko-houkoku","doc-todoke","作成"],
+    ["shunin-gijutsusha","jiko-houkoku","保安監督"],
+
+    ["hoan-kitei-unyou","doc-hoan-kitei","改定"],
+    ["hoan-kitei-unyou","sangyo-hoan","届出"],
+    ["hoan-kitei-unyou","team-member","教育"],
+    ["hoan-kitei-unyou","anzen-bu","連携"],
+    ["shunin-gijutsusha","hoan-kitei-unyou","作成責任"],
+
+    ["sekkei-spec","koji-keikaku-todoke","届出該当判定"],
+    ["koji-keikaku-todoke","sangyo-hoan","届出"],
+    ["koji-keikaku-todoke","kpgr-hoshu","高圧ガス該当"],
+    ["kpgr-hoshu","kpgr-hoan","届出/許可"],
+    ["koji-keikaku-todoke","doc-todoke","作成"],
+
+    ["shunin-senin","sangyo-hoan","届出"],
+    ["shunin-senin","doc-todoke","作成"],
+    ["team-leader","shunin-gijutsusha","兼任の可能性"],
+    ["team-leader","team-member","指揮"],
+
+    ["shiunten","denryoku-madoguchi","停電申請"],
+    ["teiki-tenken","denryoku-madoguchi","年次停電"],
+    ["denryoku-madoguchi","denryoku-co","連絡"],
+
+    ["shoene-shisaku","energy-kanrishi","施策入力"],
+    ["energy-kanrishi","shoene-houkoku","年次集計"],
+    ["shoene-houkoku","shoene-kyoku","提出"],
+    ["shoene-houkoku","doc-todoke","作成"],
+
+    ["houtei-kensa","shunin-gijutsusha","立会"],
+    ["houtei-kensa","tenken-itaku","委託検査"],
+    ["houtei-kensa","doc-tenken-kiroku","記録"],
+    ["sangyo-hoan","houtei-kensa","監督官立会"],
+
+    ["ojt","team-member","対象"],
+    ["ojt","team-leader","計画"],
+    ["tokubetsu-kyoiku","team-member","受講"],
+    ["tokubetsu-kyoiku","anzen-bu","運用"],
+    ["ka-katsu","team-member","参加"],
+    ["ka-katsu","anzen-bu","集約"],
+
+    ["team-leader","tool-teams","チーム連携"],
+    ["team-member","tool-teams","チーム連携"],
+    ["ringi","tool-outlook","稟議連絡"],
+    ["denryoku-madoguchi","tool-outlook","申請連絡"],
+    ["ojt","tool-onenote","OJTノート"],
+    ["doc-trouble-report","tool-onenote","共有メモ"],
+    ["nichijo-junshi","tool-plantia","点検入力"],
+    ["teiki-tenken","tool-plantia","点検記録"],
+    ["doc-tenken-kiroku","tool-plantia","データ蓄積"],
+    ["yochi-hozen","tool-plantia","トレンド参照"],
+    ["trouble-cause","tool-chatgpt","RCA支援"],
+    ["shoene-shisaku","tool-chatgpt","検討支援"],
+    ["sekkei-spec","tool-copilot","仕様検討"],
+    ["jizen-chosa","tool-gemini","調査・要約"],
+    ["hoan-kitei-unyou","tool-notebooklm","規程参照"]
+  ],
+  "flows": [
+    {
+      "id": "new-project",
+      "label": "新規設備プロジェクト",
+      "color": "#ffd54f",
+      "highlight": ["seizo-bu","hozen-bu","kaizen-kiann","jizen-chosa","sekkei-spec","ringi","keiei","rfq-hattchu","kobai","vendor-koji","maker","koji-shiyousho","koji-kantoku","shiunten","kenshu","hikitsugi","doc-shiyousho","doc-ringi","doc-kenshu","koji-keikaku-todoke","sangyo-hoan","denryoku-madoguchi","denryoku-co","team-leader","team-member"],
+      "steps": [
+        ["1","課題認識・要求受付","製造部/保全部からの工事要求・更新計画からの抽出"],
+        ["2","事前調査","現地確認・既設図面・法規該当性 (電気事業法/高圧ガス保安法)"],
+        ["3","仕様検討","電気容量・計装仕様・負荷計算・防爆要否"],
+        ["4","稟議","投資額/根拠/代替案/リスク評価→工場長・本社承認"],
+        ["5","RFQ・発注","技術評価・契約・購買連携"],
+        ["6","工事計画届出 (該当時)","産業保安監督部・高圧ガス保安担当行政"],
+        ["7","電力会社連絡","停電申請・受電点変更通知"],
+        ["8","設計→工事仕様書","図面承認・工事範囲/品質基準/安全要求"],
+        ["9","工事監督","施工立会・進捗・品質確認"],
+        ["10","試運転・ループチェック","性能確認・インターロック確認"],
+        ["11","検収","パンチリスト解消・書類確認・完成図書"],
+        ["12","運用引継","製造部/保全部への運転・点検ポイント説明"]
+      ]
+    },
+    {
+      "id": "periodic-inspection",
+      "label": "定期点検サイクル (日次・月次・年次)",
+      "color": "#9ea7b3",
+      "highlight": ["nichijo-junshi","teiki-tenken","tenken-itaku","yochi-hozen","yobihin","doc-tenken-kiroku","denryoku-madoguchi","denryoku-co","team-member","shunin-gijutsusha","hozen-bu"],
+      "steps": [
+        ["1","日常巡視・点検","保安規程上の頻度で現場確認・記録"],
+        ["2","月次点検","重要設備の点検・トレンド管理"],
+        ["3","年次点検計画","停電/活線・委託先選定・電力会社停電申請"],
+        ["4","点検実施","継電器試験・絶縁測定・委託先立会"],
+        ["5","記録・トレンド入力","点検記録に保存・予知保全DBへ"],
+        ["6","異常発見時","kaizen-kiann へ起案 or trouble フロー連携"]
+      ]
+    },
+    {
+      "id": "trouble-response",
+      "label": "トラブル対応 (一次→恒久→水平展開)",
+      "color": "#ff6b9b",
+      "highlight": ["seizo-bu","trouble-1st","trouble-cause","doc-trouble-report","jiko-houkoku","sangyo-hoan","kaizen-kiann","shunin-gijutsusha","team-member"],
+      "steps": [
+        ["1","異常検知・通報","製造部/運転員から連絡・症状逆引き"],
+        ["2","一次対応","現場切分け・暫定復旧・安全確保"],
+        ["3","電気事故該当判定","電気事業法上の事故か (主任技術者判断)"],
+        ["4","事故報告 (該当時)","産業保安監督部へ速報24h/確報30日"],
+        ["5","原因解析 (RCA)","直接原因/根本原因/管理上の問題"],
+        ["6","恒久対策","設備改修/手順見直し/予備品/教育"],
+        ["7","水平展開","類似設備への対策反映・改修案件起案"]
+      ]
+    },
+    {
+      "id": "legal-inspection",
+      "label": "法定検査対応 (年間スケジュール)",
+      "color": "#d97706",
+      "highlight": ["houtei-kensa","shunin-gijutsusha","tenken-itaku","sangyo-hoan","doc-tenken-kiroku","denryoku-madoguchi","denryoku-co"],
+      "steps": [
+        ["1","年間スケジュール作成","電気事業法/高圧ガス保安法/消防法の検査時期一覧"],
+        ["2","事前準備","図書整備・予備品確認・委託先手配・停電申請"],
+        ["3","検査当日","主任技術者立会・委託先実施・監督官対応"],
+        ["4","結果記録","点検記録/検査成績書・指摘事項整理"],
+        ["5","是正・フォロー","指摘事項の対応期限管理・完了報告"]
+      ]
+    },
+    {
+      "id": "hoan-kitei",
+      "label": "保安規程 改定→届出→教育→監査",
+      "color": "#b388ff",
+      "highlight": ["hoan-kitei-unyou","doc-hoan-kitei","shunin-gijutsusha","sangyo-hoan","team-member","anzen-bu"],
+      "steps": [
+        ["1","改定トリガー","法令改正・組織変更・事故教訓・設備大改修"],
+        ["2","改定案作成","主任技術者主導・関係部門レビュー"],
+        ["3","変更届出","産業保安監督部へ変更届"],
+        ["4","教育・周知","電計チーム/関係部門への説明会"],
+        ["5","運用監査","規程と実態の乖離チェック・改善"]
+      ]
+    },
+    {
+      "id": "kaizen-ringi",
+      "label": "改修案件起案→投資申請→実施",
+      "color": "#5ec4ff",
+      "highlight": ["kaizen-kiann","jizen-chosa","sekkei-spec","ringi","keiei","rfq-hattchu","vendor-koji","koji-kantoku","shiunten","kenshu","hikitsugi","renewal-plan","yochi-hozen","trouble-cause"],
+      "steps": [
+        ["1","課題抽出","トラブル恒久対策/予知保全トレンド/更新計画/省エネ"],
+        ["2","優先度判定","リスク×投資額×回収期間"],
+        ["3","事前調査・仕様検討","new-project フローへ合流"],
+        ["4","稟議","投資額/根拠/代替案→経営層承認"],
+        ["5","実施","設計→工事→試運転→検収→引継"]
+      ]
+    },
+    {
+      "id": "ojt-skill",
+      "label": "OJT・技能伝承",
+      "color": "#7ed957",
+      "highlight": ["ojt","tokubetsu-kyoiku","ka-katsu","team-leader","team-member","anzen-bu"],
+      "steps": [
+        ["1","新人受入","配属時オリエンテーション・安全教育"],
+        ["2","OJT計画","担当業務に応じた育成計画 (チームリーダー作成)"],
+        ["3","特別教育・資格取得","電気取扱・低圧/高圧・関連資格"],
+        ["4","KY活動・ヒヤリハット","ツールボックスミーティング・近接災害共有"],
+        ["5","評価・独り立ち","定期評価・主任技術者補佐へのステップアップ"]
+      ]
+    },
+    {
+      "id": "shoene-cn",
+      "label": "省エネ・カーボンニュートラル",
+      "color": "#f5a623",
+      "highlight": ["shoene-shisaku","energy-kanrishi","shoene-houkoku","shoene-kyoku","doc-todoke","kaizen-kiann"],
+      "steps": [
+        ["1","エネルギー監視","原単位管理・デマンド監視・異常検知"],
+        ["2","省エネ施策起案","VFD/力率改善/インバータ化→改修案件へ"],
+        ["3","効果測定","施策前後の使用量・原単位比較"],
+        ["4","省エネ法 定期報告","エネルギー管理士が年次集計"],
+        ["5","資源エネルギー庁提出","定期報告書・中長期計画"]
+      ]
+    },
+    {
+      "id": "shunin-gijutsusha-flow",
+      "label": "主任技術者業務 / 監督官対応",
+      "color": "#ff8a65",
+      "highlight": ["shunin-gijutsusha","shunin-senin","hoan-kitei-unyou","koji-keikaku-todoke","jiko-houkoku","houtei-kensa","denryoku-madoguchi","sangyo-hoan","denryoku-co","team-leader","doc-todoke"],
+      "steps": [
+        ["1","選任・届出","選任時に産業保安監督部へ届出"],
+        ["2","保安規程の作成・改定","電気事業法 第42条 関連"],
+        ["3","工事計画届出 判定","設備変更時に届出要否を確認"],
+        ["4","電気事故対応","事故定義の判断・速報/確報"],
+        ["5","電力会社窓口","受電点・停電申請・設備変更連絡"],
+        ["6","法定検査立会","年次点検/絶縁/継電器試験"],
+        ["7","監督官対応","立入検査・指導への対応"]
+      ]
+    },
+    {
+      "id": "tools-usage",
+      "label": "社内ツール活用",
+      "color": "#34d399",
+      "highlight": ["tool-teams","tool-outlook","tool-onenote","tool-plantia","tool-gemini","tool-notebooklm","tool-chatgpt","tool-copilot","team-leader","team-member","ringi","denryoku-madoguchi","ojt","doc-trouble-report","nichijo-junshi","teiki-tenken","doc-tenken-kiroku","yochi-hozen","trouble-cause","shoene-shisaku","sekkei-spec","jizen-chosa","hoan-kitei-unyou"],
+      "steps": [
+        ["1","Teams","チーム内チャット・会議・部内連携の常設レイヤー"],
+        ["2","Outlook","稟議・申請・対外連絡のメール&カレンダー"],
+        ["3","OneNote","OJTノート・議事録・トラブル共有メモ"],
+        ["4","Plantia","設備管理システム — 点検記録・トレンド・データ蓄積（要本人確認）"],
+        ["5","Gemini","事前調査・要約・情報収集の生成AI"],
+        ["6","NotebookLM","社内規程・既存資料ベースの問答型AI"],
+        ["7","ChatGPT","RCA支援・省エネ検討・複雑検討の汎用生成AI"],
+        ["8","Copilot","M365 連携・仕様検討・ドキュメント生成"]
+      ]
+    }
+  ]
+}
