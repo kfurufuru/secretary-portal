@@ -15,9 +15,30 @@
     min-height: 100vh;
   }
   header {
+    position: relative;
     padding: 18px 24px 12px;
     border-bottom: 1px solid #1c2540;
     background: #0d1325;
+  }
+  .portal-back {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: #8a94b0;
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid #1c2540;
+    border-radius: 4px;
+    background: rgba(13, 19, 37, 0.6);
+    letter-spacing: 0.02em;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .portal-back:hover {
+    color: #fff;
+    border-color: #8a94b0;
+    background: #161d33;
   }
   header h1 {
     margin: 0 0 6px;
@@ -206,6 +227,7 @@
 </head>
 <body>
 <header>
+  <a class="portal-back" href="../index.html">← Portal</a>
   <h1>古舘主寿 キャリアマップ — Architecture Map</h1>
   <div class="sub">三菱ケミカル (旧 三菱樹脂) 設備技術部 / 2014.4 入社 → Phase1 フィルム工場 9年 → Phase2 半導体材料工場 3年目 → 2025.4 管理職</div>
   <div class="legend" id="legend"></div>

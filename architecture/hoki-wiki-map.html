@@ -18,7 +18,13 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
   font-family:'SF Mono','Consolas','Menlo','Source Code Pro',ui-monospace,monospace;
   font-size:13px;line-height:1.45}
 .app{display:grid;grid-template-columns:1fr 320px;min-height:100vh}
-header{grid-column:1 / -1;padding:18px 24px;border-bottom:1px solid var(--line);background:#0c1224}
+header{position:relative;grid-column:1 / -1;padding:18px 24px;border-bottom:1px solid var(--line);background:#0c1224}
+.portal-back{position:absolute;top:12px;right:16px;
+  font-family:'SF Mono','Consolas','Menlo',monospace;font-size:11px;color:var(--ink3);
+  text-decoration:none;padding:3px 8px;border:1px solid var(--line);border-radius:4px;
+  background:rgba(17,23,42,0.6);letter-spacing:0.02em;
+  transition:color 0.15s,border-color 0.15s,background 0.15s}
+.portal-back:hover{color:var(--ink);border-color:var(--ink3);background:var(--bg2)}
 header h1{margin:0 0 6px;font-size:18px;letter-spacing:0.02em;color:var(--ink)}
 header .sub{color:var(--ink3);font-size:12px}
 header .meta{color:var(--ink3);font-size:11px;margin-top:6px}
@@ -83,6 +89,7 @@ button.clear:hover{color:var(--ink);border-color:var(--ink3)}
 <div class="app">
 
 <header>
+  <a class="portal-back" href="../index.html">← Portal</a>
   <h1>hoki-wiki Architecture Map</h1>
   <div class="sub">電験3種 法規Wiki — React 18 + Babel CDN による単一HTML SPA。Source(JSX/JS) → Build(Python) → Artifact(HTML) → Deploy(GH Pages) → Browser(localStorage / SPA hash routing)</div>
   <div class="meta">repo: <a href="https://github.com/kfurufuru/secretary-portal" target="_blank">kfurufuru/secretary-portal</a> · branch chokuzen-suuchi-impl · live: <a href="https://kfurufuru.github.io/denken-hoki-wiki.html" target="_blank">denken-hoki-wiki.html</a> · generated 2026-05-16</div>

@@ -25,8 +25,29 @@
     line-height: 1.45;
   }
   header {
+    position: relative;
     padding: 18px 24px 12px;
     border-bottom: 1px solid var(--border);
+  }
+  .portal-back {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-family: "SF Mono", "Cascadia Mono", "Consolas", "Menlo", monospace;
+    font-size: 11px;
+    color: var(--fg-mute);
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(18, 24, 41, 0.6);
+    letter-spacing: 0.02em;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .portal-back:hover {
+    color: var(--fg);
+    border-color: var(--fg-mute);
+    background: var(--bg-elev);
   }
   h1 { margin: 0 0 6px; font-size: 20px; letter-spacing: 0.02em; }
   .subtitle { color: var(--fg-mute); font-size: 12px; margin-bottom: 12px; }
@@ -180,6 +201,7 @@
 </head>
 <body>
 <header>
+  <a class="portal-back" href="../index.html">← Portal</a>
   <h1>AI社員諮問システム — Architecture Map</h1>
   <div class="subtitle">古舘さん × 3ペルソナ並列諮問 × Notion同期 / generated 2026-05-16</div>
   <div class="legend" id="legend"></div>
