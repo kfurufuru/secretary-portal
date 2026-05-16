@@ -223,6 +223,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 @keyframes flashbg{0%,100%{background:var(--bg)}50%{background:oklch(from var(--accent) l c h/.18)}}
 body.flash{animation:flashbg .8s ease 2}
+header{position:relative}.portal-back{position:absolute;top:12px;right:16px;font:11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:4px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.03);color:#8a94b0;text-decoration:none;transition:border-color .15s,color .15s}.portal-back:hover{color:#fff;border-color:#ffd54f}
 </style>
 </head>
 <body>
@@ -244,7 +245,7 @@ body.flash{animation:flashbg .8s ease 2}
     </div>
   </div>
 
-  <header class="hero">
+  <header class="hero"><a class="portal-back" href="index.html">← Portal</a>
     <div class="micro">Focus · Pomodoro</div>
     <h1>集中タイマー<em>。</em></h1>
     <p>集中と回復を自動で切り替えます。設定時間が来ると音と画面で知らせます。タブを閉じても進捗・モードは保存されます。</p>

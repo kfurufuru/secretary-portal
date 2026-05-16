@@ -292,6 +292,7 @@
     /* CommandBar: 縦積み時の余白調整 */
     .m3-card.px-4 { padding-left: 14px; padding-right: 14px; }
   }
+header{position:relative}.portal-back{position:absolute;top:12px;right:16px;font:11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:4px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.03);color:#8a94b0;text-decoration:none;transition:border-color .15s,color .15s}.portal-back:hover{color:#fff;border-color:#ffd54f}
 </style>
 </head>
 <body>
@@ -2901,7 +2902,7 @@
     return (
     <div className="min-h-screen w-full" style={{background:'var(--bg)'}}>
       {/* top app bar */}
-      <header className="px-4 md:px-8 pt-4 md:pt-6 pb-2 flex items-center justify-between gap-2 flex-wrap">
+      <header className="px-4 md:px-8 pt-4 md:pt-6 pb-2 flex items-center justify-between gap-2 flex-wrap"><a class="portal-back" href="index.html">← Portal</a>
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{background:'var(--surface-container,#eef2fa)'}}>
             <Icon name="hub" size={22} style={{color:'var(--primary,#1a73e8)'}} />

@@ -256,7 +256,8 @@
       .controls{flex-direction:column;}
       .search-box{min-width:100%;}
     }
-  </style>
+  header{position:relative}.portal-back{position:absolute;top:12px;right:16px;font:11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:4px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.03);color:#8a94b0;text-decoration:none;transition:border-color .15s,color .15s}.portal-back:hover{color:#fff;border-color:#ffd54f}
+</style>
 </head>
 <body>
   <!-- ORBS -->
@@ -265,7 +266,7 @@
   <div class="orb orb-3"></div>
 
   <!-- HEADER -->
-  <header>
+  <header><a class="portal-back" href="index.html">← Portal</a>
     <div class="header-nav" onclick="window.location.href='portal.html'">← ポータルに戻る</div>
     <div class="header-title">🧠 Knowledge Dashboard</div>
   </header>
